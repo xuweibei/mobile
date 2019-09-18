@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <title>CAM商城</title>
+        <script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=GFnu2bon0GPM7wuu8rPROimLuqi18eFE&s=1"></script>
+        <!-- jsbridge 前端初始化 安卓  -->
+        <script type="text/javascript">
+            function connectWebViewJavascriptBridge(callback) {
+                if (window.WebViewJavascriptBridge) {
+                    callback(WebViewJavascriptBridge)
+                } else {
+                    document.addEventListener(
+                        'WebViewJavascriptBridgeReady'
+                        , function() {
+                            callback(WebViewJavascriptBridge)
+                        },
+                        false
+                    );
+                }
+            }
+            connectWebViewJavascriptBridge(function(bridge) {
+                bridge.init(function(message, responseCallback) {
+                    // console.log('JS got a message', message);
+                    var data = {
+                        'Javascript Responds': '测试中文!'
+                    };
+                    if (responseCallback) {
+                        // console.log('JS responding with', data);
+                        responseCallback(data);
+                    }
+                });
+                bridge.registerHandler("functionInJs", function(data, responseCallback) {
+                    if (responseCallback) {
+                        var responseData = "Javascript Says Right back aka!";
+                        responseCallback(responseData);
+                    }
+                });
+            })
+        </script>
+        <!-- jsbridge 前端初始化 ios  -->
+        <script>
+            function setupWebViewJavascriptBridge(callback) {
+                    if (window.WebViewJavascriptBridge) { return callback(WebViewJavascriptBridge); }
+                    if (window.WVJBCallbacks) { return window.WVJBCallbacks.push(callback); }
+                    window.WVJBCallbacks = [callback];
+                    var WVJBIframe = document.createElement('iframe');
+                    WVJBIframe.style.display = 'none';
+                    WVJBIframe.src = 'https://__bridge_loaded__';
+                    document.documentElement.appendChild(WVJBIframe);
+                    setTimeout(function() { document.documentElement.removeChild(WVJBIframe) }, 0)
+                }
+                setupWebViewJavascriptBridge(function(bridge) {
+                    var uniqueId = 1
+                    function log(message, data) {
+                        var log = document.getElementById('log')
+                        var el = document.createElement('div')
+                        el.className = 'logLine'
+                        el.innerHTML = uniqueId++ + '. ' + message + ':<br/>' + JSON.stringify(data)
+                        if (log.children.length) { log.insertBefore(el, log.children[0]) }
+                        else { log.appendChild(el) }
+                    }
+
+                    bridge.registerHandler('testJavascriptHandler', function(data, responseCallback) {
+                                        
+                        log('ObjC called testJavascriptHandler with', data)
+                        var responseData = { 'Javascript Says':'Right back atcha!' }
+                        log('JS responding with', responseData)
+                        responseCallback(responseData)
+                    })
+
+                    document.body.appendChild(document.createElement('br'))
+
+                    var callbackButton = document.getElementById('buttons').appendChild(document.createElement('button'))
+                    callbackButton.innerHTML = 'Fire testObjcCallback'
+                    callbackButton.onclick = function(e) {
+                        e.preventDefault()
+                        log('JS calling handler "testObjcCallback"')
+                        bridge.callHandler('testObjcCallback', {'foo': 'bar'}, function(response) {
+                            log('JS got response', response)
+                        })
+                    }
+                })
+        </script>
+        <script>
+            function res() {
+                var deviceWidth = document.documentElement.clientWidth;
+                if (deviceWidth > 750) deviceWidth = 750;
+                document.documentElement.style.fontSize = deviceWidth / 7.5 + 'px';
+                window.rem = deviceWidth / 7.5;
+            }
+            res();
+            window.onresize = function () {
+                res();
+            }
+        </script>
+        <% for (var css in htmlWebpackPlugin.files.css) { %>
+        <link href="<%=htmlWebpackPlugin.files.css[css] %>" rel="stylesheet"/>
+        <% } %>
+    </head>
+    <body>
+        <div id="root"></div>
+        <script src="https://cdn.bootcss.com/zepto/1.2.0/zepto.min.js"></script>
+        <script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=GFnu2bon0GPM7wuu8rPROimLuqi18eFE&s=1"></script>
+        <% if (htmlWebpackPlugin.options.env === 'test') { %>
+        <!-- VConsole调试 (mobile 上调试)-->
+        <script src="https://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/vconsole/3.0.0/vconsole.min.js"></script>
+        <script>
+            new VConsole();
+        </script>
+        <% } %>
+        <script>
+            if(!window.Promise){document.writeln('<script src="https://cdn.bootcss.com/es6-promise/3.2.2/es6-promise.min.js"'+'>'+'<'+'/'+'script>');}
+        </script>
+        <%var chunks = htmlWebpackPlugin.files.chunks;for (var chunk in chunks) {%>
+        <script src="<%=chunks[chunk].entry %>"></script><% } %>
+    </body>
+</html>

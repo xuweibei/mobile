@@ -1,0 +1,44 @@
+@import "~style";
+.information {
+    .wrapTabNav {
+        margin-bottom: 20px;
+        .navbar {
+            border-bottom: none;
+        }
+    }
+    .tidings-box {
+        position: absolute;
+        top: 108px;
+        bottom: 0;
+        width: 100%;
+        background: @white;
+        .am-list {
+            .am-list-body {
+                .am-list-item {
+                    border-bottom: 1px solid @to-light-gray;
+                }
+            }
+            .am-list-body:before {
+                height: 0!important;
+            }
+        }
+    }
+    .tidings-box-clear{
+        top: 30px !important;
+    }
+    .am-icon {
+        color: #333333;
+    }
+    .am-list-content {
+        color: rgba(51, 51, 51, 1);
+        font-size: 30px;
+    }
+    .am-list-line {
+        padding-left: 30px;
+    }
+    .am-list-item .am-list-line {
+        padding-left: 30px!important;
+    }
+}
+
+

@@ -1,0 +1,77 @@
+@import "~style";
+.Payment-completed {
+    position: fixed;
+    background-color: white;
+    width: 100%;
+    bottom: 0;
+    top: 0;
+    .finish {
+        padding: 100px 0 80px 0;
+        margin-top: 88px;
+        background-color: @white;
+        text-align: center;
+        img {
+            width: 127px;
+            height: 124px;
+            margin-bottom: 70px;
+
+        }
+        .finish-bottom {
+            font-size: @font-size-36;
+            color: @fiery-red;
+        }
+    }
+
+    .bill {
+        padding: 0 45px;
+        background-color: @white;
+        margin-bottom: 100px;
+        .frame {
+            padding: 35px 0 37px;
+            //border-top: 1px solid  #EDEDED;
+            .hairline('top',#EDEDED);
+            //border-bottom: 1px solid  #EDEDED;
+            .hairline('bottom',#EDEDED);
+            .bill-top {
+                display: flex;
+                justify-content: space-between;
+                color: @dark-gray;
+                font-size: @font-size-30;
+            }
+            .center {
+                margin: 28px 0;
+            }
+        }
+    }
+
+    .advise {
+        width: 438px;
+        text-align: center;
+        margin: auto;
+        font-size: @font-size-24;
+        line-height: 40px;
+    }
+
+    .instructions {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        padding: 0 48px 40px;
+        position: fixed;
+        bottom: 0;
+        .see, .return {
+            width:280px;
+            height:80px;
+            background: @white;
+            border-radius:40px;
+            text-align: center;
+            line-height: 80px;
+        }
+        .see {
+            border:2px solid rgba(102,102,102,1);
+        }
+        .return {
+            border:2px solid rgba(255,45,81,1);
+        }
+    }
+}

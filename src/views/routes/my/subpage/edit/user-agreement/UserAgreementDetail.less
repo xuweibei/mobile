@@ -1,0 +1,67 @@
+@import "~style";
+
+.UserAgreementDetail {
+    .wrapTabNav {
+        //margin-bottom: 20px;
+        .navbar {
+            border-bottom: none;
+            .nav-left .icon-left:before {
+                color: @darker-black;
+            }
+            .nav-right .icon-right:before {
+                content: '';
+            }
+        }
+    }
+    .about-information {
+        .am-list-item {
+            .hairline('bottom',@to-light-gray);
+        }
+        .am-list-item::after {
+            height: 0!important;
+        }
+    }
+    .about-information {
+        .am-list-item:last-child {
+            border-bottom: none;
+        }
+    }
+    .am-list-item {
+        min-height: 100px;
+        padding-left: 0;
+    }
+    .am-list-item .am-list-line {
+        padding-left: 30px;
+    }
+    .am-list-item .am-list-line .am-list-extra {
+        color: rgba(226, 30, 19, 1);
+    }
+    .am-list-body {
+        position: unset;
+    }
+    .am-list-item:nth-child(1) {
+        margin: 20px 0;
+    }
+    .am-list-line::after {
+        height: 0!important;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ;
+    }
+
+    .edition {
+        color: rgba(153, 153, 153, 1);
+        display: block;
+        font-size: @font-size-24;
+        position: absolute;
+        bottom: 79px;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    .corporate{
+        color: rgba(153, 153, 153, 1);
+        display: block;
+        font-size: @font-size-24;
+        position: absolute;
+        bottom: 140px;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}

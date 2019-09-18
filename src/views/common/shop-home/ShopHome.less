@@ -1,0 +1,122 @@
+@import "~style";
+
+.home-bar{
+    width: 100%;
+    height: 230px;
+    .home-bar-top{
+        width: 100%;
+        height: 230px;
+        // background: url();
+        background-size: 100% 100% !important;
+        padding: 0 @padding-wingBlank;
+        box-sizing: border-box;
+        position: fixed;
+        z-index: 999;
+        top: 0;
+        .bar-top{
+            width: 100%;
+            padding-top: 22px;
+            display: flex;
+            justify-content: space-between;
+            overflow: hidden;
+           .bar-icon-left, .bar-icon-right {
+                padding-top: 6px;
+            }
+            .bar-icon-left:before{
+                content: '\E646';
+                color: @white;
+            }
+            .bar-icon-right:before{
+                content: '\E63b';
+                color: @white;
+            }
+            .home-search{
+                float: right;
+                width: 570px;
+                height: 60px;
+                border-radius: 30px;
+                background: @white;
+                padding: 0 30px;
+                padding-top: 2px;
+                box-sizing: border-box;
+                display: flex;
+                justify-content: end;
+                .icon-search {
+                    margin-right: 21px;
+                }
+                .icon-search:before{
+                    content: '\E644';
+                    font-size: 36px;
+                }
+                .search-title{
+                    line-height: 56px;
+                    font-size: 24px;
+                    color: @dark-gray;
+                }
+            }
+        }
+    }
+    .home-bar-bottom{
+        width: 100%;
+        height: 72px;
+        margin-top: 54px;
+        display: flex;
+        justify-content: space-between;
+        .home-logo{
+            float: left;
+            width: 72px;
+            height: 72px;
+            box-sizing: border-box;
+            border-radius: 50%;
+            overflow: hidden;
+            img{
+                width: 72px;
+                height: 72px;
+            }
+        }
+        .home-title{
+            float: left;
+            height: 72px;
+            margin-left: -80px;
+            .home-icons{
+                margin-top: -16px;
+                margin-bottom: 4px;
+                .icon-tiny:before{
+                    content: '\E637';
+                    color: @duckling-yellow;
+                    font-size: 26px;
+                }
+                .icon-ban:before{
+                    content: '\e638';
+                    color: @duckling-yellow;
+                    font-size: 26px;
+                }
+            }
+            .home-text{
+                color: @white;
+                width: 360px;
+                .TextareaOverflow(1);
+                .text{
+                    font-weight: @font-weight-bold;
+                    margin-right: 18px;
+                }
+                .text-num{
+                    font-size: 24px;
+                }
+            }
+        }
+        .collection {
+            width: 140px;
+            height: 50px;
+            border: 1px solid @white;
+            border-radius: 100px;
+            text-align: center;
+            line-height: 46px;
+            color: @white;
+            font-size: @font-size-24;
+        }
+    }
+    .WXce{
+        margin: 0 auto;
+    }
+}

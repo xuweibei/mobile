@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <title>CAM商城</title>
+        <script src="http://at.alicdn.com/t/font_1151553_wu287zvy76s.js"></script>
+        <script src="http://sdk.talkingdata.com/app/h5/v1?appid=A5A10D902BA54F699A1DE3361C7E7E07&vn=zpyg&vc=0.0.1"></script>
+        <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=GFnu2bon0GPM7wuu8rPROimLuqi18eFE"></script>
+        <script type="text/javascript" src="../sdk/json2.js"></script>
+        <!--web im sdk-->
+        <script type="text/javascript" src="../sdk/webim.js"></script>
+        <script>
+            function res() {
+                var deviceWidth = document.documentElement.clientWidth;
+                if (deviceWidth > 750) deviceWidth = 750;
+                document.documentElement.style.fontSize = deviceWidth / 7.5 + 'px';
+                window.rem = deviceWidth / 7.5;
+            }
+            res();
+            window.onresize = function () {
+                res();
+            }
+
+            window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", userOrientation, false);
+            //判断手机横竖屏状态：
+            function userOrientation(){
+                if(window.orientation==180||window.orientation==0){
+                    console.log('竖屏状态');
+                }
+                if(window.orientation==90||window.orientation==-90){
+                    alert('你好亲。为了更好的体验请你切换回竖屏')
+                }
+            }
+            userOrientation();
+
+            /**
+             * 判断是否是微信环境
+             */
+            window.isWX = function getIsWxClient () {
+                var ua = navigator.userAgent.toLowerCase();
+                if (ua.match(/MicroMessenger/i) == "micromessenger") {
+                    return true;
+                }
+                return false;
+            }();
+        </script>
+
+        <% for (var css in htmlWebpackPlugin.files.css) { %>
+        <link href="<%=htmlWebpackPlugin.files.css[css] %>" rel="stylesheet"/>
+        <% } %>
+        <style>
+            .loading-canvas{
+                width: 100%;
+                height: 96vh;
+                background: #ffffff
+            }
+            .canvas-drawing{
+                width: 100%;
+                height: 332px;
+                margin:70px auto;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="loading" class="loading-canvas"><canvas id="canvas" class="canvas-drawing" height="450" width="450"></canvas></div>
+        <div id="root"></div>
+        <script>
+            let myCanvas=document.querySelector('canvas');
+            let ctx=myCanvas.getContext('2d');
+            let canvasWidth=myCanvas.width
+            let canvasHeight=myCanvas.height
+            let timer=null;
+            let img=new Image();
+            let x=0;
+            let y=0;
+            img.src='../src/assets/images/all.png';
+            img.onload=function(){
+                timer=setInterval(function(){
+                    ctx.clearRect(0,0,canvasWidth,canvasHeight);
+                    ctx.drawImage(img,x*240,y*240,240,240,100,100,240,240);
+                    x++;
+                    if(x % 7 === 0){
+                        y++;
+                        x=0
+                    }
+                    if(y>6){
+                        x=0;
+                        y=0
+                    }
+                    if (window.loading.style) {
+                        if (window.loading.style.cssText) {
+                            window.clearInterval(timer);
+                        }
+                    }
+                },50)
+            }
+        </script>
+        <script src="https://cdn.bootcss.com/zepto/1.2.0/zepto.min.js"></script>
+        <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=GFnu2bon0GPM7wuu8rPROimLuqi18eFE"></script>
+            <% if (htmlWebpackPlugin.options.env === 'dev') { %>
+            <!-- VConsole调试 (mobile 上调试)-->
+            <script src="https://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/vconsole/3.0.0/vconsole.min.js"></script>
+        <script>
+            new VConsole();
+        </script>
+        <% } %>
+        <!-- 微信JSSDK-->
+        <script>
+            if(window.isWX){document.writeln('<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"'+'>'+'<'+'/'+'script>');}
+        </script>
+        <script>
+            if (window.isWX) {
+                /*$.get('https://cs.zzha.vip/wechat/index?url=http://zpyg.ngrok.xiaomiqiu.cn', function(response){
+                console.log(response)
+                wx.config({
+                    debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                    appId: response.appId, // 必填，公众号的唯一标识
+                    timestamp: response.timestamp, // 必填，生成签名的时间戳
+                    nonceStr: response.nonceStr, // 必填，生成签名的随机串
+                    signature: response.signature,// 必填，签名
+                    jsApiList: ['chooseImage'] // 必填，需要使用的JS接口列表
+                });
+            })*/
+                $.ajax({
+                    type: 'POST',
+                    url: 'https://cs.zzha.vip/wechat/index',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        appID: 'wx24c842b6e4d21e02',
+                        appsecret: '89ccd23bd4d40767b9522ff02d7dab71',
+                        url: location.href.split('#')[0]
+                    }),
+                    dataType: 'json',
+                    success: function (res) {
+                        wx.config({
+                            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                            appId: res.appId, // 必填，公众号的唯一标识
+                            timestamp: res.timestamp, // 必填，生成签名的时间戳
+                            nonceStr: res.nonceStr, // 必填，生成签名的随机串
+                            signature: res.signature,// 必填，签名
+                            jsApiList: [
+                                'getLocation', //获取地址
+                                'openLocation', //打开地图
+                                'onMenuShareWeibo',//分享微博
+                                'scanQRCode',//扫一扫
+                                'onMenuShareQQ',//qq分享
+                                'chooseWXPay',//微信支付
+                                'onMenuShareAppMessage',//分享微信
+                                'onMenuShareQZone',//分享空间
+                                'onMenuShareTimeline',
+                                "hideAllNonBaseMenuItem",
+                                "showMenuItems",
+                                "chooseWXPay"
+                            ] // 必填，需要使用的JS接口列表
+                        });
+                    },
+                    error: function (xhr, type) {
+                        console.log('Ajax error!')
+                    }
+                })
+                // wx.ready(() => {
+                    const href = window.location.href;
+                    wx.onMenuShareAppMessage({
+                        title: '这是一个微信分享', // 分享标题
+                        desc: '这是一个微信分享', // 分享描述
+                        link: href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                        imgUrl: 'https://img.zzha.vip/cam/mall/pr/00/00/00/00/72d7eb854a4d0d17_0.jpg?6566', // 分享图标
+                        type: '', // 分享类型,music、video或link，不填默认为link
+                        dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                        success: function () {
+                        }
+                    });
+                    wx.onMenuShareQZone({
+                        title: 'QQ空间', // 分享标题
+                        desc: '这是一个QQ控件分享', // 分享描述
+                        link: href, // 分享链接
+                        imgUrl: 'https://img.zzha.vip/cam/mall/pr/00/00/00/00/72d7eb854a4d0d17_0.jpg?6566', // 分享图标
+                        success: function () {
+                        },
+                        cancel: function () {
+                        }
+                    });
+                    wx.onMenuShareTimeline({
+                        title: '朋友圈', // 分享标题
+                        link: href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                        imgUrl: 'https://img.zzha.vip/cam/mall/pr/00/00/00/00/72d7eb854a4d0d17_0.jpg?6566', // 分享图标
+                        success: function () {
+                        }
+                    });
+                    wx.onMenuShareWeibo({
+                        title: '微博分享', // 分享标题
+                        desc: '这是微博分享', // 分享描述
+                        link: href, // 分享链接
+                        imgUrl: 'https://img.zzha.vip/cam/mall/pr/00/00/00/00/72d7eb854a4d0d17_0.jpg?6566', // 分享图标
+                        success: function () {
+                        },
+                        cancel: function () {
+                        }
+                    });
+                    // wx.hideAllNonBaseMenuItem({
+                    //     success: function () {
+                    //         // alert('已隐藏所有非基本菜单项');
+                    //     }
+                    // });
+                    // wx.showMenuItems({
+                    //     menuList: [
+                    //         "menuItem:share:appMessage", // 阅读模式
+                    //         'menuItem:share:timeline', // 分享到朋友圈
+                    //         "menuItem:share:weiboApp",
+                    //         "menuItem:favorite",
+                    //         "menuItem:share:qq"
+                    //     ],
+                    // });
+                // })
+            }
+        </script>
+        <script>
+            if(!window.Promise){document.writeln('<script src="https://cdn.bootcss.com/es6-promise/3.2.2/es6-promise.min.js"'+'>'+'<'+'/'+'script>');}
+        </script>
+        <%var chunks = htmlWebpackPlugin.files.chunks;for (var chunk in chunks) {%>
+        <script src="<%=chunks[chunk].entry %>"></script><% } %>
+    </body>
+</html>

@@ -1,0 +1,239 @@
+@import "~style";
+@import "~reboot";
+
+/*@import "../assets/style/_component";*/
+
+/* 全局样式设置 */
+//自定义常用样式
+.fl {
+    float: left;
+}
+
+.fr {
+    float: right;
+}
+
+.clearfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.hide {
+    display: none;
+}
+
+.show {
+    display: inherit;
+}
+.ellipsis-line {
+    .TextOverflow();
+}
+body {
+    padding-bottom: constant(safe-area-inset-bottom);
+    padding-bottom: env(safe-area-inset-right);
+/*    background-color: #fff;*/
+}
+
+input::-webkit-input-placeholder {
+    /* placeholder颜色  */
+    color: #ced6e1;
+    /* placeholder字体大小  */
+    font-size: 28px;
+    /* placeholder位置  */
+    text-align: left;
+}
+.content-box {
+    position: fixed;
+    top: 88px;
+    bottom: 100px;
+    //height: 1146px;
+    .am-tabs {
+        display: flex;
+        .am-tabs-content-wrap-animated {
+            flex: 1;
+        }
+    }
+}
+
+.table-reset {
+    border-collapse: collapse;
+    border-spacing: 0;
+    border: 0;
+}
+
+// 解决 Unable to preventDefault inside passive event listener due to target being treated as passive.
+.am-modal-wrap {
+    touch-action: manipulation;
+    .am-modal-body {
+        //padding: 0!important;
+    }
+    .am-modal-button-group-h::before {
+        height: 0!important;
+    }
+}
+
+.com-btn-warp {
+    padding: 30px 26px;
+    .am-button-primary {
+        color: #fff;
+        border-radius:10px;
+        height: 84px;
+        line-height: 84px;
+    }
+}
+
+.mt90{
+    margin-top: 90px;
+}
+
+// 滚动条样式修改
+/* 针对缺省样式 (必须的) */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 0;
+}
+/* 滚动条的滑轨背景颜色 */
+::-webkit-scrollbar-track {
+    background-color: rgba(238, 238, 238, 1);
+    border-radius: 5px;
+}
+/* 滑块颜色 */
+::-webkit-scrollbar-thumb {
+    background-color: rgba(243, 14, 5, 1);
+    border-radius: 10px;
+    opacity: 0.4;
+}
+/*内层轨道的颜色*/
+::-webkit-scrollbar-track-piece{
+    background-color: rgba(238, 238, 238, 1);
+    border-radius: 5px;
+    opacity: 0.4;
+}
+/* 滑轨两头的监听按钮颜色 */
+::-webkit-scrollbar-button {
+    background-color: rgba(243, 14, 5, 1);
+    width:0;
+    height:0;
+}
+/* 横向滚动条和纵向滚动条相交处尖角的颜色 */
+::-webkit-scrollbar-corner {
+    background-color: rgba(243, 14, 5, 1);
+}
+
+//后端提示 高度
+.am-toast-text{
+    height: auto;
+}
+@font-face {
+    font-family: 'iconfont';  /* project id 1151553 */
+    src: url('https://at.alicdn.com/t/font_1151553_3ht17vtdhab.eot');
+    src: url('https://at.alicdn.com/t/font_1151553_3ht17vtdhab.eot?#iefix') format('embedded-opentype'),
+    url('https://at.alicdn.com/t/font_1151553_3ht17vtdhab.woff2') format('woff2'),
+    url('https://at.alicdn.com/t/font_1151553_3ht17vtdhab.woff') format('woff'),
+    url('https://at.alicdn.com/t/font_1151553_3ht17vtdhab.ttf') format('truetype'),
+    url('https://at.alicdn.com/t/font_1151553_3ht17vtdhab.svg#iconfont') format('svg');
+}
+.icon {
+    font-family: 'iconfont';
+    display: inline-block;
+    font-size: 45px;
+    /*    speak: none;
+        font-style: normal;
+        font-weight: normal;
+        font-variant: normal;
+        text-transform: none;
+        line-height: 1;
+        !* Better Font Rendering =========== *!
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;*/
+}
+.icon-symbol {
+    width: 1.4em;
+    height: 1.4em;
+    vertical-align: -0.15em;
+    fill: currentColor;
+    overflow: hidden;
+}
+
+body, .page{
+    background: @back-color;
+    color: @darker-black;
+    font-size: @font-size-30;
+}
+
+//记账量按钮渐变色
+.btn-keep{
+    display: inline-block;
+    padding:0 12px;
+    padding-top: 2px;
+    height: 34px;
+    border-radius: 18px;
+    color: @white;
+    font-size: 22px;
+    //font-weight: @font-weight-normal;
+    text-align: center;
+    background: linear-gradient(to top, #F20C00, #FF2D51);
+    box-sizing: border-box;
+}
+
+//输入框一键删除左边距
+.am-input-clear {
+    margin-left: 17px!important;
+}
+.aroundBlank {
+    margin:0 30px;
+    padding: 30px 0;
+}
+//全局弹出样式
+.am-modal {
+    // width: 100%!important;
+    .am-modal-content {
+        margin: 85px!important;
+    }
+}
+
+//按钮---大
+.large-button {
+    .largeButton();
+}
+//按钮---中
+.medium-button {
+    .mediumButton();
+}
+//按钮---正常
+.normal-button {
+    .normalButton();
+}
+//触摸按钮颜色
+.touch-button {
+    background: linear-gradient(180deg, rgba(234, 12, 1, 1) 100%) !important;
+    box-shadow: 0 4px 35px 0 rgba(242, 13, 3, 0.4) !important;
+}
+//辅助按钮
+.auxiliary-button {
+    .auxiliaryButton();
+}
+//禁用按钮颜色
+.disable-button {
+    .disableButton();
+}
+//我的资产-虚线链接
+.dotted {
+    position: absolute;
+    width: 100%;
+    padding: 0 124px;
+    top: 60px;
+    .am-flexbox-item {
+        border: 1px dashed @gray;
+    }
+    .am-flexbox-item:nth-child(2) {
+        margin: 0 48px 0 60px;
+    }
+}
+
+.am-picker-popup-wrap {
+    overflow: inherit;
+}

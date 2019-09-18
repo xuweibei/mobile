@@ -1,0 +1,409 @@
+/**我要开店---个体页面 */
+
+import {List, InputItem, Picker, Flex} from 'antd-mobile';
+import {createForm} from 'rc-form';
+import AppNavBar from '../../../../../common/navbar/NavBar';
+import Region from '../../../../../common/region/Region';
+import './PersonalFour.less';
+
+const {urlCfg} = Configs;
+const {MESSAGE: {Form}} = Constants;
+const {showInfo, validator} = Utils;
+
+class PersonalFour extends BaseComponent {
+    state ={
+        files: [],
+        multiple: false,
+        value: 0,
+        banks: [], //获取银行列表
+        userName: '',
+        bankCard: '', //银行卡号
+        phone: '', //用户手机号
+        province: '', //省的名字
+        urban: '', //市辖区的名字
+        county: '', //城市名字
+        countyId: '', //城市id
+        cValue: '',
+        bankBranch: [],  //银行支行
+        branchName: '',
+        bankId: 0, //银行id
+        bankKey: '', //所属银行
+        pageStatus: ''
+    };
+
+    componentDidMount = () => {
+        this.getBank();
+        this.getUpdateAudit();
+    };
+
+    onChange = (files) => {
+        console.log(files);
+        this.setState({
+            files
+        });
+    };
+
+    //审核失败获取填过的数据
+    getUpdateAudit = () => {
+        this.fetch(urlCfg.getShopbank, {data: {type: 4}}).subscribe(res => {
+            if (res.status === 0 && res.data.length !== 0) {
+                this.setState({
+                    userName: res.data.realname,
+                    bankCard: res.data.bankNo,
+                    cValue: Array(res.data.bankId),
+                    bankId: res.data.bankId,
+                    phone: res.data.phone,
+                    bankKey: res.data.bankName
+                });
+            }
+        });
+    };
+
+    // //切换银行账号显示内容
+    // onChecked = (values) => {
+    //     if (values === 1) {
+    //         this.setState({
+    //             cardStatus: '存折账号',
+    //             value: values
+    //         });
+    //     } else {
+    //         this.setState({
+    //             cardStatus: '银行账号',
+    //             value: values
+    //         });
+    //     }
+    //     this.setState({
+    //         value: values
+    //     }, () => {
+    //         console.log(this.state.value);
+    //     });
+    // }
+
+    //获取银行
+    getBank = () => {
+        this.fetch(urlCfg.getBank).subscribe(res => {
+            if (res) {
+                if (res.status === 0) {
+                    const arr = [];
+                    res.data.forEach(item => {
+                        arr.push({
+                            label: item.name,
+                            value: item.id
+                        });
+                    });
+                    this.setState({
+                        banks: arr
+                    });
+                }
+            }
+        });
+    }
+
+    //  省市县的赋值
+    setProvince = str => {
+        this.setState({
+            province: str,
+            urban: '',
+            county: ''
+        });
+    };
+
+   //设置城市
+   setCity = str => {
+       this.setState({
+           urban: str,
+           county: ''
+       });
+   };
+
+   //设置市辖区
+   setCounty = str => {
+       this.setState({
+           county: str
+       });
+   };
+
+    //获取选中的银行
+    getBankInfo = (val) => {
+        const {banks} = this.state;
+        const value = val.toString();
+        const result = banks.find(item => item.value === value);
+        this.setState({
+            cValue: val,
+            bankKey: result.label,
+            bankId: result.value
+        });
+    }
+
+    //获取城市id
+    setCountyId = (str) => {
+        this.setState({
+            countyId: str
+        });
+    };
+
+    //获取支行列表
+    getBankList = () => {
+        const {countyId, bankKey} = this.state;
+        if (countyId && bankKey) {
+            this.fetch(urlCfg.getBankList, {data: {
+                cityId: countyId,
+                key: bankKey.substr(0, 2)
+            }}).subscribe(res => {
+                if (res && res.status === 0) {
+                    const arr = [];
+                    res.data.forEach(item => {
+                        arr.push({
+                            label: item.bankBranchName,
+                            value: item.code
+                        });
+                    });
+                    this.setState({
+                        bankBranch: arr
+                    });
+                }
+            });
+        } else {
+            showInfo('请先选择银行开户行和开户地', 1);
+        }
+    }
+
+    //获取支行信息
+    getBankBranchInfo = (val) => {
+        const {bankBranch} = this.state;
+        const result = bankBranch.find(item => item.value === val.toString());
+        if (result) {
+            this.setState({
+                branchName: result.label
+            });
+        }
+    }
+
+    //获取短信验证码
+    getCode = () => {
+        const {phone} = this.state;
+        const myPhone = validator.wipeOut(phone);
+        this.fetch(urlCfg.getCode, {data: {
+            phone: parseInt(myPhone, 10)
+        }}).subscribe(res => {
+            if (res && res.status === 0) {
+                showInfo('验证码获取成功');
+            }
+        });
+    }
+
+    //驗證银行用户名
+    checkUserName = (rule, value, callback) => {
+        if (!validator.isEmpty(value, Form.No_cardHolderName, callback)) return;
+        if (!validator.checkRange(2, 10, value)) {
+            validator.showMessage(Form.Error_UserName, callback);
+            return;
+        }
+        callback();
+    };
+
+    //验证银行卡号
+    checkBankCard = (rule, value, callback) => {
+        if (!validator.isEmpty(value, Form.No_BankNumber, callback)) return;
+        if (!validator.bankCard(value)) {
+            validator.showMessage(Form.Error_Bank, callback);
+            return;
+        }
+        callback();
+    };
+
+    //校验是否选择开户行
+    checkBanks = (rule, value, callback) => {
+        const {bankKey} = this.state;
+        if (!validator.isEmpty(bankKey, Form.No_Bank, callback)) return;
+        callback();
+    };
+
+     //校验负责人电话
+     checkPhone = (rule, value, callback) => {
+         if (!validator.isEmpty(value, Form.No_Phone, callback)) return;
+         const myPhone = validator.wipeOut(value);
+         if (!validator.checkPhone(myPhone)) {
+             showInfo(Form.No_checkPhone, 1);
+             return;
+         }
+         callback();
+     };
+
+     //是否选择银行支行
+     checkBranchName = (rule, value, callback) => {
+         const {branchName} = this.state;
+         if (!validator.isEmpty(branchName, Form.No_branchBankName, callback)) return;
+         callback();
+     };
+
+    //提交申请
+    submit = () => {
+        const {that} = this.props;
+        const {form: {validateFields}} = this.props;
+        const {bankId, bankKey, branchName, value} = this.state;
+
+        validateFields({first: true, force: true}, (error, val) => {
+            if (!error) {
+                this.fetch(urlCfg.bindBankCard, {data: {
+                    id: 0,
+                    bank_id: bankId,
+                    real_name: val.userName,
+                    bank_name: bankKey,
+                    bank_number: val.bankCard,
+                    branches: branchName,
+                    userType: 2,
+                    phone: validator.wipeOut(val.phone),
+                    type: value + 1
+                }}).subscribe(res => {
+                    // that.getChildren('audits');
+                    if (res.status === 0) {
+                        this.fetch(urlCfg.shopFinish).subscribe(res2 => {
+                            that.getChildren('audits');
+                        });
+                    }
+                });
+            }
+        });
+    };
+
+    render() {
+        const {banks, cValue, bankBranch, branchName, userName, bankCard, phone} = this.state;
+        const {getFieldDecorator} = this.props.form;
+        const steps = ['填写店铺信息', '填写开店人信息', '填写工商信息', '绑定银行卡'];
+        return (
+            <div data-component="personal-four" data-role="page" className="personal-four">
+                <AppNavBar rightExplain title="店铺信息" goBackModal={() => this.props.goBack('three')}/>
+                <div className={`step-box ${window.isWX ? 'step-box-clear' : ''}`}>
+                    {steps.map((item, index) => (
+                        <div className="step" key={item}>
+                            <span>{index + 1}</span>
+                            <span>{item}</span>
+                        </div>
+                    ))}
+                    <Flex className="dotted"><Flex.Item/><Flex.Item/><Flex.Item/></Flex>
+                </div>
+                <div className="backdrop">
+                    <div className="list-content">
+                        <div className="margin">
+                            <List>
+                                {
+                                    getFieldDecorator('userName', {
+                                        initialValue: userName,
+                                        rules: [
+                                            {validator: this.checkUserName}
+                                        ],
+                                        validateTrigger: 'submit'//校验值的时机
+                                    })(
+                                        <InputItem
+                                            // value={userName}
+                                            clear
+                                            placeholder="请输入卡主名称"
+                                            maxLength="10"
+                                            type="text"
+                                            // onChange={val => this.getInfo(val, 'name')}
+                                        >卡主姓名
+                                        </InputItem>
+                                    )
+                                }
+                                {
+                                    getFieldDecorator('bankCard', {
+                                        initialValue: bankCard,
+                                        rules: [
+                                            {validator: this.checkBankCard}
+                                        ],
+                                        validateTrigger: 'submit'//校验值的时机
+                                    })(
+                                        <InputItem
+                                            // value={bankCard}
+                                            clear
+                                            maxLength="20"
+                                            type="number"
+                                            placeholder="请输入银行卡号"
+                                        >银行卡号
+                                        </InputItem>
+                                    )
+                                }
+
+                                {
+                                    getFieldDecorator('banks', {
+                                        initialValue: cValue,
+                                        rules: [
+                                            {validator: this.checkBanks}
+                                        ],
+                                        validateTrigger: 'submit'//校
+                                    })(
+                                        <Picker
+                                            data={banks}
+                                            cols={1}
+                                            onOk={val => this.getBankInfo(val)}
+                                        >
+                                            <List.Item arrow="horizontal" onClick={this.onClick}>开户银行</List.Item>
+                                        </Picker>
+                                    )
+                                }
+                                <List.Item className="branches area" arrow="horizontal">
+                                    <span>开户地区</span>
+                                    <Region
+                                        onSetProvince={this.setProvince}
+                                        onSetCity={this.setCity}
+                                        onSetCounty={this.setCounty}
+                                        onCountyId={this.setCountyId}
+                                        add
+                                    />
+                                </List.Item>
+                                {
+                                    getFieldDecorator('branchName', {
+                                        initialValue: branchName,
+                                        rules: [
+                                            {validator: this.checkBranchName}
+                                        ],
+                                        validateTrigger: 'submit'//校
+                                    })(
+                                        <Picker
+                                            data={bankBranch}
+                                            cols={1}
+                                            onOk={val => this.getBankBranchInfo(val)}
+                                        >
+                                            <List.Item
+                                                arrow="horizontal"
+                                                onClick={this.getBankList}
+                                            >{branchName || '开户支行'}
+                                            </List.Item>
+                                        </Picker>
+                                    )
+                                }
+                                {
+                                    getFieldDecorator('phone', {
+                                        initialValue: phone,
+                                        rules: [
+                                            {validator: this.checkPhone}
+                                        ],
+                                        validateTrigger: 'submit'//校
+                                    })(
+                                        <InputItem
+                                            clear
+                                            // maxLength="11"
+                                            // value={}
+                                            type="phone"
+                                            // onChange={val => this.getInfo(val, 'phone')}
+                                            placeholder="请输入手机号码"
+                                        >银行预留手机号
+                                        </InputItem>
+                                    )
+                                }
+                                <List.Item className="remark">请填写与开店人信息一致的所属人银行卡信息</List.Item>
+                            </List>
+                        </div>
+                    </div>
+                    <div className="button">
+                        {/*<div className="large-button general">先保存，下次填</div>*/}
+                        <div className="large-button important" onClick={this.submit}>提交申请</div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
+
+export default createForm()(PersonalFour);

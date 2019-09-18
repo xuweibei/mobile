@@ -1,0 +1,314 @@
+@import "~style";
+.login-modal{
+        width: 580px !important;
+        overflow-y: scroll;
+        .am-icon{
+            margin-top: 30px;
+            margin-left: 100px;
+        }
+        .am-icon-check-circle{
+            color: red;
+        }
+    .am-modal-content{
+
+        // overflow-y: scroll;
+        .logo{
+            width: 100px;
+            height: 100px;
+            background: url('../../../assets/images/wx-icon.png') no-repeat 0 0;
+            border: 50%;
+        }
+        .icon-logo{
+            width: 60px;
+            background: url('../../../assets/images/wx-icon.png') no-repeat center center;
+        }
+        .user-info{
+            color:@darker-black;
+            font-size: @font-size-24;
+            flex: 1;
+            span{
+                display: inline-block;
+                margin-right: 25px;
+            }
+        }
+        .am-list{
+            height: 650px !important;
+        }
+        .am-list-content{
+            display: flex;
+            line-height: 100px;
+        }
+    }
+}
+.login-register {
+
+    .register{
+        background: @white;
+        height: 100vh;
+
+        .register-icon{
+            width: 420px;
+            height: 420px;
+            margin: 120px auto;
+            .logo-icon{
+                background: url('../../../assets/images/yaomeimei.png') center center no-repeat;
+                margin: auto;
+                background-size: 100% 100%;
+                width: 335px;
+                height: 398px;
+            }
+        }
+        .reg-title{
+            font-size: @font-size-24;
+            font-weight: 400;
+            color: @red;
+            text-align: center;
+            margin-top: 40px;
+        }
+        .register-btn{
+            width: 100%;
+            margin-top: 90px;
+            .am-button{
+                background:linear-gradient(180deg,rgba(255,45,81,1) 0%,rgba(242,12,0,1) 100%) !important;
+                box-shadow:0px 4px 35px 0px rgba(242,13,3,0.4) !important;
+            }
+        }
+        .vcode-button{
+            display: flex;
+            margin-top: 50px;
+            justify-content: space-between;
+            padding: 0 45px;
+            .pass{
+                color: @fiery-red;
+                font-size: @font-size-30;
+                font-weight:500;
+                width:280px;
+                height:80px;
+                line-height: 80px;
+                border:2px solid @fiery-red;
+                border-radius:40px;
+                text-align: center;
+                .pass-right{
+                    width:310px;
+                }
+            }
+        }
+    }
+    .login-code{
+        height: 100vh;
+        background: url('../../../assets/images/register.png');
+        background-size: 100% 100%;
+        .login-title{
+            margin-top: 94px;
+            margin-left: 46px;
+            font-weight: 500;
+            color: @darker-black;
+            font-size: @font-size-48;
+            margin-bottom: 140px;
+        }
+        .login-inp{
+            width: 660px;
+            margin:0 auto;
+            .inp-item{
+                height: 122px;
+                width: 100%;
+                border-bottom: 2px solid #CCCCCC;
+                padding: 20px 0;
+                box-sizing: border-box;
+                line-height: 122px;
+                display: flex;
+                margin-bottom: 40px;
+                position: relative;
+                .inp-icon-t,.inp-icon-b{
+                    width: 86px;
+                    height: 48px;
+                    border-right: 2px solid #E5E5E5;
+                    padding-left:30px;
+                    box-sizing: border-box;
+                    display: inline-block;
+                    line-height: 48px;
+                    margin-top: 28px;
+                }
+                .icon-box{
+                    .icon-open:before{
+                        content: '\e65f';
+                        color: #FF5774;
+                        margin-left: 60px;
+                    }
+                    .icon-close:before{
+                        content: '\e660';
+                        color: #ccc;
+                        margin-left: 60px;
+                    }
+                }
+                .inp-icon-t:before{
+                    content: '\e641';
+                }
+                .inp-icon-b:before{
+                    content: '\e642';
+                }
+                .btn-code{
+                    background: @to-light-gray;
+                    height: 50px;
+                    min-width: 160px;
+                    position: absolute;
+                    right: 16px;
+                    bottom: 20px;
+                    color: @gray;
+                    font-size: @font-size-28;
+                    border-radius: 10px;
+                    .code-text{
+                        position: absolute;
+                        top: -22px;
+                        left: 8px;
+                    }
+                }
+            }
+            .border-color {
+                border-bottom: 2px solid #FF5774;
+            }
+        }
+        .log-button{
+            margin-top: 84px;
+            margin-bottom: 40px;
+            .large-button {
+                background:linear-gradient(180deg, #ff2d51 0%, #f20c00 100%)!important;
+                box-shadow: 0 0.04rem 0.35rem 0 rgba(242, 13, 3, 0.4);
+            }
+        }
+        .others{
+            display: flex;
+            margin-top: 170px;
+            justify-content: space-around;
+            div:nth-child(2){
+                color: @gray;
+                font-size: @font-size-26;
+            }
+            .line{
+                width: 240px;
+                padding-bottom: 10px;
+                border-bottom: 1px solid #EEEEEE;
+            }
+        }
+        .wxLogin{
+            margin: 30px auto;
+            width: 100px;
+            height: 100px;
+            background-size: 1950px!important;
+            background: url("../../../assets/images/CSS-Sprites.png") no-repeat -1050px -150px;
+        }
+    }
+
+    .icon-weixin:before{
+        content: '\e63e';
+        margin-right: 20px;
+    }
+
+    .register-del{
+        height: 40px;
+        padding-top: 24px;
+        margin-left: 40px;
+        .del-icon:before{
+            width: 36px;
+            height: 36px;
+            content: '\e645';
+        }
+    }
+
+    .register-bottom{
+        position: fixed;
+        width: 100vw;
+        bottom: 50px;
+        .register-title{
+            width: 100%;
+            text-align: center;
+            color: @gray;
+            font-size: @font-size-24;
+            .bottom-red{
+                display: inline-block;
+                color: @link-color;
+            }
+        }
+    }
+
+    .checkMethods{
+        display: flex;
+        justify-content: space-between;
+        color: #990000;
+        padding: 0 45px;
+        font-size: @font-size-28;
+    }
+
+    .am-list-item.am-input-item{
+        padding-left: 16px;
+    }
+    .am-list-item .am-input-control{
+        margin-bottom: -16px;
+    }
+    .am-list-item .am-input-control input {
+        text-align: left;
+    }
+    .am-list-item .am-input-control input::placeholder {
+        text-align: left;
+    }
+    .am-button{
+        text-align: center !important;
+    }
+    .am-list-line::after {
+        height: 0!important;
+    }
+    .am-button-primary::before {
+        height: 0;
+        border: none!important;
+    }
+
+    .shadow {
+        //display: none;
+        background: rgba(0, 0, 0, 0.2);
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        .unaccessible {
+            padding: 30px;
+            position: absolute;
+            background: @white;
+            bottom: 0;
+            border-radius: 20px 20px 0 0 ;
+            .icon-close {
+                display: block;
+                text-align: right;
+                margin-bottom: 15px;
+            }
+            .icon-close:before {
+                content: '\E640';
+                font-size: @font-size-36;
+                color: @gray;
+            }
+            .rule {
+                padding: 0 15px;
+                .rule-top {
+                    font-size: @font-size-36;
+                    font-weight:bold;
+                    margin-bottom: 77px;
+                }
+                .rule-bottom {
+                    .details {
+                        font-size: @font-size-30;
+                        color: @darker-black;
+                        margin-bottom: 60px;
+                        letter-spacing: 3px;
+                        text-indent: 2em;
+                    }
+                }
+                .contact-us {
+                    .largeButton();
+                    color: @fiery-red;
+                    border: 1px solid @fiery-red;
+                    text-align: center;
+                    margin-bottom: 50px;
+                }
+            }
+        }
+    }
+}

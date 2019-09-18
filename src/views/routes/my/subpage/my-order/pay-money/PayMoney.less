@@ -1,0 +1,190 @@
+@import "~style";
+.pay-money {
+
+    .navbar {
+        .nav-right .icon-right:before {
+            content: '\e63d';
+        }
+    }
+
+    .surplus {
+        height: 206px;
+        padding-top: 50px;
+        background-color: @fiery-red;
+        text-align: center;
+        .surplus-top {
+            font-size: @font-size-24;
+            color: @white;
+            margin-bottom: 30px;
+            span {
+                font-size: @font-size-48 ;
+            }
+        }
+        .surplus-bottom {
+            display: flex;
+            justify-content: center;
+            .remaining-time {
+                font-size: @font-size-24;
+                color: @white;
+                margin-right: 10px;
+                display: flex;
+            }
+            .reciprocal {
+                display: flex;
+                color: @white;
+                margin-top:-5px;
+                .time-box {
+                    font-size: @font-size-20;
+                    margin: 0 7px;
+                    width: 30px;
+                    height: 30px;
+                    background: @white;
+                    color: @fiery-red;
+                    padding: 2px;
+                    border-radius: 4px;
+                    display: block;
+                }
+            }
+        }
+    }
+
+    .build{
+        margin-top: 20px;
+    }
+
+    .payment-method-box {
+        .payment-method {
+            padding: 0 30px 0 30px;
+            background-color: @white;
+            .distance {
+                height: 120px;
+                display: flex;
+                justify-content: space-between;
+                padding: 29px 2px 31px 11px;
+                line-height: 65px;
+                .hairline('bottom',#ededed)!important;
+                .pm-left {
+                    margin-right: 39px;
+                    .we-chat {
+                        width: 60px;
+                        height: 60px;
+                        background-size: 1950px!important;
+                        background: url("../../../../../../assets/images/CSS-Sprites.png") -600px -300px no-repeat;
+                    }
+                    .alipay{
+                        width: 60px;
+                        height: 60px;
+                        background-size: 1950px!important;
+                        background: url("../../../../../../assets/images/CSS-Sprites.png") -450px -300px no-repeat;
+                    }
+                }
+                .pm-center {
+                    flex: 1;
+                    font-size: @font-size-30;
+                    color: @darker-black;
+                }
+                .icon-Selection {
+                    margin: auto;
+                }
+                .icon-Selection:before {
+                    content: '\e612';
+                    color: red;
+                }
+                .icon-Unselected {
+                    width: 36px;
+                    height: 36px;
+                    border-radius: 50%;
+                    border: 1px solid @gray;
+                    margin: auto 6px auto 0;
+                }
+            }
+        }
+        .build{
+            margin-top: 20px;
+        }
+    }
+
+    .binding {
+        display: flex;
+        justify-content: space-between;
+        padding: 42px 30px;
+        background-color: @white;
+        line-height: 45px;
+        .binding-left {
+            margin-left: 91px;
+            font-size: @font-size-30;
+        }
+        .binding-right {
+            color: @gray;
+            font-size: @font-size-30;
+        }
+        .binding-right:after {
+            content: '\e643';
+            font-size: @font-size-40;
+            vertical-align: bottom;
+        }
+    }
+
+    .promptly {
+        width: 660px;
+        height: 100px;
+        background:linear-gradient(0deg,rgba(242,12,0,1) 0%,rgba(255,45,81,1) 100%);
+        box-shadow:0px 4px 35px 0px rgba(242,13,3,0.4);
+        border-radius:50px;
+        font-size: @font-size-36;
+        color: @white;
+        text-align: center;
+        line-height: 100px;
+        position: fixed;
+        bottom: 41px;
+        left: 50%;
+        transform:translate(-50%)
+    }
+    .payTip{
+        text-align: center;
+    }
+    .enter-password-box {
+        position: absolute;
+        width: 100%;
+        top: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.3);
+        .enter-password {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            padding-bottom: 460px;
+            background: @white;
+            .command {
+                display: flex;
+                justify-content: space-between;
+                padding: 20px 32px;
+                .hairline('bottom',@to-light-gray);
+                margin-bottom: 60px;
+                .command-left:before {
+                    content: '\E646';
+                    font-size: @font-size-36;
+                    color: #A2A2A2;
+                }
+                .command-center {
+                    font-size: @font-size-36;
+                    color: @darker-black;
+                }
+                .command-right:before {
+                    content: '\E640';
+                    font-size: @font-size-36;
+                    color: #A2A2A2;
+                }
+            }
+            .frame {
+                height: 100px;
+            }
+            p {
+                text-align: center;
+                font-size: @font-size-28;
+                color: @link-color;
+                margin-top: 60px;
+            }
+        }
+    }
+}

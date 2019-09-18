@@ -1,0 +1,173 @@
+@import "~style";
+
+.address-set{
+    background: @back-color;
+    .nav-bar{
+        display: flex;
+        justify-content: space-between;
+        line-height: 88px;
+        padding: 0 30px;
+        box-sizing: border-box;
+        position: fixed;
+        top:0;
+        left:0;
+        width:100%;
+        background:#fff;
+        .nav-title{
+            font-size: @font-size-38;
+            font-weight: bold;
+            color: @darker-black;
+        }
+        .nav-right{
+            font-size: @font-size-28;
+            color: #010101;
+            width: 72px;
+        }
+        .am-icon-left{
+            margin-top: 10px;
+        }
+    }
+    .add-list{
+        //background: #fff;
+        margin: 108px 0 101px;
+        .am-swipe {
+            .am-swipe-actions {
+                .am-swipe-btn {
+                    margin: 2px !important;
+                }
+            }
+        }
+        .location-box {
+            background: @white;
+            .list-detail{
+                display: flex;
+                justify-content: space-between;
+                height: 160px;
+                padding-left: 30px;
+                margin-bottom:1px;
+                .hairline('bottom',@to-light-gray);
+                .item-desc{
+                    width: 542px;
+                    margin-top: 30px;
+                    .address-name{
+                        font-size: @font-size-30;
+                        color: @darker-black;
+                        .TextareaOverflow(1);
+                        span{
+                            color:red;
+                        }
+                    }
+                    .user-name{
+                        margin-top: 20px;
+                        font-size: @font-size-28;
+                        color: @dark-gray;
+                        span:nth-child(2){
+                            margin-right: 100px;
+                        }
+                    }
+                }
+                .item-button{
+                    width: 120px;
+                    height: auto;
+                    text-align: center;
+                    color: #990000;
+                    padding: 30px 0;
+                    box-sizing: border-box;
+                    font-size: @font-size-28;
+                    .button-inner{
+                        line-height: 100px;
+                        //border-left: 1px solid @gray;
+                        .hairline('left',@gray);
+                    }
+                    .button-inner::before {
+                        width: 0 !important;
+                    }
+                }
+            }
+            .list-detail::after {
+                height: 0!important;
+            }
+        }
+        .default-address{
+            background:pink;
+            border-radius: 4px;
+            height:19px;
+            font-size:20px;
+            font-family:PingFang-SC-Medium;
+            font-weight:500;
+            color:@fiery-red;
+            line-height:30px;
+            padding: 5px;
+            margin-right:10px;
+        }
+        .no-address {
+            margin-top: 335px;
+            text-align: center;
+            img {
+                width: 310px;
+                height: 305px;
+                margin-bottom: 72px;
+            }
+            div {
+                font-size: @font-size-28;
+                color: @gray;
+                text-align: center;
+            }
+            div:before {
+                content: '';
+                .spriteFigureTow();
+                width: 309px;
+                height: 296px;
+                background-size: 1750px!important;
+                background-position: 0 -700px;
+                display: block;
+                margin: 0 auto 40px;
+            }
+        }
+    }
+    .new-address{
+        width:100%;
+        background: #fff;
+        height: 100px;
+        line-height: 100px;
+        text-align: center;
+        position: fixed;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        span{
+            float:right;
+            font-size:28px;
+        }
+        i:before{
+            float:left;
+            content: '\e608';
+            font-style:normal;
+            color:#E7344F;
+            margin-right:10px;
+        }
+        .am-button{
+            margin:0 auto;
+        }
+        .am-button::before{
+            border:none;
+        }
+    }
+}
+.active{
+    background: #E21E13;
+    color: #fff !important;
+    border-left: none !important;
+}
+.icon-add:before {
+    font-size: 40px;
+    margin: 0 19px 0 15px;
+    content: '\e613';
+    color: #E7344F;
+}
+.WX-address{
+    .add-list{
+        margin: 0 0 101px;
+    }
+}

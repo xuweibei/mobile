@@ -1,0 +1,494 @@
+/**
+ * 浏览历史
+ */
+import {connect} from 'react-redux';
+import {Tabs, ListView} from 'antd-mobile';
+import {baseActionCreator as actionCreator} from '../../../../../redux/baseAction';
+import Nothing from '../../../../common/nothing/Nothing';
+import AppNavBar from '../../../../common/navbar/NavBar';
+import './History.less';
+
+const {urlCfg} = Configs;
+const {appHistory, showInfo, confirmDate, native} = Utils;
+const {MESSAGE: {Feedback}, FIELD} = Constants;
+//tab配置信息
+const tabs = [
+    {title: '商品历史', type: 1},
+    {title: '店铺历史', type: 2}
+];
+const getSectionData = (dataBlob, sectionID) => sectionID;//将数据按日期分块，返回块id
+const getRowData = (dataBlob, sectionID, rowID) => rowID[sectionID];//获取每行数据id
+//创建dataSource对象
+//rowHasChanged: prev和next不相等时更新row
+//sectionHeaderHasChanged: prev和next不相等时更新section
+const dataSource = new ListView.DataSource({
+    getRowData,
+    getSectionHeaderData: getSectionData,
+    rowHasChanged: (row1, row2) => row1 !== row2,
+    sectionHeaderHasChanged: (s1, s2) => s1 !== s2
+});
+
+class History extends BaseComponent {
+    constructor(props) {
+        super(props);
+        this.dataBlobs = {};//数据源
+        this.sectionIDs = [];//存放分组id
+        this.rowIDs = [];//存放分组数据
+        this.stackData = [];//存放不分组数据
+        this.checkedIds = [];//存放选中id
+    }
+
+    state = {
+        data: dataSource, //数据源
+        type: 1, //请求参数：历史类型
+        tabKey: this.props.tabValue || 0, //当前选中tab
+        page: 1, //当前选中tab页码
+        pageCount: -1, //当前选中tab总页数
+        isLoading: false, //是否在上拉加载时显示提示
+        hasMore: false, //是否有数据可请求
+        isEdit: false, //底部编辑菜单是否显示
+        checkedIds: [] //存放选中的行id
+    };
+
+    componentDidMount() {
+        this.getHistoryList();
+    }
+
+    //获取历史列表
+    getHistoryList = () => {
+        const {type, page} = this.state;
+        this.fetch(urlCfg.getHistory, {
+            data: {
+                type,
+                page,
+                pagesize: 8
+            }
+        }).subscribe(res => {
+            if (res.status === 0 && res.data.length > 0) {
+                this.handleResult(res);
+            }
+        });
+    }
+
+    //处理接口请求结果
+    handleResult = (res) => {
+        const {page} = this.state;
+        const sectionIDs = [];
+        const rowIDs = [];
+        const arr = [];
+        res.data.forEach((item, index) => {
+            //判断后一页是否有和前一页同一天的数据
+            if (item.day.indexOf(this.sectionIDs)) {
+                item.data.map(v => {
+                    v.select = false;
+                    arr.push(v);
+                });
+                rowIDs[this.rowIDs.length - 1] = [{
+                    [`${item.day}`]: [rowIDs[this.rowIDs.length - 1][`${item.day}`], ...item.data]
+                }];
+            } else {
+                sectionIDs[index] = item.day;
+                item.data.map(v => {
+                    v.select = false;
+                    arr.push(v);
+                });
+                rowIDs[index] = [{
+                    [`${item.day}`]: [...item.data]
+                }];
+            }
+        });
+        this.sectionIDs = [...this.sectionIDs, ...sectionIDs];
+        this.rowIDs = [...this.rowIDs, ...rowIDs];
+        this.stackData = [...this.stackData, ...arr];
+        console.log('handleResult', this.sectionIDs, this.rowIDs, this.stackData);
+        this.setState((prevState) => ({
+            data: prevState.data.cloneWithRowsAndSections(this.dataBlobs, this.sectionIDs, this.rowIDs),
+            pageCount: res.page_count,
+            isLoading: false
+        }), () => {
+            if (page < this.state.pageCount) {
+                this.setState({
+                    hasMore: true
+                });
+            }
+        });
+    }
+
+    //切换tab回调，重置状态
+    onTabChange = (tab, index) => {
+        this.sectionIDs = [];
+        this.rowIDs = [];
+        this.stackData = [];
+        this.checkedIds = [];
+        this.setState({
+            data: dataSource,
+            type: tab.type,
+            tabKey: index,
+            page: 1,
+            pageCount: -1,
+            isLoading: false,
+            hasMore: false,
+            checkedIds: []
+        }, () => {
+            this.getHistoryList();
+        });
+    };
+
+    //上拉加载列表回调，
+    onEndReached = () => {
+        const {hasMore} = this.state;
+        if (!hasMore) {
+            return;
+        }
+        this.setState(prevState => ({
+            isLoading: true,
+            hasMore: false,
+            page: prevState.page + 1
+        }), () => {
+            this.getHistoryList();
+        });
+    };
+
+    //根据当前tab判断渲染样式
+    renderListItem = (item) => {
+        const {tabKey, isEdit} = this.state;
+        return (
+            tabKey === 0
+                ? (
+                    <div
+                        className={`goods-row${isEdit ? '' : ' unedit'}`}
+                        onClick={() => this.goToGoodsDetail(item.pr_id)}
+                    >
+                        <div className="goods-row-left">
+                            <img
+                                src={item.picpath}
+                            />
+                        </div>
+                        <div className="goods-row-right">
+                            <div className="goods-row-right-zeroth">
+                                {item.title}
+                            </div>
+                            <div className="goods-row-right-first">
+                                <span>记账量：{item.deposit}</span>
+                                {
+                                    !isEdit
+                                        ? item.status === '0' && <span className="goods-row-right-isout">已下架</span> : null
+                                }
+                                <span className="goods-row-right-city">{item.city[0]}</span>
+                            </div>
+                            <div className="goods-row-right-second">
+                                <span>{item.order_num}人付款</span>
+                                {
+                                    !isEdit
+                                        ? <span className="goods-row-right-original">￥{item.price_original}</span>
+                                        : item.status === '0' && <span className="goods-row-right-isout">已下架</span>
+                                }
+                            </div>
+                            <div className="goods-row-right-third">
+                                <span>{item.shopName}</span>
+                                <span className="icon icon-arrow" onClick={(e) => this.goToShopHome(e, item.shop_id)}>进店</span>
+                                <span>￥{item.price}</span>
+                            </div>
+                        </div>
+                    </div>
+                )
+                : (
+                    <div className="shop-row-box">
+                        <div className="shop-row-first">
+                            {item.open_time !== '' && <span>{`营业时间：${item.open_time}`}</span>}
+                        </div>
+                        <div className="shop-row">
+                            <div
+                                className="shop-row-second"
+                                onClick={(e) => this.goToShopHome(e, item.shop_id)}
+                            >
+                                <div className="shop-row-left">
+                                    <img
+                                        src={item.picpath}
+                                    />
+                                    {/* <span>休息中</span> */}
+                                </div>
+                                <div className="shop-row-right">
+                                    <div className="shop-row-right-first">
+                                        {this.renderStar(item.shop_mark)}
+                                    </div>
+                                    <div className="shop-row-right-second">
+                                        <span className="store-name">{item.shopName}</span>
+                                        <span>人均消费 <span>￥{item.average}</span></span>
+                                    </div>
+                                    <div className="shop-row-right-third">
+                                        <span className="icon icon-third">{item.address}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )
+        );
+    }
+
+    //跳转到商品详情
+    goToGoodsDetail = id => {
+        const {tabKey} = this.state;
+        this.props.setTab(tabKey);//缓存选中tab
+        appHistory.push(`/goodsDetail?id=${id}`);
+    };
+
+    //跳转到店铺首页
+    goToShopHome = (e, id) => {
+        e.stopPropagation();
+        const {tabKey} = this.state;
+        this.props.setTab(tabKey);//缓存选中tab
+        appHistory.push(`/shopHome?id=${id}`);
+    };
+
+    //渲染店铺评分
+    renderStar = (num) => {
+        console.log('renderStar', num);
+        const slot = num.split('.')[1];
+        const value = Number(num);
+        const arr = [];
+        for (let i = 0; i < Math.floor(value); i++) {
+            const star = <div className="icon icon-tiny" key={i}/>;
+            arr.push(star);
+        }
+        if (slot >= 5) {
+            const stars = <div className="icon icon-stars"/>;
+            arr.push(stars);
+        }
+        return arr;
+    }
+
+    //渲染列表底部
+    renderFooter = () => {
+        const {isLoading, hasMore} = this.props;
+        if (isLoading) {
+            return <p>正在加载</p>;
+        }
+        return hasMore ? <p>加载完成</p> : null;
+    };
+
+    //返回键回调
+    goBackModal = () => {
+        const hybirid = process.env.NATIVE;
+        if (hybirid) {
+            native('goBack');
+        } else {
+            appHistory.goBack();
+        }
+        this.props.setTab('');//清空
+    };
+
+    //点击顶部导航右侧按钮
+    changeNavRight = () => {
+        this.setState(prevState => ({
+            isEdit: !prevState.isEdit
+        }));
+    };
+
+    //点击每行复选框
+    onChangeCheck =  (item) => {
+        if (this.checkedIds.includes(item.id)) {
+            this.stackData.map(v => {
+                if (v.id === item.id) {
+                    v.select = false;
+                }
+            });
+            const newArr = this.checkedIds.filter(id => id !== item.id);
+            this.setState({
+                checkedIds: newArr
+            }, () => {
+                this.checkedIds = newArr;
+                console.log('移除选中id', this.state.checkedIds);
+            });
+        } else {
+            this.stackData.map(v => {
+                if (v.id === item.id) {
+                    v.select = true;
+                }
+            });
+            this.checkedIds = this.checkedIds.concat(item.id);
+            this.setState({
+                checkedIds: this.checkedIds
+            }, () => {
+                console.log('添加选中id', this.state.checkedIds);
+            });
+        }
+    };
+
+    //点击加入收藏夹回调
+    addCollect = () => {
+        const {type, checkedIds} = this.state;
+        this.fetch(urlCfg.addCollect, {
+            data: {
+                type,
+                ids: checkedIds
+            }
+        }).subscribe(res => {
+            if (res.status === 0) {
+                showInfo(Feedback.Collect_Success);
+            }
+        });
+    };
+
+    //点击清空回调
+    onDelList = (clear = false) => {
+        const {type, tabKey, checkedIds} = this.state;
+        const {showConfirm} = this.props;
+        let arr = [];
+        if (!clear) {
+            if (checkedIds.length === 0) return;
+            arr = checkedIds;
+        }
+        showConfirm({
+            title: `确定${clear ? '清空' : '删除选中'}${tabKey === 0 ? '商品' : '店铺'}历史?`,
+            btnTexts: ['否', '是'],
+            callbacks: [null, () => {
+                this.fetch(urlCfg.delHistory, {
+                    data: {
+                        type,
+                        id: arr
+                    }
+                }).subscribe(res => {
+                    if (res.status === 0) {
+                        showInfo(Feedback.Del_Success);
+                        this.onRefresh();
+                    }
+                });
+            }]
+        });
+    };
+
+    //删除历史后回调，刷新列表
+    onRefresh = () => {
+        this.sectionIDs = [];
+        this.rowIDs = [];
+        this.stackData = [];
+        this.checkedIds = [];
+        this.setState({
+            data: dataSource,
+            page: 1,
+            pageCount: -1,
+            isLoading: false,
+            hasMore: false,
+            isEdit: false,
+            checkedIds: []
+        }, () => {
+            this.getHistoryList();
+        });
+    };
+
+    render() {
+        const {data, tabKey, isEdit} = this.state;
+        //滚动容器高度
+        const height = document.documentElement.clientHeight - (window.isWX ? window.rem * 1.07 : window.rem * 1.95);
+        //每行渲染样式
+        const row = v => (
+            isEdit
+                ? (
+                    v.map((item) => (
+                        <span key={item.id} className="history-list-show">
+                            <div className="history-list-show-select">
+                                <span
+                                    className={item.select ? 'icon select' : 'icon unselect'}
+                                    onClick={() => this.onChangeCheck(item)}
+                                />
+                            </div>
+                            {this.renderListItem(item)}
+                        </span>
+                    ))
+
+                )
+                : (
+                    v.map((item) => (
+                        <span key={item.id} className="history-list-hide">
+                            {this.renderListItem(item)}
+                        </span>
+                    ))
+                )
+        );
+        return (
+            <div className="browsing-history">
+                {window.isWX ? null : (
+                    <AppNavBar
+                        title="浏览历史"
+                        goBackModal={this.goBackModal}
+                        {...data && data.getRowCount() > 0
+                            ? {
+                                rightEdit: true,
+                                isEdit,
+                                changeNavRight: this.changeNavRight
+                            } : null
+                        }
+
+                    />
+                )}
+                <div className={tabKey === 0 ? 'history-list-goods' : 'history-list-shop'}>
+                    <Tabs
+                        tabs={tabs}
+                        initialPage={tabKey}
+                        onChange={this.onTabChange}
+                        swipeable={false}
+                    >
+                        {data && data.getRowCount() > 0 ? (
+                            <ListView
+                                dataSource={data}
+                                style={{height}}
+                                initialListSize={5}
+                                renderSectionHeader={sectionData => (
+                                    <div className="history-list-section">
+                                        {confirmDate(sectionData)}
+                                    </div>
+                                )}
+                                pageSize={5}
+                                renderRow={row}
+                                onEndReachedThreshold={50}
+                                onEndReached={this.onEndReached}
+                                renderFooter={this.renderFooter}
+                            />
+                        ) : (
+                            <Nothing
+                                title=""
+                                text={FIELD.No_Evaluation}
+                            />
+                        )}
+                    </Tabs>
+                </div>
+                {!isEdit ? null : (
+                    <div className="history-menu">
+                        <span
+                            className="history-menu-left"
+                            onClick={this.addCollect}
+                        >
+                            加入收藏夹
+                        </span>
+                        <span
+                            className="history-menu-center"
+                            onClick={() => this.onDelList(true)}
+                        >
+                            清空
+                        </span>
+                        <span
+                            className="history-menu-right"
+                            onClick={() => this.onDelList()}
+                        >
+                            删除
+                        </span>
+                    </div>
+                )}
+            </div>
+        );
+    }
+}
+const mapStateToProps = state => {
+    const base = state.get('base');
+    return {
+        tabValue: base.get('tabValue')
+    };
+};
+
+const mapDispatchToProps = {
+    setTab: actionCreator.setTab,
+    showConfirm: actionCreator.showConfirm
+};
+export default connect(mapStateToProps, mapDispatchToProps)(History);
