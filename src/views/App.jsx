@@ -4,12 +4,15 @@
 import {Fragment} from 'react';
 import {Provider} from 'react-redux';
 import {hot} from 'react-hot-loader';
+import initReactFastclick from 'react-fastclick';
 import {store} from '../redux/store';
 import {baseActionCreator} from '../redux/baseAction';
 import BasePage from './common/base/BasePage';
 import {ViewRoutes} from './routes/index';
 import {getUrlParam} from '../utils/mixin';
 import './App.less';
+
+initReactFastclick();
 
 const App = () => {
     // 微信公众号登陆
