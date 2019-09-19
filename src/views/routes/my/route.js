@@ -1,7 +1,7 @@
 import {Route} from 'react-router-dom';
 
 const MyPage = Loadable({
-    loader: () => import(/* webpackChunkName: 'hybird' */ './My'),
+    loader: () => import(/* webpackChunkName: 'wechat' */ './My'),
     loading: () => null
 });
 const MyCustomer = Loadable({
@@ -9,7 +9,7 @@ const MyCustomer = Loadable({
     loading: () => null
 });
 const MyBusiness = Loadable({
-    loader: () => import(/* webpackChunkName: 'wechat' */ './subpage/business/route'),
+    loader: () => import(/* webpackChunkName: 'hybird' */ './subpage/business/route'),
     loading: () => null
 });
 const MyInvitation = Loadable({
