@@ -475,6 +475,17 @@ class Register extends BaseComponent {
                                 <div className="pass pass-right" onClick={() => this.loginByPassWord('code')}>验证码登陆
                                 </div>
                             </div>
+                            <div className="register-bottom">
+                                <div className="register-title">
+                                    登录即注册，且代表同意
+                                    <p className="bottom-red">《用户协议》、
+                                    </p>
+                                    <p
+                                        className="bottom-red"
+                                    >《隐私政策》
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     )}
                     {!convert && (
@@ -533,25 +544,27 @@ class Register extends BaseComponent {
                                 >登录
                                 </Button>
                             </div>
-                            <div className="others">
-                                <div className="line"/>
-                                <div>第三方登录</div>
-                                <div className="line"/>
+                            <div className="register-bottom">
+                                <div className="register-title">
+                                    登录即注册，且代表同意
+                                    <p className="bottom-red">《用户协议》、
+                                    </p>
+                                    <p
+                                        className="bottom-red"
+                                    >《隐私政策》
+                                    </p>
+                                </div>
                             </div>
-                            <div className="wxLogin"/>
+                            <div className="thirdparty">
+                                <div className="others">
+                                    {/*<div className="line"/>*/}
+                                    <div className="line">第三方登录</div>
+                                    {/*<div className="line"/>*/}
+                                </div>
+                                <div className="wxLogin"/>
+                            </div>
                         </div>
                     )}
-                    <div className="register-bottom">
-                        <div className="register-title">
-                            登录即注册，且代表同意
-                            <p className="bottom-red">《用户协议》、
-                            </p>
-                            <p
-                                className="bottom-red"
-                            >《隐私政策》
-                            </p>
-                        </div>
-                    </div>
                 </div>
 
                 {

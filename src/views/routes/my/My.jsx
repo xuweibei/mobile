@@ -92,11 +92,11 @@ const consumerOrder = [
     },
     {
         text: '评价中心',
-        className: 'icon assessment-center'
+        className: 'icon qr-code'
     },
     {
         text: '二维码',
-        className: 'icon qr-code'
+        className: 'icon assessment-center'
     }
 ];
 

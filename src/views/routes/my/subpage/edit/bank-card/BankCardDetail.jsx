@@ -19,7 +19,8 @@ const getPass = {
     fontSize: '0.3rem',
     border: 'none',
     marginTop: '18px',
-    background: '#fff'
+    background: '#fff',
+    height: document.documentElement.clientHeight - (window.isWX ? window.rem * null : window.rem * 1.08)
 };
 class BankCardDetail extends BaseComponent {
     state = {
@@ -213,12 +214,12 @@ class BankCardDetail extends BaseComponent {
      };
 
      render() {
-         const {userInfo, getOff} = this.state;
+         const {userInfo, getOff, height} = this.state;
          const {getFieldDecorator} = this.props.form;
          return (
              <div data-component="bankCardDetail" data-role="page" className="bank-card-detail">
                  <AppNavBar title="我的银行卡"/>
-                 <div className="bank-box">
+                 <div style={{height: height}} className="bank-box">
                      <List className={`mainInfo ${userInfo.bankId === undefined ? 'no-font-color' : 'font-color'}`}>
                          {
                              getFieldDecorator('name', {
