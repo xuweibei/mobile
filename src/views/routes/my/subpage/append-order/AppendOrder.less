@@ -88,7 +88,7 @@
             background: #fff;
         }
         .distance {
-            padding: 0 30px;
+            padding: 0 30px 30px;
         }
         .goods-desc{
             margin:0;
@@ -120,7 +120,8 @@
             }
         }
         .am-list-body {
-            padding: 0 30px!important;
+            border-top: 0.5px solid @to-light-gray;
+            padding: 1px 30px 0!important;
         }
         .am-list-body::before{
            height: 0;
@@ -132,11 +133,12 @@
             display: flex;
             justify-content: space-between;
             margin-top: 16px;
+            line-height: 30px;
             .sku-right{
                 font-size: @font-size-20;
                 color: @gray;
                 margin-right: 5px;
-                line-height: 15px;
+                line-height: 38px;
             }
         }
         .num-right{
@@ -151,7 +153,7 @@
             }
         }
         .desc-count{
-            width: 150px;
+            //width: 150px;
             height: 30px;
             font-size: @font-size-20;
             color: #FFFFFF;
@@ -159,8 +161,9 @@
             font-weight: 500;
             //margin-top: 16px;
             text-align: center;
-            line-height: 30px;
+            line-height: 32px;
             border-radius: 15px;
+            padding: 0px 15px;
         }
         .goods-price{
             text-align: right;
@@ -185,6 +188,7 @@
         padding: 0 30px;
         font-size: 30px;
         margin-top: -16px;
+        //.hairline('bottom', @to-light-gray);
         //margin-bottom: 2px;
         .list{
             margin-bottom: 20px;
@@ -198,7 +202,7 @@
         justify-content: space-between;
     }
     .payable {
-        .hairline('top',@to-light-gray);
+        //.hairline('top',@to-light-gray);
         padding: 40px 30px;
         background: @white;
     }
@@ -240,6 +244,11 @@
         .am-list-line{
             border-bottom: 1px solid @border-color !important;
             padding: 0;
+            .am-input-control {
+                input::placeholder {
+                    line-height: 45px;
+                }
+            }
         }
     }
     .am-input-control{
@@ -364,7 +373,7 @@
                 // width: 100%;
                 justify-content: space-between;
                 .icon-close:before{
-                    content:'\e62f'
+                    content:'\e618'
                 }
             }
             .kind{
@@ -415,16 +424,56 @@
                         margin-right: 30px;
                     }
                 }
-                
+
             }
+            //发票抬头弹窗样式
             .invoice-info{
-                margin-top: 64px;
+                margin-top: 30px;
+                //height: 400px;
+                //overflow-y: auto;
+
+                .enterprise {
+                    .hairline('bottom', @to-light-gray);
+                    margin-bottom: 30px;
+                    .am-input-label-5 {
+                        margin-right: 25px;
+                    }
+                    .am-list-item:nth-child(2) {
+                        margin-bottom: 20px;
+                    }
+                    span {
+                        color: #F20C00;
+                    }
+                }
+                .personage {
+
+                }
+
+                .invoice-content {
+                    .am-input-item {
+                        height: 60px;
+                        min-height: 60px;
+                        margin: 8px 0;
+                        border-bottom: none!important;
+                    }
+                    .am-input-label-5 {
+                        margin-right: 40px;
+                    }
+                }
+                //.am-list-item {
+                //    width: ;
+                //}
                 .am-input-label {
                     width: auto;
+                }
+                .am-list-body::after, .am-list-body::before, .enterprise::after {
+                    height: 0!important;
                 }
                 .am-list-line{
                     border: none !important;
                 }
+               /*
+
                 .am-input-item{
                     min-height: 50px !important;
                     height: 50px !important;
@@ -434,7 +483,7 @@
                 }
                 .kind-people{
                     margin: 58px 0 80px 0;
-                }
+                }*/
             }
             .am-button{
                 width:660px;

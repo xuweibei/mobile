@@ -342,10 +342,6 @@ class appendOrder extends BaseComponent {
                                             </div>
                                         </ul>
                                     </div>
-                                    <div className="payable">
-                                        <span>实付款</span>
-                                        <span>￥{shop.actual_all_price}</span>
-                                    </div>
                                     <List>
                                         <InputItem
                                             placeholder="请和商家协议一致"
@@ -372,6 +368,10 @@ class appendOrder extends BaseComponent {
                                             <List.Item arrow="horizontal">日期选择</List.Item>
                                         </DatePicker>
                                     </List>
+                                    <div className="payable">
+                                        <span>实付款</span>
+                                        <span>￥{shop.actual_all_price}</span>
+                                    </div>
                                 </div>
                             ))
                         }
@@ -411,40 +411,42 @@ class appendOrder extends BaseComponent {
                                 </div>
                                 <div className="invoice-info">
                                     <List>
-                                        <InputItem
-                                            placeholder={`请填写${textInfo}名称`}
-                                        >
-                                            {textInfo}
-                                        </InputItem>
+                                        <div className="enterprise">
+                                            <InputItem
+                                                placeholder={`请填写${textInfo}名称`}
+                                            >
+                                                <span>*</span>{textInfo}
+                                            </InputItem>
+                                            {self && (
+                                                <InputItem
+                                                    placeholder="请填写纳税人识别号"
+                                                >
+                                                    <span>*</span>纳税人识别号
+                                                </InputItem>
+                                            )}
+                                        </div>
                                         {
                                             self && (
                                                 <div className="invoice-content">
-                                                    <div className="kind-people">
-                                                        <InputItem
-                                                            placeholder="请填写纳税人识别号"
-                                                        >
-                                纳税人识别号
-                                                        </InputItem>
-                                                    </div>
                                                     <InputItem
                                                         placeholder="请填写开户银行"
                                                     >
-                                开户银行
+                                                        开户银行
                                                     </InputItem>
                                                     <InputItem
                                                         placeholder="请填写企业地址"
                                                     >
-                                企业地址
+                                                        企业地址
                                                     </InputItem>
                                                     <InputItem
                                                         placeholder="请填写银行地址"
                                                     >
-                                银行地址
+                                                        银行地址
                                                     </InputItem>
                                                     <InputItem
                                                         placeholder="请填写企业电话"
                                                     >
-                                企业电话
+                                                        企业电话
                                                     </InputItem>
                                                 </div>
                                             )
