@@ -22,7 +22,7 @@ export default class MyAssets extends BaseComponent {
         };
         this.state = {
             dataSource,
-            height: document.documentElement.clientHeight - (window.isWX ? window.rem * 6.12 : window.rem * 6.4),
+            height: document.documentElement.clientHeight - (window.isWX ? window.rem * 1.08 : window.rem * 1.08),
             editModal: '', //当前状态
             page: 1,
             pageCount: -1,

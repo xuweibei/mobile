@@ -11,7 +11,8 @@ const {MESSAGE: {Form, Feedback}} = Constants;
 
 class Source extends BaseComponent {
     state = {
-        showButton: false
+        showButton: false,
+        height: document.documentElement.clientHeight - (window.isWX ? window.rem * null : window.rem * 1.08)
     }
 
     //设置uid
@@ -81,10 +82,12 @@ class Source extends BaseComponent {
     };
 
     render() {
+        const {height} = this.state;
+        console.log(height);
         return (
             <div data-component="source" data-role="page" className="source">
                 <AppNavBar title="确认源头UID" goBackModal={this.goBackModal}/>
-                <div className="source-box">
+                <div style={{height: height}} className="source-box">
                     <List>
                         <InputItem
                             clear
