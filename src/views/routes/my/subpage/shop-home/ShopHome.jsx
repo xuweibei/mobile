@@ -199,13 +199,6 @@ class ShopHome extends BaseComponent {
                     </div>
                     <div className="goods-information">
                         <div className="goods-explain">{item.title}</div>
-                        {/*FIXME: 不用ul*/}
-                        {/* 已修改 */}
-                        {/* <div className="goods-label">
-                            {
-                                item.property && item.property.values_name.split(',').map(data => <span>{data}</span>)
-                            }
-                        </div> */}
                         <span className="btn-keep">记账量：{item.deposit}</span>
                         <div className="payment">
                             <span>{item.order_num}人付款</span>
@@ -243,7 +236,7 @@ class ShopHome extends BaseComponent {
                                 )}
                                 renderFooter={() => ListFooter(hasMore)}
                             />
-                        ) : ''
+                        ) : <Nothing text={FIELD.No_Commodity}/>
                     }
                 </div>
             </div>
@@ -252,6 +245,7 @@ class ShopHome extends BaseComponent {
 
     //底部tab
     onTabChange = (data) => {
+        const {shopOnsInfo} = this.state;
         let info = '';
         switch (data) {
         case 'category':
@@ -264,7 +258,6 @@ class ShopHome extends BaseComponent {
             info = 'homePage';
             break;
         default:
-            const {shopOnsInfo} = this.state;
             if (hybrid) {
                 native('goToShoper', {shopNo: shopOnsInfo.no, id: '', type: '', shopNickName: shopOnsInfo.nickname, imType: '1', groud: '0'});//groud 为0 单聊，1群聊 imType 1商品2订单3空白  type 1商品 2订单
             } else {

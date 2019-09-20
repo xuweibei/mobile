@@ -326,14 +326,14 @@ class ReDetail extends BaseComponent {
                             <div className="total-price-right"><span>合计：</span><span className="money">{item.all_price}元</span></div>
                         </div>
                         {/*等待付款*/}
-                        {(item.status === '0' && !item.return_status) && (
+                        {item.is_shoper === 0 && (item.status === '0' && !item.return_status) && (
                             <div className="buttons">
                                 <span className="look-button delete" onClick={(e) => this.cancelOrder(e, item.id)}>取消</span>
                                 <div className="evaluate-button" onClick={(e) => this.payNow(e, item)}>立即付款</div>
                             </div>
                         )}
                         {/*等待使用*/}
-                        {(item.status === '1' || item.return_status === '1') && (
+                        {item.is_shoper === 0 && (item.status === '1' || item.return_status === '1') && (
                             <div className="buttons">
                                 {!item.return_status && (
                                     <div className="evaluate-button" onClick={(e) => this.serviceRefund(e, item.id)}>退款</div>
@@ -345,21 +345,21 @@ class ReDetail extends BaseComponent {
                             </div>
                         )}
                         {/*订单完成，等待评价*/}
-                        {(item.status === '3' && !item.return_status) && (
+                        {item.is_shoper === 0 && (item.status === '3' && !item.return_status) && (
                             <div className="buttons">
                                 <span className="look-button delete" onClick={(e) => this.deleteOrder(e, item.id)}>删除</span>
                                 <div className="evaluate-button" onClick={(e) => this.promptlyAssess(e, item.id)}>待评价</div>
                             </div>
                         )}
                         {/*订单完成*/}
-                        {(item.status === '4' && !item.return_status) && (
+                        {item.is_shoper === 0 && (item.status === '4' && !item.return_status) && (
                             <div className="buttons">
                                 <span className="look-button delete" onClick={(e) => this.deleteOrder(e, item.id)}>删除</span>
                                 <div className="evaluate-button" onClick={(e) => this.skipDetail(e, item.id)}>查看详情</div>
                             </div>
                         )}
                         {/*退款中  1 退款成功 3  退款失败 4 退款关闭 5*/}
-                        {(item.return_status === '3' || item.return_status === '4') && (
+                        {item.is_shoper === 0 && (item.return_status === '3' || item.return_status === '4') && (
                             <div className="buttons">
                                 <div className="evaluate-button" onClick={(e) => this.skipAfterSale(e, item.return_id)}>查看详情</div>
                             </div>

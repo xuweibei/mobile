@@ -270,6 +270,42 @@
     .padd{
         padding:50px 0 50px 30px;
     }
+    .commodity-title-two {
+        padding: 16px 12px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        margin-bottom: 14px;
+        // background-color: #e2f9ff;
+        .commodity-two {
+            width: 43%;
+            margin-bottom:16px;
+            img {
+                width: 100%;
+                height: 132px;
+                margin-bottom: 6px;
+            }
+            .two-headline {
+                font-size: 16px;
+                margin-bottom: 8px;
+            }
+            .two-price {
+                span:nth-child(1) {
+                    font-size: 8px;
+                    color: #333;
+                    span {
+                        font-size: 16px;
+                    }
+                }
+                span:nth-child(2) {
+                    font-size: 8px;
+                    color: #ccc;
+                    margin-left: 10px;
+                    text-decoration:line-through
+                }
+            }
+        }
+    }
 }
 .priceInfo{
     font-size:23px;

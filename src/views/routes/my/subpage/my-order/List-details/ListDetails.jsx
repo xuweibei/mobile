@@ -231,7 +231,7 @@ class ListDetails extends BaseComponent {
     goToShoper = () => {
         const {canInfo} = this.state;
         if (hybird) {
-            native('goToShoper', {shopNo: canInfo.shop_no, id: canInfo.order_id, type: '2', shopNickName: canInfo.nickname, imType: '1', groud: '0'});//groud 为0 单聊，1群聊 imType 1商品2订单3空白  type 1商品 2订单
+            native('goToShoper', {shopNo: canInfo.shop_no, id: canInfo.order_id, type: '2', shopNickName: canInfo.nickname, imType: '2', groud: '0'});//groud 为0 单聊，1群聊 imType 1商品2订单3空白  type 1商品 2订单
         } else {
             showInfo('联系商家');
         }

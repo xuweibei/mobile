@@ -5,6 +5,7 @@ export const FIELD = {
     No_Comment: '居然没人评论',
     Not_Found: '很抱歉，没有搜到该商品',
     No_Template: '暂无模板',
+    No_Commodity: '暂无商品',
     No_Collection: '您还没有收藏哦',
     No_News: '暂无消息',
     No_Customer: '暂无客户',

@@ -38,6 +38,7 @@ class Nothing extends React.PureComponent {
             str = 'no-order';
             break;
         case FIELD.No_Shopping:
+        case FIELD.No_Commodity:
             str = 'no-order';
             break;
         case FIELD.No_EvaluationL:

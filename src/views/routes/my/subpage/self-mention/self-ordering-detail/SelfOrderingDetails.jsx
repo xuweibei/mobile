@@ -338,7 +338,7 @@ class ReDetail extends BaseComponent {
                     </div>
                     <div className="collection-center">{selfSufficiency.shopName}</div>
                     {
-                        !collectId ? <div className="collection-right" onClick={() => this.collectDoIts('add')}>+收藏</div> : <div className="collection-right" onClick={() => this.collectDoIts('off')}>取消收藏</div>
+                        selfSufficiency.is_shoper === 0 && (!collectId ? <div className="collection-right" onClick={() => this.collectDoIts('add')}>+收藏</div> : <div className="collection-right" onClick={() => this.collectDoIts('off')}>取消收藏</div>)
                     }
                 </div>
 
@@ -390,7 +390,7 @@ class ReDetail extends BaseComponent {
                         </div>
                     )}
                     <div className="cancel-order-box">
-                        {(selfSufficiency.status === '3' || selfSufficiency.status === '4' || selfSufficiency.status === '10') && (
+                        {selfSufficiency.is_shoper === 0 && (selfSufficiency.status === '3' || selfSufficiency.status === '4' || selfSufficiency.status === '10') && (
                             <div>
                                 <div className="cancel-order" onClick={() => this.deleteOrder()}>刪除订单</div>
                                 {selfSufficiency.status === '3' && (
@@ -398,7 +398,7 @@ class ReDetail extends BaseComponent {
                                 )}
                             </div>
                         )}
-                        {(selfSufficiency.status === '1' || selfSufficiency.status === '3' || selfSufficiency.status === '4') && (
+                        {selfSufficiency.is_shoper === 0 && (selfSufficiency.status === '1' || selfSufficiency.status === '3' || selfSufficiency.status === '4') && (
                             <div>
                                 {selfSufficiency.return_name ? (
                                     <div className="cancel-order" onClick={(e) => this.skipAfterSale(e, selfSufficiency.return_id)}>{selfSufficiency.return_name}</div>
