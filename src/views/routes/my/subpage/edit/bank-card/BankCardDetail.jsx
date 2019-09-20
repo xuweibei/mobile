@@ -19,11 +19,11 @@ const getPass = {
     fontSize: '0.3rem',
     border: 'none',
     marginTop: '18px',
-    background: '#fff',
-    height: document.documentElement.clientHeight - (window.isWX ? window.rem * null : window.rem * 1.08)
+    background: '#fff'
 };
 class BankCardDetail extends BaseComponent {
     state = {
+        height: document.documentElement.clientHeight - (window.isWX ? window.rem * null : window.rem * 1.08),
         countdown: Constants.COUNTERNUM,
         bankArr: [], //銀行卡内容
         userInfo: {}, //用戶信息

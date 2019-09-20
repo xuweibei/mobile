@@ -37,6 +37,9 @@
                 color: @gray;
             }
         }
+        .frame::after {
+            height: 0 !important;
+        }
         .appointment {
             display: flex;
             padding: 39px 0 40px;
@@ -114,9 +117,9 @@
     .shop-lists{
         margin-top: 20px;
         background: #ffffff;
-        padding: 40px 48px 30px 49px;
+        padding: 40px 48px 130px 49px;
         overflow: hidden;
-        margin-bottom: 100px;
+        //margin-bottom: 100px;
         .shop-name {
             display: flex;
             font-size: @font-size-30;
@@ -201,7 +204,7 @@
                     }
                 }
                 .btn-keep {
-                    padding-top: 5px;
+                    padding-top: 1px;
                 }
 
                 .goods-price {

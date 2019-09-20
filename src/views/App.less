@@ -168,7 +168,8 @@ body, .page{
 .btn-keep{
     display: inline-block;
     padding:0 12px;
-    padding-top: 2px;
+    line-height: 34px;
+    //padding-top: 2px;
     height: 34px;
     border-radius: 18px;
     color: @white;
@@ -215,6 +216,7 @@ body, .page{
 //辅助按钮
 .auxiliary-button {
     .auxiliaryButton();
+
 }
 //禁用按钮颜色
 .disable-button {
@@ -236,4 +238,13 @@ body, .page{
 
 .am-picker-popup-wrap {
     overflow: inherit;
+}
+//提示框按钮颜色
+.am-picker-popup-item {
+    color: @fiery-red;
+}
+
+.am-modal-button {
+    .hairline('top', @to-light-gray) !important;
+    color: @fiery-red !important;
 }
