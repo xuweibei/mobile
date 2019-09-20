@@ -22,7 +22,8 @@ class BasicInput extends BaseComponent {
         county: '', //城市的名字
         addressArr: [], //初始地址
         editStatus: true, //地址选择显示与否
-        addressStatus: decodeURI(getUrlParam('status', encodeURI(this.props.location.search))) //编辑还是删除 1编辑2添加
+        addressStatus: decodeURI(getUrlParam('status', encodeURI(this.props.location.search))), //编辑还是删除 1编辑2添加
+        height: document.documentElement.clientHeight - (window.isWX ? window.rem * 1.08 : 0) //扣除微信头部高度
     };
 
     componentDidMount() {
@@ -144,12 +145,12 @@ class BasicInput extends BaseComponent {
 
     render() {
         const {getFieldProps, getFieldError} = this.props.form;
-        const {province, urban, county, addressArr, defaultState, editStatus, addressStatus} = this.state;
+        const {province, urban, county, addressArr, defaultState, editStatus, addressStatus, height} = this.state;
         return (
             <div data-component="add-address" data-role="page" className="add-address">
                 <AppNavBar title="地址管理"/>
-                <form>
-                    <List style={{marginTop: '10px'}}>
+                <form style={{height: height}} className="location-list">
+                    <List>
                         <InputItem
                             {...getFieldProps('account', {initialValue: addressArr.linkname})}
                             clear
