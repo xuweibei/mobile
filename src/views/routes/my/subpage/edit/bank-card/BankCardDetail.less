@@ -1,5 +1,8 @@
 @import "~style";
 .bank-card-detail {
+    .wrapTabNav {
+        margin-bottom: 20px;
+    }
     .mainInfo{
         .am-input-label,.am-list-extra,.am-list-content{
             font-size:30px;
@@ -30,8 +33,9 @@
     }
     .bank-box {
         position: absolute;
-        top: 108px;
+        //top: 108px;
         bottom: 0;
+        //height: 100%;
         background: @white;
         width: 100%;
     }
@@ -97,6 +101,10 @@
         background:#fff;
         display: flex;
         .hairline('bottom',@to-light-gray);
+        padding-right: 30px;
+        div:nth-child(2) {
+            text-align: right;
+        }
         .am-list-item {
             .am-list-line:nth-child(1) {
                 border-bottom: none!important;
