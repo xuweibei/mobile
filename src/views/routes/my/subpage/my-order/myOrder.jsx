@@ -53,6 +53,7 @@ class MyOrder extends BaseComponent {
     }
 
     componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方法
+        if (this.tabClick) return;
         const num = this.statusChoose(nextProps.location.pathname.split('/')[2]);
         if (num !== this.props.orderStatus) {
             this.init(num);
@@ -182,6 +183,7 @@ class MyOrder extends BaseComponent {
 
     //tab状态变更
     tabChange = (data, index) => {
+        this.tabClick = true;
         const dataSource2 = new ListView.DataSource({
             rowHasChanged: (row1, row2) => row1 !== row2
         });
@@ -197,6 +199,7 @@ class MyOrder extends BaseComponent {
             hasMore: false
         }, () => {
             temp.stackData = [];
+            this.tabClick = false;
             if (status === 4) {
                 this.refundMllOder(this.state.page);
             } else {
