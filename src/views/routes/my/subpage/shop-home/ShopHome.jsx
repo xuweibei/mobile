@@ -20,7 +20,8 @@ import './ShopHome.less';
 
 const {FIELD} = Constants;
 const {urlCfg} = Configs;
-const {appHistory, getUrlParam, showInfo} = Utils;
+const {appHistory, getUrlParam, showInfo, native} = Utils;
+const hybrid = process.env.NATIVE;
 class ShopHome extends BaseComponent {
     constructor(props) {
         super(props);
@@ -120,7 +121,8 @@ class ShopHome extends BaseComponent {
                     this.setState((prevState) => (
                         {
                             dataSource: prevState.dataSource.cloneWithRows(this.temp.stackData),
-                            pageCount: res.data.page_count
+                            pageCount: res.data.page_count,
+                            shopOnsInfo: res.data.shop_info
                         }
                     ));
                 }
@@ -262,13 +264,19 @@ class ShopHome extends BaseComponent {
             info = 'homePage';
             break;
         default:
-            showInfo('im');
-            info = 'im';
+            const {shopOnsInfo} = this.state;
+            if (hybrid) {
+                native('goToShoper', {shopNo: shopOnsInfo.no, id: '', type: '', shopNickName: shopOnsInfo.nickname, imType: '1', groud: '0'});//groud 为0 单聊，1群聊 imType 1商品2订单3空白  type 1商品 2订单
+            } else {
+                showInfo('联系商家');
+            }
             break;
         }
-        this.setState({
-            currentState: info
-        });
+        if (data !== 'im') {
+            this.setState({
+                currentState: info
+            });
+        }
     }
 
     render() {

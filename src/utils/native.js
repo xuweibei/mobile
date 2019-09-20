@@ -65,6 +65,27 @@ export const native = (str, obj, callBack) => new Promise((resolve, reject) => {
         }
     );
 });
+
+//设置nav的颜色，回传给原生
+export const setNavColor = (str, obj) =>  new Promise((resolve, reject) => {
+    setTimeout(() => {
+        hybrid && window.WebViewJavascriptBridge.callHandler(
+            str,
+            JSON.stringify(obj),
+            (responseData) => {
+                // const info = JSON.parse(responseData);
+                // if (info.status === '0') {
+                //     resolve(info);
+                // } else {
+                //     reject(info);
+                //     showInfo(info.message);
+                // }
+            }
+        );
+    }, 600);
+});
+
+
 //获取购物车点击结算的时候的跳转数据
 export const getShopCartInfo = (str, obj, callBack) => new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -98,7 +119,7 @@ export const getAppUserToken = () => new Promise((resolve) => {
                     showFail('身份验证失败');
                 }
             });
-    }, 1000);
+    }, 500);
 });
 
 //安卓底部回退按钮 // APP右滑
@@ -120,6 +141,7 @@ global.goBack = function () {
 
 //h5跳登录页时，清除缓存
 global.clearCache = function () {
+    alert(231);
     removeValue(LOCALSTORAGE.USER_TOKEN); // 清除token,localstorage
     store.dispatch(baseActionCreator.setUserToken('')); // 清除redux的userToken
 };

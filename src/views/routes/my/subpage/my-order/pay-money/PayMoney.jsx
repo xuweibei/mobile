@@ -280,11 +280,8 @@ class PayMoney extends BaseComponent {
             this.fetch(urlCfg.campay, {method: 'post', data: {order_no: !listArr.order ? new Array(id) : id, pwd, money: listArr.all_price || money}})
                 .subscribe(res => {
                     if (res.status === 0) {
-                        if (JSON.parse(getValue('orderInfo'))) { //这里判断是购物页过来还是，订单页过来，购物页过来就让页面往回退1
-                            appHistory.go(-1);
-                        }
+                        appHistory.replace(`/paymentCompleted?&deposit=${res.data.capital}&id=${res.data.id}&allPrice=${res.data.total_fee}&types=${selectIndex}&if_express=${res.data.if_express}&batch=${res.data.id && (res.data.id ? 0 : 1)}`);
                         setTimeout(() => {
-                            appHistory.replace(`/paymentCompleted?&deposit=${res.data.capital}&id=${res.data.id}&allPrice=${res.data.total_fee}&types=${selectIndex}&if_express=${res.data.if_express}&batch=${res.data.id && (res.data.id ? 0 : 1)}`);
                             //返回弹框的回调是否显示
                             this.props.setReturn(false);
                         }, 300);
@@ -341,16 +338,10 @@ class PayMoney extends BaseComponent {
                 const arr = JSON.parse(getValue('orderArr'));
                 if (arrInfo) {
                     if (arr[0].if_express === '1') {
-                        appHistory.go(-1);
-                        setTimeout(() => {
-                            appHistory.replace(`/myOrder/fk?type=${'car'}`);
-                        });
+                        appHistory.replace(`/myOrder/fk?type=${'car'}`);
                     } else {
                         setOrderStatus(1);
-                        appHistory.go(-1);
-                        setTimeout(() => {
-                            appHistory.replace(`/selfMention?type=${'car'}`);
-                        });
+                        appHistory.replace(`/selfMention?type=${'car'}`);
                     }
                 } else {
                     appHistory.goBack();

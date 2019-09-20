@@ -7,6 +7,7 @@ import './RefundDetails.less';
 
 const {getUrlParam, appHistory, showInfo, native} = Utils;
 const {urlCfg} = Configs;
+const hybrid = process.env.NATIVE;
 
 const {MESSAGE: {Form, Feedback}} = Constants;
 class refundDetails extends BaseComponent {
@@ -205,6 +206,16 @@ class refundDetails extends BaseComponent {
         appHistory.push('/consultHistory');
     }
 
+    //联系商家
+    goToShoper = () => {
+        const {refundArr} = this.state;
+        if (hybrid) {
+            native('goToShoper', {shopNo: refundArr.no, id: refundArr.order_id, type: '1', shopNickName: refundArr.nickname, imType: '2', groud: '0'});//groud 为0 单聊，1群聊 imType 1商品2订单3空白  type 1商品 2订单
+        } else {
+            showInfo('联系商家');
+        }
+    }
+
     render() {
         const {refundArr} = this.state;
         return (
@@ -253,7 +264,7 @@ class refundDetails extends BaseComponent {
                                                 x{value.pr_num }
                                                 </span>
                                             </div>
-                                            {this.allButton(refundArr)}
+                                            {refundArr.is_shoper === 0 && this.allButton(refundArr)}
                                         </div>
                                     </div>
                                 </div>
@@ -299,7 +310,7 @@ class refundDetails extends BaseComponent {
                     }
                     <div className="business-box">
                         <div className="business">
-                            <div className="business-left"><IconFont iconText="iconIM-zhutou"/><span>联系商家</span></div>
+                            <div className="business-left" onClick={this.goToShoper}><IconFont iconText="iconIM-zhutou"/><span>联系商家</span></div>
                             <span className="business-right icon" onClick={() => this.shopPhone()}>商家电话</span>
                         </div>
                     </div>

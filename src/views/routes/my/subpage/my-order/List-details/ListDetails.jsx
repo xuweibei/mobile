@@ -227,6 +227,16 @@ class ListDetails extends BaseComponent {
         this.props.setReturn(false);
     }
 
+    //联系商家
+    goToShoper = () => {
+        const {canInfo} = this.state;
+        if (hybird) {
+            native('goToShoper', {shopNo: canInfo.shop_no, id: canInfo.order_id, type: '2', shopNickName: canInfo.nickname, imType: '1', groud: '0'});//groud 为0 单聊，1群聊 imType 1商品2订单3空白  type 1商品 2订单
+        } else {
+            showInfo('联系商家');
+        }
+    }
+
     render() {
         const {canInfo, canStatus} = this.state;
         return (
@@ -295,13 +305,13 @@ class ListDetails extends BaseComponent {
                                                             <div className="local">x{item.num}</div>
                                                         </div>
                                                         {   //订单为待评价的时候
-                                                            (canInfo.status === '3' || canInfo.status === '4') && <div className="after-service" onClick={(ev) => this.goToIm(ev)}>申请售后</div>
+                                                            canInfo.is_shoper === 0 &&  (canInfo.status === '3' || canInfo.status === '4') && <div className="after-service" onClick={(ev) => this.goToIm(ev)}>申请售后</div>
                                                         }
                                                         {   //退款中，按钮
-                                                            item.button_name && <div className="after-service" onClick={(ev) => this.afterSale(ev, item.return_id)}>{item.button_name}</div>
+                                                            canInfo.is_shoper === 0 && item.button_name && <div className="after-service" onClick={(ev) => this.afterSale(ev, item.return_id)}>{item.button_name}</div>
                                                         }
                                                         {   //订单为待发货或待收货时
-                                                            !item.return_name && (canInfo.status === '1' || canInfo.status === '2') && <div className="after-service" onClick={(ev) => this.serviceRefund(canInfo, item, ev)}>申请退款</div>
+                                                            canInfo.is_shoper === 0 && !item.return_name && (canInfo.status === '1' || canInfo.status === '2') && <div className="after-service" onClick={(ev) => this.serviceRefund(canInfo, item, ev)}>申请退款</div>
                                                         }
                                                     </div>
                                                 </div>
@@ -357,7 +367,7 @@ class ListDetails extends BaseComponent {
 
                             <div className="business-box">
                                 <div className="business">
-                                    <div className="business-left"><IconFont iconText="iconIM-zhutou"/><span>联系商家</span></div>
+                                    <div className="business-left" onClick={this.goToShoper}><IconFont iconText="iconIM-zhutou" onClick={this.goToShoper}/><span>联系商家</span></div>
                                     <span className="business-right icon" onClick={() => this.shopPhone(canInfo.shop_tel)}>商家电话</span>
                                 </div>
                             </div>
@@ -368,7 +378,7 @@ class ListDetails extends BaseComponent {
                                 </div>
                                 <div className="collection-center">{canInfo.shopName}</div>
                                 {
-                                    canInfo.shop_collect === '0' ? <div onClick={() => this.collectDoIt({id: canInfo.shop_id, name: canInfo.shopName}, 'add')} className="collection-right">+收藏</div> : <div onClick={() => this.collectDoIt({id: canInfo.shop_collect, name: canInfo.shopName})} className="removeCollect">已收藏</div>
+                                    canInfo.is_shoper === 0 && (canInfo.shop_collect === '0' ? <div onClick={() => this.collectDoIt({id: canInfo.shop_id, name: canInfo.shopName}, 'add')} className="collection-right">+收藏</div> : <div onClick={() => this.collectDoIt({id: canInfo.shop_collect, name: canInfo.shopName})} className="removeCollect">已收藏</div>)
                                 }
                             </div>
 
@@ -425,7 +435,7 @@ class ListDetails extends BaseComponent {
                                         (canInfo.status === '0') &&  <div className="cancel-order new-style-cancel" onClick={() => this.setState({canStatus: true, canCelId: canInfo.pr_id})}>取消订单</div>
                                     }
                                     {
-                                        this.bottomButton(canInfo.status)
+                                        canInfo.is_shoper === 0 && this.bottomButton(canInfo.status)
                                     }
                                 </div>
                                 {canStatus && (

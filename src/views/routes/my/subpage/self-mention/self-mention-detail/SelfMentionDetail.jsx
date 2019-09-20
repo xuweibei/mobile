@@ -202,7 +202,7 @@ class ReDetail extends BaseComponent {
                 .subscribe((res) => {
                     if (res.status === 0) {
                         setOrderInfo(res);
-                        appHistory.push(`/payMoney?source=${sou}`);
+                        appHistory.replace(`/payMoney?source=${sou}`);
                     }
                     setValue('orderInfo', JSON.stringify(res));
                 });

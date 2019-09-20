@@ -10,9 +10,10 @@ import CancelOrder from '../../../../common/cancel-order/CancleOrder';
 import MyListView from '../../../../common/my-list-view/MyListView';
 import AppNavBar from '../../../../common/navbar/NavBar';
 
-const {appHistory, showFail, showInfo, native, getUrlParam} = Utils;
+const {appHistory, showFail, showInfo, native, getUrlParam, setNavColor} = Utils;
 const {urlCfg} = Configs;
 const {MESSAGE: {Feedback}, FIELD} = Constants;
+const hybrid = process.env.NATIVE;
 const tabs = [
     {title: '全部'},
     {title: '未完成'},
@@ -31,7 +32,8 @@ class ReDetail extends BaseComponent {
         pageCount: -1, //一共有多少页
         pageList: [], //列表信息
         orderId: 0, //订单id
-        canStatus: false //是否弹出取消框
+        canStatus: false, //是否弹出取消框
+        navColor: '#ff2d51' //nav背景颜色
     }
 
     componentWillMount() {
@@ -45,6 +47,10 @@ class ReDetail extends BaseComponent {
     }
 
     componentDidMount() {
+        const {navColor} = this.state;
+        if (hybrid) {
+            setNavColor('setNavColor', {color: navColor});
+        }
         this.getList();
     }
 
@@ -255,13 +261,12 @@ class ReDetail extends BaseComponent {
 
     //左上角返回上一级
     goBackModal = () => {
-        const hybrid = process.env.NATIVE;
         const type = decodeURI(getUrlParam('type', encodeURI(this.props.location.search)));
         if (hybrid) {
             native('goBack');
         } if (type === 'car') {
             appHistory.replace('/home');
-        } else if (appHistory.length === 0) {
+        } else if (appHistory.length() === 0) {
             appHistory.push('/my');
         } else {
             appHistory.goBack();
@@ -271,7 +276,7 @@ class ReDetail extends BaseComponent {
     }
 
     render() {
-        const {pageList, status, refreshing, isLoading, hasMore, canStatus} = this.state;
+        const {pageList, status, refreshing, isLoading, hasMore, canStatus, navColor} = this.state;
         //滚动容器高度
         const height = document.documentElement.clientHeight - (window.isWX ? 0.75 : window.rem * 1.8);
 
@@ -365,7 +370,7 @@ class ReDetail extends BaseComponent {
         );
         return (
             <div data-component="Self-mention" data-role="page" className="Self-mention">
-                <AppNavBar title="线下订单" goBackModal={this.goBackModal} goToSearch={this.goToSearch} rightShow redBackground search/>
+                <AppNavBar title="线下订单" backgroundColor={navColor} goBackModal={this.goBackModal} goToSearch={this.goToSearch} rightShow redBackground search/>
                 <div>
                     <Tabs
                         tabs={tabs}

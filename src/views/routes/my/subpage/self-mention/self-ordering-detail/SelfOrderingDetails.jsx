@@ -213,6 +213,16 @@ class ReDetail extends BaseComponent {
         this.props.setReturn(false);
     }
 
+    //联系商家
+    goToShoper = () => {
+        const {selfSufficiency} = this.state;
+        if (hybrid) {
+            native('goToShoper', {shopNo: selfSufficiency.shop_no, id: selfSufficiency.order_id, type: '2', shopNickName: selfSufficiency.nickname, imType: '1', groud: '0'});//groud 为0 单聊，1群聊 imType 1商品2订单3空白  type 1商品 2订单
+        } else {
+            showInfo('联系商家');
+        }
+    }
+
     render() {
         const {selfSufficiency, selfGoods, recommendGoods, maskStatus, collectId} = this.state;
         return (
@@ -318,7 +328,7 @@ class ReDetail extends BaseComponent {
                 </div>
 
                 <div className="business">
-                    <div className="frame"><IconFont iconText="iconIM-zhutou"/><span>联系商家</span></div>
+                    <div className="frame"><IconFont iconText="iconIM-zhutou" onClick={this.goToShoper}/><span>联系商家</span></div>
                     <div className="frame" onClick={() => this.shopPhone(selfSufficiency.shop_tel)}><IconFont iconText="iconfuzhu-dianhua-copy"/><span>商家电话</span></div>
                 </div>
 

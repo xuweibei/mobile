@@ -92,11 +92,11 @@ const consumerOrder = [
     },
     {
         text: '评价中心',
-        className: 'icon qr-code'
+        className: 'icon assessment-center'
     },
     {
         text: '二维码',
-        className: 'icon assessment-center'
+        className: 'icon qr-code'
     }
 ];
 
@@ -417,7 +417,7 @@ class My extends BaseComponent {
                         </div>
                     </div>
 
-                    <div className="setUpShop" onClick={() => this.jumpRouter((myInfo && myInfo.info.iden_type === '1') ? '/selectType' : '/recommend')}>
+                    <div className="setUpShop" onClick={() => this.jumpRouter((myInfo && myInfo.info.iden_type === '1') ? '/selectType' : myInfo.info.url.split('#')[1])}>
                         <img src={myInfo && (userInfo.shop_url)} alt=""/>
                     </div>
                     {   //用户身份不为消费者时展示

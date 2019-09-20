@@ -483,9 +483,9 @@ class GoodsDetail extends BaseComponent {
 
     //联系商家
     goToShoper = () => {
-        const {shop} = this.state;
+        const {shop, recommend} = this.state;
         if (hybrid) {
-            native('goToShoper', {shopNo: shop.no, groud: '0'});//groud 为0 单聊，1群聊
+            native('goToShoper', {shopNo: shop.no, id: recommend[0].id, type: '1', shopNickName: shop.nickname, imType: '1', groud: '0'});//groud 为0 单聊，1群聊 imType 1商品2订单3空白  type 1商品 2订单
         } else {
             showInfo('联系商家');
         }
