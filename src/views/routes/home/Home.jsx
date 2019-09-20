@@ -285,12 +285,10 @@ class Home extends BaseComponent {
                             >
                                 {mallBanner.map((item, index) => (
                                     <div key={item}>
-                                        <a key={index.toString()} href={item.url} className="banner-item">
-                                            <img
-                                                src={item}
-                                                className="banner-img"
-                                            />
-                                        </a>
+                                        <img
+                                            src={item}
+                                            className="banner-img"
+                                        />
                                     </div>
                                 ))}
                             </Carousel>
@@ -318,7 +316,7 @@ class Home extends BaseComponent {
                             <ul>
                                 {
                                     goodStuff.map((item, index) => (
-                                        <li key={item.type}>
+                                        <li key={index.toString()}>
                                             <p className="list-title">{this.goodType(item.type)}</p>
                                             <p className="list-desc">
                                                 <span>品质好店</span>
@@ -326,8 +324,8 @@ class Home extends BaseComponent {
                                             </p>
                                             <div className="img-box">
                                                 {
-                                                    item.data.map(value => (
-                                                        <div className="show-img" key={value.rs_id}>
+                                                    item.data.map((value, i) => (
+                                                        <div className="show-img" key={i.toString()}>
                                                             <img src={value.picpath} alt="" onClick={() => this.jumpOther(value.rs_id, index, value.rs_id)}/>
                                                         </div>
                                                     ))

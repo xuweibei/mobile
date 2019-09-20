@@ -99,11 +99,11 @@ class GoodsDetail extends BaseComponent {
     }
 
     //获取商品详情
-    getGoodsDetail = () => {
+    getGoodsDetail = (reId) => {
         const id = decodeURI(
             getUrlParam('id', encodeURI(this.props.location.search))
         );
-        this.fetch(urlCfg.getGoodsDetail, {data: {id: id}}).subscribe(res => {
+        this.fetch(urlCfg.getGoodsDetail, {data: {id: reId || id}}).subscribe(res => {
             if (res.status === 0) {
                 this.starShow(res.shop.shop_mark);
                 const stocks = [];
@@ -121,7 +121,7 @@ class GoodsDetail extends BaseComponent {
                         goodsDetail: res.data,
                         picPath: res.data.picpath,
                         shop: res.shop, // 店铺信息,
-                        rank: res.shop.shop_mark,
+                        // rank: res.shop.shop_mark,
                         recommend: res.recommend_pr, // 商品推荐
                         evaluate: res.pingjia,
                         allState: res,
@@ -512,7 +512,7 @@ class GoodsDetail extends BaseComponent {
     render() {
         const {
             topSwithe, popup, paginationNum, xxArr, half, ids, maskStatus,
-            picPath, rank, goodsDetail, shop, recommend, evaluate, allState, collect,
+            picPath, goodsDetail, shop, recommend, evaluate, allState, collect,
             goodsAttr, stocks, shopAddress, lineStatus, lineText, pickType, selectType
         } = this.state;
         const renderCount = (
@@ -707,9 +707,9 @@ class GoodsDetail extends BaseComponent {
                                                 </div>
                                             )}
                                             <div className="shop-btn">
-                                                <div className="shop-det">
+                                                {/* <div className="shop-det">
                                                     店铺详情
-                                                </div>
+                                                </div> */}
                                                 <div
                                                     className="auxiliary-button red"
                                                     onClick={() => this.ShopH(shop.id)
@@ -739,7 +739,7 @@ class GoodsDetail extends BaseComponent {
                                             {shop.shop_mark}
                                         </span>
                                         <span className="grade-height">
-                                            {this.rating(rank)}
+                                            {this.rating(shop.shop_mark)}
                                         </span>
                                     </div>
                                     <div className="logistics-score">
@@ -747,7 +747,7 @@ class GoodsDetail extends BaseComponent {
                                         <span className="score-eva">
                                             {shop.logistics_mark}
                                         </span>
-                                        <span className="grade-low">低</span>
+                                        <span className="grade-low">{this.rating(shop.logistics_mark)}</span>
                                     </div>
                                 </div>
                             </div>
@@ -795,6 +795,7 @@ class GoodsDetail extends BaseComponent {
                                         <div
                                             className="home-recommend-individual"
                                             key={item.id}
+                                            onClick={() => this.getGoodsDetail(item.id)}
                                         >
                                             <div className="recommend-individual-imgParent">
                                                 <img
@@ -835,11 +836,14 @@ class GoodsDetail extends BaseComponent {
                         </Element>
                         {/*商品详情*/}
                         <Element name="details" className="detail-img lis">
-                            <img
+                            {/* <img
                                 className="img"
                                 src={require('../../../../../assets/images/dateil.png')}
                                 alt=""
-                            />
+                            /> */}
+                            {
+                                goodsDetail.intro
+                            }
                         </Element>
                         {/*失效*/}
                     </div>
