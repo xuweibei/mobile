@@ -1,7 +1,7 @@
 @import "~style";
 .login-modal{
         width: 580px !important;
-        overflow-y: scroll;
+        //overflow-y: scroll;
         .am-icon{
             margin-top: 30px;
             margin-left: 100px;
@@ -16,7 +16,7 @@
             width: 100px;
             height: 100px;
             background: url('../../../assets/images/wx-icon.png') no-repeat 0 0;
-            border: 50%;
+            //border: 50%;
         }
         .icon-logo{
             width: 60px;
@@ -39,12 +39,19 @@
             line-height: 100px;
         }
     }
+    .am-list-body::before, .am-list-line::after, .am-list-body::after {
+        height: 0!important;
+    }
 }
 .login-register {
     position: absolute;
     width: 100%;
     top: 0;
     bottom: 0;
+    background: @white;
+    .enter-box {
+        padding-bottom: 80px;
+    }
     .register{
         background: @white;
         //height: 100vh;
@@ -109,12 +116,13 @@
     }
     .login-code{
         height: auto;
-        background: url('../../../assets/images/register.png');
-        background-size: 100% 100%;
-        position: absolute;
-        width: 100%;
-        top: 0;
-        bottom: -100px;
+        background: @white;
+        //background: url('../../../assets/images/register.png');
+        //background-size: 100% 100%;
+        //position: absolute;
+        //width: 100%;
+        //top: 0;
+        //bottom: -100px;
         //background: #fff;
         //padding-bottom: 300px;
         //position: relative;
@@ -171,21 +179,34 @@
                     color: #D2D2D2;
                     content: '\e642';
                 }
+                input::placeholder {
+                    line-height: 47px;
+                }
                 .btn-code{
-                    background: @to-light-gray;
+                    background: @white;
                     height: 50px;
-                    min-width: 160px;
+                    width: 24%;
+                    //min-width: 160px;
                     position: absolute;
                     right: 16px;
                     bottom: 20px;
+                    border: 2px solid @gray;
                     color: @gray;
                     font-size: @font-size-28;
                     border-radius: 10px;
                     .code-text{
                         position: absolute;
                         top: -22px;
-                        left: 8px;
+                        left: 0;
+                        width: 100%;
                     }
+                }
+                .highlight {
+                    border: 2px solid @fiery-red;
+                    color: @fiery-red;
+                }
+                .am-button::before {
+                    border: none !important;
                 }
             }
             .border-color {
@@ -230,9 +251,9 @@
                 //}
             }
             .wxLogin{
-                margin: 30px auto;
+                margin: 31px auto 30px;
                 width: 100px;
-                height: 100px;
+                height: 110px;
                 background-size: 1950px!important;
                 background: url("../../../assets/images/CSS-Sprites.png") no-repeat -1050px -150px;
             }
@@ -248,7 +269,7 @@
     }
 
     .register-del{
-        height: 40px;
+        //height: 40px;
         padding-top: 24px;
         margin-left: 40px;
         .del-icon:before{

@@ -51,16 +51,27 @@ class MyOrder extends BaseComponent {
 
     componentWillMount() {
         const num = this.props.orderStatus || this.statusChoose(this.props.location.pathname.split('/')[2]);
+        this.init(num);
+    }
+
+    componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方法
+        const num = this.statusChoose(nextProps.location.pathname.split('/')[2]);
+        if (num !== this.props.orderStatus) {
+            this.init(num);
+        }
+    }
+
+    componentDidMount() {
+        this.getInfo();
+    }
+
+    init = (num) => {
         this.setState({
             status: num
         }, () => {
             //储存我的订单的tab状态在哪一个
             this.props.setOrderStatus(num);
         });
-    }
-
-    componentDidMount() {
-        this.getInfo();
     }
 
     //请求数据

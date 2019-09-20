@@ -2,34 +2,18 @@
 
 .address-set{
     background: @back-color;
-    .nav-bar{
-        display: flex;
-        justify-content: space-between;
-        line-height: 88px;
-        padding: 0 30px;
-        box-sizing: border-box;
-        position: fixed;
-        top:0;
-        left:0;
-        width:100%;
-        background:#fff;
-        .nav-title{
-            font-size: @font-size-38;
-            font-weight: bold;
-            color: @darker-black;
-        }
-        .nav-right{
-            font-size: @font-size-28;
-            color: #010101;
-            width: 72px;
-        }
-        .am-icon-left{
-            margin-top: 10px;
-        }
+    .wrapTabNav {
+        margin-bottom: 20px;
     }
     .add-list{
         //background: #fff;
-        margin: 108px 0 101px;
+        //margin: 108px 0 101px;
+        padding-bottom: 100px;
+        div:last-child {
+            list-detail {
+                border-bottom: none!important;
+            }
+        }
         .am-swipe {
             .am-swipe-actions {
                 .am-swipe-btn {
@@ -44,7 +28,7 @@
                 justify-content: space-between;
                 height: 160px;
                 padding-left: 30px;
-                margin-bottom:1px;
+                //margin-bottom:1px;
                 .hairline('bottom',@to-light-gray);
                 .item-desc{
                     width: 542px;
@@ -136,6 +120,7 @@
         left: 50%;
         transform: translateX(-50%);
         display: flex;
+        box-shadow:0px 2px 7px 1px rgba(255, 146, 150, 0.35);
         span{
             float:right;
             font-size:28px;
