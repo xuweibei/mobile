@@ -215,6 +215,9 @@ class GoodsDetail extends BaseComponent {
     //添加商品到购物车
     addCart = () => {
         const {shop, goodsDetail, paginationNum, ids, selectType} = this.state;
+        if (shop.shoper_open_status === '0') {
+            return;
+        }
         if (paginationNum === 0 || ids.length === 0) {
             this.setState({
                 popup: true,
@@ -255,6 +258,10 @@ class GoodsDetail extends BaseComponent {
 
     //立即购买
     emption = () => {
+        const {shop} = this.state;
+        if (shop.shoper_open_status === '0') {
+            return;
+        }
         const id = decodeURI(
             getUrlParam('id', encodeURI(this.props.location.search))
         );
@@ -872,6 +879,9 @@ class GoodsDetail extends BaseComponent {
                 </div>
                 {lineStatus ? <div className="timeout">{lineText}</div> : null}
                 {/*底部固定购买栏*/}
+                {
+                    shop.shoper_open_status === '0' && (<div className="rest">该店暂未营业</div>)
+                }
                 <div className="goodsDetail-bottom">
                     <div className="icons-warp">
                         <div className="icons">
@@ -918,6 +928,7 @@ class GoodsDetail extends BaseComponent {
                 {/*底部弹出选择商品框*/}
                 {popup && (
                     <Sku
+                        detail={goodsDetail}
                         attributes={goodsAttr}
                         stocks={stocks}
                         cover={picPath[0]}

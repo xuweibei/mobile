@@ -426,11 +426,19 @@ class ShopCart extends BaseComponent {
                 }
             }).subscribe(res => {
                 if (res.status === 0) {
-                    this.setState({
-                        goodsCount: goods.num
-                    });
-                } else {
-                    showInfo(Form.No_Stocks);
+                    if (res.data) {
+                        if (res.data.status === 6) {
+                            goods.num = (Number(goods.num) - 1).toString();
+                            this.setState({
+                                goodsCount: goods.num
+                            });
+                            showInfo(res.message);
+                        }
+                    } else {
+                        this.setState({
+                            goodsCount: goods.num
+                        });
+                    }
                 }
             });
         }
