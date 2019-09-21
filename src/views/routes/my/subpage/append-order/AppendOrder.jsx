@@ -31,7 +31,9 @@ class appendOrder extends BaseComponent {
         self: true, //发票类型
         currentIndex: 0, //默认发票选中类型
         textInfo: '企业',
-        invoiceStatus: false  //发票弹框显示状态
+        invoiceStatus: false,  //发票弹框显示状态
+        notAllow: true, //不支持提交状态
+        invoice: {}
     };
 
     componentDidMount() {
@@ -126,8 +128,6 @@ class appendOrder extends BaseComponent {
         array[index] = val;
         this.setState({
             order: array
-        }, () => {
-            console.log(this.state.order);
         });
     };
 
@@ -178,6 +178,14 @@ class appendOrder extends BaseComponent {
                         goods: res.data.map(shop => shop.data.map(goods => goods)),
                         IDcard: cardArr,
                         order: infoArry
+                    }, () => {
+                        const {goods} = this.state;
+                        const status = goods[0].map(item => item.in_area);
+                        if (status.includes(0)) {
+                            this.setState({
+                                notAllow: false
+                            });
+                        }
                     });
                 }
             });
@@ -231,7 +239,7 @@ class appendOrder extends BaseComponent {
     }
 
     render() {
-        const {shopInfo, addressInfo, total, order, self, currentIndex, textInfo, invoiceStatus} = this.state;
+        const {shopInfo, addressInfo, total, order, self, currentIndex, textInfo, notAllow, invoiceStatus} = this.state;
         const {address} = this.props;
         const kind = [
             {title: '企业'},
@@ -318,12 +326,20 @@ class appendOrder extends BaseComponent {
                                                                         >X{goods.num}
                                                                         </span>
                                                                     </div>
+                                                                    {
+                                                                        (goods && goods.in_area === 0) && (<div className="not-allow">该商品在该地区暂不支持销售</div>)
+                                                                    }
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <List.Item onClick={this.showPanel} className="invoice">发票抬头</List.Item>
+                                                {
+                                                    (goods && goods.if_invoice === '1') && (
+                                                        <List.Item onClick={this.showPanel} className="invoice">发票抬头</List.Item>
+                                                    )
+                                                }
+
                                             </React.Fragment>
                                         ))
                                     }
@@ -379,13 +395,16 @@ class appendOrder extends BaseComponent {
                         }
                     </div>
                 </div>
+                {
+                    !notAllow && (<div className="notAllow">当前有商品在该地区暂不支持销售，非常抱歉！</div>)
+                }
                 <div className="pay">
                     <div className="pay-left">
                         <span className="space">共{this.totalCount()}件</span>
                         <span>合计：</span>
                         <span>￥{total}</span>
                     </div>
-                    <Button onClick={() => this.postOrder()}>立即付款</Button>
+                    <Button onClick={() => this.postOrder()} disabled={!notAllow}>立即付款</Button>
                 </div>
                 {
                     invoiceStatus && (
@@ -406,7 +425,7 @@ class appendOrder extends BaseComponent {
                                     <div className="rise-content">
                                         {
                                             kind.map((item, index) => (
-                                                <div className={currentIndex === index ? 'active' : ''} onClick={() => this.checkIndex(index)} key={item.title}>{item.title}</div>
+                                                <div className={currentIndex === index ? 'active' : ''} onClick={() => this.checkIndex(index)} key={index.toString()}>{item.title}</div>
                                             ))
                                         }
                                     </div>
