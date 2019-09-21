@@ -54,15 +54,12 @@ class MyOrder extends BaseComponent {
         this.init(num);
     }
 
-    componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方法
+    componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方
+        if (this.tabBtn) return;
         const num = this.statusChoose(nextProps.location.pathname.split('/')[2]);
         if (num !== this.props.orderStatus) {
             this.init(num);
         }
-    }
-
-    componentDidMount() {
-        this.getInfo();
     }
 
     init = (num) => {
@@ -71,6 +68,7 @@ class MyOrder extends BaseComponent {
         }, () => {
             //储存我的订单的tab状态在哪一个
             this.props.setOrderStatus(num);
+            this.getInfo();
         });
     }
 
@@ -189,6 +187,7 @@ class MyOrder extends BaseComponent {
 
     //tab状态变更
     tabChange = (data, index) => {
+        this.tabBtn = true;
         const dataSource2 = new ListView.DataSource({
             rowHasChanged: (row1, row2) => row1 !== row2
         });
@@ -203,6 +202,7 @@ class MyOrder extends BaseComponent {
             retainArr: [],
             hasMore: false
         }, () => {
+            this.tabBtn = false;
             temp.stackData = [];
             if (status === 4) {
                 this.refundMllOder(this.state.page);

@@ -37,13 +37,8 @@ class ReDetail extends BaseComponent {
     }
 
     componentWillMount() {
-        const num = this.props.orderStatus === 0 ? 0 : (this.props.orderStatus || this.statusChoose(this.props.location.pathname.split('/')[2]));
-        this.setState({
-            status: num
-        }, () => {
-            //储存我的订单的tab状态在哪一个
-            this.props.setOrderStatus(num);
-        });
+        const num = this.props.orderStatus || this.statusChoose(this.props.location.pathname.split('/')[2]);
+        this.init(num);
     }
 
     componentDidMount() {
@@ -51,7 +46,24 @@ class ReDetail extends BaseComponent {
         if (hybrid) {
             setNavColor('setNavColor', {color: navColor});
         }
-        this.getList();
+    }
+
+    componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方
+        if (this.tabBtn) return;
+        const num = this.statusChoose(nextProps.location.pathname.split('/')[2]);
+        if (num !== this.props.orderStatus) {
+            this.init(num);
+        }
+    }
+
+    init = (num) => {
+        this.setState({
+            status: num
+        }, () => {
+            //储存我的订单的tab状态在哪一个
+            this.props.setOrderStatus(num);
+            this.getList();
+        });
     }
 
     //进入订单页面，判断为什么状态
@@ -99,6 +111,7 @@ class ReDetail extends BaseComponent {
 
     //选择列表状态
     tabChange = (data, index) => {
+        this.tabBtn = true;
         this.props.setOrderStatus(index);
         this.setState({
             page: 1,
@@ -106,6 +119,7 @@ class ReDetail extends BaseComponent {
             pageCount: -1,
             status: index
         }, () => {
+            this.tabBtn = false;
             this.getList();
         });
     }
@@ -374,7 +388,7 @@ class ReDetail extends BaseComponent {
                 <div>
                     <Tabs
                         tabs={tabs}
-                        initialPage={status}
+                        page={status}
                         animated={false}
                         useOnPan
                         swipeable={false}

@@ -134,6 +134,7 @@ class BankCardDetail extends BaseComponent {
 
     //验证开户银行
     checkBank = (rule, value, callback) => {
+        console.log(validator.isEmpty(value, Form.No_Bank, callback));
         if (!validator.isEmpty(value, Form.No_Bank, callback)) return;
         callback();
     };
@@ -246,7 +247,7 @@ class BankCardDetail extends BaseComponent {
                                  <InputItem
                                      clear
                                      editable={!userInfo.idcard}
-                                     type="number"
+                                     type="text"
                                      placeholder="请输入户主身份证号"
                                  >身份证号
                                  </InputItem>

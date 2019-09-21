@@ -74,19 +74,24 @@ class GoodsDetail extends BaseComponent {
         pickType: {}, //配送方式
         selectType: '', //选中配送方式 1快递 2自提
         clickType: 0, //打开sku的方式 0箭头 1购物车 2立即购买
-        totalNUm: 0 //商品库存
+        totalNUm: 0, //商品库存,
+        goodId: decodeURI(getUrlParam('id', encodeURI(this.props.location.search)))
     };
 
     componentDidMount() {
-        scrollSpy.update();
-        scrollSpy.mount(document);
-        scrollSpy.addSpyHandler(this.handleScroll, document);
-        this.getGoodsDetail();
+        this.init();
     }
 
     componentWillUnmount() {
         super.componentWillUnmount();
         scrollSpy.unmount();
+    }
+
+    init = () => {
+        scrollSpy.update();
+        scrollSpy.mount(document);
+        scrollSpy.addSpyHandler(this.handleScroll, document);
+        this.getGoodsDetail();
     }
 
     //网页滚动
@@ -98,12 +103,20 @@ class GoodsDetail extends BaseComponent {
         }
     }
 
+    componentWillReceiveProps(nextProps, value) { //路由跳转时的判断，id有变化就请求
+        if (this.state.goodId !== decodeURI(getUrlParam('id', encodeURI(nextProps.location.search)))) {
+            this.setState({
+                goodId: decodeURI(getUrlParam('id', encodeURI(nextProps.location.search)))
+            }, () => {
+                this.init();
+            });
+        }
+    }
+
     //获取商品详情
     getGoodsDetail = () => {
-        const id = decodeURI(
-            getUrlParam('id', encodeURI(this.props.location.search))
-        );
-        this.fetch(urlCfg.getGoodsDetail, {data: {id: id}}).subscribe(res => {
+        const {goodId} = this.state;
+        this.fetch(urlCfg.getGoodsDetail, {data: {id: goodId}}).subscribe(res => {
             if (res.status === 0) {
                 this.starShow(res.shop.shop_mark);
                 const stocks = [];

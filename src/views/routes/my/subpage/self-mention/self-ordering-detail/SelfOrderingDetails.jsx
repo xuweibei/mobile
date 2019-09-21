@@ -22,11 +22,6 @@ class ReDetail extends BaseComponent {
         shopId: 0 //订单shop_id
     }
 
-    componentWillMount() {
-        //这里是为了控制原生右滑退出
-        this.props.setReturn(true);
-    }
-
     componentDidMount() {
         this.getList();
     }
@@ -47,13 +42,6 @@ class ReDetail extends BaseComponent {
                     });
                 }
             });
-    }
-
-    componentWillReceiveProps(data, value) {
-        //原生右滑退出处理
-        if (!data.returnStatus) {
-            this.goBackModal();
-        }
     }
 
     //判斷是否收藏
@@ -205,12 +193,6 @@ class ReDetail extends BaseComponent {
         } else {
             appHistory.goBack();
         }
-    }
-
-    //页面卸载
-    componentWillUnmount() {
-        //返回弹框的回调是否显示
-        this.props.setReturn(false);
     }
 
     //联系商家

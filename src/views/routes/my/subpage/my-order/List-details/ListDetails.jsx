@@ -17,20 +17,8 @@ class ListDetails extends BaseComponent {
         canInfo: {} //数据容器
     };
 
-    componentWillMount() {
-        //这里是为了控制原生右滑退出
-        this.props.setReturn(true);
-    }
-
     componentDidMount() {
         this.getList();
-    }
-
-    componentWillReceiveProps(data, value) {
-        //原生右滑退出处理
-        if (!data.returnStatus) {
-            this.goBackModal();
-        }
     }
 
     getList = () => {
@@ -219,12 +207,6 @@ class ListDetails extends BaseComponent {
         } else {
             appHistory.goBack();
         }
-    }
-
-    //页面卸载
-    componentWillUnmount() {
-        //返回弹框的回调是否显示
-        this.props.setReturn(false);
     }
 
     //联系商家
