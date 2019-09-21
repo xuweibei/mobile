@@ -24,7 +24,7 @@ const Marker = new window.BMap.Icon(LOCATION, new window.BMap.Size(30, 30), {
     anchor: new window.BMap.Size(10, 25)
 });
 
-const {appHistory, showInfo, getUrlParam, TD} = Utils;
+const {appHistory, showInfo, getUrlParam, TD, systemApi: {setValue, getValue}} = Utils;
 const {urlCfg} = Configs;
 
 class Find extends BaseComponent {
@@ -63,7 +63,21 @@ class Find extends BaseComponent {
             nowLongitude: longitude, //当前点击商店经纬度
             nowLatitude: latitude
         });
-        this.getLocation();
+        const local = JSON.parse(getValue('local'));
+
+        if (!local) {
+            this.getLocation();
+        } else {
+            this.setState({
+                longitude: local.lon,
+                latitude: local.lat
+            }, () => {
+                this.renderMap();
+                this.getShop(this.state.latitude, this.state.longitude);
+            });
+            const pt = new window.BMap.Point(local.lon, local.lat);
+            this.addressGeoc(pt);
+        }
     }
 
     componentWillUnmount() {
@@ -219,11 +233,13 @@ class Find extends BaseComponent {
                         this.renderMap();
                         this.getShop(this.state.latitude, this.state.longitude);
                     });
+                    setValue('local', JSON.stringify({lon: res.longitude, lat: res.latitude}));
                 }
             });
         } else {
             const geolocation = new window.BMap.Geolocation();
             geolocation.getCurrentPosition((res) => {
+                setValue('local', JSON.stringify({lon: res.longitude, lat: res.latitude}));
                 const pt = res.point;
                 this.addressGeoc(pt);
                 this.setState({

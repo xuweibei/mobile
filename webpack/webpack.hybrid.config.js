@@ -79,6 +79,10 @@ class Environment {
         return this.__chkEnv('test');
     }
 
+    ispreProdEnv() {
+        return this.__chkEnv('prev');
+    }
+
     isProdEnv() {
         return this.__chkEnv('production')
     }
@@ -90,7 +94,7 @@ class Environment {
     path() {
         let name;
         Object.keys(this.env).forEach((item) => {
-            if (/development|test|production/g.test(item)) {
+            if (/development|test|production|prev/g.test(item)) {
                 name = item;
             }
         })
@@ -341,7 +345,7 @@ module.exports = (env = {}) => {
                     new webpack.NamedModulesPlugin(),  // 在热加载时直接返回更新文件名，而不是文件的id
                 ]
                 : []),
-            ...(ENV.isProdEnv()
+            ...((ENV.isProdEnv() || ENV.ispreProdEnv())
                 ? [
                     new webpack.optimize.UglifyJsPlugin({
                         mangle: {

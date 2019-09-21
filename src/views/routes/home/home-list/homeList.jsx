@@ -5,7 +5,7 @@ import {ListView, Tabs} from 'antd-mobile';
 import {scrollSpy} from 'react-scroll';
 import './homeList.less';
 
-const {appHistory, showInfo} = Utils;
+const {appHistory, showInfo, systemApi: {getValue, setValue}} = Utils;
 const {urlCfg} = Configs;
 const {MESSAGE: {Form}} = Constants;
 
@@ -46,11 +46,19 @@ export default class HomeList extends BaseComponent {
     }
 
     componentDidMount() {
+        const local = JSON.parse(getValue('local'));
         scrollSpy.mount(document);
         scrollSpy.addSpyHandler(this.handleScroll, document);
         scrollSpy.update();
         this.getGoodsList();
-        this.getLocation();
+        if (!local) {
+            this.getLocation();
+        } else {
+            this.setState({
+                longitude: local.lon,
+                latitude: local.lat
+            });
+        }
         this.getExGoodsList();
         // this.getHotShops();
     }
@@ -81,16 +89,17 @@ export default class HomeList extends BaseComponent {
             window.wx.getLocation({
                 type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
                 success: (res) => {
-                    console.log(res);
                     this.setState({
                         latitude: res.latitude,
                         longitude: res.longitude
                     });
+                    setValue('local', JSON.stringify({lon: res.longitude, lat: res.latitude}));
                 }
             });
         } else {
             const geolocation = new window.BMap.Geolocation();
             geolocation.getCurrentPosition((res) => {
+                setValue('local', JSON.stringify({lon: res.longitude, lat: res.latitude}));
                 this.setState({
                     latitude: res.latitude,
                     longitude: res.longitude
@@ -292,8 +301,8 @@ export default class HomeList extends BaseComponent {
                 </div>
             </div>
         );
-        const ex = item => (
-            <div className="hot" key={item.rs_id} onClick={(e) => this.goCate(item.rs_id)}>
+        const ex = (item, index) => (
+            <div className="hot" key={index.toString()} onClick={(e) => this.goCate(item.rs_id, item)}>
                 <img src={item.picpath} alt=""/>
                 <div className="hot-content">
                     <p>{item.title}</p>

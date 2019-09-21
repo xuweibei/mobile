@@ -2,7 +2,7 @@
 * 确认订单
 * */
 import {connect} from 'react-redux';
-import {InputItem, List, DatePicker, Button, Icon} from 'antd-mobile';
+import {InputItem, List, Button, Icon} from 'antd-mobile';
 import {myActionCreator as ActionCreator} from '../../actions/index';
 import {shopCartActionCreator} from '../../../shop-cart/actions/index';
 import AppNavBar from '../../../../common/navbar/NavBar';
@@ -231,7 +231,7 @@ class appendOrder extends BaseComponent {
     }
 
     render() {
-        const {shopInfo, addressInfo, total, IDcard, order, self, currentIndex, textInfo, invoiceStatus} = this.state;
+        const {shopInfo, addressInfo, total, order, self, currentIndex, textInfo, invoiceStatus} = this.state;
         const {address} = this.props;
         const kind = [
             {title: '企业'},
@@ -285,43 +285,46 @@ class appendOrder extends BaseComponent {
                                     </div>
                                     {
                                         shop.data.map((goods) => (
-                                            <div key={goods.id}>
-                                                <div className="distance-box">
-                                                    <div className="distance">
-                                                        <div className="goods-desc">
-                                                            <div className="desc-left">
-                                                                <img
-                                                                    src={goods.picpath}
-                                                                    alt=""
-                                                                    className="thumb-img"
-                                                                />
-                                                            </div>
-                                                            <div className="desc-right">
-                                                                <div className="desc-title">
-                                                                    {goods.title}
+                                            <React.Fragment>
+                                                <div key={goods.id}>
+                                                    <div className="distance-box">
+                                                        <div className="distance">
+                                                            <div className="goods-desc">
+                                                                <div className="desc-left">
+                                                                    <img
+                                                                        src={goods.picpath}
+                                                                        alt=""
+                                                                        className="thumb-img"
+                                                                    />
                                                                 </div>
-                                                                <div className="desc-sku">
-                                                                    <div className="sku-left">
-                                                                        {goods.values_name.split(',').map(item => (
-                                                                            <span key={item}>{item}</span>
-                                                                        ))}
+                                                                <div className="desc-right">
+                                                                    <div className="desc-title">
+                                                                        {goods.title}
+                                                                    </div>
+                                                                    <div className="desc-sku">
+                                                                        <div className="sku-left">
+                                                                            {goods.values_name.split(',').map(item => (
+                                                                                <span key={item}>{item}</span>
+                                                                            ))}
 
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                                <div className="num-add">
-                                                                    <div className="desc-count">
-                                                                        记账量：{goods.deposit}
+                                                                    <div className="num-add">
+                                                                        <div className="desc-count">
+                                                                            记账量：{goods.deposit}
+                                                                        </div>
+                                                                        <span
+                                                                            className="sku-right"
+                                                                        >X{goods.num}
+                                                                        </span>
                                                                     </div>
-                                                                    <span
-                                                                        className="sku-right"
-                                                                    >X{goods.num}
-                                                                    </span>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                                <List.Item onClick={this.showPanel} className="invoice">发票抬头</List.Item>
+                                            </React.Fragment>
                                         ))
                                     }
                                     <div className="goods-attr">
@@ -350,8 +353,7 @@ class appendOrder extends BaseComponent {
                                             onChange={(val) => this.getRemark(val, index)}
                                         >订单备注
                                         </InputItem>
-                                        <List.Item onClick={this.showPanel}>发票抬头</List.Item>
-                                        <InputItem
+                                        {/* <InputItem
                                             // value={card[index]}
                                             placeholder="请输入您的身份证"
                                             value={IDcard[index]}
@@ -359,14 +361,14 @@ class appendOrder extends BaseComponent {
                                             type="text"
                                             onChange={val => this.getIdCart(val, index)}
                                         >身份证
-                                        </InputItem>
-                                        <DatePicker
+                                        </InputItem> */}
+                                        {/* <DatePicker
                                             mode="date"
                                             value={this.state.date}
                                             onChange={date => this.setState({date})}
                                         >
                                             <List.Item arrow="horizontal">日期选择</List.Item>
-                                        </DatePicker>
+                                        </DatePicker> */}
                                     </List>
                                     <div className="payable">
                                         <span>实付款</span>
