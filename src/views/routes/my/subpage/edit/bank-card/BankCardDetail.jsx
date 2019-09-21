@@ -141,6 +141,10 @@ class BankCardDetail extends BaseComponent {
 
     //检验银行卡号
     checkBankNo = (rule, value, callback) => {
+        if (!value) {
+            validator.showMessage(Form.No_BankNumber, callback);
+            return;
+        }
         if (!validator.isEmpty(value, Form.No_BankNumber, callback)) return;
         if (!validator.bankCard(validator.wipeOut(value))) {
             validator.showMessage(Form.Error_Bank, callback);
@@ -215,7 +219,7 @@ class BankCardDetail extends BaseComponent {
      };
 
      render() {
-         const {userInfo, getOff, height} = this.state;
+         const {userInfo, getOff, height, bankArr} = this.state;
          const {getFieldDecorator} = this.props.form;
          return (
              <div data-component="bankCardDetail" data-role="page" className="bank-card-detail">
@@ -262,7 +266,7 @@ class BankCardDetail extends BaseComponent {
                              })(
                                  <Picker
                                      extra="请选择"
-                                     data={this.state.bankArr}
+                                     data={bankArr}
                                      onOk={(data) => this.onOkPicker(data)}
                                      cols={1}
                                  >

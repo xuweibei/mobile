@@ -51,6 +51,7 @@ const {LOCALSTORAGE} = Constants;
 
 //统一封装原生接口请求
 export const native = (str, obj, callBack) => new Promise((resolve, reject) => {
+    alert(str);
     hybrid && window.WebViewJavascriptBridge.callHandler(
         str,
         JSON.stringify(obj),
