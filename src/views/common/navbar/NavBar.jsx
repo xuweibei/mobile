@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './NavBar.less';
+import {showInfo} from '../../../utils/mixin';
 
 const {appHistory, native} = Utils;
+const hybird = process.env.NATIVE;
 // const hashs = window.location.hash;
 // const str = hashs.substring(hashs.length - 8);
 // const hash = str;
@@ -22,7 +24,8 @@ class NavBar extends React.PureComponent {
         isEdit: false,
         changeNavRight: false,
         goToSearch: null,
-        style: {}
+        style: {},
+        backgroundColor: ''
     };
 
     static propTypes = {
@@ -38,12 +41,12 @@ class NavBar extends React.PureComponent {
         isEdit: PropTypes.bool,
         changeNavRight: PropTypes.bool,
         goToSearch: PropTypes.func,
-        style: PropTypes.object
+        style: PropTypes.object,
+        backgroundColor: PropTypes.string
     }
 
     //左边按钮图标点击样式
     backAway = () => {
-        const hybird = process.env.NATIVE;
         const {nativeGoBack, goBackModal} = this.props;
         if (hybird) { //app状态下
             if (goBackModal) { //如果是有返回处理函数，则执行这个函数
@@ -70,8 +73,16 @@ class NavBar extends React.PureComponent {
         this.props.goToSearch();
     }
 
+    goToIm = () => {
+        if (hybird) {
+            native('goToIm',  {'': ''});
+        } else {
+            showInfo('im');
+        }
+    }
+
     render() {
-        const {title, rightShow, redBackground, rightSearch, rightExplain, rightEdit, search, isEdit} = this.props;
+        const {title, rightShow, redBackground, rightSearch, rightExplain, rightEdit, search, isEdit, backgroundColor} = this.props;
         if (window.isWX) {
             document.title = title;
             return null;
@@ -79,7 +90,7 @@ class NavBar extends React.PureComponent {
         return (
             window.isWX ? null : (
                 <div className="wrapTabNav">
-                    <div className="navbar">
+                    <div className="navbar" style={{backgroundColor: backgroundColor || '#fff'}}>
                         { redBackground //红底
                             ? (
                                 <div>
@@ -90,7 +101,7 @@ class NavBar extends React.PureComponent {
                                     {
                                         rightShow && ( //是否展示 im图标
                                             <div className="nav-right">
-                                                <div className="icon-right icon" onClick={() => appHistory.push('/im')}/>
+                                                <div className="icon-right icon" onClick={this.goToIm}/>
                                             </div>
                                         )
                                     }
@@ -112,7 +123,7 @@ class NavBar extends React.PureComponent {
                                     {
                                         rightShow && ( //是否展示 im图标
                                             <div className="blackNav-right">
-                                                <div className="icon-right icon"/>
+                                                <div className="icon-right icon" onClick={this.goToIm}/>
                                             </div>
                                         )
                                     }

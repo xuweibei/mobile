@@ -18,6 +18,9 @@ const systemApi = {
     isProdEnv() { // 生产环境
         return this.__chkEnv('production');
     },
+    ispreProdEnv() { // 预生产环境
+        return this.__chkEnv('prev');
+    },
     isTestEnv() { // 测试环境
         return this.__chkEnv('test');
     },

@@ -22,11 +22,6 @@ class ReDetail extends BaseComponent {
         shopId: 0 //订单shop_id
     }
 
-    componentWillMount() {
-        //这里是为了控制原生右滑退出
-        this.props.setReturn(true);
-    }
-
     componentDidMount() {
         this.getList();
     }
@@ -47,13 +42,6 @@ class ReDetail extends BaseComponent {
                     });
                 }
             });
-    }
-
-    componentWillReceiveProps(data, value) {
-        //原生右滑退出处理
-        if (!data.returnStatus) {
-            this.goBackModal();
-        }
     }
 
     //判斷是否收藏
@@ -207,10 +195,14 @@ class ReDetail extends BaseComponent {
         }
     }
 
-    //页面卸载
-    componentWillUnmount() {
-        //返回弹框的回调是否显示
-        this.props.setReturn(false);
+    //联系商家
+    goToShoper = () => {
+        const {selfSufficiency} = this.state;
+        if (hybrid) {
+            native('goToShoper', {shopNo: selfSufficiency.shop_no, id: selfSufficiency.order_id, type: '2', shopNickName: selfSufficiency.nickname, imType: '1', groud: '0'});//groud 为0 单聊，1群聊 imType 1商品2订单3空白  type 1商品 2订单
+        } else {
+            showInfo('联系商家');
+        }
     }
 
     render() {
@@ -318,7 +310,7 @@ class ReDetail extends BaseComponent {
                 </div>
 
                 <div className="business">
-                    <div className="frame"><IconFont iconText="iconIM-zhutou"/><span>联系商家</span></div>
+                    <div className="frame"><IconFont iconText="iconIM-zhutou" onClick={this.goToShoper}/><span>联系商家</span></div>
                     <div className="frame" onClick={() => this.shopPhone(selfSufficiency.shop_tel)}><IconFont iconText="iconfuzhu-dianhua-copy"/><span>商家电话</span></div>
                 </div>
 
@@ -328,7 +320,7 @@ class ReDetail extends BaseComponent {
                     </div>
                     <div className="collection-center">{selfSufficiency.shopName}</div>
                     {
-                        !collectId ? <div className="collection-right" onClick={() => this.collectDoIts('add')}>+收藏</div> : <div className="collection-right" onClick={() => this.collectDoIts('off')}>取消收藏</div>
+                        selfSufficiency.is_shoper === 0 && (!collectId ? <div className="collection-right" onClick={() => this.collectDoIts('add')}>+收藏</div> : <div className="collection-right" onClick={() => this.collectDoIts('off')}>取消收藏</div>)
                     }
                 </div>
 
@@ -380,7 +372,7 @@ class ReDetail extends BaseComponent {
                         </div>
                     )}
                     <div className="cancel-order-box">
-                        {(selfSufficiency.status === '3' || selfSufficiency.status === '4' || selfSufficiency.status === '10') && (
+                        {selfSufficiency.is_shoper === 0 && (selfSufficiency.status === '3' || selfSufficiency.status === '4' || selfSufficiency.status === '10') && (
                             <div>
                                 <div className="cancel-order" onClick={() => this.deleteOrder()}>刪除订单</div>
                                 {selfSufficiency.status === '3' && (
@@ -388,7 +380,7 @@ class ReDetail extends BaseComponent {
                                 )}
                             </div>
                         )}
-                        {(selfSufficiency.status === '1' || selfSufficiency.status === '3' || selfSufficiency.status === '4') && (
+                        {selfSufficiency.is_shoper === 0 && (selfSufficiency.status === '1' || selfSufficiency.status === '3' || selfSufficiency.status === '4') && (
                             <div>
                                 {selfSufficiency.return_name ? (
                                     <div className="cancel-order" onClick={(e) => this.skipAfterSale(e, selfSufficiency.return_id)}>{selfSufficiency.return_name}</div>

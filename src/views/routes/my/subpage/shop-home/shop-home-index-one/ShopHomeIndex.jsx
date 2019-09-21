@@ -17,6 +17,7 @@ class ShopHomeIndex extends React.PureComponent {
 
     render() {
         const {shopModelArr} = this.props;
+        console.log(shopModelArr, '乐山大佛恢复健康');
         return (
             <div data-component="ShopHomeIndex" data-role="page" className="ShopHomeIndex">
                 <div className="shopHomeContent">
@@ -29,28 +30,24 @@ class ShopHomeIndex extends React.PureComponent {
                         </div>
                         <div className="hotImgShow">
                             <div className="top">
-                                <img onClick={() => this.goToGoods(shopModelArr.content.sort1_pr1_id)} src={shopModelArr.picurl[2]} alt=""/>
+                                <img onClick={() => this.goToGoods(shopModelArr.content.sort1_pr1_id)} src={shopModelArr.picurl[shopModelArr.content.sort1_pr1_ix]} alt=""/>
                                 <div className="priceInfo">
                                     <div className="infoLeft">
                                         <p className="shopTitleSmall">{shopModelArr.content.sort1_pr1_title1}</p>
-                                        <strong className="shopPeiceSmall">{shopModelArr.content.sort1_pr1_title2}<span>{shopModelArr.content.sort1_pr1_title3}</span></strong>
                                     </div>
-                                    <div onClick={() => this.goToGoods(shopModelArr.content.sort1_pr1_id)} className="textTip fr">{shopModelArr.content.buy_name}</div>
+                                    <div className="fr">{shopModelArr.content.sort1_pr1_title2}<span>{shopModelArr.content.sort1_pr1_title3}</span></div>
                                 </div>
                             </div>
-                            <div className="middle">
-                                <div className="leftImg fl"><img onClick={() => this.goToGoods(shopModelArr.content.sort1_pr2_id)} src={shopModelArr.picurl[3]} alt=""/></div>
-                                <div className="rightText fl">
-                                    <p className="rightTextCon fl">
-                                        <div className="priceInfo">
-                                            <p className="shopTitleSmall">{shopModelArr.content.sort1_pr2_title1}</p>
-                                            <strong className="shopPeiceSmall">{shopModelArr.content.sort1_pr2_title2}<span>{shopModelArr.content.sort1_pr2_title3}</span></strong>
-                                            <div onClick={() => this.goToGoods(shopModelArr.content.sort1_pr2_id)} className="textTip fr">{shopModelArr.content.buy_name}</div>
-                                        </div>
-                                    </p>
+                            <div className="top">
+                                <img onClick={() => this.goToGoods(shopModelArr.content.sort1_pr2_id)} src={shopModelArr.picurl[shopModelArr.content.sort1_pr2_ix]} alt=""/>
+                                <div className="priceInfo">
+                                    <div className="infoLeft">
+                                        <p className="shopTitleSmall">{shopModelArr.content.sort1_pr2_title1}</p>
+                                    </div>
+                                    <div className="fr">{shopModelArr.content.sort1_pr2_title2}<span>{shopModelArr.content.sort1_pr2_title3}</span></div>
                                 </div>
                             </div>
-                            <div className="hotImgBottom">
+                            {/* <div className="hotImgBottom">
                                 <div className="bottomImg">
                                     <div className="bottomImgLeft fl">
                                         <div className="marginBot"><img onClick={() => this.goToGoods(shopModelArr.content.sort1_pr3_id)} src={shopModelArr.picurl[4]} alt=""/></div>
@@ -63,10 +60,80 @@ class ShopHomeIndex extends React.PureComponent {
                                     <strong className="shopPeiceSmall">{shopModelArr.content.sort1_pr3_title2}<span>{shopModelArr.content.sort1_pr3_title3}</span></strong>
                                     <div onClick={() => this.goToGoods(shopModelArr.content.sort1_pr3_id)} className="textTip fr">{shopModelArr.content.buy_name}</div>
                                 </div>
+                            </div> */}
+                        </div>
+                    </div>
+
+                    <div className="commodity-title-two" style={{backgroundColor: shopModelArr.content && shopModelArr.content.bg_color}}>
+                        <div className="commodity-two" onClick={() => this.goToGoods(shopModelArr.content.sort2_pr1_id)}>
+                            <img src={shopModelArr.picurl && shopModelArr.picurl[shopModelArr.content.sort2_pr1_ix]} alt=""/>
+                            <div className="two-headline">{shopModelArr.content && shopModelArr.content.sort2_pr1_title1}</div>
+                            <div className="two-price">
+                                <span>{shopModelArr.content && shopModelArr.content.sort2_pr1_title2}</span>
+                                <span className="price">{shopModelArr.content && shopModelArr.content.sort2_pr1_title3}</span>
+                            </div>
+                        </div>
+                        <div className="commodity-two" onClick={() => this.goToGoods(shopModelArr.content.sort2_pr2_id)}>
+                            <img src={shopModelArr.picurl && shopModelArr.picurl[shopModelArr.content.sort2_pr2_ix]} alt=""/>
+                            <div className="two-headline">{shopModelArr.content && shopModelArr.content.sort2_pr2_title1}</div>
+                            <div className="two-price">
+                                <span>{shopModelArr.content && shopModelArr.content.sort2_pr2_title2}</span>
+                                <span className="price">{shopModelArr.content && shopModelArr.content.sort2_pr2_title3}</span>
+                            </div>
+                        </div>
+                        <div className="commodity-two" onClick={() => this.goToGoods(shopModelArr.content.sort2_pr3_id)}>
+                            <img src={shopModelArr.picurl && shopModelArr.picurl[shopModelArr.content.sort2_pr3_ix]} alt=""/>
+                            <div className="two-headline">{shopModelArr.content && shopModelArr.content.sort2_pr3_title1}</div>
+                            <div className="two-price">
+                                <span>{shopModelArr.content && shopModelArr.content.sort2_pr3_title2}</span>
+                                <span className="price">{shopModelArr.content && shopModelArr.content.sort2_pr3_title3}</span>
+                            </div>
+                        </div>
+                        <div className="commodity-two" onClick={() => this.goToGoods(shopModelArr.content.sort2_pr8_id)}>
+                            <img src={shopModelArr.picurl && shopModelArr.picurl[shopModelArr.content.sort2_pr4_ix]} alt=""/>
+                            <div className="two-headline">{shopModelArr.content && shopModelArr.content.sort2_pr4_title1}</div>
+                            <div className="two-price">
+                                <span>{shopModelArr.content && shopModelArr.content.sort2_pr4_title2}</span>
+                                <span className="price">{shopModelArr.content && shopModelArr.content.sort2_pr4_title3}</span>
                             </div>
                         </div>
                     </div>
-                    <div className="items">
+
+                    <div className="commodity-title-two">
+                        <div className="commodity-two" onClick={() => this.goToGoods(shopModelArr.content.sort2_pr5_id)}>
+                            <img src={shopModelArr.picurl && shopModelArr.picurl[shopModelArr.content.sort2_pr5_ix]} alt=""/>
+                            <div className="two-headline">{shopModelArr.content && shopModelArr.content.sort2_pr5_title1}</div>
+                            <div className="two-price">
+                                <span>{shopModelArr.content && shopModelArr.content.sort2_pr5_title2}</span>
+                                <span className="price">{shopModelArr.content && shopModelArr.content.sort2_pr5_title3}</span>
+                            </div>
+                        </div>
+                        <div className="commodity-two" onClick={() => this.goToGoods(shopModelArr.content.sort2_pr6_id)}>
+                            <img src={shopModelArr.picurl && shopModelArr.picurl[shopModelArr.content.sort2_pr6_ix]} alt=""/>
+                            <div className="two-headline">{shopModelArr.content && shopModelArr.content.sort2_pr6_title1}</div>
+                            <div className="two-price">
+                                <span>{shopModelArr.content && shopModelArr.content.sort2_pr6_title2}</span>
+                                <span className="price">{shopModelArr.content && shopModelArr.content.sort2_pr6_title3}</span>
+                            </div>
+                        </div>
+                        <div className="commodity-two" onClick={() => this.goToGoods(shopModelArr.content.sort2_pr7_id)}>
+                            <img src={shopModelArr.picurl && shopModelArr.picurl[shopModelArr.content.sort2_pr7_ix]} alt=""/>
+                            <div className="two-headline">{shopModelArr.content && shopModelArr.content.sort2_pr7_title1}</div>
+                            <div className="two-price">
+                                <span>{shopModelArr.content && shopModelArr.content.sort2_pr7_title2}</span>
+                                <span className="price">{shopModelArr.content && shopModelArr.content.sort2_pr7_title3}</span>
+                            </div>
+                        </div>
+                        <div className="commodity-two" onClick={() => this.goToGoods(shopModelArr.content.sort2_pr8_id)}>
+                            <img src={shopModelArr.picurl && shopModelArr.picurl[shopModelArr.content.sort2_pr8_ix]} alt=""/>
+                            <div className="two-headline">{shopModelArr.content && shopModelArr.content.sort2_pr8_title1}</div>
+                            <div className="two-price">
+                                <span>{shopModelArr.content && shopModelArr.content.sort2_pr8_title2}</span>
+                                <span className="price">{shopModelArr.content && shopModelArr.content.sort2_pr8_title3}</span>
+                            </div>
+                        </div>
+                    </div>
+                    {/* <div className="items">
                         <div className="title">
                             <h2>{shopModelArr.content.sort2_title1}</h2>
                             <h3>{shopModelArr.content.sort2_title2}</h3>
@@ -100,7 +167,7 @@ class ShopHomeIndex extends React.PureComponent {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
 

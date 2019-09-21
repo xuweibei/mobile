@@ -74,19 +74,24 @@ class GoodsDetail extends BaseComponent {
         pickType: {}, //配送方式
         selectType: '', //选中配送方式 1快递 2自提
         clickType: 0, //打开sku的方式 0箭头 1购物车 2立即购买
-        totalNUm: 0 //商品库存
+        totalNUm: 0, //商品库存,
+        goodId: decodeURI(getUrlParam('id', encodeURI(this.props.location.search)))
     };
 
     componentDidMount() {
-        scrollSpy.update();
-        scrollSpy.mount(document);
-        scrollSpy.addSpyHandler(this.handleScroll, document);
-        this.getGoodsDetail();
+        this.init();
     }
 
     componentWillUnmount() {
         super.componentWillUnmount();
         scrollSpy.unmount();
+    }
+
+    init = () => {
+        scrollSpy.update();
+        scrollSpy.mount(document);
+        scrollSpy.addSpyHandler(this.handleScroll, document);
+        this.getGoodsDetail();
     }
 
     //网页滚动
@@ -98,12 +103,20 @@ class GoodsDetail extends BaseComponent {
         }
     }
 
+    componentWillReceiveProps(nextProps, value) { //路由跳转时的判断，id有变化就请求
+        if (this.state.goodId !== decodeURI(getUrlParam('id', encodeURI(nextProps.location.search)))) {
+            this.setState({
+                goodId: decodeURI(getUrlParam('id', encodeURI(nextProps.location.search)))
+            }, () => {
+                this.init();
+            });
+        }
+    }
+
     //获取商品详情
-    getGoodsDetail = (reId) => {
-        const id = decodeURI(
-            getUrlParam('id', encodeURI(this.props.location.search))
-        );
-        this.fetch(urlCfg.getGoodsDetail, {data: {id: reId || id}}).subscribe(res => {
+    getGoodsDetail = () => {
+        const {goodId} = this.state;
+        this.fetch(urlCfg.getGoodsDetail, {data: {id: goodId}}).subscribe(res => {
             if (res.status === 0) {
                 this.starShow(res.shop.shop_mark);
                 const stocks = [];
@@ -483,9 +496,9 @@ class GoodsDetail extends BaseComponent {
 
     //联系商家
     goToShoper = () => {
-        const {shop} = this.state;
+        const {shop, recommend} = this.state;
         if (hybrid) {
-            native('goToShoper', {shopNo: shop.no, groud: '0'});//groud 为0 单聊，1群聊
+            native('goToShoper', {shopNo: shop.no, id: recommend[0].id, type: '1', shopNickName: shop.nickname, imType: '1', groud: '0'});//groud 为0 单聊，1群聊 imType 1商品2订单3空白  type 1商品 2订单
         } else {
             showInfo('联系商家');
         }
@@ -508,6 +521,15 @@ class GoodsDetail extends BaseComponent {
             <Icon type="ellipsis"/>
         </Popover>
     )
+
+    //店铺详情跳转
+    goToShopRecom = (id) => {
+        this.setState({
+            goodId: id
+        }, () => {
+            this.getGoodsDetail();
+        });
+    }
 
     render() {
         const {
@@ -795,7 +817,7 @@ class GoodsDetail extends BaseComponent {
                                         <div
                                             className="home-recommend-individual"
                                             key={item.id}
-                                            onClick={() => this.getGoodsDetail(item.id)}
+                                            onClick={() => this.goToShopRecom(item.id)}
                                         >
                                             <div className="recommend-individual-imgParent">
                                                 <img

@@ -64,7 +64,8 @@ class CategoryListView extends BaseComponent {
             flag: [false, false, false],
             showStatus: [false, false, false],
             initStatus: false,
-            compareIndex: null
+            compareIndex: null,
+            id: props.id.toString()
         };
     }
 
@@ -73,9 +74,19 @@ class CategoryListView extends BaseComponent {
         this.getCategoryList();
     }
 
+    componentWillReceiveProps(data, value) {
+        if (data.id !== this.state.id) {
+            this.setState({
+                id: data.id
+            }, () => {
+                this.getCategoryList();
+            });
+        }
+    }
+
     // 初始获取获取分类列表数据
     getCategoryList = (num, noLoading) => {
-        const {currentIndex, showStatus} = this.state;
+        const {currentIndex, showStatus, id} = this.state;
         if (num) {
             this.setState({
                 initStatus: true
@@ -90,7 +101,6 @@ class CategoryListView extends BaseComponent {
         const shopId = this.props.shoppingId;
         const {page} = this.state;
         const keywords = this.props.keywords;
-        const id = this.props.id;
         this.temp.isLoading = true;
 
         //判断是否是店铺搜索
@@ -276,6 +286,7 @@ class CategoryListView extends BaseComponent {
 
     render() {
         const {dataSource, height, hasFetch, currentIndex, showStatus, initStatus, refreshing} = this.state;
+        const shopId = this.props.shoppingId;
         const row = (item) => (
             <div className="goods" key={item.id} onClick={() => this.switchTo(item.id)}>
                 <div className="goods-name">
@@ -293,16 +304,18 @@ class CategoryListView extends BaseComponent {
                             <span className="payment-right">￥{item.deposit}</span>
                         </div>
                         <div className="price">
-                            <div className="price-left">
-                                <span className="enter-left">店铺名称{item.shopName}</span>
-                                <span
-                                    className="enter-right"
-                                    onClick={(e) => this.goToShop(e, item.shop_id)}
-                                >
+                            {!shopId && (
+                                <div className="price-left">
+                                    <span className="enter-left">店铺名称{item.shopName}</span>
+                                    <span
+                                        className="enter-right"
+                                        onClick={(e) => this.goToShop(e, item.shop_id)}
+                                    >
                                     进店
-                                    <span className="icon"/>
-                                </span>
-                            </div>
+                                        <span className="icon"/>
+                                    </span>
+                                </div>
+                            ) }
                             <div className="price-right">￥{item.price}</div>
                         </div>
                     </div>

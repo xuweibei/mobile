@@ -129,7 +129,7 @@ export function multipleIntenger(num, mul) {
 
 //身份证号验证
 export function ID(num) {
-    return /^\d{15}|\d{18}$/.test(num);
+    return /^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/.test(num);
 }
 
 //银行卡号验证

@@ -103,7 +103,7 @@ class appendOrder extends BaseComponent {
             const {setOrderInfo} = this.props;
             setOrderInfo(res);
             setValue('orderInfo', JSON.stringify(res));//将订单相关数据存入locastage
-            appHistory.push('/payMoney');
+            appHistory.replace('/payMoney');
         });
     };
 

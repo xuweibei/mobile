@@ -1,7 +1,7 @@
 /*
 * 收货地址页面
 * */
-import {Icon, Button, SwipeAction} from 'antd-mobile';
+import {Button, SwipeAction} from 'antd-mobile';
 import {connect} from 'react-redux';
 import {baseActionCreator} from '../../../../../../redux/baseAction';
 import {myActionCreator} from '../../../actions/index';
