@@ -84,7 +84,12 @@ class Category extends BaseComponent {
                             {
                                 categoryData.map(item => (
                                     <div className="category-main-content" key={item.id1}>
-                                        <div className="category-banner"><img src={item.pic} alt=""/></div>
+                                        {
+                                            item.pic && (
+                                                <div className="category-banner"><img src={item.pic} alt=""/></div>
+                                            )
+                                        }
+
                                         <div className="category-list">
                                             <div className="category-title">
                                                 <p className="line"/>

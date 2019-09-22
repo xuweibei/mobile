@@ -11,6 +11,7 @@ class Sku extends React.PureComponent {
     //组件API类型
     static propTypes = {
         visible: PropTypes.bool, //sku是否显示
+        detail: PropTypes.object, //商品详情
         attributes: PropTypes.array, //商品属性
         stocks: PropTypes.array, //商品库存
         cover: PropTypes.string, //商品图
@@ -29,6 +30,7 @@ class Sku extends React.PureComponent {
     //组件API默认值
     static defaultProps = {
         visible: true,
+        detail: {},
         attributes: [],
         stocks: [],
         cover: '',
@@ -45,7 +47,7 @@ class Sku extends React.PureComponent {
         selectType: this.props.selectType, //存放被选中的配送方式
         selectedTemp: {}, // 存放被选中的属性组合
         Ids: this.props.select, //存放被选中的属性id
-        price: '0.00', // 价格
+        price: this.props.detail.price, // 价格
         originalPrice: '0.00', //原价
         deposit: '0.00', //记账量
         submitalbe: false//确认按钮是否可点击
@@ -190,7 +192,7 @@ class Sku extends React.PureComponent {
 
     // 处理sku数据
     skuHandler= () => {
-        const {stocks, attributes} = this.props;
+        const {detail, attributes} = this.props;
         const {selectedTemp, skuResult} = this.state;
         console.log('商品属性attributes:', attributes);
         // 根据已选中的selectedTemp，生成字典查询selectedIdsTemp
@@ -210,16 +212,6 @@ class Sku extends React.PureComponent {
                 item.selected = !!(selectedTemp[attribute.name] && selectedTemp[attribute.name].id === item.id);
                 if (!item.selected) {
                     let testAttrIds = [...selectedIdsTemp];
-                    // if (selectedTemp[attribute.name]) {
-                    //     selectedObjId = selectedTemp[attribute.name].id;
-                    //     console.log('selectedObjId', selectedObjId);
-                    //     for (let i = 0; i < selectedIds.length; i++) {
-                    //         selectedIds[i] !== selectedObjId
-                    //             && testAttrIds.push(selectedIds[i]);
-                    //     }
-                    // } else {
-                    //     testAttrIds = selectedIds.concat();
-                    // }
                     testAttrIds[index] = item.id;
                     testAttrIds = testAttrIds.filter(v => v);
                     console.log('testAttrIds', testAttrIds.join(';'));
@@ -231,14 +223,6 @@ class Sku extends React.PureComponent {
         const nextState = {};
         nextState.submitalbe = false;
         if (skuResult[selectedIds.join(';')]) {
-            // const originalPrices = skuResult[selectedIds.join(';')].originalPrices;
-            // const oMax = Math.max(...originalPrices);
-            // const oMin = Math.min(...originalPrices);
-            // nextState.totalOriginalPrice = oMax === oMin ? oMax : `${oMin}~${oMax}`;
-            // const prices = skuResult[selectedIds.join(';')].prices;
-            // const max = Math.max(...prices);
-            // const min = Math.min(...prices);
-            // nextState.totalPrice = max === min ? max : `${min}~${max}`;
             if (selectedIds.length === attributes.length) {
                 nextState.submitalbe = true;
                 nextState.originalPrice = skuResult[selectedIds.join(';')].originalPrice;
@@ -247,10 +231,7 @@ class Sku extends React.PureComponent {
             }
             nextState.stock = skuResult[selectedIds.join(';')].stocks;
         } else {
-            nextState.stock = stocks.reduce(
-                (stock, item) => stock + item.stock,
-                0
-            );
+            nextState.stock = detail.num_stock;
         }
         this.setState({
             Ids: selectedIds
@@ -331,7 +312,7 @@ class Sku extends React.PureComponent {
     }
 
     render() {
-        const {selectedTemp, selectType, submitalbe, price, originalPrice, deposit} = this.state;
+        const {selectedTemp, selectType, submitalbe, price, originalPrice, deposit, stock} = this.state;
         const {type, attributes, cover, visible, onClose} = this.props;
         return (
             <Modal
@@ -354,6 +335,7 @@ class Sku extends React.PureComponent {
                             <div className="count">
                                 记账量：{deposit}
                             </div>
+                            <div>{stock}</div>
                             <div className="close icon" onClick={onClose}/>
                         </div>
                     </div>
