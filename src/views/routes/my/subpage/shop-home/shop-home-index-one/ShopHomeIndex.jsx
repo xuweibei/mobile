@@ -8,7 +8,7 @@ const {appHistory} = Utils;
 
 class ShopHomeIndex extends React.PureComponent {
     static propTypes = {
-        shopModelArr: PropTypes.array.isRequired
+        shopModelArr: PropTypes.object.isRequired
     };
 
     goToGoods = (num) => {
