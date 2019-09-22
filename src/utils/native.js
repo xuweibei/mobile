@@ -51,7 +51,6 @@ const {LOCALSTORAGE} = Constants;
 
 //统一封装原生接口请求
 export const native = (str, obj, callBack) => new Promise((resolve, reject) => {
-    alert(str);
     hybrid && window.WebViewJavascriptBridge.callHandler(
         str,
         JSON.stringify(obj),
@@ -142,7 +141,6 @@ global.goBack = function () {
 
 //h5跳登录页时，清除缓存
 global.clearCache = function () {
-    alert(231);
     removeValue(LOCALSTORAGE.USER_TOKEN); // 清除token,localstorage
     store.dispatch(baseActionCreator.setUserToken('')); // 清除redux的userToken
 };

@@ -26,7 +26,7 @@ class CategoryList extends BaseComponent {
         pulldownMsg: '',
         keywords1: '',
         textStatus: false,
-        shopId: parseInt(getUrlParam('id', this.props.location.search), 10)
+        shopId: parseInt(getUrlParam('id', this.props.location.search), 10) || ''
     };
 
     componentWillMount() {

@@ -79,7 +79,7 @@ class BankCardDetail extends BaseComponent {
 
     //保存说
      successToast = () => {
-         const {form: {validateFields, getFieldValue}, getBank} = this.props;
+         const {form: {validateFields, getFieldValue}, getBankCardList} = this.props;
          validateFields({first: true, force: true}, (error, value) => {
              if (!error) {
                  const userName = getFieldValue('name');
@@ -105,7 +105,7 @@ class BankCardDetail extends BaseComponent {
                      }}).subscribe(res => {
                      if (res.status === 0) {
                          showSuccess(Feedback.Bind_Success);
-                         getBank();
+                         getBankCardList();
                          appHistory.goBack();
                      }
                  });
@@ -349,7 +349,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
     showConfirm: actionCreator.showConfirm,
     showAlert: actionCreator.showAlert,
-    getBank: myActionCreator.getBank
+    getBankCardList: myActionCreator.getBankCardList
 };
 
 const BasicInputWrapper = createForm()(BankCardDetail);

@@ -36,10 +36,9 @@ class BankCard extends BaseComponent {
     };
 
     componentDidMount() {
-        const {bankInfo, getBank} = this.props;
-        console.log(bankInfo, '看来收到货放接口');
+        const {bankInfo, getBankCardList} = this.props;
         if (!bankInfo) {
-            getBank();
+            getBankCardList();
         }
     }
 
@@ -106,6 +105,7 @@ class BankCard extends BaseComponent {
     //密码输入 支付完成 （CAM消费）
     inputGrid = (pwd) => {
         const {untId} = this.state;
+        const {getBankCardList} = this.props;
         this.fetch(urlCfg.verifyPaymentPassword, {data: {pay_pwd: pwd}})
             .subscribe(res => {
                 if (res && res.status === 0) {
@@ -117,7 +117,7 @@ class BankCard extends BaseComponent {
                         .subscribe(data => {
                             if (data && data.status === 0) {
                                 showSuccess(Feedback.Unbind_Success);
-                                this.getList();
+                                getBankCardList();
                             }
                         });
                 }
@@ -223,6 +223,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
     showConfirm: actionCreator.showConfirm,
-    getBank: myActionCreator.getBank
+    getBankCardList: myActionCreator.getBankCardList
 };
 export default connect(mapStateToProps, mapDispatchToProps)(BankCard);

@@ -23,19 +23,11 @@ class Account extends BaseComponent {
     };
 
     componentDidMount() {
-        this.getList();
+        const {accoutList, switchAccountList} = this.props;
+        if (!accoutList) {
+            switchAccountList();
+        }
     }
-
-    //获取数据
-    getList = () => {
-        this.fetch(urlCfg.getAccountInfo).subscribe(res => {
-            if (res.status === 0) {
-                this.setState({
-                    dataList: res.data.list
-                });
-            }
-        });
-    };
 
     //添加地址
     addAounted =() => {
@@ -44,7 +36,7 @@ class Account extends BaseComponent {
 
     //切换账号
     switchingAccounts = (id, password = '') => {
-        const {showConfirm} = this.props;
+        const {showConfirm, switchAccountList, removeUserInfo, removebankInfo, removeNickNameInfo, removeAressInfo, removeRegionInfo} = this.props;
         this.fetch(urlCfg.switchAccountInfo, {method: 'post', data: {id: id, password}})
             .subscribe(res => {
                 if (res.status === 0) {
@@ -71,9 +63,13 @@ class Account extends BaseComponent {
                         //切换账号需要重新设置userToken
                         setValue(res.data.LoginSessionKey);
                         this.props.setUserToken(res.data.LoginSessionKey);
-                        this.getList();
-                        //切换成功将设置页面的redux缓存清除，以便重新请求
-                        this.props.delEdit();
+                        switchAccountList();
+                        //清除当前页面redux
+                        removeUserInfo('');
+                        removebankInfo();
+                        removeNickNameInfo('');
+                        removeAressInfo();
+                        removeRegionInfo('');
                     }
                 }
             });
@@ -112,7 +108,7 @@ class Account extends BaseComponent {
 
     //删除用户弹框
     deleteList = (value, id, num) => {
-        const {showAlert} = this.props;
+        const {showAlert, switchAccountList} = this.props;
         if (num === '1') {
             showAlert({
                 title: '主账号不能删除',
@@ -128,7 +124,7 @@ class Account extends BaseComponent {
                     .subscribe(res => {
                         if (res && res.status === 0) {
                             showInfo(Feedback.Account_Delete_Success);
-                            this.getList();
+                            switchAccountList();
                         }
                     });
             }]
@@ -137,13 +133,13 @@ class Account extends BaseComponent {
 
     //默认结构
     defaultModal = () => {
-        const {dataList} = this.state;
+        const {accoutList} = this.props;
         return  (
             <div data-component="aount" data-role="aount" className="aount">
                 <AppNavBar goBackModal={this.props.goBackModal} title="账户管理"/>
                 <div className="aountIndex">
                     <List>
-                        {dataList.map(item => (
+                        {accoutList && accoutList.map(item => (
                             <SwipeAction
                                 key={item.id}
                                 right={[
@@ -204,14 +200,26 @@ class Account extends BaseComponent {
     }
 }
 
+
+const mapStateToProps = state => {
+    const EditInfo = state.get('my');
+    return {
+        accoutList: EditInfo.get('accoutList')
+    };
+};
 const mapDispatchToProps = {
-    delEdit: actionCreator.delEdit,
     setUserToken: baseActionCreator.setUserToken,
     showConfirm: baseActionCreator.showConfirm,
-    showAlert: baseActionCreator.showAlert
+    showAlert: baseActionCreator.showAlert,
+    switchAccountList: actionCreator.switchAccountList,
+    removeUserInfo: actionCreator.removeUserInfo,
+    removebankInfo: actionCreator.removebankInfo,
+    removeNickNameInfo: actionCreator.removeNickNameInfo,
+    removeAressInfo: actionCreator.removeAressInfo,
+    removeRegionInfo: actionCreator.removeRegionInfo
 };
 
 export default connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
 )(Account);
