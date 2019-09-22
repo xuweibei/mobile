@@ -68,6 +68,8 @@ class BankCardDetail extends BaseComponent {
                         res.data.forEach(item => {
                             item.label = item.name;
                             item.value = item.id;
+                            delete item.name;
+                            delete item.id;
                         });
                     }
                     this.setState({

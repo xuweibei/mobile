@@ -36,7 +36,7 @@ class Account extends BaseComponent {
 
     //切换账号
     switchingAccounts = (id, password = '') => {
-        const {showConfirm, switchAccountList, removeUserInfo, removebankInfo, removeNickNameInfo, removeAressInfo, removeRegionInfo} = this.props;
+        const {showConfirm, switchAccountList, removeUserInfo, removebankInfo, removeNickNameInfo, removeAressInfo, removeRegionInfo, removeUserIdInfo} = this.props;
         this.fetch(urlCfg.switchAccountInfo, {method: 'post', data: {id: id, password}})
             .subscribe(res => {
                 if (res.status === 0) {
@@ -65,11 +65,12 @@ class Account extends BaseComponent {
                         this.props.setUserToken(res.data.LoginSessionKey);
                         switchAccountList();
                         //清除当前页面redux
-                        removeUserInfo('');
+                        removeUserInfo();
                         removebankInfo();
-                        removeNickNameInfo('');
+                        removeNickNameInfo();
                         removeAressInfo();
-                        removeRegionInfo('');
+                        removeRegionInfo();
+                        removeUserIdInfo();
                     }
                 }
             });
@@ -216,7 +217,8 @@ const mapDispatchToProps = {
     removebankInfo: actionCreator.removebankInfo,
     removeNickNameInfo: actionCreator.removeNickNameInfo,
     removeAressInfo: actionCreator.removeAressInfo,
-    removeRegionInfo: actionCreator.removeRegionInfo
+    removeRegionInfo: actionCreator.removeRegionInfo,
+    removeUserIdInfo: actionCreator.removeUserIdInfo
 };
 
 export default connect(

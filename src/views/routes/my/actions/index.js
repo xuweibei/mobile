@@ -111,6 +111,15 @@ function _removebankInfo(data) {
         }
     };
 }
+//清除源头uid信息
+function _removeUserIdInfo(data) {
+    return {
+        type: myActionTypes.SET_UID,
+        payload: {
+            data
+        }
+    };
+}
 //清除昵称信息
 function _removeNickNameInfo(data) {
     return {
@@ -211,6 +220,7 @@ const myActionCreator = {
     removeAressInfo: _removeAressInfo,
     removeRegionInfo: _removeRegionInfo,
     removeAccoutInfo: _removeAccoutInfo,
+    removeUserIdInfo: _removeUserIdInfo,
     getNickName: _getUserNickName,
     getArea: _getArea,
     getUid: _getUid,
