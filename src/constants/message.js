@@ -158,6 +158,7 @@ export const MESSAGE = {
         No_INFO: '请先验证信息'
     },
     Feedback: {
+        DOT_TWOM: '上传图片不能超过2M',
         Waiting: '商家正在加急为您处理中',
         // Add_Shopping_Cart_Success: '添加成功，在购物车等着您',
         Empty_Success: '清空成功',

@@ -9,7 +9,7 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 
 const {urlCfg} = Configs;
 const {appHistory, getUrlParam, dealImage, showInfo, showSuccess, native} = Utils;
-const {MESSAGE: {Form, Feedback}} = Constants;
+const {MESSAGE: {Form, Feedback}, IMGSIZE} = Constants;
 //评价 好评 中评 差评
 const evaluates = [
     {value: 1, title: '好评'},
@@ -90,6 +90,13 @@ export default class MyEvaluate extends BaseComponent {
 
     //获取商品上传图片
     increase = (index, filer) => {
+        //限制图片上传大小
+        filer = filer.filter(item => {
+            if (item.file.size < IMGSIZE) {
+                return item;
+            }
+            return showInfo(Feedback.DOT_TWOM);
+        });
         const {filerAll} = this.state;
         const wxUrl = filer.map((imgB) => {
             const objTemp = {
