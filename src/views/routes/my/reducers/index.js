@@ -86,6 +86,10 @@ export default {
         [ActionTypes.SAVE_ADDRESS](state, action) {
             const {obj} = action.payload;
             return state.set('defaultAddress', obj);
+        },
+        [ActionTypes.SET_ACCOUT](state, action) {
+            const {obj} = action.payload;
+            return state.set('accoutList', obj);
         }
     })
 };

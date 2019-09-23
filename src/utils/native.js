@@ -141,7 +141,6 @@ global.goBack = function () {
 
 //h5跳登录页时，清除缓存
 global.clearCache = function () {
-    alert(231);
     removeValue(LOCALSTORAGE.USER_TOKEN); // 清除token,localstorage
     store.dispatch(baseActionCreator.setUserToken('')); // 清除redux的userToken
 };

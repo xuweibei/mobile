@@ -68,6 +68,8 @@ class BankCardDetail extends BaseComponent {
                         res.data.forEach(item => {
                             item.label = item.name;
                             item.value = item.id;
+                            delete item.name;
+                            delete item.id;
                         });
                     }
                     this.setState({
@@ -79,7 +81,7 @@ class BankCardDetail extends BaseComponent {
 
     //保存说
      successToast = () => {
-         const {form: {validateFields, getFieldValue}, getBank} = this.props;
+         const {form: {validateFields, getFieldValue}, getBankCardList} = this.props;
          validateFields({first: true, force: true}, (error, value) => {
              if (!error) {
                  const userName = getFieldValue('name');
@@ -105,7 +107,7 @@ class BankCardDetail extends BaseComponent {
                      }}).subscribe(res => {
                      if (res.status === 0) {
                          showSuccess(Feedback.Bind_Success);
-                         getBank();
+                         getBankCardList();
                          appHistory.goBack();
                      }
                  });
@@ -141,6 +143,10 @@ class BankCardDetail extends BaseComponent {
 
     //检验银行卡号
     checkBankNo = (rule, value, callback) => {
+        if (!value) {
+            validator.showMessage(Form.No_BankNumber, callback);
+            return;
+        }
         if (!validator.isEmpty(value, Form.No_BankNumber, callback)) return;
         if (!validator.bankCard(validator.wipeOut(value))) {
             validator.showMessage(Form.Error_Bank, callback);
@@ -215,7 +221,7 @@ class BankCardDetail extends BaseComponent {
      };
 
      render() {
-         const {userInfo, getOff, height} = this.state;
+         const {userInfo, getOff, height, bankArr} = this.state;
          const {getFieldDecorator} = this.props.form;
          return (
              <div data-component="bankCardDetail" data-role="page" className="bank-card-detail">
@@ -262,7 +268,7 @@ class BankCardDetail extends BaseComponent {
                              })(
                                  <Picker
                                      extra="请选择"
-                                     data={this.state.bankArr}
+                                     data={bankArr}
                                      onOk={(data) => this.onOkPicker(data)}
                                      cols={1}
                                  >
@@ -345,7 +351,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
     showConfirm: actionCreator.showConfirm,
     showAlert: actionCreator.showAlert,
-    getBank: myActionCreator.getBank
+    getBankCardList: myActionCreator.getBankCardList
 };
 
 const BasicInputWrapper = createForm()(BankCardDetail);

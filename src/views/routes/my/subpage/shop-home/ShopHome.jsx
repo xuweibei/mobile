@@ -202,9 +202,9 @@ class ShopHome extends BaseComponent {
                         <span className="btn-keep">记账量：{item.deposit}</span>
                         <div className="payment">
                             <span>{item.order_num}人付款</span>
-                            <span className="payment-r">￥{item.property.original_price}</span>
+                            <span className="payment-r">￥{item.original_price}</span>
                         </div>
-                        <div className="price">￥{item.property.price}</div>
+                        <div className="price">￥{item.price}</div>
                     </div>
                 </div>
             </div>

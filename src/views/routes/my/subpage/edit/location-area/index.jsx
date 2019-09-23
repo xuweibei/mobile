@@ -24,19 +24,10 @@ class Area extends BaseComponent {
     componentDidMount() {
         const {areaInfo, getArea} = this.props;
         if (!areaInfo) {
+            alert(13);
             getArea();
         }
     }
-
-    getList = () => {
-        this.fetch(urlCfg.settingPageData).subscribe(res => {
-            if (res && res.status === 0) {
-                this.setState({
-                    address: res.data.address
-                });
-            }
-        });
-    };
 
     //  省市县的赋值
     setProvince = str => {
@@ -97,8 +88,7 @@ class Area extends BaseComponent {
     };
 
     render() {
-        const {areaInfo} = this.props;
-        const {getFieldDecorator} = this.props.form;
+        const {areaInfo, form: {getFieldDecorator}} = this.props;
         return (
             <div data-component="regicon" data-role="page" className="regicon">
                 <AppNavBar title="所在区域管理"/>
