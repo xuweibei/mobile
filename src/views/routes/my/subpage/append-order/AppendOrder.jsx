@@ -56,6 +56,15 @@ class appendOrder extends BaseComponent {
         }
     }
 
+    componentWillReceiveProps(nextProps) {
+        console.log(nextProps, this.props, '就开始地方和你');
+    }
+
+    shouldComponentUpdate(data, value) {
+        console.log(data, value, '了水电费接口');
+        return false;
+    }
+
     componentWillUnmount() {
         const {saveAddress} = this.props;
         saveAddress('');
@@ -258,7 +267,7 @@ class appendOrder extends BaseComponent {
     }
 
     goBackModal = () => {
-        if (hybrid && appHistory.length === 0) {
+        if (hybrid && appHistory.length() === 0) {
             native('goBack');
         } else {
             appHistory.goBack();

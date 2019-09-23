@@ -340,6 +340,7 @@ class PersonalTwo extends BaseComponent {
          const {form: {getFieldDecorator}} = this.props;
          const steps = ['填写店铺信息', '填写开店人信息', '填写工商信息', '绑定银行卡'];
          const {file, file2, file3, userName, ID, date} = this.state;
+         console.log(file, file2, file3, '圣诞节开发');
          return (
              <div data-component="personal-two" data-role="page" className="personal-two">
                  <AppNavBar rightExplain title="开店人信息" goBackModal={this.props.goBack}/>
@@ -366,7 +367,7 @@ class PersonalTwo extends BaseComponent {
                                                          file && file.map(item => (
                                                              <li id={item.id}>
                                                                  <span className="delete-icon" onClick={() => this.deleteImg('forward', item.id)}>×</span>
-                                                                 <img src={item.imgS}/>
+                                                                 <img src={item.imgS || item.url}/>
                                                              </li>
                                                          ))
                                                      }
@@ -416,7 +417,7 @@ class PersonalTwo extends BaseComponent {
                                                          file2 && file2.map(item => (
                                                              <li id={item.id}>
                                                                  <span className="delete-icon" onClick={() => this.deleteImg('back', item.id)}>×</span>
-                                                                 <img src={item.imgS}/>
+                                                                 <img src={item.imgS || item.url}/>
                                                              </li>
                                                          ))
                                                      }
@@ -463,7 +464,7 @@ class PersonalTwo extends BaseComponent {
                                                          file3 && file3.map(item => (
                                                              <li id={item.id}>
                                                                  <span className="delete-icon" onClick={() => this.deleteImg('handle', item.id)}>×</span>
-                                                                 <img src={item.imgS}/>
+                                                                 <img src={item.imgS || item.url}/>
                                                              </li>
                                                          ))
                                                      }

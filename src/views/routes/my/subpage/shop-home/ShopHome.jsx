@@ -164,7 +164,6 @@ class ShopHome extends BaseComponent {
 
     //上拉刷新
     onEndReached = () => {
-        console.log(this.temp.isLoading, '四大皆空');
         const {page, pageCount} = this.state;
         if (this.temp.isLoading) return;
         if (pageCount > page) {
@@ -192,7 +191,6 @@ class ShopHome extends BaseComponent {
     //全部商品
     structure = () => {
         const {height, dataSource, refreshing, hasMore} = this.state;
-        console.log(dataSource, ';hi史蒂芬霍金开会说的');
         const row = (item) => (
             <div className="goods">
                 <div className="goods-name" onClick={() => this.allgoods(item.id)}>
