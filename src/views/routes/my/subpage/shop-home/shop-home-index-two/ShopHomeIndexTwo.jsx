@@ -169,7 +169,7 @@ class ShopHomeIndexTwo extends React.PureComponent {
                                         selectedIndex={selectedIndex}
                                         infinite
                                     >
-                                        {shopModelArr.banner.map(item  => (
+                                        {shopModelArr && shopModelArr.banner && shopModelArr.banner.map(item  => (
                                             <div
                                                 className="hotSellImgItem fl"
                                                 key={item}

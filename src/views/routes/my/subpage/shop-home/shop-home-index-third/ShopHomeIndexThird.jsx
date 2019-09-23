@@ -33,7 +33,10 @@ class ShopHomeIndexThird extends React.PureComponent {
                                 <img onClick={() => this.goToGoods(shopModelArr.content.sort1_pr1_id)} src={shopModelArr.picurl[2]} alt=""/>
                                 <div className="hotSellInfo">
                                     <h4>{shopModelArr.content.sort1_pr1_title1}</h4>
-                                    <h5>{shopModelArr.content.sort1_pr1_title2}</h5>
+                                    <h5>
+                                        {shopModelArr.content.sort1_pr1_title2}
+                                        <span>{shopModelArr.content.sort1_pr1_title3}</span>
+                                    </h5>
                                     <p>{shopModelArr.content.sort1_pr1_title3}<span>{shopModelArr.content.sort1_pr1_title4}</span></p>
                                     <span onClick={() => this.goToGoods(shopModelArr.content.sort1_pr1_id)}>{shopModelArr.content.sort1_pr1_title5}</span>
                                 </div>
