@@ -544,6 +544,7 @@ class GoodsDetail extends BaseComponent {
             picPath, goodsDetail, shop, recommend, evaluate, allState, collect,
             goodsAttr, stocks, shopAddress, lineStatus, lineText, pickType, selectType
         } = this.state;
+        console.log(picPath[0], '肯德基康师傅');
         const renderCount = (
             <List>
                 <List.Item

@@ -2,7 +2,6 @@
 * 店铺页面
 * */
 import {connect} from 'react-redux';
-import {Badge} from 'antd-mobile';
 import {baseActionCreator as actionCreator} from '../../../redux/baseAction';
 import ShowButton from '../top-show-button';
 import './ShopHome.less';
@@ -167,12 +166,11 @@ class ShopHome extends BaseComponent {
                                     {
                                         shopInfo && shopInfo.shoper_open_status === '0' && <span className="reatIng">休息中</span>
                                     }
-                                    <span className="reatIng">休息中</span>
                                     {/* <span style={{color: '#FFCC00'}}>{shopInfo.shop_mark}分</span> */}
                                 </div>
                                 <div className="home-text">
                                     <span className="text">{shopInfo && shopInfo.shopName}</span>
-                                    <span className="text-num">人均消费 ￥{setTextNum}</span>
+                                    <span className="text-num">人均消费 ￥{shopInfo && shopInfo.conper}元</span>
                                 </div>
                             </div>
                             {
