@@ -1,7 +1,7 @@
 const {systemApi} = Utils;
 const hrefCfg = {
     dev: {
-        apiPath: 'https://csapi.zzha.vip/mall',
+        apiPath: 'https://yapi.zzha.vip/mall',
         apiShopPath: 'https://csapi.zzha.vip/rui',
         scan: 'https://csapp.zzha.vip/mall.html#'
     },
