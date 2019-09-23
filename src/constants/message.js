@@ -99,6 +99,8 @@ export const MESSAGE = {
         Error_UserName: '请输入正确的卡主姓名',
         Error_ID: '请输入18位公民身份证号',
         Error_Bank: '银行卡格式不对',
+        Bank_None: '请选择开户银行',
+        Bank_Card_Num: '请输入银行卡号',
         Error_ShopName: '店铺名称必须是2-10位中文',
         Error_Phone: '请输入11位电话号码',
         Error_Captcha: '验证码错误',

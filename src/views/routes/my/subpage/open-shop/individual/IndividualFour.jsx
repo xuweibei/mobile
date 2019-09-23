@@ -35,16 +35,17 @@ class IndividualFour extends BaseComponent {
         bankCard: '', // 银行卡号,
         cardType: 1, //卡类型
         phone: '', //  手机号
-        vcCode: '', //验证码
+        // vcCode: '', //验证码
         countyId: '', //区id
-        type: 2, //1：个人户；2：个体工商户
+        // type: 2, //1：个人户；2：个体工商户
         cardStatus: '银行卡号'
+        // id: ''
     };
 
     //提交绑定银行卡信息
     postInformation = () => {
         const {form: {validateFields}} = this.props;
-        const {bankName, bankId, id, cardType, branchBankName, vcCode, type} = this.state;
+        const {bankName, bankId, id, cardType, branchBankName, province, county, urban} = this.state;
         validateFields({first: true, force: true}, (error, val) => {
             if (!error) {
                 this.fetch(urlCfg.bindBankCard, {
@@ -56,9 +57,11 @@ class IndividualFour extends BaseComponent {
                         bank_number: val.bankCard,
                         branches: branchBankName,
                         phone: validator.wipeOut(val.phone),
-                        vcode: vcCode,
-                        cardType: cardType,
-                        type: type
+                        pcat: [province, urban, county],
+                        // vcode: vcCode,
+                        userType: 2,
+                        cardType: cardType
+                        // type: type
                     }}).subscribe(res => {
                     if (res && res.status === 0) {
                         this.fetch(urlCfg.shopFinish).subscribe(res2 => {
@@ -81,14 +84,21 @@ class IndividualFour extends BaseComponent {
     //获取审核失败返回的数据
     getUpdateAudit = () => {
         this.fetch(urlCfg.getShopbank, {data: {type: 4}}).subscribe(res => {
-            if (res.status === 0 && res.data.length !== 0) {
+            if (res && res.status === 0) {
                 this.setState({
                     userName: res.data.realname,
                     bankCard: res.data.bankNo,
                     cValue: Array(res.data.bankId),
                     bankId: res.data.bankId,
                     phone: res.data.phone,
-                    bankName: res.data.bankName
+                    bankName: res.data.bankArea,
+                    id: res.data.id,
+                    province: res.data.city_name && res.data.city_name[0],
+                    urban: res.data.city_name && res.data.city_name[1],
+                    county: res.data.city_name && res.data.city_name[2],
+                    provinceId: res.data.province_id,
+                    cityId: res.data.city_id,
+                    countyId: res.data.county_id
                 });
             }
         });
@@ -138,6 +148,7 @@ class IndividualFour extends BaseComponent {
     //获取支行
     getBankBranch = () => {
         const {bankName, countyId} = this.state;
+        console.log(bankName, countyId);
         if (bankName && countyId) {
             this.fetch(urlCfg.getBankList, {data: {
                 cityId: countyId,
@@ -175,6 +186,7 @@ class IndividualFour extends BaseComponent {
     // 获取选中的支行
     setBankBranch = (val) => {
         const {branchBank} = this.state;
+        console.log(val);
         if (branchBank.length !== 0) {
             const result = branchBank.find(item => item.value === val.toString());
             this.setState(() => ({
@@ -274,7 +286,7 @@ class IndividualFour extends BaseComponent {
     editModalMain = () => {
         const {form: {getFieldDecorator}} = this.props;
         const steps = ['填写店铺信息', '填写开店人信息', '填写工商信息', '绑定银行卡'];
-        const {banks, cValue, branchBank, bValue, userName, bankCard, phone, branchBankName} = this.state;
+        const {banks, cValue, branchBank, userName, bankCard, phone, branchBankName, provinceId, cityId, countyId, province, urban, county} = this.state;
         return (
             <div>
                 <AppNavBar goBackModal={this.props.goBack} rightExplain title="绑定银行卡"/>
@@ -342,6 +354,12 @@ class IndividualFour extends BaseComponent {
                             <List.Item className="branches area" arrow="horizontal">
                                 <span>开户地区</span>
                                 <Region
+                                    provinceId={provinceId}
+                                    cityId={cityId}
+                                    countyId={countyId}
+                                    provinceValue={province}
+                                    cityValue={urban}
+                                    countyValue={county}
                                     onSetProvince={this.setProvince}
                                     onSetCity={this.setCity}
                                     onSetCounty={this.setCounty}
@@ -365,7 +383,7 @@ class IndividualFour extends BaseComponent {
                                         <List.Item
                                             arrow="horizontal"
                                             onClick={this.getBankBranch}
-                                        >{bValue || '开户支行'}
+                                        >开户支行
                                         </List.Item>
                                     </Picker>
                                 )
@@ -408,6 +426,7 @@ class IndividualFour extends BaseComponent {
                                     <InputItem
                                         clear
                                         placeholder="请输入手机号码"
+                                        maxLength={11}
                                     >银行预留手机号
                                     </InputItem>
                                 )
