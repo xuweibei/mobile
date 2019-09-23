@@ -104,7 +104,7 @@ class Personal extends BaseComponent {
                     openTime: res.data.open_time,
                     closeTime: res.data.close_time,
                     discount: parseInt(res.data.discount, 10),
-                    shopStatus: Number(res.data.typepr_path),
+                    shopStatus: Number(res.data.cer_type) + 1,
                     cshPhone: res.data.csh_phone,
                     linkName: res.data.linkName,
                     phone: res.data.phone
@@ -114,6 +114,7 @@ class Personal extends BaseComponent {
     };
 
     onChecked = (value) => {
+        console.log(value);
         this.setState({
             shopStatus: value
         }, () => {
