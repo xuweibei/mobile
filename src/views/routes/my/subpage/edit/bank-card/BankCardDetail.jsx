@@ -23,7 +23,7 @@ const getPass = {
 };
 class BankCardDetail extends BaseComponent {
     state = {
-        height: document.documentElement.clientHeight - (window.isWX ? window.rem * null : window.rem * 1.08),
+        height: document.documentElement.clientHeight - (window.isWX ? window.rem * null : window.rem * 1.08), //是微信扣除头部高度
         countdown: Constants.COUNTERNUM,
         bankArr: [], //銀行卡内容
         userInfo: {}, //用戶信息
