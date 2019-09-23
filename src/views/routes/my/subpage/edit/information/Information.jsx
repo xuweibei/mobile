@@ -9,6 +9,7 @@ const {urlCfg} = Configs;
 
 export default class Information extends BaseComponent {
     state = {
+        height: document.documentElement.clientHeight - (window.isWX ? window.rem * null : window.rem * 1.08), //是微信扣除头部高度
         data: {
             message: 0, //初始信息状态
             customer: 0//初始信息状态
@@ -69,10 +70,12 @@ export default class Information extends BaseComponent {
     }
 
     render() {
+        const {height} = this.state;
+        console.log(height);
         return (
             <div data-component="information" data-role="page" className="information">
                 <AppNavBar title="消息通知"/>
-                <div className={`tidings-box ${window.isWX ? 'tidings-box-clear' : ''}`}>
+                <div style={{height: height}} className="tidings-box">
                     <List>
                         <List.Item
                             extra={(

@@ -175,14 +175,18 @@ class PayMoney extends BaseComponent {
                 if (res.status === 0) {
                     if (selectIndex === 1) { //微信
                         native('payWX', {qrCode: res.data.appPayRequest.qrCode, order_no: listArr.order[0], type: this.paymentPlatform(), payType: 2}).then((data) => {
+                            native('goH5', {'': ''});
                             appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&types=${selectIndex}&deposit=${listArr.all_deposit}&if_express=${res.if_express}&batch=1`);
                         }).catch(data => {
+                            native('goH5', {'': ''});
                             showFail(data.message);
                         });
                     } else {
                         native('payAliPay', {qrCode: res.data.appPayRequest.qrCode, order_no: listArr.order[0], type: this.paymentPlatform(), payType: 1}).then((data) => {
+                            native('goH5', {'': ''});
                             appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&types=${selectIndex}&deposit=${listArr.all_deposit}&if_express=${res.if_express}&batch=1`);
                         }).catch(data => {
+                            native('goH5', {'': ''});
                             showFail(data.message);
                         });
                     }
@@ -210,8 +214,10 @@ class PayMoney extends BaseComponent {
                             sign: res.data.arr.sign
                         };
                         native('wxPayCallback', obj).then((data) => {
+                            native('goH5', {'': ''});
                             appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&id=${listArr.order_id}&types=${selectIndex}&deposit=${listArr.deposit}&if_express=${res.data.if_express}`);
                         }).catch(data => {
+                            native('goH5', {'': ''});
                             showFail(data.message);
                         });
                     } else {
@@ -229,10 +235,14 @@ class PayMoney extends BaseComponent {
                 if (res.status === 0) {
                     if (hybird) {
                         native('authInfo', res.data.response).then((data) => {
+                            native('goH5', {'': ''});
                             setValue('orderId', listArr.order_id);
                             if (data.status === '0') {
                                 appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&id=${listArr.order_id}&types=${selectIndex}&deposit=${listArr.deposit}&if_express=${res.data.if_express}`);
                             }
+                        }).catch(data => {
+                            native('goH5', {'': ''});
+                            showFail(data.message);
                         });
                     } else {
                         // window.location.href = res.data.mweb_url;

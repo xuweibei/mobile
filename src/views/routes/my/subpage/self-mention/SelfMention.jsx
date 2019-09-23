@@ -68,7 +68,7 @@ class ReDetail extends BaseComponent {
 
     //进入订单页面，判断为什么状态
     statusChoose = (str) => {
-        let numStr = -1;
+        let numStr = 0;
         switch (str) {
         case 'ww':
             numStr = 1;

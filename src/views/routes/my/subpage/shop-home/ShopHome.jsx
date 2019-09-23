@@ -3,7 +3,7 @@
  */
 import {ListView, PullToRefresh} from 'antd-mobile';
 import {connect} from 'react-redux';
-import ShopHomes from '../../../../common/shop-home/ShopHome';
+import ShopHomes from '../../../../common/shop-home-nav/ShopHome';
 import {baseActionCreator as actionCreator} from '../../../../../redux/baseAction';
 import {ShopFooter} from '../../../../common/shop-footer/ShopFooter';
 import ShopHomeOne from './shop-home-index-one/ShopHomeIndex';
@@ -58,13 +58,31 @@ class ShopHome extends BaseComponent {
     }
 
     componentDidMount() {
-        this.getShop();
-        this.getShopModel();
+        const {shopInfos, shoppingId, shopModal} = this.props;
+        const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
+        console.log(shopInfos, shoppingId, shopModal, id, '进口量水电费');
+        if (!shoppingId || shoppingId !== id) {
+            this.getShop();
+            this.getShopModel();
+        } else {
+            this.temp.stackData = shopInfos.data.data;
+            this.setState((prevState) => ({
+                dataSource: prevState.dataSource.cloneWithRows(this.temp.stackData),
+                pageCount: shopInfos.data.page_count,
+                page: shopInfos.data.page,
+                shopOnsInfo: shopInfos.data.shop_info,
+                currentState: shopModal.currentState,
+                modelShow: shopModal.modelShow,
+                shopModelArr: shopModal.shopModelArr
+            }));
+        }
+        console.log(shopInfos, shoppingId, '克里斯多夫');
     }
 
     //获取模板信息
     getShopModel = () => {
         const {currentState} = this.state;
+        const {setShoppModal} = this.props;
         const shoppingId = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
         this.fetch(urlCfg.shopModel, {method: 'post', data: {shop_id: shoppingId}})
             .subscribe(res => {
@@ -75,11 +93,25 @@ class ShopHome extends BaseComponent {
                             currentState: currentState || 'homePage',
                             shopModelArr: res.data,
                             modelShow: true
+                        }, () => {
+                            const obj = {
+                                currentState: this.state.currentState,
+                                shopModelArr: this.state.shopModelArr,
+                                modelShow: this.state.modelShow
+                            };
+                            setShoppModal(obj);
                         });
                     } else {
                         this.setState({
                             currentState: currentState || 'modal',
                             shopModelArr: res.data
+                        }, () => {
+                            const obj = {
+                                currentState: this.state.currentState,
+                                shopModelArr: this.state.shopModelArr,
+                                modelShow: this.state.modelShow
+                            };
+                            setShoppModal(obj);
                         });
                     }
                 }
@@ -88,13 +120,14 @@ class ShopHome extends BaseComponent {
 
     //获取商店内的所有商品
     getShop = (noShowLoading = false) => {
+        const {setShoppInfos, setshoppingId, shopInfos} = this.props;
         const {page} = this.state;
         this.temp.isLoading = true;
         this.setState({
             hasMore: true
         });
         const shoppingId = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
-        this.props.setshoppingId(shoppingId);
+        setshoppingId(shoppingId);
         this.fetch(urlCfg.allGoodsInTheShop, {
             method: 'post',
             data: {
@@ -104,14 +137,19 @@ class ShopHome extends BaseComponent {
             }}, noShowLoading)
             .subscribe(res => {
                 this.temp.isLoading = false;
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     this.setState({
                         refreshing: false
                     });
+                    res.data.page = page;
                     if (page === 1) {
                         this.temp.stackData = res.data.data;
+                        setShoppInfos(res);
                     } else {
+                        console.log(res, '考虑到哈萨克龙卷风');
                         this.temp.stackData = this.temp.stackData.concat(res.data.data);
+                        // res.data.data = this.temp.stackData.concat(res.data.data);
+                        setShoppInfos(res);
                     }
                     if (page >= res.data.page_count) {
                         this.setState({
@@ -162,6 +200,8 @@ class ShopHome extends BaseComponent {
 
     //上拉刷新
     onEndReached = () => {
+        alert(123);
+        console.log(this.temp.isLoading, '四大皆空');
         const {page, pageCount} = this.state;
         if (this.temp.isLoading) return;
         if (pageCount > page) {
@@ -189,6 +229,7 @@ class ShopHome extends BaseComponent {
     //全部商品
     structure = () => {
         const {height, dataSource, refreshing, hasMore} = this.state;
+        console.log(dataSource, ';hi史蒂芬霍金开会说的');
         const row = (item) => (
             <div className="goods">
                 <div className="goods-name" onClick={() => this.allgoods(item.id)}>
@@ -274,6 +315,8 @@ class ShopHome extends BaseComponent {
 
     render() {
         const {currentState, modelShow, shopModelArr, lat, lon} = this.state;
+        console.log(this.props.shopInfos, '看来圣诞节快乐');
+        console.log(modelShow, '进口量电饭锅');
         const shoppingId = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
         let blockModel = <div/>;
         switch (currentState) {
@@ -304,12 +347,16 @@ class ShopHome extends BaseComponent {
 const mapStateToProps = state => {
     const base = state.get('base');
     return {
-        shoppingId: base.get('shoppingId')
+        shoppingId: base.get('shoppingId'),
+        shopInfos: base.get('shopInfos'),
+        shopModal: base.get('shopModal')
     };
 };
 
 const mapDispatchToProps = {
-    setshoppingId: actionCreator.setshoppingId
+    setshoppingId: actionCreator.setshoppingId,
+    setShoppInfos: actionCreator.setShoppInfos,
+    setShoppModal: actionCreator.setShoppModal
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ShopHome);

@@ -215,8 +215,11 @@ class ReDetail extends BaseComponent {
         } else {
             appHistory.goBack();
         }
-        //清除缓存
-        removeValue('orderArr');
+        const arr = JSON.parse(getValue('orderArr'));
+        if (arr) {
+            //清除缓存
+            removeValue('orderArr');
+        }
     }
 
     render() {
@@ -231,7 +234,7 @@ class ReDetail extends BaseComponent {
                         <div className="address-center">{address || '暂无'}</div>
                     </div>
                     <div className="appointment">
-                        {arr[0].if_express === '3' ? (
+                        {arr && arr[0].if_express === '3' ? (
                             <div className="time-number">
                                 <div className="time-top">有效时间</div>
                                 {OrderSelf.effective && (
@@ -330,7 +333,7 @@ class ReDetail extends BaseComponent {
                     </div>
                     <div className="altogether-right" onClick={this.submitSelf}>立即付款</div>
                 </div>
-                {arr[0].if_express !== '3' && (
+                {arr && arr[0].if_express !== '3' && (
                     <Modal
                         popup
                         visible={modal}
