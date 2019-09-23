@@ -179,28 +179,35 @@ class appendOrder extends BaseComponent {
                     const cardArr = [];
                     const infoArry = [];
                     const invoice = [];
-                    for (let i = 0; i < res.data.length; i++) {
-                        array.push([]);
-                        cardArr.push([]);
-                        infoArry.push([]);
-                        invoice.push([]);
+                    if (res.data) {
+                        for (let i = 0; i < res.data.length; i++) {
+                            array.push([]);
+                            cardArr.push([]);
+                            infoArry.push([]);
+                            invoice.push([]);
+                        }
                     }
                     this.setState({
                         total: res.all_price,
                         shopInfo: res.data,
                         addressInfo: res.addr,
                         files: array,
-                        goods: res.data.map(shop => shop.data.map(goods => goods)),
+                        goods: res.data ? res.data.map(shop => shop.data.map(goods => goods)) : [],
                         IDcard: cardArr,
                         order: infoArry,
                         invoice
                     }, () => {
                         console.log(this.state.shopInfo);
                         const {goods} = this.state;
-                        const status = goods[0] && goods[0].map(item => item.in_area);
-                        if (status && status.includes(0)) {
-                            this.setState({
-                                notAllow: false
+                        if (goods && goods.length > 0) {
+                            goods.forEach(item => {
+                                if (item && item.length > 0) {
+                                    if (item.some((value) => value.in_area === 0)) {
+                                        this.setState({
+                                            notAllow: false//判断收货地址是否符合邮寄范围
+                                        });
+                                    }
+                                }
                             });
                         }
                     });
@@ -357,7 +364,7 @@ class appendOrder extends BaseComponent {
                             )
                         }
                         {
-                            shopInfo.map((shop, index) => (
+                            shopInfo && shopInfo.map((shop, index) => (
                                 <div className="shopCart-goods" key={shop.shop_id}>
                                     <div className="goods-top">
                                         <div className="shop-avatar">
@@ -374,7 +381,7 @@ class appendOrder extends BaseComponent {
                                         </div>
                                     </div>
                                     {
-                                        shop.data.map((goods) => (
+                                        shop && shop.data.map((goods) => (
                                             <React.Fragment>
                                                 <div key={goods.id}>
                                                     <div className="distance-box">

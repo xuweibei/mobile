@@ -45,12 +45,6 @@ const {createReducer} = Utils,
     shoppingId = {
         shoppingId: '' //进入店铺储存商店id
     },
-    shopInfos = {
-        shopInfos: '' //进入店铺储存商店数据
-    },
-    shopModal = {
-        shopModal: '' //进入店铺储存商店模板
-    },
     orderStatus = {
         orderStatus: '' //我的订单的tab状态 默认全部
     },
@@ -72,9 +66,7 @@ const baseState = Immutable.fromJS({
     ...tabValue,
     ...shoppingId,
     ...orderStatus,
-    ...returnStatus,
-    ...shopInfos,
-    ...shopModal
+    ...returnStatus
 });
 
 export function resetLoadingNum() {
@@ -172,12 +164,6 @@ export default {
         },
         [ActionTypes.SET_SHOPPINGID](state, action) {
             return state.set('shoppingId', action.playload.id);
-        },
-        [ActionTypes.SET_SHOPINFOS](state, action) {
-            return state.set('shopInfos', action.playload.data);
-        },
-        [ActionTypes.SET_SHOPMODAL](state, action) {
-            return state.set('shopModal', action.playload.data);
         },
         [ActionTypes.SET_ORDERSTATUS](state, action) {
             return state.set('orderStatus', action.playload.id);
