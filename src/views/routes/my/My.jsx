@@ -364,7 +364,6 @@ class My extends BaseComponent {
             });
             return item;
         }) : myOrderIconData;//线上订单相关信息
-        console.log(myInfo, '进口量水电费好几款');
         return (
             <div data-component="my" data-role="page" className="my">
                 <div className="aroundBlank">
@@ -379,6 +378,7 @@ class My extends BaseComponent {
                                 <div className="info-basic-portrait">
                                     <div className="basic-basic-img-parent">
                                         <img
+                                            onClick={this.routeTo}
                                             src={myInfo && (userInfo.avatarUrl || require('../../../assets/images/avatar.png'))}
                                             className="basic-basic-img"
                                             alt=""
@@ -390,7 +390,7 @@ class My extends BaseComponent {
                                     <Badge
                                         text={myInfo && (userInfo.typeName)}
                                     />
-                                    <p className="basic-data-UID">UID:{myInfo && (userInfo.no)}</p>
+                                    <p className="basic-data-UID" onClick={this.routeTo}>UID:{myInfo && (userInfo.no)}</p>
                                     {   //用户身份为消费商的时候展示
                                         myInfo && myInfo.info.iden_type === '2' && <div className="icon conmuterId" onClick={this.changeYourself}>我是消费者</div>
                                     }
