@@ -33,7 +33,8 @@ class appendOrder extends BaseComponent {
         textInfo: '企业',
         invoiceStatus: false,  //发票弹框显示状态
         notAllow: true, //不支持提交状态
-        invoice: {}
+        invoice: {},
+        invoiceIndex: ''
     };
 
     componentDidMount() {
@@ -67,7 +68,7 @@ class appendOrder extends BaseComponent {
 
     //立即付款
     postOrder = () => {
-        const {addressInfo, shopInfo, order} = this.state;
+        const {addressInfo, shopInfo, order, invoice} = this.state;
         const {address} = this.props;
         const source = decodeURI(getUrlParam('source', encodeURI(this.props.location.search)));
         if (addressInfo.length === 0) {
@@ -86,7 +87,7 @@ class appendOrder extends BaseComponent {
             });
         }
         const shopArr = shopInfo.map((item, index) => {
-            const objTemp = {shop_id: item.shop_id, remarks: order[index].toString()};
+            const objTemp = {shop_id: item.shop_id, remarks: order[index].toString(), invoice: invoice[index]};
             const prArr = [];
             if (item.data.length > 0) {
                 item.data.forEach(value => {
@@ -147,14 +148,14 @@ class appendOrder extends BaseComponent {
     };
 
     //图片接收
-    onChange = (file, type, index) => {
-        const {files} = this.state;
-        const array = files.concat([]);
-        array[index] = file;
-        this.setState({
-            files: array
-        });
-    };
+    // onChange = (file, type, index) => {
+    //     const {files} = this.state;
+    //     const array = files.concat([]);
+    //     array[index] = file;
+    //     this.setState({
+    //         files: array
+    //     });
+    // };
 
     //获取订单页面数据
     getOrderState = () => {
@@ -213,16 +214,19 @@ class appendOrder extends BaseComponent {
     };
 
     //发票弹框显示状态
-    showPanel = () => {
+    showPanel = (index) => {
         this.setState({
-            invoiceStatus: true
+            invoiceStatus: true,
+            invoiceIndex: index
         });
+        // console.log(index);
     }
 
     //关闭发票弹框
     hidePanel = () => {
         this.setState({
-            invoiceStatus: false
+            invoiceStatus: false,
+            currentIndex: 0
         });
     }
 
@@ -294,7 +298,26 @@ class appendOrder extends BaseComponent {
 
     //保存发票
     saveInvoice = () => {
-
+        const {invoiceIndex, invoice, currentIndex, invoiceName, invoiceNum, invoiceBank, invoiceAddress, bankAddress, invoicePhone} = this.state;
+        const array = invoice.concat([]);
+        array[invoiceIndex] = {
+            invoice_type: 1,
+            head_type: currentIndex + 1,
+            body_name: invoiceName,
+            enterprise_name: invoiceName,
+            tax_id: invoiceNum,
+            bank: invoiceBank,
+            enterprise_addr: invoiceAddress,
+            bank_addr: bankAddress,
+            enterprise_phone: invoicePhone
+        };
+        this.setState({
+            invoice: array,
+            currentIndex: 0,
+            invoiceStatus: false
+        }, () => {
+            console.log(this.state.invoice);
+        });
     }
 
     render() {
@@ -423,7 +446,7 @@ class appendOrder extends BaseComponent {
                                         >订单备注
                                         </InputItem>
                                         {
-                                            shop.data.map(goods => goods.if_invoice.includes('1')) && (<List.Item onClick={this.showPanel} className="invoice">发票抬头</List.Item>)
+                                            shop.data.map(goods => goods.if_invoice.includes('1')) && (<List.Item onClick={() => { this.showPanel(index) }} className="invoice">发票抬头</List.Item>)
                                         }
                                         {/* <InputItem
                                             // value={card[index]}
