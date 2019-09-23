@@ -50,7 +50,7 @@ export default class Recommender extends BaseComponent {
         this.fetch(urlCfg.setparent, {data: {
             no: Number(UID),
             phone: myPhone,
-            type: 1
+            type: 0
         }}).subscribe(res => {
             if (res) {
                 if (res.status === 0) {
