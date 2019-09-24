@@ -117,10 +117,10 @@ class MyAssets extends BaseComponent {
                     </div>
                 </div>
                 <List>
-                    <Item extra={this.state.Detailed.capital || 0} onClick={() => appHistory.push('/projected-revenue')}>记账余额</Item>
-                    <Item extra={this.state.Detailed.exp_point || 0} onClick={() => appHistory.push('/cam-balance')}>CAM余额</Item>
-                    <Item extra="" onClick={() => appHistory.push('/preparatory-income')}>预备收益</Item>
-                    <Item extra="" onClick={() => appHistory.push('/withdrawal')}>CAM提现</Item>
+                    <Item extra={this.state.Detailed.capital || 0} onClick={() => appHistory.push('/projected-revenue')}>记账余额<span className="icon arrows-icon"/></Item>
+                    <Item extra={this.state.Detailed.exp_point || 0} onClick={() => appHistory.push('/cam-balance')}>CAM余额<span className="icon arrows-icon"/></Item>
+                    <Item extra="" onClick={() => appHistory.push('/preparatory-income')}>预备收益<span className="icon arrows-icon"/></Item>
+                    <Item extra="" onClick={() => appHistory.push('/withdrawal')}>CAM提现<span className="icon arrows-icon"/></Item>
                 </List>
             </div>
             <div className="cash-bg"/>

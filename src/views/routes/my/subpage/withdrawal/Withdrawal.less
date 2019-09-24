@@ -2,6 +2,9 @@
 
 .Withdrawal {
     height: 100vh;
+    .navbar {
+        background: transparent!important;
+    }
     .cash-bg {
         position: absolute;
         width: 100%;
@@ -9,11 +12,14 @@
         background: linear-gradient(180deg, @garnet-red 0%, @fiery-red 100%);
         top: 0;
     }
+    .cash-bg-WX {
+        height: 60px;
+    }
 }
 .Withdrawal .navbar{
-    background: rgba(0, 0, 0, 0);
+    //background: rgba(0, 0, 0, 0);
     .icon-left:before, .blackNav-title {
-        color: @white;
+        color: @white!important;
     }
 }
 .extract {
@@ -53,10 +59,10 @@
     }
 
     .cash-content-tabs {
-        position: absolute;
-        width: 100%;
-        top: 100px;
-        bottom: 0;
+        //position: absolute;
+        //width: 100%;
+        //top: 100px;
+        //bottom: 0;
         //padding-top: 100px;
         .am-tabs {
             height: auto;
@@ -227,7 +233,11 @@
         }
 
     }
-
+    .weChat-button {
+        .important {
+            box-shadow: 0 0 0 0;
+        }
+    }
     .weChat-record {
         //position: absolute;
         //top: 600px;
