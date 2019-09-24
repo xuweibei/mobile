@@ -7,7 +7,7 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 
 const {MESSAGE: {Form}} = Constants;
 const {urlCfg} = Configs;
-const {dealImage, showInfo, validator} = Utils;
+const {dealImage, showInfo, validator, native} = Utils;
 const seasons = [
     {
         label: '租赁协议',
@@ -30,6 +30,7 @@ const seasons = [
         value: '12'
     }
 ];
+const hybrid = process.env.NATIVE;
 
 class PersonalThree extends BaseComponent {
     state = {
@@ -245,6 +246,109 @@ class PersonalThree extends BaseComponent {
         }
     };
 
+    //原生点击添加图片
+    addPictrue = (type) => {
+        const arrInfo = [];
+        if (hybrid) {
+            if (type === 'prove') {
+                const {sValue} = this.state;
+                if (sValue.length === 0) {
+                    showInfo(Form.No_Prove_type);
+                    return;
+                }
+                native('picCallback', {num: 1}).then(res => {
+                    res.data.img.forEach(item => {
+                        arrInfo.push({imgB: item[0], imgS: item[1], id: new Date()});
+                    });
+                    this.setState((proveState) => ({
+                        file: proveState.file.concat(arrInfo)
+                    }));
+                    this.pasGass(arrInfo, Number(sValue[0]), 0);
+                });
+            } else if (type === 'shop') {
+                native('picCallback', {num: 1}).then(res => {
+                    res.data.img.forEach(item => {
+                        arrInfo.push({imgB: item[0], imgS: item[1], id: new Date()});
+                    });
+                    this.setState((proveState) => ({
+                        file2: proveState.file2.concat(arrInfo)
+                    }));
+                    this.pasGass(arrInfo, 3, 1);
+                });
+            } else if (type === 'environment') {
+                native('picCallback', {num: 1}).then(res => {
+                    res.data.img.forEach(item => {
+                        arrInfo.push({imgB: item[0], imgS: item[1], id: new Date()});
+                    });
+                    this.setState((proveState) => ({
+                        file3: proveState.file3.concat(arrInfo)
+                    }));
+                    this.pasGass(arrInfo, 5, 2);
+                });
+            } else {
+                native('picCallback', {num: 1}).then(res => {
+                    res.data.img.forEach(item => {
+                        arrInfo.push({imgB: item[0], imgS: item[1], id: new Date()});
+                    });
+                    this.setState((proveState) => ({
+                        file4: proveState.file4.concat(arrInfo)
+                    }));
+                    this.pasGass(arrInfo, 7, 3);
+                });
+            }
+        }
+    };
+
+    //原生点击删除图片
+    deleteImg = (type, id) => {
+        if (type === 'prove') {
+            this.setState({
+                file: []
+            });
+        } else if (type === 'shop') {
+            this.setState({
+                file2: []
+            });
+        } else if (type === 'environment') {
+            this.setState({
+                file3: []
+            });
+        } else {
+            this.setState({
+                file4: []
+            });
+        }
+    };
+
+    //原生图片上传的时候的请求
+    pasGass = (arrInfo, ix, index) => {
+        const {flagArr} = this.state;
+        const arr = flagArr;
+        this.fetch(urlCfg.postIDcard, {data: {
+            ix,
+            file: encodeURIComponent(arrInfo[0].imgB),
+            filex: encodeURIComponent(arrInfo[0].imgS)
+        }}).subscribe(res => {
+            if (res && res.status === 0) {
+                arr[index] = true;
+                if (res.data.name && res.data.id_num) {
+                    this.setState({
+                        flagArr: arr,
+                        userName: res.data.name,
+                        ID: res.data.id_num
+                    });
+                }
+                if (res.data.exp) {
+                    this.setState({
+                        flagArr: arr,
+                        date: res.data.exp
+                    });
+                }
+                showInfo('上传成功');
+            }
+        });
+    }
+
     render() {
         const {form: {getFieldDecorator}} = this.props;
         const steps = ['填写店铺信息', '填写开店人信息', '填写工商信息', '绑定银行卡'];
@@ -281,7 +385,27 @@ class PersonalThree extends BaseComponent {
                             <div>
                                 <WingBlank>
                                     {
-                                        getFieldDecorator('prove', {
+                                        !hybrid ? (
+                                            <div className="picture-area">
+                                                <ul>
+                                                    {
+                                                        file1 && file1.map(item => (
+                                                            <li id={item.id}>
+                                                                <span className="delete-icon" onClick={() => this.deleteImg('prove', item.id)}>×</span>
+                                                                <img src={item.imgS || item.url}/>
+                                                            </li>
+                                                        ))
+                                                    }
+                                                    {
+                                                        file1.length === 0 && (
+                                                            <li className="imgAdd-button" onClick={() => this.addPictrue('prove')}>
+                                                                <span className="imgAdd-icon">+</span>
+                                                            </li>
+                                                        )
+                                                    }
+                                                </ul>
+                                            </div>
+                                        ) : getFieldDecorator('prove', {
                                             rules: [
                                                 {validator: this.checkProve}
                                             ],
@@ -310,22 +434,44 @@ class PersonalThree extends BaseComponent {
                             <div>
                                 <WingBlank>
                                     {
-                                        getFieldDecorator('shop', {
-                                            rules: [
-                                                {validator: this.checkShop}
-                                            ],
-                                            validateTrigger: 'submit'//校验值的时机
-                                        })(
-                                            <ImagePicker
-                                                files={file2}
-                                                onChange={(files) => {
-                                                    this.onChange(files, 'shop');
-                                                }}
-                                                onImageClick={(index, fs) => console.log(index, fs)}
-                                                selectable={file2.length < 1}
-                                                length={1}
-                                            />
-                                        )
+                                        !hybrid
+                                            ? (
+                                                <div className="picture-area">
+                                                    <ul>
+                                                        {
+                                                            file2 && file2.map(item => (
+                                                                <li id={item.id}>
+                                                                    <span className="delete-icon" onClick={() => this.deleteImg('shop', item.id)}>×</span>
+                                                                    <img src={item.imgS || item.url}/>
+                                                                </li>
+                                                            ))
+                                                        }
+                                                        {
+                                                            file2.length === 0 && (
+                                                                <li className="imgAdd-button" onClick={() => this.addPictrue('shop')}>
+                                                                    <span className="imgAdd-icon">+</span>
+                                                                </li>
+                                                            )
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            )
+                                            : getFieldDecorator('shop', {
+                                                rules: [
+                                                    {validator: this.checkShop}
+                                                ],
+                                                validateTrigger: 'submit'//校验值的时机
+                                            })(
+                                                <ImagePicker
+                                                    files={file2}
+                                                    onChange={(files) => {
+                                                        this.onChange(files, 'shop');
+                                                    }}
+                                                    onImageClick={(index, fs) => console.log(index, fs)}
+                                                    selectable={file2.length < 1}
+                                                    length={1}
+                                                />
+                                            )
                                     }
                                 </WingBlank>
                                 <span>{that.state.urlParams === '0' ? '上传门头照/摊位照' : '上传店铺照'}</span>
@@ -336,22 +482,44 @@ class PersonalThree extends BaseComponent {
                             <div>
                                 <WingBlank>
                                     {
-                                        getFieldDecorator('environment', {
-                                            rules: [
-                                                {validator: this.checkEnvironment}
-                                            ],
-                                            validateTrigger: 'submit'//校验值的时机
-                                        })(
-                                            <ImagePicker
-                                                files={file3}
-                                                onChange={(files) => {
-                                                    this.onChange(files, 'environment');
-                                                }}
-                                                onImageClick={(index, fs) => console.log(index, fs)}
-                                                selectable={file3.length < 1}
-                                                length={1}
-                                            />
-                                        )
+                                        !hybrid
+                                            ? (
+                                                <div className="picture-area">
+                                                    <ul>
+                                                        {
+                                                            file3 && file3.map(item => (
+                                                                <li id={item.id}>
+                                                                    <span className="delete-icon" onClick={() => this.deleteImg('environment', item.id)}>×</span>
+                                                                    <img src={item.imgS || item.url}/>
+                                                                </li>
+                                                            ))
+                                                        }
+                                                        {
+                                                            file3.length === 0 && (
+                                                                <li className="imgAdd-button" onClick={() => this.addPictrue('environment')}>
+                                                                    <span className="imgAdd-icon">+</span>
+                                                                </li>
+                                                            )
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            )
+                                            : getFieldDecorator('environment', {
+                                                rules: [
+                                                    {validator: this.checkEnvironment}
+                                                ],
+                                                validateTrigger: 'submit'//校验值的时机
+                                            })(
+                                                <ImagePicker
+                                                    files={file3}
+                                                    onChange={(files) => {
+                                                        this.onChange(files, 'environment');
+                                                    }}
+                                                    onImageClick={(index, fs) => console.log(index, fs)}
+                                                    selectable={file3.length < 1}
+                                                    length={1}
+                                                />
+                                            )
                                     }
                                 </WingBlank>
                                 <span>{that.state.urlParams === '0' ? '上传门店/摊位环境照' : '上传环境照'}</span>
@@ -364,22 +532,44 @@ class PersonalThree extends BaseComponent {
                             <div>
                                 <WingBlank>
                                     {
-                                        getFieldDecorator('product', {
-                                            rules: [
-                                                {validator: this.checkProduct}
-                                            ],
-                                            validateTrigger: 'submit'//校验值的时机
-                                        })(
-                                            <ImagePicker
-                                                files={file4}
-                                                onChange={(files) => {
-                                                    this.onChange(files, 'product');
-                                                }}
-                                                onImageClick={(index, fs) => console.log(index, fs)}
-                                                selectable={file4.length < 1}
-                                                length={1}
-                                            />
-                                        )
+                                        hybrid
+                                            ? (
+                                                <div className="picture-area">
+                                                    <ul>
+                                                        {
+                                                            file4 && file4.map(item => (
+                                                                <li id={item.id}>
+                                                                    <span className="delete-icon" onClick={() => this.deleteImg('product', item.id)}>×</span>
+                                                                    <img src={item.imgS || item.url}/>
+                                                                </li>
+                                                            ))
+                                                        }
+                                                        {
+                                                            file4.length === 0 && (
+                                                                <li className="imgAdd-button" onClick={() => this.addPictrue('product')}>
+                                                                    <span className="imgAdd-icon">+</span>
+                                                                </li>
+                                                            )
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            )
+                                            : getFieldDecorator('product', {
+                                                rules: [
+                                                    {validator: this.checkProduct}
+                                                ],
+                                                validateTrigger: 'submit'//校验值的时机
+                                            })(
+                                                <ImagePicker
+                                                    files={file4}
+                                                    onChange={(files) => {
+                                                        this.onChange(files, 'product');
+                                                    }}
+                                                    onImageClick={(index, fs) => console.log(index, fs)}
+                                                    selectable={file4.length < 1}
+                                                    length={1}
+                                                />
+                                            )
                                     }
                                 </WingBlank>
                                 <span>上传售卖商品照片</span>

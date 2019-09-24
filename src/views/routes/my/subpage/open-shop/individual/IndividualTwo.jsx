@@ -247,29 +247,34 @@ class IndividualTwo extends BaseComponent {
 
     //原生图片上传的时候的请求
     pasGass = (arrInfo, ix, index) => {
-        const {flagArr} = this.state;
-        const arr = flagArr;
         this.fetch(urlCfg.postIDcard, {data: {
             ix,
             file: encodeURIComponent(arrInfo[0].imgB),
             filex: encodeURIComponent(arrInfo[0].imgS)
-        }}).subscribe(value => {
-            if (value && value.status === 0) {
-                arr[index] = true;
-                if (value.data.name && value.data.id_num) {
-                    this.setState({
-                        flagArr: arr,
-                        userName: value.data.name,
-                        ID: value.data.id_num
-                    });
+        }}).subscribe(res => {
+            if (res.status === 0) {
+                this.setState((prevState) => {
+                    const arr = prevState.flagArr;
+                    arr[index] = true;
+                    return {
+                        flagArr: arr
+                    };
+                });
+                if (res.data) {
+                    if (res.data.hasOwnProperty('name')) {
+                        this.setState({
+                            userName: res.data.name,
+                            idCard: res.data.id_num
+                        });
+                    } else if (res.data.hasOwnProperty('exp')) {
+                        this.setState({
+                            validDate: res.data.exp
+                        });
+                    }
                 }
-                if (value.data.exp) {
-                    this.setState({
-                        flagArr: arr,
-                        date: value.data.exp
-                    });
-                }
-                showInfo('上传成功');
+                showInfo(Feedback.upload_Success);
+            } else {
+                showInfo(Feedback.upload_failed);
             }
         });
     }
@@ -288,14 +293,17 @@ class IndividualTwo extends BaseComponent {
                     }));
                     this.pasGass(arrInfo, 0, 0);
                 });
-            } else if (type === 'back') {
+            } else if (type === 'hand') {
                 native('picCallback', {num: 1}).then(res => {
                     res.data.img.forEach(item => {
                         arrInfo.push({imgB: item[0], imgS: item[1], id: new Date()});
                     });
-                    this.pasGass(arrInfo, 2, 1);
+                    this.setState((proveState) => ({
+                        file2: proveState.file.concat(arrInfo)
+                    }));
+                    this.pasGass(arrInfo, 4, 2);
                 });
-            } else {
+            } else if (type === 'back') {
                 native('picCallback', {num: 1}).then(res => {
                     res.data.img.forEach(item => {
                         arrInfo.push({imgB: item[0], imgS: item[1], id: new Date()});
@@ -303,7 +311,7 @@ class IndividualTwo extends BaseComponent {
                     this.setState((proveState) => ({
                         file3: proveState.file3.concat(arrInfo)
                     }));
-                    this.pasGass(arrInfo, 4, 2);
+                    this.pasGass(arrInfo, 1, 1);
                 });
             }
         }
@@ -311,18 +319,17 @@ class IndividualTwo extends BaseComponent {
 
     //点击删除图片
     deleteImg = (type, id) => {
-        const {file, file2, file3} = this.state;
         if (type === 'forward') {
             this.setState({
-                file: file.filter(item => item.id !== id)
+                file: []
             });
         } else if (type === 'back') {
             this.setState({
-                file2: file2.filter(item => item.id !== id)
+                file3: []
             });
         } else {
             this.setState({
-                file3: file3.filter(item => item.id !== id)
+                file2: []
             });
         }
     };
@@ -335,6 +342,7 @@ class IndividualTwo extends BaseComponent {
     editModalMain = () => {
         const {form: {getFieldDecorator}} = this.props;
         const {file, file2, file3, validDate, idCard, userName} = this.state;
+        console.log(file, file2, file3, '就开始地方接口');
         return (
             <div>
                 <AppNavBar goBackModal={this.props.goBack} rightExplain title="开店人信息"/>
@@ -371,7 +379,7 @@ class IndividualTwo extends BaseComponent {
                                                         file && file.map(item => (
                                                             <li id={item.id}>
                                                                 <span className="delete-icon" onClick={() => this.deleteImg('forward', item.id)}>×</span>
-                                                                <img src={item.imgS}/>
+                                                                <img src={item.imgS || item.url}/>
                                                             </li>
                                                         ))
                                                     }
@@ -411,15 +419,15 @@ class IndividualTwo extends BaseComponent {
                                             <div className="picture-area">
                                                 <ul>
                                                     {
-                                                        file2 && file2.map(item => (
+                                                        file3 && file3.map(item => (
                                                             <li id={item.id}>
                                                                 <span className="delete-icon" onClick={() => this.deleteImg('back', item.id)}>×</span>
-                                                                <img src={item.imgS}/>
+                                                                <img src={item.imgS || item.url}/>
                                                             </li>
                                                         ))
                                                     }
                                                     {
-                                                        file2.length === 0 && (
+                                                        file3.length === 0 && (
                                                             <li className="imgAdd-button" onClick={() => this.addPictrue('back')}>
                                                                 <span className="imgAdd-icon">+</span>
                                                             </li>
@@ -458,15 +466,15 @@ class IndividualTwo extends BaseComponent {
                                                 <div className="picture-area">
                                                     <ul>
                                                         {
-                                                            file3 && file3.map(item => (
+                                                            file2 && file2.map(item => (
                                                                 <li id={item.id}>
                                                                     <span className="delete-icon" onClick={() => this.deleteImg('handle', item.id)}>×</span>
-                                                                    <img src={item.imgS}/>
+                                                                    <img src={item.imgS || item.url}/>
                                                                 </li>
                                                             ))
                                                         }
                                                         {
-                                                            file3.length === 0 && (
+                                                            file2.length === 0 && (
                                                                 <li className="imgAdd-button" onClick={() => this.addPictrue('handle')}>
                                                                     <span className="imgAdd-icon">+</span>
                                                                 </li>
