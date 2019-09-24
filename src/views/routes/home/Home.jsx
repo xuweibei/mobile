@@ -2,7 +2,7 @@
 * 首页
 * */
 import {connect} from 'react-redux';
-import {Carousel, Grid, SearchBar, Toast, WhiteSpace, Modal} from 'antd-mobile';
+import {Carousel, Grid, SearchBar, Toast, WhiteSpace, Modal,Badge} from 'antd-mobile';
 import {dropByCacheKey} from 'react-router-cache-route';
 import {systemApi} from '../../../utils/systemApi';
 import {FooterBar} from '../../common/foot-bar/FooterBar';
@@ -265,8 +265,9 @@ class Home extends BaseComponent {
                             {
                                 userToken && userToken.length > 0 ? (
                                     <div className={`nav-right ${userToken && userToken.length > 0 ? 'nav-right-login' : ''}`} style={{display: 'flex'}}>
-                                        {/* <Badge text={77} overflowCount={55}/> */}
                                         <div className="home-searchBar-icon" onClick={this.lookLook}>
+                                            {/*<Badge className="information-IM icon" text={77} overflowCount={55}/>*/}
+
                                             <div className="icon information"/>
                                         </div>
                                     </div>

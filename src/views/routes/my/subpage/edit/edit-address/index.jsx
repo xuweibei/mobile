@@ -23,7 +23,7 @@ class BasicInput extends BaseComponent {
         addressArr: [], //初始地址
         editStatus: true, //地址选择显示与否
         addressStatus: decodeURI(getUrlParam('status', encodeURI(this.props.location.search))), //编辑还是删除 1编辑2添加
-        height: document.documentElement.clientHeight - (window.isWX ? window.rem * 1.08 : 0) //扣除微信头部高度
+        height: document.documentElement.clientHeight - (window.isWX ? window.rem * 1.08 : window.rem * 1.08) //扣除微信头部高度
     };
 
     componentDidMount() {

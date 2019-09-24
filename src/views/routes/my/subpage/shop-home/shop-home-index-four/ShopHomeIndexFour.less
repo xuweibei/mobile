@@ -1,5 +1,6 @@
 @import "~style";
 .shopHomeFourContent {
+    padding-bottom: 100px;
     .shopHomFourBanner{
         a{
             display:block;
@@ -11,6 +12,46 @@
             display:block;
             width:100%;
             height:100%
+        }
+    }
+    .banner {
+        margin-bottom: 29px;
+        img {
+            height: 316px!important;
+        }
+        .slider-decorator-0 {
+            width: auto!important;
+            display: flex;
+            bottom: -34px!important;
+            right: 40px;
+            .am-carousel-wrap {
+                width: auto;
+            }
+        }
+    }
+    .new-box {
+        display: flex;
+        padding-right: 40px;
+        margin-bottom: 20px;
+        .new-left {
+            width: 30%;
+            //height: 100%;
+            border-radius: 0 60px 0 0 ;
+            background: #CAD9EC;
+            margin-right: 40px;
+            margin-top: 54px;
+        }
+        .new-right {
+            .fresh {
+                font-size: @font-size-100;
+                color: #CAD9EC;
+                font-style:italic;
+                margin-bottom: 40px;
+            }
+            img {
+                width: 100%;
+                margin-bottom: 19px;
+            }
         }
     }
     .newImgShow{
@@ -41,7 +82,7 @@
 
         }
         .newImgShowRt{
-            width:506px;
+            width:606px;
             h3{
                 height:73px;
                 font-size:100px;
@@ -51,8 +92,7 @@
             }
             a{
                 display:block;
-                width:506px;
-                height:406px;
+                width:606px;
                 background:#FFF59B;
                 margin-top:38px;
                 img{
@@ -60,6 +100,11 @@
                     width:100%;
                     height:100%;
                 }
+            }
+            .newImgShowRT-bottom{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
             }
         }
     }
@@ -78,9 +123,9 @@
 
         }
         .rankImgInfo{
-            position:absolute;
-            left:66px;
-            bottom:14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             p{
                 width:558px;
                 height:46px;
@@ -104,20 +149,17 @@
             }
         }
         ul{
-            padding:23px 0 26px 0;
-            overflow:hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            flex-wrap: wrap;
             li{
-                float:left;
-                width:162px;
-                height:162px;
-                margin-right:14px;
-                &:last-child{
-                    margin-right:0;
-                }
+                width: 45%;
+                margin: 15px;
                 img{
                     display:block;
                     width:100%;
-                    height:100%;
 
                 }
             }
@@ -205,7 +247,7 @@
 
     //编辑面板
     .compile-box {
-        margin-right: 48px;
+        //margin-right: 48px;
         //标题
         .compile {
             margin-bottom: 12px;
@@ -231,25 +273,33 @@
         }
         //标题栏
         .title-bar {
-            color: #ccc;
+            color: @white;
             text-align: center;
-            margin-bottom: 20px;
-            font-size: 16px;
-            span:nth-child(1) {
-                color: #ccc;
-                padding: 0 10px 2px;
-                border-bottom: 1px solid #ccc;
-                margin-bottom: 10px;
+            margin-bottom: 40px;
+            //margin-bottom: 20px;
+            //font-size: 16px;
+            div:nth-child(1) {
+                display: inline-block;
+                font-size: @font-size-28;
+                padding: 0 29px 11px;
+                border-bottom: 1px solid @white;
+                margin-bottom: 30px;
             }
             div:nth-child(2) {
-                margin-top: 5px;
-                font-size: 14px;
-                color: #ccc;
+                font-size: @font-size-30;
+                //margin-top: 5px;
+                //color: #ccc;
+            }
+        }
+        .hot-sale {
+            color: @dark-gray;
+            div:nth-child(1) {
+                border-bottom: 1px solid #CAD9EC;
             }
         }
 
         .sell-box {
-            background: pink;
+            background: #CAD9EC;
             padding-top: 15px;
             .title-bar {
                 color: #fff;
@@ -262,37 +312,43 @@
                 }
             }
             .sell {
-                padding: 0 40px;
-                margin-bottom: 10px;
+                padding: 0 36px;
+                margin-bottom: 41px;
                 .sell-goods {
                     width: 100%;
-                    height: 132px;
+                    height: 330px;
+                    margin-bottom: 19px;
                     img {
                         width: 100%;
-                        height: inherit;
+                        height: 100%;
+                        margin-bottom: 19px;
                     }
                 }
+            }
+            .sell-commodity-box {
+                margin-bottom: 58px;
             }
         }
         .sell-commodity-box {
             display: flex;
-            padding: 0 25px;
+            padding: 0 49px;
             flex-wrap: wrap;
             .sell{
                 width: 100%;
             }
             .sell-commodity {
                 width: 50%;
-                padding: 0 4px;
-                margin-bottom: 10px;
-                height: 185px;
+                padding: 0 11px;
+                margin-bottom: 40px;
                 .sell-commodity-img {
                     width: 100%;
-                    border: 1px solid #ccc;
-                    height: 156px;
+                    //border: 1px solid #ccc;
+                    height: 304px;
+                    margin-bottom: 19px;
                     img {
                         height: 100%;
                         width: 100%;
+                        //margin-bottom: 19px;
                     }
                 }
             }
@@ -303,47 +359,44 @@
             display: flex;
             justify-content: space-between;
             .headline {
-                font-size: 14px;
-                margin-bottom: 3px;
+                font-size: @font-size-30;
+                //margin-bottom: 3px;
             }
             .price {
                 span:nth-child(1) {
-                    color: #ccc;
-                    font-size: 10px;
-                    margin-right: 10px;
-
+                    color: @darker-black;
+                    font-size: @font-size-20;
                     span {
-                        font-size: 14px;
+                        font-size: @font-size-32;
                     }
                 }
                 span:nth-child(2) {
-                    font-size: 10px;
-                    color: #ccc;
+                    margin-left: 20px;
+                    font-size: @font-size-20;
+                    color: @gray;
                     text-decoration:line-through
                 }
             }
         }
 
         .headline-price-take {
-            //display: flex;
-            //justify-content: space-between;
             .headline {
-                font-size: 14px;
-                margin-bottom: 3px;
+                font-size: @font-size-30;
+                margin-bottom: 24px;
+                color: @darker-black;
             }
             .price {
                 span:nth-child(1) {
-                    color: #ccc;
-                    font-size: 10px;
-                    margin-right: 10px;
-
+                    color: @darker-black;
+                    font-size: @font-size-20;
                     span {
-                        font-size: 14px;
+                        font-size: @font-size-32;
                     }
                 }
                 span:nth-child(2) {
-                    font-size: 10px;
-                    color: #ccc;
+                    font-size: @font-size-20;
+                    color: @gray;
+                    margin-left: 19px;
                     text-decoration:line-through
                 }
             }
@@ -351,7 +404,7 @@
     }
 
     .headline-price {
-        height: 24px;
+        //height: 24px;
         .headline {
             overflow: hidden;
             text-overflow: ellipsis;
