@@ -23,7 +23,7 @@ export const MESSAGE = {
     },
 
     Form: {
-
+        ShopName_Err: '店铺名称由2-30位字符组成',
         No_Captcha: '请输入验证码',
         No_Content: '您还没有输入任何内容',
         No_Data: '您还没有选择任何数据',
@@ -73,7 +73,10 @@ export const MESSAGE = {
         Error_PayPassword: '密码必须为纯数字',
         // Error_PayPassword: '',
         // Error_Password: '密码错误',
-
+        Fail_Lic_Info: '图片信息识别失败,请重新上传!',
+        Success_Lic_Info: '图片信息识别成功',
+        // Fail_People_Info: '营业执照信息识别失败,请重新上传!',
+        // Fail_Date_Info: '营业执照信息识别失败,请重新上传!',
         Error_Withdraw: '提现金额无效',
         Error_Position: '获取当前位置失败',
         // Error_Message: '您输入的信息有误',

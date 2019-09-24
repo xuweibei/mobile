@@ -183,3 +183,7 @@ export function showMessage(message, callback) {
     callback(VERIFY_FAILED);
     showInfo(message);
 }
+export function checkShopName(value) {
+    const reg = /^[0-9a-zA-Z\u4e00-\u9fa5]+$/;
+    return reg.test(value);
+}

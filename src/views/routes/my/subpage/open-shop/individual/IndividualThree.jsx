@@ -68,8 +68,8 @@ class IndividualThree extends BaseComponent {
                     });
                 }
                 this.setState({
-                    threeInOne: res.data.three_in_one,
-                    value: Number(res.data.three_in_one),
+                    // threeInOne: res.data.three_in_one,
+                    // value: Number(res.data.three_in_one),
                     shopLic: res.data.shop_lic,
                     shopLicExp: res.data.shop_lic_exp
                 });
@@ -111,6 +111,7 @@ class IndividualThree extends BaseComponent {
 
     //图片转换和上传
     transImg = (file, ix, index) => {
+        console.log(index);
         if (file) {
             let imgBD = '';
             let imgS = '';
@@ -137,13 +138,11 @@ class IndividualThree extends BaseComponent {
                                     flagArr: arr
                                 };
                             });
-                            if (res.data) {
-                                if (res.data.hasOwnProperty('reg_num')) {
-                                    this.setState({
-                                        shopLic: res.data.reg_num,
-                                        shopLicExp: res.data.exp
-                                    });
-                                }
+                            if (res.data.hasOwnProperty('reg_num') && res.data.hasOwnProperty('reg_num')) {
+                                this.setState({
+                                    shopLic: res.data.reg_num,
+                                    shopLicExp: res.data.exp
+                                });
                             }
                             clearTimeout(timerId);
                         }

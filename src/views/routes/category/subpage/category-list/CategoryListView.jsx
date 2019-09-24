@@ -306,7 +306,7 @@ class CategoryListView extends BaseComponent {
                         <div className="price">
                             {!shopId && (
                                 <div className="price-left">
-                                    <span className="enter-left">店铺名称{item.shopName}</span>
+                                    <span className="enter-left">{item.shopName}</span>
                                     <span
                                         className="enter-right"
                                         onClick={(e) => this.goToShop(e, item.shop_id)}

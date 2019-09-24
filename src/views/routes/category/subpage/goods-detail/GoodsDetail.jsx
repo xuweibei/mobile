@@ -216,8 +216,11 @@ class GoodsDetail extends BaseComponent {
 
     //添加商品到购物车
     addCart = () => {
-        const {shop, goodsDetail, paginationNum, ids, selectType} = this.state;
+        const {shop, goodsDetail, paginationNum, ids, selectType, status} = this.state;
         if (shop.shoper_open_status === '0') {
+            return;
+        }
+        if (status === '0' || status === '2') {
             return;
         }
         if (paginationNum === 0 || ids.length === 0) {
@@ -260,8 +263,11 @@ class GoodsDetail extends BaseComponent {
 
     //立即购买
     emption = () => {
-        const {shop} = this.state;
+        const {shop, status} = this.state;
         if (shop.shoper_open_status === '0') {
+            return;
+        }
+        if (status === '0' || status === '2') {
             return;
         }
         const id = decodeURI(
@@ -434,7 +440,7 @@ class GoodsDetail extends BaseComponent {
         case '2':
             this.setState({
                 lineStatus: true,
-                lineText: '库存不足'
+                lineText: '商品已下架'
             });
             break;
         default:
@@ -665,7 +671,7 @@ class GoodsDetail extends BaseComponent {
                                     <Flex.Item>
                                         <div className="bot-left">
                                             邮费：
-                                            {goodsDetail.freight || '免邮'}
+                                            {'￥' + goodsDetail.express_money || '免邮'}
                                         </div>
                                     </Flex.Item>
                                     <Flex.Item>
