@@ -21,8 +21,6 @@ const baseActionTypes = keyMirror({
     HIDE_MENU: '',
     SET_TAB: '', //tab切换状态
     SET_SHOPPINGID: '', //设置商店id
-    SET_SHOPINFOS: '', //储存商品数据
-    SET_SHOPMODAL: '', //储存商店模板
     SET_ORDERSTATUS: '', //我的订单的tab状态
     SET_EVA: '', //全部评价的评价状态
     SET_USER_TYPE: '', //全部评价的评价状态
@@ -229,25 +227,6 @@ function  _setShoppingId(id) {
     };
 }
 
-//储存商品数据
-function  _setShoppInfos(data) {
-    return {
-        type: baseActionTypes.SET_SHOPINFOS,
-        playload: {
-            data
-        }
-    };
-}
-//储存商品数据
-function  _setShoppModal(data) {
-    return {
-        type: baseActionTypes.SET_SHOPMODAL,
-        playload: {
-            data
-        }
-    };
-}
-
 function  _setOrderStatus(id) {
     return {
         type: baseActionTypes.SET_ORDERSTATUS,
@@ -300,9 +279,7 @@ const baseActionCreator = {
     setOrderStatus: _setOrderStatus,
     setEvaStatus: _setEvaStatus,
     setUseType: _setUseType,
-    setReturn: _setReturn,
-    setShoppInfos: _setShoppInfos,
-    setShoppModal: _setShoppModal
+    setReturn: _setReturn
 };
 
 

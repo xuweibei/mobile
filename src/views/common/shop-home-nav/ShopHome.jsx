@@ -126,7 +126,7 @@ class ShopHome extends BaseComponent {
     };
 
     render() {
-        const {setTextNum, shopModelArr, show} = this.props;
+        const {shopModelArr, show} = this.props;
         const {shopInfo, starsArr, half, visible} = this.state;
         return (
             show ? '' : (

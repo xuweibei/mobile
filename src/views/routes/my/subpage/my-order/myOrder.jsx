@@ -691,7 +691,7 @@ class MyOrder extends BaseComponent {
                 <div className="shop-bottom">
                     <div className="right-bottom">
                         <div className="total-count">
-                            总记账量：<span>{item.all_price}</span>
+                            总记账量：<span>{item.all_deposit}</span>
                         </div>
                         <div className="total-price">
                             <div className="total-price-left">共{item.pr_count}件商品</div>

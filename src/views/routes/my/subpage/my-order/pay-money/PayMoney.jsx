@@ -412,7 +412,7 @@ class PayMoney extends BaseComponent {
                                 <span className="icon command-center">请输入支付密码</span>
                                 <span className="icon command-right" onClick={() => this.closePopup()}/>
                             </div>
-                            <InputGrid onInputGrid={this.inputGrid}/>
+                            <InputGrid focus onInputGrid={this.inputGrid}/>
                             <p onClick={() => this.forgetPws()}>忘记密码</p>
                         </div>
                     </div>
