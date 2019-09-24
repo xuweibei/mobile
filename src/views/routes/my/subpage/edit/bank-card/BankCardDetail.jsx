@@ -299,6 +299,8 @@ class BankCardDetail extends BaseComponent {
                                      clear
                                      type="bankCard"
                                      placeholder="请输入银行卡号"
+                                     maxLength={20}
+                                     minLength={15}
                                  >银行卡号
                                  </InputItem>
                              )
