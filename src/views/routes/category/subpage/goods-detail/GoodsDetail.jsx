@@ -194,7 +194,7 @@ class GoodsDetail extends BaseComponent {
     //确定按钮点击
     confirmSku = (type, ids) => {
         const {clickType} = this.state;
-        console.log('选中商品属性ID：', type, ids);
+        // console.log('选中商品属性ID：', type, ids);
         this.setState({
             selectType: type,
             ids: ids,
@@ -256,6 +256,9 @@ class GoodsDetail extends BaseComponent {
                     }
                 } else {
                     showInfo(Feedback.Add_Success);
+                    this.setState({
+                        ids: []
+                    });
                 }
             }
         });
