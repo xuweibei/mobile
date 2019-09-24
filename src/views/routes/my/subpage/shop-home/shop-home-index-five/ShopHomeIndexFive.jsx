@@ -27,78 +27,69 @@ class ShopHomeIndexFive extends React.PureComponent {
                     </div>
                     <div className="boutique">
                         <div className="boutique-name">
-                            <div className="boutique-name-top">{shopModelArr.content.sort1_title1}</div>
+                            <div className="boutique-name-top">- {shopModelArr.content.sort1_title1} -</div>
                             <div className="boutique-name-bottom">{shopModelArr.content.sort1_title2}</div>
                         </div>
-
                         <div className="thing">
-                            <ul className="thing-top">
-                                <li>
-                                    <div className="sell-well">
-                                        <img onClick={() => this.goToGoods(shopModelArr.content.sort1_pr1_id)} src={shopModelArr.picurl[2]} alt="" className="thing-big"/>
-                                        <div className="thing-center">
-                                            <p>{shopModelArr.content.sort1_pr1_title1}</p>
-                                            <div>
-                                                {shopModelArr.content.sort1_pr1_title1}
-                                                <span>{shopModelArr.content.sort1_pr1_title2}</span>
-                                            </div>
-                                        </div>
+                            <div className="sell-well">
+                                <img onClick={() => this.goToGoods(shopModelArr.content.sort1_pr1_id)} src={shopModelArr.picurl[2]} alt="" className="thing-big"/>
+                                <div className="thing-center">
+                                    <p className="introduce-left">{shopModelArr.content.sort1_pr1_title1}</p>
+                                    <div>
+                                        <span className="money-ZH">￥</span>
+                                        <span className="money-now">{shopModelArr.content.sort1_pr1_title1}</span>
+                                        <span className="money-before">{shopModelArr.content.sort1_pr1_title2}</span>
                                     </div>
-                                </li>
-                                <li>
-                                    <div className="sell-well">
-                                        <img onClick={() => this.goToGoods(shopModelArr.content.sort1_pr2_id)} src={shopModelArr.picurl[3]} alt="" className="thing-big"/>
-                                        <div className="thing-center">
-                                            <p>{shopModelArr.content.sort1_pr1_title1}</p>
-                                            <div>
-                                                {shopModelArr.content.sort1_pr1_title1}
-                                                <span>{shopModelArr.content.sort1_pr1_title2}</span>
-                                            </div>
-                                        </div>
+                                </div>
+                            </div>
+                            <div className="sell-well">
+                                <img onClick={() => this.goToGoods(shopModelArr.content.sort1_pr2_id)} src={shopModelArr.picurl[3]} alt="" className="thing-big"/>
+                                <div className="thing-center">
+                                    <p className="introduce-left">{shopModelArr.content.sort1_pr1_title1}</p>
+                                    <div>
+                                        <span className="money-ZH">￥</span>
+                                        <span className="money-now">{shopModelArr.content.sort1_pr1_title1}</span>
+                                        <span className="money-before">{shopModelArr.content.sort1_pr1_title2}</span>
                                     </div>
-                                </li>
-                            </ul>
-                            <ul className="thing-bottom">
-                                <li>
-                                    <div className="sell-well">
-                                        <img onClick={() => this.goToGoods(shopModelArr.content.sort1_pr3_id)} src={shopModelArr.picurl[4]} alt="" className="thing-small"/>
-                                        <div className="thing-center">
-                                            <p>{shopModelArr.content.sort1_pr1_title1}</p>
-                                            <div>
-                                                {shopModelArr.content.sort1_pr1_title1}
-                                                <span>{shopModelArr.content.sort1_pr1_title2}</span>
-                                            </div>
-                                        </div>
+                                </div>
+                            </div>
+                            <div className="sell-well">
+                                <img onClick={() => this.goToGoods(shopModelArr.content.sort1_pr3_id)} src={shopModelArr.picurl[4]} alt="" className="thing-small"/>
+                                <div className="thing-center">
+                                    <p className="introduce-left">{shopModelArr.content.sort1_pr1_title1}</p>
+                                    <div>
+                                        <span className="money-ZH">￥</span>
+                                        <span className="money-now">{shopModelArr.content.sort1_pr1_title1}</span>
+                                        <span className="money-before">{shopModelArr.content.sort1_pr1_title2}</span>
                                     </div>
-                                </li>
-                                <li>
-                                    <div className="sell-well">
-                                        <img onClick={() => this.goToGoods(shopModelArr.content.sort1_pr4_id)} src={shopModelArr.picurl[5]} alt="" className="thing-small"/>
-                                        <div className="thing-center">
-                                            <p>{shopModelArr.content.sort1_pr1_title1}</p>
-                                            <div>
-                                                {shopModelArr.content.sort1_pr1_title1}
-                                                <span>{shopModelArr.content.sort1_pr1_title2}</span>
-                                            </div>
-                                        </div>
+                                </div>
+                            </div>
+                            <div className="sell-well">
+                                <img onClick={() => this.goToGoods(shopModelArr.content.sort1_pr4_id)} src={shopModelArr.picurl[5]} alt="" className="thing-small"/>
+                                <div className="thing-center">
+                                    <p className="introduce-left">{shopModelArr.content.sort1_pr1_title1}</p>
+                                    <div>
+                                        <span className="money-ZH">￥</span>
+                                        <span className="money-now">{shopModelArr.content.sort1_pr1_title1}</span>
+                                        <span className="money-before">{shopModelArr.content.sort1_pr1_title2}</span>
                                     </div>
-                                </li>
-                            </ul>
+                                </div>
+                            </div>
                         </div>
-
                         <div className="popular-name">
                             <div className="popular-name-top">{shopModelArr.content.sort2_title1}</div>
                             <div className="popular-name-bottom">{shopModelArr.content.sort2_title2}</div>
                         </div>
-
                         <div className="popular-one">
                             <div className="popular-one-top">
                                 <img onClick={() => this.goToGoods(shopModelArr.content.sort2_pr1_id)} src={shopModelArr.picurl[6]} alt=""/>
                             </div>
-                            <div>
-                                <div>辅导费</div>
-                                <div>
-                                    <span>153</span><span>415</span>
+                            <div className="popular-one-bottom">
+                                <div className="introduce-left">辅导费</div>
+                                <div className="popular-one-bottom-price">
+                                    <span className="money-ZH">￥</span>
+                                    <span className="money-now">153</span>
+                                    <span className="money-before">415</span>
                                 </div>
                             </div>
                         </div>
@@ -109,40 +100,49 @@ class ShopHomeIndexFive extends React.PureComponent {
                                 <div className="introduce">
                                     <div className="introduce-left">{shopModelArr.content.sort2_pr4_title1}</div>
                                     <div className="price">
-                                        <span className="price-left">{shopModelArr.content.sort2_pr4_title2}</span>
-                                        <span className="price-center"/>
-                                        <span className="price-right">{shopModelArr.content.sort2_pr4_title3}<span>{shopModelArr.content.sort2_pr4_title4}</span></span>
+                                        <span className="money-ZH">￥</span>
+                                        <span className="money-now">{shopModelArr.content.sort2_pr4_title2}</span>
+                                        <span className="money-before">{shopModelArr.content.sort2_pr4_title3}</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div className="popular-two">
+                        <div className="popular-two-copy">
                             <div className="popular-two-left">
-                                <img onClick={() => this.goToGoods(shopModelArr.content.sort2_pr2_id)} src={shopModelArr.picurl[7]} alt=""/>
-                            </div>
-                            <div>
-                                <div>辅导费</div>
-                                <div>
-                                    <span>153</span><span>415</span>
+                                <div className="popular-two-left-top">
+                                    <div>
+                                        <div className="inner">
+                                            <span>dsfdsdf</span>
+                                            <span>fgdsfg</span>
+                                        </div>
+                                    </div>
+                                    <img onClick={() => this.goToGoods(shopModelArr.content.sort2_pr2_id)} src={shopModelArr.picurl[7]} alt=""/>
+                                </div>
+                                <div className="popular-two-left-bot">
+                                    <div className="introduce-left">辅导费</div>
+                                    <div className="popular-two-left-bot-price">
+                                        <span className="money-ZH">￥</span>
+                                        <span className="money-now">153</span>
+                                        <span className="money-before">415</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div className="popular-four">
                             <div className="winter">
-                                <div style={{background: shopModelArr.content.bg_color}} className="popular-four-left">
-                                    <div className="winter-top">{shopModelArr.content.sort2_pr5_title1}</div>
-                                    <div className="winter-bottom">{shopModelArr.content.sort2_pr5_title2}</div>
-                                </div>
                                 <div className="popular-four-right">
-                                    <img onClick={() => this.goToGoods(shopModelArr.content.sort2_pr5_id)} src={shopModelArr.picurl[10]} alt=""/>
+                                    <img onClick={() => this.goToGoods(shopModelArr.content.sort2_pr2_id)} src={shopModelArr.picurl[7]} alt=""/>
+                                </div>
+                                <div className="introduce">
+                                    <div className="introduce-left">dfdsfsd</div>
+                                    <div className="introduce-right">
+                                        <span className="money-ZH">￥</span>
+                                        <span className="money-now">456</span>
+                                        <span className="money-before">5441</span>
+                                    </div>
                                 </div>
                             </div>
-                            <div className="introduce-left">{shopModelArr.content.sort2_pr5_title3}</div>
-                            <div className="price">
-                                <span className="price-left">{shopModelArr.content.sort2_pr5_title4}</span>
-                                <span className="price-center"/>
-                                <span className="price-right">{shopModelArr.content.sort2_pr5_title5}<span>{shopModelArr.content.sort2_pr5_title6}</span></span>
-                            </div>
+                            <div className="empty-container-four"/>
                         </div>
                         {/* <div className="popular-five">
                             <div className="popular-box">
@@ -155,7 +155,6 @@ class ShopHomeIndexFive extends React.PureComponent {
                                 <div className="introduce-left">{shopModelArr.content.sort2_pr6_title1}</div>
                                 <div className="price">
                                     <span className="price-left">{shopModelArr.content.sort2_pr6_title2}</span>
-                                    <span className="price-center"/>
                                     <span className="price-right">{shopModelArr.content.sort2_pr6_title3}<span>{shopModelArr.content.sort2_pr6_title4}</span></span>
                                 </div>
                             </div>

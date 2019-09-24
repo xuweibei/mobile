@@ -1,16 +1,18 @@
 @import "~style";
 .shopHomeContent {
+    padding-bottom: 150px;
     .shopHomeBanner{
         // background:#CAD9EC;
-        height:900px;
+        // height:900px;
         img{
             display:block;
             width:100%;
         }
     }
     .items{
+        padding-left: 55px;
+        padding-right: 55px;
         .hotImgBottom{
-            padding-left:18px;
             padding-bottom:60px;
             overflow: hidden;
             position: relative;
@@ -33,7 +35,7 @@
                 flex-wrap: wrap;
                 .bottomImgLeft{
                     width: 45%;
-                    margin: 16px;
+                    margin: 15px;
                     div{
                         img{
                             display:block;
@@ -41,6 +43,20 @@
                         }
                         &.marginBot{
                             margin-bottom: 20px;
+                            img{
+                                width: 100%;
+                            }
+                            & > div{
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: center;
+                                padding-top: 8px;
+                                .margin-bot-content-top{
+                                    font-size: 30px;
+                                    color:rgba(4,1,0,1);
+                                }
+                                
+                            }
                         }
                     }
                 }
@@ -79,10 +95,15 @@
             //padding-left:88px;
             .top{
                 margin:40px 88px;
-                overflow:hidden;
                 .priceInfo{
                     .infoLeft{
-                        float:left;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        .shopTitleSmall{
+                            font-size: 30px;
+                            color:rgba(4,1,0,1);
+                        }
                     }
                 }
                 .textTip{
@@ -124,9 +145,6 @@
                         position: absolute;
                         bottom:0;
                         .priceInfo{
-                            position: absolute;
-                            bottom:0;
-                            height:120px;
                             .shopTitleSmall{
                                 line-height:20px;
                                 margin-bottom:8px;
@@ -149,26 +167,19 @@
                 //padding-left:170px;
                 width: 45%;
                 margin: 15px;
-                display: flex;
-                flex-direction: column;
-                justify-content: flex-start;
-                align-items: flex-end;
                 img{
                     display:block;
                     width:100%;
                 }
                 .priceInfo{
-                    width:5.5rem;
                     margin-top:10px;
-                    .textTip{
-                        margin-right:0;
-                        margin-top:-20px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    .shop-title-small{
+                        font-size: 30px;
+                        color: #333333;
                     }
-                }
-                .marLf{
-                    //margin-left:410px;
-                    margin-top:30px;
-                    margin-right:0;
                 }
             }
         }
@@ -196,13 +207,4 @@
 .textTip{
     font-size:19px;
     background:#fff;
-}
-
-.shopPeiceSmall{
-    span{
-        text-decoration:line-through;
-        color:#999999;
-        margin-left:10px;
-        font-size:16px;
-    }
 }
