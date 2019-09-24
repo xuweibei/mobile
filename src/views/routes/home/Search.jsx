@@ -37,7 +37,7 @@ class Search extends BaseComponent {
                     textStatus: false
                 });
             } else {
-                appHistory.push(`/categoryList?flag=${true}&keywords=${encodeURI(keywords)}`);
+                appHistory.push(`/categoryList?flag=${true}&keywords=${encodeURI(keywords)}&id=${''}`);
             }
         } else if (hybird && !this.props.shoppingId) {
             native('goBack');
@@ -64,7 +64,7 @@ class Search extends BaseComponent {
 
     //热门搜索和历史搜索跳转
     switchTo = (val) => {
-        appHistory.push(`/categoryList?flag=${true}&keywords=${encodeURI(val)}`);
+        appHistory.push(`/categoryList?flag=${true}&keywords=${encodeURI(val)}&id=${''}`);
     };
 
     //获取输入框文字
