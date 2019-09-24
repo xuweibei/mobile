@@ -56,6 +56,23 @@ class appendOrder extends BaseComponent {
         }
     }
 
+    componentWillReceiveProps(next, data) {
+        const {setOrder, setIds} = this.props;
+        const timerNext = decodeURI(getUrlParam('time', encodeURI(next.location.search)));
+        const timer = decodeURI(getUrlParam('time', encodeURI(this.props.location.search)));
+        console.log(timerNext, timer, '看来SDK浪费 ');
+        if (timerNext !== timer) {
+            if (hybrid) {
+                getShopCartInfo('getInfo', {'': ''}).then(res => {
+                    setOrder(res.data.arr);
+                    setIds(res.data.cartArr);
+                    this.getOrderState();
+                });//原生方法获取前面的redux
+            }
+        }
+        console.log(next, data, this.props, '考虑到非数据库里');
+    }
+
     componentWillUnmount() {
         const {saveAddress} = this.props;
         saveAddress('');
