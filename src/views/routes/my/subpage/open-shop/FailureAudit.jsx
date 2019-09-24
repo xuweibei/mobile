@@ -7,12 +7,13 @@ const {appHistory} = Utils;
 const {FIELD} = Constants;
 export default class FailureAudit extends BaseComponent {
     emptyGoTo = () => {
-        const {type} = this.props;
-        if (type === '1') {
-            appHistory.replace(`/individual?type=${type}`);
-        } else {
-            appHistory.replace(`/personal?type=${type}`);
-        }
+        // const {type} = this.props;
+        // if (type === '1') {
+        //     appHistory.replace(`/individual?type=${type}`);
+        // } else {
+        //     appHistory.replace(`/personal?type=${type}`);
+        // }
+        appHistory.replace('/selectType');
     };
 
     render() {

@@ -194,7 +194,7 @@ class GoodsDetail extends BaseComponent {
     //确定按钮点击
     confirmSku = (type, ids) => {
         const {clickType} = this.state;
-        console.log('选中商品属性ID：', type, ids);
+        // console.log('选中商品属性ID：', type, ids);
         this.setState({
             selectType: type,
             ids: ids,
@@ -256,6 +256,9 @@ class GoodsDetail extends BaseComponent {
                     }
                 } else {
                     showInfo(Feedback.Add_Success);
+                    this.setState({
+                        ids: []
+                    });
                 }
             }
         });
@@ -895,24 +898,17 @@ class GoodsDetail extends BaseComponent {
                 <div className="goodsDetail-bottom">
                     <div className="icons-warp">
                         <div className="icons">
-                            <div className="phone-cart">
+                            <div className="phone-cart" onClick={this.goToShoper}>
                                 <div className="icon icon-phone"/>
-                                <div className="phone-text" onClick={this.goToShoper}>联系卖家</div>
+                                <div className="phone-text" >联系卖家</div>
                             </div>
-                            <div className="phone-cart">
-                                <div
-                                    className={`icon ${collect.length > 0 ? 'icon-collect-active' : 'icon-collect'}`}
-                                />
-                                <div
-                                    className="phone-text"
-                                    onClick={() => this.collect()}
-                                >
-                                    收藏
-                                </div>
+                            <div className="phone-cart" onClick={() => this.collect()}>
+                                <div className={`icon ${collect.length > 0 ? 'icon-collect-active' : 'icon-collect'}`}/>
+                                <div className="phone-text">收藏</div>
                             </div>
-                            <div className="phone-cart">
+                            <div className="phone-cart" onClick={this.shopCart}>
                                 <div className="icon icon-cart"/>
-                                <div className="phone-text" onClick={this.shopCart}>
+                                <div className="phone-text">
                                     购物车
                                 </div>
                             </div>

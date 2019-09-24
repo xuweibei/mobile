@@ -6,6 +6,7 @@ import './IndividualThree.less';
 import {List, InputItem, ImagePicker, WingBlank, Flex} from 'antd-mobile';
 import {createForm} from 'rc-form';
 import AppNavBar from '../../../../../common/navbar/NavBar';
+import {showFail} from '../../../../../../utils/mixin';
 import IndividualFour from './IndividualFour';
 
 const {urlCfg} = Configs;
@@ -138,13 +139,27 @@ class IndividualThree extends BaseComponent {
                                     flagArr: arr
                                 };
                             });
-                            if (res.data.hasOwnProperty('reg_num') && res.data.hasOwnProperty('reg_num')) {
-                                this.setState({
-                                    shopLic: res.data.reg_num,
-                                    shopLicExp: res.data.exp
-                                });
+                            if (res.data.pic_info && res.data.pic_info.status === 0) {
+                                if (res.data.reg_num && res.data.exp) {
+                                    this.setState({
+                                        shopLic: res.data.reg_num,
+                                        shopLicExp: res.data.exp
+                                    });
+                                }
+                                showInfo(Form.Success_Lic_Info);
+                            } else if (res.data.pic_info && res.data.pic_info.status === 1) {
+                                if (ix === 2) {
+                                    this.setState({
+                                        file: [],
+                                        shopLic: '',
+                                        shopLicExp: ''
+                                    });
+                                }
+                                showFail(Form.Fail_Lic_Info);
                             }
                             clearTimeout(timerId);
+                        } else {
+                            showInfo(Feedback.upload_failed);
                         }
                     });
                 }

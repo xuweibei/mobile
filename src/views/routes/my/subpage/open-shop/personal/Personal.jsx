@@ -159,12 +159,12 @@ class Personal extends BaseComponent {
     //校验商店名称
     checkShopName = (rule, value, callback) => {
         if (!validator.isEmpty(value, Form.No_StoreName, callback)) return;
-        if (!validator.checkRange(2, 30, value)) {
+        if (!validator.ckeckShopName(value)) {
             validator.showMessage(Form.Error_ShopName, callback);
             return;
         }
-        if (!validator.checkShopName(value)) {
-            validator.showMessage(Form.ShopName_Err, callback);
+        if (value.length < 2 || value.length > 30) {
+            showInfo(Form.Error_ShopName);
             return;
         }
         callback();
@@ -217,26 +217,15 @@ class Personal extends BaseComponent {
     };
 
     //校验客服电话
-    checkCasPhone = (rule, value, callback) => {
-        if (!value) {
-            showInfo('请输入电话号码');
-            return;
-        }
-        value = value.replace('-', '');
-        const res = /^[0-9]*$/;
-        const str = res.test(value);
-        if (!str) {
-            showInfo('电话必须为纯数字');
-            return;
-        }
-        if (value.length > 12 || value.length < 4) {
-            showInfo('客服号码填写不正确');
-            return;
-        }
-        const myCshPhone = validator.wipeOut(value);
-        if (!validator.isEmpty(myCshPhone, Form.No_cshPhone, callback))  return;
-        callback();
-    };
+    // checkCshPhone = (rule, value, callback) => {
+    //     const myCshPhone = validator.wipeOut(value);
+    //     if (!validator.isEmpty(myCshPhone, Form.No_cshPhone, callback)) return;
+    //     if (!validator.checkStr(myCshPhone, 4, 12)) {
+    //         showInfo(Form.Error_CasPhone);
+    //         return;
+    //     }
+    //     callback();
+    // };
 
     //校验负责人电话
     checkLinkName = (rule, value, callback) => {
@@ -252,6 +241,17 @@ class Personal extends BaseComponent {
             showInfo(Form.No_checkPhone, 1);
             return;
         }
+        callback();
+    };
+
+    //校验客服电话
+    checkCasPhone = (rule, value, callback) => {
+        const myCshPhone = validator.wipeOut(value);
+        if (!validator.isEmpty(myCshPhone, Form.No_cshPhone, callback)) return;
+        // if (!validator.checkNum(Number(myCshPhone), 3, 11)) {
+        //     showInfo(Form.Error_CasPhone);
+        //     return;
+        // }
         callback();
     };
 
