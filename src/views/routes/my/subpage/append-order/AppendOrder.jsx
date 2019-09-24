@@ -58,8 +58,8 @@ class appendOrder extends BaseComponent {
 
     componentWillReceiveProps(next, data) {
         const {setOrder, setIds} = this.props;
-        const timerNext = decodeURI(getUrlParam('timer', encodeURI(next.location.search)));
-        const timer = decodeURI(getUrlParam('timer', encodeURI(this.props.location.search)));
+        const timerNext = decodeURI(getUrlParam('time', encodeURI(next.location.search)));
+        const timer = decodeURI(getUrlParam('time', encodeURI(this.props.location.search)));
         console.log(timerNext, timer, '看来SDK浪费 ');
         if (timerNext !== timer) {
             if (hybrid) {
