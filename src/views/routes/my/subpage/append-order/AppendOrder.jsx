@@ -288,9 +288,9 @@ class appendOrder extends BaseComponent {
                 invoiceBank: e
             });
             break;
-        case 'bankAddress':
+        case 'bankCard':
             this.setState({
-                bankAddress: e
+                bankCard: e
             });
             break;
         case 'phone':
@@ -305,7 +305,7 @@ class appendOrder extends BaseComponent {
 
     //保存发票
     saveInvoice = () => {
-        const {invoiceIndex, invoice, currentIndex, invoiceName, invoiceNum, invoiceBank, invoiceAddress, bankAddress, invoicePhone} = this.state;
+        const {invoiceIndex, invoice, currentIndex, invoiceName, invoiceNum, invoiceBank, invoiceAddress, bankCard, invoicePhone} = this.state;
         const array = invoice.concat([]);
         array[invoiceIndex] = {
             invoice_type: 1,
@@ -315,7 +315,7 @@ class appendOrder extends BaseComponent {
             tax_id: invoiceNum,
             bank: invoiceBank,
             enterprise_addr: invoiceAddress,
-            bank_addr: bankAddress,
+            bank_card_no: bankCard,
             enterprise_phone: invoicePhone
         };
         this.setState({
@@ -554,11 +554,12 @@ class appendOrder extends BaseComponent {
                                                         企业地址
                                                     </InputItem>
                                                     <InputItem
-                                                        placeholder="请填写银行地址"
+                                                        placeholder="请填写银行卡号"
                                                         maxLength={50}
-                                                        onChange={(e) => { this.invoiceChange(e, 'bankAddress') }}
+                                                        type="number"
+                                                        onChange={(e) => { this.invoiceChange(e, 'bankCard') }}
                                                     >
-                                                        银行地址
+                                                        银行卡号
                                                     </InputItem>
                                                     <InputItem
                                                         placeholder="请填写企业电话"

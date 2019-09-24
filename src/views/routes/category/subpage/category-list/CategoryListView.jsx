@@ -109,7 +109,7 @@ class CategoryListView extends BaseComponent {
                 data: {
                     page: page,
                     pagesize: this.temp.pagesize,
-                    id: shopId,
+                    id: shopId || '',
                     key: '' || keywords
                 }
             })
@@ -135,7 +135,7 @@ class CategoryListView extends BaseComponent {
                 data: {
                     page: page,
                     pagesize: this.temp.pagesize,
-                    id: id,
+                    id: '',
                     types: 2,
                     order: num || null,
                     keyword: '' || keywords

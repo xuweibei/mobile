@@ -36,7 +36,11 @@ class CategoryList extends BaseComponent {
     componentWillReceiveProps(nextProps, value) { //路由跳转时的判断，id有变化就请求
         if (this.state.shopId !== decodeURI(getUrlParam('id', encodeURI(nextProps.location.search)))) {
             this.setState({
+<<<<<<< HEAD
+                shopId: decodeURI(getUrlParam('id', encodeURI(nextProps.location.search))) || ''
+=======
                 shopId: decodeURI(getUrlParam('id', encodeURI(nextProps.location.search))) === 'null' ? '' : decodeURI(getUrlParam('id', encodeURI(nextProps.location.search)))
+>>>>>>> ee796d265e4d87399ff1a300a01aacf21f4ca536
             }, () => {
                 this.init();
             });
