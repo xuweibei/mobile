@@ -332,11 +332,11 @@ class Sku extends React.PureComponent {
                                 <span>￥{price}</span>
                                 <span>￥{originalPrice}</span>
                             </div>
+                            <div className="residue">库存{stock < 10000 ? stock : '充足'}</div>
                             <div className="inventory-box">
                                 <div className="count">
                                     记账量：{deposit}
                                 </div>
-                                <div>库存{stock < 10000 ? stock : '充足'}</div>
                             </div>
                             <div className="close icon" onClick={onClose}/>
                         </div>

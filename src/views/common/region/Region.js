@@ -221,7 +221,7 @@ class Region extends BaseComponent {
             judge1, judge2
         } = this.state;
         return (
-            <div className="region">
+            <div className="regional">
                 <div className={provinceValue === '请选择所在地区' ?  'picker-inline' : 'gray-3'}>
                     <Picker
                         onChange={this.provinceChange}
