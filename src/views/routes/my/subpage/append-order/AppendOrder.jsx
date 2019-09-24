@@ -90,7 +90,6 @@ class appendOrder extends BaseComponent {
                 });
             }
         }
-        console.log(next, data, this.props, '考虑到非数据库里');
     }
 
     componentWillUnmount() {

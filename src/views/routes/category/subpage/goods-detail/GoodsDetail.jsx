@@ -404,6 +404,7 @@ class GoodsDetail extends BaseComponent {
         this.props.setTab('');
         if (hybrid) {
             native('goShop');
+            appHistory.reduction();//重置路由
         } else {
             appHistory.push('/shopCart');
         }
