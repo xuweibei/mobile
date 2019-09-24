@@ -86,7 +86,7 @@ class CategoryListView extends BaseComponent {
 
     // 初始获取获取分类列表数据
     getCategoryList = (num, noLoading) => {
-        const {currentIndex, showStatus, id} = this.state;
+        const {currentIndex, showStatus} = this.state;
         if (num) {
             this.setState({
                 initStatus: true
@@ -109,7 +109,7 @@ class CategoryListView extends BaseComponent {
                 data: {
                     page: page,
                     pagesize: this.temp.pagesize,
-                    id: shopId,
+                    id: shopId || '',
                     key: '' || keywords
                 }
             })
@@ -135,7 +135,7 @@ class CategoryListView extends BaseComponent {
                 data: {
                     page: page,
                     pagesize: this.temp.pagesize,
-                    id: id,
+                    id: '',
                     types: 2,
                     order: num || null,
                     keyword: '' || keywords
