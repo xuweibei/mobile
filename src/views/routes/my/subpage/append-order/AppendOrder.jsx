@@ -56,15 +56,6 @@ class appendOrder extends BaseComponent {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        console.log(nextProps, this.props, '就开始地方和你');
-    }
-
-    shouldComponentUpdate(data, value) {
-        console.log(data, value, '了水电费接口');
-        return false;
-    }
-
     componentWillUnmount() {
         const {saveAddress} = this.props;
         saveAddress('');
