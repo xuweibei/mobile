@@ -35,33 +35,30 @@ class ShopHomeIndex extends React.PureComponent {
                                         <p className="shopTitleSmall">{shopModelArr.content.sort1_pr1_title1}</p>
                                         <strong className="shopPeiceSmall">{shopModelArr.content.sort1_pr1_title2}<span>{shopModelArr.content.sort1_pr1_title3}</span></strong>
                                     </div>
-                                    <div onClick={() => this.goToGoods(shopModelArr.content.sort1_pr1_id)} className="textTip fr">{shopModelArr.content.buy_name}</div>
+                                    {/* <div onClick={() => this.goToGoods(shopModelArr.content.sort1_pr1_id)} className="textTip fr">{shopModelArr.content.buy_name}</div> */}
                                 </div>
                             </div>
-                            <div className="middle">
-                                <div className="leftImg fl"><img onClick={() => this.goToGoods(shopModelArr.content.sort1_pr2_id)} src={shopModelArr.picurl[3]} alt=""/></div>
-                                <div className="rightText fl">
-                                    <p className="rightTextCon fl">
-                                        <div className="priceInfo">
-                                            <p className="shopTitleSmall">{shopModelArr.content.sort1_pr2_title1}</p>
-                                            <strong className="shopPeiceSmall">{shopModelArr.content.sort1_pr2_title2}<span>{shopModelArr.content.sort1_pr2_title3}</span></strong>
-                                            <div onClick={() => this.goToGoods(shopModelArr.content.sort1_pr2_id)} className="textTip fr">{shopModelArr.content.buy_name}</div>
-                                        </div>
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="hotImgBottom">
-                                <div className="bottomImg">
-                                    <div className="bottomImgLeft fl">
-                                        <div className="marginBot"><img onClick={() => this.goToGoods(shopModelArr.content.sort1_pr3_id)} src={shopModelArr.picurl[4]} alt=""/></div>
-                                        <div><img onClick={() => this.goToGoods(shopModelArr.content.sort1_pr3_id)} src={shopModelArr.picurl[5]} alt=""/></div>
+                            {/* <div className="middle">
+                                <div className="leftImg fl">
+                                    <img onClick={() => this.goToGoods(shopModelArr.content.sort1_pr2_id)} src={shopModelArr.picurl[3]} alt=""/>
+                                    <div className="rightText fl">
+                                        <p className="rightTextCon fl">
+                                            <div className="priceInfo">
+                                                <p className="shopTitleSmall">{shopModelArr.content.sort1_pr2_title1}</p>
+                                                <strong className="shopPeiceSmall">{shopModelArr.content.sort1_pr2_title2}<span>{shopModelArr.content.sort1_pr2_title3}</span></strong>
+                                            </div>
+                                        </p>
                                     </div>
-                                    <div className="bottomImgRight fl"><img onClick={() => this.goToGoods(shopModelArr.content.sort1_pr3_id)} src={shopModelArr.picurl[6]} alt=""/></div>
                                 </div>
+                            </div> */}
+                            <div className="top">
+                                <img onClick={() => this.goToGoods(shopModelArr.content.sort1_pr1_id)} src={shopModelArr.picurl[2]} alt=""/>
                                 <div className="priceInfo">
-                                    <p>{shopModelArr.content.sort1_pr3_title1}</p>
-                                    <strong className="shopPeiceSmall">{shopModelArr.content.sort1_pr3_title2}<span>{shopModelArr.content.sort1_pr3_title3}</span></strong>
-                                    <div onClick={() => this.goToGoods(shopModelArr.content.sort1_pr3_id)} className="textTip fr">{shopModelArr.content.buy_name}</div>
+                                    <div className="infoLeft">
+                                        <p className="shopTitleSmall">{shopModelArr.content.sort1_pr1_title1}</p>
+                                        <strong className="shopPeiceSmall">{shopModelArr.content.sort1_pr1_title2}<span>{shopModelArr.content.sort1_pr1_title3}</span></strong>
+                                    </div>
+                                    {/* <div onClick={() => this.goToGoods(shopModelArr.content.sort1_pr1_id)} className="textTip fr">{shopModelArr.content.buy_name}</div> */}
                                 </div>
                             </div>
                         </div>
@@ -71,24 +68,75 @@ class ShopHomeIndex extends React.PureComponent {
                             <h2>{shopModelArr.content.sort2_title1}</h2>
                             <h3>{shopModelArr.content.sort2_title2}</h3>
                         </div>
-                        <div className="newImgShow">
-                            <div className="top">
-                                <div style={{background: shopModelArr.content.bg_color}} className="newImgShowRight fl">
-                                    <div className="newImgShowLeft fl"> <img src={shopModelArr.picurl[7]} alt=""/></div>
-                                    <img className="newImg1" onClick={() => this.goToGoods(shopModelArr.content.sort2_pr1_id)} src={shopModelArr.picurl[8]} alt=""/>
-                                    <div className="priceInfo">
-                                        <p>{shopModelArr.content.sort2_pr2_title1}</p>
-                                        <strong className="shopPeiceSmall">{shopModelArr.content.sort2_pr2_title2}<span>{shopModelArr.content.sort2_pr2_title3}</span></strong>
-                                        <div onClick={() => this.goToGoods(shopModelArr.content.sort2_pr1_id)} className="textTip fr">{shopModelArr.content.buy_name}</div>
-                                    </div>
-                                    <div className="imgNice">
-                                        <img onClick={() => this.goToGoods(shopModelArr.content.sort2_pr2_id)} className="newImg2" src={shopModelArr.picurl[9]} alt=""/>
-                                        <div className="priceInfoS">
-                                            <p>{shopModelArr.content.sort2_pr2_title1}</p>
-                                            <strong className="shopPeiceSmall">{shopModelArr.content.sort2_pr2_title2}<span>{shopModelArr.content.sort2_pr2_title3}</span></strong>
-                                            <div onClick={() => this.goToGoods(shopModelArr.content.sort2_pr2_id)} className="textTip">{shopModelArr.content.buy_name}</div>
+                        <div className="hotImgBottom">
+                            <div className="bottomImg">
+                                <div className="bottomImgLeft">
+                                    <div className="marginBot">
+                                        <img onClick={() => this.goToGoods(shopModelArr.content.sort1_pr3_id)} src={shopModelArr.picurl[4]} alt=""/>
+                                        <div>
+                                            <div>佛挡杀</div>
+                                            <div>
+                                                <span>453</span>
+                                                <span>54635</span>
+                                            </div>
                                         </div>
                                     </div>
+                                </div>
+                                {/* <div className="bottomImgRight fl">
+                                        <img onClick={() => this.goToGoods(shopModelArr.content.sort1_pr3_id)} src={shopModelArr.picurl[6]} alt=""/>
+                                    </div> */}
+                                <div className="bottomImgLeft">
+                                    <div className="marginBot">
+                                        <img onClick={() => this.goToGoods(shopModelArr.content.sort1_pr3_id)} src={shopModelArr.picurl[4]} alt=""/>
+                                        <div>
+                                            <div>佛挡杀</div>
+                                            <div>
+                                                <span>453</span>
+                                                <span>54635</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="bottomImgLeft">
+                                    <div className="marginBot">
+                                        <img onClick={() => this.goToGoods(shopModelArr.content.sort1_pr3_id)} src={shopModelArr.picurl[4]} alt=""/>
+                                        <div>
+                                            <div>佛挡杀</div>
+                                            <div>
+                                                <span>453</span>
+                                                <span>54635</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="bottomImgLeft">
+                                    <div className="marginBot">
+                                        <img onClick={() => this.goToGoods(shopModelArr.content.sort1_pr3_id)} src={shopModelArr.picurl[4]} alt=""/>
+                                        <div>
+                                            <div>佛挡杀</div>
+                                            <div>
+                                                <span>453</span>
+                                                <span>54635</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {/* <div className="priceInfo">
+                                    <p>{shopModelArr.content.sort1_pr3_title1}</p>
+                                    <strong className="shopPeiceSmall">{shopModelArr.content.sort1_pr3_title2}
+                                        <span>{shopModelArr.content.sort1_pr3_title3}</span>
+                                    </strong>
+                                    <div onClick={() => this.goToGoods(shopModelArr.content.sort1_pr3_id)} className="textTip fr">{shopModelArr.content.buy_name}</div>
+                                </div> */}
+                        </div>
+                        <div className="newImgShow">
+                            <div className="newImgBottom">
+                                <img onClick={() => this.goToGoods(shopModelArr.content.sort2_pr3_id)} src={shopModelArr.picurl[10]} alt=""/>
+                                <div className="priceInfo">
+                                    <p>{shopModelArr.content.sort2_pr3_title1}</p>
+                                    <strong className="shopPeiceSmall">{shopModelArr.content.sort2_pr3_title2}<span>{shopModelArr.content.sort2_pr3_title3}</span></strong>
+                                    {/* <div onClick={() => this.goToGoods(shopModelArr.content.sort2_pr3_id)} className="textTip fr">{shopModelArr.content.buy_name}</div> */}
                                 </div>
                             </div>
                             <div className="newImgBottom">
@@ -96,7 +144,23 @@ class ShopHomeIndex extends React.PureComponent {
                                 <div className="priceInfo">
                                     <p>{shopModelArr.content.sort2_pr3_title1}</p>
                                     <strong className="shopPeiceSmall">{shopModelArr.content.sort2_pr3_title2}<span>{shopModelArr.content.sort2_pr3_title3}</span></strong>
-                                    <div onClick={() => this.goToGoods(shopModelArr.content.sort2_pr3_id)} className="textTip fr">{shopModelArr.content.buy_name}</div>
+                                    {/* <div onClick={() => this.goToGoods(shopModelArr.content.sort2_pr3_id)} className="textTip fr">{shopModelArr.content.buy_name}</div> */}
+                                </div>
+                            </div>
+                            <div className="newImgBottom">
+                                <img onClick={() => this.goToGoods(shopModelArr.content.sort2_pr3_id)} src={shopModelArr.picurl[10]} alt=""/>
+                                <div className="priceInfo">
+                                    <p>{shopModelArr.content.sort2_pr3_title1}</p>
+                                    <strong className="shopPeiceSmall">{shopModelArr.content.sort2_pr3_title2}<span>{shopModelArr.content.sort2_pr3_title3}</span></strong>
+                                    {/* <div onClick={() => this.goToGoods(shopModelArr.content.sort2_pr3_id)} className="textTip fr">{shopModelArr.content.buy_name}</div> */}
+                                </div>
+                            </div>
+                            <div className="newImgBottom">
+                                <img onClick={() => this.goToGoods(shopModelArr.content.sort2_pr3_id)} src={shopModelArr.picurl[10]} alt=""/>
+                                <div className="priceInfo">
+                                    <p>{shopModelArr.content.sort2_pr3_title1}</p>
+                                    <strong className="shopPeiceSmall">{shopModelArr.content.sort2_pr3_title2}<span>{shopModelArr.content.sort2_pr3_title3}</span></strong>
+                                    {/* <div onClick={() => this.goToGoods(shopModelArr.content.sort2_pr3_id)} className="textTip fr">{shopModelArr.content.buy_name}</div> */}
                                 </div>
                             </div>
                         </div>
