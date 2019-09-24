@@ -106,7 +106,9 @@ class GoodsDetail extends BaseComponent {
     componentWillReceiveProps(nextProps, value) { //路由跳转时的判断，id有变化就请求
         if (this.state.goodId !== decodeURI(getUrlParam('id', encodeURI(nextProps.location.search)))) {
             this.setState({
-                goodId: decodeURI(getUrlParam('id', encodeURI(nextProps.location.search)))
+                goodId: decodeURI(getUrlParam('id', encodeURI(nextProps.location.search))),
+                selectType: '',
+                ids: []
             }, () => {
                 this.init();
             });
@@ -544,6 +546,7 @@ class GoodsDetail extends BaseComponent {
             picPath, goodsDetail, shop, recommend, evaluate, allState, collect,
             goodsAttr, stocks, shopAddress, lineStatus, lineText, pickType, selectType
         } = this.state;
+        console.log(picPath[0], '肯德基康师傅');
         const renderCount = (
             <List>
                 <List.Item

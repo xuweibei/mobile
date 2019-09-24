@@ -126,7 +126,7 @@ class ShopHome extends BaseComponent {
     };
 
     render() {
-        const {setTextNum, shopModelArr, show} = this.props;
+        const {shopModelArr, show} = this.props;
         const {shopInfo, starsArr, half, visible} = this.state;
         return (
             show ? '' : (
@@ -163,11 +163,14 @@ class ShopHome extends BaseComponent {
                                     {
                                         half && <div className="icon icon-ban"/>
                                     }
+                                    {
+                                        shopInfo && shopInfo.shoper_open_status === '0' && <span className="reatIng">休息中</span>
+                                    }
                                     {/* <span style={{color: '#FFCC00'}}>{shopInfo.shop_mark}分</span> */}
                                 </div>
                                 <div className="home-text">
                                     <span className="text">{shopInfo && shopInfo.shopName}</span>
-                                    <span className="text-num">人均消费 ￥{setTextNum}</span>
+                                    <span className="text-num">人均消费 ￥{shopInfo && shopInfo.conper}元</span>
                                 </div>
                             </div>
                             {

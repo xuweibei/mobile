@@ -33,7 +33,7 @@ const data = [
 
 class ShopHomeIndexTwo extends React.PureComponent {
     static propTypes = {
-        shopModelArr: PropTypes.array.isRequired
+        shopModelArr: PropTypes.object.isRequired
     };
 
     state = {
@@ -172,6 +172,7 @@ class ShopHomeIndexTwo extends React.PureComponent {
                                         infinite
                                     >
                                         {shopModelArr && shopModelArr.banner && shopModelArr.banner.length > 0 && shopModelArr.banner.map(item  => (
+                                        // {shopModelArr.banner && shopModelArr.banner.map(item  => (
                                             <div
                                                 className="hotSellImgItem fl"
                                                 key={item}

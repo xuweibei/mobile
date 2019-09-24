@@ -86,6 +86,7 @@ class ShopIndex extends BaseComponent {
                             <AppNavBar
                                 title="我要开店"
                             />
+                            <div className="license"/>
                             <h2 className="select-title">您是否有营业执照?</h2>
                             <div className="button-box">
                                 <Button type="primary" onClick={() => this.checkPath('has')}>我有营业执照</Button>

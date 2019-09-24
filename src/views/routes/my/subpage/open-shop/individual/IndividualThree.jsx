@@ -3,7 +3,7 @@
 
 import React from 'react';
 import './IndividualThree.less';
-import {List, InputItem, ImagePicker, WingBlank, Radio, Flex, DatePicker} from 'antd-mobile';
+import {List, InputItem, ImagePicker, WingBlank, Flex} from 'antd-mobile';
 import {createForm} from 'rc-form';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import IndividualFour from './IndividualFour';
@@ -11,12 +11,12 @@ import IndividualFour from './IndividualFour';
 const {urlCfg} = Configs;
 const {dealImage, showInfo, native, validator} = Utils;
 const {MESSAGE: {Form, Feedback}} = Constants;
-const RadioItem = Radio.RadioItem;
+// const RadioItem = Radio.RadioItem;
 const hybrid = process.env.NATIVE;
-const data = [
-    {value: 1, label: '是'},
-    {value: 0, label: '否'}
-];
+// const data = [
+//     {value: 1, label: '是'},
+//     {value: 0, label: '否'}
+// ];
 class IndividualThree extends BaseComponent {
     state ={
         file: [], //营业执照
@@ -40,14 +40,10 @@ class IndividualThree extends BaseComponent {
             if (res.status === 0 && res.data.length !== 0) {
                 const {flagArr} = this.state;
                 const arr = flagArr;
-                let shopLicExp = '';
-                if (res.data.shop_lic_exp) {
-                    shopLicExp = new Date(res.data.shop_lic_exp);
-                }
                 if (res.data.pics[2]) {
                     const file = [];
                     arr[0] = true;
-                    file.push({url: res.data.pics[3]});
+                    file.push({url: res.data.pics[2]});
                     this.setState({
                         file,
                         flagArr: arr
@@ -75,19 +71,19 @@ class IndividualThree extends BaseComponent {
                     threeInOne: res.data.three_in_one,
                     value: Number(res.data.three_in_one),
                     shopLic: res.data.shop_lic,
-                    shopLicExp
+                    shopLicExp: res.data.shop_lic_exp
                 });
             }
         });
     };
 
     //设置是否三证合一
-    setThreeInOne = (index) => {
-        this.setState(() => ({
-            threeInOne: index,
-            value: index
-        }));
-    };
+    // setThreeInOne = (index) => {
+    //     this.setState(() => ({
+    //         threeInOne: index,
+    //         value: index
+    //     }));
+    // };
 
     //获取图片信息
     onChange = (files, type) => {
@@ -124,7 +120,7 @@ class IndividualThree extends BaseComponent {
             dealImage(file, 800, imgD => {
                 imgBD = imgD;
             });
-            setTimeout(() => {
+            const timerId = setTimeout(() => {
                 if (imgS && imgBD) {
                     this.fetch(urlCfg.postIDcard, {
                         data: {
@@ -141,6 +137,15 @@ class IndividualThree extends BaseComponent {
                                     flagArr: arr
                                 };
                             });
+                            if (res.data) {
+                                if (res.data.hasOwnProperty('reg_num')) {
+                                    this.setState({
+                                        shopLic: res.data.reg_num,
+                                        shopLicExp: res.data.exp
+                                    });
+                                }
+                            }
+                            clearTimeout(timerId);
                         }
                     });
                 }
@@ -296,7 +301,7 @@ class IndividualThree extends BaseComponent {
     editModalMain = () => {
         const {form: {getFieldDecorator}} = this.props;
         const steps = ['填写店铺信息', '填写开店人信息', '填写工商信息', '绑定银行卡'];
-        const {value, file, file2, file3, shopLicExp, shopLic} = this.state;
+        const {file, file2, file3, shopLicExp, shopLic} = this.state;
         return (
             <div>
                 <AppNavBar goBackModal={this.props.goBack} rightExplain title="个体工商户信息"/>
@@ -360,7 +365,7 @@ class IndividualThree extends BaseComponent {
                             </div>
                             <div className="margin">
                                 <List>
-                                    <div className="merchant-state">
+                                    {/* <div className="merchant-state">
                                         <span className="state-left">是否三证合一</span>
                                         {
                                             getFieldDecorator('threeInOne', {
@@ -379,7 +384,7 @@ class IndividualThree extends BaseComponent {
                                                 </span>
                                             )
                                         }
-                                    </div>
+                                    </div> */}
                                     {
                                         getFieldDecorator('shopLic', {
                                             initialValue: shopLic,
@@ -390,7 +395,8 @@ class IndividualThree extends BaseComponent {
                                         })(
                                             <InputItem
                                                 clear
-                                                placeholder="请输入"
+                                                disabled
+                                                placeholder="统一社会信用代码"
                                                 // onChange={(val) => this.setShopLic(val)}
                                             >统一社会信用代码
                                             </InputItem>
@@ -404,16 +410,12 @@ class IndividualThree extends BaseComponent {
                                             ],
                                             validateTrigger: 'submit'//校验值的时机
                                         })(
-                                            <DatePicker
-                                                className="date"
-                                                // disabled={disabled}
-                                                mode="date"
-                                                title="选择有效期"
-                                                format="YYYY-MM-DD"
-                                                // onChange={date => this.dateChange(date)}
-                                            >
-                                                <List.Item arrow="horizontal">营业执照有效期</List.Item>
-                                            </DatePicker>
+                                            <InputItem
+                                                clear
+                                                disabled
+                                                placeholder="营业执照有效期"
+                                            >营业执照有效期
+                                            </InputItem>
                                         )
                                     }
                                 </List>

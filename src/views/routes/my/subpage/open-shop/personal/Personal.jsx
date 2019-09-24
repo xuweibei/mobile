@@ -104,7 +104,7 @@ class Personal extends BaseComponent {
                     openTime: res.data.open_time,
                     closeTime: res.data.close_time,
                     discount: parseInt(res.data.discount, 10),
-                    shopStatus: Number(res.data.typepr_path),
+                    shopStatus: Number(res.data.cer_type) + 1,
                     cshPhone: res.data.csh_phone,
                     linkName: res.data.linkName,
                     phone: res.data.phone
@@ -114,6 +114,7 @@ class Personal extends BaseComponent {
     };
 
     onChecked = (value) => {
+        console.log(value);
         this.setState({
             shopStatus: value
         }, () => {
@@ -213,12 +214,27 @@ class Personal extends BaseComponent {
 
     //校验客服电话
     checkCasPhone = (rule, value, callback) => {
-        const myCshPhone = validator.wipeOut(value);
-        if (!validator.isEmpty(myCshPhone, Form.No_cshPhone, callback))  return;
-        if (!validator.checkPhone(myCshPhone)) {
-            showInfo(Form.No_checkPhone, 1);
+        if (!value) {
+            showInfo('请输入电话号码');
             return;
         }
+        value = value.replace('-', '');
+        const res = /^[0-9]*$/;
+        const str = res.test(value);
+        if (!str) {
+            showInfo('电话必须为纯数字');
+            return;
+        }
+        if (value.length > 12 || value.length < 4) {
+            showInfo('号码长度不对');
+            return;
+        }
+        const myCshPhone = validator.wipeOut(value);
+        if (!validator.isEmpty(myCshPhone, Form.No_cshPhone, callback))  return;
+        // if (!validator.checkPhone(myCshPhone)) {
+        //     showInfo(Form.No_checkPhone, 1);
+        //     return;
+        // }
         callback();
     };
 
@@ -253,7 +269,7 @@ class Personal extends BaseComponent {
                             shopName: val.shopName,
                             linkName: val.linkName,
                             phone: validator.wipeOut(val.phone),
-                            csh_phone: validator.wipeOut(val.casPhone),
+                            csh_phone: validator.wipeOut(val.casPhone).replace('-', ''),
                             discount: parseFloat(val.discount),
                             pca: pca,
                             pick_up_self: 1,
@@ -596,9 +612,9 @@ class Personal extends BaseComponent {
                             })(
                                 <InputItem
                                     // value={cshPhone}
+                                    maxLength={13}
                                     clear
                                     placeholder="请输入客服电话"
-                                    type="phone"
                                 >客服电话
                                 </InputItem>
                             )

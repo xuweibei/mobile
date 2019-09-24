@@ -1,6 +1,6 @@
 /**我要开店---个体页面 */
 import React from 'react';
-import {List, InputItem, ImagePicker, WingBlank, Flex, DatePicker} from 'antd-mobile';
+import {List, InputItem, ImagePicker, WingBlank, Flex} from 'antd-mobile';
 import {createForm} from 'rc-form';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import IndividualThree from './IndividualThree';
@@ -46,10 +46,9 @@ class IndividualTwo extends BaseComponent {
 
     //设置开店人姓名
     setUserName = (val) => {
-        // FIXME: 没有引用perState，为什么要用函数
-        this.setState(() => ({
+        this.setState({
             userName: val
-        }));
+        });
     };
 
     //获取审核失败返回的数据
@@ -58,10 +57,7 @@ class IndividualTwo extends BaseComponent {
             if (res.status === 0 && res.data.length !== 0) {
                 const {flagArr} = this.state;
                 const arr = flagArr;
-                let validDate = '';
-                if (res.data.idcard_exp) {
-                    validDate =  new Date(res.data.idcard_exp);
-                }
+
                 if (res.data.pics[0]) {
                     const file = [];
                     arr[0] = true;
@@ -92,7 +88,7 @@ class IndividualTwo extends BaseComponent {
                 this.setState({
                     userName: res.data.mastar_name,
                     idCard: res.data.idcard,
-                    validDate
+                    validDate: res.data.idcard_exp
                 });
             }
         });
@@ -134,7 +130,7 @@ class IndividualTwo extends BaseComponent {
                 imgBD = imgD;
             });
             // FIXME: 为什么要用setTimeout， 用了后有没有清除
-            setTimeout(() => {
+            const timerId = setTimeout(() => {
                 if (imgS && imgBD) {
                     this.fetch(urlCfg.postIDcard, {data: {
                         ix: ix,
@@ -149,7 +145,20 @@ class IndividualTwo extends BaseComponent {
                                     flagArr: arr
                                 };
                             });
+                            if (res.data) {
+                                if (res.data.hasOwnProperty('name')) {
+                                    this.setState({
+                                        userName: res.data.name,
+                                        idCard: res.data.id_num
+                                    });
+                                } else if (res.data.hasOwnProperty('exp')) {
+                                    this.setState({
+                                        validDate: res.data.exp
+                                    });
+                                }
+                            }
                             showInfo(Feedback.upload_Success);
+                            clearTimeout(timerId);
                         } else {
                             showInfo(Feedback.upload_failed);
                         }
@@ -498,6 +507,7 @@ class IndividualTwo extends BaseComponent {
                                         })(
                                             <InputItem
                                                 clear
+                                                disabled
                                                 placeholder="请输入真实姓名"
                                                 // onChange={(val) => this.setUserName(val)}
                                             >姓名
@@ -515,6 +525,7 @@ class IndividualTwo extends BaseComponent {
                                             <InputItem
                                                 maxLength={18}
                                                 clear
+                                                disabled
                                                 placeholder="请输入身份证号"
                                                 // onChange={(val) => this.setIdCard(val)}
                                             >身份证号
@@ -529,15 +540,14 @@ class IndividualTwo extends BaseComponent {
                                             ],
                                             validateTrigger: 'submit'//校验值的时机
                                         })(
-                                            <DatePicker
-                                                className="date"
-                                                mode="date"
-                                                title="选择有效期"
-                                                format="YYYY-MM-DD"
-                                                // onChange={date => this.dateChange(date)}
-                                            >
-                                                <List.Item arrow="horizontal">身份证有效期</List.Item>
-                                            </DatePicker>
+                                            <InputItem
+                                                maxLength={18}
+                                                clear
+                                                disabled
+                                                placeholder="身份证有效期"
+                                                // onChange={(val) => this.setIdCard(val)}
+                                            >身份证有效期
+                                            </InputItem>
                                         )
                                     }
                                 </List>
