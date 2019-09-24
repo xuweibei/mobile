@@ -86,7 +86,7 @@ class CategoryListView extends BaseComponent {
 
     // 初始获取获取分类列表数据
     getCategoryList = (num, noLoading) => {
-        const {currentIndex, showStatus, id} = this.state;
+        const {currentIndex, showStatus} = this.state;
         if (num) {
             this.setState({
                 initStatus: true
@@ -306,7 +306,7 @@ class CategoryListView extends BaseComponent {
                         <div className="price">
                             {!shopId && (
                                 <div className="price-left">
-                                    <span className="enter-left">店铺名称{item.shopName}</span>
+                                    <span className="enter-left">{item.shopName}</span>
                                     <span
                                         className="enter-right"
                                         onClick={(e) => this.goToShop(e, item.shop_id)}

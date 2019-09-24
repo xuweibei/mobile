@@ -149,7 +149,7 @@ export function wipeOut(str) {
 
 //检验[min-max]个中文字符
 export function checkRange(min, max, value) {
-    const re = new RegExp(`[\u4E00-\u9FA5]{${min},${max}}$`, 'g');
+    const re = new RegExp(`^[\u4E00-\u9FA5]{${min},${max}}$`);
     return re.test(value);
 }
 
@@ -182,4 +182,8 @@ export function isEmpty(value, message, callback) {
 export function showMessage(message, callback) {
     callback(VERIFY_FAILED);
     showInfo(message);
+}
+export function checkShopName(value) {
+    const reg = /^[0-9a-zA-Z\u4e00-\u9fa5]+$/;
+    return reg.test(value);
 }

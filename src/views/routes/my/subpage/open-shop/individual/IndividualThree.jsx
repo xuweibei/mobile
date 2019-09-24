@@ -68,8 +68,8 @@ class IndividualThree extends BaseComponent {
                     });
                 }
                 this.setState({
-                    threeInOne: res.data.three_in_one,
-                    value: Number(res.data.three_in_one),
+                    // threeInOne: res.data.three_in_one,
+                    // value: Number(res.data.three_in_one),
                     shopLic: res.data.shop_lic,
                     shopLicExp: res.data.shop_lic_exp
                 });
@@ -111,6 +111,7 @@ class IndividualThree extends BaseComponent {
 
     //图片转换和上传
     transImg = (file, ix, index) => {
+        console.log(index);
         if (file) {
             let imgBD = '';
             let imgS = '';
@@ -137,13 +138,11 @@ class IndividualThree extends BaseComponent {
                                     flagArr: arr
                                 };
                             });
-                            if (res.data) {
-                                if (res.data.hasOwnProperty('reg_num')) {
-                                    this.setState({
-                                        shopLic: res.data.reg_num,
-                                        shopLicExp: res.data.exp
-                                    });
-                                }
+                            if (res.data.hasOwnProperty('reg_num') && res.data.hasOwnProperty('reg_num')) {
+                                this.setState({
+                                    shopLic: res.data.reg_num,
+                                    shopLicExp: res.data.exp
+                                });
                             }
                             clearTimeout(timerId);
                         }
@@ -212,18 +211,17 @@ class IndividualThree extends BaseComponent {
 
     //原生点击删除图片
     deleteImg = (type, id) => {
-        const {file, file2, file3} = this.state;
         if (type === 'license') {
             this.setState({
-                file: file.filter(item => item.id !== id)
+                file: []
             });
         } else if (type === 'doorTop') {
             this.setState({
-                file2: file2.filter(item => item.id !== id)
+                file2: []
             });
         } else {
             this.setState({
-                file3: file3.filter(item => item.id !== id)
+                file3: []
             });
         }
     };
@@ -330,7 +328,7 @@ class IndividualThree extends BaseComponent {
                                                                 file && file.map(item => (
                                                                     <li id={item.id}>
                                                                         <span className="delete-icon" onClick={() => this.deleteImg('license', item.id)}>×</span>
-                                                                        <img src={item.imgS}/>
+                                                                        <img src={item.imgS || item.url}/>
                                                                     </li>
                                                                 ))
                                                             }
@@ -434,7 +432,7 @@ class IndividualThree extends BaseComponent {
                                                             file2 && file2.map(item => (
                                                                 <li id={item.id}>
                                                                     <span className="delete-icon" onClick={() => this.deleteImg('doorTop', item.id)}>×</span>
-                                                                    <img src={item.imgS}/>
+                                                                    <img src={item.imgS || item.url}/>
                                                                 </li>
                                                             ))
                                                         }
@@ -480,7 +478,7 @@ class IndividualThree extends BaseComponent {
                                                         file3 && file3.map(item => (
                                                             <li id={item.id}>
                                                                 <span className="delete-icon" onClick={() => this.deleteImg('shopInside', item.id)}>×</span>
-                                                                <img src={item.imgS}/>
+                                                                <img src={item.imgS || item.url}/>
                                                             </li>
                                                         ))
                                                     }

@@ -118,7 +118,7 @@ class BankCardDetail extends BaseComponent {
 
     //校验姓名
     checkName=(rule, value, callback) => {
-        if (!validator.checkRange(2, 20, value)) {
+        if (!validator.checkRange(2, 8, value)) {
             validator.showMessage(Form.No_Name, callback);
             return;
         }
@@ -136,7 +136,10 @@ class BankCardDetail extends BaseComponent {
 
     //验证开户银行
     checkBank = (rule, value, callback) => {
-        console.log(validator.isEmpty(value, Form.No_Bank, callback));
+        if (!value) {
+            showInfo(Form.No_Bank);
+            return;
+        }
         if (!validator.isEmpty(value, Form.No_Bank, callback)) return;
         callback();
     };
@@ -157,6 +160,10 @@ class BankCardDetail extends BaseComponent {
 
     //验证手机号
     checkPhone = (rule, value, callback) => {
+        if (!value) {
+            showInfo(Form.No_Phone);
+            return;
+        }
         if (!validator.isEmpty(value, Form.No_Phone, callback)) return;
         if (!validator.checkPhone(validator.wipeOut(value))) {
             validator.showMessage(Form.Error_Phone, callback);
@@ -167,6 +174,10 @@ class BankCardDetail extends BaseComponent {
 
     //检验验证码
     checkPhoneCode = (rule, value, callback) => {
+        if (!value) {
+            showInfo(Form.No_Naptcha);
+            return;
+        }
         if (!validator.isEmpty(value, Form.No_Naptcha, callback)) return;
         if (value.length < 4) {
             validator.showMessage(Form.Error_Captcha, callback);
@@ -252,6 +263,7 @@ class BankCardDetail extends BaseComponent {
                              })(
                                  <InputItem
                                      clear
+                                     maxLength={18}
                                      editable={!userInfo.idcard}
                                      type="text"
                                      placeholder="请输入户主身份证号"
