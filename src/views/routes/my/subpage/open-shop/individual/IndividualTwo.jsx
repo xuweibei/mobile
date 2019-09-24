@@ -4,6 +4,7 @@ import {List, InputItem, ImagePicker, WingBlank, Flex} from 'antd-mobile';
 import {createForm} from 'rc-form';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import IndividualThree from './IndividualThree';
+import {showFail} from '../../../../../../utils/mixin';
 import './IndividualTwo.less';
 
 const {dealImage, showInfo, validator, native} = Utils;
@@ -96,6 +97,7 @@ class IndividualTwo extends BaseComponent {
 
     //获取图片信息
     onChange = (files, type) => {
+        console.log('object');
         if (type === 'forward') {
             this.setState(() => ({
                 file: files
@@ -145,19 +147,33 @@ class IndividualTwo extends BaseComponent {
                                     flagArr: arr
                                 };
                             });
-                            if (res.data) {
-                                if (res.data.hasOwnProperty('name')) {
+                            if (res.data.pic_info && res.data.pic_info.status === 0) {
+                                if (res.data.name && res.data.id_num) {
                                     this.setState({
                                         userName: res.data.name,
                                         idCard: res.data.id_num
                                     });
-                                } else if (res.data.hasOwnProperty('exp')) {
+                                } else if (res.data.exp) {
                                     this.setState({
                                         validDate: res.data.exp
                                     });
                                 }
+                                showInfo(Form.Success_Lic_Info);
+                            } else if (res.data.pic_info && res.data.pic_info.status === 1) {
+                                if (ix === 0) {
+                                    this.setState({
+                                        file: [],
+                                        userName: '',
+                                        idCard: ''
+                                    });
+                                } else if (ix === 1) {
+                                    this.setState({
+                                        file2: [],
+                                        validDate: ''
+                                    });
+                                }
+                                showFail(Form.Fail_Lic_Info);
                             }
-                            showInfo(Feedback.upload_Success);
                             clearTimeout(timerId);
                         } else {
                             showInfo(Feedback.upload_failed);

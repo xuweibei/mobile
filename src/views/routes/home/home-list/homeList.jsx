@@ -220,7 +220,6 @@ export default class HomeList extends BaseComponent {
         }
     };
 
-     // FIXME: 上拉加载更多逻辑要优化 完成
      //热销商品上拉加载
      goodReached = () => {
          const {currentIndex} = this.state;
@@ -290,7 +289,10 @@ export default class HomeList extends BaseComponent {
                 <div className="hot-content">
                     <p>{item.title}</p>
                     <span className="tally">记账量：{item.deposit}</span>
-                    <div className="original">￥{item.price_ori}</div>
+                    {
+                        item.price_ori !== '0.00' && (<div className="original">￥{item.price_ori}</div>)
+
+                    }
                     <div className="current">
                         <span>￥<span>{item.price}</span></span>
                         <span>

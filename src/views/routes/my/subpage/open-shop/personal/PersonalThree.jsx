@@ -64,7 +64,7 @@ class PersonalThree extends BaseComponent {
                 }
                 this.setState({
                     sValue: arr2
-                }, () => console.log(this.state.sValue));
+                });
                 if (res.data.pics[3]) {
                     const file2 = [];
                     arr[1] = true;
@@ -250,6 +250,7 @@ class PersonalThree extends BaseComponent {
         const steps = ['填写店铺信息', '填写开店人信息', '填写工商信息', '绑定银行卡'];
         const {file1, file2, file3, file4} = this.state;
         const {that} = this.props;
+        console.log(this.state.sValue);
         return (
             <div data-component="personal-three" data-role="page" className="personal-three">
                 <AppNavBar rightExplain title="开店人信息" goBackModal={() => this.props.goBack('two')}/>
@@ -269,10 +270,8 @@ class PersonalThree extends BaseComponent {
                                 data={seasons}
                                 value={this.state.sValue}
                                 extra="请选择照片类型"
-                                cols="1"
-                                onChange={v => this.setState({sValue: v})}
+                                // onChange={v => this.setState({sValue: v})}
                                 onOk={v => this.setState({sValue: v})}
-                                // title="Areas"
                             >
                                 <List.Item arrow="horizontal">商家证明照片</List.Item>
                             </Picker>
