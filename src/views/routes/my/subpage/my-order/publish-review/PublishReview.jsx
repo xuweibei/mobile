@@ -7,7 +7,7 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 import './PublishReview.less';
 
 const {getUrlParam, dealImage, showInfo, showSuccess, appHistory, native} = Utils;
-const {MESSAGE: {Form, Feedback}} = Constants;
+const {MESSAGE: {Form, Feedback}, IMGSIZE} = Constants;
 const {urlCfg} = Configs;
 const hybrid = process.env.NATIVE;
 export default class PublishReview extends BaseComponent {
@@ -36,6 +36,14 @@ export default class PublishReview extends BaseComponent {
 
     //图片选择
     onChange = (files) => {
+        //限制图片上传大小
+        files = files.filter(item => {
+            if (item.file.size < IMGSIZE) {
+                return item;
+            }
+            return showInfo(Feedback.DOT_TWOM);
+        });
+
         const fileArr = files.map((imgB) => {
             const objTemp = {
                 url: '',
@@ -186,6 +194,7 @@ export default class PublishReview extends BaseComponent {
                                         onChange={this.onChange}
                                         selectable={files.length < 9}
                                         multiple
+                                        onAddImageClick={(data, value) => true}
                                     />
                                 )}
                         </WingBlank>

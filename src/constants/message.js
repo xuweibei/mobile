@@ -23,7 +23,7 @@ export const MESSAGE = {
     },
 
     Form: {
-
+        ShopName_Err: '店铺名称由2-30位字符组成',
         No_Captcha: '请输入验证码',
         No_Content: '您还没有输入任何内容',
         No_Data: '您还没有选择任何数据',
@@ -73,7 +73,10 @@ export const MESSAGE = {
         Error_PayPassword: '密码必须为纯数字',
         // Error_PayPassword: '',
         // Error_Password: '密码错误',
-
+        Fail_Lic_Info: '图片信息识别失败,请重新上传!',
+        Success_Lic_Info: '图片信息识别成功',
+        // Fail_People_Info: '营业执照信息识别失败,请重新上传!',
+        // Fail_Date_Info: '营业执照信息识别失败,请重新上传!',
         Error_Withdraw: '提现金额无效',
         Error_Position: '获取当前位置失败',
         // Error_Message: '您输入的信息有误',
@@ -99,6 +102,8 @@ export const MESSAGE = {
         Error_UserName: '请输入正确的卡主姓名',
         Error_ID: '请输入18位公民身份证号',
         Error_Bank: '银行卡格式不对',
+        Bank_None: '请选择开户银行',
+        Bank_Card_Num: '请输入银行卡号',
         Error_ShopName: '店铺名称必须是2-10位中文',
         Error_Phone: '请输入11位电话号码',
         Error_Captcha: '验证码错误',
@@ -158,6 +163,7 @@ export const MESSAGE = {
         No_INFO: '请先验证信息'
     },
     Feedback: {
+        DOT_TWOM: '上传图片不能超过2M',
         Waiting: '商家正在加急为您处理中',
         // Add_Shopping_Cart_Success: '添加成功，在购物车等着您',
         Empty_Success: '清空成功',

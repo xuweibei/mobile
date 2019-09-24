@@ -3,6 +3,7 @@ const hrefCfg = {
     // 测境
     dev: {
         apiPath: 'https://csapi.zzha.vip/mall',
+        apiShopPath: 'https://csapi.zzha.vip/rui',
         scan: 'https://csapp.zzha.vip/mall.html#'
     },
     // 预生产环境

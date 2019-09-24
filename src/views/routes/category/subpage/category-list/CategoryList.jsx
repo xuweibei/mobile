@@ -25,10 +25,25 @@ class CategoryList extends BaseComponent {
         pageCount: 0, //总共页数
         pulldownMsg: '',
         keywords1: '',
-        textStatus: false
+        textStatus: false,
+        shopId: parseInt(getUrlParam('id', this.props.location.search), 10) || ''
     };
 
     componentWillMount() {
+        this.init();
+    }
+
+    componentWillReceiveProps(nextProps, value) { //路由跳转时的判断，id有变化就请求
+        if (this.state.shopId !== decodeURI(getUrlParam('id', encodeURI(nextProps.location.search)))) {
+            this.setState({
+                shopId: decodeURI(getUrlParam('id', encodeURI(nextProps.location.search))) === 'null' ? '' : decodeURI(getUrlParam('id', encodeURI(nextProps.location.search)))
+            }, () => {
+                this.init();
+            });
+        }
+    }
+
+    init = () => {
         const title = decodeURI(getUrlParam('title', encodeURI(this.props.location.search)));
         const flag = decodeURI(getUrlParam('flag', encodeURI(this.props.location.search)));
         const keywords = decodeURI(getUrlParam('keywords', encodeURI(this.props.location.search)));
@@ -102,7 +117,7 @@ class CategoryList extends BaseComponent {
     };
 
     render() {
-        const {text, changeNav, textStatus} = this.state;
+        const {text, changeNav, textStatus, shopId} = this.state;
         return (
             <div
                 data-component="classify-list"
@@ -136,7 +151,7 @@ class CategoryList extends BaseComponent {
                     )
                 }
                 <CategoryListView
-                    id={parseInt(getUrlParam('id', this.props.location.search), 10)}
+                    id={shopId}
                     that={this}
                     onRef={this.onRef}
                     keywords={this.state.keywords}

@@ -197,8 +197,11 @@ class Edit extends BaseComponent {
     bindingWeChat = () => {
         const {getUserInfo} = this.props;
         native('bindWxCallback').then(res => {
+            native('goH5', {'': ''});
             showInfo(Feedback.wxbind_Success);
             getUserInfo();
+        }).catch(err => {
+            native('goH5', {'': ''});
         });
     };
 
@@ -209,7 +212,7 @@ class Edit extends BaseComponent {
 
     //登出账号
     signOut = () => {
-        const {removeUserInfo, setUserToken, setUseType, delMyInfo} = this.props;
+        const {removeUserInfo, setUserToken, setUseType, delMyInfo, removebankInfo, removeNickNameInfo, removeAressInfo, removeRegionInfo} = this.props;
         if (hybird) {
             //重定向到原生登录页
             native('loginoutCallback');
@@ -222,7 +225,11 @@ class Edit extends BaseComponent {
         removeValue(LOCALSTORAGE.USER_TOKEN);
         setUserToken('');
         //清除当前页面redux
-        removeUserInfo();
+        removeUserInfo('');
+        removebankInfo();
+        removeNickNameInfo('');
+        removeAressInfo();
+        removeRegionInfo('');
         //清除我的页面redux
         delMyInfo();
     };
@@ -274,7 +281,6 @@ class Edit extends BaseComponent {
                             onClick={this.changeTheAvatar}
                         />
                         {/* <div className="my-name">{nickname}</div> ff说是将昵称去掉，自己先留着 */}
-                        <div>跟换头像</div>
                         <div>UID:{userInfo && userInfo.no}</div>
                     </div>
                 </div>
@@ -308,6 +314,10 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
     getUserInfo: actionCreator.getUserInfo,
     removeUserInfo: actionCreator.removeUserInfo,
+    removebankInfo: actionCreator.removebankInfo,
+    removeNickNameInfo: actionCreator.removeNickNameInfo,
+    removeAressInfo: actionCreator.removeAressInfo,
+    removeRegionInfo: actionCreator.removeRegionInfo,
     delMyInfo: actionCreator.delMyInfo,
     getMyInfo: actionCreator.getMyInfo,
     setUserToken: baseActionCreator.setUserToken,

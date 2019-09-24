@@ -15,6 +15,7 @@ const {appHistory, showInfo, validator} = Utils;
 
 class Area extends BaseComponent {
     state = {
+        height: document.documentElement.clientHeight - (window.isWX ? window.rem * null : window.rem * 1.08), //是微信扣除头部高度
         address: [],
         province: '',
         urban: '',
@@ -24,19 +25,10 @@ class Area extends BaseComponent {
     componentDidMount() {
         const {areaInfo, getArea} = this.props;
         if (!areaInfo) {
+            alert(13);
             getArea();
         }
     }
-
-    getList = () => {
-        this.fetch(urlCfg.settingPageData).subscribe(res => {
-            if (res && res.status === 0) {
-                this.setState({
-                    address: res.data.address
-                });
-            }
-        });
-    };
 
     //  省市县的赋值
     setProvince = str => {
@@ -97,17 +89,17 @@ class Area extends BaseComponent {
     };
 
     render() {
-        const {areaInfo} = this.props;
-        const {getFieldDecorator} = this.props.form;
+        const {height} = this.state;
+        const {areaInfo, form: {getFieldDecorator}} = this.props;
         return (
             <div data-component="regicon" data-role="page" className="regicon">
                 <AppNavBar title="所在区域管理"/>
                 <List className="my-list">
-                    <Item
-                        extra={areaInfo && areaInfo.join('-')}
-                    >当前区域
-                    </Item>
-                    <div className="receiving-reg">
+                    <div style={{height: height}} className="receiving-reg">
+                        <Item
+                            extra={areaInfo && areaInfo.join('-')}
+                        >当前区域
+                        </Item>
                         <InputItem>
                             <div className="area">修改区域</div>
                             {
@@ -126,9 +118,10 @@ class Area extends BaseComponent {
                                 )
                             }
                         </InputItem>
+                        <Button className="button" onClick={this.submit}>确认修改</Button>
                     </div>
+
                 </List>
-                <Button className="button" onClick={this.submit}>确认修改</Button>
             </div>
         );
     }

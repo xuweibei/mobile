@@ -7,7 +7,8 @@ import './InputGrid.less';
 // TODO: 考虑用Immutable数据结构
 class InputGrid extends React.PureComponent {
     static propTypes = {
-        onInputGrid: PropTypes.func.isRequired
+        onInputGrid: PropTypes.func.isRequired,
+        focus: PropTypes.bool.isRequired
     };
 
     state = {
@@ -15,7 +16,14 @@ class InputGrid extends React.PureComponent {
         value: ''
     }
 
+    componentDidMount() {
+        if (this.props.focus) {
+            this.numInput.focus();
+        }
+    }
+
     inputGrid = (e) => {
+        console.log(e, '了水电费进口量');
         const {valueGrid} = this.state;
         const val = e.target.value;
         const str = e.target;
@@ -62,7 +70,7 @@ class InputGrid extends React.PureComponent {
                     <div className="frame-biu-one"/>
                     <div className="frame-biu-one"/>
                 </div>
-                <input className="input-pws" maxLength="6" value={value} type="test" onChange={this.inputGrid} onClick={this.clearInput}/>
+                <input className="input-pws" maxLength="6" value={value} type="test" ref={number => { this.numInput = number }} onChange={this.inputGrid} onClick={this.clearInput}/>
             </div>
         );
     }
