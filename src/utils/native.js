@@ -144,3 +144,10 @@ global.clearCache = function () {
     removeValue(LOCALSTORAGE.USER_TOKEN); // 清除token,localstorage
     store.dispatch(baseActionCreator.setUserToken('')); // 清除redux的userToken
 };
+
+
+//原生跳h5重置历史
+global.restHistory = function () {
+    alert(132);
+    appHistory.reduction();
+};
