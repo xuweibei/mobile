@@ -128,7 +128,7 @@ class BasicInput extends BaseComponent {
     //地址删除
     deleteData = (data) => {
         const that = this;
-        const {showConfirm} = this.props;
+        const {showConfirm, getAddress} = this.props;
         showConfirm({
             title: '确定删除吗?',
             btnTexts: ['取消', '确定'],
@@ -138,6 +138,7 @@ class BasicInput extends BaseComponent {
                     .subscribe(res => {
                         if (res.status === 0) {
                             showSuccess(Feedback.Del_Success);
+                            getAddress();
                             appHistory.push('/address');
                         }
                     });

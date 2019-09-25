@@ -305,8 +305,10 @@ class Edit extends BaseComponent {
 }
 
 const mapStateToProps = state => {
+    const base = state.get('base');
     const EditInfo = state.get('my');
     return {
+        userTypes: base.get('userTypes'),
         userInfo: EditInfo.get('userInfo')
     };
 };
