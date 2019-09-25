@@ -50,13 +50,13 @@ const myOrderIconData = [
 //线下订单模块
 const myOrderSelfData = [
     {
-        text: '已完成',
-        className: 'icon accomplish',
+        text: '未完成',
+        className: 'icon unfinished',
         num: 0
     },
     {
-        text: '未完成',
-        className: 'icon unfinished',
+        text: '已完成',
+        className: 'icon accomplish',
         num: 0
     },
     {
@@ -234,8 +234,8 @@ class My extends BaseComponent {
     //线下订单跳转
     gotoSelfMyOrder=(index) => {
         const url = new Map([
-            [0, '/selfMention/yw'],
-            [1, '/selfMention/ww'],
+            [0, '/selfMention/ww'],
+            [1, '/selfMention/yw'],
             [2, '/selfMention/sh']
         ]);
         appHistory.push(url.get(index));
@@ -245,21 +245,23 @@ class My extends BaseComponent {
     jumpRouter = (url) => {
         if (url === '/selectType') {
             this.fetch(urlCfg.applyForRight).subscribe(res => {
-                if (res) {
+                if (res && res.status === 0) {
                     this.setState({
                         openShopStatus: res.data.status
                     }, () => {
                         const {openShopStatus} = this.state;
+                        console.log(openShopStatus);
                         if (openShopStatus === 9) {
                             appHistory.push(`/openShopPage?shopType=${res.data.shop_type}&auditStatus=${'now'}`);
                         } else if (openShopStatus === 4) {
                             appHistory.push(`/openShopPage?shopType=${res.data.shop_type}&auditStatus=${'filed'}`);
                         } else if (openShopStatus === 3) {
-                            if (res.data.shop_type === 2 || res.data.shop_type === 0) {
-                                appHistory.push(`/personal?shopType=${res.data.shop_type}&auditStatus=${'three'}`);
-                            } else {
-                                appHistory.push(`/individual?shopType=${res.data.shop_type}&auditStatus=${'three'}`);
-                            }
+                            // if (res.data.shop_type === 2 || res.data.shop_type === 0) {
+                            //     appHistory.push(`/personal?shopType=${res.data.shop_type}&auditStatus=${'three'}`);
+                            // } else {
+                            //     appHistory.push(`/individual?shopType=${res.data.shop_type}&auditStatus=${'three'}`);
+                            // }
+                            appHistory.push(`/personal?shopType=${res.data.shop_type}&auditStatus=${''}`);
                         } else if (openShopStatus === 7) {
                             if (res.data.shop_type === 2 || res.data.shop_type === 0) {
                                 appHistory.push(`/personal?shopType=${res.data.shop_type}&auditStatus=${'four'}`);

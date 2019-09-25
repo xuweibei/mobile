@@ -187,3 +187,14 @@ export function checkShopName(value) {
     const reg = /^[0-9a-zA-Z\u4e00-\u9fa5]+$/;
     return reg.test(value);
 }
+//校验纯数字并且位数
+export function checkNum(value, m, n) {
+    const reg = /^\d{m,n}$/;
+    return reg.test(value);
+}
+
+//校验仅包含数字字母和中文
+export function ckeckShopName(value) {
+    const reg = /^[0-9a-zA-Z\u4e00-\u9fa5]+$/;
+    return reg.test(value);
+}

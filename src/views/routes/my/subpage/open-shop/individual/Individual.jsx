@@ -110,7 +110,7 @@ class Individual extends BaseComponent {
                         discount: parseInt(res.data.discount, 10),
                         isExp: Number(res.data.type),
                         value: res.data.type - 1,
-                        pickUpSelf: res.data.pick_up_self,
+                        pickUpSelf: Number(res.data.pick_up_self),
                         values: Number(res.data.pick_up_self),
                         cshPhone: res.data.csh_phone,
                         linkName: res.data.linkName,
@@ -261,12 +261,12 @@ class Individual extends BaseComponent {
     //校验商店名称
     checkShopName = (rule, value, callback) => {
         if (!validator.isEmpty(value, Form.No_StoreName, callback)) return;
-        if (!validator.checkRange(2, 30, value)) {
+        if (!validator.ckeckShopName(value)) {
             validator.showMessage(Form.Error_ShopName, callback);
             return;
         }
-        if (!validator.checkShopName(value)) {
-            validator.showMessage(Form.ShopName_Err, callback);
+        if (value.length < 2 || value.length > 30) {
+            showInfo(Form.Error_ShopName);
             return;
         }
         callback();
@@ -335,10 +335,10 @@ class Individual extends BaseComponent {
     checkCshPhone = (rule, value, callback) => {
         const myCshPhone = validator.wipeOut(value);
         if (!validator.isEmpty(myCshPhone, Form.No_cshPhone, callback)) return;
-        if (!validator.checkPhone(myCshPhone)) {
-            showInfo(Form.Error_Phone);
-            return;
-        }
+        // if (!validator.checkNum(Number(myCshPhone), 3, 11)) {
+        //     showInfo(Form.Error_CasPhone);
+        //     return;
+        // }
         callback();
     };
 
@@ -360,7 +360,7 @@ class Individual extends BaseComponent {
         const myPhone = validator.wipeOut(value);
         if (!validator.isEmpty(myPhone, Form.No_Principal_Phone, callback)) return;
         if (!validator.checkPhone(myPhone)) {
-            showInfo(Form.No_checkPhone);
+            showInfo(Form.Error_Phone);
             return;
         }
         callback();
@@ -596,6 +596,7 @@ class Individual extends BaseComponent {
                             })(
                                 <InputItem
                                     clear
+                                    maxLength={14}
                                     placeholder="请输入客服电话"
                                     type="phone"
                                 >客服电话

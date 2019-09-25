@@ -12,9 +12,12 @@
     }
     .nav-right-login{
         width: auto !important;
-        .home-searchBar-icon{
-            margin-left: 10px !important;
-        }
+        //.home-searchBar-icon{
+        //    margin-left: 10px !important;
+        //    .information-IM:before {
+        //        content: '\E675';
+        //    }
+        //}
     }
     .home-content{
         .aroundBlank();
@@ -57,9 +60,14 @@
                 content: '\E634';
                 font-size: 44px;
             }
+            .information:before {
+                content: '\E675';
+                margin: 0 16px;
+                font-size: @font-size-44;
+            }
             .information:after {
                 content: '\E678';
-                font-size: 44px;
+                font-size: @font-size-44;
             }
         }
         &-fence{

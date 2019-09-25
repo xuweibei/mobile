@@ -153,10 +153,6 @@ class BankCardDetail extends BaseComponent {
 
     //验证手机号
     checkPhone = (rule, value, callback) => {
-        // if (!value) {
-        //     showInfo(Form.No_Phone);
-        //     return;
-        // }
         if (!validator.isEmpty(value, Form.No_Phone, callback)) return;
         if (!validator.checkPhone(validator.wipeOut(value))) {
             validator.showMessage(Form.Error_Phone, callback);

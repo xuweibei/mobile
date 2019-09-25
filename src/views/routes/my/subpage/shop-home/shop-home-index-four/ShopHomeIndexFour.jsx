@@ -124,7 +124,7 @@ class ShopHomeIndexFour extends React.PureComponent {
                         </div>
                         {
                             content && (
-                                <Carousel>
+                                <Carousel className="banner">
                                     {
                                         content.banner.length > 0 ? content.banner.map(item => <img key={item} onClick={() => this.clickOnShow('two')} className={(content.banner.every(value => value.id !== '') && content.banner.every(value => value.url)) ? '' : 'no-edit-model'} src={item.url}/>) : <div className={content.banner.length === 0 ? 'banner-img no-edit-model' : 'banner-img'} onClick={() => this.clickOnShow('two')}/>
                                     }
@@ -132,7 +132,9 @@ class ShopHomeIndexFour extends React.PureComponent {
                             )
                         }
                         <div className="new-box" onClick={() => this.clickOnShow('four')}>
-                            <div className={(picurl && content && picurl[content.sort1_pr1_ix] && content.sort1_pr1_title1 && content.sort1_pr1_title2 && content.sort1_pr1_title3) ? 'new' : 'new no-edit-model'}>
+                            <div className="new-left"/>
+                            <div className={(picurl && content && picurl[content.sort1_pr1_ix] && content.sort1_pr1_title1 && content.sort1_pr1_title2 && content.sort1_pr1_title3) ? 'new-right' : 'new no-edit-model'}>
+                                <div className="fresh">NEW</div>
                                 <img src={picurl && picurl[content.sort1_pr1_ix]} alt=""/>
                                 <div className="headline-price">
                                     <div className="headline">{content && content.sort1_pr1_title1}</div>
@@ -146,7 +148,7 @@ class ShopHomeIndexFour extends React.PureComponent {
 
                         <div className="sell-box">
                             <div className="title-bar" onClick={() => this.clickOnShow('three')}>
-                                <span>{content && (content.sort2_title1 || 'fdsfs')}</span>
+                                <div>{content && (content.sort2_title1 || 'fdsfs')}</div>
                                 <div>{content && (content.sort2_title2 || '热门商品')}</div>
                             </div>
                             <div className="sell-commodity-box" onClick={() => this.clickOnShow('five')}>
@@ -212,8 +214,8 @@ class ShopHomeIndexFour extends React.PureComponent {
                                 </div>
                             </div>
                         </div>
-                        <div className={(content && content.sort3_title1 && content.sort3_title2) ? 'title-bar' : 'title-bar no-edit-model'} onClick={() => this.clickOnShow('six')}>
-                            <span>{content && (content.sort3_title1 || 'NEW')}</span>
+                        <div className={(content && content.sort3_title1 && content.sort3_title2) ? 'title-bar hot-sale' : 'title-bar no-edit-model'} onClick={() => this.clickOnShow('six')}>
+                            <div>{content && (content.sort3_title1 || 'NEW')}</div>
                             <div>{content && (content.sort3_title2 || '新品')}</div>
                         </div>
                         <div className="sell-commodity-box" onClick={() => this.clickOnShow('seven')}>
