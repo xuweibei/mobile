@@ -35,7 +35,13 @@ class appendOrder extends BaseComponent {
         invoiceStatus: false,  //发票弹框显示状态
         notAllow: true, //不支持提交状态
         invoice: {},
-        invoiceIndex: ''
+        invoiceIndex: '',
+        invoiceName: '',
+        invoiceNum: '',
+        invoiceBank: '',
+        invoiceAddress: '',
+        bankCard: '',
+        invoicePhone: ''
     };
 
     componentDidMount() {
