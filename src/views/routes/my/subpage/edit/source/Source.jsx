@@ -66,7 +66,7 @@ class Source extends BaseComponent {
                     this.fetch(urlCfg.getDfinfor, {data: {no: uid}})
                         .subscribe(data => {
                             if (data.status === 0) {
-                                appHistory.push(`/sourceBrowse?nickname=${data.data.nickname}&phone=${validator.wipeOut(phone)}&uid=${uid}&avatarUrl=${data.data.avatarUrl}`);
+                                appHistory.push(`/sourceBrowse?nickname=${encodeURI(data.data.nickname)}&phone=${validator.wipeOut(phone)}&uid=${uid}&avatarUrl=${data.data.avatarUrl}`);
                             }
                         });
                 }

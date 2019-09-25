@@ -160,11 +160,11 @@ export default class MyAssets extends BaseComponent {
             <div data-component="cash" data-role="page" className="cash">
                 <div className="cash-content">
                     {
-                        window.isWX ? (<AppNavBar title={statusNum === '4' ? '业务转入' : '营业收入'}/>) : (
+                        window.isWX ? (<AppNavBar title={statusNum === '4' ? '业务转入' : '业务收入'}/>) : (
                             <div className="cash-content-navbar">
                                 <AppNavBar
                                     goBackModal={this.props.getBackChange}
-                                    title={statusNum === '4' ? '业务转入' : '营业收入'}
+                                    title={statusNum === '4' ? '业务转入' : '业务收入'}
                                     rightShow
                                 />
                             </div>

@@ -185,7 +185,7 @@ export default class MyAssets extends BaseComponent {
                     <div className="altogether">
                         <div className="altogether-name a-equally">
                             <span>{userInfo.realname}</span>
-                            {/* <span>今日订单 共{userInfo.num}笔</span> */}
+                            <span>总余额</span>
                         </div>
                         <div className="altogether-UID a-equally">
                             <span>UID:{userInfo.no}</span>
