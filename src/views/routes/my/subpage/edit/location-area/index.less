@@ -27,13 +27,35 @@
     }
     .receiving-reg {
         //margin-top: 20px;
-        .am-input-label, .am-input-label-5{
+        .am-list-item-middle {
+            .am-list-line {
+                .am-list-content {
+                    flex: initial;
+                }
+                .am-list-extra {
+                    flex: 1;
+                }
+            }
+        }
+        .am-input-label-5{
             display: flex;
             justify-content: space-between;
             width: 100% !important;
-        }
-        .area{
-            line-height:0.88rem;
+            .area{
+                line-height:0.88rem;
+            }
+            .regional {
+                .gray-3 {
+                    margin: 0 30px 0 0;
+                }
+                .gray-3:last-child {
+                    margin-right: 0;
+                }
+                .picker-inline {
+                    margin-right: 0;
+                    width: auto;
+                }
+            }
         }
     }
     .button{

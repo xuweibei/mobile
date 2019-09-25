@@ -21,6 +21,7 @@ const tabs = [
     {title: '售后'}
 ];
 
+let selArr = [];
 class ReDetail extends BaseComponent {
     state ={
         refreshing: false, //是否在下拉刷新时显示指示器
@@ -37,7 +38,7 @@ class ReDetail extends BaseComponent {
     }
 
     componentWillMount() {
-        const num = this.props.orderStatus || this.statusChoose(this.props.location.pathname.split('/')[2]);
+        const num = this.statusChoose(this.props.location.pathname.split('/')[2]);
         this.init(num);
     }
 
@@ -49,10 +50,23 @@ class ReDetail extends BaseComponent {
     }
 
     componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方
-        if (this.tabBtn) return;
         const num = this.statusChoose(nextProps.location.pathname.split('/')[2]);
-        if (num !== this.props.orderStatus) {
-            this.init(num);
+        if (hybrid) {
+            selArr.push(num);
+            if (selArr) {
+                this.setState({
+                    status: selArr[1] || selArr[0]
+                }, () => {
+                    this.init(selArr[1] || selArr[0]);
+                    selArr = [];
+                });
+            }
+        } else {
+            this.setState({
+                status: num
+            }, () => {
+                this.init(num);
+            });
         }
     }
 
@@ -60,8 +74,6 @@ class ReDetail extends BaseComponent {
         this.setState({
             status: num
         }, () => {
-            //储存我的订单的tab状态在哪一个
-            this.props.setOrderStatus(num);
             this.getList();
         });
     }
@@ -109,18 +121,25 @@ class ReDetail extends BaseComponent {
             });
     }
 
+    //线下订单跳转
+    gotoSelfMyOrder=(index) => {
+        const url = new Map([
+            [0, '/selfMention'],
+            [1, '/selfMention/ww'],
+            [2, '/selfMention/yw'],
+            [3, '/selfMention/sh']
+        ]);
+        appHistory.replace(url.get(index));
+    }
+
     //选择列表状态
     tabChange = (data, index) => {
-        this.tabBtn = true;
-        this.props.setOrderStatus(index);
         this.setState({
             page: 1,
             hasMore: false,
-            pageCount: -1,
-            status: index
+            pageCount: -1
         }, () => {
-            this.tabBtn = false;
-            this.getList();
+            this.gotoSelfMyOrder(index);
         });
     }
 
@@ -285,8 +304,6 @@ class ReDetail extends BaseComponent {
         } else {
             appHistory.goBack();
         }
-        //清除订单tab的状态
-        this.props.setOrderStatus('');
     }
 
     render() {

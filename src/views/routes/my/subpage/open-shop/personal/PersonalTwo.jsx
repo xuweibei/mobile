@@ -217,9 +217,9 @@ class PersonalTwo extends BaseComponent {
                     res.data.img.forEach(item => {
                         arrInfo.push({imgB: item[0], imgS: item[1], id: new Date()});
                     });
-                    this.setState((proveState) => ({
+                    this.setState({
                         file: arrInfo
-                    }));
+                    });
                     this.pasGass(arrInfo, 0, 0);
                 });
             } else if (type === 'back') {
@@ -227,9 +227,9 @@ class PersonalTwo extends BaseComponent {
                     res.data.img.forEach(item => {
                         arrInfo.push({imgB: item[0], imgS: item[1], id: new Date()});
                     });
-                    this.setState((proveState) => ({
+                    this.setState({
                         file2: arrInfo
-                    }));
+                    });
                     this.pasGass(arrInfo, 1, 1);
                 });
             } else if (type === 'handle') {
@@ -237,9 +237,9 @@ class PersonalTwo extends BaseComponent {
                     res.data.img.forEach(item => {
                         arrInfo.push({imgB: item[0], imgS: item[1], id: new Date()});
                     });
-                    this.setState((proveState) => ({
+                    this.setState({
                         file3: arrInfo
-                    }));
+                    });
                     this.pasGass(arrInfo, 4, 2);
                 });
             }
@@ -383,8 +383,8 @@ class PersonalTwo extends BaseComponent {
                                                      {
                                                          file && file.map(item => (
                                                              <li id={item.id}>
-                                                                 <span className="delete-icon" onClick={() => this.deleteImg('forward', item.id)}>×</span>
-                                                                 <img src={item.imgS || item.url}/>
+                                                                 {/* <span className="delete-icon" onClick={() => this.deleteImg('forward', item.id)}>×</span> */}
+                                                                 <img onClick={() => this.addPictrue('forward')} src={item.imgS || item.url}/>
                                                              </li>
                                                          ))
                                                      }
@@ -433,8 +433,8 @@ class PersonalTwo extends BaseComponent {
                                                      {
                                                          file2 && file2.map(item => (
                                                              <li id={item.id}>
-                                                                 <span className="delete-icon" onClick={() => this.deleteImg('back', item.id)}>×</span>
-                                                                 <img src={item.imgS || item.url}/>
+                                                                 {/* <span className="delete-icon" onClick={() => this.deleteImg('back', item.id)}>×</span> */}
+                                                                 <img onClick={() => this.addPictrue('back')} src={item.imgS || item.url}/>
                                                              </li>
                                                          ))
                                                      }
@@ -480,8 +480,8 @@ class PersonalTwo extends BaseComponent {
                                                      {
                                                          file3 && file3.map(item => (
                                                              <li id={item.id}>
-                                                                 <span className="delete-icon" onClick={() => this.deleteImg('handle', item.id)}>×</span>
-                                                                 <img src={item.imgS || item.url}/>
+                                                                 {/* <span className="delete-icon" onClick={() => this.deleteImg('handle', item.id)}>×</span> */}
+                                                                 <img onClick={() => this.addPictrue('handle')} src={item.imgS || item.url}/>
                                                              </li>
                                                          ))
                                                      }

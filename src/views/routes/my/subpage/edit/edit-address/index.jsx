@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {createForm} from 'rc-form';
-import {List, InputItem, TextareaItem, Checkbox, Button} from 'antd-mobile';
+import {List, InputItem, Checkbox, Button} from 'antd-mobile';
 import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAction';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import GeisInputItem from '../../../../../common/form/input/GeisInputItem';
@@ -25,7 +25,7 @@ class BasicInput extends BaseComponent {
         addressArr: [], //初始地址
         editStatus: true, //地址选择显示与否
         addressStatus: decodeURI(getUrlParam('status', encodeURI(this.props.location.search))), //编辑还是删除 1编辑2添加
-        height: document.documentElement.clientHeight - (window.isWX ? window.rem * 1.08 : window.rem * 1.08) //扣除微信头部高度
+        height: document.documentElement.clientHeight - (window.isWX ? window.rem * null : window.rem * 1.08) //扣除微信头部高度
     };
 
     componentDidMount() {

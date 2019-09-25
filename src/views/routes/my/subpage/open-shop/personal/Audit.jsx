@@ -1,12 +1,20 @@
 import React from 'react';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import Nothing from '../../../../../common/nothing/Nothing';
+import {native} from '../../../../../../utils/native';
 
 const {appHistory} = Utils;
 const {FIELD} = Constants;
+const hybrid = process.env.NATIVE;
 export default class Audit extends BaseComponent {
     emptyGoTo = () => {
-        appHistory.replace('/my');
+        if (hybrid) {
+            alert(1);
+            native('goBack');
+        } else {
+            alert(2);
+            appHistory.replace('/my');
+        }
     }
 
     render() {

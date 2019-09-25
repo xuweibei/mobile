@@ -14,6 +14,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        margin-bottom: 20px;
         img{
             width: 140px;
             height: 140px;
@@ -21,16 +22,19 @@
         }
     }
     .my-list-clear{
-        top: 308px !important;
+        top: 318px !important;
     }
     .my-list {
         position: absolute;
-        top: 388px;
+        top: 408px;
         bottom: 0;
         width: 100%;
         background: @white;
         .am-list-item {
             padding-left: 0;
+        }
+        .am-list-body::before {
+            height: 0!important;
         }
     }
     .am-list-item .am-list-line {

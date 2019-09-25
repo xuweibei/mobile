@@ -14,7 +14,7 @@ const {MESSAGE: {Feedback}} = Constants;
 
 class Address extends BaseComponent {
     state={
-        height: document.documentElement.clientHeight - (window.isWX ? window.rem * null : window.rem * 1.08),
+        // height: document.documentElement.clientHeight - (window.isWX ? window.rem * null : window.rem * 2.08),
         editShow: false
     }
 
@@ -160,7 +160,6 @@ class Address extends BaseComponent {
 
     render() {
         const {addressList} = this.props;
-        const {height} = this.state;
         return (
             <div data-component="address-set" data-role="page" className={`address-set ${window.isWX ? 'WX-address' : ''}`}>
                 {
@@ -168,7 +167,7 @@ class Address extends BaseComponent {
                         <AppNavBar title="地址管理"/>
                     )
                 }
-                <div style={{height: height}} className="add-list">
+                <div className="add-list">
                     {
                         (addressList && addressList.length > 0)
                             ? this.bottomModal(addressList)

@@ -17,7 +17,8 @@ class ReDetail extends BaseComponent {
         pageSize: 10, //每页多少条
         pageCount: -1, //一共有多少页
         pageList: [], //列表信息
-        orderId: 0 //订单id
+        orderId: 0, //订单id
+        navColor: '#ff2d51' //nav背景颜色
     }
 
     componentDidMount() {
@@ -142,7 +143,7 @@ class ReDetail extends BaseComponent {
     }
 
     render() {
-        const {pageList, refreshing, isLoading, hasMore} = this.state;
+        const {pageList, refreshing, isLoading, hasMore, navColor} = this.state;
 
         //滚动容器高度
         const height = document.documentElement.clientHeight - (window.isWX ? 0.75 : window.rem * 1.8);
@@ -232,7 +233,7 @@ class ReDetail extends BaseComponent {
         );
         return (
             <div data-component="Self-mention" data-role="page" className="Self-mention">
-                <AppNavBar title="线下订单" goToSearch={this.goToSearch} rightShow white/>
+                <AppNavBar title="线下订单" backgroundColor={navColor} goToSearch={this.goToSearch} rightShow white/>
                 <React.Fragment>
                     {pageList && pageList.length > 0 ? (
                         <MyListView

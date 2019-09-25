@@ -1,3 +1,5 @@
+
+import React from 'react';
 import {InputItem, Button, NavBar, Icon} from 'antd-mobile';
 import {connect} from 'react-redux';
 import {createForm} from 'rc-form';
@@ -5,7 +7,6 @@ import VerificationCode from '../../../../../../common/verification-code';
 import GeisInputItem from '../../../../../../common/form/input/GeisInputItem';
 import {baseActionCreator as actionCreator} from '../../../../../../../redux/baseAction';
 import './PasswordDetail.less';
-import React from "react";
 
 const {appHistory, validator, showInfo, showSuccess, getUrlParam, native} = Utils;
 const {urlCfg} = Configs;

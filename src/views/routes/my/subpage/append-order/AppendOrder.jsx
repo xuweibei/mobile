@@ -64,9 +64,9 @@ class appendOrder extends BaseComponent {
     }
 
     componentWillReceiveProps(next, data) {
-        const {setOrder, setIds} = this.props;
+        const {setOrder, setIds, location} = this.props;
         const timerNext = decodeURI(getUrlParam('time', encodeURI(next.location.search)));
-        const timer = decodeURI(getUrlParam('time', encodeURI(this.props.location.search)));
+        const timer = decodeURI(getUrlParam('time', encodeURI(location.search)));
         if (timerNext !== timer) {
             if (hybrid) {
                 this.setState({
