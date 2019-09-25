@@ -1,5 +1,4 @@
 @import "~style";
-
 .shop-cart {
     .change-cart{
         width:186px;
@@ -27,7 +26,7 @@
         height: 188px;
     }
     .shop-container{
-        padding: 55px 0 178px;
+        padding: 45px 0 178px;
 
     }
     .hide-bottom {
@@ -160,20 +159,21 @@
                     flex: 1;
                     .desc-title {
                         .TextareaOverflow(2);
-                        font-size: 30px;
+                        font-size: @font-size-26;
                         font-weight: 500;
                         color: @darker-black;
                         margin-top: 10px;
                     }
                     .desc-sku {
                         display: flex;
-                        justify-content: space-between;
+                        //justify-content: space-between;
                         font-size: @font-size-20;
                         color: @gray;
                         margin-top: 10px;
+                        line-height: 51px;
                         .sku-left {
-                            span:nth-child(2) {
-                                margin: 0 30px;
+                            span {
+                                margin-right: 30px;
                             }
                         }
                     }
@@ -203,7 +203,7 @@
                 font-weight: 500;
                 margin-top: 16px;
                 text-align: center;
-                line-height: 30px;
+                line-height: 32px;
                 border-radius: 15px;
             }
 
@@ -259,7 +259,8 @@
         .timeout-goods {
             background-color: #fff;
             border-radius: 30px;
-            padding: 0 0.23rem 0 4px;
+            //padding: 20px 0;
+            //margin: 20px 0;
             .timeout-top {
                 padding-top: 42px;
                 .timeout-text {
@@ -402,6 +403,7 @@
         content: '\e65e';
         font-size: 30px;
         color: @gray;
+        vertical-align: bottom;
     }
     .icon-sub:before {
         content: '\e615';
