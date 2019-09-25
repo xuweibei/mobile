@@ -209,9 +209,11 @@ class passwordPayment extends BaseComponent {
                             }
                         </NavBar>
                         <div className="password-box">
+                            <div className="payment-code">请输入支付密码</div>
                             <div className="content">
                                 <InputGrid onInputGrid={this.inputGrid}/>
                             </div>
+                            <div className="payment-code">请再次输入支付密码</div>
                             <div className="content">
                                 <InputGrid onInputGrid={this.inputGridAgain}/>
                             </div>
