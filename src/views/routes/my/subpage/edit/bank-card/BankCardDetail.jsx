@@ -8,7 +8,7 @@ import VerificationCode from '../../../../../common/verification-code';
 import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAction';
 import {myActionCreator} from '../../../actions/index';
 import AppNavBar from '../../../../../common/navbar/NavBar';
-import GeisInputItem from '../../../../../common/form/GeisInputItem';
+import GeisInputItem from '../../../../../common/form/input/GeisInputItem';
 import './BankCardDetail.less';
 
 const {appHistory, getUrlParam, validator, showInfo, showSuccess} = Utils;

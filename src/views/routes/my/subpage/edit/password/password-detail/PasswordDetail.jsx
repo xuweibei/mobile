@@ -2,7 +2,7 @@ import {InputItem, Button, NavBar, Icon} from 'antd-mobile';
 import {connect} from 'react-redux';
 import {createForm} from 'rc-form';
 import VerificationCode from '../../../../../../common/verification-code';
-import GeisInputItem from '../../../../../../common/form/GeisInputItem';
+import GeisInputItem from '../../../../../../common/form/input/GeisInputItem';
 import {baseActionCreator as actionCreator} from '../../../../../../../redux/baseAction';
 import './PasswordDetail.less';
 import React from "react";
@@ -276,6 +276,7 @@ class passwordDetail extends BaseComponent {
     render() {
         const {reEdit, passShow, phoneShow, getOff, moreAccount, accountList} = this.state;
         const {getFieldDecorator} = this.props.form;//getFieldDecorator用于和表单进行双向绑定
+
         return (
             <div data-component="passwordDetail" data-role="page" className="password-detail">
                 {
