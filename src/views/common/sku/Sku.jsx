@@ -263,6 +263,7 @@ class Sku extends React.PureComponent {
                         selectedTemp[info.name] = {};
                         selectedTemp[info.name].id = item.id;
                         selectedTemp[info.name].index = index;
+                        selectedTemp[info.name].value = item.value;
                     }
                 });
             }
@@ -288,15 +289,19 @@ class Sku extends React.PureComponent {
 
     //提交选中的商品属性
     onSubmit=() => {
-        const {selectType, Ids} = this.state;
-        const {goods, type} = this.props;
+        const {selectType, Ids, selectedTemp} = this.state;
+        const {goods, type, onSubmit} = this.props;
         //配送方式不能为空
         if (selectType === '') {
             showInfo(Feedback.Select + type.name);
             return;
         }
-        console.log('Ids', Ids);
-        this.props.onSubmit(selectType, Ids, goods);
+        const valueArr = Object.values(selectedTemp).map(item => item.value);
+        if (goods.length === 0) {
+            onSubmit(selectType, Ids, valueArr); //商品详情
+        } else {
+            onSubmit(selectType, Ids, goods); //购物车
+        }
     };
 
     //渲染额外内容

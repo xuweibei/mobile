@@ -101,6 +101,11 @@ class ShopHomeIndexThird extends React.PureComponent {
                                             <span>{content.sort2_pr2_title4}</span>
                                             <span className="act">{content.sort2_pr3_title5}</span>
                                         </div>
+                                        <p>{shopModelArr.content.sort2_pr1_title3}<span>{shopModelArr.content.sort2_pr1_title2}</span></p>
+                                        {/* <div className="price">
+                                            <span>{shopModelArr.content.sort2_pr1_title4}</span>
+                                            <span className="act">{shopModelArr.content.sort2_pr1_title5}</span>
+                                        </div>
 
                                     </div>
                                 </div>
