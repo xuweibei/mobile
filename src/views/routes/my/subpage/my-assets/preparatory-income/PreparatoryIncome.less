@@ -8,6 +8,9 @@
     //}
     .navbar {
         border-bottom: none;
+        .icon-right:before {
+            content: '\E675';
+        }
     }
 
     .cash-bg {
@@ -17,43 +20,43 @@
         top: 0;
     }
 
-    .cash-content-navbar {
-        width: 100%;
-        // margin:0 30px 30px;
-        // padding-top: 10px;
-        background: red;
+    .wrapTabNav {
+        margin-bottom: 20px;
+        .cash-content-navbar {
+            width: 100%;
+            // margin:0 30px 30px;
+            // padding-top: 10px;
+            background: red;
 
-        .am-navbar {
-            background: none;
+            .am-navbar {
+                background: none;
 
-            .am-navbar-left {
-                padding: 0;
-                z-index: 1;
+                .am-navbar-left {
+                    padding: 0;
+                    z-index: 1;
 
-                .am-navbar-left-icon {
-                    font-size: @font-size-38;;
-                    font-weight: @font-weight-normal;
+                    .am-navbar-left-icon {
+                        font-size: @font-size-38;;
+                        font-weight: @font-weight-normal;
+                    }
+                }
+
+                .am-navbar-title {
+                    font-size: @font-size-38;
+                    font-weight: @font-weight-bold;
+                    font-family: @font-family;
+                    color: rgba(255, 254, 254, 1);
+                    z-index: 1;
                 }
             }
 
-            .am-navbar-title {
-                font-size: @font-size-38;
-                font-weight: @font-weight-bold;
-                font-family: @font-family;
-                color: rgba(255, 254, 254, 1);
+            .am-navbar-right {
+                margin: 0;
                 z-index: 1;
             }
         }
-
-        .am-navbar-right {
-            margin: 0;
-            z-index: 1;
-        }
-
-        .navbar .nav-right .icon-right:before {
-            content: '\E633';
-        }
     }
+
     .assetBg{
         width:750px;
         height:164px;
@@ -137,11 +140,11 @@
 
     .asset-info-wrap {
         width: 100%;
-        margin-top: 20px;
+        //margin-top: 20px;
         background-color: @white;
         .bottom-modal{
-            position: absolute;
-            top:4rem;
+            //position: absolute;
+            //top:400px;
         }
         .see-more {
             font-size: 28px;
@@ -309,7 +312,7 @@
 
     .menu-line {
         background: #fff;
-        height: 100px;
+        //height: 100px;
 
         .assets-img {
             float: left;
@@ -341,7 +344,9 @@
         .line {
             //border-bottom:1px solid rgba(204,204,204,0.5);
             .hairline('bottom', rgba(204, 204, 204, 0.5));
-
+            .am-list-line::after{
+                height: 0.5px;
+            }
             .am-input-label-5 {
                 font-size: 30px;
             }

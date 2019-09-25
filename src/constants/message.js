@@ -23,7 +23,7 @@ export const MESSAGE = {
     },
 
     Form: {
-
+        ShopName_Err: '店铺名称由2-30位字符组成',
         No_Captcha: '请输入验证码',
         No_Content: '您还没有输入任何内容',
         No_Data: '您还没有选择任何数据',
@@ -73,7 +73,10 @@ export const MESSAGE = {
         Error_PayPassword: '密码必须为纯数字',
         // Error_PayPassword: '',
         // Error_Password: '密码错误',
-
+        Fail_Lic_Info: '图片信息识别失败,请重新上传!',
+        Success_Lic_Info: '图片信息识别成功',
+        // Fail_People_Info: '营业执照信息识别失败,请重新上传!',
+        // Fail_Date_Info: '营业执照信息识别失败,请重新上传!',
         Error_Withdraw: '提现金额无效',
         Error_Position: '获取当前位置失败',
         // Error_Message: '您输入的信息有误',
@@ -99,9 +102,13 @@ export const MESSAGE = {
         Error_UserName: '请输入正确的卡主姓名',
         Error_ID: '请输入18位公民身份证号',
         Error_Bank: '银行卡格式不对',
-        Error_ShopName: '店铺名称必须是2-10位中文',
+        Bank_None: '请选择开户银行',
+        Bank_Card_Num: '请输入银行卡号',
+        Error_ShopName: '店铺名称必须是2-30位中文, 数字, 英文组成',
         Error_Phone: '请输入11位电话号码',
+        Error_CasPhone: '请输入4-12位数字客服电话',
         Error_Captcha: '验证码错误',
+        Code_Error: '请输入验证码',
         Error_Password_Required: '密码不能为空',
         Error_Password_Length: '密码长度应为6~20位',
         Error_Password_Same: '两次密码输入不相同',

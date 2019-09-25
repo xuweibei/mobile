@@ -149,37 +149,52 @@ export function wipeOut(str) {
 
 //检验[min-max]个中文字符
 export function checkRange(min, max, value) {
-    const re = new RegExp(`[\u4E00-\u9FA5]{${min},${max}}$`, 'g');
+    const re = new RegExp(`^[\u4E00-\u9FA5]{${min},${max}}$`);
     return re.test(value);
 }
 
-//判断字符串、对象、数组、是否为空,判断bool型
+//判断字符串、对象、数组、是否为空,判断bool型,undefined
 export function isEmpty(value, message, callback) {
     const type =  Object.prototype.toString.call(value);
     let arrayVerify = false;
     let objectVerify = false;
     //判断字符串
-    const stringVerify = type.indexOf('String') !== -1 && !value;
+    const stringVerify = type.indexOf('String') !== -1 && value;
     //判断bool型
-    const boolVerify = type.indexOf('Boolean') !== -1 && !value;
+    const boolVerify = type.indexOf('Boolean') !== -1 && value;
     //判断数组
     if (type.indexOf('Array') !== -1) {
-        arrayVerify = value.some(item => item === '');
+        arrayVerify = value.some(item => item !== '');
     }
     //判断对象
     if (type.indexOf('Object') !== -1) {
-        objectVerify = JSON.stringify(value) === '{}';
+        objectVerify = JSON.stringify(value) !== '{}';
     }
     if (stringVerify || arrayVerify || objectVerify || boolVerify) {
-        callback(VERIFY_FAILED);
-        showInfo(message);
-        return false;
+        return true;
     }
-    return true;
+    callback(VERIFY_FAILED);
+    showInfo(message);
+    return false;
 }
 
 //提示语
 export function showMessage(message, callback) {
     callback(VERIFY_FAILED);
     showInfo(message);
+}
+export function checkShopName(value) {
+    const reg = /^[0-9a-zA-Z\u4e00-\u9fa5]+$/;
+    return reg.test(value);
+}
+//校验纯数字并且位数
+export function checkNum(value, m, n) {
+    const reg = /^\d{m,n}$/;
+    return reg.test(value);
+}
+
+//校验仅包含数字字母和中文
+export function ckeckShopName(value) {
+    const reg = /^[0-9a-zA-Z\u4e00-\u9fa5]+$/;
+    return reg.test(value);
 }

@@ -99,26 +99,34 @@
             border-right: none;
         }
     }
-/*    .money-show div:nth-child(2){
-        //float:right;
-        //margin-top:30px;
-        //margin-right:130px;
-        text-align: center;
-        flex: 1;
-        span{
-            color:#fff;
-            font-size:30px;
-            display: inline-block;
-            margin-bottom:20px;
+
+    .am-list {
+        .am-list-body {
+            .am-list-item {
+                padding-left: 0;
+                .am-list-line {
+                    padding: 0 60px 0 30px;
+                    .am-list-content {
+                        .arrows-icon:after {
+                            content: '\E643';
+                            font-size: @font-size-30;
+                            position: absolute;
+                            right: 30px;
+                            top: 20px;
+                            color: @darker-black;
+                        }
+                    }
+                    .am-list-extra {
+                        color: @darker-black;
+                    }
+                }
+            }
         }
-        p{
-            font-size:28px;
+        .am-list-body::after, .am-list-body::before {
+            height: 0!important;
         }
-        i{
-            font-style: normal;
-            font-size:28px;
-        }
-    }*/
+    }
+
 
     .am-button::before {
         border: none;

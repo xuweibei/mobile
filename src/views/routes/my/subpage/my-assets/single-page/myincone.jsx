@@ -148,6 +148,7 @@ export default class Myincone extends BaseComponent {
 
     //底部结构
     defaultModal = (row) => {
+        const {navTtile} = this.props;
         const {dataSource, height, hasMore, refreshing} = this.state;
         return (
             <div data-component="cash" data-role="page" className="cash">
@@ -155,7 +156,7 @@ export default class Myincone extends BaseComponent {
                     <div className="cash-content-navbar">
                         <AppNavBar
                             goBackModal={() => this.props.getBackChange()}
-                            title="当日收入"
+                            title={navTtile || '当日收入'}
                         />
                     </div>
                     <ListView

@@ -5,10 +5,11 @@ import {connect} from 'react-redux';
 import {InputItem, List, Button, Icon} from 'antd-mobile';
 import {myActionCreator as ActionCreator} from '../../actions/index';
 import {shopCartActionCreator} from '../../../shop-cart/actions/index';
+import {baseActionCreator as actionCreator} from '../../../../../redux/baseAction';
 import AppNavBar from '../../../../common/navbar/NavBar';
 import './AppendOrder.less';
 
-const {appHistory, showFail, getUrlParam, getShopCartInfo, systemApi: {setValue, removeValue}, native} = Utils;
+const {appHistory, showFail, getUrlParam, getShopCartInfo, systemApi: {setValue, removeValue, getValue}, native} = Utils;
 const {urlCfg} = Configs;
 
 const nowTimeStamp = Date.now();
@@ -56,6 +57,42 @@ class appendOrder extends BaseComponent {
         }
     }
 
+    componentWillReceiveProps(next, data) {
+        const {setOrder, setIds} = this.props;
+        const timerNext = decodeURI(getUrlParam('time', encodeURI(next.location.search)));
+        const timer = decodeURI(getUrlParam('time', encodeURI(this.props.location.search)));
+        if (timerNext !== timer) {
+            if (hybrid) {
+                this.setState({
+                    shopInfo: [],
+                    addressInfo: {},
+                    goodsCount: 0,
+                    goods: [],
+                    idCard: '', //身份证
+                    total: 0, // 总价
+                    totalCount: 0, //商品总数量
+                    files: {},
+                    order: {}, //订单备注信息
+                    IDcard: [],
+                    date: now,
+                    self: true, //发票类型
+                    currentIndex: 0, //默认发票选中类型
+                    textInfo: '企业',
+                    invoiceStatus: false,  //发票弹框显示状态
+                    notAllow: true, //不支持提交状态
+                    invoice: {},
+                    invoiceIndex: ''
+                }, () => {
+                    getShopCartInfo('getInfo', {'': ''}).then(res => {
+                        setOrder(res.data.arr);
+                        setIds(res.data.cartArr);
+                        this.getOrderState();
+                    });//原生方法获取前面的redux
+                });
+            }
+        }
+    }
+
     componentWillUnmount() {
         const {saveAddress} = this.props;
         saveAddress('');
@@ -69,8 +106,16 @@ class appendOrder extends BaseComponent {
     //立即付款
     postOrder = () => {
         const {addressInfo, shopInfo, order, invoice} = this.state;
+        const invoices = JSON.parse(getValue('invoices'));
+        console.log(invoices);
         const {address} = this.props;
         const source = decodeURI(getUrlParam('source', encodeURI(this.props.location.search)));
+        let invoiceInfo;
+        if (invoices) {
+            invoiceInfo = invoices;
+        } else {
+            invoiceInfo = invoice;
+        }
         if (addressInfo.length === 0) {
             showFail('请选择您的收货地址');
             return;
@@ -87,7 +132,7 @@ class appendOrder extends BaseComponent {
             });
         }
         const shopArr = shopInfo.map((item, index) => {
-            const objTemp = {shop_id: item.shop_id, remarks: order[index].toString(), invoice: invoice[index]};
+            const objTemp = {shop_id: item.shop_id, remarks: order[index].toString(), invoice: invoiceInfo[index]};
             const prArr = [];
             if (item.data.length > 0) {
                 item.data.forEach(value => {
@@ -106,10 +151,13 @@ class appendOrder extends BaseComponent {
                 source: Number(source)
             }
         }).subscribe((res) => {
-            const {setOrderInfo} = this.props;
-            setOrderInfo(res);
-            setValue('orderInfo', JSON.stringify(res));//将订单相关数据存入locastage
-            appHistory.replace('/payMoney');
+            if (res && res.status === 0) {
+                const {setOrderInfo} = this.props;
+                setOrderInfo(res);
+                setValue('orderInfo', JSON.stringify(res));//将订单相关数据存入locastage
+                appHistory.replace('/payMoney');
+                removeValue('invoices');
+            }
         });
     };
 
@@ -179,28 +227,35 @@ class appendOrder extends BaseComponent {
                     const cardArr = [];
                     const infoArry = [];
                     const invoice = [];
-                    for (let i = 0; i < res.data.length; i++) {
-                        array.push([]);
-                        cardArr.push([]);
-                        infoArry.push([]);
-                        invoice.push([]);
+                    if (res.data) {
+                        for (let i = 0; i < res.data.length; i++) {
+                            array.push([]);
+                            cardArr.push([]);
+                            infoArry.push([]);
+                            invoice.push([]);
+                        }
                     }
                     this.setState({
                         total: res.all_price,
                         shopInfo: res.data,
                         addressInfo: res.addr,
                         files: array,
-                        goods: res.data.map(shop => shop.data.map(goods => goods)),
+                        goods: res.data ? res.data.map(shop => shop.data.map(goods => goods)) : [],
                         IDcard: cardArr,
                         order: infoArry,
                         invoice
                     }, () => {
                         console.log(this.state.shopInfo);
                         const {goods} = this.state;
-                        const status = goods[0] && goods[0].map(item => item.in_area);
-                        if (status && status.includes(0)) {
-                            this.setState({
-                                notAllow: false
+                        if (goods && goods.length > 0) {
+                            goods.forEach(item => {
+                                if (item && item.length > 0) {
+                                    if (item.some((value) => value.in_area === 0)) {
+                                        this.setState({
+                                            notAllow: false//判断收货地址是否符合邮寄范围
+                                        });
+                                    }
+                                }
                             });
                         }
                     });
@@ -233,7 +288,13 @@ class appendOrder extends BaseComponent {
     //切换发票选中类型
     checkIndex = index => {
         this.setState({
-            currentIndex: index
+            currentIndex: index,
+            // invoiceName: '',
+            invoiceNum: '',
+            invoiceBank: '',
+            invoiceAddress: '',
+            bankCard: '',
+            invoicePhone: ''
         }, () => {
             const currentIndex = this.state.currentIndex;
             if (currentIndex === 1) {
@@ -251,7 +312,7 @@ class appendOrder extends BaseComponent {
     }
 
     goBackModal = () => {
-        if (hybrid && appHistory.length === 0) {
+        if (hybrid && appHistory.length() === 0) {
             native('goBack');
         } else {
             appHistory.goBack();
@@ -281,9 +342,9 @@ class appendOrder extends BaseComponent {
                 invoiceBank: e
             });
             break;
-        case 'bankAddress':
+        case 'bankCard':
             this.setState({
-                bankAddress: e
+                bankCard: e
             });
             break;
         case 'phone':
@@ -298,25 +359,32 @@ class appendOrder extends BaseComponent {
 
     //保存发票
     saveInvoice = () => {
-        const {invoiceIndex, invoice, currentIndex, invoiceName, invoiceNum, invoiceBank, invoiceAddress, bankAddress, invoicePhone} = this.state;
+        const {invoiceIndex, invoice, currentIndex, invoiceName, invoiceNum, invoiceBank, invoiceAddress, bankCard, invoicePhone} = this.state;
         const array = invoice.concat([]);
         array[invoiceIndex] = {
             invoice_type: 1,
             head_type: currentIndex + 1,
-            body_name: invoiceName,
-            enterprise_name: invoiceName,
+            name: invoiceName,
             tax_id: invoiceNum,
             bank: invoiceBank,
             enterprise_addr: invoiceAddress,
-            bank_addr: bankAddress,
+            bank_card_no: bankCard,
             enterprise_phone: invoicePhone
         };
-        this.setState({
-            invoice: array,
-            currentIndex: 0,
-            invoiceStatus: false
-        }, () => {
-            console.log(this.state.invoice);
+        const {showConfirm} = this.props;
+        showConfirm({
+            title: '提示',
+            message: '是否确定提交该发票申请？',
+            btnTexts: ['取消', '确定'],
+            callbacks: [null, () => {
+                this.setState({
+                    invoice: array,
+                    // currentIndex: 0,
+                    invoiceStatus: false
+                }, () => {
+                    setValue('invoices', JSON.stringify(this.state.invoice));
+                });
+            }]
         });
     }
 
@@ -357,7 +425,7 @@ class appendOrder extends BaseComponent {
                             )
                         }
                         {
-                            shopInfo.map((shop, index) => (
+                            shopInfo && shopInfo.map((shop, index) => (
                                 <div className="shopCart-goods" key={shop.shop_id}>
                                     <div className="goods-top">
                                         <div className="shop-avatar">
@@ -374,7 +442,7 @@ class appendOrder extends BaseComponent {
                                         </div>
                                     </div>
                                     {
-                                        shop.data.map((goods) => (
+                                        shop && shop.data.map((goods) => (
                                             <React.Fragment>
                                                 <div key={goods.id}>
                                                     <div className="distance-box">
@@ -547,11 +615,12 @@ class appendOrder extends BaseComponent {
                                                         企业地址
                                                     </InputItem>
                                                     <InputItem
-                                                        placeholder="请填写银行地址"
+                                                        placeholder="请填写银行卡号"
                                                         maxLength={50}
-                                                        onChange={(e) => { this.invoiceChange(e, 'bankAddress') }}
+                                                        type="number"
+                                                        onChange={(e) => { this.invoiceChange(e, 'bankCard') }}
                                                     >
-                                                        银行地址
+                                                        银行卡号
                                                     </InputItem>
                                                     <InputItem
                                                         placeholder="请填写企业电话"
@@ -592,7 +661,8 @@ const mapDispatchToProps = {
     setOrderInfo: ActionCreator.setOrderInformation,
     setOrder: shopCartActionCreator.setOrder,
     setIds: shopCartActionCreator.setIds,
-    saveAddress: ActionCreator.saveAddress
+    saveAddress: ActionCreator.saveAddress,
+    showConfirm: actionCreator.showConfirm
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(appendOrder);

@@ -1,5 +1,13 @@
 @import "~style";
 .shopHomeThirdContent {
+    padding-bottom: 100px;
+    .banner {
+        height: 499px;
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    }
     .shopHomThirdBanner{
         //width:750px;
         width:100%;
@@ -18,22 +26,20 @@
             justify-content: space-between;
             li{
                 width:331px;
-                height:451px;
-                background:#E0E0E0;
+                background:#fff;
                 margin-right:20px;
                 position:relative;
                 img{
                     width:100%;
-                    height:100%;
                 }
                 &:last-child{
                     margin-right:0;
                 }
 
                 .hotSellInfo{
-                    position:absolute;
-                    left:30px;
-                    bottom:0;
+                    // position:absolute;
+                    // left:30px;
+                    // bottom:0;
                     h4{
                         //font-weight:bold;
                         font-size:40px;
@@ -117,22 +123,14 @@
                     height:39px;
                     line-height:39px;
                     text-align:center;
-                    font-size:20px;
+                    font-size: 0.3rem;
                     &:last-child{
-                        height:40px;
-                    }
-                    i{
-                        font-size:26px;
-                        font-weight:bold;
-                        font-style:normal;
+
                     }
                 }
                 .dePriceActive{
-                    color:#B01922;
-                    font-size:23px;
-                    i{
-                        font-size:15px;
-                    }
+                    color:#000;
+                    font-size: 0.3rem;
                 }
             }
             p{
@@ -198,6 +196,7 @@
             .classifyEntryConMid{
                 padding:0 40px 0 40px;
                 //height:500px;
+                background-color: #5598bb;
                 overflow: hidden;
                 margin-bottom:60px;
                 display: flex;
@@ -209,7 +208,7 @@
                         width:282px;
                         height:392px;
                         //background:red;
-                        border:3px solid #000;
+                        // border:3px solid #000;
                         padding-top:55px;
                         padding-left:45px;
                         margin-bottom: 20px;
@@ -237,11 +236,11 @@
                 //height:500px;
                 overflow:hidden;
                 //background:red;
-                padding-left:50px;
-                padding-right:50px;
+                // padding-left:50px;
+                // padding-right:50px;
                 margin-bottom: 60px;
                 display: flex;
-                justify-content: space-between;
+                justify-content: center;
                 .classifyEntryBigImg2{
                     width:280px;
                     height:407px;
@@ -327,7 +326,7 @@
    }
    //编辑面板
    .compile-box {
-       margin-right: 48px;
+       //margin-right: 48px;
        //标题
        .compile {
            margin-bottom: 12px;
@@ -342,8 +341,8 @@
                height:215px;
            }
            img{
-               width:100%;			
-               height:100%;		
+               width:100%;
+               height:100%;
                display:block;
            }
            .slick-slide {
@@ -354,41 +353,33 @@
        }
        //标题栏
        .title-bar {
-           color: #ccc;
+           color: #090909;
            text-align: center;
            margin-bottom: 20px;
-           font-size: 16px;
+           //font-size: 16px;
            margin-top: 20px;
-           .products:before ,.products:after {
-               content: '';
-               display: inline-block;
-               border: 0.5px solid #FF6633;
-               width: 30%;
-               vertical-align: super;
+           .headline {
+               font-size: @font-size-30;
+               margin-bottom: 29px;
+               letter-spacing: 22px ;
            }
-           .products:before {
-               margin-right: 15px;
-           }
-           .products:after {
-               margin-left: 15px;
-           }
-           div:nth-child(2) {
-               margin-top: 5px;
-               font-size: 12px;
-               color:#ccc;
+           .fiery {
+               font-size: @font-size-20;
+               margin-bottom: 60px;
+               letter-spacing: 10px ;
            }
        }
        //热门商品
        .hot-box {
-           padding: 0 20px;
+           padding: 0 55px;
            display: flex;
            margin-bottom: 24px;
            .hot {
-               padding: 0 10px;
-               flex: 0.5;
+               padding: 0 20px;
+               flex: 1;
                .commodity-img {
                    width: 100%;
-                   height: 156px;
+                   height: 390px;
                    margin-bottom: 5px;
                    border: 1px solid #ccc;
                    img {
@@ -400,68 +391,40 @@
        }
        .sell-box {
            display: flex;
-           padding: 10px 9px;
-           margin-bottom: 16px;
+           padding: 20px 52px 0 25px;
+           margin-bottom: 30px;
            background: #FF6633;
            .sell {
-               padding: 0 9px;
-               flex: 0.5;  
-              div:nth-child(1) {
-                  border: 1px solid #ccc;
-                  width: 100%;
-                  height: 156px;
-                  margin-bottom: 5px;
-                  img {
-                      width: 100%;
-                      height: 100%;
-                  }
-              }
-           }
-           .sell-right {
-               padding: 0 21px 0 9px;
-               flex: 0.5;
+               padding: 0 22px;
+               flex: 1;
                div:nth-child(1) {
                    border: 1px solid #ccc;
-                   margin-bottom: 5px;
                    width: 100%;
-                   height: 122px;
+                   height: 390px;
+                   margin-bottom: 5px;
                    img {
                        width: 100%;
                        height: 100%;
                    }
                }
            }
-       }
-
-       .sell-one-box {
-           display: flex;
-           padding: 0 12px;
-           margin-bottom: 16px;
-           .sell-one {
-               flex: 0.5;
-               padding: 0 10px;
+           .sell:nth-child(2) {
                div:nth-child(1) {
-                   width: 100%;
-                   height: 156px;
-                   margin-bottom: 5px;
-                   img {
-                       width: 100%;
-                       height: 100%;
-                   }
+                   height: 304px;
                }
            }
        }
 
        .sell-two-box {
            display: flex;
-           padding: 0 12px;
+           padding: 0 31px;
            flex-wrap: wrap;
            .sell-two {
                width: 50%;
-               padding: 0 10px;
+               padding: 0 20px;
                div:nth-child(1) {
                    width: 100%;
-                   height: 156px;
+                   height: 304px;
                    margin-bottom: 5px;
                    img {
                        width: 100%;
@@ -474,22 +437,25 @@
        //公用标题-价格
        .headline-price {
            .headline {
-               font-size: 14px;
-               margin-bottom: 3px;
+               margin-top: 19px;
+               font-size: @font-size-30;
+               margin-bottom: 24px;
+               .TextareaOverflow(@num:1)
            }
            .price {
+               margin-bottom: 19px;
                span:nth-child(1) {
-                   color: #ccc;
-                   font-size: 10px;
-                   margin-right: 10px;
-
+                   color: @darker-black;
+                   font-size: @font-size-20;
+                   margin-right: 20px;
                    span {
-                       font-size: 14px;
+                       font-size: @font-size-32;
+                       //margin-left: ;
                    }
                }
                span:nth-child(2) {
-                   font-size: 10px;
-                   color: #ccc;
+                   font-size: 20px;
+                   color: @gray;
                    text-decoration:line-through
                }
            }

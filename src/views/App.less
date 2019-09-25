@@ -5,13 +5,13 @@
 
 /* 全局样式设置 */
 //自定义常用样式
-.fl {
-    float: left;
-}
+// .fl {
+//     float: left;
+// }
 
-.fr {
-    float: right;
-}
+// .fr {
+//     float: right;
+// }
 
 .clearfix:after {
     content: ".";
@@ -239,16 +239,26 @@ body, .page{
 .am-picker-popup-wrap {
     overflow: inherit;
 }
-//提示框按钮颜色
-.am-picker-popup-item {
-    color: @fiery-red;
+//模板标题和价格公用样式
+.introduce-left {
+    font-size: 30px;
+    color: #040100;
+    font-weight: normal;
 }
-
-//
-.am-modal-button-group-h .am-modal-button {
-    color: @fiery-red;
+.money-ZH{
+    font-size: 16px;
+    font-weight: normal;
+    color: #333;
 }
-.am-modal-button {
-    .hairline('top', @to-light-gray) !important;
-    //color: @fiery-red !important;
+.money-now{
+    color: #333;
+    font-size: 20px;
+    font-weight: 600;
+}
+.money-before{
+    color: #999;
+    font-size: 16px;
+    text-decoration: line-through;
+    font-weight: normal;
+    margin-left: 15px;
 }

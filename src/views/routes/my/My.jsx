@@ -50,13 +50,13 @@ const myOrderIconData = [
 //线下订单模块
 const myOrderSelfData = [
     {
-        text: '已完成',
-        className: 'icon accomplish',
+        text: '未完成',
+        className: 'icon unfinished',
         num: 0
     },
     {
-        text: '未完成',
-        className: 'icon unfinished',
+        text: '已完成',
+        className: 'icon accomplish',
         num: 0
     },
     {
@@ -234,8 +234,8 @@ class My extends BaseComponent {
     //线下订单跳转
     gotoSelfMyOrder=(index) => {
         const url = new Map([
-            [0, '/selfMention/yw'],
-            [1, '/selfMention/ww'],
+            [0, '/selfMention/ww'],
+            [1, '/selfMention/yw'],
             [2, '/selfMention/sh']
         ]);
         appHistory.push(url.get(index));
@@ -245,21 +245,23 @@ class My extends BaseComponent {
     jumpRouter = (url) => {
         if (url === '/selectType') {
             this.fetch(urlCfg.applyForRight).subscribe(res => {
-                if (res) {
+                if (res && res.status === 0) {
                     this.setState({
                         openShopStatus: res.data.status
                     }, () => {
                         const {openShopStatus} = this.state;
+                        console.log(openShopStatus);
                         if (openShopStatus === 9) {
                             appHistory.push(`/openShopPage?shopType=${res.data.shop_type}&auditStatus=${'now'}`);
                         } else if (openShopStatus === 4) {
                             appHistory.push(`/openShopPage?shopType=${res.data.shop_type}&auditStatus=${'filed'}`);
                         } else if (openShopStatus === 3) {
-                            if (res.data.shop_type === 2 || res.data.shop_type === 0) {
-                                appHistory.push(`/personal?shopType=${res.data.shop_type}&auditStatus=${'three'}`);
-                            } else {
-                                appHistory.push(`/individual?shopType=${res.data.shop_type}&auditStatus=${'three'}`);
-                            }
+                            // if (res.data.shop_type === 2 || res.data.shop_type === 0) {
+                            //     appHistory.push(`/personal?shopType=${res.data.shop_type}&auditStatus=${'three'}`);
+                            // } else {
+                            //     appHistory.push(`/individual?shopType=${res.data.shop_type}&auditStatus=${'three'}`);
+                            // }
+                            appHistory.push(`/personal?shopType=${res.data.shop_type}&auditStatus=${''}`);
                         } else if (openShopStatus === 7) {
                             if (res.data.shop_type === 2 || res.data.shop_type === 0) {
                                 appHistory.push(`/personal?shopType=${res.data.shop_type}&auditStatus=${'four'}`);
@@ -364,7 +366,6 @@ class My extends BaseComponent {
             });
             return item;
         }) : myOrderIconData;//线上订单相关信息
-        console.log(myInfo, '进口量水电费好几款');
         return (
             <div data-component="my" data-role="page" className="my">
                 <div className="aroundBlank">
@@ -379,6 +380,7 @@ class My extends BaseComponent {
                                 <div className="info-basic-portrait">
                                     <div className="basic-basic-img-parent">
                                         <img
+                                            onClick={this.routeTo}
                                             src={myInfo && (userInfo.avatarUrl || require('../../../assets/images/avatar.png'))}
                                             className="basic-basic-img"
                                             alt=""
@@ -390,7 +392,7 @@ class My extends BaseComponent {
                                     <Badge
                                         text={myInfo && (userInfo.typeName)}
                                     />
-                                    <p className="basic-data-UID">UID:{myInfo && (userInfo.no)}</p>
+                                    <p className="basic-data-UID" onClick={this.routeTo}>UID:{myInfo && (userInfo.no)}</p>
                                     {   //用户身份为消费商的时候展示
                                         myInfo && myInfo.info.iden_type === '2' && <div className="icon conmuterId" onClick={this.changeYourself}>我是消费者</div>
                                     }

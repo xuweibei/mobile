@@ -60,7 +60,7 @@ class Consumer extends BaseComponent {
 
     goBackModal = () => {
         if (appHistory.length() === 0) {
-            native('native');
+            native('goBack');
         } else {
             appHistory.goBack();
         }

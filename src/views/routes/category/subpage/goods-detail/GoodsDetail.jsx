@@ -106,7 +106,9 @@ class GoodsDetail extends BaseComponent {
     componentWillReceiveProps(nextProps, value) { //路由跳转时的判断，id有变化就请求
         if (this.state.goodId !== decodeURI(getUrlParam('id', encodeURI(nextProps.location.search)))) {
             this.setState({
-                goodId: decodeURI(getUrlParam('id', encodeURI(nextProps.location.search)))
+                goodId: decodeURI(getUrlParam('id', encodeURI(nextProps.location.search))),
+                selectType: '',
+                ids: []
             }, () => {
                 this.init();
             });
@@ -192,7 +194,7 @@ class GoodsDetail extends BaseComponent {
     //确定按钮点击
     confirmSku = (type, ids) => {
         const {clickType} = this.state;
-        console.log('选中商品属性ID：', type, ids);
+        // console.log('选中商品属性ID：', type, ids);
         this.setState({
             selectType: type,
             ids: ids,
@@ -214,8 +216,11 @@ class GoodsDetail extends BaseComponent {
 
     //添加商品到购物车
     addCart = () => {
-        const {shop, goodsDetail, paginationNum, ids, selectType} = this.state;
+        const {shop, goodsDetail, paginationNum, ids, selectType, status} = this.state;
         if (shop.shoper_open_status === '0') {
+            return;
+        }
+        if (status === '0' || status === '2') {
             return;
         }
         if (paginationNum === 0 || ids.length === 0) {
@@ -251,6 +256,9 @@ class GoodsDetail extends BaseComponent {
                     }
                 } else {
                     showInfo(Feedback.Add_Success);
+                    this.setState({
+                        ids: []
+                    });
                 }
             }
         });
@@ -258,8 +266,11 @@ class GoodsDetail extends BaseComponent {
 
     //立即购买
     emption = () => {
-        const {shop} = this.state;
+        const {shop, status} = this.state;
         if (shop.shoper_open_status === '0') {
+            return;
+        }
+        if (status === '0' || status === '2') {
             return;
         }
         const id = decodeURI(
@@ -396,6 +407,7 @@ class GoodsDetail extends BaseComponent {
         this.props.setTab('');
         if (hybrid) {
             native('goShop');
+            appHistory.reduction();//重置路由
         } else {
             appHistory.push('/shopCart');
         }
@@ -432,7 +444,7 @@ class GoodsDetail extends BaseComponent {
         case '2':
             this.setState({
                 lineStatus: true,
-                lineText: '库存不足'
+                lineText: '商品已下架'
             });
             break;
         default:
@@ -544,6 +556,7 @@ class GoodsDetail extends BaseComponent {
             picPath, goodsDetail, shop, recommend, evaluate, allState, collect,
             goodsAttr, stocks, shopAddress, lineStatus, lineText, pickType, selectType
         } = this.state;
+        console.log(picPath[0], '肯德基康师傅');
         const renderCount = (
             <List>
                 <List.Item
@@ -662,7 +675,7 @@ class GoodsDetail extends BaseComponent {
                                     <Flex.Item>
                                         <div className="bot-left">
                                             邮费：
-                                            {goodsDetail.freight || '免邮'}
+                                            {'￥' + goodsDetail.express_money || '免邮'}
                                         </div>
                                     </Flex.Item>
                                     <Flex.Item>
@@ -885,24 +898,17 @@ class GoodsDetail extends BaseComponent {
                 <div className="goodsDetail-bottom">
                     <div className="icons-warp">
                         <div className="icons">
-                            <div className="phone-cart">
+                            <div className="phone-cart" onClick={this.goToShoper}>
                                 <div className="icon icon-phone"/>
-                                <div className="phone-text" onClick={this.goToShoper}>联系卖家</div>
+                                <div className="phone-text" >联系卖家</div>
                             </div>
-                            <div className="phone-cart">
-                                <div
-                                    className={`icon ${collect.length > 0 ? 'icon-collect-active' : 'icon-collect'}`}
-                                />
-                                <div
-                                    className="phone-text"
-                                    onClick={() => this.collect()}
-                                >
-                                    收藏
-                                </div>
+                            <div className="phone-cart" onClick={() => this.collect()}>
+                                <div className={`icon ${collect.length > 0 ? 'icon-collect-active' : 'icon-collect'}`}/>
+                                <div className="phone-text">收藏</div>
                             </div>
-                            <div className="phone-cart">
+                            <div className="phone-cart" onClick={this.shopCart}>
                                 <div className="icon icon-cart"/>
-                                <div className="phone-text" onClick={this.shopCart}>
+                                <div className="phone-text">
                                     购物车
                                 </div>
                             </div>

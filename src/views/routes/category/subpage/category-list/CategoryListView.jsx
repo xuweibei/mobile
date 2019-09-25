@@ -109,7 +109,7 @@ class CategoryListView extends BaseComponent {
                 data: {
                     page: page,
                     pagesize: this.temp.pagesize,
-                    id: shopId,
+                    id: shopId || '',
                     key: '' || keywords
                 }
             })
@@ -268,13 +268,13 @@ class CategoryListView extends BaseComponent {
             return (
                 showStatus[currentIndex] && index === currentIndex ? (
                     <div className="icon-box">
-                        <span className="icon list-icon-top"/>
-                        <span className="icon list-icon-bdown"/>
+                        <span className="icon list-icon-btop"/>
+                        <span className="icon list-icon-down"/>
                     </div>
                 ) : (
                     <div className="icon-box">
-                        <span className="icon list-icon-btop"/>
-                        <span className="icon list-icon-down"/>
+                        <span className="icon list-icon-top"/>
+                        <span className="icon list-icon-bdown"/>
                     </div>
                 )
             );
@@ -306,7 +306,7 @@ class CategoryListView extends BaseComponent {
                         <div className="price">
                             {!shopId && (
                                 <div className="price-left">
-                                    <span className="enter-left">店铺名称{item.shopName}</span>
+                                    <span className="enter-left">{item.shopName}</span>
                                     <span
                                         className="enter-right"
                                         onClick={(e) => this.goToShop(e, item.shop_id)}

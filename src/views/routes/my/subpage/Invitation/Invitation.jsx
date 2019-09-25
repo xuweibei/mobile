@@ -110,7 +110,11 @@ class Invitation extends BaseComponent {
                 url: '',
                 imgUrl: shareArr
             };
-            native('showShare', obj);
+            native('showShare', obj).then(res => {
+                native('goH5', {'': ''});
+            }).catch(err => {
+                native('goH5', {'': ''});
+            });
         }
     }
 

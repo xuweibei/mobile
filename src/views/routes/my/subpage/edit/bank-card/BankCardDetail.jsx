@@ -8,6 +8,7 @@ import VerificationCode from '../../../../../common/verification-code';
 import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAction';
 import {myActionCreator} from '../../../actions/index';
 import AppNavBar from '../../../../../common/navbar/NavBar';
+import GeisInputItem from '../../../../../common/form/GeisInputItem';
 import './BankCardDetail.less';
 
 const {appHistory, getUrlParam, validator, showInfo, showSuccess} = Utils;
@@ -23,7 +24,7 @@ const getPass = {
 };
 class BankCardDetail extends BaseComponent {
     state = {
-        height: document.documentElement.clientHeight - (window.isWX ? window.rem * null : window.rem * 1.08),
+        height: document.documentElement.clientHeight - (window.isWX ? window.rem * null : window.rem * 1.08), //是微信扣除头部高度
         countdown: Constants.COUNTERNUM,
         bankArr: [], //銀行卡内容
         userInfo: {}, //用戶信息
@@ -118,7 +119,7 @@ class BankCardDetail extends BaseComponent {
 
     //校验姓名
     checkName=(rule, value, callback) => {
-        if (!validator.checkRange(2, 20, value)) {
+        if (!validator.checkRange(2, 8, value)) {
             validator.showMessage(Form.No_Name, callback);
             return;
         }
@@ -136,17 +137,12 @@ class BankCardDetail extends BaseComponent {
 
     //验证开户银行
     checkBank = (rule, value, callback) => {
-        console.log(validator.isEmpty(value, Form.No_Bank, callback));
         if (!validator.isEmpty(value, Form.No_Bank, callback)) return;
         callback();
     };
 
     //检验银行卡号
     checkBankNo = (rule, value, callback) => {
-        if (!value) {
-            validator.showMessage(Form.No_BankNumber, callback);
-            return;
-        }
         if (!validator.isEmpty(value, Form.No_BankNumber, callback)) return;
         if (!validator.bankCard(validator.wipeOut(value))) {
             validator.showMessage(Form.Error_Bank, callback);
@@ -167,7 +163,7 @@ class BankCardDetail extends BaseComponent {
 
     //检验验证码
     checkPhoneCode = (rule, value, callback) => {
-        if (!validator.isEmpty(value, Form.No_Naptcha, callback)) return;
+        if (!validator.isEmpty(value, Form.No_Captcha, callback)) return;
         if (value.length < 4) {
             validator.showMessage(Form.Error_Captcha, callback);
             return;
@@ -235,12 +231,20 @@ class BankCardDetail extends BaseComponent {
                                  ],
                                  validateTrigger: 'onSubmit'//校验值的时机
                              })(
-                                 <InputItem
-                                     clear
+                                 <GeisInputItem
+                                     type="nonSpace"
+                                     itemTitle="户主姓名"
                                      placeholder="请输入户主名称"
+                                     maxLength={8}
                                      editable={!userInfo.realname}
-                                 >户主姓名
-                                 </InputItem>
+                                     clear
+                                 />
+                                 // <InputItem
+                                 //     clear
+                                 //     placeholder="请输入户主名称"
+                                 //     editable={!userInfo.realname}
+                                 // >户主姓名
+                                 // </InputItem>
                              )
                          }
                          {
@@ -250,13 +254,22 @@ class BankCardDetail extends BaseComponent {
                                  ],
                                  validateTrigger: 'onSubmit'//校验值的时机
                              })(
-                                 <InputItem
+                                 <GeisInputItem
                                      clear
+                                     maxLength={18}
+                                     type="numEn"
                                      editable={!userInfo.idcard}
-                                     type="text"
                                      placeholder="请输入户主身份证号"
-                                 >身份证号
-                                 </InputItem>
+                                     itemTitle="身份证号"
+                                 />
+                                 // <InputItem
+                                 //     clear
+                                 //     maxLength={18}
+                                 //     editable={!userInfo.idcard}
+                                 //     type="text"
+                                 //     placeholder="请输入户主身份证号"
+                                 // >身份证号
+                                 // </InputItem>
                              )
                          }
                          {
@@ -283,12 +296,19 @@ class BankCardDetail extends BaseComponent {
                                  ],
                                  validateTrigger: 'onSubmit'//校验值的时机
                              })(
-                                 <InputItem
+                                 <GeisInputItem
                                      clear
-                                     type="bankCard"
+                                     maxLength={20}
+                                     type="num"
                                      placeholder="请输入银行卡号"
-                                 >银行卡号
-                                 </InputItem>
+                                     itemTitle="银行卡号"
+                                 />
+                                 // <InputItem
+                                 //     clear
+                                 //     type="bankCard"
+                                 //     placeholder="请输入银行卡号"
+                                 // >银行卡号
+                                 // </InputItem>
                              )
                          }
                          {
