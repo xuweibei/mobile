@@ -35,6 +35,7 @@ export default class MyAssets extends BaseComponent {
             userInfo: {},
             page: 1,
             pageCount: -1,
+            exceed: true,
             hasMore: false //底部加载状态
         };
     }
@@ -44,16 +45,15 @@ export default class MyAssets extends BaseComponent {
         this.getEveryData();
     }
 
-    //当天收入
+    //当月收入
     getDaril = () => {
         temp.isLoading = true;
         const {page} = this.state;
-        this.fetch(urlCfg.dailyIncome, {
+        this.fetch(urlCfg.budgetaryRevenue, {
             method: 'post',
             data: {
                 page: page,
-                page_count: 100000,
-                types: 1
+                page_count: 100000
             }})
             .subscribe(res => {
                 temp.isLoading = false;
@@ -66,20 +66,19 @@ export default class MyAssets extends BaseComponent {
             });
     }
 
-    //每一天的收入
+    //其他月份的收入
     getEveryData = () => {
         temp.isLoading = true;
         const {page, date} = this.state;
         this.setState({
             hasMore: true
         }, () => {
-            this.fetch(urlCfg.dailyIncomeAll, {
+            this.fetch(urlCfg.budgetaryRevenueOther, {
                 method: 'post',
                 data: {
                     page: page,
                     pagesize: temp.pagesize,
                     page_count: 5,
-                    types: 1,
                     date: date
                 }})
                 .subscribe(res => {
@@ -186,7 +185,7 @@ export default class MyAssets extends BaseComponent {
                     <div className="altogether">
                         <div className="altogether-name a-equally">
                             <span>{userInfo.realname}</span>
-                            <span>今日订单 共{userInfo.num}笔</span>
+                            <span>总余额</span>
                         </div>
                         <div className="altogether-UID a-equally">
                             <span>UID:{userInfo.no}</span>
@@ -196,12 +195,10 @@ export default class MyAssets extends BaseComponent {
                     <div className="asset-info-wrap">
                         {((todayArr.length > 0 && !exceed) ?  (
                             <div>
-                                {todayArr.map(item =>  (
-                                    <div>
-                                        <div className="asset-info unde-line">
-                                            <p><span>{item.desc}</span><span>{this.paySymbol(item.types) }{item.scalar}</span></p>
-                                            <p><span>{item.crtdate}</span></p>
-                                        </div>
+                                {todayArr.map(item => (
+                                    <div className="asset-info unde-line">
+                                        <p><span>{item.desc}</span><span className="nowMoney">{this.paySymbol(item.types)}{item.scalar}</span></p>
+                                        <p><span>{item.crtdate}</span></p>
                                     </div>
                                 ))}
                             </div>
@@ -210,20 +207,18 @@ export default class MyAssets extends BaseComponent {
                             <div>
                                 {todayArr.map((item, index) => {
                                     if (index < 6) {
-                                        return  (
+                                        return (
                                             // <div onClick={() => this.detailedPage(item)}>
-                                            <div>
-                                                <div className="asset-info unde-line">
-                                                    <p><span>{item.desc}</span><span>{this.paySymbol(item.types) }{item.scalar}</span></p>
-                                                    <p><span>{item.crtdate}</span></p>
-                                                </div>
+                                            <div className="asset-info unde-line">
+                                                <p><span>{item.desc}</span><span className="nowMoney">{this.paySymbol(item.types) }{item.scalar}</span></p>
+                                                <p><span>{item.crtdate}</span></p>
                                             </div>
                                         );
                                     }
                                     return '';
                                 })}
-                                <Button className="see-more" onClick={() => this.setState({exceed: true})}>查看更多</Button>
-                                <p className="explain">预估收入将于每月25号起结算至CAM，以结算金额为准。您可以前往CAM余额进行提现</p>
+                                <Button className="see-more" onClick={() => this.setState({exceed: false})}>查看更多</Button>
+                                {/* <p className="explain">预估收入将于每月25号起结算至CAM，以结算金额为准。您可以前往CAM余额进行提现</p> */}
 
                             </div>
                         ) : '')}
@@ -264,7 +259,7 @@ export default class MyAssets extends BaseComponent {
         );
         return (
             <React.Fragment>
-                {editModal === 'myIncome' && <Myincome getBackChange={this.getBackChange} {...this.state} noClick/>}
+                {editModal === 'myIncome' && <Myincome navTtile="当月收入" getBackChange={this.getBackChange} {...this.state} noClick/>}
                 {editModal === 'detail' && <Detailpage getBackChange={this.getBackChange} {...this.state}/>}
                 {editModal === 'income' && <Income getBackChange={this.getBackChange}/>}
                 {!editModal && this.defaultModel(row)}

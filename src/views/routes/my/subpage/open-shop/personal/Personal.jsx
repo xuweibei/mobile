@@ -202,7 +202,10 @@ class Personal extends BaseComponent {
 
     //验证折扣信息
     checkDiscount = (rule, value, callback) => {
-        if (!validator.isEmpty(value, Form.No_disRange, callback)) return;
+        if (!value) {
+            showInfo(Form.No_disRange);
+            return;
+        }
         if (Number(value) < 8 || Number(value) > 9.5) {
             validator.showMessage(Form.No_disNum, callback);
             return;
@@ -212,7 +215,10 @@ class Personal extends BaseComponent {
 
     //校验商户状态
     checkShopStatus = (rule, value, callback) => {
-        if (!validator.isEmpty(value, Form.No_isExp, callback)) return;
+        if (!value) {
+            showInfo(Form.No_isExp);
+            return;
+        }
         callback();
     };
 

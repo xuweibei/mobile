@@ -4,7 +4,7 @@ import VerificationCode from '../../../../../../common/verification-code';
 import {InputGrid} from '../../../../../../common/input-grid/InputGrid';
 import './PasswordPayment.less';
 
-const {appHistory, validator, showInfo, showSuccess} = Utils;
+const {appHistory, validator, showInfo, showSuccess, getUrlParam} = Utils;
 const {urlCfg} = Configs;
 const {MESSAGE: {Form, Feedback}} = Constants;
 const getPass = { //获取验证码按钮的样式
@@ -140,6 +140,7 @@ class passwordPayment extends BaseComponent {
 
     // 确认修改
     mustSure = () => {
+        const pay = decodeURI(getUrlParam('pay', encodeURI(this.props.location.search)));//支付页面设置支付密码的时候使用
         const {num, againNum, statusPay, phoneNum} = this.state;
         const reg = /^[0-9]\d*$/;
         if (!phoneNum) {
@@ -156,7 +157,11 @@ class passwordPayment extends BaseComponent {
                             } else {
                                 showSuccess(Feedback.Set_Success);
                             }
-                            appHistory.go(-2);
+                            if (pay && pay === '1') {
+                                appHistory.go(-1);
+                            } else {
+                                appHistory.go(-2);
+                            }
                         }
                     });
             } else {
@@ -211,10 +216,12 @@ class passwordPayment extends BaseComponent {
                         <div className="password-box">
                             <div className="payment-code">请输入支付密码</div>
                             <div className="content">
+                                <p>请输入密码</p>
                                 <InputGrid onInputGrid={this.inputGrid}/>
                             </div>
                             <div className="payment-code">请再次输入支付密码</div>
                             <div className="content">
+                                <p>请再次输入密码</p>
                                 <InputGrid onInputGrid={this.inputGridAgain}/>
                             </div>
                             <div className="payment-box">

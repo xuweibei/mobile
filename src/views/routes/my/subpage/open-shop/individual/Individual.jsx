@@ -57,6 +57,7 @@ class Individual extends BaseComponent {
     //提交店铺信息
     postInformation = () => {
         const {cate1, cate1Id, province, urban, county, pickUpSelf, isExp, openTime, closeTime} = this.state;
+        console.log(pickUpSelf);
         const {form: {validateFields}} = this.props;
         const pca = [province, urban, county];
         validateFields({first: true, force: true}, (error, val) => {
@@ -311,13 +312,20 @@ class Individual extends BaseComponent {
 
     //校验商户状态
     checkIsExp = (rule, value, callback) => {
-        if (!validator.isEmpty(value, Form.No_isExp, callback)) return;
+        if (!value) {
+            showInfo(Form.No_isExp);
+            return;
+        }
         callback();
     };
 
     //检验是否支持自提
     checkPickUpSelf = (rule, value, callback) => {
-        if (!validator.isEmpty(value, Form.No_pickUpSelf, callback)) return;
+        // const {pickUpSelf} = this.state;
+        if (!value) {
+            showInfo(Form.No_pickUpSelf);
+            return;
+        }
         callback();
     };
 
@@ -335,10 +343,6 @@ class Individual extends BaseComponent {
     checkCshPhone = (rule, value, callback) => {
         const myCshPhone = validator.wipeOut(value);
         if (!validator.isEmpty(myCshPhone, Form.No_cshPhone, callback)) return;
-        // if (!validator.checkNum(Number(myCshPhone), 3, 11)) {
-        //     showInfo(Form.Error_CasPhone);
-        //     return;
-        // }
         callback();
     };
 

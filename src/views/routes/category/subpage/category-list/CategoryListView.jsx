@@ -268,13 +268,13 @@ class CategoryListView extends BaseComponent {
             return (
                 showStatus[currentIndex] && index === currentIndex ? (
                     <div className="icon-box">
-                        <span className="icon list-icon-top"/>
-                        <span className="icon list-icon-bdown"/>
+                        <span className="icon list-icon-btop"/>
+                        <span className="icon list-icon-down"/>
                     </div>
                 ) : (
                     <div className="icon-box">
-                        <span className="icon list-icon-btop"/>
-                        <span className="icon list-icon-down"/>
+                        <span className="icon list-icon-top"/>
+                        <span className="icon list-icon-bdown"/>
                     </div>
                 )
             );
