@@ -148,6 +148,5 @@ global.clearCache = function () {
 
 //原生跳h5重置历史
 global.restHistory = function () {
-    alert(132);
     appHistory.reduction();
 };

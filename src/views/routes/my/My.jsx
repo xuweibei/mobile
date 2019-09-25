@@ -256,12 +256,12 @@ class My extends BaseComponent {
                         } else if (openShopStatus === 4) {
                             appHistory.push(`/openShopPage?shopType=${res.data.shop_type}&auditStatus=${'filed'}`);
                         } else if (openShopStatus === 3) {
-                            // if (res.data.shop_type === 2 || res.data.shop_type === 0) {
-                            //     appHistory.push(`/personal?shopType=${res.data.shop_type}&auditStatus=${'three'}`);
-                            // } else {
-                            //     appHistory.push(`/individual?shopType=${res.data.shop_type}&auditStatus=${'three'}`);
-                            // }
-                            appHistory.push(`/personal?shopType=${res.data.shop_type}&auditStatus=${''}`);
+                            if (res.data.shop_type === 2 || res.data.shop_type === 0) {
+                                appHistory.push(`/personal?shopType=${res.data.shop_type}&auditStatus=${'three'}`);
+                            } else {
+                                appHistory.push(`/individual?shopType=${res.data.shop_type}&auditStatus=${'three'}`);
+                            }
+                            // appHistory.push(`/openShopPage?shopType=${res.data.shop_type}&auditStatus=${''}`);
                         } else if (openShopStatus === 7) {
                             if (res.data.shop_type === 2 || res.data.shop_type === 0) {
                                 appHistory.push(`/personal?shopType=${res.data.shop_type}&auditStatus=${'four'}`);
