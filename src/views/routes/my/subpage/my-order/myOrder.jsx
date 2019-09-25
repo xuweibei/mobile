@@ -31,6 +31,8 @@ const tabs = [
     {title: '售后'}
 ];
 
+let arr = [];
+
 class MyOrder extends BaseComponent {
     state = {
         dataSource: new ListView.DataSource({
@@ -50,15 +52,28 @@ class MyOrder extends BaseComponent {
     };
 
     componentWillMount() {
-        const num = this.props.orderStatus || this.statusChoose(this.props.location.pathname.split('/')[2]);
+        const num = this.statusChoose(this.props.location.pathname.split('/')[2]);
         this.init(num);
     }
 
     componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方
-        if (this.tabBtn) return;
         const num = this.statusChoose(nextProps.location.pathname.split('/')[2]);
-        if (num !== this.props.orderStatus) {
-            this.init(num);
+        if (hybrid) {
+            arr.push(num);
+            if (arr && arr.length > 1) {
+                this.setState({
+                    status: arr[1]
+                }, () => {
+                    this.init(arr[1]);
+                    arr = [];
+                });
+            }
+        } else {
+            this.setState({
+                status: num
+            }, () => {
+                this.init(num);
+            });
         }
     }
 
@@ -66,8 +81,6 @@ class MyOrder extends BaseComponent {
         this.setState({
             status: num
         }, () => {
-            //储存我的订单的tab状态在哪一个
-            this.props.setOrderStatus(num);
             this.getInfo();
         });
     }
@@ -143,7 +156,6 @@ class MyOrder extends BaseComponent {
                             retainArr: prevState.retainArr.concat(res.list),
                             refreshing: false
                         }));
-
                         const {navColor} = this.state;
                         if (hybrid) {
                             setNavColor('setNavColor', {color: navColor});
@@ -185,30 +197,34 @@ class MyOrder extends BaseComponent {
             });
     }
 
+    //跳转我的订单
+    gotoMyOrder = (index) => {
+        const url = new Map([
+            [0, '/myOrder/qb'],
+            [1, '/myOrder/fk'],
+            [2, '/myOrder/fh'],
+            [3, '/myOrder/sh'],
+            [4, '/myOrder/pj'],
+            [5, '/myOrder/ssh']
+        ]);
+        appHistory.replace(url.get(index));
+    };
+
     //tab状态变更
     tabChange = (data, index) => {
-        this.tabBtn = true;
         const dataSource2 = new ListView.DataSource({
             rowHasChanged: (row1, row2) => row1 !== row2
         });
-        const status = index - 1;
-        //储存我的订单的tab状态在哪一个
-        this.props.setOrderStatus(status);
         this.setState({
             page: 1,
-            status,
+            // status,
             pageCount: -1,
             dataSource: dataSource2,
             retainArr: [],
             hasMore: false
         }, () => {
-            this.tabBtn = false;
             temp.stackData = [];
-            if (status === 4) {
-                this.refundMllOder(this.state.page);
-            } else {
-                this.getMallOrder(this.state.status, this.state.page);
-            }
+            this.gotoMyOrder(index);
         });
     };
 
@@ -321,13 +337,15 @@ class MyOrder extends BaseComponent {
         if (state > 0) {
             this.refundDetails(returnId, ev);
         } else {
-            this.skipDetail(id, returnType);
+            this.skipDetail(id, returnType, ev);
         }
+        ev.stopPropagation();
     }
 
     //跳转到订单详情页
-    skipDetail = (id, returnType) => {
+    skipDetail = (id, returnType, ev) => {
         appHistory.push(`/listDetails?id=${id}&refurn=${returnType ? '1' : ''}`);
+        ev.stopPropagation();
     }
 
     //立即支付
@@ -458,12 +476,12 @@ class MyOrder extends BaseComponent {
                             this.setState({
                                 showModal: false,
                                 modalTitle: '',
-                                status: 2
+                                status: 2,
+                                page: 1
                             });
+
                             //确定撤销后，跳转到待收货那列
-                            this.getMallOrder(2, 1);
-                            //储存我的订单的tab状态在哪一个
-                            this.props.setOrderStatus(2);
+                            this.gotoMyOrder(3);
                         }
                     });
             }]
@@ -636,8 +654,6 @@ class MyOrder extends BaseComponent {
         } else {
             appHistory.goBack();
         }
-        //清除订单tab的状态
-        this.props.setOrderStatus('');
     }
 
     render() {
