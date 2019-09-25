@@ -153,29 +153,29 @@ export function checkRange(min, max, value) {
     return re.test(value);
 }
 
-//判断字符串、对象、数组、是否为空,判断bool型
+//判断字符串、对象、数组、是否为空,判断bool型,undefined
 export function isEmpty(value, message, callback) {
     const type =  Object.prototype.toString.call(value);
     let arrayVerify = false;
     let objectVerify = false;
     //判断字符串
-    const stringVerify = type.indexOf('String') !== -1 && !value;
+    const stringVerify = type.indexOf('String') !== -1 && value;
     //判断bool型
-    const boolVerify = type.indexOf('Boolean') !== -1 && !value;
+    const boolVerify = type.indexOf('Boolean') !== -1 && value;
     //判断数组
     if (type.indexOf('Array') !== -1) {
-        arrayVerify = value.some(item => item === '');
+        arrayVerify = value.some(item => item !== '');
     }
     //判断对象
     if (type.indexOf('Object') !== -1) {
-        objectVerify = JSON.stringify(value) === '{}';
+        objectVerify = JSON.stringify(value) !== '{}';
     }
     if (stringVerify || arrayVerify || objectVerify || boolVerify) {
-        callback(VERIFY_FAILED);
-        showInfo(message);
-        return false;
+        return true;
     }
-    return true;
+    callback(VERIFY_FAILED);
+    showInfo(message);
+    return false;
 }
 
 //提示语
