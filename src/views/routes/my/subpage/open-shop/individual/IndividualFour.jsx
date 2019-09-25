@@ -72,7 +72,6 @@ class IndividualFour extends BaseComponent {
                 });
                 return;
             }
-            console.log('错误', error, val);
         });
     };
 

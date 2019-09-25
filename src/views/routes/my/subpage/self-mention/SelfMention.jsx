@@ -50,16 +50,14 @@ class ReDetail extends BaseComponent {
     }
 
     componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方
-        // alert(123);
         const num = this.statusChoose(nextProps.location.pathname.split('/')[2]);
         if (hybrid) {
-            alert(num);
             selArr.push(num);
-            if (selArr && selArr.length > 1) {
+            if (selArr) {
                 this.setState({
-                    status: selArr[1]
+                    status: selArr[1] || selArr[0]
                 }, () => {
-                    this.init(selArr[1]);
+                    this.init(selArr[1] || selArr[0]);
                     selArr = [];
                 });
             }

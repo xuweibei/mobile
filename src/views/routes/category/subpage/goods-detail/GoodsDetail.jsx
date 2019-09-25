@@ -55,6 +55,7 @@ class GoodsDetail extends BaseComponent {
         goodsAttr: [],
         stocks: [],
         type: '',
+        names: '', //选中商品属性
         inputStatus: false, //评论框状态
         assess: 0, //评价顶部距离
         detailImg: 0, //商品详情顶部距离
@@ -199,6 +200,7 @@ class GoodsDetail extends BaseComponent {
         this.setState({
             selectType: type,
             ids: ids,
+            names,
             popup: false
         }, () => {
             switch (clickType) { //判断确认后的回调 1加入购物车 2立即购买
@@ -555,7 +557,7 @@ class GoodsDetail extends BaseComponent {
         const {
             topSwithe, popup, paginationNum, xxArr, half, ids, maskStatus,
             picPath, goodsDetail, shop, recommend, evaluate, allState, collect,
-            goodsAttr, stocks, shopAddress, lineStatus, lineText, pickType, selectType
+            goodsAttr, stocks, shopAddress, lineStatus, lineText, pickType, selectType, names
         } = this.state;
         console.log(picPath[0], '肯德基康师傅');
         const renderCount = (
@@ -703,7 +705,9 @@ class GoodsDetail extends BaseComponent {
                                         <div className="chose">选择</div>
                                         <div className="attrs">
                                             <span>选择</span>
-                                            <span>颜色规格</span>
+                                            {
+                                                names && names.map((item, index) => (<span key={index.toString()}>{item}</span>))
+                                            }
                                         </div>
                                     </div>
                                     <div className="select-right">
@@ -878,16 +882,12 @@ class GoodsDetail extends BaseComponent {
                             </div>
                         </Element>
                         {/*商品详情*/}
-                        <Element name="details" className="detail-img lis">
-                            {/* <img
+                        <Element name="details" className="detail-img lis" dangerouslySetInnerHTML={{__html: goodsDetail.intro}}/>
+                        {/* <img
                                 className="img"
                                 src={require('../../../../../assets/images/dateil.png')}
                                 alt=""
                             /> */}
-                            {
-                                goodsDetail.intro
-                            }
-                        </Element>
                         {/*失效*/}
                     </div>
                 </div>

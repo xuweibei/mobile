@@ -35,7 +35,13 @@ class appendOrder extends BaseComponent {
         invoiceStatus: false,  //发票弹框显示状态
         notAllow: true, //不支持提交状态
         invoice: {},
-        invoiceIndex: ''
+        invoiceIndex: '',
+        invoiceName: '',
+        invoiceNum: '',
+        invoiceBank: '',
+        invoiceAddress: '',
+        bankCard: '',
+        invoicePhone: ''
     };
 
     componentDidMount() {
@@ -58,9 +64,9 @@ class appendOrder extends BaseComponent {
     }
 
     componentWillReceiveProps(next, data) {
-        const {setOrder, setIds} = this.props;
+        const {setOrder, setIds, location} = this.props;
         const timerNext = decodeURI(getUrlParam('time', encodeURI(next.location.search)));
-        const timer = decodeURI(getUrlParam('time', encodeURI(this.props.location.search)));
+        const timer = decodeURI(getUrlParam('time', encodeURI(location.search)));
         if (timerNext !== timer) {
             if (hybrid) {
                 this.setState({

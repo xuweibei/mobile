@@ -313,8 +313,8 @@ class Home extends BaseComponent {
                                             <div className="img-box">
                                                 {
                                                     item.data.map((value, i) => (
-                                                        <div className="show-img" key={i.toString()}>
-                                                            <img src={value.picpath} alt="" onClick={() => this.jumpOther(value.rs_id, index, value.rs_id)}/>
+                                                        <div className="show-img" key={i.toString()} onClick={() => this.jumpOther(value.rs_id, index, value.rs_id)}>
+                                                            <img src={value.picpath} alt=""/>
                                                         </div>
                                                     ))
                                                 }

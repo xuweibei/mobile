@@ -4,7 +4,6 @@ import './selectType.less';
 
 const {appHistory} = Utils;
 
-// FIXME: 改用纯组件 完成
 class SelfType extends React.PureComponent {
     //跳转开店
     routeTo = (type, num) => {

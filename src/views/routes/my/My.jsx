@@ -15,8 +15,9 @@ import {myActionCreator} from './actions/index';
 import {FooterBar} from '../../common/foot-bar/FooterBar';
 import MyLogistics from './subpage/my-logistics/MyLogistics';
 import './My.less';
+import {showInfo} from '../../../utils/mixin';
 
-const {appHistory, rollStatus: {offRoll, openRoll, getScrollTop}} = Utils;
+const {appHistory, rollStatus: {offRoll, openRoll, getScrollTop}, systemApi: {setValue}} = Utils;
 const {urlCfg} = Configs;
 
 //线上订单模块
@@ -246,22 +247,25 @@ class My extends BaseComponent {
         if (url === '/selectType') {
             this.fetch(urlCfg.applyForRight).subscribe(res => {
                 if (res && res.status === 0) {
+                    setValue('shopStatus', JSON.stringify(res.data.status));
                     this.setState({
                         openShopStatus: res.data.status
                     }, () => {
                         const {openShopStatus} = this.state;
-                        console.log(openShopStatus);
                         if (openShopStatus === 9) {
                             appHistory.push(`/openShopPage?shopType=${res.data.shop_type}&auditStatus=${'now'}`);
+                        } else if (openShopStatus === 6) {
+                            showInfo('您已提交过开店申请，请不要重复提交！');
+                            return;
                         } else if (openShopStatus === 4) {
                             appHistory.push(`/openShopPage?shopType=${res.data.shop_type}&auditStatus=${'filed'}`);
                         } else if (openShopStatus === 3) {
-                            if (res.data.shop_type === 2 || res.data.shop_type === 0) {
-                                appHistory.push(`/personal?shopType=${res.data.shop_type}&auditStatus=${'three'}`);
-                            } else {
-                                appHistory.push(`/individual?shopType=${res.data.shop_type}&auditStatus=${'three'}`);
-                            }
-                            // appHistory.push(`/openShopPage?shopType=${res.data.shop_type}&auditStatus=${''}`);
+                            // if (res.data.shop_type === 2 || res.data.shop_type === 0) {
+                            //     appHistory.push(`/personal?shopType=${res.data.shop_type}&auditStatus=${'three'}`);
+                            // } else {
+                            //     appHistory.push(`/individual?shopType=${res.data.shop_type}&auditStatus=${'three'}`);
+                            // }
+                            appHistory.push(`/openShopPage?shopType=${res.data.shop_type}&auditStatus=${''}`);
                         } else if (openShopStatus === 7) {
                             if (res.data.shop_type === 2 || res.data.shop_type === 0) {
                                 appHistory.push(`/personal?shopType=${res.data.shop_type}&auditStatus=${'four'}`);
