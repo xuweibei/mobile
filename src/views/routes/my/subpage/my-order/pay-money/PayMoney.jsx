@@ -63,7 +63,6 @@ class PayMoney extends BaseComponent {
     }
 
     componentWillReceiveProps(data, value) {
-        console.log(data.returnStatus, '乐山大佛哭就开始地方');
         // if (this.nativeBtn) return;
         //原生右滑退出处理
         if (!data.returnStatus) {
@@ -260,7 +259,7 @@ class PayMoney extends BaseComponent {
 
     //忘记密码跳转
     forgetPws = () => {
-        appHistory.push('/password');
+        appHistory.push(`/passwordPayment?pay=${1}`);
     }
 
     //CAM消费 支付
@@ -289,7 +288,7 @@ class PayMoney extends BaseComponent {
                         showConfirm({
                             title: '您还未设置支付密码，是否前往设置',
                             callbacks: [null, () => {
-                                appHistory.push('/passwordPayment');
+                                appHistory.push(`/passwordPayment?pay=${1}`);
                             }]
                         });
                     } else {

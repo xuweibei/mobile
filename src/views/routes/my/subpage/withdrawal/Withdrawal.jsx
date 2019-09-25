@@ -351,7 +351,7 @@ class Withdrawal extends BaseComponent {
                                             <Flex>
                                                 <Flex.Item>
                                                     <Checkbox.AgreeItem onChange={(res) => this.agreeItem(res)}>
-                                                        请认真阅读《提现提示》
+                                                        <span className="">请认真阅读</span>《提现提示》
                                                     </Checkbox.AgreeItem>
                                                 </Flex.Item>
                                             </Flex>
