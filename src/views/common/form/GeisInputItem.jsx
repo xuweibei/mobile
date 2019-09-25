@@ -8,6 +8,7 @@ import {InputItem} from 'antd-mobile';
 class GeisInputItem extends React.PureComponent {
     static defaultProps = {
         clear: false,
+        showPass: false,
         editable: true,
         placeholder: '',
         itemTitle: '',
@@ -20,6 +21,7 @@ class GeisInputItem extends React.PureComponent {
         placeholder: PropTypes.string,   //inputItem的placeholder
         type: PropTypes.string,   //限制类型
         editable: PropTypes.bool,   //是否可编辑
+        showPass: PropTypes.bool, //是否显示密码输入框
         itemTitle: PropTypes.string,     //inputItem的标题
         clear: PropTypes.bool,   //是否可清除
         maxLength: PropTypes.number,  //inputItem的最大长度
@@ -57,12 +59,13 @@ class GeisInputItem extends React.PureComponent {
     };
 
     render() {
-        const {clear, placeholder, editable, itemTitle, maxLength} = this.props;
+        const {clear, placeholder, editable, itemTitle, maxLength, showPass} = this.props;
         const {value} = this.state;
         return (
             <InputItem
                 value={value}
                 clear={clear}
+                type={showPass ? 'password' : 'text'}
                 placeholder={placeholder}
                 editable={editable}
                 onChange={this.itemChange}
