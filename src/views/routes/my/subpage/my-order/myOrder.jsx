@@ -31,6 +31,8 @@ const tabs = [
     {title: '售后'}
 ];
 
+let arr = [];
+
 class MyOrder extends BaseComponent {
     state = {
         dataSource: new ListView.DataSource({
@@ -56,13 +58,23 @@ class MyOrder extends BaseComponent {
 
     componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方
         const num = this.statusChoose(nextProps.location.pathname.split('/')[2]);
-        console.log(num, '健康好地方就开始');
-        alert(6);
-        this.setState({
-            status: num
-        }, () => {
-            this.init(num);
-        });
+        if (hybrid) {
+            arr.push(num);
+            if (arr && arr.length > 1) {
+                this.setState({
+                    status: arr[1]
+                }, () => {
+                    this.init(arr[1]);
+                    arr = [];
+                });
+            }
+        } else {
+            this.setState({
+                status: num
+            }, () => {
+                this.init(num);
+            });
+        }
     }
 
     init = (num) => {
@@ -187,7 +199,6 @@ class MyOrder extends BaseComponent {
 
     //跳转我的订单
     gotoMyOrder = (index) => {
-        alert(3);
         const url = new Map([
             [0, '/myOrder/qb'],
             [1, '/myOrder/fk'],
@@ -197,12 +208,10 @@ class MyOrder extends BaseComponent {
             [5, '/myOrder/ssh']
         ]);
         appHistory.replace(url.get(index));
-        alert(4);
     };
 
     //tab状态变更
     tabChange = (data, index) => {
-        alert(1);
         const dataSource2 = new ListView.DataSource({
             rowHasChanged: (row1, row2) => row1 !== row2
         });
@@ -214,7 +223,6 @@ class MyOrder extends BaseComponent {
             retainArr: [],
             hasMore: false
         }, () => {
-            alert(2);
             temp.stackData = [];
             this.gotoMyOrder(index);
         });

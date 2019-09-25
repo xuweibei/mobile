@@ -16,13 +16,16 @@ const hybird = process.env.NATIVE;
 
 class Edit extends BaseComponent {
     componentDidMount() {
-        const {userInfo, getUserInfo} = this.props;
+        const {userInfo, getUserInfo, userTypes} = this.props;
         if (!userInfo) {
             getUserInfo();
         }
-        const userType = decodeURI(getUrlParam('userType', encodeURI(this.props.location.search)));
-        //全局储存用户身份
-        this.props.setUseType(userType);
+        alert(userTypes);
+        if (!userTypes) {
+            const userType = decodeURI(getUrlParam('userType', encodeURI(this.props.location.search)));
+            //全局储存用户身份
+            this.props.setUseType(userType);
+        }
     }
 
     //初始化列表数据
@@ -305,8 +308,10 @@ class Edit extends BaseComponent {
 }
 
 const mapStateToProps = state => {
+    const base = state.get('base');
     const EditInfo = state.get('my');
     return {
+        userTypes: base.get('userTypes'),
         userInfo: EditInfo.get('userInfo')
     };
 };

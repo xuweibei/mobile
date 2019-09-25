@@ -8,7 +8,7 @@ import {myActionCreator} from '../../../actions/index';
 import SelfType from './SelfType';
 
 
-const {appHistory, getUrlParam} = Utils;
+const {appHistory, getUrlParam, native} = Utils;
 
 const hybrid = process.env.NATIVE;
 class ShopIndex extends BaseComponent {
@@ -18,42 +18,42 @@ class ShopIndex extends BaseComponent {
     };
 
     componentDidMount() {
-        if (hybrid) {
-            this.getApply();
-        } else {
-            const status = decodeURI(getUrlParam('status', encodeURI(this.props.location.search)));
-            const cerType = decodeURI(getUrlParam('cerType', encodeURI(this.props.location.search)));
+        const status = decodeURI(getUrlParam('status', encodeURI(this.props.location.search)));
+        const cerType = decodeURI(getUrlParam('cerType', encodeURI(this.props.location.search)));
 
-            this.setState({
-                sure: status
-            });
-            if (status === '11') {
-                const {showConfirm} = this.props;
-                showConfirm({
-                    title: '提示',
-                    message: '您还没有开店资格，暂不能开店。快去确认推荐人吧',
-                    btnTexts: ['取消', '确定'],
-                    callbacks: [
-                        () => {
+        this.setState({
+            sure: status
+        });
+        if (status === '11') {
+            const {showConfirm} = this.props;
+            showConfirm({
+                title: '提示',
+                message: '您还没有开店资格，暂不能开店。快去确认推荐人吧',
+                btnTexts: ['取消', '确定'],
+                callbacks: [
+                    () => {
+                        if (hybrid) {
+                            native('goBack');
+                        } else {
                             appHistory.push('/my');
-                        },
-                        () => {
-                            appHistory.push('/recommender');
                         }
-                    ]
-                });
-            } else if (status === '4') {
-                this.setState({
-                    auditStatus: 'filed',
-                    cerType: cerType
-                });
-            } else if (status === '9') {
-                // const {setStatus} = this.state;
-                // setStatus('now')
-                this.setState({
-                    auditStatus: 'now'
-                });
-            }
+                    },
+                    () => {
+                        appHistory.push('/recommender');
+                    }
+                ]
+            });
+        } else if (status === '4') {
+            this.setState({
+                auditStatus: 'filed',
+                cerType: cerType
+            });
+        } else if (status === '9') {
+            // const {setStatus} = this.state;
+            // setStatus('now')
+            this.setState({
+                auditStatus: 'now'
+            });
         }
     }
 
