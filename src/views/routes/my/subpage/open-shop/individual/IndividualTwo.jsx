@@ -1,9 +1,10 @@
 /**我要开店---个体页面 */
 import React from 'react';
-import {List, InputItem, ImagePicker, WingBlank, Flex, DatePicker} from 'antd-mobile';
+import {List, InputItem, ImagePicker, WingBlank, Flex} from 'antd-mobile';
 import {createForm} from 'rc-form';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import IndividualThree from './IndividualThree';
+import {showFail} from '../../../../../../utils/mixin';
 import './IndividualTwo.less';
 
 const {dealImage, showInfo, validator, native} = Utils;
@@ -46,10 +47,9 @@ class IndividualTwo extends BaseComponent {
 
     //设置开店人姓名
     setUserName = (val) => {
-        // FIXME: 没有引用perState，为什么要用函数
-        this.setState(() => ({
+        this.setState({
             userName: val
-        }));
+        });
     };
 
     //获取审核失败返回的数据
@@ -58,10 +58,7 @@ class IndividualTwo extends BaseComponent {
             if (res.status === 0 && res.data.length !== 0) {
                 const {flagArr} = this.state;
                 const arr = flagArr;
-                let validDate = '';
-                if (res.data.idcard_exp) {
-                    validDate =  new Date(res.data.idcard_exp);
-                }
+
                 if (res.data.pics[0]) {
                     const file = [];
                     arr[0] = true;
@@ -92,7 +89,7 @@ class IndividualTwo extends BaseComponent {
                 this.setState({
                     userName: res.data.mastar_name,
                     idCard: res.data.idcard,
-                    validDate
+                    validDate: res.data.idcard_exp
                 });
             }
         });
@@ -100,6 +97,7 @@ class IndividualTwo extends BaseComponent {
 
     //获取图片信息
     onChange = (files, type) => {
+        console.log('object');
         if (type === 'forward') {
             this.setState(() => ({
                 file: files
@@ -134,7 +132,7 @@ class IndividualTwo extends BaseComponent {
                 imgBD = imgD;
             });
             // FIXME: 为什么要用setTimeout， 用了后有没有清除
-            setTimeout(() => {
+            const timerId = setTimeout(() => {
                 if (imgS && imgBD) {
                     this.fetch(urlCfg.postIDcard, {data: {
                         ix: ix,
@@ -149,7 +147,34 @@ class IndividualTwo extends BaseComponent {
                                     flagArr: arr
                                 };
                             });
-                            showInfo(Feedback.upload_Success);
+                            if (res.data.pic_info && res.data.pic_info.status === 0) {
+                                if (res.data.name && res.data.id_num) {
+                                    this.setState({
+                                        userName: res.data.name,
+                                        idCard: res.data.id_num
+                                    });
+                                } else if (res.data.exp) {
+                                    this.setState({
+                                        validDate: res.data.exp
+                                    });
+                                }
+                                showInfo(Form.Success_Lic_Info);
+                            } else if (res.data.pic_info && res.data.pic_info.status === 1) {
+                                if (ix === 0) {
+                                    this.setState({
+                                        file: [],
+                                        userName: '',
+                                        idCard: ''
+                                    });
+                                } else if (ix === 1) {
+                                    this.setState({
+                                        file2: [],
+                                        validDate: ''
+                                    });
+                                }
+                                showFail(Form.Fail_Lic_Info);
+                            }
+                            clearTimeout(timerId);
                         } else {
                             showInfo(Feedback.upload_failed);
                         }
@@ -238,29 +263,34 @@ class IndividualTwo extends BaseComponent {
 
     //原生图片上传的时候的请求
     pasGass = (arrInfo, ix, index) => {
-        const {flagArr} = this.state;
-        const arr = flagArr;
         this.fetch(urlCfg.postIDcard, {data: {
             ix,
             file: encodeURIComponent(arrInfo[0].imgB),
             filex: encodeURIComponent(arrInfo[0].imgS)
-        }}).subscribe(value => {
-            if (value && value.status === 0) {
-                arr[index] = true;
-                if (value.data.name && value.data.id_num) {
-                    this.setState({
-                        flagArr: arr,
-                        userName: value.data.name,
-                        ID: value.data.id_num
-                    });
+        }}).subscribe(res => {
+            if (res.status === 0) {
+                this.setState((prevState) => {
+                    const arr = prevState.flagArr;
+                    arr[index] = true;
+                    return {
+                        flagArr: arr
+                    };
+                });
+                if (res.data) {
+                    if (res.data.hasOwnProperty('name')) {
+                        this.setState({
+                            userName: res.data.name,
+                            idCard: res.data.id_num
+                        });
+                    } else if (res.data.hasOwnProperty('exp')) {
+                        this.setState({
+                            validDate: res.data.exp
+                        });
+                    }
                 }
-                if (value.data.exp) {
-                    this.setState({
-                        flagArr: arr,
-                        date: value.data.exp
-                    });
-                }
-                showInfo('上传成功');
+                showInfo(Feedback.upload_Success);
+            } else {
+                showInfo(Feedback.upload_failed);
             }
         });
     }
@@ -279,14 +309,17 @@ class IndividualTwo extends BaseComponent {
                     }));
                     this.pasGass(arrInfo, 0, 0);
                 });
-            } else if (type === 'back') {
+            } else if (type === 'hand') {
                 native('picCallback', {num: 1}).then(res => {
                     res.data.img.forEach(item => {
                         arrInfo.push({imgB: item[0], imgS: item[1], id: new Date()});
                     });
-                    this.pasGass(arrInfo, 2, 1);
+                    this.setState((proveState) => ({
+                        file2: proveState.file.concat(arrInfo)
+                    }));
+                    this.pasGass(arrInfo, 4, 2);
                 });
-            } else {
+            } else if (type === 'back') {
                 native('picCallback', {num: 1}).then(res => {
                     res.data.img.forEach(item => {
                         arrInfo.push({imgB: item[0], imgS: item[1], id: new Date()});
@@ -294,7 +327,7 @@ class IndividualTwo extends BaseComponent {
                     this.setState((proveState) => ({
                         file3: proveState.file3.concat(arrInfo)
                     }));
-                    this.pasGass(arrInfo, 4, 2);
+                    this.pasGass(arrInfo, 1, 1);
                 });
             }
         }
@@ -302,18 +335,17 @@ class IndividualTwo extends BaseComponent {
 
     //点击删除图片
     deleteImg = (type, id) => {
-        const {file, file2, file3} = this.state;
         if (type === 'forward') {
             this.setState({
-                file: file.filter(item => item.id !== id)
+                file: []
             });
         } else if (type === 'back') {
             this.setState({
-                file2: file2.filter(item => item.id !== id)
+                file3: []
             });
         } else {
             this.setState({
-                file3: file3.filter(item => item.id !== id)
+                file2: []
             });
         }
     };
@@ -326,6 +358,7 @@ class IndividualTwo extends BaseComponent {
     editModalMain = () => {
         const {form: {getFieldDecorator}} = this.props;
         const {file, file2, file3, validDate, idCard, userName} = this.state;
+        console.log(file, file2, file3, '就开始地方接口');
         return (
             <div>
                 <AppNavBar goBackModal={this.props.goBack} rightExplain title="开店人信息"/>
@@ -362,7 +395,7 @@ class IndividualTwo extends BaseComponent {
                                                         file && file.map(item => (
                                                             <li id={item.id}>
                                                                 <span className="delete-icon" onClick={() => this.deleteImg('forward', item.id)}>×</span>
-                                                                <img src={item.imgS}/>
+                                                                <img src={item.imgS || item.url}/>
                                                             </li>
                                                         ))
                                                     }
@@ -402,15 +435,15 @@ class IndividualTwo extends BaseComponent {
                                             <div className="picture-area">
                                                 <ul>
                                                     {
-                                                        file2 && file2.map(item => (
+                                                        file3 && file3.map(item => (
                                                             <li id={item.id}>
                                                                 <span className="delete-icon" onClick={() => this.deleteImg('back', item.id)}>×</span>
-                                                                <img src={item.imgS}/>
+                                                                <img src={item.imgS || item.url}/>
                                                             </li>
                                                         ))
                                                     }
                                                     {
-                                                        file2.length === 0 && (
+                                                        file3.length === 0 && (
                                                             <li className="imgAdd-button" onClick={() => this.addPictrue('back')}>
                                                                 <span className="imgAdd-icon">+</span>
                                                             </li>
@@ -449,15 +482,15 @@ class IndividualTwo extends BaseComponent {
                                                 <div className="picture-area">
                                                     <ul>
                                                         {
-                                                            file3 && file3.map(item => (
+                                                            file2 && file2.map(item => (
                                                                 <li id={item.id}>
                                                                     <span className="delete-icon" onClick={() => this.deleteImg('handle', item.id)}>×</span>
-                                                                    <img src={item.imgS}/>
+                                                                    <img src={item.imgS || item.url}/>
                                                                 </li>
                                                             ))
                                                         }
                                                         {
-                                                            file3.length === 0 && (
+                                                            file2.length === 0 && (
                                                                 <li className="imgAdd-button" onClick={() => this.addPictrue('handle')}>
                                                                     <span className="imgAdd-icon">+</span>
                                                                 </li>
@@ -498,6 +531,7 @@ class IndividualTwo extends BaseComponent {
                                         })(
                                             <InputItem
                                                 clear
+                                                disabled
                                                 placeholder="请输入真实姓名"
                                                 // onChange={(val) => this.setUserName(val)}
                                             >姓名
@@ -515,6 +549,7 @@ class IndividualTwo extends BaseComponent {
                                             <InputItem
                                                 maxLength={18}
                                                 clear
+                                                disabled
                                                 placeholder="请输入身份证号"
                                                 // onChange={(val) => this.setIdCard(val)}
                                             >身份证号
@@ -529,15 +564,14 @@ class IndividualTwo extends BaseComponent {
                                             ],
                                             validateTrigger: 'submit'//校验值的时机
                                         })(
-                                            <DatePicker
-                                                className="date"
-                                                mode="date"
-                                                title="选择有效期"
-                                                format="YYYY-MM-DD"
-                                                // onChange={date => this.dateChange(date)}
-                                            >
-                                                <List.Item arrow="horizontal">身份证有效期</List.Item>
-                                            </DatePicker>
+                                            <InputItem
+                                                maxLength={18}
+                                                clear
+                                                disabled
+                                                placeholder="身份证有效期"
+                                                // onChange={(val) => this.setIdCard(val)}
+                                            >身份证有效期
+                                            </InputItem>
                                         )
                                     }
                                 </List>

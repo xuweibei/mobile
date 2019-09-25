@@ -4,6 +4,7 @@
  */
 import PropTypes from 'prop-types';
 import './ShopHomeIndexFive.less';
+import {Carousel} from 'antd-mobile';
 
 
 const {appHistory} = Utils;
@@ -23,7 +24,26 @@ class ShopHomeIndexFive extends React.PureComponent {
             <div data-component="ShopHomeIndexFive" data-role="page" className="ShopHomeIndexFive">
                 <div className="Template-top">
                     <div className="template-top" style={{background: shopModelArr.content.bg_color}}>
-                        <img src={shopModelArr.picurl[1]} alt=""/>
+                        {
+                            (shopModelArr.content && shopModelArr.content.banner && shopModelArr.content.banner.length > 0) ? (
+                                <Carousel
+                                    className="my-carousel"
+                                    vertical
+                                    dots={false}
+                                    dragging={false}
+                                    swiping={false}
+                                    autoplay
+                                    infinite
+                                    speed={200}
+                                    autoplayInterval={300}
+                                    resetAutoplay={false}
+                                >
+                                    {
+                                        shopModelArr.content.banner.map(item => <img key={item.ix} src={item.url} title="693"/>)
+                                    }
+                                </Carousel>
+                            ) : <img title="132"/>
+                        }
                     </div>
                     <div className="boutique">
                         <div className="boutique-name">

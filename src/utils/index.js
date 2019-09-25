@@ -9,6 +9,6 @@ export {rollStatus} from './rollStatus';
 export
     * as validator
 from './validator';
-export {getAppUserToken, native, getShopCartInfo} from './native';
+export {getAppUserToken, native, getShopCartInfo, setNavColor} from './native';
 export {appHistory} from './appHistory';
 export {TD} from './Td';

@@ -23,6 +23,7 @@ const getPass = {
 };
 class BankCardDetail extends BaseComponent {
     state = {
+        height: document.documentElement.clientHeight - (window.isWX ? window.rem * null : window.rem * 1.08), //是微信扣除头部高度
         countdown: Constants.COUNTERNUM,
         bankArr: [], //銀行卡内容
         userInfo: {}, //用戶信息
@@ -67,6 +68,8 @@ class BankCardDetail extends BaseComponent {
                         res.data.forEach(item => {
                             item.label = item.name;
                             item.value = item.id;
+                            delete item.name;
+                            delete item.id;
                         });
                     }
                     this.setState({
@@ -78,7 +81,7 @@ class BankCardDetail extends BaseComponent {
 
     //保存说
      successToast = () => {
-         const {form: {validateFields, getFieldValue}, getBank} = this.props;
+         const {form: {validateFields, getFieldValue}, getBankCardList} = this.props;
          validateFields({first: true, force: true}, (error, value) => {
              if (!error) {
                  const userName = getFieldValue('name');
@@ -104,7 +107,7 @@ class BankCardDetail extends BaseComponent {
                      }}).subscribe(res => {
                      if (res.status === 0) {
                          showSuccess(Feedback.Bind_Success);
-                         getBank();
+                         getBankCardList();
                          appHistory.goBack();
                      }
                  });
@@ -115,7 +118,7 @@ class BankCardDetail extends BaseComponent {
 
     //校验姓名
     checkName=(rule, value, callback) => {
-        if (!validator.checkRange(2, 20, value)) {
+        if (!validator.checkRange(2, 8, value)) {
             validator.showMessage(Form.No_Name, callback);
             return;
         }
@@ -133,12 +136,20 @@ class BankCardDetail extends BaseComponent {
 
     //验证开户银行
     checkBank = (rule, value, callback) => {
+        if (!value) {
+            showInfo(Form.No_Bank);
+            return;
+        }
         if (!validator.isEmpty(value, Form.No_Bank, callback)) return;
         callback();
     };
 
     //检验银行卡号
     checkBankNo = (rule, value, callback) => {
+        if (!value) {
+            validator.showMessage(Form.No_BankNumber, callback);
+            return;
+        }
         if (!validator.isEmpty(value, Form.No_BankNumber, callback)) return;
         if (!validator.bankCard(validator.wipeOut(value))) {
             validator.showMessage(Form.Error_Bank, callback);
@@ -149,6 +160,10 @@ class BankCardDetail extends BaseComponent {
 
     //验证手机号
     checkPhone = (rule, value, callback) => {
+        if (!value) {
+            showInfo(Form.No_Phone);
+            return;
+        }
         if (!validator.isEmpty(value, Form.No_Phone, callback)) return;
         if (!validator.checkPhone(validator.wipeOut(value))) {
             validator.showMessage(Form.Error_Phone, callback);
@@ -159,6 +174,10 @@ class BankCardDetail extends BaseComponent {
 
     //检验验证码
     checkPhoneCode = (rule, value, callback) => {
+        if (!value) {
+            showInfo(Form.No_Naptcha);
+            return;
+        }
         if (!validator.isEmpty(value, Form.No_Naptcha, callback)) return;
         if (value.length < 4) {
             validator.showMessage(Form.Error_Captcha, callback);
@@ -213,12 +232,12 @@ class BankCardDetail extends BaseComponent {
      };
 
      render() {
-         const {userInfo, getOff} = this.state;
+         const {userInfo, getOff, height, bankArr} = this.state;
          const {getFieldDecorator} = this.props.form;
          return (
              <div data-component="bankCardDetail" data-role="page" className="bank-card-detail">
                  <AppNavBar title="我的银行卡"/>
-                 <div className="bank-box">
+                 <div style={{height: height}} className="bank-box">
                      <List className={`mainInfo ${userInfo.bankId === undefined ? 'no-font-color' : 'font-color'}`}>
                          {
                              getFieldDecorator('name', {
@@ -244,8 +263,9 @@ class BankCardDetail extends BaseComponent {
                              })(
                                  <InputItem
                                      clear
+                                     maxLength={18}
                                      editable={!userInfo.idcard}
-                                     type="number"
+                                     type="text"
                                      placeholder="请输入户主身份证号"
                                  >身份证号
                                  </InputItem>
@@ -260,7 +280,7 @@ class BankCardDetail extends BaseComponent {
                              })(
                                  <Picker
                                      extra="请选择"
-                                     data={this.state.bankArr}
+                                     data={bankArr}
                                      onOk={(data) => this.onOkPicker(data)}
                                      cols={1}
                                  >
@@ -343,7 +363,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
     showConfirm: actionCreator.showConfirm,
     showAlert: actionCreator.showAlert,
-    getBank: myActionCreator.getBank
+    getBankCardList: myActionCreator.getBankCardList
 };
 
 const BasicInputWrapper = createForm()(BankCardDetail);

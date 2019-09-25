@@ -344,9 +344,9 @@ class ShopCart extends BaseComponent {
         }));
         let count = 0;
         for (let i = 0; i < nums.length; i++) {
-            count += deposit[i] * nums[i];
+            count += ((deposit[i] * 100) * (nums[i] * 100));
         }
-        return count;
+        return parseFloat(count / 10000);
     };
 
     //获取总价格
@@ -426,11 +426,19 @@ class ShopCart extends BaseComponent {
                 }
             }).subscribe(res => {
                 if (res.status === 0) {
-                    this.setState({
-                        goodsCount: goods.num
-                    });
-                } else {
-                    showInfo(Form.No_Stocks);
+                    if (res.data) {
+                        if (res.data.status === 6) {
+                            goods.num = (Number(goods.num) - 1).toString();
+                            this.setState({
+                                goodsCount: goods.num
+                            });
+                            showInfo(res.message);
+                        }
+                    } else {
+                        this.setState({
+                            goodsCount: goods.num
+                        });
+                    }
                 }
             });
         }
@@ -447,7 +455,7 @@ class ShopCart extends BaseComponent {
 
     //进入店铺
     goToShopHome = (id) => {
-        console.log(id);
+        // console.log(id);
         const shop = id.data[0];
         const shopId = shop.shop_id;
         if (hybird) {
@@ -462,7 +470,7 @@ class ShopCart extends BaseComponent {
 
     //开启sku
     openSku = (e, goods) => {
-        console.log('openSkuopenSkuopenSku', goods);
+        // console.log('openSkuopenSkuopenSku', goods);
         e.stopPropagation(); //阻止冒泡
         this.fetch(urlCfg.getCartSku, {
             data: {
@@ -682,7 +690,7 @@ class ShopCart extends BaseComponent {
                             {valid.map((shop, index) => (
                                 <div
                                     className="shopCart-goods"
-                                    key={shop.name}
+                                    key={index.toString()}
                                 >
                                     <div className="goods-top">
                                         <span
@@ -747,7 +755,7 @@ class ShopCart extends BaseComponent {
                                                     <div className="num-add">
                                                         <div className="desc-count">
                                                             记账量：
-                                                            {this.numFormat(goods.deposit)}
+                                                            {goods.deposit}
                                                         </div>
                                                         <div className="num-right">
                                                             <span

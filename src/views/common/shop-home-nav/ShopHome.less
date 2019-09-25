@@ -3,11 +3,20 @@
 .home-bar{
     width: 100%;
     height: 230px;
+    .shade {
+        height: 230px;
+        //opacity: 1;
+        position: fixed;
+        top:0;
+        width: 100%;
+        z-index: 1;
+        background-size: 100% 100% !important;
+    }
     .home-bar-top{
         width: 100%;
         height: 230px;
         // background: url();
-        background-size: 100% 100% !important;
+        background: rgba(0, 0, 0, 0.6);
         padding: 0 @padding-wingBlank;
         box-sizing: border-box;
         position: fixed;
@@ -21,6 +30,8 @@
             overflow: hidden;
            .bar-icon-left, .bar-icon-right {
                 padding-top: 6px;
+               position: relative;
+               z-index: 199999999;
             }
             .bar-icon-left:before{
                 content: '\E646';
@@ -91,10 +102,18 @@
                     color: @duckling-yellow;
                     font-size: 26px;
                 }
+                .reatIng{
+                    display: inline-block;
+                    padding: 0.04rem 0.16rem;
+                    border-radius: 0.2rem;
+                    font-size: 12px;
+                    background: #ccc;
+                    margin-left: 10px;
+                }
             }
             .home-text{
                 color: @white;
-                width: 360px;
+                width: 370px;
                 .TextareaOverflow(1);
                 .text{
                     font-weight: @font-weight-bold;
@@ -111,12 +130,13 @@
             border: 1px solid @white;
             border-radius: 100px;
             text-align: center;
-            line-height: 46px;
+            line-height: 50px;
             color: @white;
             font-size: @font-size-24;
         }
     }
     .WXce{
         margin: 0 auto;
+        width: 100% !important;
     }
 }

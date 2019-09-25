@@ -13,6 +13,9 @@
     .my-list {
         width: 100%;
         background: @white;
+        //position: absolute;
+        top: 196px;
+        bottom: 0;
         .am-list-item {
             padding-left: 0;
             //margin-top:20px;
@@ -23,6 +26,7 @@
 
     }
     .receiving-reg {
+        //margin-top: 20px;
         .am-input-label, .am-input-label-5{
             display: flex;
             justify-content: space-between;
@@ -39,10 +43,13 @@
         color:#fff !important;
         opacity: 1;
     }
+    .am-button::before {
+        border: none!important;
+    }
     .am-list-item .am-list-line {
         padding: 0 30px;
     }
-    .am-list-body::before {
+    .am-list-body::before, .am-list-body::after {
         height: 0!important;
     }
     .region{

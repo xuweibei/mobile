@@ -139,6 +139,24 @@ export function getBankCardList(action$) {
         );
 }
 
+// 获取更多账户
+export function switchAccountList(action$) {
+    return action$.ofType(actionTypes.GET_ACCOUT)
+        .switchMap(
+            (action) => XHR.fetch(urlCfg.getAccountInfo)
+                .map(res => {
+                    if (res.status !== 0) {
+                        return errorType(res);
+                    }
+                    return ({
+                        type: actionTypes.SET_ACCOUT,
+                        payload: {
+                            obj: res.data.list
+                        }
+                    });
+                })
+        );
+}
 // 会员登录
 /*export function login(action$) {
     return action$.ofType(actionTypes.LOGIN)

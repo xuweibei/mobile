@@ -32,7 +32,8 @@ class Register extends BaseComponent {
         userNum: [], //多个账号
         currentIndex: -1,
         currentUser: {},
-        fouceShow: ''
+        fouceShow: '',
+        asdsdf: ''
     };
 
     componentDidMount() {
@@ -447,6 +448,7 @@ class Register extends BaseComponent {
 
     render() {
         const {convert, phone, maxLength, code, text, lineText, forgotText, verification, textType, shadow, eyes, fouceShow} = this.state;
+        console.log(phone);
         return (
             <div className="login-register">
                 {this.loginModal()}
@@ -475,10 +477,21 @@ class Register extends BaseComponent {
                                 <div className="pass pass-right" onClick={() => this.loginByPassWord('code')}>验证码登陆
                                 </div>
                             </div>
+                            <div className="register-bottom">
+                                <div className="register-title">
+                                    登录即注册，且代表同意
+                                    <p className="bottom-red">《用户协议》、
+                                    </p>
+                                    <p
+                                        className="bottom-red"
+                                    >《隐私政策》
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     )}
                     {!convert && (
-                        <div>
+                        <div className="enter-box">
                             <div className="login-title">欢迎登录中品优购</div>
                             <div className="login-inp">
                                 <div className={`inp-item ${fouceShow === '1' ? 'border-color' : ''}`}>
@@ -508,7 +521,7 @@ class Register extends BaseComponent {
                                                 <div className={`icon ${eyes ? 'icon-open' : 'icon-close'}`}/>
                                             </div>
                                         ) : (
-                                            <Button className="btn-code" onClick={this.getCode}>
+                                            <Button className={`btn-code ${phone.length === 13 ?  'highlight' : ''}`} onClick={this.getCode}>
                                                 <span
                                                     className="code-text"
                                                 >{text}
@@ -533,25 +546,27 @@ class Register extends BaseComponent {
                                 >登录
                                 </Button>
                             </div>
-                            <div className="others">
-                                <div className="line"/>
-                                <div>第三方登录</div>
-                                <div className="line"/>
+                            <div className="register-bottom">
+                                <div className="register-title">
+                                    登录即注册，且代表同意
+                                    <p className="bottom-red">《用户协议》、
+                                    </p>
+                                    <p
+                                        className="bottom-red"
+                                    >《隐私政策》
+                                    </p>
+                                </div>
                             </div>
-                            <div className="wxLogin"/>
+                            <div className="thirdparty">
+                                <div className="others">
+                                    {/*<div className="line"/>*/}
+                                    <div className="line">第三方登录</div>
+                                    {/*<div className="line"/>*/}
+                                </div>
+                                <div className="wxLogin"/>
+                            </div>
                         </div>
                     )}
-                    <div className="register-bottom">
-                        <div className="register-title">
-                            登录即注册，且代表同意
-                            <p className="bottom-red">《用户协议》、
-                            </p>
-                            <p
-                                className="bottom-red"
-                            >《隐私政策》
-                            </p>
-                        </div>
-                    </div>
                 </div>
 
                 {

@@ -1,14 +1,28 @@
 import {Route} from 'react-router-dom';
-import RegisterPage from './Register';
-import SetPassWordPage from './SetPassword';
 // import BindPhone from './BindPhone';
 
-const Register = () => (
-    <React.Fragment>
-        <Route path="/login" component={RegisterPage}/>
-        <Route path="/setpassword" component={SetPassWordPage}/>
-        {/* <Route path="/bindPhone" component={BindPhone}/> */}
-    </React.Fragment>
-);
+const RegisterPage = Loadable({
+    loader: () => import(/* webpackChunkName: 'wechat' */ './Register'),
+    loading: () => null
+});
+
+const SetPassWordPage = Loadable({
+    loader: () => import(/* webpackChunkName: 'wechat' */ './SetPassword'),
+    loading: () => null
+});
+
+const Register = () => {
+    const hybird = process.env.NATIVE;
+    if (hybird) {
+        return null;
+    }
+    return (
+        <React.Fragment>
+            <Route path="/login" component={RegisterPage}/>
+            <Route path="/setpassword" component={SetPassWordPage}/>
+            {/* <Route path="/bindPhone" component={BindPhone}/> */}
+        </React.Fragment>
+    );
+};
 
 export default Register;

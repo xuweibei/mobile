@@ -1,10 +1,11 @@
 /*
 * 收货地址页面
 * */
-import {Icon, Button, SwipeAction} from 'antd-mobile';
+import {Button, SwipeAction} from 'antd-mobile';
 import {connect} from 'react-redux';
 import {baseActionCreator} from '../../../../../../redux/baseAction';
 import {myActionCreator} from '../../../actions/index';
+import AppNavBar from '../../../../../common/navbar/NavBar';
 import './Address.less';
 
 const {appHistory, showSuccess} = Utils;
@@ -162,11 +163,7 @@ class Address extends BaseComponent {
             <div data-component="address-set" data-role="page" className={`address-set ${window.isWX ? 'WX-address' : ''}`}>
                 {
                     window.isWX ? null : (
-                        <div className="nav-bar">
-                            <Icon type="left" size="lg" onClick={() => appHistory.goBack()}/>
-                            <span className="nav-title">地址管理</span>
-                            <span className="nav-right"/>
-                        </div>
+                        <AppNavBar title="地址管理"/>
                     )
                 }
                 <div className="add-list">

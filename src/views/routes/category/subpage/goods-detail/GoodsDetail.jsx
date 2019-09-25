@@ -74,19 +74,24 @@ class GoodsDetail extends BaseComponent {
         pickType: {}, //配送方式
         selectType: '', //选中配送方式 1快递 2自提
         clickType: 0, //打开sku的方式 0箭头 1购物车 2立即购买
-        totalNUm: 0 //商品库存
+        totalNUm: 0, //商品库存,
+        goodId: decodeURI(getUrlParam('id', encodeURI(this.props.location.search)))
     };
 
     componentDidMount() {
-        scrollSpy.update();
-        scrollSpy.mount(document);
-        scrollSpy.addSpyHandler(this.handleScroll, document);
-        this.getGoodsDetail();
+        this.init();
     }
 
     componentWillUnmount() {
         super.componentWillUnmount();
         scrollSpy.unmount();
+    }
+
+    init = () => {
+        scrollSpy.update();
+        scrollSpy.mount(document);
+        scrollSpy.addSpyHandler(this.handleScroll, document);
+        this.getGoodsDetail();
     }
 
     //网页滚动
@@ -98,12 +103,22 @@ class GoodsDetail extends BaseComponent {
         }
     }
 
+    componentWillReceiveProps(nextProps, value) { //路由跳转时的判断，id有变化就请求
+        if (this.state.goodId !== decodeURI(getUrlParam('id', encodeURI(nextProps.location.search)))) {
+            this.setState({
+                goodId: decodeURI(getUrlParam('id', encodeURI(nextProps.location.search))),
+                selectType: '',
+                ids: []
+            }, () => {
+                this.init();
+            });
+        }
+    }
+
     //获取商品详情
     getGoodsDetail = () => {
-        const id = decodeURI(
-            getUrlParam('id', encodeURI(this.props.location.search))
-        );
-        this.fetch(urlCfg.getGoodsDetail, {data: {id: id}}).subscribe(res => {
+        const {goodId} = this.state;
+        this.fetch(urlCfg.getGoodsDetail, {data: {id: goodId}}).subscribe(res => {
             if (res.status === 0) {
                 this.starShow(res.shop.shop_mark);
                 const stocks = [];
@@ -121,7 +136,7 @@ class GoodsDetail extends BaseComponent {
                         goodsDetail: res.data,
                         picPath: res.data.picpath,
                         shop: res.shop, // 店铺信息,
-                        rank: res.shop.shop_mark,
+                        // rank: res.shop.shop_mark,
                         recommend: res.recommend_pr, // 商品推荐
                         evaluate: res.pingjia,
                         allState: res,
@@ -201,7 +216,13 @@ class GoodsDetail extends BaseComponent {
 
     //添加商品到购物车
     addCart = () => {
-        const {shop, goodsDetail, paginationNum, ids, selectType} = this.state;
+        const {shop, goodsDetail, paginationNum, ids, selectType, status} = this.state;
+        if (shop.shoper_open_status === '0') {
+            return;
+        }
+        if (status === '0' || status === '2') {
+            return;
+        }
         if (paginationNum === 0 || ids.length === 0) {
             this.setState({
                 popup: true,
@@ -242,6 +263,13 @@ class GoodsDetail extends BaseComponent {
 
     //立即购买
     emption = () => {
+        const {shop, status} = this.state;
+        if (shop.shoper_open_status === '0') {
+            return;
+        }
+        if (status === '0' || status === '2') {
+            return;
+        }
         const id = decodeURI(
             getUrlParam('id', encodeURI(this.props.location.search))
         );
@@ -412,7 +440,7 @@ class GoodsDetail extends BaseComponent {
         case '2':
             this.setState({
                 lineStatus: true,
-                lineText: '库存不足'
+                lineText: '商品已下架'
             });
             break;
         default:
@@ -483,9 +511,9 @@ class GoodsDetail extends BaseComponent {
 
     //联系商家
     goToShoper = () => {
-        const {shop} = this.state;
+        const {shop, recommend} = this.state;
         if (hybrid) {
-            native('goToShoper', {shopNo: shop.no, groud: '0'});//groud 为0 单聊，1群聊
+            native('goToShoper', {shopNo: shop.no, id: recommend[0].id, type: '1', shopNickName: shop.nickname, imType: '1', groud: '0'});//groud 为0 单聊，1群聊 imType 1商品2订单3空白  type 1商品 2订单
         } else {
             showInfo('联系商家');
         }
@@ -509,12 +537,22 @@ class GoodsDetail extends BaseComponent {
         </Popover>
     )
 
+    //店铺详情跳转
+    goToShopRecom = (id) => {
+        this.setState({
+            goodId: id
+        }, () => {
+            this.getGoodsDetail();
+        });
+    }
+
     render() {
         const {
             topSwithe, popup, paginationNum, xxArr, half, ids, maskStatus,
-            picPath, rank, goodsDetail, shop, recommend, evaluate, allState, collect,
+            picPath, goodsDetail, shop, recommend, evaluate, allState, collect,
             goodsAttr, stocks, shopAddress, lineStatus, lineText, pickType, selectType
         } = this.state;
+        console.log(picPath[0], '肯德基康师傅');
         const renderCount = (
             <List>
                 <List.Item
@@ -633,7 +671,7 @@ class GoodsDetail extends BaseComponent {
                                     <Flex.Item>
                                         <div className="bot-left">
                                             邮费：
-                                            {goodsDetail.freight || '免邮'}
+                                            {'￥' + goodsDetail.express_money || '免邮'}
                                         </div>
                                     </Flex.Item>
                                     <Flex.Item>
@@ -707,9 +745,9 @@ class GoodsDetail extends BaseComponent {
                                                 </div>
                                             )}
                                             <div className="shop-btn">
-                                                <div className="shop-det">
+                                                {/* <div className="shop-det">
                                                     店铺详情
-                                                </div>
+                                                </div> */}
                                                 <div
                                                     className="auxiliary-button red"
                                                     onClick={() => this.ShopH(shop.id)
@@ -739,7 +777,7 @@ class GoodsDetail extends BaseComponent {
                                             {shop.shop_mark}
                                         </span>
                                         <span className="grade-height">
-                                            {this.rating(rank)}
+                                            {this.rating(shop.shop_mark)}
                                         </span>
                                     </div>
                                     <div className="logistics-score">
@@ -747,7 +785,7 @@ class GoodsDetail extends BaseComponent {
                                         <span className="score-eva">
                                             {shop.logistics_mark}
                                         </span>
-                                        <span className="grade-low">低</span>
+                                        <span className="grade-low">{this.rating(shop.logistics_mark)}</span>
                                     </div>
                                 </div>
                             </div>
@@ -795,6 +833,7 @@ class GoodsDetail extends BaseComponent {
                                         <div
                                             className="home-recommend-individual"
                                             key={item.id}
+                                            onClick={() => this.goToShopRecom(item.id)}
                                         >
                                             <div className="recommend-individual-imgParent">
                                                 <img
@@ -835,38 +874,37 @@ class GoodsDetail extends BaseComponent {
                         </Element>
                         {/*商品详情*/}
                         <Element name="details" className="detail-img lis">
-                            <img
+                            {/* <img
                                 className="img"
                                 src={require('../../../../../assets/images/dateil.png')}
                                 alt=""
-                            />
+                            /> */}
+                            {
+                                goodsDetail.intro
+                            }
                         </Element>
                         {/*失效*/}
                     </div>
                 </div>
                 {lineStatus ? <div className="timeout">{lineText}</div> : null}
                 {/*底部固定购买栏*/}
+                {
+                    shop.shoper_open_status === '0' && (<div className="rest">该店暂未营业</div>)
+                }
                 <div className="goodsDetail-bottom">
                     <div className="icons-warp">
                         <div className="icons">
-                            <div className="phone-cart">
+                            <div className="phone-cart" onClick={this.goToShoper}>
                                 <div className="icon icon-phone"/>
-                                <div className="phone-text" onClick={this.goToShoper}>联系卖家</div>
+                                <div className="phone-text" >联系卖家</div>
                             </div>
-                            <div className="phone-cart">
-                                <div
-                                    className={`icon ${collect.length > 0 ? 'icon-collect-active' : 'icon-collect'}`}
-                                />
-                                <div
-                                    className="phone-text"
-                                    onClick={() => this.collect()}
-                                >
-                                    收藏
-                                </div>
+                            <div className="phone-cart" onClick={() => this.collect()}>
+                                <div className={`icon ${collect.length > 0 ? 'icon-collect-active' : 'icon-collect'}`}/>
+                                <div className="phone-text">收藏</div>
                             </div>
-                            <div className="phone-cart">
+                            <div className="phone-cart" onClick={this.shopCart}>
                                 <div className="icon icon-cart"/>
-                                <div className="phone-text" onClick={this.shopCart}>
+                                <div className="phone-text">
                                     购物车
                                 </div>
                             </div>
@@ -892,6 +930,7 @@ class GoodsDetail extends BaseComponent {
                 {/*底部弹出选择商品框*/}
                 {popup && (
                     <Sku
+                        detail={goodsDetail}
                         attributes={goodsAttr}
                         stocks={stocks}
                         cover={picPath[0]}

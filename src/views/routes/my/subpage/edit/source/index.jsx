@@ -17,6 +17,10 @@ const {urlCfg} = Configs;
 const hybrid = process.env.NATIVE;
 
 export default class applyService extends BaseComponent {
+    state = {
+        height: document.documentElement.clientHeight - (window.isWX ? window.rem * null : window.rem * 1.08)
+    }
+
     //点击扫一扫
     sureSaoCode = () => {
         if (hybrid) {
@@ -39,10 +43,11 @@ export default class applyService extends BaseComponent {
     }
 
     render() {
+        const {height} = this.state;
         return (
             <div data-component="apply-service" data-role="page" className="source-index">
                 <AppNavBar title="确认源头UID"/>
-                <div className="services">
+                <div style={{height: height}} className="services">
                     {article.map((item, index) => (
                         <div className="service-list" key={index.toString()} onClick={() => this.serviceList(item.value)}>
                             <div className="service-left">

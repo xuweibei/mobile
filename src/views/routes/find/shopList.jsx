@@ -19,10 +19,6 @@ class shopList extends BaseComponent {
     }
     // close_time;
 
-    componentWillMount() {
-        alert(123456);
-    }
-
     componentDidMount() {
         // const {shopListData} = this.props;
         // console.log(shopListData);
@@ -84,7 +80,7 @@ class shopList extends BaseComponent {
                 <ul className="list-content">
                     {
                         shopListData.map(item => (
-                            <li key={item.id} onClick={() => { this.goShopHome('item.id') }}>
+                            <li key={item.id} onClick={() => { this.goShopHome(item.id) }}>
                                 <div className="work-time">营业时间{item.open_time}-{item.close_time}<span>{item.discount}km</span></div>
                                 <div className="content-wrapper">
                                     <div className="awatar">

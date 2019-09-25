@@ -14,6 +14,7 @@ export default class Recommender extends BaseComponent {
     }
 
     state = {
+        height: document.documentElement.clientHeight - (window.isWX ? window.rem * 6.18 : window.rem * 6.3), //判断是否使用微信登入
         UID: '',
         phone: '',
         verification: false
@@ -50,7 +51,7 @@ export default class Recommender extends BaseComponent {
         this.fetch(urlCfg.setparent, {data: {
             no: Number(UID),
             phone: myPhone,
-            type: 1
+            type: 0
         }}).subscribe(res => {
             if (res) {
                 if (res.status === 0) {
@@ -64,10 +65,11 @@ export default class Recommender extends BaseComponent {
     }
 
     render() {
+        const {height} = this.state;
         return (
             <div data-component="recommender" data-role="page" className="recommender">
                 <AppNavBar title="确认推荐人"/>
-                <div className="recommender-box">
+                <div style={{height: height}} className="recommender-box">
                     <List>
                         <InputItem
                             clear

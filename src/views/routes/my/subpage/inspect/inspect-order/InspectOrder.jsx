@@ -10,7 +10,8 @@ const hybrid = process.env.NATIVE;
 export default class InspectOrder extends BaseComponent {
     state = {
         list: [],
-        status: ''
+        status: '',
+        navColor: '#ff2d51' //标题头部颜色
     }
 
     componentDidMount() {
@@ -71,10 +72,10 @@ export default class InspectOrder extends BaseComponent {
     }
 
     render() {
-        const {list} = this.state;
+        const {list, navColor} = this.state;
         return (
             <div className="inspect-order">
-                <AppNavBar title="核销订单" goToSearch={this.goToSearch} rightShow redBackground search/>
+                <AppNavBar title="核销订单" goToSearch={this.goToSearch} backgroundColor={navColor} rightShow redBackground search/>
                 <div className="shortcut">
                     <span>快捷核销</span>
                     <span onClick={this.sureSaoCode} className="icon icon-shortcut"/>

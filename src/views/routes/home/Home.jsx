@@ -2,7 +2,7 @@
 * 首页
 * */
 import {connect} from 'react-redux';
-import {Carousel, Grid, SearchBar, Toast, WhiteSpace, Modal} from 'antd-mobile';
+import {Carousel, Grid, SearchBar, Toast, WhiteSpace, Modal,Badge} from 'antd-mobile';
 import {dropByCacheKey} from 'react-router-cache-route';
 import {systemApi} from '../../../utils/systemApi';
 import {FooterBar} from '../../common/foot-bar/FooterBar';
@@ -265,8 +265,9 @@ class Home extends BaseComponent {
                             {
                                 userToken && userToken.length > 0 ? (
                                     <div className={`nav-right ${userToken && userToken.length > 0 ? 'nav-right-login' : ''}`} style={{display: 'flex'}}>
-                                        {/* <Badge text={77} overflowCount={55}/> */}
                                         <div className="home-searchBar-icon" onClick={this.lookLook}>
+                                            {/*<Badge className="information-IM icon" text={77} overflowCount={55}/>*/}
+
                                             <div className="icon information"/>
                                         </div>
                                     </div>
@@ -285,12 +286,10 @@ class Home extends BaseComponent {
                             >
                                 {mallBanner.map((item, index) => (
                                     <div key={item}>
-                                        <a key={index.toString()} href={item.url} className="banner-item">
-                                            <img
-                                                src={item}
-                                                className="banner-img"
-                                            />
-                                        </a>
+                                        <img
+                                            src={item}
+                                            className="banner-img"
+                                        />
                                     </div>
                                 ))}
                             </Carousel>
@@ -318,7 +317,7 @@ class Home extends BaseComponent {
                             <ul>
                                 {
                                     goodStuff.map((item, index) => (
-                                        <li key={item.type}>
+                                        <li key={index.toString()}>
                                             <p className="list-title">{this.goodType(item.type)}</p>
                                             <p className="list-desc">
                                                 <span>品质好店</span>
@@ -326,8 +325,8 @@ class Home extends BaseComponent {
                                             </p>
                                             <div className="img-box">
                                                 {
-                                                    item.data.map(value => (
-                                                        <div className="show-img" key={value.rs_id}>
+                                                    item.data.map((value, i) => (
+                                                        <div className="show-img" key={i.toString()}>
                                                             <img src={value.picpath} alt="" onClick={() => this.jumpOther(value.rs_id, index, value.rs_id)}/>
                                                         </div>
                                                     ))

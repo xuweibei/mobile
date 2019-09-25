@@ -6,7 +6,14 @@
     bottom: 0;
     left: 0;
     width: 100%;
+    .goods-banner{
+        touch-action: pan-y;
+    }
+    .goods-detail-wrapper{
+        padding-bottom: 115px;
+    }
     .picMask{
+        touch-action: pan-y;
         position: fixed;
         top: 0;
         bottom: 0;
@@ -257,7 +264,7 @@
                 height:2px;
                 background:rgba(153,153,153,1);
                 border-radius:50%;
-                margin: 16px 15px 0;
+                margin: 32px 15px 0;
 
             }
             .waiter{
@@ -272,6 +279,9 @@
             .nonsupport{
                 color: #999999;
             }
+        }
+        .serve::after {
+            height: 0!important;
         }
         .shop-detali{
             width: 100%;
@@ -367,7 +377,8 @@
             .shop-btn{
                 float: right;
                 display: flex;
-                margin-left: 20px;
+                // margin-left: 20px;
+                margin-right: 10px;
                 .shop-det{
                     width: 140px;
                     height: 50px;
@@ -380,6 +391,9 @@
                     margin-right: 20px;
                 }
             }
+        }
+        .shop-detali::after {
+            height: 0!important;
         }
         .goods-assess{
             width: 100%;
@@ -520,8 +534,8 @@
                     text-align: center;
                     //background:linear-gradient(90deg,rgba(255,45,81,1) 0%,rgba(242,12,0,1) 100%);
                     .directionalGradation(90deg, @fiery-red, @garnet-red);
-                    box-shadow:0 4px 18px 0 rgba(242,13,3,0.3);
-                    border-radius:15px;
+                    //box-shadow:0 4px 18px 0 rgba(242,13,3,0.3);
+                    border-radius:50px;
                     font-size:20px;
                     color:rgba(255,255,255,1);
                 }
@@ -569,6 +583,7 @@
     //商品详情图片
     .detail-img{
         width: 100%;
+        background: @white;
         .img{
             width: 100%;
         }
@@ -583,6 +598,7 @@
         padding: 12px @padding-wingBlank;
         box-sizing: border-box;
         z-index: 100;
+        box-shadow:0px 0px 20px 0px rgba(204,204,204,0.3);
         .icons-warp {
             float: left;
             height: 110px;
@@ -593,7 +609,7 @@
         }
         .phone-cart{
             width: 100px;
-            height: 70px;
+            //height: 70px;
             text-align: center;
             float: left;
             .icon-phone:before{
@@ -613,6 +629,7 @@
             .icon-cart:before{
                 content: '\e63c';
                 font-size: 36px;
+                color: @gray;
             }
             .phone-text{
                 font-size: @font-size-20;
@@ -672,6 +689,20 @@
         }
     }
     .timeout{
+        width: 100%;
+        height:88px;
+        background:rgba(102,102,102,1);
+        color: #F9F9F9;
+        line-height: 88px;
+        text-align: center;
+        font-size: 30px;
+        position: fixed;
+        bottom: 100px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 100;
+    }
+    .rest {
         width: 100%;
         height:88px;
         background:rgba(102,102,102,1);
@@ -769,7 +800,4 @@
 .am-icon:before {
     content: '\E640';
     display: block;
-}
-.aaaa::before {
-    content: '\E640'
 }

@@ -24,6 +24,8 @@ const myActionTypes = Utils.keyMirror({
     SET_UID: '', // 查看源头uid
     GET_BANK: '', // 获取银行卡
     SET_BANK: '', // 设置银行卡信息
+    GET_ACCOUT: '', // 设置账号
+    SET_ACCOUT: '', // 设置账号
     SAVE_ADDRESS: ''//保存当前用户守护地址
 });
 
@@ -100,6 +102,67 @@ function _removeUserInfo() {
     };
 }
 
+//清除银行卡信息
+function _removebankInfo(data) {
+    return {
+        type: myActionTypes.SET_BANK,
+        payload: {
+            data
+        }
+    };
+}
+//清除源头uid信息
+function _removeUserIdInfo(data) {
+    return {
+        type: myActionTypes.SET_UID,
+        payload: {
+            data
+        }
+    };
+}
+//清除昵称信息
+function _removeNickNameInfo(data) {
+    return {
+        type: myActionTypes.SET_NICKNAME,
+        payload: {
+            data
+        }
+    };
+}
+//清除地址信息
+function _removeAressInfo(data) {
+    return {
+        type: myActionTypes.SET_ADDRESS,
+        payload: {
+            data
+        }
+    };
+}
+//清除当前区域信息
+function _removeRegionInfo(data) {
+    return {
+        type: myActionTypes.SET_AREA,
+        payload: {
+            data
+        }
+    };
+}
+//清除账号信息
+function _removeAccoutInfo(data) {
+    return {
+        type: myActionTypes.SET_ACCOUT,
+        payload: {
+            data
+        }
+    };
+}
+
+//清除账号信息
+function _switchAccountList() {
+    return {
+        type: myActionTypes.GET_ACCOUT
+    };
+}
 //获取用户昵称
 function _getUserNickName() {
     return {
@@ -152,11 +215,18 @@ const myActionCreator = {
     delMyInfo: _delMyInfo,
     getUserInfo: _getUserInfo,
     removeUserInfo: _removeUserInfo,
+    removebankInfo: _removebankInfo,
+    removeNickNameInfo: _removeNickNameInfo,
+    removeAressInfo: _removeAressInfo,
+    removeRegionInfo: _removeRegionInfo,
+    removeAccoutInfo: _removeAccoutInfo,
+    removeUserIdInfo: _removeUserIdInfo,
     getNickName: _getUserNickName,
     getArea: _getArea,
     getUid: _getUid,
-    getBank: _getBank,
-    saveAddress: _saveAddress
+    getBankCardList: _getBank,
+    saveAddress: _saveAddress,
+    switchAccountList: _switchAccountList
 };
 
 

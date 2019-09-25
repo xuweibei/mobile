@@ -104,7 +104,7 @@ class Personal extends BaseComponent {
                     openTime: res.data.open_time,
                     closeTime: res.data.close_time,
                     discount: parseInt(res.data.discount, 10),
-                    shopStatus: Number(res.data.typepr_path),
+                    shopStatus: Number(res.data.type),
                     cshPhone: res.data.csh_phone,
                     linkName: res.data.linkName,
                     phone: res.data.phone
@@ -114,6 +114,7 @@ class Personal extends BaseComponent {
     };
 
     onChecked = (value) => {
+        console.log(value);
         this.setState({
             shopStatus: value
         }, () => {
@@ -158,8 +159,12 @@ class Personal extends BaseComponent {
     //校验商店名称
     checkShopName = (rule, value, callback) => {
         if (!validator.isEmpty(value, Form.No_StoreName, callback)) return;
-        if (!validator.checkRange(2, 10, value)) {
+        if (!validator.checkRange(2, 30, value)) {
             validator.showMessage(Form.Error_ShopName, callback);
+            return;
+        }
+        if (!validator.checkShopName(value)) {
+            validator.showMessage(Form.ShopName_Err, callback);
             return;
         }
         callback();
@@ -213,12 +218,23 @@ class Personal extends BaseComponent {
 
     //校验客服电话
     checkCasPhone = (rule, value, callback) => {
-        const myCshPhone = validator.wipeOut(value);
-        if (!validator.isEmpty(myCshPhone, Form.No_cshPhone, callback))  return;
-        if (!validator.checkPhone(myCshPhone)) {
-            showInfo(Form.No_checkPhone, 1);
+        if (!value) {
+            showInfo('请输入电话号码');
             return;
         }
+        value = value.replace('-', '');
+        const res = /^[0-9]*$/;
+        const str = res.test(value);
+        if (!str) {
+            showInfo('电话必须为纯数字');
+            return;
+        }
+        if (value.length > 12 || value.length < 4) {
+            showInfo('客服号码填写不正确');
+            return;
+        }
+        const myCshPhone = validator.wipeOut(value);
+        if (!validator.isEmpty(myCshPhone, Form.No_cshPhone, callback))  return;
         callback();
     };
 
@@ -245,6 +261,7 @@ class Personal extends BaseComponent {
         const {form: {validateFields}} = this.props;
         const {province, county, urban, cateId, cateName, openTime, closeTime, shopStatus, urlParams} = this.state;
         const pca = [province, urban, county];
+        console.log(shopStatus);
         validateFields({first: true, force: true}, (error, val) => {
             if (val && !error) {
                 if (!error) {
@@ -253,7 +270,7 @@ class Personal extends BaseComponent {
                             shopName: val.shopName,
                             linkName: val.linkName,
                             phone: validator.wipeOut(val.phone),
-                            csh_phone: validator.wipeOut(val.casPhone),
+                            csh_phone: validator.wipeOut(val.casPhone).replace('-', ''),
                             discount: parseFloat(val.discount),
                             pca: pca,
                             pick_up_self: 1,
@@ -409,8 +426,8 @@ class Personal extends BaseComponent {
                                 <InputItem
                                     // value={shopName}
                                     clear
-                                    placeholder="请输入十个字以内的店铺名称"
-                                    maxLength={10}
+                                    placeholder="请输入2-30位店铺名称"
+                                    maxLength={30}
                                     type="text"
                                     // onChange={val => this.onChange(val, 'shopname')}
                                 >店铺名称
@@ -596,9 +613,9 @@ class Personal extends BaseComponent {
                             })(
                                 <InputItem
                                     // value={cshPhone}
+                                    maxLength={12}
                                     clear
                                     placeholder="请输入客服电话"
-                                    type="phone"
                                 >客服电话
                                 </InputItem>
                             )
@@ -615,9 +632,9 @@ class Personal extends BaseComponent {
                                 <InputItem
                                     // value={linkName}
                                     clear
-                                    placeholder="商户负责人"
+                                    placeholder="开店人姓名"
                                     // onChange={val => this.onChange(val, 'linkName')}
-                                >商户负责人
+                                >开店人姓名
                                 </InputItem>
                             )
                         }
@@ -632,10 +649,10 @@ class Personal extends BaseComponent {
                                 <InputItem
                                     // value={phone}
                                     clear
-                                    placeholder="商户负责人电话"
+                                    placeholder="开店人手机号"
                                     type="phone"
                                     // onChange={val => this.onChange(val, 'phone')}
-                                >商户负责人电话
+                                >开店人电话
                                 </InputItem>
                             )
                         }

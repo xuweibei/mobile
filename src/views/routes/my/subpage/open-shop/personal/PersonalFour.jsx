@@ -28,7 +28,8 @@ class PersonalFour extends BaseComponent {
         branchName: '',
         bankId: 0, //银行id
         bankKey: '', //所属银行
-        pageStatus: ''
+        pageStatus: '',
+        id: ''
     };
 
     componentDidMount = () => {
@@ -53,7 +54,15 @@ class PersonalFour extends BaseComponent {
                     cValue: Array(res.data.bankId),
                     bankId: res.data.bankId,
                     phone: res.data.phone,
-                    bankKey: res.data.bankName
+                    bankKey: res.data.bankArea,
+                    province: res.data.city_name && res.data.city_name[0],
+                    urban: res.data.city_name && res.data.city_name[1],
+                    county: res.data.city_name && res.data.city_name[2],
+                    provinceId: res.data.province_id,
+                    cityId: res.data.city_id,
+                    countyId: res.data.county_id,
+                    id: res.data.id,
+                    branches: res.data.branchName
                 });
             }
         });
@@ -145,6 +154,7 @@ class PersonalFour extends BaseComponent {
     //获取支行列表
     getBankList = () => {
         const {countyId, bankKey} = this.state;
+        console.log(bankKey, countyId);
         if (countyId && bankKey) {
             this.fetch(urlCfg.getBankList, {data: {
                 cityId: countyId,
@@ -164,13 +174,14 @@ class PersonalFour extends BaseComponent {
                 }
             });
         } else {
-            showInfo('请先选择银行开户行和开户地', 1);
+            showInfo('请先选择银行开户行和开户地', 2);
         }
     }
 
     //获取支行信息
     getBankBranchInfo = (val) => {
         const {bankBranch} = this.state;
+        console.log(val);
         const result = bankBranch.find(item => item.value === val.toString());
         if (result) {
             this.setState({
@@ -180,17 +191,17 @@ class PersonalFour extends BaseComponent {
     }
 
     //获取短信验证码
-    getCode = () => {
-        const {phone} = this.state;
-        const myPhone = validator.wipeOut(phone);
-        this.fetch(urlCfg.getCode, {data: {
-            phone: parseInt(myPhone, 10)
-        }}).subscribe(res => {
-            if (res && res.status === 0) {
-                showInfo('验证码获取成功');
-            }
-        });
-    }
+    // getCode = () => {
+    //     const {phone} = this.state;
+    //     const myPhone = validator.wipeOut(phone);
+    //     this.fetch(urlCfg.getCode, {data: {
+    //         phone: parseInt(myPhone, 10)
+    //     }}).subscribe(res => {
+    //         if (res && res.status === 0) {
+    //             showInfo('验证码获取成功');
+    //         }
+    //     });
+    // }
 
     //驗證银行用户名
     checkUserName = (rule, value, callback) => {
@@ -204,6 +215,10 @@ class PersonalFour extends BaseComponent {
 
     //验证银行卡号
     checkBankCard = (rule, value, callback) => {
+        if (!value) {
+            validator.showMessage(Form.Bank_Card_Num, callback);
+            return;
+        }
         if (!validator.isEmpty(value, Form.No_BankNumber, callback)) return;
         if (!validator.bankCard(value)) {
             validator.showMessage(Form.Error_Bank, callback);
@@ -241,15 +256,17 @@ class PersonalFour extends BaseComponent {
     submit = () => {
         const {that} = this.props;
         const {form: {validateFields}} = this.props;
-        const {bankId, bankKey, branchName, value} = this.state;
+        const {bankId, bankKey, branchName, value, id, province, county, urban} = this.state;
 
         validateFields({first: true, force: true}, (error, val) => {
             if (!error) {
+                console.log(val.branchName);
                 this.fetch(urlCfg.bindBankCard, {data: {
-                    id: 0,
+                    id: id,
                     bank_id: bankId,
                     real_name: val.userName,
                     bank_name: bankKey,
+                    pcat: [province, urban, county],
                     bank_number: val.bankCard,
                     branches: branchName,
                     userType: 2,
@@ -268,7 +285,7 @@ class PersonalFour extends BaseComponent {
     };
 
     render() {
-        const {banks, cValue, bankBranch, branchName, userName, bankCard, phone} = this.state;
+        const {banks, cValue, bankBranch, branchName, phone, userName, bankCard, provinceId, cityId, countyId, province, urban, county} = this.state;
         const {getFieldDecorator} = this.props.form;
         const steps = ['填写店铺信息', '填写开店人信息', '填写工商信息', '绑定银行卡'];
         return (
@@ -345,6 +362,12 @@ class PersonalFour extends BaseComponent {
                                 <List.Item className="branches area" arrow="horizontal">
                                     <span>开户地区</span>
                                     <Region
+                                        provinceId={provinceId}
+                                        cityId={cityId}
+                                        countyId={countyId}
+                                        provinceValue={province}
+                                        cityValue={urban}
+                                        countyValue={county}
                                         onSetProvince={this.setProvince}
                                         onSetCity={this.setCity}
                                         onSetCounty={this.setCounty}
@@ -368,7 +391,7 @@ class PersonalFour extends BaseComponent {
                                             <List.Item
                                                 arrow="horizontal"
                                                 onClick={this.getBankList}
-                                            >{branchName || '开户支行'}
+                                            >开户支行
                                             </List.Item>
                                         </Picker>
                                     )

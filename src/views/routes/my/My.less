@@ -88,8 +88,9 @@
                         padding: 8px 18px 5px 21px;
                     }
                     .switchId,.conmuterId{
-                        width:188px;
-                        height:50px;
+                        //width:188px;
+                        padding: 0 10px;
+                        //height:50px;
                         position: absolute;
                         right:-30px;
                         top:60px;
@@ -105,7 +106,7 @@
                     .switchId:before{
                         content: '\E669';
                         color: #fff;
-                        margin:0 15px 0 30px;
+                        margin:0 10px;
                     }
                     .conmuterId:before{
                         content: '\E669';
@@ -166,6 +167,9 @@
             height: 220px;
             border-radius:20px;
         }
+        .am-wingblank {
+            margin: 0!important;
+        }
        /* &.my-banner2{
             margin-bottom:100px;
             .myBanner2();
@@ -174,11 +178,11 @@
 
     .setUpShop{
         width:690px;
-        height:110px;
+        height:144px;
         margin-top: 40px;
         img {
             width:100%;
-            height:110px;
+            height:144px;
             border-radius:20px;
         }
     }
@@ -217,8 +221,9 @@
     }
 
     .my-order-form{
-        margin-top: 40px;
-        margin-bottom:100px;
+        //margin-top: 40px;
+        //margin-bottom:100px;
+        margin: 100px 0;
         .my-order-box{
             margin-bottom: 15px;
             display: flex;
@@ -400,12 +405,15 @@
         box-shadow:0 10px 24px 0 rgba(204,204,204,0.2);
         border-radius: 20px;
         background:#fff;
-        padding: 40px 90px;
+        padding: 40px 60px;
         margin-bottom:100px;
         overflow: hidden;
         ul{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
             li{
-                float:left;
+                //float:left;
                 width:160px;
                 height:160px;
                 margin:30px 10px 0 0;
@@ -627,6 +635,9 @@
                     text-align: center;
                     line-height: 48px;
                     margin: 0 19px 0 auto;
+                    position: absolute;
+                    right: 0;
+                    bottom: 20px;
                     .contact {
                         font-size: @font-size-24;
                         color: @dark-gray;
@@ -653,7 +664,7 @@
         top: 0;
         bottom: 0;
         width: 100%;
-        background: rgba(0,0,0,0.3);
+        background: rgba(0,0,0,0.6);
         z-index: 99;
     }
     .am-drawer-fixed{
@@ -752,7 +763,7 @@
         color: #F20C00;
     }
     .issue:before {
-        content: '\E62d';
+        content: '\E67d';
         color: #F20C00;
     }
     .evaluate:before {
@@ -778,7 +789,7 @@
         color: #FEC407;
     }
     .unfinished:before {
-        content: '\E674';
+        content: '\E67e';
         color: #FEC407;
     }
 

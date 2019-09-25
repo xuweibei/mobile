@@ -1,7 +1,15 @@
 import {Route} from 'react-router-dom';
 import React from 'react';
-import FindPage from './Find';
-import shopListPage from './shopList';
+
+const FindPage = Loadable({
+    loader: () => import(/* webpackChunkName: 'wechat' */ './Find'),
+    loading: () => null
+});
+
+const shopListPage = Loadable({
+    loader: () => import(/* webpackChunkName: 'hybird' */ './shopList'),
+    loading: () => null
+});
 
 const Find = () => {
     const hybird = process.env.NATIVE;

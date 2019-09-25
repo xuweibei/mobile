@@ -54,7 +54,7 @@ class Search extends BaseComponent {
     };
 
     //获取输入框文字
-    getKeyWords = (val) => {
+    getKeyWords = (val, e) => {
         if (val.length !== 0) {
             this.setState({
                 keywords: val,
@@ -77,7 +77,7 @@ class Search extends BaseComponent {
                         type="text"
                         placeholder="请输入商品名称"
                         clear
-                        onChange={(val) => this.getKeyWords(val)}
+                        onChange={(val, e) => this.getKeyWords(val, e)}
                     >
                         <Icon type="search"/>
                     </InputItem>

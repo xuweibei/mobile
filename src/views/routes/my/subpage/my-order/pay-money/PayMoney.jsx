@@ -40,6 +40,7 @@ class PayMoney extends BaseComponent {
     };
 
     componentWillMount() {
+        this.nativeBtn = true;
         //这里是为了控制原生右滑退出
         this.props.setReturn(true);
     }
@@ -62,6 +63,8 @@ class PayMoney extends BaseComponent {
     }
 
     componentWillReceiveProps(data, value) {
+        console.log(data.returnStatus, '乐山大佛哭就开始地方');
+        // if (this.nativeBtn) return;
         //原生右滑退出处理
         if (!data.returnStatus) {
             this.goBackModal();
@@ -172,22 +175,18 @@ class PayMoney extends BaseComponent {
                 if (res.status === 0) {
                     if (selectIndex === 1) { //微信
                         native('payWX', {qrCode: res.data.appPayRequest.qrCode, order_no: listArr.order[0], type: this.paymentPlatform(), payType: 2}).then((data) => {
+                            native('goH5', {'': ''});
                             appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&types=${selectIndex}&deposit=${listArr.all_deposit}&if_express=${res.if_express}&batch=1`);
-                            setTimeout(() => {
-                                //返回弹框的回调是否显示
-                                this.props.setReturn(false);
-                            });
                         }).catch(data => {
+                            native('goH5', {'': ''});
                             showFail(data.message);
                         });
                     } else {
                         native('payAliPay', {qrCode: res.data.appPayRequest.qrCode, order_no: listArr.order[0], type: this.paymentPlatform(), payType: 1}).then((data) => {
+                            native('goH5', {'': ''});
                             appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&types=${selectIndex}&deposit=${listArr.all_deposit}&if_express=${res.if_express}&batch=1`);
-                            setTimeout(() => {
-                                //返回弹框的回调是否显示
-                                this.props.setReturn(false);
-                            });
                         }).catch(data => {
+                            native('goH5', {'': ''});
                             showFail(data.message);
                         });
                     }
@@ -215,12 +214,10 @@ class PayMoney extends BaseComponent {
                             sign: res.data.arr.sign
                         };
                         native('wxPayCallback', obj).then((data) => {
+                            native('goH5', {'': ''});
                             appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&id=${listArr.order_id}&types=${selectIndex}&deposit=${listArr.deposit}&if_express=${res.data.if_express}`);
-                            setTimeout(() => {
-                                //返回弹框的回调是否显示
-                                this.props.setReturn(false);
-                            });
                         }).catch(data => {
+                            native('goH5', {'': ''});
                             showFail(data.message);
                         });
                     } else {
@@ -238,14 +235,14 @@ class PayMoney extends BaseComponent {
                 if (res.status === 0) {
                     if (hybird) {
                         native('authInfo', res.data.response).then((data) => {
+                            native('goH5', {'': ''});
                             setValue('orderId', listArr.order_id);
                             if (data.status === '0') {
                                 appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&id=${listArr.order_id}&types=${selectIndex}&deposit=${listArr.deposit}&if_express=${res.data.if_express}`);
-                                setTimeout(() => {
-                                    //返回弹框的回调是否显示
-                                    this.props.setReturn(false);
-                                });
                             }
+                        }).catch(data => {
+                            native('goH5', {'': ''});
+                            showFail(data.message);
                         });
                     } else {
                         // window.location.href = res.data.mweb_url;
@@ -264,10 +261,6 @@ class PayMoney extends BaseComponent {
     //忘记密码跳转
     forgetPws = () => {
         appHistory.push('/password');
-        setTimeout(() => {
-            //返回弹框的回调是否显示
-            this.props.setReturn(false);
-        });
     }
 
     //CAM消费 支付
@@ -280,14 +273,7 @@ class PayMoney extends BaseComponent {
             this.fetch(urlCfg.campay, {method: 'post', data: {order_no: !listArr.order ? new Array(id) : id, pwd, money: listArr.all_price || money}})
                 .subscribe(res => {
                     if (res.status === 0) {
-                        if (JSON.parse(getValue('orderInfo'))) { //这里判断是购物页过来还是，订单页过来，购物页过来就让页面往回退1
-                            appHistory.go(-1);
-                        }
-                        setTimeout(() => {
-                            appHistory.replace(`/paymentCompleted?&deposit=${res.data.capital}&id=${res.data.id}&allPrice=${res.data.total_fee}&types=${selectIndex}&if_express=${res.data.if_express}&batch=${res.data.id && (res.data.id ? 0 : 1)}`);
-                            //返回弹框的回调是否显示
-                            this.props.setReturn(false);
-                        }, 300);
+                        appHistory.replace(`/paymentCompleted?&deposit=${res.data.capital}&id=${res.data.id}&allPrice=${res.data.total_fee}&types=${selectIndex}&if_express=${res.data.if_express}&batch=${res.data.id && (res.data.id ? 0 : 1)}`);
                     }
                 });
         });
@@ -304,10 +290,6 @@ class PayMoney extends BaseComponent {
                             title: '您还未设置支付密码，是否前往设置',
                             callbacks: [null, () => {
                                 appHistory.push('/passwordPayment');
-                                setTimeout(() => {
-                                    //返回弹框的回调是否显示
-                                    this.props.setReturn(false);
-                                });
                             }]
                         });
                     } else {
@@ -317,6 +299,14 @@ class PayMoney extends BaseComponent {
                     }
                 }
             });
+    }
+
+    //页面卸载
+    componentWillUnmount() {
+        //返回弹框的回调是否显示
+        setTimeout(() => {
+            this.props.setReturn(false);
+        });
     }
 
     //返回
@@ -341,16 +331,10 @@ class PayMoney extends BaseComponent {
                 const arr = JSON.parse(getValue('orderArr'));
                 if (arrInfo) {
                     if (arr[0].if_express === '1') {
-                        appHistory.go(-1);
-                        setTimeout(() => {
-                            appHistory.replace(`/myOrder/fk?type=${'car'}`);
-                        });
+                        appHistory.replace(`/myOrder/fk?type=${'car'}`);
                     } else {
                         setOrderStatus(1);
-                        appHistory.go(-1);
-                        setTimeout(() => {
-                            appHistory.replace(`/selfMention?type=${'car'}`);
-                        });
+                        appHistory.replace(`/selfMention?type=${'car'}`);
                     }
                 } else {
                     appHistory.goBack();
@@ -366,10 +350,9 @@ class PayMoney extends BaseComponent {
                 } else {
                     this.getList();
                 }
-                //返回弹框的回调是否显示
-                this.props.setReturn(true);
             }]
         });
+        this.props.setReturn(true);
         //清除定时器
         clearInterval(this.state.timer);
     };
@@ -429,7 +412,7 @@ class PayMoney extends BaseComponent {
                                 <span className="icon command-center">请输入支付密码</span>
                                 <span className="icon command-right" onClick={() => this.closePopup()}/>
                             </div>
-                            <InputGrid onInputGrid={this.inputGrid}/>
+                            <InputGrid focus onInputGrid={this.inputGrid}/>
                             <p onClick={() => this.forgetPws()}>忘记密码</p>
                         </div>
                     </div>

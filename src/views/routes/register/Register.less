@@ -1,7 +1,7 @@
 @import "~style";
 .login-modal{
         width: 580px !important;
-        overflow-y: scroll;
+        //overflow-y: scroll;
         .am-icon{
             margin-top: 30px;
             margin-left: 100px;
@@ -16,7 +16,7 @@
             width: 100px;
             height: 100px;
             background: url('../../../assets/images/wx-icon.png') no-repeat 0 0;
-            border: 50%;
+            //border: 50%;
         }
         .icon-logo{
             width: 60px;
@@ -39,13 +39,26 @@
             line-height: 100px;
         }
     }
+    .am-list-body::before, .am-list-line::after, .am-list-body::after {
+        height: 0!important;
+    }
 }
 .login-register {
-
+    position: absolute;
+    width: 100%;
+    top: 0;
+    bottom: 0;
+    background: @white;
+    .enter-box {
+        padding-bottom: 80px;
+    }
     .register{
         background: @white;
-        height: 100vh;
-
+        //height: 100vh;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        bottom: 0;
         .register-icon{
             width: 420px;
             height: 420px;
@@ -93,11 +106,27 @@
                 }
             }
         }
+        .register-bottom {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translate(-50%,0%);
+            width: 100vw;
+        }
     }
     .login-code{
-        height: 100vh;
-        background: url('../../../assets/images/register.png');
-        background-size: 100% 100%;
+        height: auto;
+        background: @white;
+        //background: url('../../../assets/images/register.png');
+        //background-size: 100% 100%;
+        //position: absolute;
+        //width: 100%;
+        //top: 0;
+        //bottom: -100px;
+        //background: #fff;
+        //padding-bottom: 300px;
+        //position: relative;
+        //width: 100%;
         .login-title{
             margin-top: 94px;
             margin-left: 46px;
@@ -130,38 +159,54 @@
                     margin-top: 28px;
                 }
                 .icon-box{
+                    line-height: 88px;
                     .icon-open:before{
                         content: '\e65f';
                         color: #FF5774;
                         margin-left: 60px;
                     }
                     .icon-close:before{
-                        content: '\e660';
+                        content: '\E67b';
                         color: #ccc;
                         margin-left: 60px;
                     }
                 }
                 .inp-icon-t:before{
+                    color: #D2D2D2;
                     content: '\e641';
                 }
                 .inp-icon-b:before{
+                    color: #D2D2D2;
                     content: '\e642';
                 }
+                input::placeholder {
+                    line-height: 47px;
+                }
                 .btn-code{
-                    background: @to-light-gray;
+                    background: @white;
                     height: 50px;
-                    min-width: 160px;
+                    width: 24%;
+                    //min-width: 160px;
                     position: absolute;
                     right: 16px;
                     bottom: 20px;
+                    border: 2px solid @gray;
                     color: @gray;
                     font-size: @font-size-28;
                     border-radius: 10px;
                     .code-text{
                         position: absolute;
                         top: -22px;
-                        left: 8px;
+                        left: 0;
+                        width: 100%;
                     }
+                }
+                .highlight {
+                    border: 2px solid @fiery-red;
+                    color: @fiery-red;
+                }
+                .am-button::before {
+                    border: none !important;
                 }
             }
             .border-color {
@@ -170,32 +215,51 @@
         }
         .log-button{
             margin-top: 84px;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
             .large-button {
                 background:linear-gradient(180deg, #ff2d51 0%, #f20c00 100%)!important;
                 box-shadow: 0 0.04rem 0.35rem 0 rgba(242, 13, 3, 0.4);
             }
         }
-        .others{
-            display: flex;
-            margin-top: 170px;
-            justify-content: space-around;
-            div:nth-child(2){
-                color: @gray;
-                font-size: @font-size-26;
+        .thirdparty {
+            //position: absolute;
+            //bottom: 80px;
+            //width: 100%;
+            .others{
+                display: flex;
+                //margin-top: 170px;
+                justify-content: space-around;
+                .line {
+                    width: 100%;
+                    color: @gray;
+                    text-align: center;
+                    font-size: @font-size-26;
+                }
+                .line:before, .line:after {
+                    content: '';
+                    width: 26%;
+                    height: 1px;
+                    display: inline-block;
+                    border: 1px solid #EEEEEE;
+                    vertical-align: middle;
+                    margin: 0 30px;
+                }
+                //.line{
+                //    width: 240px;
+                //    padding-bottom: 10px;
+                //    border-bottom: 1px solid #EEEEEE;
+                //}
             }
-            .line{
-                width: 240px;
-                padding-bottom: 10px;
-                border-bottom: 1px solid #EEEEEE;
+            .wxLogin{
+                margin: 31px auto 30px;
+                width: 100px;
+                height: 110px;
+                background-size: 1950px!important;
+                background: url("../../../assets/images/CSS-Sprites.png") no-repeat -1050px -150px;
             }
         }
-        .wxLogin{
-            margin: 30px auto;
-            width: 100px;
-            height: 100px;
-            background-size: 1950px!important;
-            background: url("../../../assets/images/CSS-Sprites.png") no-repeat -1050px -150px;
+        .register-bottom {
+            margin-bottom: 80px;
         }
     }
 
@@ -205,25 +269,31 @@
     }
 
     .register-del{
-        height: 40px;
+        //height: 40px;
         padding-top: 24px;
         margin-left: 40px;
         .del-icon:before{
             width: 36px;
             height: 36px;
-            content: '\e645';
+            content: '\E67c';
         }
     }
 
     .register-bottom{
-        position: fixed;
-        width: 100vw;
-        bottom: 50px;
+        //position: absolute;
+        //bottom: 50px;
+        //left: 50%;
+        //width: 100%;
+        //transform: translate(-50%,0%);
+        //width: 100vw;
+        //bottom: 50px;
         .register-title{
             width: 100%;
             text-align: center;
             color: @gray;
             font-size: @font-size-24;
+            //position: absolute;
+            //bottom: 30px;
             .bottom-red{
                 display: inline-block;
                 color: @link-color;
@@ -241,6 +311,7 @@
 
     .am-list-item.am-input-item{
         padding-left: 16px;
+        flex: 1;
     }
     .am-list-item .am-input-control{
         margin-bottom: -16px;

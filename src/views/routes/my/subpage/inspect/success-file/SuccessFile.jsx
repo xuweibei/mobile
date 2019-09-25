@@ -27,7 +27,11 @@ class SuccessFile extends BaseComponent {
             }, () => {
                 if (this.state.time === 0) {
                     clearInterval(timer);
-                    appHistory.replace('/home');
+                    if (hybrid) {
+                        native('goHome');
+                    } else {
+                        appHistory.replace('/home');
+                    }
                 }
             });
         }, 1000);

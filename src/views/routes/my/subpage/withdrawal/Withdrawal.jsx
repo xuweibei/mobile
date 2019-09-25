@@ -21,6 +21,7 @@ const tabs = [
 
 class Withdrawal extends BaseComponent {
     state = {
+        height: document.documentElement.clientHeight - (window.isWX ? window.rem * null : window.rem * 0.88),
         district: [], //获取提现类型列表
         incomeData: null, //获取income 信息
         bankIndex: 0, //获取银行卡名字 （id）
@@ -259,14 +260,14 @@ class Withdrawal extends BaseComponent {
     }
 
     render() {
-        const {selectorIndexName, money, pwsPopup, withdrawId, district, bankId, incomeData, bankIndex, bankImg} = this.state;
+        const {selectorIndexName, money, pwsPopup, withdrawId, district, bankId, incomeData, bankIndex, bankImg, height} = this.state;
         return (
             <div className={`Withdrawal extract ${withdrawId === 0 ? 'withdrawColor' : ''}`}>
                 <div className="cash-content">
                     <div className="cash-content-navbar">
                         <AppNavBar nativeGoBack title="CAM提现"/>
                     </div>
-                    <div className="cash-content-tabs">
+                    <div style={{height: height}} className="cash-content-tabs">
                         <Tabs
                             tabs={tabs}
                             initialPage={0}
@@ -309,7 +310,7 @@ class Withdrawal extends BaseComponent {
                                     </div>
 
                                     <div className="weChat-button">
-                                        <Button type="primary" className="large-button disable-button" onClick={() => this.submit()}>确定</Button>
+                                        <Button type="primary" className="large-button important" onClick={() => this.submit()}>确定</Button>
                                     </div>
                                 </div>
                             </div>
@@ -357,7 +358,7 @@ class Withdrawal extends BaseComponent {
                                         </div>
 
                                         <div className="weChat-button">
-                                            <Button type="primary" className="large-button disable-button" onClick={() => this.submit()}>确定</Button>
+                                            <Button type="primary" className="large-button important" onClick={() => this.submit()}>确定</Button>
                                         </div>
                                     </div>
                                 </div>
@@ -371,7 +372,7 @@ class Withdrawal extends BaseComponent {
                     </div>
                 </div>
                 {/*顶部颜色*/}
-                <div className="cash-bg"/>
+                <div className={`cash-bg ${window.isWX ? 'cash-bg-WX' : ''}`}/>
                 {/*弹窗支付密码*/}
                 {pwsPopup && (
                     <div className="popups">

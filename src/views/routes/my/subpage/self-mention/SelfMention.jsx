@@ -10,9 +10,10 @@ import CancelOrder from '../../../../common/cancel-order/CancleOrder';
 import MyListView from '../../../../common/my-list-view/MyListView';
 import AppNavBar from '../../../../common/navbar/NavBar';
 
-const {appHistory, showFail, showInfo, native, getUrlParam} = Utils;
+const {appHistory, showFail, showInfo, native, getUrlParam, setNavColor} = Utils;
 const {urlCfg} = Configs;
 const {MESSAGE: {Feedback}, FIELD} = Constants;
+const hybrid = process.env.NATIVE;
 const tabs = [
     {title: '全部'},
     {title: '未完成'},
@@ -31,26 +32,43 @@ class ReDetail extends BaseComponent {
         pageCount: -1, //一共有多少页
         pageList: [], //列表信息
         orderId: 0, //订单id
-        canStatus: false //是否弹出取消框
+        canStatus: false, //是否弹出取消框
+        navColor: '#ff2d51' //nav背景颜色
     }
 
     componentWillMount() {
-        const num = this.props.orderStatus === 0 ? 0 : (this.props.orderStatus || this.statusChoose(this.props.location.pathname.split('/')[2]));
+        const num = this.props.orderStatus || this.statusChoose(this.props.location.pathname.split('/')[2]);
+        this.init(num);
+    }
+
+    componentDidMount() {
+        const {navColor} = this.state;
+        if (hybrid) {
+            setNavColor('setNavColor', {color: navColor});
+        }
+    }
+
+    componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方
+        if (this.tabBtn) return;
+        const num = this.statusChoose(nextProps.location.pathname.split('/')[2]);
+        if (num !== this.props.orderStatus) {
+            this.init(num);
+        }
+    }
+
+    init = (num) => {
         this.setState({
             status: num
         }, () => {
             //储存我的订单的tab状态在哪一个
             this.props.setOrderStatus(num);
+            this.getList();
         });
-    }
-
-    componentDidMount() {
-        this.getList();
     }
 
     //进入订单页面，判断为什么状态
     statusChoose = (str) => {
-        let numStr = -1;
+        let numStr = 0;
         switch (str) {
         case 'ww':
             numStr = 1;
@@ -93,6 +111,7 @@ class ReDetail extends BaseComponent {
 
     //选择列表状态
     tabChange = (data, index) => {
+        this.tabBtn = true;
         this.props.setOrderStatus(index);
         this.setState({
             page: 1,
@@ -100,6 +119,7 @@ class ReDetail extends BaseComponent {
             pageCount: -1,
             status: index
         }, () => {
+            this.tabBtn = false;
             this.getList();
         });
     }
@@ -255,13 +275,12 @@ class ReDetail extends BaseComponent {
 
     //左上角返回上一级
     goBackModal = () => {
-        const hybrid = process.env.NATIVE;
         const type = decodeURI(getUrlParam('type', encodeURI(this.props.location.search)));
         if (hybrid) {
             native('goBack');
         } if (type === 'car') {
             appHistory.replace('/home');
-        } else if (appHistory.length === 0) {
+        } else if (appHistory.length() === 0) {
             appHistory.push('/my');
         } else {
             appHistory.goBack();
@@ -271,7 +290,7 @@ class ReDetail extends BaseComponent {
     }
 
     render() {
-        const {pageList, status, refreshing, isLoading, hasMore, canStatus} = this.state;
+        const {pageList, status, refreshing, isLoading, hasMore, canStatus, navColor} = this.state;
         //滚动容器高度
         const height = document.documentElement.clientHeight - (window.isWX ? 0.75 : window.rem * 1.8);
 
@@ -321,14 +340,14 @@ class ReDetail extends BaseComponent {
                             <div className="total-price-right"><span>合计：</span><span className="money">{item.all_price}元</span></div>
                         </div>
                         {/*等待付款*/}
-                        {(item.status === '0' && !item.return_status) && (
+                        {item.is_shoper === 0 && (item.status === '0' && !item.return_status) && (
                             <div className="buttons">
                                 <span className="look-button delete" onClick={(e) => this.cancelOrder(e, item.id)}>取消</span>
                                 <div className="evaluate-button" onClick={(e) => this.payNow(e, item)}>立即付款</div>
                             </div>
                         )}
                         {/*等待使用*/}
-                        {(item.status === '1' || item.return_status === '1') && (
+                        {item.is_shoper === 0 && (item.status === '1' || item.return_status === '1') && (
                             <div className="buttons">
                                 {!item.return_status && (
                                     <div className="evaluate-button" onClick={(e) => this.serviceRefund(e, item.id)}>退款</div>
@@ -340,21 +359,21 @@ class ReDetail extends BaseComponent {
                             </div>
                         )}
                         {/*订单完成，等待评价*/}
-                        {(item.status === '3' && !item.return_status) && (
+                        {item.is_shoper === 0 && (item.status === '3' && !item.return_status) && (
                             <div className="buttons">
                                 <span className="look-button delete" onClick={(e) => this.deleteOrder(e, item.id)}>删除</span>
                                 <div className="evaluate-button" onClick={(e) => this.promptlyAssess(e, item.id)}>待评价</div>
                             </div>
                         )}
                         {/*订单完成*/}
-                        {(item.status === '4' && !item.return_status) && (
+                        {item.is_shoper === 0 && (item.status === '4' && !item.return_status) && (
                             <div className="buttons">
                                 <span className="look-button delete" onClick={(e) => this.deleteOrder(e, item.id)}>删除</span>
                                 <div className="evaluate-button" onClick={(e) => this.skipDetail(e, item.id)}>查看详情</div>
                             </div>
                         )}
                         {/*退款中  1 退款成功 3  退款失败 4 退款关闭 5*/}
-                        {(item.return_status === '3' || item.return_status === '4') && (
+                        {item.is_shoper === 0 && (item.return_status === '3' || item.return_status === '4') && (
                             <div className="buttons">
                                 <div className="evaluate-button" onClick={(e) => this.skipAfterSale(e, item.return_id)}>查看详情</div>
                             </div>
@@ -365,11 +384,11 @@ class ReDetail extends BaseComponent {
         );
         return (
             <div data-component="Self-mention" data-role="page" className="Self-mention">
-                <AppNavBar title="线下订单" goBackModal={this.goBackModal} goToSearch={this.goToSearch} rightShow redBackground search/>
+                <AppNavBar title="线下订单" backgroundColor={navColor} goBackModal={this.goBackModal} goToSearch={this.goToSearch} rightShow redBackground search/>
                 <div>
                     <Tabs
                         tabs={tabs}
-                        initialPage={status}
+                        page={status}
                         animated={false}
                         useOnPan
                         swipeable={false}
