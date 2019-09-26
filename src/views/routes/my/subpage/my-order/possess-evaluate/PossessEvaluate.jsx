@@ -455,7 +455,7 @@ class PossessEvaluate extends BaseComponent {
     alreadyEvalutedRow = (item) => {
         const {userType} = this.state;
         return (
-            <div>
+            <div className="have-evaluation">
                 <div className="discuss">
                     <div className="discuss-user">
                         <LazyLoadIndex lazyInfo={{offset: -30, imgUrl: item.avatarUrl, overflow: true}}/>
