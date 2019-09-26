@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import {InputItem} from 'antd-mobile';
 
 class GeisInputItem extends React.PureComponent {
-
     static propTypes = {
         placeholder: PropTypes.string,   //inputItem的placeholder
         value: PropTypes.string,  //Form表单的默认值
@@ -38,9 +37,10 @@ class GeisInputItem extends React.PureComponent {
         inputValue: ''
     };
 
-    componentWillReceiveProps(Props) {
-        const {value} = Props;
-        if (value) {
+    componentWillReceiveProps(nextProps) {
+        const {value} = nextProps;
+        const {inputValue} = this.state;
+        if (value !== inputValue) {
             this.setState({
                 inputValue: value
             });

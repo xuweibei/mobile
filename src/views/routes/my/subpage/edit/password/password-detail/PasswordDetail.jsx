@@ -5,7 +5,6 @@ import VerificationCode from '../../../../../../common/verification-code';
 import GeisInputItem from '../../../../../../common/form/input/GeisInputItem';
 import {baseActionCreator as actionCreator} from '../../../../../../../redux/baseAction';
 import './PasswordDetail.less';
-import React from "react";
 
 const {appHistory, validator, showInfo, showSuccess, getUrlParam, native} = Utils;
 const {urlCfg} = Configs;

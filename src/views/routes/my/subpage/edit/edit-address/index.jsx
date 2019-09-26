@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {createForm} from 'rc-form';
-import {List, InputItem, TextareaItem, Checkbox, Button} from 'antd-mobile';
+import {List, InputItem, Checkbox, Button} from 'antd-mobile';
 import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAction';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import GeisInputItem from '../../../../../common/form/input/GeisInputItem';
