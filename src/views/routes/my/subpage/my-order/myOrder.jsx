@@ -31,7 +31,7 @@ const tabs = [
     {title: '售后'}
 ];
 
-let arr = [];
+let orderArr = [];
 
 class MyOrder extends BaseComponent {
     state = {
@@ -59,13 +59,13 @@ class MyOrder extends BaseComponent {
     componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方
         const num = this.statusChoose(nextProps.location.pathname.split('/')[2]);
         if (hybrid) {
-            arr.push(num);
-            if (arr && arr.length > 1) {
+            orderArr.push(num);
+            if (orderArr && orderArr.length > 1) {
                 this.setState({
-                    status: arr[1]
+                    status: orderArr[1]
                 }, () => {
-                    this.init(arr[1]);
-                    arr = [];
+                    this.init(orderArr[1]);
+                    orderArr = [];
                 });
             }
         } else {

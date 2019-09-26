@@ -25,7 +25,6 @@ class Area extends BaseComponent {
     componentDidMount() {
         const {areaInfo, getArea} = this.props;
         if (!areaInfo) {
-            alert(13);
             getArea();
         }
     }

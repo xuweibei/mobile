@@ -882,16 +882,12 @@ class GoodsDetail extends BaseComponent {
                             </div>
                         </Element>
                         {/*商品详情*/}
-                        <Element name="details" className="detail-img lis">
-                            {/* <img
+                        <Element name="details" className="detail-img lis" dangerouslySetInnerHTML={{__html: goodsDetail.intro}}/>
+                        {/* <img
                                 className="img"
                                 src={require('../../../../../assets/images/dateil.png')}
                                 alt=""
                             /> */}
-                            {
-                                goodsDetail.intro
-                            }
-                        </Element>
                         {/*失效*/}
                     </div>
                 </div>

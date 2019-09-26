@@ -260,9 +260,9 @@ class PersonalThree extends BaseComponent {
                     res.data.img.forEach(item => {
                         arrInfo.push({imgB: item[0], imgS: item[1], id: new Date()});
                     });
-                    this.setState((proveState) => ({
-                        file: proveState.file.concat(arrInfo)
-                    }));
+                    this.setState({
+                        file1: arrInfo
+                    });
                     this.pasGass(arrInfo, Number(sValue[0]), 0);
                 });
             } else if (type === 'shop') {
@@ -270,9 +270,9 @@ class PersonalThree extends BaseComponent {
                     res.data.img.forEach(item => {
                         arrInfo.push({imgB: item[0], imgS: item[1], id: new Date()});
                     });
-                    this.setState((proveState) => ({
-                        file2: proveState.file2.concat(arrInfo)
-                    }));
+                    this.setState({
+                        file2: arrInfo
+                    });
                     this.pasGass(arrInfo, 3, 1);
                 });
             } else if (type === 'environment') {
@@ -280,9 +280,9 @@ class PersonalThree extends BaseComponent {
                     res.data.img.forEach(item => {
                         arrInfo.push({imgB: item[0], imgS: item[1], id: new Date()});
                     });
-                    this.setState((proveState) => ({
-                        file3: proveState.file3.concat(arrInfo)
-                    }));
+                    this.setState({
+                        file3: arrInfo
+                    });
                     this.pasGass(arrInfo, 5, 2);
                 });
             } else {
@@ -290,9 +290,9 @@ class PersonalThree extends BaseComponent {
                     res.data.img.forEach(item => {
                         arrInfo.push({imgB: item[0], imgS: item[1], id: new Date()});
                     });
-                    this.setState((proveState) => ({
-                        file4: proveState.file4.concat(arrInfo)
-                    }));
+                    this.setState({
+                        file4: arrInfo
+                    });
                     this.pasGass(arrInfo, 7, 3);
                 });
             }
@@ -303,7 +303,7 @@ class PersonalThree extends BaseComponent {
     deleteImg = (type, id) => {
         if (type === 'prove') {
             this.setState({
-                file: []
+                file1: []
             });
         } else if (type === 'shop') {
             this.setState({
@@ -384,14 +384,14 @@ class PersonalThree extends BaseComponent {
                             <div>
                                 <WingBlank>
                                     {
-                                        !hybrid ? (
+                                        hybrid ? (
                                             <div className="picture-area">
                                                 <ul>
                                                     {
                                                         file1 && file1.map(item => (
                                                             <li id={item.id}>
-                                                                <span className="delete-icon" onClick={() => this.deleteImg('prove', item.id)}>×</span>
-                                                                <img src={item.imgS || item.url}/>
+                                                                {/* <span className="delete-icon" onClick={() => this.deleteImg('prove', item.id)}>×</span> */}
+                                                                <img onClick={() => this.addPictrue('prove')} src={item.imgS || item.url}/>
                                                             </li>
                                                         ))
                                                     }
@@ -433,15 +433,15 @@ class PersonalThree extends BaseComponent {
                             <div>
                                 <WingBlank>
                                     {
-                                        !hybrid
+                                        hybrid
                                             ? (
                                                 <div className="picture-area">
                                                     <ul>
                                                         {
                                                             file2 && file2.map(item => (
                                                                 <li id={item.id}>
-                                                                    <span className="delete-icon" onClick={() => this.deleteImg('shop', item.id)}>×</span>
-                                                                    <img src={item.imgS || item.url}/>
+                                                                    {/* <span className="delete-icon" onClick={() => this.deleteImg('shop', item.id)}>×</span> */}
+                                                                    <img onClick={() => this.addPictrue('shop')} src={item.imgS || item.url}/>
                                                                 </li>
                                                             ))
                                                         }
@@ -481,15 +481,15 @@ class PersonalThree extends BaseComponent {
                             <div>
                                 <WingBlank>
                                     {
-                                        !hybrid
+                                        hybrid
                                             ? (
                                                 <div className="picture-area">
                                                     <ul>
                                                         {
                                                             file3 && file3.map(item => (
                                                                 <li id={item.id}>
-                                                                    <span className="delete-icon" onClick={() => this.deleteImg('environment', item.id)}>×</span>
-                                                                    <img src={item.imgS || item.url}/>
+                                                                    {/* <span className="delete-icon" onClick={() => this.deleteImg('environment', item.id)}>×</span> */}
+                                                                    <img onClick={() => this.addPictrue('environment')} src={item.imgS || item.url}/>
                                                                 </li>
                                                             ))
                                                         }
@@ -538,8 +538,8 @@ class PersonalThree extends BaseComponent {
                                                         {
                                                             file4 && file4.map(item => (
                                                                 <li id={item.id}>
-                                                                    <span className="delete-icon" onClick={() => this.deleteImg('product', item.id)}>×</span>
-                                                                    <img src={item.imgS || item.url}/>
+                                                                    {/* <span className="delete-icon" onClick={() => this.deleteImg('product', item.id)}>×</span> */}
+                                                                    <img onClick={() => this.addPictrue('product')} src={item.imgS || item.url}/>
                                                                 </li>
                                                             ))
                                                         }

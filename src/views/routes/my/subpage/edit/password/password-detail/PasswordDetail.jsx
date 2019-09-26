@@ -1,3 +1,5 @@
+
+import React from 'react';
 import {InputItem, Button, NavBar, Icon} from 'antd-mobile';
 import {connect} from 'react-redux';
 import {createForm} from 'rc-form';
