@@ -9,6 +9,9 @@
                 content: '\E633';
             }
         }
+        .icon-right:before {
+            content: '\E675';
+        }
     }
 
     .wait-box {
@@ -135,10 +138,11 @@
                 color: @fiery-red;
                 width: 140px;
                 height: 50px;
-                line-height: 48px;
-                border: 1px  solid @fiery-red;
+                line-height: 50px;
+                border: 2px solid @fiery-red;
                 text-align: center;
                 border-radius: 50px;
+                font-size: @font-size-24;
             }
         }
         .goods {
@@ -162,6 +166,7 @@
                 .goods-desc {
                     font-size: 30px;
                     color: @darker-black;
+                    margin-bottom: 16px;
                     .desc-title{
                         .TextareaOverflow(2);
                         margin-right: 28px;
@@ -171,12 +176,15 @@
                     display: flex;
                     font-size: 20px;
                     color: @gray;
-                    margin-top: 11px;
+                    //margin-top: 11px;
+                    //line-height: 16px;
+                    margin-bottom: 16px;
+                    justify-content: space-between;
                     .sku-left {
                         display: flex;
                         justify-content: left;
                         flex: 2;
-                        margin-bottom:  10px;
+                        //margin-bottom:  10px;
                         .goods-size{
                             padding: 0 15px 0 15px;
                             //border-right: 1px solid @gray;
@@ -213,7 +221,7 @@
                     border:2px solid @fiery-red;
                     border-radius:25px;
                     text-align: center;
-                    line-height: 48px;
+                    line-height: 50px;
                     margin-left: auto;
                     font-size: 24px;
                     color: @fiery-red;
@@ -353,11 +361,12 @@
         }
         .removeCollect{
             width: 140px;
-            height: 50px;
+            height: 51px;
             text-align: center;
-            line-height: 46px;
+            line-height: 49px;
             border-radius: 100px;
             margin: auto;
+            padding-top: 1px;
             color: #ccc;
             border:1px solid #ccc;
             font-size:24px;
@@ -487,8 +496,8 @@
                 background:#F20C00;
             }
             .deliver{
-                color:black;
-                border:1px solid black;
+                color:@fiery-red;
+                border:2px solid @fiery-red;
             }
         }
     }
