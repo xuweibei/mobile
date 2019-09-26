@@ -148,6 +148,7 @@ class BasicInput extends BaseComponent {
         const {getFieldProps, getFieldError} = this.props.form;
         const {getFieldDecorator} = this.props.form;//getFieldDecorator用于和表单进行双向绑定
         const {province, urban, county, addressArr, defaultState, editStatus, addressStatus, height} = this.state;
+        console.log(province, urban, county, addressArr.province_id, addressArr.city_id, editStatus);
         return (
             <div data-component="add-address" data-role="page" className="add-address">
                 <AppNavBar title="地址管理"/>

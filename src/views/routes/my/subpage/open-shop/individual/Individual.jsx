@@ -52,7 +52,8 @@ class Individual extends BaseComponent {
         urban: '', //市辖区的名字
         county: '', //城市名字
         updateAudit: '',
-        editStatus: true
+        editStatus: true,
+        addressStatus: 1
     };
 
     //提交店铺信息
@@ -122,7 +123,8 @@ class Individual extends BaseComponent {
                         county: res.data.city_name && res.data.city_name[2],
                         provinceId: res.data.province_id,
                         cityId: res.data.city_id,
-                        countyId: res.data.county_id
+                        countyId: res.data.county_id,
+                        addressStatus: 1
                     });
                 }
             });
@@ -373,8 +375,9 @@ class Individual extends BaseComponent {
 
     //点击下一步，跳转开店人信息
     editModalMain = () => {
-        const {phone, editStatus, isExp, pickUpSelf, linkName, discount, cValue, shopName, values, category,  text, date,  openTime, closeTime, provinceId, cityId, countyId, province, urban, county,  address, cshPhone, oTValue, cTValue} = this.state;
+        const {phone, editStatus, isExp, pickUpSelf, linkName, discount, cValue, shopName, values, category,  text, date,  openTime, closeTime, provinceId, cityId, province, urban, county,  address, cshPhone, oTValue, cTValue, addressStatus} = this.state;
         const {getFieldDecorator} = this.props.form;
+        console.log(addressStatus, province, urban, county, provinceId, cityId, editStatus);
         const steps = ['填写店铺信息', '填写开店人信息', '填写工商信息', '绑定银行卡'];
         return (
             <div>
@@ -435,20 +438,30 @@ class Individual extends BaseComponent {
                                         validateTrigger: 'onSubmit'
                                     })(
                                         <div className="region-select">
-                                            <Region
-                                                provinceId={provinceId}
-                                                cityId={cityId}
-                                                countyId={countyId}
-                                                provinceValue={province}
-                                                cityValue={urban}
-                                                countyValue={county}
-                                                onSetProvince={this.setProvince}
-                                                onSetCity={this.setCity}
-                                                onSetCounty={this.setCounty}
-                                                editStatus={editStatus}
-                                                editStatusChange={this.editStatusChange}
-                                                add
-                                            />
+                                            {
+                                                addressStatus === '1'
+                                                    ? (
+                                                        <Region
+                                                            onSetProvince={this.setProvince}
+                                                            onSetCity={this.setCity}
+                                                            onSetCounty={this.setCounty}
+                                                            provinceValue={province}
+                                                            cityValue={urban}
+                                                            countyValue={county}
+                                                            provinceId={provinceId}
+                                                            cityId={cityId}
+                                                            editStatus={editStatus}
+                                                            editStatusChange={this.editStatusChange}
+                                                        />
+                                                    ) : (
+                                                        <Region
+                                                            onSetProvince={this.setProvince}
+                                                            onSetCity={this.setCity}
+                                                            onSetCounty={this.setCounty}
+                                                            add
+                                                        />
+                                                    )
+                                            }
                                         </div>
                                     )
                                 }

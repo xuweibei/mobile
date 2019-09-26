@@ -58,7 +58,6 @@ class IndividualTwo extends BaseComponent {
             if (res.status === 0 && res.data.length !== 0) {
                 const {flagArr} = this.state;
                 const arr = flagArr;
-
                 if (res.data.pics[0]) {
                     const file = [];
                     arr[0] = true;
