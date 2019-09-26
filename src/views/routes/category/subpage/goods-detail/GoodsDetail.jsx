@@ -105,7 +105,7 @@ class GoodsDetail extends BaseComponent {
     }
 
     componentWillReceiveProps(nextProps, value) { //路由跳转时的判断，id有变化就请求
-        if (this.state.goodId !== decodeURI(getUrlParam('id', encodeURI(nextProps.location.search)))) {
+        if (hybrid) {
             this.setState({
                 goodId: decodeURI(getUrlParam('id', encodeURI(nextProps.location.search))),
                 selectType: '',

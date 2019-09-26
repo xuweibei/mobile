@@ -168,7 +168,7 @@ class PayMoney extends BaseComponent {
 
     //合并付款
     batchPayMoney = (listArr, selectIndex) => {
-        alert('合并付款');
+        // alert('合并付款');
         this.fetch(urlCfg.batchPayment, {method: 'post', data: {type: 1, payType: selectIndex === 1 ? 2 : 1, order_no: listArr.order}})
             .subscribe(res => {
                 if (res.status === 0) {
@@ -198,7 +198,7 @@ class PayMoney extends BaseComponent {
 
     //微信支付
     wxPay = (listArr, orderNum, selectIndex) => {
-        alert('微信支付');
+        // alert('微信支付');
         this.fetch(urlCfg.wechatPayment, {method: 'post', data: {type: 1, order_no: orderNum}})
             .subscribe(res => {
                 if (res.status === 0) {
@@ -228,7 +228,7 @@ class PayMoney extends BaseComponent {
 
     //支付宝支付
     alipay = (listArr, orderNum, selectIndex) => {
-        alert('支付宝支付');
+        // alert('支付宝支付');
         this.fetch(urlCfg.alipayPayment, {method: 'post', data: {type: 1, order_no: orderNum}})
             .subscribe(res => {
                 if (res.status === 0) {
