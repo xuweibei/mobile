@@ -3,7 +3,7 @@
  * 店铺模板3
  */
 import PropTypes from 'prop-types';
-import {Carousel} from 'antd-mobile';
+import {Carousel, WingBlank} from 'antd-mobile';
 import './ShopHomeIndexThird.less';
 
 const {appHistory} = Utils;
@@ -23,19 +23,28 @@ class ShopHomeIndexThird extends React.PureComponent {
         return (
             <div data-component="ShopHomeIndex" data-role="page" className="ShopHomeIndex">
                 <div className="shopHomeThirdContent">
-                    <div className="compile-box">
-                        {/* <div className={(picurl && picurl.length === 0) ? 'head no-edit-model' : 'head'} style={{background: picurl ? `url(${picurl[0]})` : '', backgroundSize: '100% 100%', height: '499px'}}>
-                            <div className="head-base" onClick={() => this.clickOnShow('one')}/>
-                        </div> */}
+                    <div className="shopHomThirdBanner">
                         {
                             content && (
-                                <Carousel className="banner" style={{height: '249.5px'}}>
-                                    {
-                                        content.banner.length > 0 ? content.banner.map(item => <img key={item} onClick={() => this.clickOnShow('two')} className={(content.banner.every(value => value.id !== '') && content.banner.every(value => value.url)) ? '' : 'no-edit-model'} src={item.url}/>) : <div className={content.banner.length === 0 ? 'banner-img no-edit-model' : 'banner-img'} onClick={() => this.clickOnShow('two')}/>
-                                    }
-                                </Carousel>
+                                <WingBlank>
+                                    <Carousel
+                                        autoplay
+                                        infinite
+                                        speed={2000}
+                                    >
+                                        {
+                                            content.banner.length > 0 ? content.banner.map(item => (
+                                                <div key={item} style={{height: '248px'}}>
+                                                    <img src={item.url} onClick={() => this.clickOnShow('two')}/>
+                                                </div>
+                                            )) : null
+                                        }
+                                    </Carousel>
+                                </WingBlank>
                             )
                         }
+                    </div>
+                    <div className="compile-box">
                         <div className="title-bar" onClick={() => this.clickOnShow('three')}>
                             {/* <p className={(content && content.sort1_title1) ? 'time' : 'time no-edit-model'}>{content && (content.sort1_title1 || '2018/5/20')}</p> */}
                             <p className={(content && content.sort1_title1) ? 'headline' : 'hot no-edit-model'}>{content && (content.sort1_title1 || 'POPULAR COMMODITY')}</p>
