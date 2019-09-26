@@ -10,7 +10,8 @@ class GeisTextareaItem extends React.PureComponent {
         isStyle: false,
         placeholder: '',
         itemTitle: '',
-        count: 100,
+        count: 0,
+        rows: 1,
         onChange() {},
         type: ''
     };
@@ -21,6 +22,7 @@ class GeisTextareaItem extends React.PureComponent {
         isStyle: PropTypes.bool,   //是否自定义样式
         itemTitle: PropTypes.string,     //inputItem的标题
         count: PropTypes.number,   //
+        rows: PropTypes.number,
         onChange: PropTypes.func     //表单的onChange事件
     };
 
@@ -64,15 +66,16 @@ class GeisTextareaItem extends React.PureComponent {
     };
 
     render() {
-        const {placeholder, itemTitle, isStyle, count} = this.props;
+        const {placeholder, itemTitle, isStyle, count, rows} = this.props;
         const {value} = this.state;
         return (
             <TextareaItem
                 value={value}
                 placeholder={placeholder}
                 onChange={this.itemChange}
-                {...isStyle && {className: 'add-input'}}
+                {...isStyle && {className: 'detail-address'}}
                 count={count}
+                rows={rows}
             >{itemTitle}
             </TextareaItem>
         );
