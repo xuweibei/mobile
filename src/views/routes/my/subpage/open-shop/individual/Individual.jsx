@@ -1,7 +1,7 @@
 /**
  * 我要开店---个体页面
  * */
-import {List, InputItem, Picker, Radio, Modal, Flex} from 'antd-mobile';
+import {List, InputItem, Picker, Radio, Modal, Flex, TextareaItem} from 'antd-mobile';
 import {createForm} from 'rc-form';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import IndividualTwo from './IndividualTwo';
@@ -9,7 +9,6 @@ import IndividualThree from './IndividualThree';
 import IndividualFour from './IndividualFour';
 import Region from '../../../../../common/region/Region';
 import GeisInputItem from '../../../../../common/form/input/GeisInputItem';
-import GeisTextareaItem from '../../../../../common/form/textArea/GeisTextareaItem';
 import './Individual.less';
 
 const {urlCfg} = Configs;
@@ -401,12 +400,12 @@ class Individual extends BaseComponent {
                                     ],
                                     validateTrigger: 'onSubmit'//校验值的时机
                                 })(
-                                    <GeisInputItem
-                                        type="nonSpace"
+                                    <InputItem
                                         clear
                                         placeholder="请输入2-30位的店铺名称"
-                                        itemTitle="店铺名称"
-                                    />
+                                    >
+                                        店铺名称
+                                    </InputItem>
                                 )}
                             {
                                 getFieldDecorator('category', {
@@ -462,19 +461,13 @@ class Individual extends BaseComponent {
                                     ],
                                     validateTrigger: 'onSubmit'
                                 })(
-                                    <GeisTextareaItem
+                                    <TextareaItem
                                         placeholder="请填写店铺详细地址"
-                                        type="nonSpace"
-                                        isStyle
                                         rows={5}
+                                        labelNumber={5}
+                                        className="detail-address"
+                                        // onChange={(val) => this.setDetailAddress(val)}
                                     />
-                                    // <TextareaItem
-                                    //     placeholder="请填写店铺详细地址"
-                                    //     rows={5}
-                                    //     labelNumber={5}
-                                    //     className="detail-address"
-                                    //     // onChange={(val) => this.setDetailAddress(val)}
-                                    // />
                                 )
                             }
                             {
@@ -631,17 +624,11 @@ class Individual extends BaseComponent {
                                 ],
                                 validateTrigger: 'onSubmit'
                             })(
-                                <GeisInputItem
-                                    type="nonSpace"
+                                <InputItem
                                     clear
                                     placeholder="请输入开店人姓名"
-                                    itemTitle="开店人姓名"
-                                />
-                                // <InputItem
-                                //     clear
-                                //     placeholder="请输入开店人姓名"
-                                // >开店人姓名
-                                // </InputItem>
+                                >开店人姓名
+                                </InputItem>
                             )
                         }
                         {
