@@ -4,7 +4,7 @@
  */
 import PropTypes from 'prop-types';
 import './ShopHomeIndexFive.less';
-import {Carousel} from 'antd-mobile';
+import {Carousel, WingBlank} from 'antd-mobile';
 
 
 const {appHistory} = Utils;
@@ -23,26 +23,26 @@ class ShopHomeIndexFive extends React.PureComponent {
         console.log(shopModelArr);
         return (
             <div data-component="ShopHomeIndexFive" data-role="page" className="ShopHomeIndexFive">
-                <div className="Template-top">
-                    <div className="template-top" style={{background: shopModelArr.content.bg_color}}>
+                <div className="template-top">
+                    <div className="shopHomeFiveBanner" style={{background: shopModelArr.content.bg_color}}>
                         {
                             (shopModelArr.content && shopModelArr.content.banner && shopModelArr.content.banner.length > 0) ? (
-                                <Carousel
-                                    className="my-carousel"
-                                    vertical
-                                    dots={false}
-                                    dragging={false}
-                                    swiping={false}
-                                    autoplay
-                                    infinite
-                                    speed={2000}
-                                    autoplayInterval={300}
-                                    resetAutoplay={false}
-                                >
-                                    {
-                                        shopModelArr.content.banner.map(item => <img key={item.ix} src={item.url} title="693"/>)
-                                    }
-                                </Carousel>
+                                <WingBlank>
+                                    <Carousel
+                                        autoplay
+                                        infinite
+                                        speed={2000}
+                                    >
+                                        {
+                                            shopModelArr.content.banner.map(item => (
+                                                <div style={{height: '386px'}} key={item.ix}>
+                                                    <img src={item.url} title="693"/>
+                                                </div>
+                                            ))
+                                        }
+                                    </Carousel>
+                                </WingBlank>
+
                             ) : <img title="132"/>
                         }
                     </div>
