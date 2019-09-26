@@ -362,9 +362,9 @@ class ShopCart extends BaseComponent {
         }));
         let price = 0;
         for (let i = 0; i < arr.length; i++) {
-            price += arr[i] * num[i];
+            price += ((arr[i] * 100)  * (num[i] * 100));
         }
-        return price;
+        return (price / 10000);
     };
 
     //总共几件商品
@@ -570,10 +570,10 @@ class ShopCart extends BaseComponent {
         let num = 0;
         valid[index].data.forEach(item => {
             if (item.select === true) {
-                num += Number(item.deposit) * Number(item.num);
+                num += (Number(item.deposit) *  100) * (Number(item.num) * 100);
             }
         });
-        return num;
+        return (num / 10000);
     }
 
     // //自提总价
@@ -583,11 +583,11 @@ class ShopCart extends BaseComponent {
         let price = 0;
         valid[index].data.forEach(item => {
             if (item.select === true) {
-                price += Number(item.price) * Number(item.num);
+                price += (Number(item.price) * 100) * (Number(item.num) * 100);
                 // selfPrice += Number(item.price) * Number(item.num);
             }
         });
-        return price;
+        return (price / 10000);
     }
 
     //自提商品总数量
@@ -873,7 +873,7 @@ class ShopCart extends BaseComponent {
                         </div>
                         {
                             hide && (
-                                <div className="shop-bottom">
+                                <div className="shop-bottom" style={hybird && {bottom: '0px'}}>
                                     <div className="bottom-left">
                                         <div
                                             className={`icon ${totalSelect ? 'icon-select-z' : 'icon-unselect-z'}`}

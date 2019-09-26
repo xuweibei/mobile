@@ -12,8 +12,9 @@ const getPass = { //获取验证码按钮的样式
     marginRight: '18px',
     color: '#de1212',
     border: 'none',
-    marginTop: '18px',
-    background: '#fff'
+    // marginTop: '18px',
+    background: '#fff',
+    lineHeight: '44px'
 };
 class passwordPayment extends BaseComponent {
     state = {
@@ -214,9 +215,11 @@ class passwordPayment extends BaseComponent {
                             }
                         </NavBar>
                         <div className="password-box">
+                            <div className="payment-code">请输入支付密码</div>
                             <div className="content">
                                 <InputGrid onInputGrid={this.inputGrid}/>
                             </div>
+                            <div className="payment-code">请再次输入支付密码</div>
                             <div className="content">
                                 <InputGrid onInputGrid={this.inputGridAgain}/>
                             </div>

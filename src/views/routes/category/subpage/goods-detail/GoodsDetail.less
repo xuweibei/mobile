@@ -227,7 +227,7 @@
                     font-size: @font-size-20;
                     color: #999999;
                     //line-height: 30px;
-                    span:first-child{
+                    span{
                         margin-right: 20px;
                     }
                 }
@@ -489,15 +489,18 @@
                     }
                 }
                 .recommend-individual-title{
-                    margin: 25px 0 16px 0;
+                    margin: 25px 0 18px 0;
                     overflow : hidden;
                     text-overflow: ellipsis;
                     display: -webkit-box;
                     -webkit-line-clamp: 2; /* 可以显示的行数，超出部分用...表示*/
                     -webkit-box-orient: vertical;
                     .ImportantFont();
-                    text-align: center;
+                    text-align: left;
                     color:@darker-black;
+                    font-size: @font-size-30;
+                    height: 67px;
+                    //padding-bottom: 6px;
                 }
                 .recommend-concessional-box{
                     display: flex;
@@ -582,6 +585,8 @@
     }
     //商品详情图片
     .detail-img{
+        padding: 0 30px 30px;
+        line-height: 38px;
         width: 100%;
         background: @white;
         .img{
@@ -619,6 +624,7 @@
             }
             .icon-collect:before{
                 content: '\e63a';
+                color: @gray;
                 font-size: 36px;
             }
             .icon-collect-active:before{

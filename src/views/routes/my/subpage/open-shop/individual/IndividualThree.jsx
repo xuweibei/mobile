@@ -182,6 +182,24 @@ class IndividualThree extends BaseComponent {
                         flagArr: arr
                     };
                 });
+                if (res.data.pic_info && res.data.pic_info.status === 0) {
+                    if (res.data.reg_num && res.data.exp) {
+                        this.setState({
+                            shopLic: res.data.reg_num,
+                            shopLicExp: res.data.exp
+                        });
+                    }
+                    showInfo(Form.Success_Lic_Info);
+                } else if (res.data.pic_info && res.data.pic_info.status === 1) {
+                    if (ix === 2) {
+                        this.setState({
+                            file: [],
+                            shopLic: '',
+                            shopLicExp: ''
+                        });
+                    }
+                    showFail(Form.Fail_Lic_Info);
+                }
             }
         });
     }
@@ -195,9 +213,9 @@ class IndividualThree extends BaseComponent {
                     res.data.img.forEach(item => {
                         arrInfo.push({imgB: item[0], imgS: item[1], id: new Date()});
                     });
-                    this.setState((proveState) => ({
-                        file: proveState.file.concat(arrInfo)
-                    }));
+                    this.setState({
+                        file: arrInfo
+                    });
                     this.pasGass(arrInfo, 2, 0);
                 });
             } else if (type === 'doorTop') {
@@ -205,9 +223,9 @@ class IndividualThree extends BaseComponent {
                     res.data.img.forEach(item => {
                         arrInfo.push({imgB: item[0], imgS: item[1], id: new Date()});
                     });
-                    this.setState((proveState) => ({
-                        file2: proveState.file2.concat(arrInfo)
-                    }));
+                    this.setState({
+                        file2: arrInfo
+                    });
                     this.pasGass(arrInfo, 3, 1);
                 });
             } else {
@@ -215,9 +233,9 @@ class IndividualThree extends BaseComponent {
                     res.data.img.forEach(item => {
                         arrInfo.push({imgB: item[0], imgS: item[1], id: new Date()});
                     });
-                    this.setState((proveState) => ({
-                        file3: proveState.file3.concat(arrInfo)
-                    }));
+                    this.setState({
+                        file3: arrInfo
+                    });
                     this.pasGass(arrInfo, 5, 2);
                 });
             }
@@ -342,8 +360,8 @@ class IndividualThree extends BaseComponent {
                                                             {
                                                                 file && file.map(item => (
                                                                     <li id={item.id}>
-                                                                        <span className="delete-icon" onClick={() => this.deleteImg('license', item.id)}>×</span>
-                                                                        <img src={item.imgS || item.url}/>
+                                                                        {/* <span className="delete-icon" onClick={() => this.deleteImg('license', item.id)}>×</span> */}
+                                                                        <img onClick={() => this.addPictrue('license')} src={item.imgS || item.url}/>
                                                                     </li>
                                                                 ))
                                                             }
@@ -446,8 +464,8 @@ class IndividualThree extends BaseComponent {
                                                         {
                                                             file2 && file2.map(item => (
                                                                 <li id={item.id}>
-                                                                    <span className="delete-icon" onClick={() => this.deleteImg('doorTop', item.id)}>×</span>
-                                                                    <img src={item.imgS || item.url}/>
+                                                                    {/* <span className="delete-icon" onClick={() => this.deleteImg('doorTop', item.id)}>×</span> */}
+                                                                    <img onClick={() => this.addPictrue('doorTop')} src={item.imgS || item.url}/>
                                                                 </li>
                                                             ))
                                                         }
@@ -492,8 +510,8 @@ class IndividualThree extends BaseComponent {
                                                     {
                                                         file3 && file3.map(item => (
                                                             <li id={item.id}>
-                                                                <span className="delete-icon" onClick={() => this.deleteImg('shopInside', item.id)}>×</span>
-                                                                <img src={item.imgS || item.url}/>
+                                                                {/* <span className="delete-icon" onClick={() => this.deleteImg('shopInside', item.id)}>×</span> */}
+                                                                <img onClick={() => this.addPictrue('shopInside')} src={item.imgS || item.url}/>
                                                             </li>
                                                         ))
                                                     }

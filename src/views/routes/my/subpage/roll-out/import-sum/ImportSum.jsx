@@ -1,8 +1,9 @@
 /*
 * cam转出 支付页面
 * */
-import {List, InputItem, Picker} from 'antd-mobile';
+import {List, Picker} from 'antd-mobile';
 import AppNavBar from '../../../../../common/navbar/NavBar';
+import GeisInputItem from '../../../../../common/form/input/GeisInputItem';
 import {InputGrid} from '../../../../../common/input-grid/InputGrid';
 import './ImportSum.less';
 
@@ -105,7 +106,7 @@ export default class importSum extends BaseComponent {
 
     //微信支付
     wxPay = () => {
-        alert('微信支付');
+        // alert('微信支付');
         const {money, uid} = this.state;
         this.fetch(urlCfg.userpay, {method: 'post', data: {no: uid, money, flag: 1}})
             .subscribe(res => {
@@ -121,6 +122,7 @@ export default class importSum extends BaseComponent {
                             sign: res.data.arr.sign
                         };
                         native('wxPayCallback', obj).then((data) => {
+                            native('goH5');
                             appHistory.push(`/pay-camsucess?uid=${uid}&money=${money}`);
                         });
                     }
@@ -130,13 +132,14 @@ export default class importSum extends BaseComponent {
 
     //支付宝支付
     alipay = () => {
-        alert('支付宝支付');
+        // alert('支付宝支付');
         const {money, uid} = this.state;
         this.fetch(urlCfg.userpay, {method: 'post', data: {no: uid, money, flag: 0}})
             .subscribe(res => {
                 if (res.status === 0) {
                     if (hybird) {
                         native('authInfo', res.data.response).then((data) => {
+                            native('goH5');
                             appHistory.push(`/pay-camsucess?uid=${uid}&money=${money}`);
                         });
                     }
@@ -199,8 +202,8 @@ export default class importSum extends BaseComponent {
                     </div>
                     <div className="money">
                         <List>
-                            <InputItem
-                                type="number"
+                            <GeisInputItem
+                                type="float"
                                 clear
                                 placeholder="请输转出金额"
                                 onChange={(res) => this.getInput(res)}

@@ -12,7 +12,8 @@ export default class MyAssets extends BaseComponent {
     state = {
         editModal: '', //当前状态
         reserveArr: [], //预计收益
-        hasMore: true //底部加载状态
+        hasMore: true, //底部加载状态
+        height: document.documentElement.clientHeight - (window.isWX ? window.rem * 1.08 : window.rem * 1.08) //扣除已占高度
     };
 
     componentDidMount() {
@@ -66,7 +67,7 @@ export default class MyAssets extends BaseComponent {
 
     //底部结构
     defaultModel = (row) => {
-        const {reserveArr} = this.state;
+        const {reserveArr, height} = this.state;
         return (
             <div data-component="cash" data-role="page" className="cash-icom">
                 <div className="cash-content">
@@ -81,7 +82,7 @@ export default class MyAssets extends BaseComponent {
                             </div>
                         )
                     }
-                    <div className="asset-info-wrap">
+                    <div style={{height: height}} className="asset-info-wrap">
                         <div className="cash-content-tabs"/>
                         <div className="bottom-modal">
                             <div className="menu-line">

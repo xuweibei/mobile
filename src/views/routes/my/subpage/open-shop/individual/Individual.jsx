@@ -1,13 +1,14 @@
 /**
  * 我要开店---个体页面
  * */
-import {List, InputItem, Picker, Radio, TextareaItem, Modal, Flex} from 'antd-mobile';
+import {List, InputItem, Picker, Radio, Modal, Flex, TextareaItem} from 'antd-mobile';
 import {createForm} from 'rc-form';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import IndividualTwo from './IndividualTwo';
 import IndividualThree from './IndividualThree';
 import IndividualFour from './IndividualFour';
 import Region from '../../../../../common/region/Region';
+import GeisInputItem from '../../../../../common/form/input/GeisInputItem';
 import './Individual.less';
 
 const {urlCfg} = Configs;
@@ -57,6 +58,7 @@ class Individual extends BaseComponent {
     //提交店铺信息
     postInformation = () => {
         const {cate1, cate1Id, province, urban, county, pickUpSelf, isExp, openTime, closeTime} = this.state;
+        console.log(pickUpSelf);
         const {form: {validateFields}} = this.props;
         const pca = [province, urban, county];
         validateFields({first: true, force: true}, (error, val) => {
@@ -311,13 +313,20 @@ class Individual extends BaseComponent {
 
     //校验商户状态
     checkIsExp = (rule, value, callback) => {
-        if (!validator.isEmpty(value, Form.No_isExp, callback)) return;
+        if (!value) {
+            showInfo(Form.No_isExp);
+            return;
+        }
         callback();
     };
 
     //检验是否支持自提
     checkPickUpSelf = (rule, value, callback) => {
-        if (!validator.isEmpty(value, Form.No_pickUpSelf, callback)) return;
+        // const {pickUpSelf} = this.state;
+        if (!value) {
+            showInfo(Form.No_pickUpSelf);
+            return;
+        }
         callback();
     };
 
@@ -335,10 +344,6 @@ class Individual extends BaseComponent {
     checkCshPhone = (rule, value, callback) => {
         const myCshPhone = validator.wipeOut(value);
         if (!validator.isEmpty(myCshPhone, Form.No_cshPhone, callback)) return;
-        // if (!validator.checkNum(Number(myCshPhone), 3, 11)) {
-        //     showInfo(Form.Error_CasPhone);
-        //     return;
-        // }
         callback();
     };
 
@@ -398,7 +403,8 @@ class Individual extends BaseComponent {
                                     <InputItem
                                         clear
                                         placeholder="请输入2-30位的店铺名称"
-                                    >店铺名称
+                                    >
+                                        店铺名称
                                     </InputItem>
                                 )}
                             {
@@ -428,7 +434,7 @@ class Individual extends BaseComponent {
                                         ],
                                         validateTrigger: 'onSubmit'
                                     })(
-                                        <div>
+                                        <div className="region-select">
                                             <Region
                                                 provinceId={provinceId}
                                                 cityId={cityId}
@@ -548,12 +554,19 @@ class Individual extends BaseComponent {
                                     ],
                                     validateTrigger: 'onSubmit'
                                 })(
-                                    <InputItem
+                                    <GeisInputItem
+                                        type="float"
+                                        itemTitle="收款码折扣"
                                         clear
                                         placeholder="请设置8 ~ 9.5折"
-                                    >收款码折扣
-                                        <span className="nani" onClick={this.openMod}>?</span>
-                                    </InputItem>
+                                        itemStyle={(<span className="nani" onClick={this.openMod}>?</span>)}
+                                    />
+                                    // <InputItem
+                                    //     clear
+                                    //     placeholder="请设置8 ~ 9.5折"
+                                    // >收款码折扣
+                                    //     <span className="nani" onClick={this.openMod}>?</span>
+                                    // </InputItem>
                                 )
                             }
                             {

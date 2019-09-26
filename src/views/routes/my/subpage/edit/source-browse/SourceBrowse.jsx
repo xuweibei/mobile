@@ -38,13 +38,12 @@ class SourceBrowse extends BaseComponent {
             .subscribe(res => {
                 if (res.status === 0) {
                     showInfo(Feedback.Bind_Success);
-                    //源头uid绑定成功了，将设置页面的redux清除，以便重新请求
-                    this.props.delEdit();
                     if (hybrid && appHistory.length === 0) {
                         native('native');
                     } else {
                         appHistory.go(-3);
                     }
+                    this.props.getUserInfo();
                 }
             });
     }
@@ -87,7 +86,7 @@ class SourceBrowse extends BaseComponent {
 }
 
 const mapDispatchToProps = {
-    delEdit: actionCreator.delEdit
+    getUserInfo: actionCreator.getUserInfo
 };
 
 export default connect(null, mapDispatchToProps)(SourceBrowse);

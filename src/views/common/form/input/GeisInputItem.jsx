@@ -6,29 +6,50 @@ import PropTypes from 'prop-types';
 import {InputItem} from 'antd-mobile';
 
 class GeisInputItem extends React.PureComponent {
-    static defaultProps = {
-        clear: false,
-        editable: true,
-        placeholder: '',
-        itemTitle: '',
-        maxLength: 30,
-        onChange() {},
-        type: ''
-    };
-
     static propTypes = {
         placeholder: PropTypes.string,   //inputItem的placeholder
+        value: PropTypes.string,  //Form表单的默认值
         type: PropTypes.string,   //限制类型
         editable: PropTypes.bool,   //是否可编辑
+        isStyle: PropTypes.bool,   //是否自定义样式
+        showPass: PropTypes.bool, //是否显示密码输入框
         itemTitle: PropTypes.string,     //inputItem的标题
         clear: PropTypes.bool,   //是否可清除
+        itemStyle: PropTypes.element,
         maxLength: PropTypes.number,  //inputItem的最大长度
         onChange: PropTypes.func     //表单的onChange事件
     };
 
-    state = {
-        value: ''
+    static defaultProps = {
+        clear: false,
+        showPass: false,
+        editable: true,
+        isStyle: false,
+        placeholder: '',
+        value: '',  //form表单传过来的默认值
+        itemTitle: '',
+        maxLength: 30,
+        onChange() {},
+        type: '',
+        itemStyle: null
     };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            inputValue: ''
+        };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const {value} = nextProps;
+        const {inputValue} = this.state;
+        if (value !== inputValue) {
+            this.setState({
+                inputValue: value
+            });
+        }
+    }
 
     itemChange = e => {
         const {type} = this.props;
@@ -51,23 +72,25 @@ class GeisInputItem extends React.PureComponent {
         if (onChange) {
             onChange(e);
             this.setState({
-                value: e
+                inputValue: e
             });
         }
     };
 
     render() {
-        const {clear, placeholder, editable, itemTitle, maxLength} = this.props;
-        const {value} = this.state;
+        const {clear, placeholder, editable, itemTitle, maxLength, showPass, isStyle, itemStyle} = this.props;
+        const {inputValue} = this.state;
         return (
             <InputItem
-                value={value}
+                value={inputValue}
                 clear={clear}
+                type={showPass ? 'password' : 'text'}
                 placeholder={placeholder}
                 editable={editable}
                 onChange={this.itemChange}
                 maxLength={maxLength}
-            >{itemTitle}
+                {...isStyle && {className: 'add-input'}}
+            >{itemTitle}{itemStyle}
             </InputItem>
         );
     }

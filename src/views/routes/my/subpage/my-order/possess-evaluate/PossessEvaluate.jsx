@@ -77,7 +77,7 @@ class PossessEvaluate extends BaseComponent {
             tabkey: props.tabValue || 0, //tab状态
             refreshing: false, //是否显示刷新状态
             height: document.documentElement.clientHeight - (window.isWX ? window.rem * 1.08 : window.rem * 2),
-            heightAlready: document.documentElement.clientHeight - (window.isWX ? window.rem * 4.12 : window.rem * 4.3), //已评价的列表高
+            heightAlready: document.documentElement.clientHeight - (window.isWX ? window.rem * 2.98 : window.rem * 4.06), //已评价的列表高
             arrChecked: arr, //已评价按钮状态切换集合
             userType: decodeURI(getUrlParam('userType', encodeURI(this.props.location.search))), //用户身份
             hasMore: false, //底部请求状态文字显示情况
@@ -455,7 +455,7 @@ class PossessEvaluate extends BaseComponent {
     alreadyEvalutedRow = (item) => {
         const {userType} = this.state;
         return (
-            <div>
+            <div className="have-evaluation">
                 <div className="discuss">
                     <div className="discuss-user">
                         <LazyLoadIndex lazyInfo={{offset: -30, imgUrl: item.avatarUrl, overflow: true}}/>
@@ -473,9 +473,9 @@ class PossessEvaluate extends BaseComponent {
                                 item.picsx.length > 0 && item.picsx.map((value, index) => <LazyLoadIndex key={keyNum++} bigPicture={() => this.bigPicture(item.pics, index)} lazyInfo={{offset: -30, imgUrl: value, overflow: true}}/>)
                             }
                         </div>
-                        {
+                        {/* {
                             item.return_content && <div>商家回复：{item.return_content}</div>
-                        }
+                        }*/}
                         {item.have_add === '1' && (
                             <div className="append">
                                 <div className="append-chase">追评</div>
@@ -484,7 +484,7 @@ class PossessEvaluate extends BaseComponent {
                                 {item.add && item.add.return_content && <div className="reply">商家回复：{item.add.return_content}</div>}
                             </div>
                         )}
-                        <div onClick={() => appHistory.push(`/evaluateDetail?id=${item.id}`)}>查看</div>
+                        {/*<div onClick={() => appHistory.push(`/evaluateDetail?id=${item.id}`)}>查看</div>*/}
                     </div>
                 </div>
                 <div className="write-comment">

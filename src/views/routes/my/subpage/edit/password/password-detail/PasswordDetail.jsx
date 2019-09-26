@@ -1,7 +1,10 @@
+
+import React from 'react';
 import {InputItem, Button, NavBar, Icon} from 'antd-mobile';
 import {connect} from 'react-redux';
 import {createForm} from 'rc-form';
 import VerificationCode from '../../../../../../common/verification-code';
+import GeisInputItem from '../../../../../../common/form/input/GeisInputItem';
 import {baseActionCreator as actionCreator} from '../../../../../../../redux/baseAction';
 import './PasswordDetail.less';
 
@@ -14,8 +17,9 @@ const getPass = { //获取验证码按钮的样式
     marginRight: '18px',
     color: '#de1212',
     border: 'none',
-    marginTop: '18px',
-    background: '#fff'
+    // marginTop: '18px',
+    background: '#fff',
+    lineHeight: '44px'
 };
 
 class passwordDetail extends BaseComponent {
@@ -86,7 +90,9 @@ class passwordDetail extends BaseComponent {
                                     });
                                 } else {
                                     this.setState({
-                                        uid: res.data[0].no
+                                        uid: res.data[0].no,
+                                        phoneShow: false,
+                                        passShow: true
                                     });
                                 }
                             }
@@ -212,21 +218,6 @@ class passwordDetail extends BaseComponent {
         }
     };
 
-    //第一个密码输入
-    passwordChange = (data) => {
-        this.setState({
-            password: data
-        });
-    };
-
-
-    //第二个密码输入
-    passwordChanegAgain = (data) => {
-        this.setState({
-            passwordAgain: data
-        });
-    };
-
     //校验密码
     checkPwd = () => {
         const {password} = this.state;
@@ -287,8 +278,9 @@ class passwordDetail extends BaseComponent {
     }
 
     render() {
-        const {password, reEdit, passwordAgain, passShow, phoneShow, getOff, moreAccount, accountList} = this.state;
+        const {reEdit, passShow, phoneShow, getOff, moreAccount, accountList} = this.state;
         const {getFieldDecorator} = this.props.form;//getFieldDecorator用于和表单进行双向绑定
+
         return (
             <div data-component="passwordDetail" data-role="page" className="password-detail">
                 {
@@ -367,14 +359,13 @@ class passwordDetail extends BaseComponent {
                                         ],
                                         validateTrigger: 'onSubmit'//校验值的时机
                                     })(
-                                        <InputItem
-                                            type="password"
-                                            onBlur={this.checkPwd}
+                                        <GeisInputItem
+                                            type="nonSpace"
+                                            itemTitle="输入密码"
+                                            clear
                                             placeholder="请输入6-18位密码"
-                                            onChange={this.passwordChange}
-                                            value={password}
-                                        >输入密码
-                                        </InputItem>
+                                            maxLength={18}
+                                        />
                                     )
                                 }
                                 {
@@ -385,14 +376,13 @@ class passwordDetail extends BaseComponent {
                                         ],
                                         validateTrigger: 'onSubmit'//校验值的时机
                                     })(
-                                        <InputItem
-                                            type="password"
+                                        <GeisInputItem
+                                            type="nonSpace"
+                                            showPass
                                             placeholder="******"
                                             editable={reEdit}
-                                            onChange={this.passwordChanegAgain}
-                                            value={passwordAgain}
-                                        >确认密码
-                                        </InputItem>
+                                            itemTitle="确认密码"
+                                        />
                                     )
                                 }
 
