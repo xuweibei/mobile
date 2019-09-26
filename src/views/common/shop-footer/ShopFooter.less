@@ -1,4 +1,4 @@
-//@import "~style";
+@import "~style";
 
 .footer-bar {
     position: fixed;
@@ -14,24 +14,24 @@
 
 
         &.home-icon::before{
-            color: #FF2D51;
+            color: @gray;
             content:'\e64a';
         }
         &.home-icon-active:before{
-            color:red;
+            color: @fiery-red;
             content:'\e64a';
         }
         &.share-icon::before{
-            color: #F20C00;
+            color: @gray;
             content:'\e647';
         }
 
         &.share-icon-active::before{
-            color:#F20C00;
+            color:@fiery-red;
             content:'\e647'
         }
         &.find-icon:before{
-            color: #FF2D51;
+            color: @gray;
             content:'\e64d'
         }
         // {
@@ -39,7 +39,7 @@
         // }
 
         &.find-icon-active:before{
-            color:red;
+            color:@fiery-red;
             content: '\e64d';
         }
 
