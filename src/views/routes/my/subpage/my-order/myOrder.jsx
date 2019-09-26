@@ -60,14 +60,12 @@ class MyOrder extends BaseComponent {
         const num = this.statusChoose(nextProps.location.pathname.split('/')[2]);
         if (hybrid) {
             orderArr.push(num);
-            if (orderArr && orderArr.length > 1) {
-                this.setState({
-                    status: orderArr[1]
-                }, () => {
-                    this.init(orderArr[1]);
-                    orderArr = [];
-                });
-            }
+            this.setState({
+                status: orderArr[1] || orderArr[0]
+            }, () => {
+                this.init(orderArr[1] || orderArr[0]);
+                orderArr = [];
+            });
         } else {
             this.setState({
                 status: num

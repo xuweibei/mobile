@@ -50,7 +50,6 @@ class SourceBrowse extends BaseComponent {
 
     //返回
     goBackModal = () => {
-        alert(appHistory.length());
         if (hybrid && appHistory.length() === 0) {
             native('goBack');
         } else {

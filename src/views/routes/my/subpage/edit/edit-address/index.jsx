@@ -137,7 +137,7 @@ class BasicInput extends BaseComponent {
                         if (res.status === 0) {
                             showSuccess(Feedback.Del_Success);
                             getAddress();
-                            appHistory.push('/address');
+                            appHistory.goBack();
                         }
                     });
             }]
@@ -146,7 +146,6 @@ class BasicInput extends BaseComponent {
 
     render() {
         const {getFieldProps, getFieldError} = this.props.form;
-        const {getFieldDecorator} = this.props.form;//getFieldDecorator用于和表单进行双向绑定
         const {province, urban, county, addressArr, defaultState, editStatus, addressStatus, height} = this.state;
         console.log(province, urban, county, addressArr.province_id, addressArr.city_id, editStatus);
         return (
@@ -154,14 +153,16 @@ class BasicInput extends BaseComponent {
                 <AppNavBar title="地址管理"/>
                 <form style={{height: height}} className="location-list">
                     <List>
-                        <InputItem
-                            {...getFieldProps('account', {initialValue: addressArr.linkname})}
-                            clear
-                            error={!!getFieldError('account')}
-                            onErrorClick={() => {}}
-                            placeholder="请输入您的收件人姓名"
-                            className="add-input"
-                        />
+                        <div className="consignee">
+                            <InputItem
+                                {...getFieldProps('account', {initialValue: addressArr.linkname})}
+                                clear
+                                error={!!getFieldError('account')}
+                                onErrorClick={() => {}}
+                                placeholder="请输入您的收件人姓名"
+                                className="add-input"
+                            />
+                        </div>
                         <InputItem
                             className="add-input"
                             {...getFieldProps('phone', {initialValue: addressArr.linktel})}

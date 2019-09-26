@@ -483,13 +483,13 @@ class IndividualTwo extends BaseComponent {
                                                             file2 && file2.map(item => (
                                                                 <li id={item.id}>
                                                                     {/* <span className="delete-icon" onClick={() => this.deleteImg('handle', item.id)}>×</span> */}
-                                                                    <img onClick={() => this.addPictrue('handle')} src={item.imgS || item.url}/>
+                                                                    <img onClick={() => this.addPictrue('hand')} src={item.imgS || item.url}/>
                                                                 </li>
                                                             ))
                                                         }
                                                         {
                                                             file2.length === 0 && (
-                                                                <li className="imgAdd-button" onClick={() => this.addPictrue('handle')}>
+                                                                <li className="imgAdd-button" onClick={() => this.addPictrue('hand')}>
                                                                     <span className="imgAdd-icon">+</span>
                                                                 </li>
                                                             )
