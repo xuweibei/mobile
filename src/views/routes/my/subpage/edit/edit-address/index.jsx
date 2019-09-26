@@ -146,7 +146,6 @@ class BasicInput extends BaseComponent {
 
     render() {
         const {getFieldProps, getFieldError} = this.props.form;
-        const {getFieldDecorator} = this.props.form;//getFieldDecorator用于和表单进行双向绑定
         const {province, urban, county, addressArr, defaultState, editStatus, addressStatus, height} = this.state;
         return (
             <div data-component="add-address" data-role="page" className="add-address">
