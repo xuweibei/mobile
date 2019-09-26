@@ -9,10 +9,12 @@
         .shopHomeTwoBanner{
             background:#CAD9EC;
             width:750px;
-            height:1083px;
+            .am-wingblank.am-wingblank-lg{
+                padding: 0;
+                margin: 0;
+            }
             img{
                 width:100%;
-                height:100%
             }
         }
         .shopHomeTwoContentPadding{
@@ -113,16 +115,22 @@
         .hotSellRecommendCon{
             position:relative;
             //width:712px;
-            height:834px;
             padding-left:65px;
             padding-right:65px;
             padding-top:20px;
             margin-bottom:40px;
             //display:flex;
             .hotSellImg{
-                width:100%;
-                height:763px;
-
+                .pr_banner_bottom{
+                    .introduce{
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                    }
+                    img{
+                        width: 100%;
+                    }
+                }
                 .slider-decorator-0{
                     top: 761px;
                 }
@@ -215,7 +223,7 @@
                     width:35px;
                     height:44px;
                     position:absolute;
-                    top:310px;
+                    top:40%;
                     color:#fff;
                     &.pre  {
                         left:10px;

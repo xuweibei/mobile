@@ -3,7 +3,7 @@
  */
 import PropTypes from 'prop-types';
 import './ShopHomeIndex.less';
-import {Carousel} from 'antd-mobile';
+import {Carousel, WingBlank} from 'antd-mobile';
 
 const {appHistory} = Utils;
 
@@ -24,22 +24,22 @@ class ShopHomeIndex extends React.PureComponent {
                     <div style={{background: shopModelArr.content.bg_color}} className="shopHomeBanner">
                         {
                             (shopModelArr.content && shopModelArr.content.banner && shopModelArr.content.banner.length > 0) ? (
-                                <Carousel
-                                    className="my-carousel"
-                                    vertical
-                                    dots={false}
-                                    dragging={false}
-                                    swiping={false}
-                                    autoplay
-                                    infinite
-                                    speed={2000}
-                                    autoplayInterval={3000}
-                                    resetAutoplay={false}
-                                >
-                                    {
-                                        shopModelArr.content.banner.map(item => <img key={item.ix} src={item.url} title="693"/>)
-                                    }
-                                </Carousel>
+                                <WingBlank>
+                                    <Carousel
+                                        className="my-carousel"
+                                        autoplay
+                                        infinite
+                                        speed={2000}
+                                    >
+                                        {
+                                            shopModelArr.content.banner.map(item => (
+                                                <div key={item} style={{height: '475px'}}>
+                                                    <img key={item.ix} src={item.url} title="693"/>
+                                                </div>
+                                            ))
+                                        }
+                                    </Carousel>
+                                </WingBlank>
                             ) : <img title="132"/>
                         }
                     </div>
