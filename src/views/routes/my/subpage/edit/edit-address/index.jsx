@@ -155,19 +155,21 @@ class BasicInput extends BaseComponent {
                 <AppNavBar title="地址管理"/>
                 <form style={{height: height}} className="location-list">
                     <List>
-                        {
-                            getFieldDecorator('account', {
-                                initialValue: addressArr.linkname
-                                // validateTrigger: 'onSubmit'//校验值的时机
-                            })(
-                                <GeisInputItem
-                                    type="nonSpace"
-                                    clear
-                                    placeholder="请输入您的收件人姓名"
-                                    isStyle
-                                />
-                            )
-                        }
+                        <div className="consignee">
+                            {
+                                getFieldDecorator('account', {
+                                    initialValue: addressArr.linkname
+                                    // validateTrigger: 'onSubmit'//校验值的时机
+                                })(
+                                    <GeisInputItem
+                                        type="nonSpace"
+                                        clear
+                                        placeholder="请输入您的收件人姓名"
+                                        isStyle
+                                    />
+                                )
+                            }
+                        </div>
                         {/*<InputItem*/}
                         {/*    {...getFieldProps('account', {initialValue: addressArr.linkname})}*/}
                         {/*    clear*/}
