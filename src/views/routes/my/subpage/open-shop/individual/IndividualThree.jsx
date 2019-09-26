@@ -182,6 +182,24 @@ class IndividualThree extends BaseComponent {
                         flagArr: arr
                     };
                 });
+                if (res.data.pic_info && res.data.pic_info.status === 0) {
+                    if (res.data.reg_num && res.data.exp) {
+                        this.setState({
+                            shopLic: res.data.reg_num,
+                            shopLicExp: res.data.exp
+                        });
+                    }
+                    showInfo(Form.Success_Lic_Info);
+                } else if (res.data.pic_info && res.data.pic_info.status === 1) {
+                    if (ix === 2) {
+                        this.setState({
+                            file: [],
+                            shopLic: '',
+                            shopLicExp: ''
+                        });
+                    }
+                    showFail(Form.Fail_Lic_Info);
+                }
             }
         });
     }

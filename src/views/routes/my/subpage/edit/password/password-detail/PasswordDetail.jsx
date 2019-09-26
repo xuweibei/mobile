@@ -17,8 +17,9 @@ const getPass = { //获取验证码按钮的样式
     marginRight: '18px',
     color: '#de1212',
     border: 'none',
-    marginTop: '18px',
-    background: '#fff'
+    // marginTop: '18px',
+    background: '#fff',
+    lineHeight: '44px'
 };
 
 class passwordDetail extends BaseComponent {

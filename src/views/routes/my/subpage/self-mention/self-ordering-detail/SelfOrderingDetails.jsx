@@ -259,10 +259,10 @@ class ReDetail extends BaseComponent {
                                                     <div className="goods-size">{items}</div>
                                                 ))}
                                             </div>
+                                            <div className="local">x{item.num}</div>
                                         </div>
                                         <div className="accounting">
                                             <div className="btn-keep">记账量：{item.deposit}</div>
-                                            <div className="local">x{item.num}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -371,26 +371,26 @@ class ReDetail extends BaseComponent {
                             </div>
                         </div>
                     )}
-                    <div className="cancel-order-box">
-                        {selfSufficiency.is_shoper === 0 && (selfSufficiency.status === '3' || selfSufficiency.status === '4' || selfSufficiency.status === '10') && (
-                            <div>
-                                <div className="cancel-order" onClick={() => this.deleteOrder()}>刪除订单</div>
-                                {selfSufficiency.status === '3' && (
-                                    <div className="immediate-evaluation" onClick={() => this.promptlyAssess(selfSufficiency.order_id)}>立即评价</div>
-                                )}
-                            </div>
-                        )}
-                        {selfSufficiency.is_shoper === 0 && (selfSufficiency.status === '1' || selfSufficiency.status === '3' || selfSufficiency.status === '4') && (
-                            <div>
-                                {selfSufficiency.return_name ? (
-                                    <div className="cancel-order" onClick={(e) => this.skipAfterSale(e, selfSufficiency.return_id)}>{selfSufficiency.return_name}</div>
-                                ) : (
-                                    <div className="cancel-order" onClick={(e) => this.serviceRefund(e, selfSufficiency.order_id)}>申请售后</div>
-                                )
-                                }
-                            </div>
-                        )}
-                    </div>
+                </div>
+                <div className="cancel-order-box">
+                    {selfSufficiency.is_shoper === 0 && (selfSufficiency.status === '3' || selfSufficiency.status === '4' || selfSufficiency.status === '10') && (
+                        <div className="assessment">
+                            <div className="cancel-order" onClick={() => this.deleteOrder()}>刪除订单</div>
+                            {selfSufficiency.status === '3' && (
+                                <div className="immediate-evaluation" onClick={() => this.promptlyAssess(selfSufficiency.order_id)}>立即评价</div>
+                            )}
+                        </div>
+                    )}
+                    {selfSufficiency.is_shoper === 0 && (selfSufficiency.status === '1' || selfSufficiency.status === '3' || selfSufficiency.status === '4') && (
+                        <div>
+                            {selfSufficiency.return_name ? (
+                                <div className="cancel-order" onClick={(e) => this.skipAfterSale(e, selfSufficiency.return_id)}>{selfSufficiency.return_name}</div>
+                            ) : (
+                                <div className="cancel-order" onClick={(e) => this.serviceRefund(e, selfSufficiency.order_id)}>申请售后</div>
+                            )
+                            }
+                        </div>
+                    )}
                 </div>
             </div>
         );
