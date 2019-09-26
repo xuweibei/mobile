@@ -425,7 +425,7 @@ class IndividualFour extends BaseComponent {
                                     <InputItem
                                         clear
                                         placeholder="请输入手机号码"
-                                        maxLength={11}
+                                        type="phone"
                                     >银行预留手机号
                                     </InputItem>
                                 )

@@ -15,6 +15,7 @@ class GeisInputItem extends React.PureComponent {
         showPass: PropTypes.bool, //是否显示密码输入框
         itemTitle: PropTypes.string,     //inputItem的标题
         clear: PropTypes.bool,   //是否可清除
+        itemStyle: PropTypes.element,
         maxLength: PropTypes.number,  //inputItem的最大长度
         onChange: PropTypes.func     //表单的onChange事件
     };
@@ -29,13 +30,16 @@ class GeisInputItem extends React.PureComponent {
         itemTitle: '',
         maxLength: 30,
         onChange() {},
-        type: ''
+        type: '',
+        itemStyle: null
     };
 
-
-    state = {
-        inputValue: ''
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            inputValue: ''
+        };
+    }
 
     componentWillReceiveProps(nextProps) {
         const {value} = nextProps;
@@ -66,15 +70,15 @@ class GeisInputItem extends React.PureComponent {
         if (!reg.get(type).test(e) && e !== '') return;
         const {onChange} = this.props;
         if (onChange) {
+            onChange(e);
             this.setState({
                 inputValue: e
             });
-            onChange(e);
         }
     };
 
     render() {
-        const {clear, placeholder, editable, itemTitle, maxLength, showPass, isStyle} = this.props;
+        const {clear, placeholder, editable, itemTitle, maxLength, showPass, isStyle, itemStyle} = this.props;
         const {inputValue} = this.state;
         return (
             <InputItem
@@ -86,7 +90,7 @@ class GeisInputItem extends React.PureComponent {
                 onChange={this.itemChange}
                 maxLength={maxLength}
                 {...isStyle && {className: 'add-input'}}
-            >{itemTitle}
+            >{itemTitle}{itemStyle}
             </InputItem>
         );
     }

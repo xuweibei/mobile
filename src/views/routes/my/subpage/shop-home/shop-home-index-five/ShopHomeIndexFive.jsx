@@ -133,8 +133,8 @@ class ShopHomeIndexFive extends React.PureComponent {
                                 <div className="popular-two-left-top">
                                     <div>
                                         <div className="inner">
-                                            <span>dsfdsdf</span>
-                                            <span>fgdsfg</span>
+                                            <span>The Winter</span>
+                                            <span>冬季热销</span>
                                         </div>
                                     </div>
                                     <img onClick={() => this.goToGoods(shopModelArr.content.sort2_pr3_id)} src={shopModelArr.picurl[7]} alt=""/>
