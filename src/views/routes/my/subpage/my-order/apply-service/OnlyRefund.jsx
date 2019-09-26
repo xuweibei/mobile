@@ -173,10 +173,8 @@ class applyService extends BaseComponent {
                             showInfo(Feedback.Apply_Success);
                             if (down === '1') { //线下订单申请
                                 if (returnType === '1') {
-                                    alert(1);
                                     appHistory.go(-1);
                                 } else {
-                                    alert(2);
                                     appHistory.go(-2);
                                 }
                                 setTimeout(() => {
