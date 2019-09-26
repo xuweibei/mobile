@@ -139,7 +139,7 @@ class BasicInput extends BaseComponent {
                         if (res.status === 0) {
                             showSuccess(Feedback.Del_Success);
                             getAddress();
-                            appHistory.push('/address');
+                            appHistory.goBack();
                         }
                     });
             }]

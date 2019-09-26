@@ -89,7 +89,9 @@ class passwordDetail extends BaseComponent {
                                     });
                                 } else {
                                     this.setState({
-                                        uid: res.data[0].no
+                                        uid: res.data[0].no,
+                                        phoneShow: false,
+                                        passShow: true
                                     });
                                 }
                             }

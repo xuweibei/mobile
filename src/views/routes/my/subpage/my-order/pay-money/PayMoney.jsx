@@ -272,7 +272,7 @@ class PayMoney extends BaseComponent {
             this.fetch(urlCfg.campay, {method: 'post', data: {order_no: !listArr.order ? new Array(id) : id, pwd, money: listArr.all_price || money}})
                 .subscribe(res => {
                     if (res.status === 0) {
-                        appHistory.replace(`/paymentCompleted?&deposit=${res.data.capital}&id=${res.data.id}&allPrice=${res.data.total_fee}&types=${selectIndex}&if_express=${res.data.if_express}&batch=${res.data.id && (res.data.id ? 0 : 1)}`);
+                        appHistory.replace(`/paymentCompleted?&deposit=${res.data.capital}&id=${res.data.id}&allPrice=${res.data.total_fee}&types=${selectIndex}&if_express=${res.data.if_express}&batch=${res.data.id ? '0' : '1'}`);
                     }
                 });
         });
