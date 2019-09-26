@@ -281,10 +281,10 @@ class ListDetails extends BaseComponent {
                                                             <div className="sku-left">
                                                                 {item.values_name.map(value => <div className="goods-size">{value}</div>)}
                                                             </div>
+                                                            <div className="local">x{item.num}</div>
                                                         </div>
                                                         <div className="accounting">
                                                             <div className="btn-keep">记账量：{item.deposit}</div>
-                                                            <div className="local">x{item.num}</div>
                                                         </div>
                                                         {   //订单为待评价的时候
                                                             canInfo.is_shoper === 0 &&  (canInfo.status === '3' || canInfo.status === '4') && <div className="after-service" onClick={(ev) => this.goToIm(ev)}>申请售后</div>

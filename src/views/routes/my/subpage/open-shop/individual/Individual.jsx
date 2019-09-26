@@ -435,7 +435,7 @@ class Individual extends BaseComponent {
                                         ],
                                         validateTrigger: 'onSubmit'
                                     })(
-                                        <div>
+                                        <div className="region-select">
                                             <Region
                                                 provinceId={provinceId}
                                                 cityId={cityId}

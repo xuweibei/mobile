@@ -71,6 +71,8 @@ export default class Recommender extends BaseComponent {
                 <AppNavBar title="确认推荐人"/>
                 <div style={{height: height}} className="recommender-box">
                     <List>
+                        <div className="survey-icon icon">1.扫码确认</div>
+                        <div className="manual">2.手动输入确认</div>
                         <InputItem
                             clear
                             type="number"

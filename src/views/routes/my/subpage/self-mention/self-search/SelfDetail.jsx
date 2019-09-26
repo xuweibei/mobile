@@ -203,7 +203,7 @@ class ReDetail extends BaseComponent {
                         {/*等待使用*/}
                         {(item.status === '1' && item.return_status === '0') && (
                             <div className="buttons">
-                                <div className="evaluate-button" onClick={() => this.serviceRefund(item.id)}>退款</div>
+                                <div onClick={() => this.serviceRefund(item.id)}>退款</div>
                                 <div className="evaluate-button" onClick={() => this.skipSelf(item.id)}>立即使用</div>
                             </div>
                         )}
