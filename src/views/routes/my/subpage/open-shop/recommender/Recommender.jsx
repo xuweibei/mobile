@@ -15,7 +15,7 @@ export default class Recommender extends BaseComponent {
     }
 
     state = {
-        height: document.documentElement.clientHeight - (window.isWX ? window.rem * 6.18 : window.rem * 6.3), //判断是否使用微信登入
+        height: document.documentElement.clientHeight - (window.isWX ? window.rem * null : window.rem * 1.08), //判断是否使用微信登入
         UID: '',
         phone: '',
         verification: false

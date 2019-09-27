@@ -1,9 +1,13 @@
 @import "~style";
 .pay-money {
 
-    .navbar {
-        .nav-right .icon-right:before {
-            content: '\e63d';
+    .wrapTabNav {
+        .navbar {
+            .blackNav-right {
+                .icon-right:before {
+                    content: '\E675';
+                }
+            }
         }
     }
 
@@ -65,17 +69,20 @@
                 .hairline('bottom',#ededed)!important;
                 .pm-left {
                     margin-right: 39px;
-                    .we-chat {
+                    .balance-cam, .we-chat, .alipay {
                         width: 60px;
                         height: 60px;
                         background-size: 1950px!important;
-                        background: url("../../../../../../assets/images/CSS-Sprites.png") -600px -300px no-repeat;
+                    }
+                    .balance-cam {
+                        margin-top: 6px;
+                        background: url("../../../../../../assets/images/CSS-Sprites.jpg") -1650px -300px no-repeat;
+                    }
+                    .we-chat {
+                        background: url("../../../../../../assets/images/CSS-Sprites.jpg") -600px -300px no-repeat;
                     }
                     .alipay{
-                        width: 60px;
-                        height: 60px;
-                        background-size: 1950px!important;
-                        background: url("../../../../../../assets/images/CSS-Sprites.png") -450px -300px no-repeat;
+                        background: url("../../../../../../assets/images/CSS-Sprites.jpg") -450px -300px no-repeat;
                     }
                 }
                 .pm-center {

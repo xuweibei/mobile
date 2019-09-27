@@ -35,7 +35,7 @@ class ShopHomeIndexThird extends React.PureComponent {
                                         {
                                             content.banner.length > 0 ? content.banner.map(item => (
                                                 <div key={item} style={{height: '248px'}}>
-                                                    <img src={item.url} onClick={() => this.clickOnShow('two')}/>
+                                                    <img src={item.url}/>
                                                 </div>
                                             )) : null
                                         }
@@ -45,12 +45,12 @@ class ShopHomeIndexThird extends React.PureComponent {
                         }
                     </div>
                     <div className="compile-box">
-                        <div className="title-bar" onClick={() => this.clickOnShow('three')}>
+                        <div className="title-bar">
                             {/* <p className={(content && content.sort1_title1) ? 'time' : 'time no-edit-model'}>{content && (content.sort1_title1 || '2018/5/20')}</p> */}
                             <p className={(content && content.sort1_title1) ? 'headline' : 'hot no-edit-model'}>{content && (content.sort1_title1 || 'POPULAR COMMODITY')}</p>
                             <p className={(content && content.sort1_title2) ? 'fiery' : 'fiery no-edit-model'}>{content && (content.sort1_title2 || '热门商品')}</p>
                         </div>
-                        <div className="hot-box" onClick={() => this.clickOnShow('four')}>
+                        <div className="hot-box">
                             <div className={(picurl && content && picurl[content.sort1_pr1_ix] && content.sort1_pr1_title1 && content.sort1_pr1_title2 && content.sort1_pr1_title3) ? 'hot' : 'hot no-edit-model'}>
                                 <div className="commodity-img">
                                     <img src={picurl && picurl[content.sort1_pr1_ix]} alt=""/>
@@ -78,11 +78,11 @@ class ShopHomeIndexThird extends React.PureComponent {
                                 </div>
                             </div>
                         </div>
-                        <div className={(content && content.sort2_title1 && content.sort2_title2) ? 'title-bar' : 'title-bar no-edit-model'} onClick={() => this.clickOnShow('six')}>
+                        <div className={(content && content.sort2_title1 && content.sort2_title2) ? 'title-bar' : 'title-bar no-edit-model'}>
                             <p className="headline">{content && (content.sort2_title1 || '热销榜单')}</p>
                             <p className="fiery">{content && (content.sort2_title2 || 'SUPER HOT SALE')}</p>
                         </div>
-                        <div className="sell-box" onClick={() => this.clickOnShow('five')}>
+                        <div className="sell-box">
                             <div className={(picurl && content && picurl[content.sort2_pr1_ix] && content.sort2_pr1_title1 && content.sort2_pr1_title2 && content.sort2_pr1_title3) ? 'sell' : 'sell no-edit-model'}>
                                 <div>
                                     <img src={picurl && picurl[content.sort2_pr1_ix]} alt=""/>
@@ -110,7 +110,7 @@ class ShopHomeIndexThird extends React.PureComponent {
                                 </div>
                             </div>
                         </div>
-                        <div className="hot-box" onClick={() => this.clickOnShow('five-extra')}>
+                        <div className="hot-box">
                             <div className={(picurl && content && picurl[content.sort2_pr3_ix] && content.sort2_pr1_title1 && content.sort2_pr1_title2 && content.sort2_pr1_title3) ? 'hot' : 'sell-one no-edit-model'}>
                                 <div className="commodity-img">
                                     <img src={picurl && picurl[content.sort2_pr3_ix]} alt=""/>
@@ -138,7 +138,7 @@ class ShopHomeIndexThird extends React.PureComponent {
                                 </div>
                             </div>
                         </div>
-                        <div className="sell-two-box" onClick={() => this.clickOnShow('seven')}>
+                        <div className="sell-two-box">
                             <div className={(picurl && content && picurl[content.sort2_pr5_ix] && content.sort2_pr5_title1 && content.sort2_pr5_title2 && content.sort2_pr5_title3) ? 'sell-two' : 'sell-two no-edit-model'}>
                                 <div>
                                     <img src={picurl && picurl[content.sort2_pr5_ix]} alt=""/>
