@@ -24,13 +24,21 @@ class Region extends BaseComponent {
     }
 
     componentDidMount() {
-        const {provinceValue, cityValue, countyValue} = this.props;
+        const {provinceValue, cityValue, countyValue, provinceId, cityId} = this.props;
         this.getProvince();
         this.setState({
             provinceValue: provinceValue || '请选择所在地区',
             cityValue: cityValue || '请选择所在地区',
             countyValue: countyValue || '请选择所在地区'
-        }, () => console.log(this.state.provinceValue));
+        });
+        //读取市数组
+        if (provinceId) {
+            this.getCity(provinceId);
+        }
+        //读取县数组
+        if (cityId) {
+            this.getCounty(cityId);
+        }
     }
 
     //判断父级是否更新
@@ -55,6 +63,7 @@ class Region extends BaseComponent {
         }
     }
 
+    //省
     getProvince() {
         const {provinceId} = this.props;
         this.fetch(urlCfg.selectAddress, {data: {code: 0}})
@@ -102,6 +111,7 @@ class Region extends BaseComponent {
         this.getCity(e[0]);
     };
 
+    //市
     getCity(cityCode) {
         const {cityId} = this.props;
         this.fetch(urlCfg.selectAddress, {data: {code: cityCode}})
@@ -153,6 +163,7 @@ class Region extends BaseComponent {
         this.getCounty(e[0]);
     };
 
+    //县
     getCounty(countyCode) {
         const {countyId} = this.props;
         this.fetch(urlCfg.selectAddress, {data: {code: countyCode}})
