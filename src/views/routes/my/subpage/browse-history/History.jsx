@@ -75,31 +75,23 @@ class History extends BaseComponent {
         const {page} = this.state;
         const sectionIDs = [];
         const rowIDs = [];
-        const arr = [];
         res.data.forEach((item, index) => {
             //判断后一页是否有和前一页同一天的数据
             if (item.day.indexOf(this.sectionIDs)) {
-                item.data.map(v => {
-                    v.select = false;
-                    arr.push(v);
-                });
                 rowIDs[this.rowIDs.length - 1] = [{
                     [`${item.day}`]: [rowIDs[this.rowIDs.length - 1][`${item.day}`], ...item.data]
                 }];
+                this.stackData = [...this.stackData, ...item.data];
             } else {
                 sectionIDs[index] = item.day;
-                item.data.map(v => {
-                    v.select = false;
-                    arr.push(v);
-                });
                 rowIDs[index] = [{
                     [`${item.day}`]: [...item.data]
                 }];
+                this.stackData = [...this.stackData, ...item.data];
             }
         });
         this.sectionIDs = [...this.sectionIDs, ...sectionIDs];
         this.rowIDs = [...this.rowIDs, ...rowIDs];
-        this.stackData = [...this.stackData, ...arr];
         console.log('handleResult', this.sectionIDs, this.rowIDs, this.stackData);
         this.setState((prevState) => ({
             data: prevState.data.cloneWithRowsAndSections(this.dataBlobs, this.sectionIDs, this.rowIDs),
@@ -177,7 +169,7 @@ class History extends BaseComponent {
                                 <span className="goods-row-right-city">{item.city[0]}</span>
                             </div>
                             <div className="goods-row-right-second">
-                                <span>{item.order_num}人付款</span>
+                                <span>{item.num_sold}人付款</span>
                                 {
                                     !isEdit
                                         ? <span className="goods-row-right-original">￥{item.price_original}</span>
@@ -244,7 +236,6 @@ class History extends BaseComponent {
 
     //渲染店铺评分
     renderStar = (num) => {
-        console.log('renderStar', num);
         const slot = num.split('.')[1];
         const value = Number(num);
         const arr = [];
@@ -280,14 +271,16 @@ class History extends BaseComponent {
     };
 
     //点击顶部导航右侧按钮
-    changeNavRight = () => {
-        this.setState(prevState => ({
-            isEdit: !prevState.isEdit
-        }));
+    changeNavRight = (isEdit) => {
+        this.setState({
+            isEdit
+        }, () => {
+            console.log('点击顶部导航右侧按钮', this.state.isEdit);
+        });
     };
 
     //点击每行复选框
-    onChangeCheck =  (item) => {
+    onChangeCheck = (item) => {
         if (this.checkedIds.includes(item.id)) {
             this.stackData.map(v => {
                 if (v.id === item.id) {
@@ -299,7 +292,7 @@ class History extends BaseComponent {
                 checkedIds: newArr
             }, () => {
                 this.checkedIds = newArr;
-                console.log('移除选中id', this.state.checkedIds);
+                console.log('移除选中id', this.state.checkedIds, this.stackData);
             });
         } else {
             this.stackData.map(v => {
@@ -311,7 +304,7 @@ class History extends BaseComponent {
             this.setState({
                 checkedIds: this.checkedIds
             }, () => {
-                console.log('添加选中id', this.state.checkedIds);
+                console.log('添加选中id', this.state.checkedIds, this.stackData);
             });
         }
     };
@@ -379,33 +372,42 @@ class History extends BaseComponent {
     };
 
     render() {
-        const {data, tabKey, isEdit} = this.state;
+        const {data, tabKey, isEdit, checkedIds} = this.state;
         //滚动容器高度
         const height = document.documentElement.clientHeight - (window.isWX ? window.rem * 1.07 : window.rem * 1.95);
         //每行渲染样式
         const row = v => (
-            isEdit
-                ? (
-                    v.map((item) => (
-                        <span key={item.id} className="history-list-show">
-                            <div className="history-list-show-select">
-                                <span
-                                    className={item.select ? 'icon select' : 'icon unselect'}
-                                    onClick={() => this.onChangeCheck(item)}
-                                />
-                            </div>
-                            {this.renderListItem(item)}
-                        </span>
-                    ))
-
-                )
-                : (
-                    v.map((item) => (
-                        <span key={item.id} className="history-list-hide">
-                            {this.renderListItem(item)}
-                        </span>
-                    ))
-                )
+            v.map((item) => (
+                <span key={item.id} className={isEdit ? 'history-list-show' : 'history-list-hide'}>
+                    {isEdit && (
+                        <div className="history-list-show-select">
+                            <span
+                                className={checkedIds.includes(item.id) ? 'icon select' : 'icon unselect'}
+                                onClick={() => this.onChangeCheck(item)}
+                            />
+                        </div>
+                    )}
+                    {this.renderListItem(item)}
+                </span>
+            ))
+        );
+        //渲染listView
+        const list = (
+            <ListView
+                dataSource={data}
+                style={{height}}
+                initialListSize={5}
+                renderSectionHeader={sectionData => (
+                    <div className="history-list-section">
+                        {confirmDate(sectionData)}
+                    </div>
+                )}
+                pageSize={5}
+                renderRow={row}
+                onEndReachedThreshold={50}
+                onEndReached={this.onEndReached}
+                renderFooter={this.renderFooter}
+            />
         );
         return (
             <div className="browsing-history">
@@ -413,7 +415,7 @@ class History extends BaseComponent {
                     <AppNavBar
                         title="浏览历史"
                         goBackModal={this.goBackModal}
-                        {...data && data.getRowCount() > 0
+                        {...(data && data.getRowCount() > 0)
                             ? {
                                 rightEdit: true,
                                 isEdit,
@@ -430,22 +432,12 @@ class History extends BaseComponent {
                         onChange={this.onTabChange}
                         swipeable={false}
                     >
-                        {data && data.getRowCount() > 0 ? (
-                            <ListView
-                                dataSource={data}
-                                style={{height}}
-                                initialListSize={5}
-                                renderSectionHeader={sectionData => (
-                                    <div className="history-list-section">
-                                        {confirmDate(sectionData)}
-                                    </div>
-                                )}
-                                pageSize={5}
-                                renderRow={row}
-                                onEndReachedThreshold={50}
-                                onEndReached={this.onEndReached}
-                                renderFooter={this.renderFooter}
-                            />
+                        {(data && data.getRowCount() > 0) ? (
+                            // listView滚动后renderRow里的状态不会刷新，只能直接重新渲染listView
+                            <React.Fragment>
+                                {isEdit && list}
+                                {!isEdit && list}
+                            </React.Fragment>
                         ) : (
                             <Nothing
                                 title=""

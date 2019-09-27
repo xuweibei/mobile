@@ -106,7 +106,7 @@ export default class importSum extends BaseComponent {
 
     //微信支付
     wxPay = () => {
-        alert('微信支付');
+        // alert('微信支付');
         const {money, uid} = this.state;
         this.fetch(urlCfg.userpay, {method: 'post', data: {no: uid, money, flag: 1}})
             .subscribe(res => {
@@ -132,7 +132,7 @@ export default class importSum extends BaseComponent {
 
     //支付宝支付
     alipay = () => {
-        alert('支付宝支付');
+        // alert('支付宝支付');
         const {money, uid} = this.state;
         this.fetch(urlCfg.userpay, {method: 'post', data: {no: uid, money, flag: 0}})
             .subscribe(res => {

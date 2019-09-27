@@ -1,12 +1,32 @@
 import {List} from 'antd-mobile';
+import {connect} from 'react-redux';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import BaseComponent from '../../../../../../components/base/BaseComponent';
 import './UserAgreementDetail.less';
+import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAction';
 
 const Item = List.Item;
 const {native} = Utils;
+const {urlCfg} = Configs;
 
-export default class UserAgreementDetail extends BaseComponent {
+class UserAgreementDetail extends BaseComponent {
+    //协议弹窗
+    getProtocol = (num) => {
+        const {showConfirm} = this.props;
+        this.fetch(urlCfg.allProtocolInfo, {method: 'post', data: {type: num}})
+            .subscribe(res => {
+                if (res && res.status === 0) {
+                    showConfirm({
+                        class: 'aaa',
+                        title: '协议',
+                        message: res.data.card_content,
+                        cfmBtnTexts: ['取消', '确定']
+                        // callbacks: [null, () => {}]
+                    });
+                }
+            });
+    }
+
     render() {
         return (
             <div data-component="UserAgreementDetail" data-role="page" className="UserAgreementDetail">
@@ -17,10 +37,10 @@ export default class UserAgreementDetail extends BaseComponent {
                 <List>
                     <div className="about-information">
                         <Item arrow="horizontal" onClick={() => {}}>版权信息</Item>
-                        <Item arrow="horizontal" onClick={() => {}}>软件许可使用协议</Item>
-                        <Item arrow="horizontal" onClick={() => {}}>特别说明</Item>
-                        <Item arrow="horizontal" onClick={() => {}}>平台服务协议</Item>
-                        <Item arrow="horizontal" onClick={() => {}}>隐私权政策</Item>
+                        <Item arrow="horizontal" onClick={() => this.getProtocol(1)}>软件许可使用协议</Item>
+                        <Item arrow="horizontal" onClick={() => this.getProtocol(2)}>特别说明</Item>
+                        <Item arrow="horizontal" onClick={() => this.getProtocol(3)}>平台服务协议</Item>
+                        <Item arrow="horizontal" onClick={() => this.getProtocol(4)}>隐私权政策</Item>
                         <Item arrow="horizontal" onClick={() => {}}>证照信息</Item>
                     </div>
                 </List>
@@ -33,3 +53,9 @@ export default class UserAgreementDetail extends BaseComponent {
         );
     }
 }
+
+const mapToDispatchProps = {
+    showConfirm: actionCreator.showConfirm
+};
+
+export default connect(null, mapToDispatchProps)(UserAgreementDetail);

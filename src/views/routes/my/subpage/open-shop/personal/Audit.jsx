@@ -9,10 +9,8 @@ const hybrid = process.env.NATIVE;
 export default class Audit extends BaseComponent {
     emptyGoTo = () => {
         if (hybrid) {
-            alert(1);
             native('goBack');
         } else {
-            alert(2);
             appHistory.replace('/my');
         }
     }

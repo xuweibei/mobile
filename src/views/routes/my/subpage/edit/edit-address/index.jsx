@@ -1,11 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {createForm} from 'rc-form';
-import {List, InputItem, Checkbox, Button} from 'antd-mobile';
+import {List, InputItem, Checkbox, Button, TextareaItem} from 'antd-mobile';
 import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAction';
 import AppNavBar from '../../../../../common/navbar/NavBar';
-import GeisInputItem from '../../../../../common/form/input/GeisInputItem';
-import GeisTextareaItem from '../../../../../common/form/textArea/GeisTextareaItem';
 import Region from '../../../../../common/region/Region';
 import {myActionCreator} from '../../../actions/index';
 import './index.less';
@@ -139,7 +137,7 @@ class BasicInput extends BaseComponent {
                         if (res.status === 0) {
                             showSuccess(Feedback.Del_Success);
                             getAddress();
-                            appHistory.push('/address');
+                            appHistory.goBack();
                         }
                     });
             }]
@@ -147,35 +145,24 @@ class BasicInput extends BaseComponent {
     };
 
     render() {
-        const {getFieldProps} = this.props.form;
-        const {getFieldDecorator} = this.props.form;//getFieldDecorator用于和表单进行双向绑定
+        const {getFieldProps, getFieldError} = this.props.form;
         const {province, urban, county, addressArr, defaultState, editStatus, addressStatus, height} = this.state;
+        console.log(province, urban, county, addressArr.province_id, addressArr.city_id, editStatus);
         return (
             <div data-component="add-address" data-role="page" className="add-address">
                 <AppNavBar title="地址管理"/>
                 <form style={{height: height}} className="location-list">
                     <List>
-                        {
-                            getFieldDecorator('account', {
-                                initialValue: addressArr.linkname
-                                // validateTrigger: 'onSubmit'//校验值的时机
-                            })(
-                                <GeisInputItem
-                                    type="nonSpace"
-                                    clear
-                                    placeholder="请输入您的收件人姓名"
-                                    isStyle
-                                />
-                            )
-                        }
-                        {/*<InputItem*/}
-                        {/*    {...getFieldProps('account', {initialValue: addressArr.linkname})}*/}
-                        {/*    clear*/}
-                        {/*    error={!!getFieldError('account')}*/}
-                        {/*    onErrorClick={() => {}}*/}
-                        {/*    placeholder="请输入您的收件人姓名"*/}
-                        {/*    className="add-input"*/}
-                        {/*/>*/}
+                        <div className="consignee">
+                            <InputItem
+                                {...getFieldProps('account', {initialValue: addressArr.linkname})}
+                                clear
+                                error={!!getFieldError('account')}
+                                onErrorClick={() => {}}
+                                placeholder="请输入您的收件人姓名"
+                                className="add-input"
+                            />
+                        </div>
                         <InputItem
                             className="add-input"
                             {...getFieldProps('phone', {initialValue: addressArr.linktel})}
@@ -210,23 +197,12 @@ class BasicInput extends BaseComponent {
                                 }
                             </InputItem>
                         </div>
-                        {
-                            getFieldDecorator('addressAll', {
-                                initialValue: addressArr.address
-                                // validateTrigger: 'onSubmit'//校验值的时机
-                            })(
-                                <GeisTextareaItem
-                                    type="nonSpace"
-                                    placeholder="请输入详细地址"
-                                />
-                            )
-                        }
-                        {/*<TextareaItem*/}
-                        {/*    {...getFieldProps('addressAll', {initialValue: addressArr.address})}*/}
-                        {/*    placeholder="请输入详细地址"*/}
-                        {/*    // autoHeight*/}
-                        {/*    count={100}*/}
-                        {/*/>*/}
+                        <TextareaItem
+                            {...getFieldProps('addressAll', {initialValue: addressArr.address})}
+                            placeholder="请输入详细地址"
+                            // autoHeight
+                            count={100}
+                        />
                         <div className="default">
                             <CheckboxItem onChange={(data) => this.onChangeDefault(data)} checked={defaultState}>
                                 {'设为默认地址'}

@@ -75,7 +75,7 @@ export default class InspectOrder extends BaseComponent {
         const {list, navColor} = this.state;
         return (
             <div className="inspect-order">
-                <AppNavBar title="核销订单" goToSearch={this.goToSearch} backgroundColor={navColor} rightShow redBackground search/>
+                <AppNavBar title="核销订单" nativeGoBack goToSearch={this.goToSearch} backgroundColor={navColor} rightShow redBackground search/>
                 <div className="shortcut">
                     <span>快捷核销</span>
                     <span onClick={this.sureSaoCode} className="icon icon-shortcut"/>

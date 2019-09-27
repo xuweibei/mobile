@@ -488,7 +488,7 @@ class PersonalTwo extends BaseComponent {
                                                      {
                                                          file3.length === 0 && (
                                                              <li className="imgAdd-button" onClick={() => this.addPictrue('handle')}>
-                                                                 <span className="imgAdd-icon">+</span>
+                                                                 <span className="imgAdd-icon">1+</span>
                                                              </li>
                                                          )
                                                      }
