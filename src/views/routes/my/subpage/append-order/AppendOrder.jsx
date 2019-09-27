@@ -45,13 +45,14 @@ class appendOrder extends BaseComponent {
     };
 
     componentDidMount() {
-        const {setOrder, setIds, arr} = this.props;
+        const {setOrder, setIds} = this.props;
+        const timer = decodeURI(getUrlParam('time', encodeURI(this.props.location.search)));
         const that = this;
         const obj = {'': ''};
         if (hybrid) {
-            if (arr.length > 0) {
-                that.getOrderState();
-            } else { //这里的情况是，原生那边跳转的时候，需要处理一些问题，所以就购物车过来的时候，存数据，这边取数据
+            if (timer === 'null') { //非购物车进入的时候
+                this.getOrderState();
+            } else {
                 getShopCartInfo('getInfo', obj).then(res => {
                     setOrder(res.data.arr);
                     setIds(res.data.cartArr);
@@ -67,35 +68,33 @@ class appendOrder extends BaseComponent {
         const {setOrder, setIds, location} = this.props;
         const timerNext = decodeURI(getUrlParam('time', encodeURI(next.location.search)));
         const timer = decodeURI(getUrlParam('time', encodeURI(location.search)));
-        if (timerNext !== timer) {
-            if (hybrid) {
-                this.setState({
-                    shopInfo: [],
-                    addressInfo: {},
-                    goodsCount: 0,
-                    goods: [],
-                    idCard: '', //身份证
-                    total: 0, // 总价
-                    totalCount: 0, //商品总数量
-                    files: {},
-                    order: {}, //订单备注信息
-                    IDcard: [],
-                    date: now,
-                    self: true, //发票类型
-                    currentIndex: 0, //默认发票选中类型
-                    textInfo: '企业',
-                    invoiceStatus: false,  //发票弹框显示状态
-                    notAllow: true, //不支持提交状态
-                    invoice: {},
-                    invoiceIndex: ''
-                }, () => {
-                    getShopCartInfo('getInfo', {'': ''}).then(res => {
-                        setOrder(res.data.arr);
-                        setIds(res.data.cartArr);
-                        this.getOrderState();
-                    });//原生方法获取前面的redux
-                });
-            }
+        if (hybrid && timer && timerNext !== timer) {
+            this.setState({
+                shopInfo: [],
+                addressInfo: {},
+                goodsCount: 0,
+                goods: [],
+                idCard: '', //身份证
+                total: 0, // 总价
+                totalCount: 0, //商品总数量
+                files: {},
+                order: {}, //订单备注信息
+                IDcard: [],
+                date: now,
+                self: true, //发票类型
+                currentIndex: 0, //默认发票选中类型
+                textInfo: '企业',
+                invoiceStatus: false,  //发票弹框显示状态
+                notAllow: true, //不支持提交状态
+                invoice: {},
+                invoiceIndex: ''
+            }, () => {
+                getShopCartInfo('getInfo', {'': ''}).then(res => {
+                    setOrder(res.data.arr);
+                    setIds(res.data.cartArr);
+                    this.getOrderState();
+                });//原生方法获取前面的redux
+            });
         }
     }
 

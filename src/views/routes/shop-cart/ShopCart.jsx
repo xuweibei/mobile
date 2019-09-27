@@ -13,7 +13,7 @@ import Sku from '../../common/sku/Sku';
 import './shopCart.less';
 
 const {urlCfg} = Configs;
-const {appHistory, showInfo, showSuccess, native, systemApi: {setValue}} = Utils;
+const {appHistory, showInfo, showSuccess, native, systemApi: {setValue}, getUrlParam} = Utils;
 const {MESSAGE: {Form, Feedback}, FIELD} = Constants;
 
 const hybird = process.env.NATIVE;
@@ -49,6 +49,14 @@ class ShopCart extends BaseComponent {
     componentDidMount() {
         const {showMenu} = this.props;
         showMenu(false);
+    }
+
+    componentWillReceiveProps(next) {
+        const timerNext = decodeURI(getUrlParam('time', encodeURI(next.location.search)));
+        const timer = decodeURI(getUrlParam('time', encodeURI(this.props.location.search)));
+        if (timer !== timerNext) {
+            this.changeCart(this.state.currentIndex);
+        }
     }
 
     componentWillUnmount() {
@@ -299,6 +307,7 @@ class ShopCart extends BaseComponent {
             setIds(cartArr);
             if (hybird) { ////这里的情况是，原生那边跳转的时候，需要处理一些问题，所以就购物车过来的时候，存数据，这边取数据
                 const obj = {arr, cartArr};//储存redux
+                console.log(obj, '线上储存');
                 native('settlement', obj);//app点击结算的时候
             } else {
                 appHistory.push(`/appendorder?source=${1}`);

@@ -38,7 +38,6 @@ const listText = [
 ];
 
 const Item = Popover.Item;
-
 class GoodsDetail extends BaseComponent {
     state = {
         topSwithe: true,
@@ -106,13 +105,17 @@ class GoodsDetail extends BaseComponent {
 
     componentWillReceiveProps(nextProps, value) { //路由跳转时的判断，id有变化就请求
         if (hybrid) {
-            this.setState({
-                goodId: decodeURI(getUrlParam('id', encodeURI(nextProps.location.search))),
-                selectType: '',
-                ids: []
-            }, () => {
-                this.init();
-            });
+            const id = decodeURI(getUrlParam('id', encodeURI(nextProps.location.search)));
+            const {goodId} = this.state;
+            if (id !== goodId) {
+                this.setState({
+                    goodId: id,
+                    selectType: '',
+                    ids: []
+                }, () => {
+                    this.init();
+                });
+            }
         }
     }
 

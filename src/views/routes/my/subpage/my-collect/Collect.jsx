@@ -387,7 +387,7 @@ class Collect extends BaseComponent {
                             </div>
                             <div className="pay">
                                 <div>{item.order_num}人付款</div>
-                                <div className="dele">￥9999</div>
+                                <div className="dele">￥{item.price_original}</div>
                             </div>
                             <div className="shop-name">
                                 <div className="s-name">
@@ -409,13 +409,13 @@ class Collect extends BaseComponent {
                         <div className="shop-space ">
                             <p>{item.shop_name}</p>
                             <span className="Shop-Nr">人均消费</span>
-                            <span className="Shop-Nr wide">￥99</span>
+                            <span className="Shop-Nr wide">￥{item.consume_per}</span>
                         </div>
                         <div className="button">进店</div>
                     </div>
                     <div className="shop-goods">
                         {
-                            item.pr && item.pr.length && item.pr.map(data => (
+                            item.pr && item.pr.length ? item.pr.map(data => (
                                 <div className="item" key={data.title} onClick={() => this.shopGoods(data.id)}>
                                     <div className="image">
                                         <LazyLoad lazyInfo={{imgUrl: data.picpath, offset: -50, overflow: true}}/>
@@ -423,7 +423,7 @@ class Collect extends BaseComponent {
                                     </div>
                                     <p>{data.title}</p>
                                 </div>
-                            ))
+                            )):''
                         }
                     </div>
                 </div>

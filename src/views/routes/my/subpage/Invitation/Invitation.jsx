@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import {baseActionCreator as actionCreator} from '../../../../../redux/baseAction';
 import AppNavBar from '../../../../common/navbar/NavBar';
 import './Invitation.less';
+import {showInfo} from '../../../../../utils/mixin';
 
 const {urlCfg} = Configs;
 const {native, getUrlParam, TD} = Utils;
@@ -52,7 +53,11 @@ class Invitation extends BaseComponent {
     saveImg = () => {
         const {shareArr} = this.state;
         if (hybird) {
-            native('savePicCallback', {type: 2, imgUrl: shareArr});
+            if (shareArr) {
+                native('savePicCallback', {type: 2, imgUrl: shareArr});
+            } else {
+                showInfo('暂无图片可以保存');
+            }
         }
     }
 
@@ -110,11 +115,15 @@ class Invitation extends BaseComponent {
                 url: '',
                 imgUrl: shareArr
             };
-            native('showShare', obj).then(res => {
-                native('goH5', {'': ''});
-            }).catch(err => {
-                native('goH5', {'': ''});
-            });
+            if (shareArr) {
+                native('showShare', obj).then(res => {
+                    native('goH5', {'': ''});
+                }).catch(err => {
+                    native('goH5', {'': ''});
+                });
+            } else {
+                showInfo('暂无图片可以分享');
+            }
         }
     }
 

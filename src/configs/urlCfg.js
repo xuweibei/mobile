@@ -82,7 +82,7 @@ export const urlCfg = {
     findShop: href.apiPath + '/discover-gps', //发现周围商家
     findForShopName: href.apiPath + '/discover-search-mall', //搜索商家
     publishAssess: href.apiPath + '/my-order-appra', //发布评价
-    picSave: href.apiPath + '/pic-save-base', //上传图片
+    picSave: href.apiPath + '/pic-save-bases', //上传图片
     submitOrder: href.apiPath + '/submit-order-page', //提交订单界面
     shopCartOrder: href.apiPath + '/submit-order', //提交购物车和订单
     applicationForRefund: href.apiPath + '/refund-apply', //退款，退货退款
