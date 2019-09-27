@@ -372,6 +372,7 @@ class PersonalThree extends BaseComponent {
                     <div className="ID-photo">
                         <List style={{backgroundColor: 'white'}} className="picker-list">
                             <Picker
+                                cols={1}
                                 data={seasons}
                                 value={this.state.sValue}
                                 extra="请选择照片类型"

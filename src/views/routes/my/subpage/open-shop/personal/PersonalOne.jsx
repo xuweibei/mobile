@@ -50,13 +50,12 @@ class PersonalOne extends BaseComponent {
         closeTime: '',
         urlParams: '',
         editStatus: false,  //地区选择显示与否
-        updateAudit: '' //审核填过的信息
+        updateAudit: '', //审核填过的信息
+        addressStatus: ''
     };
 
     componentDidMount() {
-        const {that} = this.props;
         console.log('第一步');
-        console.log(that);
         this.getCategorys();
         this.getdoBusinessTime();
         this.getUpdateAudit();
@@ -89,7 +88,8 @@ class PersonalOne extends BaseComponent {
                     shopStatus: Number(res.data.type),
                     cshPhone: res.data.csh_phone,
                     linkName: res.data.linkName,
-                    phone: res.data.phone
+                    phone: res.data.phone,
+                    addressStatus: '1'
                 });
             }
         });
@@ -383,7 +383,7 @@ class PersonalOne extends BaseComponent {
         const {getFieldDecorator} = this.props.form;
         const steps = ['填写店铺信息', '填写开店人信息', '填写工商信息', '绑定银行卡'];
         const {
-            shopName, address, discount, linkName, cshPhone,
+            shopName, address, discount, linkName, cshPhone, addressStatus,
             category, cValue, text, date, oTValue, cTValue, openTime, closeTime,
             updateAudit, province, urban, county, shopStatus, phone, editStatus
         } = this.state;
@@ -449,19 +449,30 @@ class PersonalOne extends BaseComponent {
                                 })(
                                     <List.Item arrow="horizontal" className="area">
                                         <span>区域选择</span>
-                                        <Region
-                                            provinceId={updateAudit.province_id}
-                                            cityId={updateAudit.city_id}
-                                            // countyId={updateAudit.county_id}
-                                            provinceValue={province}
-                                            cityValue={urban}
-                                            countyValue={county}
-                                            onSetProvince={this.setProvince}
-                                            onSetCity={this.setCity}
-                                            onSetCounty={this.setCounty}
-                                            editStatus={editStatus}
-                                            editStatusChange={this.editStatusChange}
-                                        />
+                                        {
+                                            addressStatus === '1'
+                                                ? (
+                                                    <Region
+                                                        onSetProvince={this.setProvince}
+                                                        onSetCity={this.setCity}
+                                                        onSetCounty={this.setCounty}
+                                                        provinceValue={province}
+                                                        cityValue={urban}
+                                                        countyValue={county}
+                                                        provinceId={updateAudit.province_id}
+                                                        cityId={updateAudit.city_id}
+                                                        editStatus={editStatus}
+                                                        editStatusChange={this.editStatusChange}
+                                                    />
+                                                ) : (
+                                                    <Region
+                                                        onSetProvince={this.setProvince}
+                                                        onSetCity={this.setCity}
+                                                        onSetCounty={this.setCounty}
+                                                        add
+                                                    />
+                                                )
+                                        }
                                     </List.Item>
                                 )
                             }
