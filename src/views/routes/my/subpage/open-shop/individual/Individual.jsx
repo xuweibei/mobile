@@ -691,6 +691,8 @@ class Individual extends BaseComponent {
     goBack = () => {
         this.setState({
             editModal: ''
+        }, () => {
+            this.getUpdateAudit();
         });
     };
 

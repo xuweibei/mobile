@@ -554,6 +554,8 @@ class IndividualThree extends BaseComponent {
     goBack = () => {
         this.setState({
             editModal: ''
+        }, () => {
+            this.getUpdateAudit();
         });
     };
 
