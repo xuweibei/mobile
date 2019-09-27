@@ -423,7 +423,7 @@ class Collect extends BaseComponent {
                                     </div>
                                     <p>{data.title}</p>
                                 </div>
-                            )):''
+                            )) : ''
                         }
                     </div>
                 </div>
