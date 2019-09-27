@@ -1,7 +1,7 @@
 /**
  * 我要开店---个体页面
  * */
-import {List, InputItem, Picker, Radio, Modal, Flex, TextareaItem} from 'antd-mobile';
+import {List, InputItem, Picker, Modal, Flex, TextareaItem} from 'antd-mobile';
 import {createForm} from 'rc-form';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import IndividualTwo from './IndividualTwo';
@@ -14,7 +14,7 @@ import './Individual.less';
 const {urlCfg} = Configs;
 const {MESSAGE: {Form}} = Constants;
 const {showInfo, validator} = Utils;
-const RadioItem = Radio.RadioItem;
+// const RadioItem = Radio.RadioItem;
 const data = [
     {value: 1, label: '正式商户'},
     {value: 2, label: '体验商户'}
@@ -26,8 +26,8 @@ const datas = [
 class Individual extends BaseComponent {
     state = {
         editModal: '',
-        values: 2,
-        value: 2,
+        values: 1,
+        value: 1,
         discount: '', // 浮点型 (折扣率/true/1-9.5)
         shopName: '',  //字符串 (商店名称/true/1-100)
         address: '', //详细地址
@@ -94,6 +94,8 @@ class Individual extends BaseComponent {
         this.getCategorys();
         this.getdoBusinessTime();
         this.getUpdateAudit();
+        // this.setExp();
+        // this.setPickupSelf();
     }
 
     //获取审核失败返回的数据
@@ -226,6 +228,7 @@ class Individual extends BaseComponent {
 
     //设置商户状态
     setExp = (value) => {
+        console.log(value);
         this.setState({
             isExp: value
         }, () => {
@@ -245,8 +248,8 @@ class Individual extends BaseComponent {
     //设置是否支持自提
     setPickupSelf = (values) => {
         this.setState({
-            pickUpSelf: values,
-            values
+            pickUpSelf: values
+            // values
         });
     };
 
@@ -375,7 +378,7 @@ class Individual extends BaseComponent {
 
     //点击下一步，跳转开店人信息
     editModalMain = () => {
-        const {phone, editStatus, isExp, pickUpSelf, linkName, discount, cValue, shopName, values, category,  text, date,  openTime, closeTime, provinceId, cityId, province, urban, county,  address, cshPhone, oTValue, cTValue, addressStatus} = this.state;
+        const {phone, editStatus, isExp, pickUpSelf, linkName, discount, cValue, shopName, category,  text, date,  openTime, closeTime, provinceId, cityId, province, urban, county,  address, cshPhone, oTValue, cTValue, addressStatus} = this.state;
         const {getFieldDecorator} = this.props.form;
         console.log(addressStatus, province, urban, county, provinceId, cityId, editStatus);
         const steps = ['填写店铺信息', '填写开店人信息', '填写工商信息', '绑定银行卡'];
@@ -494,7 +497,7 @@ class Individual extends BaseComponent {
                                     <div className="merchant-state own">
                                         <span className="state-left">是否支持自提</span>
                                         <span className="state-right">
-                                            {datas.map(i => (
+                                            {/*  {datas.map(i => (
                                                 <RadioItem
                                                     key={i.value}
                                                     checked={values === i.value}
@@ -502,7 +505,15 @@ class Individual extends BaseComponent {
                                                 >
                                                     {i.label}
                                                 </RadioItem>
-                                            ))}
+                                            ))}*/}
+                                            {
+                                                datas.map(i => (
+                                                    <div onClick={() => this.setPickupSelf(i.value)} className="merchant" key={i.value}>
+                                                        <span className={`switch-icon icon ${i.value === pickUpSelf ? 'switch-red' : ''}`}/>
+                                                        <span>{i.label}</span>
+                                                    </div>
+                                                ))
+                                            }
                                         </span>
                                     </div>
                                 )
@@ -593,7 +604,7 @@ class Individual extends BaseComponent {
                                     <div className="merchant-state">
                                         <span className="state-left">商户状态</span>
                                         <span className="state-right">
-                                            {data.map(i => (
+                                            {/* {data.map(i => (
                                                 <RadioItem
                                                     key={i.value}
                                                     checked={isExp === i.value}
@@ -601,7 +612,15 @@ class Individual extends BaseComponent {
                                                 >
                                                     {i.label}
                                                 </RadioItem>
-                                            ))}
+                                            ))}*/}
+                                            {
+                                                data.map(i => (
+                                                    <div onClick={() => this.setExp(i.value)} className="merchant" key={i.value}>
+                                                        <span className={`switch-icon icon ${i.value === isExp ? 'switch-red' : ''}`}/>
+                                                        <span>{i.label}</span>
+                                                    </div>
+                                                ))
+                                            }
                                         </span>
                                     </div>
                                 )

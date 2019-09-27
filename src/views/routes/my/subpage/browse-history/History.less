@@ -7,6 +7,8 @@
                 position: absolute;
                 right: 30px;
                 top: 26px;
+                font-weight: 500;
+                font-size: @font-size-28;
             }
         }
     }
@@ -58,7 +60,7 @@
                     justify-content: space-between;
                     font-size: @font-size-18;
                     margin-bottom: 27px;
-                    line-height: 18px;
+                    line-height: 26px;
                     span:nth-child(1) {
                         padding: 3px 15px;
                         color: @white;
@@ -110,9 +112,12 @@
                     justify-content: space-between;
                     font-size: @font-size-20;
                     line-height: 40px;
+
                     span:nth-child(1) {
                         color: @gray;
                         margin-right: 30px;
+                        width: 140px;
+                        .TextareaOverflow(1);
                     }
                     .icon-arrow {
                         color: @dark-gray;
@@ -127,6 +132,9 @@
                     span:nth-child(3) {
                         font-size: @font-size-36;
                         color: @fiery-red;
+                        .TextareaOverflow(1);
+                        width: 160px;
+                        display: block;
                     }
                 }
             }

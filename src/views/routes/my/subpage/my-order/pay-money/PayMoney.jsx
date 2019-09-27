@@ -14,7 +14,7 @@ const mode = [
     {
         title: 'CAM余额',
         value: 0,
-        imgName: 'we-chat'
+        imgName: 'balance-cam'
     },
     {
         title: '微信支付',

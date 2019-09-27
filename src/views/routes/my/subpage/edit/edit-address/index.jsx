@@ -1,14 +1,14 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {createForm} from 'rc-form';
-import {List, InputItem, Checkbox, Button, TextareaItem} from 'antd-mobile';
+import {List, InputItem, Button, TextareaItem} from 'antd-mobile';
 import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAction';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import Region from '../../../../../common/region/Region';
 import {myActionCreator} from '../../../actions/index';
 import './index.less';
 
-const CheckboxItem = Checkbox.CheckboxItem;
+// const CheckboxItem = Checkbox.CheckboxItem;
 const {MESSAGE: {Form, Feedback}} = Constants;
 const {appHistory, getUrlParam, validator, showInfo, showSuccess} = Utils;
 const {urlCfg} = Configs;
@@ -49,9 +49,12 @@ class BasicInput extends BaseComponent {
     };
 
     //设置是否默认地址
-    onChangeDefault = (data) => {
+    onChangeDefault = () => {
+        const {defaultState} = this.state;
         this.setState({
-            defaultState: data.target.checked
+            defaultState: !defaultState
+        }, () => {
+            console.log(defaultState);
         });
     };
 
@@ -146,7 +149,7 @@ class BasicInput extends BaseComponent {
 
     render() {
         const {getFieldProps, getFieldError} = this.props.form;
-        const {province, urban, county, addressArr, defaultState, editStatus, addressStatus, height} = this.state;
+        const {province, urban, county, addressArr, editStatus, addressStatus, height, defaultState} = this.state;
         console.log(province, urban, county, addressArr.province_id, addressArr.city_id, editStatus);
         return (
             <div data-component="add-address" data-role="page" className="add-address">
@@ -204,9 +207,10 @@ class BasicInput extends BaseComponent {
                             count={100}
                         />
                         <div className="default">
-                            <CheckboxItem onChange={(data) => this.onChangeDefault(data)} checked={defaultState}>
+                            {/*  <CheckboxItem onChange={(data) => this.onChangeDefault(data)} checked={defaultState}>
                                 {'设为默认地址'}
-                            </CheckboxItem>
+                            </CheckboxItem>*/}
+                            <div onClick={this.onChangeDefault} className={`icon default-icon ${defaultState === true ? 'default-red' : ''}`}>设为默认地址</div>
                         </div>
                         <Button className="save" onClick={this.saveData}>保存</Button>
                         {addressStatus === '1' && <Button className="delete" onClick={this.deleteData}>删除</Button>}

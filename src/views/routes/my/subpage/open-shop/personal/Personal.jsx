@@ -590,7 +590,7 @@ class Personal extends BaseComponent {
                                     <div className="merchant-state">
                                         <span className="state-left">商户状态</span>
                                         <span className="state-right">
-                                            {data.map(i => (
+                                            {/*{data.map(i => (
                                                 <RadioItem
                                                     key={i.value}
                                                     checked={shopStatus === i.value}
@@ -598,7 +598,15 @@ class Personal extends BaseComponent {
                                                 >
                                                     {i.label}
                                                 </RadioItem>
-                                            ))}
+                                            ))}*/}
+                                            {
+                                                data.map(i => (
+                                                    <div onClick={() => this.onChecked(i.value)} className="merchant" key={i.value}>
+                                                        <span className={`switch-icon icon ${i.value === shopStatus ? 'switch-red' : ''}`}/>
+                                                        <span>{i.label}</span>
+                                                    </div>
+                                                ))
+                                            }
                                         </span>
                                     </div>
                                 )
