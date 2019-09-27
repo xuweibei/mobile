@@ -36,6 +36,7 @@ class PersonalTwo extends BaseComponent {
     };
 
     componentDidMount() {
+        console.log('第er步');
         this.getUpdateAudit();
     }
 

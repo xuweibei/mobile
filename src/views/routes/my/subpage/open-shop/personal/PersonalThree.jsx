@@ -46,6 +46,7 @@ class PersonalThree extends BaseComponent {
     };
 
     componentDidMount = () => {
+        console.log('第三步');
         this.updateAudit();
     };
 
@@ -152,7 +153,8 @@ class PersonalThree extends BaseComponent {
     onChange = (files, type) => {
         if (type === 'prove') {
             const {sValue} = this.state;
-            if (sValue.length === 0) {
+            const result = seasons.some(item => item.value === sValue[0]);
+            if (!result) {
                 showInfo(Form.No_Prove_type);
                 return;
             }
@@ -354,7 +356,6 @@ class PersonalThree extends BaseComponent {
         const steps = ['填写店铺信息', '填写开店人信息', '填写工商信息', '绑定银行卡'];
         const {file1, file2, file3, file4} = this.state;
         const {that} = this.props;
-        console.log(this.state.sValue);
         return (
             <div data-component="personal-three" data-role="page" className="personal-three">
                 <AppNavBar rightExplain title="开店人信息" goBackModal={() => this.props.goBack('two')}/>
@@ -371,6 +372,7 @@ class PersonalThree extends BaseComponent {
                     <div className="ID-photo">
                         <List style={{backgroundColor: 'white'}} className="picker-list">
                             <Picker
+                                cols={1}
                                 data={seasons}
                                 value={this.state.sValue}
                                 extra="请选择照片类型"
