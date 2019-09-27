@@ -46,6 +46,7 @@ class PersonalThree extends BaseComponent {
     };
 
     componentDidMount = () => {
+        console.log('第三步');
         this.updateAudit();
     };
 
