@@ -450,28 +450,36 @@ class PersonalOne extends BaseComponent {
                                     <List.Item arrow="horizontal" className="area">
                                         <span>区域选择</span>
                                         {
-                                            addressStatus === '1'
-                                                ? (
-                                                    <Region
-                                                        onSetProvince={this.setProvince}
-                                                        onSetCity={this.setCity}
-                                                        onSetCounty={this.setCounty}
-                                                        provinceValue={province}
-                                                        cityValue={urban}
-                                                        countyValue={county}
-                                                        provinceId={updateAudit.province_id}
-                                                        cityId={updateAudit.city_id}
-                                                        editStatus={editStatus}
-                                                        editStatusChange={this.editStatusChange}
-                                                    />
-                                                ) : (
-                                                    <Region
-                                                        onSetProvince={this.setProvince}
-                                                        onSetCity={this.setCity}
-                                                        onSetCounty={this.setCounty}
-                                                        add
-                                                    />
-                                                )
+                                            addressStatus === '1' && (
+                                                <Region
+                                                    onSetProvince={this.setProvince}
+                                                    onSetCity={this.setCity}
+                                                    onSetCounty={this.setCounty}
+                                                    provinceValue={province}
+                                                    cityValue={urban}
+                                                    countyValue={county}
+                                                    provinceId={updateAudit.province_id}
+                                                    cityId={updateAudit.city_id}
+                                                    editStatus={editStatus}
+                                                    editStatusChange={this.editStatusChange}
+                                                />
+                                            )
+                                        }
+                                        {
+                                            addressStatus === '' && (
+                                                <Region
+                                                    onSetProvince={this.setProvince}
+                                                    onSetCity={this.setCity}
+                                                    onSetCounty={this.setCounty}
+                                                    provinceValue={province}
+                                                    cityValue={urban}
+                                                    countyValue={county}
+                                                    provinceId={updateAudit.province_id}
+                                                    cityId={updateAudit.city_id}
+                                                    editStatus={editStatus}
+                                                    editStatusChange={this.editStatusChange}
+                                                />
+                                            )
                                         }
                                     </List.Item>
                                 )

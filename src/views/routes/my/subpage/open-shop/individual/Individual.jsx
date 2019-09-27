@@ -53,7 +53,7 @@ class Individual extends BaseComponent {
         county: '', //城市名字
         updateAudit: '',
         editStatus: true,
-        addressStatus: 1
+        addressStatus: ''
     };
 
     //提交店铺信息
@@ -124,7 +124,7 @@ class Individual extends BaseComponent {
                         provinceId: res.data.province_id,
                         cityId: res.data.city_id,
                         countyId: res.data.county_id,
-                        addressStatus: 1
+                        addressStatus: '1'
                     });
                 }
             });
@@ -439,28 +439,30 @@ class Individual extends BaseComponent {
                                     })(
                                         <div className="region-select">
                                             {
-                                                addressStatus === '1'
-                                                    ? (
-                                                        <Region
-                                                            onSetProvince={this.setProvince}
-                                                            onSetCity={this.setCity}
-                                                            onSetCounty={this.setCounty}
-                                                            provinceValue={province}
-                                                            cityValue={urban}
-                                                            countyValue={county}
-                                                            provinceId={provinceId}
-                                                            cityId={cityId}
-                                                            editStatus={editStatus}
-                                                            editStatusChange={this.editStatusChange}
-                                                        />
-                                                    ) : (
-                                                        <Region
-                                                            onSetProvince={this.setProvince}
-                                                            onSetCity={this.setCity}
-                                                            onSetCounty={this.setCounty}
-                                                            add
-                                                        />
-                                                    )
+                                                addressStatus === '1' && (
+                                                    <Region
+                                                        onSetProvince={this.setProvince}
+                                                        onSetCity={this.setCity}
+                                                        onSetCounty={this.setCounty}
+                                                        provinceValue={province}
+                                                        cityValue={urban}
+                                                        countyValue={county}
+                                                        provinceId={provinceId}
+                                                        cityId={cityId}
+                                                        editStatus={editStatus}
+                                                        editStatusChange={this.editStatusChange}
+                                                    />
+                                                )
+                                            }
+                                            {
+                                                addressStatus === '' && (
+                                                    <Region
+                                                        onSetProvince={this.setProvince}
+                                                        onSetCity={this.setCity}
+                                                        onSetCounty={this.setCounty}
+                                                        add
+                                                    />
+                                                )
                                             }
                                         </div>
                                     )
