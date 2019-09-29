@@ -46,6 +46,9 @@ class appendOrder extends BaseComponent {
 
     componentDidMount() {
         const {setOrder, setIds, arr} = this.props;
+        if (this.props.location.search.includes('source')) {
+            removeValue('invoices');
+        }
         const that = this;
         const obj = {'': ''};
         if (hybrid) {
@@ -578,7 +581,7 @@ class appendOrder extends BaseComponent {
                                     <div className="rise-content">
                                         {
                                             kind.map((item, index) => (
-                                                <div className={currentIndex === index ? 'active' : ''} onClick={() => this.checkIndex(index)} key={index.toString()}>{item.title}</div>
+                                                <div className={currentIndex === index ? 'active' : ''} onClick={() => this.checkIndex(index)} key={item}>{item.title}</div>
                                             ))
                                         }
                                     </div>

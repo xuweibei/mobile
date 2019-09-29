@@ -4,7 +4,7 @@
  */
 import {Carousel, Flex, Icon, List, Popover, Stepper} from 'antd-mobile';
 import {connect} from 'react-redux';
-import {Link, Element, scrollSpy} from 'react-scroll';
+import {Link, Element, scrollSpy, animateScroll} from 'react-scroll';
 import {shopCartActionCreator as action} from '../../../shop-cart/actions';
 import {baseActionCreator as actionCreator} from '../../../../../redux/baseAction';
 import Sku from '../../../../common/sku/Sku';
@@ -122,6 +122,7 @@ class GoodsDetail extends BaseComponent {
         this.fetch(urlCfg.getGoodsDetail, {data: {id: goodId}}).subscribe(res => {
             if (res.status === 0) {
                 this.starShow(res.shop.shop_mark);
+                animateScroll.scrollToTop();
                 const stocks = [];
                 res.sku.forEach(item => {
                     stocks.push({
@@ -194,7 +195,7 @@ class GoodsDetail extends BaseComponent {
 
     //确定按钮点击
     confirmSku = (type, ids, names) => {
-        console.log('选中规格值名称', names);
+        // console.log('选中规格值名称', names);
         const {clickType} = this.state;
         // console.log('选中商品属性ID：', type, ids);
         this.setState({

@@ -454,7 +454,7 @@ class Personal extends BaseComponent {
                                         // value={cValue}
                                         onChange={(val) => this.category(val)}
                                     >
-                                        <List.Item arrow="horizontal" onClick={this.onClick}>主营行业</List.Item>
+                                        <List.Item arrow="horizontal" onClick={(e) => this.onClick(e)}>主营行业</List.Item>
                                     </Picker>
                                 )
                             }

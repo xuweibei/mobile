@@ -17,7 +17,7 @@ import MyLogistics from './subpage/my-logistics/MyLogistics';
 import './My.less';
 import {showInfo} from '../../../utils/mixin';
 
-const {appHistory, rollStatus: {offRoll, openRoll, getScrollTop}, systemApi: {setValue}} = Utils;
+const {appHistory, rollStatus: {offRoll, openRoll, getScrollTop}, systemApi: {removeValue}} = Utils;
 const {urlCfg} = Configs;
 
 //线上订单模块
@@ -245,9 +245,10 @@ class My extends BaseComponent {
     //页面跳转
     jumpRouter = (url) => {
         if (url === '/selectType') {
+            removeValue('shopStatus');
             this.fetch(urlCfg.applyForRight).subscribe(res => {
                 if (res && res.status === 0) {
-                    setValue('shopStatus', JSON.stringify(res.data.status));
+                    // setValue('shopStatus', JSON.stringify(res.data.status));
                     this.setState({
                         openShopStatus: res.data.status
                     }, () => {

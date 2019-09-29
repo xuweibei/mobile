@@ -364,7 +364,7 @@ class ShopCart extends BaseComponent {
         for (let i = 0; i < arr.length; i++) {
             price += ((arr[i] * 100)  * (num[i] * 100));
         }
-        return (price / 10000);
+        return (price / 10000) === 0 ? 0 : `￥${price / 10000}`;
     };
 
     //总共几件商品
