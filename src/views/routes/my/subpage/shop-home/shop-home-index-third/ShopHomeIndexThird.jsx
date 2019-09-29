@@ -35,7 +35,7 @@ class ShopHomeIndexThird extends React.PureComponent {
                                         {
                                             content.banner.length > 0 ? content.banner.map(item => (
                                                 <div key={item} style={{height: '248px'}}>
-                                                    <img src={item.url}/>
+                                                    <img src={item.url} onClick={() => this.goToGoods(item.id)}/>
                                                 </div>
                                             )) : null
                                         }
@@ -53,7 +53,7 @@ class ShopHomeIndexThird extends React.PureComponent {
                         <div className="hot-box">
                             <div className={(picurl && content && picurl[content.sort1_pr1_ix] && content.sort1_pr1_title1 && content.sort1_pr1_title2 && content.sort1_pr1_title3) ? 'hot' : 'hot no-edit-model'}>
                                 <div className="commodity-img">
-                                    <img src={picurl && picurl[content.sort1_pr1_ix]} alt=""/>
+                                    <img src={picurl && picurl[content.sort1_pr1_ix]} onClick={() => this.goToGoods(content.sort1_pr1_id)} alt=""/>
                                 </div>
                                 <div className="headline-price">
                                     <div className="headline">{content && content.sort1_pr1_title1}</div>
@@ -66,7 +66,7 @@ class ShopHomeIndexThird extends React.PureComponent {
                             </div>
                             <div className={(picurl && content && picurl[content.sort1_pr2_ix] && content.sort1_pr1_title1 && content.sort1_pr1_title2 && content.sort1_pr1_title3) ? 'hot' : 'hot no-edit-model'}>
                                 <div className="commodity-img">
-                                    <img src={picurl && picurl[content.sort1_pr2_ix]} alt=""/>
+                                    <img src={picurl && picurl[content.sort1_pr2_ix]} onClick={() => this.goToGoods(content.sort1_pr2_id)} alt=""/>
                                 </div>
                                 <div className="headline-price">
                                     <div className="headline">{content && content.sort1_pr2_title1}</div>
@@ -85,7 +85,7 @@ class ShopHomeIndexThird extends React.PureComponent {
                         <div className="sell-box">
                             <div className={(picurl && content && picurl[content.sort2_pr1_ix] && content.sort2_pr1_title1 && content.sort2_pr1_title2 && content.sort2_pr1_title3) ? 'sell' : 'sell no-edit-model'}>
                                 <div>
-                                    <img src={picurl && picurl[content.sort2_pr1_ix]} alt=""/>
+                                    <img src={picurl && picurl[content.sort2_pr1_ix]} onClick={() => this.goToGoods(content.sort2_pr1_id)} alt=""/>
                                 </div>
                                 <div className="headline-price">
                                     <p className="headline">{content && content.sort2_pr1_title1}</p>
@@ -98,7 +98,7 @@ class ShopHomeIndexThird extends React.PureComponent {
                             </div>
                             <div className={(picurl && content && picurl[content.sort2_pr2_ix] && content.sort2_pr2_title1 && content.sort2_pr2_title2 && content.sort2_pr2_title3) ? 'sell' : 'sell no-edit-model'}>
                                 <div>
-                                    <img src={picurl && picurl[content.sort2_pr2_ix]} alt=""/>
+                                    <img src={picurl && picurl[content.sort2_pr2_ix]} onClick={() => this.goToGoods(content.sort2_pr2_id)} alt=""/>
                                 </div>
                                 <div className="headline-price">
                                     <p className="headline">{content && content.sort2_pr2_title1}</p>
@@ -113,7 +113,7 @@ class ShopHomeIndexThird extends React.PureComponent {
                         <div className="hot-box">
                             <div className={(picurl && content && picurl[content.sort2_pr3_ix] && content.sort2_pr1_title1 && content.sort2_pr1_title2 && content.sort2_pr1_title3) ? 'hot' : 'sell-one no-edit-model'}>
                                 <div className="commodity-img">
-                                    <img src={picurl && picurl[content.sort2_pr3_ix]} alt=""/>
+                                    <img src={picurl && picurl[content.sort2_pr3_ix]} onClick={() => this.goToGoods(content.sort2_pr3_id)} alt=""/>
                                 </div>
                                 <div className="headline-price">
                                     <p className="headline">{content && content.sort2_pr3_title1}</p>
@@ -126,7 +126,7 @@ class ShopHomeIndexThird extends React.PureComponent {
                             </div>
                             <div className={(picurl && content && picurl[content.sort2_pr4_ix] && content.sort2_pr2_title1 && content.sort2_pr1_title2 && content.sort2_pr1_title3) ? 'hot' : 'sell-one no-edit-model'}>
                                 <div className="commodity-img">
-                                    <img src={picurl && picurl[content.sort2_pr4_ix]} alt=""/>
+                                    <img src={picurl && picurl[content.sort2_pr4_ix]} onClick={() => this.goToGoods(content.sort2_pr4_id)} alt=""/>
                                 </div>
                                 <div className="headline-price">
                                     <p className="headline">{content && content.sort2_pr4_title1}</p>
@@ -141,7 +141,7 @@ class ShopHomeIndexThird extends React.PureComponent {
                         <div className="sell-two-box">
                             <div className={(picurl && content && picurl[content.sort2_pr5_ix] && content.sort2_pr5_title1 && content.sort2_pr5_title2 && content.sort2_pr5_title3) ? 'sell-two' : 'sell-two no-edit-model'}>
                                 <div>
-                                    <img src={picurl && picurl[content.sort2_pr5_ix]} alt=""/>
+                                    <img src={picurl && picurl[content.sort2_pr5_ix]} onClick={() => this.goToGoods(content.sort2_pr5_id)} alt=""/>
                                 </div>
                                 <div className="headline-price">
                                     <p className="headline">{content && content.sort2_pr5_title1}</p>
@@ -154,7 +154,7 @@ class ShopHomeIndexThird extends React.PureComponent {
                             </div>
                             <div className={(picurl && content && picurl[content.sort2_pr6_ix] && content.sort2_pr6_title1 && content.sort2_pr6_title2 && content.sort2_pr6_title3) ? 'sell-two' : 'sell-two no-edit-model'}>
                                 <div>
-                                    <img src={picurl && picurl[content.sort2_pr6_ix]} alt=""/>
+                                    <img src={picurl && picurl[content.sort2_pr6_ix]} onClick={() => this.goToGoods(content.sort2_pr6_id)} alt=""/>
                                 </div>
                                 <div className="headline-price">
                                     <p className="headline">{content && content.sort2_pr6_title1}</p>
@@ -167,7 +167,7 @@ class ShopHomeIndexThird extends React.PureComponent {
                             </div>
                             <div className={(picurl && content && picurl[content.sort2_pr7_ix] && content.sort2_pr7_title1 && content.sort2_pr7_title2 && content.sort2_pr7_title3) ? 'sell-two' : 'sell-two no-edit-model'}>
                                 <div>
-                                    <img src={picurl && picurl[content.sort2_pr7_ix]} alt=""/>
+                                    <img src={picurl && picurl[content.sort2_pr7_ix]} onClick={() => this.goToGoods(content.sort2_pr7_id)} alt=""/>
                                 </div>
                                 <div className="headline-price">
                                     <p className="headline">{content && content.sort2_pr7_title1}</p>
@@ -180,7 +180,7 @@ class ShopHomeIndexThird extends React.PureComponent {
                             </div>
                             <div className={(picurl && content && picurl[content.sort2_pr8_ix] && content.sort2_pr8_title1 && content.sort2_pr8_title2 && content.sort2_pr8_title3) ? 'sell-two' : 'sell-two no-edit-model'}>
                                 <div>
-                                    <img src={picurl && picurl[content.sort2_pr8_ix]} alt=""/>
+                                    <img src={picurl && picurl[content.sort2_pr8_ix]} onClick={() => this.goToGoods(content.sort2_pr8_id)} alt=""/>
                                 </div>
                                 <div className="headline-price">
                                     <p className="headline">{content && content.sort2_pr8_title1}</p>

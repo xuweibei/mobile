@@ -222,7 +222,7 @@ class BankCardDetail extends BaseComponent {
              <div data-component="bankCardDetail" data-role="page" className="bank-card-detail">
                  <AppNavBar title="我的银行卡"/>
                  <div style={{height: height}} className="bank-box">
-                     <List className={`mainInfo ${userInfo.bankId === undefined ? 'no-font-color' : 'font-color'}`}>
+                     <div className={`mainInfo ${userInfo.bankId === undefined ? 'no-font-color' : 'font-color'}`}>
                          {
                              getFieldDecorator('name', {
                                  rules: [
@@ -327,7 +327,7 @@ class BankCardDetail extends BaseComponent {
                                  getOff={getOff}
                              />
                          </div>
-                     </List>
+                     </div>
                      <div className="Sure">
                          <div onClick={this.successToast}>确认绑定</div>
                      </div>
