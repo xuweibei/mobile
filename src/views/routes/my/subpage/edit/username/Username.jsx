@@ -5,8 +5,8 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 import {myActionCreator as actionCreator} from '../../../actions/index';
 import './Username.less';
 
-const {appHistory, showInfo, showSuccess} = Utils;
-const {MESSAGE: {Form, Feedback}} = Constants;
+const {appHistory, showSuccess} = Utils;
+const {MESSAGE: {Feedback}} = Constants;
 const {urlCfg} = Configs;
 
 class ExtName extends BaseComponent {
