@@ -83,7 +83,7 @@
     }
 }
 
-.my-order{
+.online-transaction{
     .navbar{
         height:0.88rem;
         background: @fiery-red;
@@ -237,6 +237,7 @@
                     color: @darker-black;
                     .desc-title{
                         width: 245px;
+                        height: 67px;
                         .TextareaOverflow(2);
                     }
                 }
@@ -245,18 +246,21 @@
                     display: flex;
                     font-size: 20px;
                     color: @gray;
-                    margin-top: 11px;
+                    margin: 11px 0;
                     .sku-left {
                         display: flex;
                         justify-content: left;
-                        flex: 2;
+                        flex: 1;
+
                         .goods-size{
-                            margin: 0 4px 10px;
+                            .TextareaOverflow(1);
+                            flex: 1;
+                            margin: 0 20px 0 0 ;
                         }
                     }
                     .sku-right {
                         text-align: right;
-                        flex: 1;
+                        //flex: 1;
                     }
                 }
                 .btn-keep {

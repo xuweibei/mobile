@@ -235,7 +235,6 @@ export default class MyEvaluate extends BaseComponent {
                                 delete value.url;
                             });
                         });
-                        console.log(files, '水电费啦就快到');
                         this.fetch(urlCfg.picSave, {data: {
                             type: 1,
                             id: res.id,

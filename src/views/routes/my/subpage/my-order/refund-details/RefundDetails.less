@@ -10,6 +10,66 @@
         }
     }
 
+    .cancel-order-box {
+        padding: 25px 30px 25px 0;
+        display: flex;
+        justify-content: flex-end;
+        background-color: @white;
+        box-shadow:0 2px 7px 1px rgba(255, 146, 150, 0.35);
+        .cancel-order {
+            width: 140px;
+            height: 50px;
+            font-size: @font-size-24;
+            color: @dark-gray;
+            border: 1px solid @dark-gray;
+            border-radius: 100px;
+            margin-left: auto;
+            text-align: center;
+            line-height: 48px;
+        }
+        .new-style-cancel{
+            width:50%;
+            height:100px;
+            line-height:100px;
+            border-radius: 0;
+            border-top:1px solid #CCCCCC;
+            border-right:none;
+            border-left:none;
+            border-bottom:none;
+            position: fixed;
+            bottom:0;
+            left:0;
+            font-size:36px;
+            color:#666;
+            background:#fff;
+        }
+        .immediate-evaluation {
+            width: 140px;
+            height: 50px;
+            font-size: @font-size-24;
+            color: @fiery-red;
+            border:1px solid @fiery-red;
+            text-align: center;
+            line-height: 48px;
+            margin-left: 20px;
+            border-radius: 100px;
+        }
+        .immediate-evaluation-c {
+            width: 140px;
+            height: 50px;
+            font-size: @font-size-24;
+            color: #ccc;
+            border:1px solid #ccc;
+            text-align: center;
+            line-height: 48px;
+            margin-left: 20px;
+            border-radius: 100px;
+        }
+        .deliver{
+            color:@fiery-red;
+            border:2px solid @fiery-red;
+        }
+    }
     .consult-his{
         .history:before{
             content:'\e643';

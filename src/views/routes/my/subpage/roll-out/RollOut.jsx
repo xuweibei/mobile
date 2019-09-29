@@ -59,7 +59,7 @@ export default class ReDetail extends BaseComponent {
 
     //列表跳转到支付页面
     skipSum = (uid, name) => {
-        appHistory.push(`/importSum?uid=${uid}&shopName=${name}`);
+        appHistory.push(`/importSum?uid=${uid}&shopName=${encodeURI(name)}`);
     }
 
     //跳转转出记录

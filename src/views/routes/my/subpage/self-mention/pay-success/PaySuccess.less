@@ -9,6 +9,11 @@
         .nav-right .icon-right:before {
             content: '\E63d';
         }
+        .blackNav-right {
+            .icon-right:before {
+                content: '\E675';
+            }
+        }
     }
 
     .number {
@@ -18,11 +23,13 @@
         display: flex;
         background-color: @white;
         margin: 0 30px 20px 30px;
+        justify-content: space-between;
+        padding: 0 30px;
         .number-left {
-            margin: 0 29px 20px 30px;
-            font-size: @font-size-36;
+            //margin: 0 29px 20px 30px;
+            font-size: @font-size-32;
             color: @darker-black;
-            font-weight:bold;
+            //font-weight:bold;
         }
         .number-right {
             font-size: @font-size-60;
@@ -34,7 +41,8 @@
     .shop-plan {
         background-color: @white;
         padding: 30px 30px 38px;
-        margin-bottom: 120px;
+        margin: 0 30px 120px;
+        border-radius: 20px;
         .shop-plan-top {
             margin-bottom: 30px;
             .left-show {
@@ -59,7 +67,7 @@
             font-size: @font-size-24;
             color: @dark-gray;
             line-height: 30px;
-            margin: auto;
+            //margin: auto;
         }
     }
 

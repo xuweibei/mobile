@@ -218,6 +218,7 @@ class refundDetails extends BaseComponent {
 
     render() {
         const {refundArr} = this.state;
+        const type = decodeURI(getUrlParam('type', encodeURI(this.props.location.search)));
         return (
             <div
                 data-component="after-service"
@@ -264,7 +265,7 @@ class refundDetails extends BaseComponent {
                                                 x{value.pr_num }
                                                 </span>
                                             </div>
-                                            {refundArr.is_shoper === 0 && this.allButton(refundArr)}
+                                            {refundArr.is_shoper === 0 && type !== '2' && this.allButton(refundArr)}
                                         </div>
                                     </div>
                                 </div>
@@ -341,6 +342,12 @@ class refundDetails extends BaseComponent {
                     }
                 </div>
                 <div/>
+                <div className="cancel-order-box">
+                    {type === '2' && refundArr && refundArr.status === '1' && <div onClick={this.revoke} className="immediate-evaluation-c">撤销申请</div>}
+                    {type === '2' && refundArr && refundArr.status === '1' && <div onClick={this.application} className="immediate-evaluation">修改申请</div>}
+                    {type === '2' && refundArr && refundArr.status === '2' && <div onClick={this.revoke} className="immediate-evaluation-c">撤销申请</div>}
+                    {type === '2' && refundArr && refundArr.status === '2' && <div onClick={this.complaint} className="immediate-evaluation">投诉</div>}
+                </div>
             </div>
         );
     }

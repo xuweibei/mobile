@@ -67,6 +67,7 @@ export const urlCfg = {
     payRightInfo: href.apiPath + '/mall-shop-order-price', //立即购买详情信息
     mallOrder: href.apiPath + '/mall-order', //订单列表
     delMallOrder: href.apiPath + '/deal-mallorder', //取消/删除订单
+    dealMallorderbyno: href.apiPath + '/deal-mallorderbyno', //付款页面，取消/删除订单
     remindOrder: href.apiPath + '/tip-deliver', //提醒发货
     confirmOrder: href.apiPath + '/chk-receive', //确认收货
     switchToClassFiy: href.apiPath + '/home-pr-search', //首页跳转搜索

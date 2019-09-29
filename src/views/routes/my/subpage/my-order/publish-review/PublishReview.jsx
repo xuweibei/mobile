@@ -103,25 +103,19 @@ export default class PublishReview extends BaseComponent {
             .subscribe(res => {
                 if (res.status === 0) {
                     if (fileArr.length > 0) {
-                        fileArr.forEach((item, index) => {
-                            if (index <= 9) {
-                                this.fetch(urlCfg.pictureUploadBase,
-                                    {method: 'post',
-                                        data: {
-                                            id: res.id,
-                                            type: 1,
-                                            ix: index,
-                                            num: fileArr.length,
-                                            file: encodeURIComponent(item.url),
-                                            filex: encodeURIComponent(item.urlB)
-                                        }
-                                    }).subscribe(data => {
-                                    if (data.status === 0) {
-                                        showSuccess(Feedback.Evaluate_Success);
-                                        dropByCacheKey('PossessEvaluate');
-                                        appHistory.replace('/evaluationSuccess');
-                                    }
-                                });
+                        fileArr.forEach(itemImg => {
+                            itemImg.imgB = encodeURIComponent(itemImg.imgB);
+                            delete itemImg.url;
+                        });
+                        this.fetch(urlCfg.picSave, {data: {
+                            type: 1,
+                            id: res.id,
+                            file: fileArr
+                        }}).subscribe((resr) => {
+                            if (resr.status === 0) {
+                                showSuccess(Feedback.Evaluate_Success);
+                                dropByCacheKey('PossessEvaluate');
+                                appHistory.replace('/evaluationSuccess');
                             }
                         });
                     } else {
@@ -147,7 +141,6 @@ export default class PublishReview extends BaseComponent {
 
     render() {
         const {files, publishInfo, fileArr} = this.state;
-        console.log(fileArr, '是地方个地方');
         return (
             <div data-component="publish-review" data-role="page" className="publish-review">
                 <AppNavBar title="发表追评"/>

@@ -345,7 +345,7 @@ class ListDetails extends BaseComponent {
 
                             <div className="business-box">
                                 <div className="business">
-                                    <div className="business-left" onClick={this.goToShoper}><IconFont iconText="iconIM-zhutou" onClick={this.goToShoper}/><span>联系商家</span></div>
+                                    <div className="business-left icon" onClick={this.goToShoper}><span>联系商家</span></div>
                                     <span className="business-right icon" onClick={() => this.shopPhone(canInfo.shop_tel)}>商家电话</span>
                                 </div>
                             </div>
