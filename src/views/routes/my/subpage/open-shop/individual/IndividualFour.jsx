@@ -38,7 +38,9 @@ class IndividualFour extends BaseComponent {
         // vcCode: '', //验证码
         countyId: '', //区id
         // type: 2, //1：个人户；2：个体工商户
-        cardStatus: '银行卡号'
+        cardStatus: '银行卡号',
+        addressStatus: '',
+        editStatus: true
         // id: ''
     };
 
@@ -80,10 +82,18 @@ class IndividualFour extends BaseComponent {
         this.getUpdateAudit();
     };
 
+    //父级数据变更
+    editStatusChange = () => {
+        console.log('父级数据变更');
+        this.setState({
+            editStatus: false
+        });
+    };
+
     //获取审核失败返回的数据
     getUpdateAudit = () => {
         this.fetch(urlCfg.getShopbank, {data: {type: 4}}).subscribe(res => {
-            if (res && res.status === 0) {
+            if (res && res.status === 0 && res.data.length !== 0) {
                 this.setState({
                     userName: res.data.realname,
                     bankCard: res.data.bankNo,
@@ -97,7 +107,8 @@ class IndividualFour extends BaseComponent {
                     county: res.data.city_name && res.data.city_name[2],
                     provinceId: res.data.province_id,
                     cityId: res.data.city_id,
-                    countyId: res.data.county_id
+                    countyId: res.data.county_id,
+                    addressStatus: '1'
                 });
             }
         });
@@ -147,7 +158,6 @@ class IndividualFour extends BaseComponent {
     //获取支行
     getBankBranch = () => {
         const {bankName, countyId} = this.state;
-        console.log(bankName, countyId);
         if (bankName && countyId) {
             this.fetch(urlCfg.getBankList, {data: {
                 cityId: countyId,
@@ -166,26 +176,33 @@ class IndividualFour extends BaseComponent {
                     }));
                 }
             });
-        } else {
+        } if (!countyId || !bankName) {
             showInfo(Form.failGetBankBranch);
         }
     };
 
     //获取选中的银行
     getBankInfo = (val) => {
-        const {banks} =  this.state;
+        const {banks, cValue} =  this.state;
         const result = banks.find((item) => item.value === val.toString());
         this.setState(() => ({
             cValue: val,
             bankName: result.label,
-            bankId: result.value
+            bankId: result.value,
+            branchBank: []
         }));
+        // if (cValue[0] !== val[0]) {
+        //     this.setState({
+        //         province: '',
+        //         urban: '',
+        //         county: ''
+        //     });
+        // }
     };
 
     // 获取选中的支行
     setBankBranch = (val) => {
         const {branchBank} = this.state;
-        console.log(val);
         if (branchBank.length !== 0) {
             const result = branchBank.find(item => item.value === val.toString());
             this.setState(() => ({
@@ -197,11 +214,12 @@ class IndividualFour extends BaseComponent {
 
     //  省市县的赋值
     setProvince = str => {
-        this.setState({
-            province: str,
-            urban: '',
-            county: ''
-        });
+        const {province} = this.state;
+        if (province !== str) {
+            this.setState({
+                branchBank: []
+            });
+        }
     };
 
     //设置城市
@@ -285,7 +303,8 @@ class IndividualFour extends BaseComponent {
     editModalMain = () => {
         const {form: {getFieldDecorator}} = this.props;
         const steps = ['填写店铺信息', '填写开店人信息', '填写工商信息', '绑定银行卡'];
-        const {banks, cValue, branchBank, userName, bankCard, phone, branchBankName, provinceId, cityId, countyId, province, urban, county} = this.state;
+        const {banks, cValue, branchBank, userName, bankCard, phone, branchBankName, provinceId, cityId, province, urban, county, addressStatus, editStatus} = this.state;
+        console.log(addressStatus);
         return (
             <div>
                 <AppNavBar goBackModal={this.props.goBack} rightExplain title="绑定银行卡"/>
@@ -352,19 +371,37 @@ class IndividualFour extends BaseComponent {
                             }
                             <List.Item className="branches area" arrow="horizontal">
                                 <span>开户地区</span>
-                                <Region
-                                    provinceId={provinceId}
-                                    cityId={cityId}
-                                    countyId={countyId}
-                                    provinceValue={province}
-                                    cityValue={urban}
-                                    countyValue={county}
-                                    onSetProvince={this.setProvince}
-                                    onSetCity={this.setCity}
-                                    onSetCounty={this.setCounty}
-                                    onCountyId={this.setCountyId}
-                                    add
-                                />
+                                {
+                                    addressStatus === '1' && (
+                                        <Region
+                                            onSetProvince={this.setProvince}
+                                            onSetCity={this.setCity}
+                                            onSetCounty={this.setCounty}
+                                            onCountyId={this.setCountyId}
+                                            provinceValue={province}
+                                            cityValue={urban}
+                                            countyValue={county}
+                                            provinceId={provinceId}
+                                            cityId={cityId}
+                                            editStatus={editStatus}
+                                            editStatusChange={this.editStatusChange}
+                                        />
+                                    )
+                                }
+                                {
+                                    addressStatus === '' && (
+                                        <Region
+                                            provinceValue={province}
+                                            cityValue={urban}
+                                            countyValue={county}
+                                            onSetProvince={this.setProvince}
+                                            onSetCity={this.setCity}
+                                            onSetCounty={this.setCounty}
+                                            onCountyId={this.setCountyId}
+                                            add
+                                        />
+                                    )
+                                }
                             </List.Item>
                             {
                                 getFieldDecorator('branchName', {

@@ -97,6 +97,7 @@ class BasicInput extends BaseComponent {
 
     //父级数据变更
     editStatusChange = () => {
+        console.log('富技术局');
         this.setState({
             editStatus: false
         });

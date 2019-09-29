@@ -107,8 +107,8 @@ class ShopHomeIndex extends React.PureComponent {
                                             <div className="margin-bot-content-top">{shopModelArr.content.sort2_pr2_title1}</div>
                                             <div className="margin-bot-content-bot">
                                                 <span className="money-ZH">￥</span>
-                                                <span className="money-now">{shopModelArr.content.sort2_pr2_title1}</span>
-                                                <span className="money-before">{shopModelArr.content.sort2_pr2_title1}</span>
+                                                <span className="money-now">{shopModelArr.content.sort2_pr2_title2}</span>
+                                                <span className="money-before">{shopModelArr.content.sort2_pr2_title3}</span>
                                             </div>
                                         </div>
                                     </div>
