@@ -4,7 +4,7 @@
  */
 import {Carousel, Flex, Icon, List, Popover, Stepper} from 'antd-mobile';
 import {connect} from 'react-redux';
-import {Link, Element, scrollSpy} from 'react-scroll';
+import {Link, Element, scrollSpy, animateScroll} from 'react-scroll';
 import {shopCartActionCreator as action} from '../../../shop-cart/actions';
 import {baseActionCreator as actionCreator} from '../../../../../redux/baseAction';
 import Sku from '../../../../common/sku/Sku';
@@ -38,7 +38,6 @@ const listText = [
 ];
 
 const Item = Popover.Item;
-
 class GoodsDetail extends BaseComponent {
     state = {
         topSwithe: true,
@@ -106,13 +105,17 @@ class GoodsDetail extends BaseComponent {
 
     componentWillReceiveProps(nextProps, value) { //路由跳转时的判断，id有变化就请求
         if (hybrid) {
-            this.setState({
-                goodId: decodeURI(getUrlParam('id', encodeURI(nextProps.location.search))),
-                selectType: '',
-                ids: []
-            }, () => {
-                this.init();
-            });
+            const id = decodeURI(getUrlParam('id', encodeURI(nextProps.location.search)));
+            const {goodId} = this.state;
+            if (id !== goodId) {
+                this.setState({
+                    goodId: id,
+                    selectType: '',
+                    ids: []
+                }, () => {
+                    this.init();
+                });
+            }
         }
     }
 
@@ -122,6 +125,7 @@ class GoodsDetail extends BaseComponent {
         this.fetch(urlCfg.getGoodsDetail, {data: {id: goodId}}).subscribe(res => {
             if (res.status === 0) {
                 this.starShow(res.shop.shop_mark);
+                animateScroll.scrollToTop();
                 const stocks = [];
                 res.sku.forEach(item => {
                     stocks.push({
@@ -194,7 +198,7 @@ class GoodsDetail extends BaseComponent {
 
     //确定按钮点击
     confirmSku = (type, ids, names) => {
-        console.log('选中规格值名称', names);
+        // console.log('选中规格值名称', names);
         const {clickType} = this.state;
         // console.log('选中商品属性ID：', type, ids);
         this.setState({

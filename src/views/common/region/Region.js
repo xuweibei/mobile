@@ -45,7 +45,6 @@ class Region extends BaseComponent {
     componentWillReceiveProps(nextProps) {
         const {provinceValue} = this.state;
         const {add, editStatus} = this.props;
-        console.log(editStatus, add, provinceValue, nextProps.provinceValue);
         if (editStatus && !add && provinceValue !== nextProps.provinceValue) {
             this.setState({
                 provinceValue: nextProps.provinceValue,
@@ -100,7 +99,7 @@ class Region extends BaseComponent {
         this.setState({
             provinceValue: provinceName,
             cityValue: '请选择所在地区',
-            countyValue: '请选择所在地区',
+            countyValue: '',
             cityIndex: 0,
             countyIndex: 0,
             cityData: [],

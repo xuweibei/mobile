@@ -34,7 +34,7 @@ export default class importSum extends BaseComponent {
     state = {
         newsPopup: false, //支付信息是否弹窗
         pwsPopup: false, //支付密码是否弹窗
-        money: 0, //转出金额
+        money: null, //转出金额
         sValueName: ['0'], //转出方式名字 默认cam转出
         uid: '', //获取uid
         shopName: '', //获取名称
@@ -67,6 +67,7 @@ export default class importSum extends BaseComponent {
 
     //转出金额
     getInput = (res) => {
+        console.log(res);
         this.setState({
             money: res
         });
@@ -76,6 +77,8 @@ export default class importSum extends BaseComponent {
     sumbit = () => {
         const {money} = this.state;
         if (!money) {
+            showInfo(Form.No_Money);
+        } else if (!/^[0-9]+(.[0-9]{1,2})?$/.test(money)) {
             showInfo(Form.No_Money);
         } else {
             this.setState({
@@ -205,6 +208,7 @@ export default class importSum extends BaseComponent {
                             <GeisInputItem
                                 type="float"
                                 clear
+                                value={money}
                                 placeholder="请输转出金额"
                                 onChange={(res) => this.getInput(res)}
                             />
