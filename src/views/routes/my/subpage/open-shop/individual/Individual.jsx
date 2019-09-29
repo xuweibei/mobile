@@ -167,6 +167,7 @@ class Individual extends BaseComponent {
 
     //设置城市
     setCity = str => {
+        console.log(str);
         this.setState({
             urban: str,
             county: ''
