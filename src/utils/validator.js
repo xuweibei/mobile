@@ -158,6 +158,8 @@ export function isEmpty(value, message, callback) {
     const type =  Object.prototype.toString.call(value);
     let arrayVerify = false;
     let objectVerify = false;
+    //判断数字
+    const numVerify = type.indexOf('Number') !== -1 && value;
     //判断字符串
     const stringVerify = type.indexOf('String') !== -1 && value;
     //判断bool型
@@ -170,7 +172,7 @@ export function isEmpty(value, message, callback) {
     if (type.indexOf('Object') !== -1) {
         objectVerify = JSON.stringify(value) !== '{}';
     }
-    if (stringVerify || arrayVerify || objectVerify || boolVerify) {
+    if (stringVerify || arrayVerify || objectVerify || boolVerify || numVerify) {
         return true;
     }
     callback(VERIFY_FAILED);

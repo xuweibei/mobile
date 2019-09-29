@@ -185,6 +185,7 @@ class IndividualTwo extends BaseComponent {
 
     //提交用户信息
     gotoNext = () => {
+        // this.setState({editModal: 'three'});
         const {form: {validateFields}} = this.props;
         validateFields({first: true, force: true}, (error, val) => {
             if (!error) {
