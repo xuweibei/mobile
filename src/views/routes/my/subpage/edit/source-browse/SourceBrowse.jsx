@@ -19,6 +19,19 @@ class SourceBrowse extends BaseComponent {
         avatarUrl: decodeURI(getUrlParam('avatarUrl', encodeURI(this.props.location.search)))
     }
 
+    componentWillReceiveProps(next) {
+        const timerNext = decodeURI(getUrlParam('time', encodeURI(next.location.search)));
+        const timer = decodeURI(getUrlParam('time', encodeURI(this.props.location.search)));
+        if (hybrid && timer && timerNext !== timer) {
+            this.setState({
+                nickname: decodeURI(getUrlParam('nickname', encodeURI(next.location.search))),
+                phone: decodeURI(getUrlParam('phone', encodeURI(next.location.search))),
+                uid: decodeURI(getUrlParam('uid', encodeURI(next.location.search))),
+                avatarUrl: decodeURI(getUrlParam('avatarUrl', encodeURI(next.location.search)))
+            });
+        }
+    }
+
     //重新扫码
     sureSaoAgain = () => {
         if (hybrid) {

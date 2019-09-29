@@ -67,6 +67,7 @@ export default class importSum extends BaseComponent {
 
     //转出金额
     getInput = (res) => {
+        console.log(res);
         this.setState({
             money: res
         });

@@ -332,18 +332,14 @@ class ListDetails extends BaseComponent {
                                         <span className="order-time-left">下单时间：</span>
                                         <span className="order-time-center">{canInfo.crtdate}</span>
                                     </div>
-                                    {
-                                        Number(canInfo.pay_date) ? (
-                                            <div className="payment-time">
-                                                <span className="payment-time-left">支付时间：</span>
-                                                <span className="payment-time-center">{canInfo.pay_date}</span>
-                                            </div>
-                                        ) : ''
-                                    }
-                                    {/* <div className="order-remarks">
+                                    <div className="payment-time">
+                                        <span className="payment-time-left">支付时间：</span>
+                                        <span className="payment-time-center">{canInfo.pay_date}</span>
+                                    </div>
+                                    <div className="order-remarks">
                                         <span className="order-remarks-left">订单备注：</span>
-                                        <span>麻烦打包好，仔细检查物品</span>
-                                    </div> */}
+                                        <span>{canInfo.remarks}</span>
+                                    </div>
                                 </div>
                             </div>
 
