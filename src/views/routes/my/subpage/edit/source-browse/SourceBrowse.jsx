@@ -19,6 +19,19 @@ class SourceBrowse extends BaseComponent {
         avatarUrl: decodeURI(getUrlParam('avatarUrl', encodeURI(this.props.location.search)))
     }
 
+    componentWillReceiveProps(next) {
+        const timerNext = decodeURI(getUrlParam('time', encodeURI(next.location.search)));
+        const timer = decodeURI(getUrlParam('time', encodeURI(this.props.location.search)));
+        if (hybrid && timer && timerNext !== timer) {
+            this.setState({
+                nickname: decodeURI(getUrlParam('nickname', encodeURI(next.location.search))),
+                phone: decodeURI(getUrlParam('phone', encodeURI(next.location.search))),
+                uid: decodeURI(getUrlParam('uid', encodeURI(next.location.search))),
+                avatarUrl: decodeURI(getUrlParam('avatarUrl', encodeURI(next.location.search)))
+            });
+        }
+    }
+
     //重新扫码
     sureSaoAgain = () => {
         if (hybrid) {
@@ -38,13 +51,12 @@ class SourceBrowse extends BaseComponent {
             .subscribe(res => {
                 if (res.status === 0) {
                     showInfo(Feedback.Bind_Success);
-                    //源头uid绑定成功了，将设置页面的redux清除，以便重新请求
-                    this.props.delEdit();
                     if (hybrid && appHistory.length === 0) {
                         native('native');
                     } else {
                         appHistory.go(-3);
                     }
+                    this.props.getUserInfo();
                 }
             });
     }
@@ -87,7 +99,7 @@ class SourceBrowse extends BaseComponent {
 }
 
 const mapDispatchToProps = {
-    delEdit: actionCreator.delEdit
+    getUserInfo: actionCreator.getUserInfo
 };
 
 export default connect(null, mapDispatchToProps)(SourceBrowse);

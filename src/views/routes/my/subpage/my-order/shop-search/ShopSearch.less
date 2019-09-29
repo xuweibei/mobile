@@ -100,6 +100,7 @@
         z-index:3;
         .am-tabs-default-bar-tab{
             border-right:0;
+            color: @darker-black;
         }
         .shop-list{
             background-color: @back-color;
@@ -227,8 +228,9 @@
                 flex: 1;
                 padding-top: 14px;
                 box-sizing: border-box;
-                height: 170px;
+                height: auto;
                 .goods-desc {
+                    height: 67px;
                     font-size: 30px;
                     display: flex;
                     justify-content: space-between;
@@ -320,13 +322,13 @@
         }
     }
     .buttons{
-        margin-top: 65px;
+        //margin-top: 65px;
         display: flex;
         justify-content: flex-end;
         .button-more{
             position: absolute;
             top:0;
-            left:10px;
+            left:-40px;
             border:none;
             span{
                 display: block;
@@ -348,7 +350,7 @@
         div{
             min-width: 140px;
             height: 50px;
-            border: 1px solid @dark-gray;
+            border: 2px solid @dark-gray;
             border-radius: 25px;
             line-height: 50px;
             padding:0 20px;

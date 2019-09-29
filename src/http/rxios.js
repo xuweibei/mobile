@@ -24,7 +24,7 @@ axios.interceptors.request.use(
         const state = store.getState();
         const userToken = state.get('base').get(LOCALSTORAGE.USER_TOKEN);
         if (!config.data) config.data = {};
-        config.data.userToken = userToken || (getValue(LOCALSTORAGE.USER_TOKEN) === 'null' ? null : getValue(LOCALSTORAGE.USER_TOKEN));
+        config.data.userToken = userToken || (getValue(LOCALSTORAGE.USER_TOKEN) === 'null' ? '' : getValue(LOCALSTORAGE.USER_TOKEN));
         return config;
     },
     error => {
@@ -40,7 +40,7 @@ axios.interceptors.response.use(
                 removeValue(LOCALSTORAGE.USER_TOKEN); // 清除token,localstorage
                 store.dispatch(actionCreator.setUserToken('')); // 清除redux的userToken
                 //重定向到原生登录页
-                native('loginoutCallback');
+                native('loginout');
             } else {
                 appHistory.push('/login');
             }

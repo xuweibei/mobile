@@ -12,6 +12,13 @@
         //bottom: 0;
         background: @white;
         width: 100%;
+        .consignee {
+            .hairline('bottom', @to-light-gray);
+            .am-input-label {
+                width: auto;
+                margin-right: 0;
+            }
+        }
     }
     .add-input{
         padding:0 0.3rem !important;
@@ -57,11 +64,19 @@
         vertical-align: auto !important;
     }
     .receiving-address {
+        padding: 0 30px;
+        border-bottom: 2px solid @to-light-gray;
         .am-input-label, .am-input-label-5{
             display: flex;
             justify-content: space-between;
             width: 100% !important;
             margin-right: 0px;
+            .regional {
+                text-align: left;
+                .gray-3 {
+                    margin: 0 30px 0 0;
+                }
+            }
         }
     }
     .am-list-line{
@@ -94,6 +109,9 @@
         min-height: 0;
         padding-left: 0;
     }
+    .am-list-item::after {
+        height: 0!important;
+    }
     .aroundBlank {
         margin: 0 30px;
     }
@@ -111,20 +129,36 @@
     /*.am-list-item .am-input-control input {
         text-align: right;
     }*/
-   /* .am-list-item .am-input-control input::-webkit-input-placeholder {
-        text-align: right;
-    }*/
+    .am-list-item .am-input-control input::placeholder {
+        line-height: 46px;
+    }
     .am-textarea-control textarea {
         padding: 30px 0 30px;
         line-height: 40px!important;
-        font-size: @font-size-30;
+        font-size: @font-size-28;
         height: 100% !important;
     }
     .default {
         display: flex;
         justify-content: flex-start;
         //margin-top: 12px;
-        .am-list-thumb {
+        line-height: 100px;
+        padding: 0 30px;
+        .default-icon {
+            font-size: @font-size-30;
+            color: @darker-black;
+        }
+        .default-icon:before {
+            content: '\E611';
+            font-size: @font-size-36;
+            color: #CCCCCC;
+            vertical-align: bottom;
+            margin-right: 20px;
+        }
+        .default-red:before {
+            color: @fiery-red;
+        }
+        /*.am-list-thumb {
             margin-right: 50px;
             .am-checkbox {
                 height: 100px!important;
@@ -137,7 +171,7 @@
         }
         .am-list-line::after {
             height: 0!important;
-        }
+        }*/
     }
     .am-list-body {
         border: none!important;

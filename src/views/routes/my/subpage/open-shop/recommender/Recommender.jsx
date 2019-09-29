@@ -7,13 +7,16 @@ import {List, InputItem} from 'antd-mobile';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 
 const {urlCfg} = Configs;
-const {appHistory, showInfo} = Utils;
+
+const {appHistory, showInfo, native, systemApi: {setValue}} = Utils;
+const hybrid = process.env.NATIVE;
 export default class Recommender extends BaseComponent {
     constructor(props, context) {
         super(props, context);
     }
 
     state = {
+        height: document.documentElement.clientHeight - (window.isWX ? window.rem * null : window.rem * 1.08), //判断是否使用微信登入
         UID: '',
         phone: '',
         verification: false
@@ -45,7 +48,6 @@ export default class Recommender extends BaseComponent {
     //验证
     verification = () => {
         const {UID, phone} = this.state;
-        console.log(UID);
         const myPhone = Number(phone.replace(/\s+/g, ''));
         this.fetch(urlCfg.setparent, {data: {
             no: Number(UID),
@@ -58,17 +60,45 @@ export default class Recommender extends BaseComponent {
                     this.setState({
                         verification: true
                     });
+                    this.shopInfo();
                 }
             }
         });
     }
 
+    goBack = () => {
+        appHistory.goBack();
+    }
+
+    shopInfo = () => {
+        this.fetch(urlCfg.applyForRight).subscribe(res => {
+            if (res && res.status === 0) {
+                setValue('shopStatus', JSON.stringify(res.data.status));
+            }
+        });
+    }
+
+    //点击扫一扫
+    nativeSaoMa = () => {
+        if (hybrid) {
+            const obj = {
+                pay: urlCfg.importSum,
+                write: urlCfg.consumer,
+                source: urlCfg.sourceBrowse
+            };
+            native('qrCodeScanCallback', obj);
+        }
+    }
+
     render() {
+        const {height} = this.state;
         return (
             <div data-component="recommender" data-role="page" className="recommender">
                 <AppNavBar title="确认推荐人"/>
-                <div className="recommender-box">
+                <div style={{height: height}} className="recommender-box">
                     <List>
+                        <div className="survey-icon icon" onClick={this.nativeSaoMa}>1.扫码确认</div>
+                        <div className="manual">2.手动输入确认</div>
                         <InputItem
                             clear
                             type="number"
@@ -92,7 +122,7 @@ export default class Recommender extends BaseComponent {
                         <div className="large-button general" onClick={this.verification}>验证</div>
                     </div>
                     <div className="next">
-                        <div className="normal-button general">取消</div>
+                        <div className="normal-button general" onClick={this.goBack}>取消</div>
                         <div className="normal-button important" onClick={this.routeTo}>下一步</div>
                     </div>
                 </div>

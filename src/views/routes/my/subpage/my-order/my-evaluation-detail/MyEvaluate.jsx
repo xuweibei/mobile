@@ -199,6 +199,7 @@ export default class MyEvaluate extends BaseComponent {
     evaluationSuccess = () => {
         const {evaluate, estimate, discuss, anonymous, shop, logistics, files, selfHelp} = this.state;
         const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
+        console.log(files, '接口螺丝刀讲课费');
         //判断店铺 物流是否评分
         if (!shop) {
             showInfo(Form.No_EvaluateShop);
@@ -228,22 +229,24 @@ export default class MyEvaluate extends BaseComponent {
                         dropByCacheKey('OrderPage');
                         setTimeout(() => { appHistory.replace('/evaluationSuccess') }, 1000);
                     } else {
-                        for (let r = 0; r < files[i].length; r++) {
-                            this.fetch(urlCfg.picSave, {data: {
-                                type: 1,
-                                id: res.id,
-                                ix: r,
-                                num: files[i].length,
-                                filex: encodeURIComponent(files[i][r].url),
-                                file: encodeURIComponent(files[i][r].urlB)
-                            }}).subscribe((resr) => {
-                                if (resr.status === 0) {
-                                    showSuccess(Feedback.Evaluate_Success);
-                                    dropByCacheKey('OrderPage');
-                                    setTimeout(() => { appHistory.replace('/evaluationSuccess') }, 1000);
-                                }
+                        files.forEach(data => {
+                            data.forEach(value => {
+                                value.urlB = encodeURIComponent(value.urlB);
+                                delete value.url;
                             });
-                        }
+                        });
+                        console.log(files, '水电费啦就快到');
+                        this.fetch(urlCfg.picSave, {data: {
+                            type: 1,
+                            id: res.id,
+                            file: files[i]
+                        }}).subscribe((resr) => {
+                            if (resr.status === 0) {
+                                showSuccess(Feedback.Evaluate_Success);
+                                dropByCacheKey('OrderPage');
+                                setTimeout(() => { appHistory.replace('/evaluationSuccess') }, 1000);
+                            }
+                        });
                     }
                 }
             });

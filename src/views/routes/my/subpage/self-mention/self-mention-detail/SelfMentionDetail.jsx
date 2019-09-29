@@ -9,7 +9,7 @@ import {showFail, showInfo} from '../../../../../../utils/mixin';
 import BaseComponent from '../../../../../../components/base/BaseComponent';
 
 const {urlCfg} = Configs;
-const {validator, appHistory, getUrlParam, systemApi: {setValue, getValue, removeValue}, getShopCartInfo} = Utils;
+const {validator, appHistory, getUrlParam, systemApi: {setValue, getValue, removeValue}, getShopCartInfo, native} = Utils;
 const hybrid = process.env.NATIVE;
 
 class ReDetail extends BaseComponent {
@@ -35,20 +35,49 @@ class ReDetail extends BaseComponent {
     }
 
     componentDidMount() {
-        const {setOrder, arr} = this.props;
-        const that = this;
+        const {setOrder, location} = this.props;
+        const timer = decodeURI(getUrlParam('time', encodeURI(location.search)));
         const obj = {'': ''};
         if (hybrid) {
-            if (arr.length > 0) {
-                that.getOrderSelf();
+            if (timer === 'null') { //非购物车进入时
+                this.getOrderSelf();
             } else { //这里的情况是，原生那边跳转的时候，需要处理一些问题，所以就购物车过来的时候，存数据，这边取数据
                 getShopCartInfo('getSelfMentio', obj).then(res => {
                     setOrder(res.data.arr);
-                    that.getOrderSelf();
+                    this.getOrderSelf();
                 });
             }
         } else {
             this.getOrderSelf();
+        }
+    }
+
+    componentWillReceiveProps(next) {
+        const {setOrder, location} = this.props;
+        const timerNext = decodeURI(getUrlParam('time', encodeURI(next.location.search)));
+        const timer = decodeURI(getUrlParam('time', encodeURI(location.search)));
+        if ((timerNext !== timer) && hybrid) {
+            this.setState({
+                modal: false, //自提弹窗是否弹出
+                currentTab: 0, //当前自提日期的key
+                valueItem: 0, //当前自提时间的key
+                value: '请选择', //当前自提时间
+                rdata: [{list: []}], //获取所有自提时间
+                tabsr: [], //获取所有自提日期
+                radioTreaty: false, //自提协议是否勾选
+                OrderSelf: [], //获取自提数据
+                alertPhone: 0, //自提手机号
+                showPhone: true, //是否显示修改自提手机号
+                goodsArr: [], //订单商品遍历
+                shopdata: [], //店铺
+                address: '', //门店地址
+                textarea: '' //获取备注信息
+            }, () => {
+                getShopCartInfo('getSelfMentio', {'': ''}).then(res => {
+                    setOrder(res.data.arr);
+                    this.getOrderSelf();
+                });
+            });
         }
     }
 
@@ -210,7 +239,10 @@ class ReDetail extends BaseComponent {
     }
 
     goBackModal = () => {
-        if (appHistory.length() === 0) {
+        const timer = decodeURI(getUrlParam('time', encodeURI(this.props.location.search)));
+        if (timer) {
+            native('goBack');
+        } else if (appHistory.length() === 0) {
             appHistory.replace('/selfMention/yw');
         } else {
             appHistory.goBack();

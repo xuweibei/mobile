@@ -92,6 +92,7 @@ class Register extends BaseComponent {
         });
     }
 
+    //获取验证码
     getCode = () => {
         const {resetTime} = this.state;
         const phone = validator.wipeOut(this.state.phone);
@@ -155,7 +156,6 @@ class Register extends BaseComponent {
                     this.state.userNum && this.state.userNum.map((item, index) => (
                         <List.Item onClick={() => this.saveUser(item, index)} key={item.no.toString()}>
                             <img src={item.avatarUrl} className="logo" alt=""/>
-                            {/*FIXME: 不要用img标签  已完成*/}
                             <div className="icon-logo"/>
                             <p className="user-info"><span>UID:</span>{item.no}</p>
                             <Icon type={this.state.currentIndex === index ? 'check-circle' : 'check-circle-o'} size="xxs"/>
@@ -201,8 +201,12 @@ class Register extends BaseComponent {
     login = () => {
         const phone = validator.wipeOut(this.state.phone);
         const code = this.state.code;
-        if (!phone && !code) {
+        if (!phone) {
             showInfo(Form.Phone_Err);
+            return;
+        }
+        if (!code) {
+            showInfo(Form.Code_Error);
             return;
         }
         const {verification} = this.state;
@@ -527,9 +531,6 @@ class Register extends BaseComponent {
                                                 >{text}
                                                 </span>
                                             </Button>
-                                            // <VerBtn
-                                            //     getCode={this.getCode}
-                                            // />
                                         )
                                     }
                                 </div>

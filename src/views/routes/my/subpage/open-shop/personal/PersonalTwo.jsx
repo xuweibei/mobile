@@ -36,6 +36,7 @@ class PersonalTwo extends BaseComponent {
     };
 
     componentDidMount() {
+        console.log('第er步');
         this.getUpdateAudit();
     }
 
@@ -190,20 +191,36 @@ class PersonalTwo extends BaseComponent {
         }}).subscribe(res => {
             if (res && res.status === 0) {
                 arr[index] = true;
-                if (res.data.name && res.data.id_num) {
-                    this.setState({
-                        flagArr: arr,
-                        userName: res.data.name,
-                        ID: res.data.id_num
-                    });
+                this.setState({
+                    flagArr: arr
+                });
+                if (res.data.pic_info && res.data.pic_info.status === 0) {
+                    if (res.data.name && res.data.id_num) {
+                        this.setState({
+                            userName: res.data.name,
+                            ID: res.data.id_num
+                        });
+                    } else if (res.data.exp) {
+                        this.setState({
+                            date: res.data.exp
+                        });
+                    }
+                    showInfo(Form.Success_Lic_Info);
+                } else if (res.data.pic_info && res.data.pic_info.status === 1) {
+                    if (ix === 0) {
+                        this.setState({
+                            file: [],
+                            userName: '',
+                            idCard: ''
+                        });
+                    } else if (ix === 1) {
+                        this.setState({
+                            file2: [],
+                            validDate: ''
+                        });
+                    }
+                    showFail(Form.Fail_Lic_Info);
                 }
-                if (res.data.exp) {
-                    this.setState({
-                        flagArr: arr,
-                        date: res.data.exp
-                    });
-                }
-                showInfo('上传成功');
             }
         });
     }
@@ -217,9 +234,9 @@ class PersonalTwo extends BaseComponent {
                     res.data.img.forEach(item => {
                         arrInfo.push({imgB: item[0], imgS: item[1], id: new Date()});
                     });
-                    this.setState((proveState) => ({
+                    this.setState({
                         file: arrInfo
-                    }));
+                    });
                     this.pasGass(arrInfo, 0, 0);
                 });
             } else if (type === 'back') {
@@ -227,9 +244,9 @@ class PersonalTwo extends BaseComponent {
                     res.data.img.forEach(item => {
                         arrInfo.push({imgB: item[0], imgS: item[1], id: new Date()});
                     });
-                    this.setState((proveState) => ({
+                    this.setState({
                         file2: arrInfo
-                    }));
+                    });
                     this.pasGass(arrInfo, 1, 1);
                 });
             } else if (type === 'handle') {
@@ -237,9 +254,9 @@ class PersonalTwo extends BaseComponent {
                     res.data.img.forEach(item => {
                         arrInfo.push({imgB: item[0], imgS: item[1], id: new Date()});
                     });
-                    this.setState((proveState) => ({
+                    this.setState({
                         file3: arrInfo
-                    }));
+                    });
                     this.pasGass(arrInfo, 4, 2);
                 });
             }
@@ -383,8 +400,8 @@ class PersonalTwo extends BaseComponent {
                                                      {
                                                          file && file.map(item => (
                                                              <li id={item.id}>
-                                                                 <span className="delete-icon" onClick={() => this.deleteImg('forward', item.id)}>×</span>
-                                                                 <img src={item.imgS || item.url}/>
+                                                                 {/* <span className="delete-icon" onClick={() => this.deleteImg('forward', item.id)}>×</span> */}
+                                                                 <img onClick={() => this.addPictrue('forward')} src={item.imgS || item.url}/>
                                                              </li>
                                                          ))
                                                      }
@@ -433,8 +450,8 @@ class PersonalTwo extends BaseComponent {
                                                      {
                                                          file2 && file2.map(item => (
                                                              <li id={item.id}>
-                                                                 <span className="delete-icon" onClick={() => this.deleteImg('back', item.id)}>×</span>
-                                                                 <img src={item.imgS || item.url}/>
+                                                                 {/* <span className="delete-icon" onClick={() => this.deleteImg('back', item.id)}>×</span> */}
+                                                                 <img onClick={() => this.addPictrue('back')} src={item.imgS || item.url}/>
                                                              </li>
                                                          ))
                                                      }
@@ -480,15 +497,15 @@ class PersonalTwo extends BaseComponent {
                                                      {
                                                          file3 && file3.map(item => (
                                                              <li id={item.id}>
-                                                                 <span className="delete-icon" onClick={() => this.deleteImg('handle', item.id)}>×</span>
-                                                                 <img src={item.imgS || item.url}/>
+                                                                 {/* <span className="delete-icon" onClick={() => this.deleteImg('handle', item.id)}>×</span> */}
+                                                                 <img onClick={() => this.addPictrue('handle')} src={item.imgS || item.url}/>
                                                              </li>
                                                          ))
                                                      }
                                                      {
                                                          file3.length === 0 && (
                                                              <li className="imgAdd-button" onClick={() => this.addPictrue('handle')}>
-                                                                 <span className="imgAdd-icon">+</span>
+                                                                 <span className="imgAdd-icon">1+</span>
                                                              </li>
                                                          )
                                                      }

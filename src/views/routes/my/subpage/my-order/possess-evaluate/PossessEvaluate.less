@@ -201,6 +201,7 @@
     .am-tabs-default-bar-underline {
         border: 4px solid @fiery-red;
         margin-bottom: -1px;
+        z-index: 1;
     }
     .am-tabs-pane-wrap {
         overflow: hidden;
@@ -228,6 +229,19 @@
                 color:#FF2D51;
             }
         }
+    }
+
+    .am-list-view-scrollview {
+        .am-list-body {
+            background-color: transparent;
+        }
+        .am-list-body::before, .am-list-body::after {
+            height: 0!important;
+        }
+    }
+
+    .have-evaluation {
+        margin-bottom: 20px;
     }
     .discuss {
         padding: 44px 30px 25px;
@@ -337,13 +351,14 @@
         }
     }
     .frequency {
-        height: 50px;
-        line-height: 48px;
+        //height: 50px;
+        line-height: 40px;
+        //line-height: 48px;
         display: flex;
         justify-content: space-between;
         color: @gray;
         font-size: @font-size-24;
-        padding-bottom:80px;
+        padding-bottom:40px;
         span {
             margin-right: 20px;
         }
@@ -352,6 +367,9 @@
             text-align: center;
             //padding: 0 35px;
             color: @fiery-red;
+            line-height: 30px;
+            border: 2px solid;
+            padding: 4px 20px;
         }
         .business{
             height:100px;

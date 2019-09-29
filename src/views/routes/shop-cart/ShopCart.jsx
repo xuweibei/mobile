@@ -13,7 +13,7 @@ import Sku from '../../common/sku/Sku';
 import './shopCart.less';
 
 const {urlCfg} = Configs;
-const {appHistory, showInfo, showSuccess, native, systemApi: {setValue}} = Utils;
+const {appHistory, showInfo, showSuccess, native, systemApi: {setValue}, getUrlParam} = Utils;
 const {MESSAGE: {Form, Feedback}, FIELD} = Constants;
 
 const hybird = process.env.NATIVE;
@@ -49,6 +49,14 @@ class ShopCart extends BaseComponent {
     componentDidMount() {
         const {showMenu} = this.props;
         showMenu(false);
+    }
+
+    componentWillReceiveProps(next) {
+        const timerNext = decodeURI(getUrlParam('time', encodeURI(next.location.search)));
+        const timer = decodeURI(getUrlParam('time', encodeURI(this.props.location.search)));
+        if (timer !== timerNext) {
+            this.changeCart(this.state.currentIndex);
+        }
     }
 
     componentWillUnmount() {
@@ -299,6 +307,7 @@ class ShopCart extends BaseComponent {
             setIds(cartArr);
             if (hybird) { ////这里的情况是，原生那边跳转的时候，需要处理一些问题，所以就购物车过来的时候，存数据，这边取数据
                 const obj = {arr, cartArr};//储存redux
+                console.log(obj, '线上储存');
                 native('settlement', obj);//app点击结算的时候
             } else {
                 appHistory.push(`/appendorder?source=${1}`);
@@ -362,9 +371,9 @@ class ShopCart extends BaseComponent {
         }));
         let price = 0;
         for (let i = 0; i < arr.length; i++) {
-            price += arr[i] * num[i];
+            price += ((arr[i] * 100)  * (num[i] * 100));
         }
-        return price;
+        return (price / 10000) === 0 ? 0 : `￥${price / 10000}`;
     };
 
     //总共几件商品
@@ -570,10 +579,10 @@ class ShopCart extends BaseComponent {
         let num = 0;
         valid[index].data.forEach(item => {
             if (item.select === true) {
-                num += Number(item.deposit) * Number(item.num);
+                num += (Number(item.deposit) *  100) * (Number(item.num) * 100);
             }
         });
-        return num;
+        return (num / 10000);
     }
 
     // //自提总价
@@ -583,11 +592,11 @@ class ShopCart extends BaseComponent {
         let price = 0;
         valid[index].data.forEach(item => {
             if (item.select === true) {
-                price += Number(item.price) * Number(item.num);
+                price += (Number(item.price) * 100) * (Number(item.num) * 100);
                 // selfPrice += Number(item.price) * Number(item.num);
             }
         });
-        return price;
+        return (price / 10000);
     }
 
     //自提商品总数量
@@ -873,7 +882,7 @@ class ShopCart extends BaseComponent {
                         </div>
                         {
                             hide && (
-                                <div className="shop-bottom">
+                                <div className="shop-bottom" style={hybird && {bottom: '0px'}}>
                                     <div className="bottom-left">
                                         <div
                                             className={`icon ${totalSelect ? 'icon-select-z' : 'icon-unselect-z'}`}

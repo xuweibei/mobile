@@ -47,12 +47,12 @@
         .hot-content {
             padding: 0 21px 19px;
             p {
-                font-size: @font-size-30;
                 color: #333;
                 margin-bottom: 9px;
                 font-weight: bold;
-                height: 70px;
-                .TextareaOverflow(@num:2)
+                //height: 63px;
+                .TextareaOverflow(@num:2);
+                font-size: @font-size-30;
             }
             .tally {
                 padding: 5px 12px;
@@ -62,15 +62,17 @@
                 border-radius: 50px;
                 font-family:PingFang-SC-Bold;
                 font-weight:bold;
+                display: inline-block;
                 margin-bottom: 25px;
             }
             .original {
                 font-size: @font-size-20;
-                margin-bottom: 8px;
+                //margin-bottom: 8px;
                 color: @gray;
-                margin-top: 25px;
+                //margin-top: 25px;
             }
             .current {
+                margin-top: 8px;
                 display: flex;
                 justify-content: space-between;
                 font-size: @font-size-20;

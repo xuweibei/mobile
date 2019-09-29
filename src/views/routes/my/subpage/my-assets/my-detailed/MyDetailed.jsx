@@ -59,33 +59,33 @@ export default class MyDetailed extends BaseComponent {
         return (
             <div className="my-detailed">
                 <AppNavBar title="明细"/>
-                <div className="detailed-wrap">
-                    <div className="detailed-top">
-                        <div className="detailed-top-left">
-                            <Picker
-                                data={seasons}
-                                cascade={false}
-                                title="选择月份"
-                                onChange={data => this.detailedTimer(data)}
-                                cols={2}
-                            >
-                                <p className="picker-timer">
-                                    <div className="timer-year">{year} 年</div>
-                                    <div className="timer-month-bot"><span className="timer-month">{month}</span>月<span className="icon icon-right"/></div>
-                                </p>
-                            </Picker>
+                <div className="detailed-top">
+                    <div className="detailed-top-left">
+                        <Picker
+                            data={seasons}
+                            cascade={false}
+                            title="选择月份"
+                            onChange={data => this.detailedTimer(data)}
+                            cols={2}
+                        >
+                            <p className="picker-timer">
+                                <div className="timer-year">{year} 年</div>
+                                <div className="timer-month-bot"><span className="timer-month">{month}</span>月<span className="icon icon-right"/></div>
+                            </p>
+                        </Picker>
+                    </div>
+                    <div className="detailed-top-right">
+                        <div className="collections">
+                            <div className="revenue-expend">收入</div>
+                            <div>+<span className="revenue-money">{income || 0}</span></div>
                         </div>
-                        <div className="detailed-top-right">
-                            <div className="collections">
-                                <div className="revenue-expend">收入</div>
-                                <div>+<span className="revenue-money">{income || 0}</span></div>
-                            </div>
-                            <div className="collections expend-collections">
-                                <div className="revenue-expend">支出</div>
-                                <div>-<span className="revenue-money">{expend || 0}</span></div>
-                            </div>
+                        <div className="collections expend-collections">
+                            <div className="revenue-expend">支出</div>
+                            <div>-<span className="revenue-money">{expend || 0}</span></div>
                         </div>
                     </div>
+                </div>
+                <div className="detailed-wrap">
                     {definiteList && definiteList.length > 0 ? (
                         <div className="detailed-bottom">
                             {definiteList.map(item => (

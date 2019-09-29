@@ -20,7 +20,6 @@ const tabs = [
     {title: '已完成'},
     {title: '售后'}
 ];
-
 class ReDetail extends BaseComponent {
     state ={
         refreshing: false, //是否在下拉刷新时显示指示器
@@ -37,7 +36,7 @@ class ReDetail extends BaseComponent {
     }
 
     componentWillMount() {
-        const num = this.props.orderStatus || this.statusChoose(this.props.location.pathname.split('/')[2]);
+        const num = this.statusChoose(this.props.location.pathname.split('/')[2]);
         this.init(num);
     }
 
@@ -49,10 +48,21 @@ class ReDetail extends BaseComponent {
     }
 
     componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方
-        if (this.tabBtn) return;
-        const num = this.statusChoose(nextProps.location.pathname.split('/')[2]);
-        if (num !== this.props.orderStatus) {
-            this.init(num);
+        const numNext = this.statusChoose(nextProps.location.pathname.split('/')[2]);
+        const numPrev = this.statusChoose(this.props.location.pathname.split('/')[2]);
+        console.log(numNext, numPrev, '圣诞节快乐风和ijk');
+        if (hybrid && (numNext !== numPrev)) {
+            this.setState({
+                status: numNext
+            }, () => {
+                this.init(numNext);
+            });
+        } else if (numNext !== numPrev) {
+            this.setState({
+                status: numNext
+            }, () => {
+                this.init(numNext);
+            });
         }
     }
 
@@ -60,8 +70,6 @@ class ReDetail extends BaseComponent {
         this.setState({
             status: num
         }, () => {
-            //储存我的订单的tab状态在哪一个
-            this.props.setOrderStatus(num);
             this.getList();
         });
     }
@@ -109,18 +117,25 @@ class ReDetail extends BaseComponent {
             });
     }
 
+    //线下订单跳转
+    gotoSelfMyOrder=(index) => {
+        const url = new Map([
+            [0, '/selfMention'],
+            [1, '/selfMention/ww'],
+            [2, '/selfMention/yw'],
+            [3, '/selfMention/sh']
+        ]);
+        appHistory.replace(url.get(index));
+    }
+
     //选择列表状态
     tabChange = (data, index) => {
-        this.tabBtn = true;
-        this.props.setOrderStatus(index);
         this.setState({
             page: 1,
             hasMore: false,
-            pageCount: -1,
-            status: index
+            pageCount: -1
         }, () => {
-            this.tabBtn = false;
-            this.getList();
+            this.gotoSelfMyOrder(index);
         });
     }
 
@@ -285,8 +300,6 @@ class ReDetail extends BaseComponent {
         } else {
             appHistory.goBack();
         }
-        //清除订单tab的状态
-        this.props.setOrderStatus('');
     }
 
     render() {
@@ -350,7 +363,7 @@ class ReDetail extends BaseComponent {
                         {item.is_shoper === 0 && (item.status === '1' || item.return_status === '1') && (
                             <div className="buttons">
                                 {!item.return_status && (
-                                    <div className="evaluate-button" onClick={(e) => this.serviceRefund(e, item.id)}>退款</div>
+                                    <div onClick={(e) => this.serviceRefund(e, item.id)}>退款</div>
                                 )}
                                 <div className="evaluate-button" onClick={(e) => this.skipSelf(e, item.id)}>立即使用</div>
                                 {item.return_status === '1' && (

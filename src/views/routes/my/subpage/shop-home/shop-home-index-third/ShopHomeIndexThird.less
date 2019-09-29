@@ -1,303 +1,289 @@
 @import "~style";
 .shopHomeThirdContent {
+    padding-bottom: 100px;
     .shopHomThirdBanner{
         //width:750px;
         width:100%;
-        height:498px;
         background:#CAD9EC;
         img{
-            display:block;
             width:100%;
-            height:100%;
+        }
+        .am-wingblank.am-wingblank-lg{
+            padding: 0;
+            margin: 0;
         }
     }
-    .hotClassify{
-        ul{
-            display:flex;
-            margin:0 34px;
-            justify-content: space-between;
-            li{
-                width:331px;
-                background:#fff;
-                margin-right:20px;
-                position:relative;
-                img{
-                    width:100%;
-                }
-                &:last-child{
-                    margin-right:0;
-                }
+    // .hotClassify{
+    //     ul{
+    //         display:flex;
+    //         margin:0 34px;
+    //         justify-content: space-between;
+    //         li{
+    //             width:331px;
+    //             background:#fff;
+    //             margin-right:20px;
+    //             position:relative;
+    //             img{
+    //                 width:100%;
+    //             }
+    //             &:last-child{
+    //                 margin-right:0;
+    //             }
 
-                .hotSellInfo{
-                    // position:absolute;
-                    // left:30px;
-                    // bottom:0;
-                    h4{
-                        //font-weight:bold;
-                        font-size:40px;
-                    }
-                    h5{
-                        font-weight:500;
-                        font-size:33px;
-                        span{
-                            display: inline;
-                            background:none;
-                            font-size:15px;
-                            color:#000;
-                            margin-left:10px;
-                        }
-                    }
-                    p{
-                        margin:18px 0 13px 0;
-                        span{
-                            text-decoration: line-through;
-                            font-size:16px;
-                            display: inline;
-                            background:none;
-                            color:#999999;
-                            margin-left:10px;
-                        }
-                    }
-                    span{
-                        display:block;
-                        width:110px;
-                        height:35px;
-                        line-height:35px;
-                        background:#DB3140;
-                        font-size:18px;
-                        color:#fff;
-                        text-align:center;
-                        &.spanBg{
-                            background:#5E7241;
-                        }
-                    }
+    //             .hotSellInfo{
+    //                 // position:absolute;
+    //                 // left:30px;
+    //                 // bottom:0;
+    //                 h4{
+    //                     //font-weight:bold;
+    //                     font-size:40px;
+    //                 }
+    //                 h5{
+    //                     font-weight:500;
+    //                     font-size:33px;
+    //                     span{
+    //                         display: inline;
+    //                         background:none;
+    //                         font-size:15px;
+    //                         color:#000;
+    //                         margin-left:10px;
+    //                     }
+    //                 }
+    //                 p{
+    //                     margin:18px 0 13px 0;
+    //                     span{
+    //                         text-decoration: line-through;
+    //                         font-size:16px;
+    //                         display: inline;
+    //                         background:none;
+    //                         color:#999999;
+    //                         margin-left:10px;
+    //                     }
+    //                 }
+    //                 span{
+    //                     display:block;
+    //                     width:110px;
+    //                     height:35px;
+    //                     line-height:35px;
+    //                     background:#DB3140;
+    //                     font-size:18px;
+    //                     color:#fff;
+    //                     text-align:center;
+    //                     &.spanBg{
+    //                         background:#5E7241;
+    //                     }
+    //                 }
 
-                }
+    //             }
 
-            }
-        }
-    }
-    .classifyEntry{
-        .classifyNav{
-            display:flex;
-            flex-wrap:wrap;
-            justify-content: space-around;
-            margin-bottom: 60px;
-            li{
-                width:134px;
-                height:240px;
-                //background:red;
-                display:flex;
-                flex-wrap:wrap;
-                justify-content: center;
-                align-content:space-around;
-                img{
-                    display:block;
-                    width:134px;
-                    height:134px;
-                    border-radius:134px;
-                    background:#E0E0E0;
-                }
-                p{
-                    font-size:20px;
-                    color:#000000;
-                    &:first-child{
-                        margin-bottom: 15px;
-                    }
-                }
-            }
-        }
-        .imgInfo{
-            .dePrice{
-                span{
-                    display:inline-block;
-                    width:140px;
-                    height:39px;
-                    line-height:39px;
-                    text-align:center;
-                    font-size: 0.3rem;
-                    &:last-child{
+    //         }
+    //     }
+    // }
+    // .classifyEntry{
+    //     .classifyNav{
+    //         display:flex;
+    //         flex-wrap:wrap;
+    //         justify-content: space-around;
+    //         margin-bottom: 60px;
+    //         li{
+    //             width:134px;
+    //             height:240px;
+    //             //background:red;
+    //             display:flex;
+    //             flex-wrap:wrap;
+    //             justify-content: center;
+    //             align-content:space-around;
+    //             img{
+    //                 display:block;
+    //                 width:134px;
+    //                 height:134px;
+    //                 border-radius:134px;
+    //                 background:#E0E0E0;
+    //             }
+    //             p{
+    //                 font-size:20px;
+    //                 color:#000000;
+    //                 &:first-child{
+    //                     margin-bottom: 15px;
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     .imgInfo{
+    //         .dePrice{
+    //             span{
+    //                 display:inline-block;
+    //                 width:140px;
+    //                 height:39px;
+    //                 line-height:39px;
+    //                 text-align:center;
+    //                 font-size: 0.3rem;
+    //             }
+    //             .dePriceActive{
+    //                 color:#000;
+    //                 font-size: 0.3rem;
+    //             }
+    //         }
+    //         p{
+    //             font-size:24px;
+    //             color:#000;
+    //             margin:10px 0 7px 0;
+    //         }
+    //     }
+    //     .classifyEntryCon{
+    //         padding:0 29px;
+    //         .classifyEntryConTop{
+    //             overflow:hidden;
+    //             margin-bottom: 60px;
+    //             display:flex;
+    //             justify-content: space-between;
+    //             .classifyEntryConTopLt{
+    //                 margin-right:58px;
+    //                 width:322px;
+    //                 //height:500px;
+    //                 //background:red;
+    //                 img{
+    //                     display:block;
+    //                     width:322px;
+    //                     height:403px;
+    //                     background:#E0E0E0;
+    //                     margin-bottom:21px;
+    //                 }
+    //             }
+    //             .classifyEntryConTopRt{
+    //                 width:299px;
+    //                 height:500px;
+    //                 //background:red;
+    //                 position:relative;
+    //                 img{
+    //                     display:inline-block;
+    //                     width:148px;
+    //                     height:220px;
+    //                     background:#E0E0E0;
+    //                     position:absolute;
+    //                     top:0;
+    //                     &.act{
+    //                         //margin-left:3px;
+    //                         //margin-top:183px;
+    //                         right:0;
+    //                         top:183px;
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //         .classifyEntryConMid{
+    //             padding:0 40px 0 40px;
+    //             //height:500px;
+    //             background-color: #5598bb;
+    //             overflow: hidden;
+    //             margin-bottom:60px;
+    //             display: flex;
+    //             justify-content: space-between;
+    //             .classifyEntryConMidLt{
+    //                 width:280px;
+    //                 margin-right:15px;
+    //                 .classifyEntryBigImg{
+    //                     width:282px;
+    //                     height:392px;
+    //                     //background:red;
+    //                     // border:3px solid #000;
+    //                     padding-top:55px;
+    //                     padding-left:45px;
+    //                     margin-bottom: 20px;
+    //                 }
+    //                 img{
+    //                     display:block;
+    //                     width:190px;
+    //                     height:283px;
+    //                     background:#E0E0E0;
 
-                    }
-                }
-                .dePriceActive{
-                    color:#000;
-                    font-size: 0.3rem;
-                }
-            }
-            p{
-                font-size:24px;
-                color:#000;
-                margin:10px 0 7px 0;
-            }
-            .price{
-                span{
-                    font-size:30px;
-                    color:#000;
-                    margin-right:13px;
-                    &.act{
-                        font-size:20px;
-                        color:#D4D2D2;
-                        text-decoration:line-through;
-                        //background:#fff;
-                    }
-                }
-            }
-        }
-        .classifyEntryCon{
-            padding:0 29px;
-            .classifyEntryConTop{
-                overflow:hidden;
-                margin-bottom: 60px;
-                display:flex;
-                justify-content: space-between;
-                .classifyEntryConTopLt{
-                    margin-right:58px;
-                    width:322px;
-                    //height:500px;
-                    //background:red;
-                    img{
-                        display:block;
-                        width:322px;
-                        height:403px;
-                        background:#E0E0E0;
-                        margin-bottom:21px;
-                    }
-                }
-                .classifyEntryConTopRt{
-                    width:299px;
-                    height:500px;
-                    //background:red;
-                    position:relative;
-                    img{
-                        display:inline-block;
-                        width:148px;
-                        height:220px;
-                        background:#E0E0E0;
-                        position:absolute;
-                        top:0;
-                        &.act{
-                            //margin-left:3px;
-                            //margin-top:183px;
-                            right:0;
-                            top:183px;
-                        }
-                    }
-                }
-            }
-            .classifyEntryConMid{
-                padding:0 40px 0 40px;
-                //height:500px;
-                background-color: #5598bb;
-                overflow: hidden;
-                margin-bottom:60px;
-                display: flex;
-                justify-content: space-between;
-                .classifyEntryConMidLt{
-                    width:280px;
-                    margin-right:15px;
-                    .classifyEntryBigImg{
-                        width:282px;
-                        height:392px;
-                        //background:red;
-                        // border:3px solid #000;
-                        padding-top:55px;
-                        padding-left:45px;
-                        margin-bottom: 20px;
-                    }
-                    img{
-                        display:block;
-                        width:190px;
-                        height:283px;
-                        background:#E0E0E0;
+    //                 }
+    //             }
+    //             .classifyEntryConMidRt{
+    //                 width:282px;
+    //                 img{
+    //                     display:block;
+    //                     width:280px;
+    //                     height:392px;
+    //                     background:#E0E0E0;
+    //                     margin-bottom: 20px;
+    //                 }
+    //             }
+    //         }
+    //         .classifyEntryConMid2{
+    //             //height:500px;
+    //             overflow:hidden;
+    //             //background:red;
+    //             // padding-left:50px;
+    //             // padding-right:50px;
+    //             margin-bottom: 60px;
+    //             display: flex;
+    //             justify-content: center;
+    //             .classifyEntryBigImg2{
+    //                 width:280px;
+    //                 height:407px;
+    //                 padding-left:22px;
+    //                 margin-bottom: 20px;
+    //                 img{
+    //                     display:block;
+    //                     width:236px;
+    //                     height:407px;
+    //                     background:#E0E0E0;
+    //                 }
 
-                    }
-                }
-                .classifyEntryConMidRt{
-                    width:282px;
-                    img{
-                        display:block;
-                        width:280px;
-                        height:392px;
-                        background:#E0E0E0;
-                        margin-bottom: 20px;
-                    }
-                }
-            }
-            .classifyEntryConMid2{
-                //height:500px;
-                overflow:hidden;
-                //background:red;
-                // padding-left:50px;
-                // padding-right:50px;
-                margin-bottom: 60px;
-                display: flex;
-                justify-content: center;
-                .classifyEntryBigImg2{
-                    width:280px;
-                    height:407px;
-                    padding-left:22px;
-                    margin-bottom: 20px;
-                    img{
-                        display:block;
-                        width:236px;
-                        height:407px;
-                        background:#E0E0E0;
-                    }
+    //             }
+    //             .classifyEntryConMid2Lt{
+    //                 margin-right:18px;
+    //             }
+    //             .classifyEntryConMid2Rt{
+    //                 img{
+    //                     display:block;
+    //                     &:first-child{
+    //                         width:217px;
+    //                         height:180px;
+    //                         background:#E0E0E0;
+    //                         margin-bottom:68px;
+    //                     }
+    //                     &:last-child{
+    //                         width:195px;
+    //                         height:280px;
+    //                         background:#E0E0E0;
+    //                     }
+    //                 }
+    //             }
 
-                }
-                .classifyEntryConMid2Lt{
-                    margin-right:18px;
-                }
-                .classifyEntryConMid2Rt{
-                    img{
-                        display:block;
-                        &:first-child{
-                            width:217px;
-                            height:180px;
-                            background:#E0E0E0;
-                            margin-bottom:68px;
-                        }
-                        &:last-child{
-                            width:195px;
-                            height:280px;
-                            background:#E0E0E0;
-                        }
-                    }
-                }
+    //         }
+    //         .classifyEntryConBot{
+    //             overflow:hidden;
+    //             //padding-right:23px;
+    //             padding-right:28px;
+    //             padding-left:28px;
+    //             margin-bottom:60px;
+    //             display:flex;
+    //             justify-content: space-between;
+    //             .classifyEntryConBotLt{
+    //                 margin-right:18px;
+    //                 img{
+    //                     display:block;
+    //                     width:338px;
+    //                     height:407px;
+    //                     background:#E0E0E0;
+    //                 }
+    //             }
+    //             .classifyEntryConBotRt{
+    //                 img{
+    //                     display:block;
+    //                     width:160px;
+    //                     height:169px;
+    //                     background:#E0E0E0;
+    //                     margin-left:60px;
+    //                     margin-bottom:125px;
+    //                 }
+    //             }
+    //         }
+    //     }
 
-            }
-            .classifyEntryConBot{
-                overflow:hidden;
-                //padding-right:23px;
-                padding-right:28px;
-                padding-left:28px;
-                margin-bottom:60px;
-                display:flex;
-                justify-content: space-between;
-                .classifyEntryConBotLt{
-                    margin-right:18px;
-                    img{
-                        display:block;
-                        width:338px;
-                        height:407px;
-                        background:#E0E0E0;
-                    }
-                }
-                .classifyEntryConBotRt{
-                    img{
-                        display:block;
-                        width:160px;
-                        height:169px;
-                        background:#E0E0E0;
-                        margin-left:60px;
-                        margin-bottom:125px;
-                    }
-                }
-            }
-        }
-
-    }
+    // }
     .comTitle3{
        text-align:center;
        color:#090909;
@@ -318,7 +304,7 @@
    }
    //编辑面板
    .compile-box {
-       margin-right: 48px;
+       //margin-right: 48px;
        //标题
        .compile {
            margin-bottom: 12px;
@@ -333,8 +319,8 @@
                height:215px;
            }
            img{
-               width:100%;			
-               height:100%;		
+               width:100%;
+               height:100%;
                display:block;
            }
            .slick-slide {
@@ -345,41 +331,33 @@
        }
        //标题栏
        .title-bar {
-           color: #ccc;
+           color: #090909;
            text-align: center;
            margin-bottom: 20px;
-           font-size: 16px;
+           //font-size: 16px;
            margin-top: 20px;
-           .products:before ,.products:after {
-               content: '';
-               display: inline-block;
-               border: 0.5px solid #FF6633;
-               width: 30%;
-               vertical-align: super;
+           .headline {
+               font-size: @font-size-30;
+               margin-bottom: 29px;
+               letter-spacing: 22px ;
            }
-           .products:before {
-               margin-right: 15px;
-           }
-           .products:after {
-               margin-left: 15px;
-           }
-           div:nth-child(2) {
-               margin-top: 5px;
-               font-size: 12px;
-               color:#ccc;
+           .fiery {
+               font-size: @font-size-20;
+               margin-bottom: 60px;
+               letter-spacing: 10px ;
            }
        }
        //热门商品
        .hot-box {
-           padding: 0 20px;
+           padding: 0 55px;
            display: flex;
            margin-bottom: 24px;
            .hot {
-               padding: 0 10px;
-               flex: 0.5;
+               padding: 0 20px;
+               flex: 1;
                .commodity-img {
                    width: 100%;
-                   height: 156px;
+                   height: 390px;
                    margin-bottom: 5px;
                    border: 1px solid #ccc;
                    img {
@@ -391,68 +369,48 @@
        }
        .sell-box {
            display: flex;
-           padding: 10px 9px;
-           margin-bottom: 16px;
+           padding: 20px 52px 0 25px;
+           margin-bottom: 30px;
            background: #FF6633;
-           .sell {
-               padding: 0 9px;
-               flex: 0.5;  
-              div:nth-child(1) {
-                  border: 1px solid #ccc;
-                  width: 100%;
-                  height: 156px;
-                  margin-bottom: 5px;
-                  img {
-                      width: 100%;
-                      height: 100%;
-                  }
-              }
+           .headline-price{
+               p{
+                   color: #fff;
+               }
+               span{
+                   color: #fff;
+               }
            }
-           .sell-right {
-               padding: 0 21px 0 9px;
-               flex: 0.5;
+           .sell {
+               padding: 0 22px;
+               flex: 1;
                div:nth-child(1) {
                    border: 1px solid #ccc;
-                   margin-bottom: 5px;
                    width: 100%;
-                   height: 122px;
+                   height: 390px;
+                   margin-bottom: 5px;
                    img {
                        width: 100%;
                        height: 100%;
                    }
                }
            }
-       }
-
-       .sell-one-box {
-           display: flex;
-           padding: 0 12px;
-           margin-bottom: 16px;
-           .sell-one {
-               flex: 0.5;
-               padding: 0 10px;
+           .sell:nth-child(2) {
                div:nth-child(1) {
-                   width: 100%;
-                   height: 156px;
-                   margin-bottom: 5px;
-                   img {
-                       width: 100%;
-                       height: 100%;
-                   }
+                   height: 304px;
                }
            }
        }
 
        .sell-two-box {
            display: flex;
-           padding: 0 12px;
+           padding: 0 31px;
            flex-wrap: wrap;
            .sell-two {
                width: 50%;
-               padding: 0 10px;
+               padding: 0 20px;
                div:nth-child(1) {
                    width: 100%;
-                   height: 156px;
+                   height: 304px;
                    margin-bottom: 5px;
                    img {
                        width: 100%;
@@ -465,24 +423,10 @@
        //公用标题-价格
        .headline-price {
            .headline {
-               font-size: 14px;
-               margin-bottom: 3px;
-           }
-           .price {
-               span:nth-child(1) {
-                   color: #ccc;
-                   font-size: 10px;
-                   margin-right: 10px;
-
-                   span {
-                       font-size: 14px;
-                   }
-               }
-               span:nth-child(2) {
-                   font-size: 10px;
-                   color: #ccc;
-                   text-decoration:line-through
-               }
+               margin-top: 19px;
+               font-size: @font-size-30;
+               margin-bottom: 24px;
+               .TextareaOverflow(@num:1)
            }
        }
    }

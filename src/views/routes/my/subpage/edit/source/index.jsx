@@ -42,11 +42,19 @@ export default class applyService extends BaseComponent {
         }
     }
 
+    goBackModal = () => {
+        if (appHistory.length() === 0) {
+            appHistory.push('/edit');
+        } else {
+            appHistory.goBack();
+        }
+    }
+
     render() {
         const {height} = this.state;
         return (
             <div data-component="apply-service" data-role="page" className="source-index">
-                <AppNavBar title="确认源头UID"/>
+                <AppNavBar goBackModal={this.goBackModal} title="确认源头UID"/>
                 <div style={{height: height}} className="services">
                     {article.map((item, index) => (
                         <div className="service-list" key={index.toString()} onClick={() => this.serviceList(item.value)}>

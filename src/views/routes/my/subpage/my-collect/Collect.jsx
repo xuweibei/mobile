@@ -46,7 +46,7 @@ class Collect extends BaseComponent {
             statusNum: value || 1, //返回时tab状态
             tabKey: value ? value - 1 : 0, //tab状态
             hasMore: true, // 是否有更多数据
-            height: document.documentElement.clientHeight - (window.isWX ? window.rem * 1.98 : window.rem * 1.98)
+            height: document.documentElement.clientHeight - (window.isWX ? window.rem * 1.08 : window.rem * 1.98)
         };
     }
 
@@ -323,6 +323,7 @@ class Collect extends BaseComponent {
     messageMain = (row, row2) => {
         const {tabKey, goodsSource, isEdit, height, shopSource, refreshing, hasMore} = this.state;
         let blockModal = <div/>;
+        console.log(height);
         if (tabKey === 0 ? goodsSource.getRowCount() > 0 : shopSource.getRowCount() > 0) {
             blockModal = (
                 <ListView
@@ -386,7 +387,7 @@ class Collect extends BaseComponent {
                             </div>
                             <div className="pay">
                                 <div>{item.order_num}人付款</div>
-                                <div className="dele">￥9999</div>
+                                <div className="dele">￥{item.price_original}</div>
                             </div>
                             <div className="shop-name">
                                 <div className="s-name">
@@ -408,13 +409,13 @@ class Collect extends BaseComponent {
                         <div className="shop-space ">
                             <p>{item.shop_name}</p>
                             <span className="Shop-Nr">人均消费</span>
-                            <span className="Shop-Nr wide">￥99</span>
+                            <span className="Shop-Nr wide">￥{item.consume_per}</span>
                         </div>
                         <div className="button">进店</div>
                     </div>
                     <div className="shop-goods">
                         {
-                            item.pr && item.pr.length && item.pr.map(data => (
+                            item.pr && item.pr.length ? item.pr.map(data => (
                                 <div className="item" key={data.title} onClick={() => this.shopGoods(data.id)}>
                                     <div className="image">
                                         <LazyLoad lazyInfo={{imgUrl: data.picpath, offset: -50, overflow: true}}/>
@@ -422,7 +423,7 @@ class Collect extends BaseComponent {
                                     </div>
                                     <p>{data.title}</p>
                                 </div>
-                            ))
+                            )) : ''
                         }
                     </div>
                 </div>
@@ -442,7 +443,7 @@ class Collect extends BaseComponent {
     }
 
     render() {
-        const {isEdit, goodsSource, shopSource, tabKey} = this.state;
+        const {isEdit, goodsSource, shopSource, tabKey, height} = this.state;
         const row = (item) => (
             <span key={item.id} className="callect-list-show">
                 <div className="callect-list-show-select">
@@ -491,7 +492,7 @@ class Collect extends BaseComponent {
                     initialPage={this.state.tabKey}
                     onTabClick={this.tabChange}
                 >
-                    <div className="mainInfo">
+                    <div className="mainInfo" style={{height: height}}>
                         {this.messageMain(row, row2)}
                         {!isEdit ? null : (
                             <div className="callect-menu">

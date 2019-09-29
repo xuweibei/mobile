@@ -4,11 +4,10 @@ import {connect} from 'react-redux';
 import {myActionCreator} from '../../../actions/index';
 import './Consumer.less';
 import AppNavBar from '../../../../../common/navbar/NavBar';
-import {urlCfg} from '../../../../../../configs/urlCfg';
-import {native} from '../../../../../../utils/native';
 
-const {appHistory} = Utils;
-const {getUrlParam} = Utils;
+const {urlCfg} = Configs;
+const {appHistory, getUrlParam, native} = Utils;
+const hybrid = process.env.NATIVE;
 class Consumer extends BaseComponent {
     state = {
         list: {},
@@ -59,8 +58,8 @@ class Consumer extends BaseComponent {
     }
 
     goBackModal = () => {
-        if (appHistory.length() === 0) {
-            native('native');
+        if (hybrid && appHistory.length() === 0) {
+            native('goBack');
         } else {
             appHistory.goBack();
         }

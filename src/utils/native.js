@@ -68,21 +68,19 @@ export const native = (str, obj, callBack) => new Promise((resolve, reject) => {
 
 //设置nav的颜色，回传给原生
 export const setNavColor = (str, obj) =>  new Promise((resolve, reject) => {
-    setTimeout(() => {
-        hybrid && window.WebViewJavascriptBridge.callHandler(
-            str,
-            JSON.stringify(obj),
-            (responseData) => {
-                // const info = JSON.parse(responseData);
-                // if (info.status === '0') {
-                //     resolve(info);
-                // } else {
-                //     reject(info);
-                //     showInfo(info.message);
-                // }
-            }
-        );
-    }, 600);
+    hybrid && window.WebViewJavascriptBridge.callHandler(
+        str,
+        JSON.stringify(obj),
+        (responseData) => {
+            // const info = JSON.parse(responseData);
+            // if (info.status === '0') {
+            //     resolve(info);
+            // } else {
+            //     reject(info);
+            //     showInfo(info.message);
+            // }
+        }
+    );
 });
 
 
@@ -143,4 +141,10 @@ global.goBack = function () {
 global.clearCache = function () {
     removeValue(LOCALSTORAGE.USER_TOKEN); // 清除token,localstorage
     store.dispatch(baseActionCreator.setUserToken('')); // 清除redux的userToken
+};
+
+
+//原生跳h5重置历史
+global.restHistory = function () {
+    appHistory.reduction();
 };

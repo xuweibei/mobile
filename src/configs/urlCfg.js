@@ -82,7 +82,7 @@ export const urlCfg = {
     findShop: href.apiPath + '/discover-gps', //发现周围商家
     findForShopName: href.apiPath + '/discover-search-mall', //搜索商家
     publishAssess: href.apiPath + '/my-order-appra', //发布评价
-    picSave: href.apiPath + '/pic-save-base', //上传图片
+    picSave: href.apiPath + '/pic-save-bases', //上传图片
     submitOrder: href.apiPath + '/submit-order-page', //提交订单界面
     shopCartOrder: href.apiPath + '/submit-order', //提交购物车和订单
     applicationForRefund: href.apiPath + '/refund-apply', //退款，退货退款
@@ -169,8 +169,10 @@ export const urlCfg = {
     successfulPayment: href.apiPath + '/set-pay-type',  //支付成功后，将数据传给后端
     getMoreAccounts: href.apiPath + '/forgetpwd',  //获取更多账号
     getDfinfor: href.apiPath + '/give-info',  //用户消费，获取对方资料
-
+    getShopIntro: href.apiPath + '/shop-intro',
     importSum: href.scan + '/importSum',  //扫一扫支付
     consumer: href.scan + '/consumer',  //扫一扫核销订单
-    sourceBrowse: href.scan + '/sourceBrowse' //扫一扫确认源头码
+    sourceBrowse: href.scan + '/sourceBrowse', //扫一扫确认源头码
+    allProtocolInfo: href.apiPath + '/get-agreement'
+
 };

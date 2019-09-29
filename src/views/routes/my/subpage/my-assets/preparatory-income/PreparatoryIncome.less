@@ -136,15 +136,16 @@
         height: 340px;
         background:url('../../../../../../assets/images/banner.png');
         background-size:100% 100%;
+        margin-bottom: 20px;
     }
 
     .asset-info-wrap {
         width: 100%;
         //margin-top: 20px;
-        background-color: @white;
+        //background-color: @white;
         .bottom-modal{
-            //position: absolute;
-            //top:400px;
+            height: 100%;
+            background: @white;
         }
         .see-more {
             font-size: 28px;
@@ -320,6 +321,9 @@
             height: 44px;
             margin: 0.2rem 0.3rem 0 0.4rem;
         }
+        .line::after {
+            height: 0!important;
+        }
         .yellow-logo:before ,.red-money-logo:before ,.lilac-logo:before  {
             content: '\E614';
         }
@@ -344,7 +348,9 @@
         .line {
             //border-bottom:1px solid rgba(204,204,204,0.5);
             .hairline('bottom', rgba(204, 204, 204, 0.5));
-
+            .am-list-line::after{
+                height: 0.5px;
+            }
             .am-input-label-5 {
                 font-size: 30px;
             }

@@ -5,10 +5,11 @@ import {connect} from 'react-redux';
 import {InputItem, List, Button, Icon} from 'antd-mobile';
 import {myActionCreator as ActionCreator} from '../../actions/index';
 import {shopCartActionCreator} from '../../../shop-cart/actions/index';
+import {baseActionCreator as actionCreator} from '../../../../../redux/baseAction';
 import AppNavBar from '../../../../common/navbar/NavBar';
 import './AppendOrder.less';
 
-const {appHistory, showFail, getUrlParam, getShopCartInfo, systemApi: {setValue, removeValue}, native} = Utils;
+const {appHistory, showFail, getUrlParam, getShopCartInfo, systemApi: {setValue, removeValue, getValue}, native} = Utils;
 const {urlCfg} = Configs;
 
 const nowTimeStamp = Date.now();
@@ -34,17 +35,28 @@ class appendOrder extends BaseComponent {
         invoiceStatus: false,  //发票弹框显示状态
         notAllow: true, //不支持提交状态
         invoice: {},
-        invoiceIndex: ''
+        invoiceIndex: '',
+        invoiceName: '',
+        invoiceNum: '',
+        invoiceBank: '',
+        invoiceAddress: '',
+        bankCard: '',
+        invoicePhone: ''
     };
 
     componentDidMount() {
-        const {setOrder, setIds, arr} = this.props;
+        const {setOrder, setIds} = this.props;
+        if (this.props.location.search.includes('source')) {
+            removeValue('invoices');
+        }
+        // const {setOrder, setIds} = this.props;
+        const timer = decodeURI(getUrlParam('time', encodeURI(this.props.location.search)));
         const that = this;
         const obj = {'': ''};
         if (hybrid) {
-            if (arr.length > 0) {
-                that.getOrderState();
-            } else { //这里的情况是，原生那边跳转的时候，需要处理一些问题，所以就购物车过来的时候，存数据，这边取数据
+            if (timer === 'null') { //非购物车进入的时候
+                this.getOrderState();
+            } else {
                 getShopCartInfo('getInfo', obj).then(res => {
                     setOrder(res.data.arr);
                     setIds(res.data.cartArr);
@@ -57,20 +69,37 @@ class appendOrder extends BaseComponent {
     }
 
     componentWillReceiveProps(next, data) {
-        const {setOrder, setIds} = this.props;
+        const {setOrder, setIds, location} = this.props;
         const timerNext = decodeURI(getUrlParam('time', encodeURI(next.location.search)));
-        const timer = decodeURI(getUrlParam('time', encodeURI(this.props.location.search)));
-        console.log(timerNext, timer, '看来SDK浪费 ');
-        if (timerNext !== timer) {
-            if (hybrid) {
+        const timer = decodeURI(getUrlParam('time', encodeURI(location.search)));
+        if (hybrid && timer && timerNext !== timer) {
+            this.setState({
+                shopInfo: [],
+                addressInfo: {},
+                goodsCount: 0,
+                goods: [],
+                idCard: '', //身份证
+                total: 0, // 总价
+                totalCount: 0, //商品总数量
+                files: {},
+                order: {}, //订单备注信息
+                IDcard: [],
+                date: now,
+                self: true, //发票类型
+                currentIndex: 0, //默认发票选中类型
+                textInfo: '企业',
+                invoiceStatus: false,  //发票弹框显示状态
+                notAllow: true, //不支持提交状态
+                invoice: {},
+                invoiceIndex: ''
+            }, () => {
                 getShopCartInfo('getInfo', {'': ''}).then(res => {
                     setOrder(res.data.arr);
                     setIds(res.data.cartArr);
                     this.getOrderState();
                 });//原生方法获取前面的redux
-            }
+            });
         }
-        console.log(next, data, this.props, '考虑到非数据库里');
     }
 
     componentWillUnmount() {
@@ -86,8 +115,16 @@ class appendOrder extends BaseComponent {
     //立即付款
     postOrder = () => {
         const {addressInfo, shopInfo, order, invoice} = this.state;
+        const invoices = JSON.parse(getValue('invoices'));
+        console.log(invoices);
         const {address} = this.props;
         const source = decodeURI(getUrlParam('source', encodeURI(this.props.location.search)));
+        let invoiceInfo;
+        if (invoices) {
+            invoiceInfo = invoices;
+        } else {
+            invoiceInfo = invoice;
+        }
         if (addressInfo.length === 0) {
             showFail('请选择您的收货地址');
             return;
@@ -104,7 +141,7 @@ class appendOrder extends BaseComponent {
             });
         }
         const shopArr = shopInfo.map((item, index) => {
-            const objTemp = {shop_id: item.shop_id, remarks: order[index].toString(), invoice: invoice[index]};
+            const objTemp = {shop_id: item.shop_id, remarks: order[index].toString(), invoice: invoiceInfo[index]};
             const prArr = [];
             if (item.data.length > 0) {
                 item.data.forEach(value => {
@@ -123,10 +160,13 @@ class appendOrder extends BaseComponent {
                 source: Number(source)
             }
         }).subscribe((res) => {
-            const {setOrderInfo} = this.props;
-            setOrderInfo(res);
-            setValue('orderInfo', JSON.stringify(res));//将订单相关数据存入locastage
-            appHistory.replace('/payMoney');
+            if (res && res.status === 0) {
+                const {setOrderInfo} = this.props;
+                setOrderInfo(res);
+                setValue('orderInfo', JSON.stringify(res));//将订单相关数据存入locastage
+                appHistory.replace('/payMoney');
+                removeValue('invoices');
+            }
         });
     };
 
@@ -257,7 +297,13 @@ class appendOrder extends BaseComponent {
     //切换发票选中类型
     checkIndex = index => {
         this.setState({
-            currentIndex: index
+            currentIndex: index,
+            // invoiceName: '',
+            invoiceNum: '',
+            invoiceBank: '',
+            invoiceAddress: '',
+            bankCard: '',
+            invoicePhone: ''
         }, () => {
             const currentIndex = this.state.currentIndex;
             if (currentIndex === 1) {
@@ -327,20 +373,27 @@ class appendOrder extends BaseComponent {
         array[invoiceIndex] = {
             invoice_type: 1,
             head_type: currentIndex + 1,
-            body_name: invoiceName,
-            enterprise_name: invoiceName,
+            name: invoiceName,
             tax_id: invoiceNum,
             bank: invoiceBank,
             enterprise_addr: invoiceAddress,
             bank_card_no: bankCard,
             enterprise_phone: invoicePhone
         };
-        this.setState({
-            invoice: array,
-            currentIndex: 0,
-            invoiceStatus: false
-        }, () => {
-            console.log(this.state.invoice);
+        const {showConfirm} = this.props;
+        showConfirm({
+            title: '提示',
+            message: '是否确定提交该发票申请？',
+            btnTexts: ['取消', '确定'],
+            callbacks: [null, () => {
+                this.setState({
+                    invoice: array,
+                    // currentIndex: 0,
+                    invoiceStatus: false
+                }, () => {
+                    setValue('invoices', JSON.stringify(this.state.invoice));
+                });
+            }]
         });
     }
 
@@ -528,7 +581,7 @@ class appendOrder extends BaseComponent {
                                     <div className="rise-content">
                                         {
                                             kind.map((item, index) => (
-                                                <div className={currentIndex === index ? 'active' : ''} onClick={() => this.checkIndex(index)} key={index.toString()}>{item.title}</div>
+                                                <div className={currentIndex === index ? 'active' : ''} onClick={() => this.checkIndex(index)} key={item}>{item.title}</div>
                                             ))
                                         }
                                     </div>
@@ -617,7 +670,8 @@ const mapDispatchToProps = {
     setOrderInfo: ActionCreator.setOrderInformation,
     setOrder: shopCartActionCreator.setOrder,
     setIds: shopCartActionCreator.setIds,
-    saveAddress: ActionCreator.saveAddress
+    saveAddress: ActionCreator.saveAddress,
+    showConfirm: actionCreator.showConfirm
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(appendOrder);

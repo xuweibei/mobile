@@ -1,5 +1,6 @@
 @import "~style";
 .shopHomeFourContent {
+    padding-bottom: 100px;
     .shopHomFourBanner{
         a{
             display:block;
@@ -11,6 +12,32 @@
             display:block;
             width:100%;
             height:100%
+        }
+    }
+    .new-box {
+        display: flex;
+        padding-right: 40px;
+        margin-bottom: 20px;
+        margin-top: 30px;
+        .new-left {
+            width: 30%;
+            //height: 100%;
+            border-radius: 0 60px 0 0 ;
+            background: #CAD9EC;
+            margin-right: 40px;
+            margin-top: 54px;
+        }
+        .new-right {
+            .fresh {
+                font-size: @font-size-100;
+                color: #CAD9EC;
+                font-style:italic;
+                margin-bottom: 40px;
+            }
+            img {
+                width: 100%;
+                margin-bottom: 19px;
+            }
         }
     }
     .newImgShow{
@@ -67,114 +94,6 @@
             }
         }
     }
-    .hotRank{
-        padding:60px 28px 0 28px;
-        // background:#C5DDF4;
-        .rankImg{
-            position:relative;
-            img{
-                display:block;
-                width:690px;
-                height:779px;
-
-
-            }
-
-        }
-        .rankImgInfo{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            p{
-                width:558px;
-                height:46px;
-                line-height:46px;
-                margin: 0 auto;
-                // background:#FFF699;
-                text-align:center;
-                font-size:24px;
-                color:#101010;
-                &:last-child{
-                    width:219px;
-                    color:#4A3254;
-                    font-weight:bold;
-                    margin-top:6px;
-                    span{
-                        font-size:16px;
-                    }
-                }
-
-
-            }
-        }
-        ul{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            flex-wrap: wrap;
-            li{
-                width: 45%;
-                margin: 15px;
-                img{
-                    display:block;
-                    width:100%;
-
-                }
-            }
-        }
-    }
-    .hotRank2{
-        padding-top:60px;
-        margin-bottom:100px;
-        ul{
-            display:flex;
-            flex-wrap:wrap;
-            justify-content: space-around;
-            li{
-                width:330px;
-                height:400px;
-                position:relative;
-                margin-bottom: 40px;
-                img{
-                    display:block;
-                    width:330px;
-                    height:330px;
-                }
-
-                p{
-                    margin-top:25px;
-                    font-size:38px;
-                    color:#404040;
-                    span{
-                        font-size:28px;
-                        color:#404040;
-                        &:last-child{
-                            background:0;
-                            margin-left:20px;
-                            font-size:16px;
-                            color:#999999;
-                            text-decoration: line-through;
-                        }
-                    }
-                }
-                i{
-                    position:absolute;
-                    top: 360px;
-                    right:0;
-                    width:70px;
-                    height:30px;
-                    line-height:30px;
-                    text-align:center;
-                    font-size:19px;
-                    color:#4F415B;
-                    border-bottom-left-radius: 10px;
-                    border-top-right-radius: 10px;
-                    // background: #FAEB32;
-                }
-            }
-        }
-    }
     .comTitle4{
         width:294px;
         text-align:center;
@@ -206,7 +125,7 @@
 
     //编辑面板
     .compile-box {
-        margin-right: 48px;
+        //margin-right: 48px;
         //标题
         .compile {
             margin-bottom: 12px;
@@ -221,7 +140,6 @@
             }
             img{
                 width:100%;
-                height:100%;
                 display:block;
             }
             .slick-slide {
@@ -232,25 +150,33 @@
         }
         //标题栏
         .title-bar {
-            color: #ccc;
+            color: @white;
             text-align: center;
-            margin-bottom: 20px;
-            font-size: 16px;
-            span:nth-child(1) {
-                color: #ccc;
-                padding: 0 10px 2px;
-                border-bottom: 1px solid #ccc;
-                margin-bottom: 10px;
+            margin-bottom: 40px;
+            //margin-bottom: 20px;
+            //font-size: 16px;
+            div:nth-child(1) {
+                display: inline-block;
+                font-size: @font-size-28;
+                padding: 0 29px 11px;
+                border-bottom: 1px solid @white;
+                margin-bottom: 30px;
             }
             div:nth-child(2) {
-                margin-top: 5px;
-                font-size: 14px;
-                color: #ccc;
+                font-size: @font-size-30;
+                //margin-top: 5px;
+                //color: #ccc;
+            }
+        }
+        .hot-sale {
+            color: @dark-gray;
+            div:nth-child(1) {
+                border-bottom: 1px solid #CAD9EC;
             }
         }
 
         .sell-box {
-            background: pink;
+            background: #CAD9EC;
             padding-top: 15px;
             .title-bar {
                 color: #fff;
@@ -263,37 +189,43 @@
                 }
             }
             .sell {
-                padding: 0 40px;
-                margin-bottom: 10px;
+                padding: 0 36px;
+                margin-bottom: 41px;
                 .sell-goods {
                     width: 100%;
-                    height: 132px;
+                    height: 330px;
+                    margin-bottom: 19px;
                     img {
                         width: 100%;
-                        height: inherit;
+                        height: 100%;
+                        margin-bottom: 19px;
                     }
                 }
+            }
+            .sell-commodity-box {
+                margin-bottom: 58px;
             }
         }
         .sell-commodity-box {
             display: flex;
-            padding: 0 25px;
+            padding: 0 49px;
             flex-wrap: wrap;
             .sell{
                 width: 100%;
             }
             .sell-commodity {
                 width: 50%;
-                padding: 0 4px;
-                margin-bottom: 10px;
-                height: 185px;
+                padding: 0 11px;
+                margin-bottom: 40px;
                 .sell-commodity-img {
                     width: 100%;
-                    border: 1px solid #ccc;
-                    height: 156px;
+                    //border: 1px solid #ccc;
+                    height: 304px;
+                    margin-bottom: 19px;
                     img {
                         height: 100%;
                         width: 100%;
+                        //margin-bottom: 19px;
                     }
                 }
             }
@@ -304,55 +236,22 @@
             display: flex;
             justify-content: space-between;
             .headline {
-                font-size: 14px;
-                margin-bottom: 3px;
-            }
-            .price {
-                span:nth-child(1) {
-                    color: #ccc;
-                    font-size: 10px;
-                    margin-right: 10px;
-
-                    span {
-                        font-size: 14px;
-                    }
-                }
-                span:nth-child(2) {
-                    font-size: 10px;
-                    color: #ccc;
-                    text-decoration:line-through
-                }
+                font-size: @font-size-30;
+                //margin-bottom: 3px;
             }
         }
 
         .headline-price-take {
-            //display: flex;
-            //justify-content: space-between;
             .headline {
-                font-size: 14px;
-                margin-bottom: 3px;
-            }
-            .price {
-                span:nth-child(1) {
-                    color: #ccc;
-                    font-size: 10px;
-                    margin-right: 10px;
-
-                    span {
-                        font-size: 14px;
-                    }
-                }
-                span:nth-child(2) {
-                    font-size: 10px;
-                    color: #ccc;
-                    text-decoration:line-through
-                }
+                font-size: @font-size-30;
+                margin-bottom: 24px;
+                color: @darker-black;
             }
         }
     }
 
     .headline-price {
-        height: 24px;
+        //height: 24px;
         .headline {
             overflow: hidden;
             text-overflow: ellipsis;

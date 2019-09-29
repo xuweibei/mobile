@@ -14,6 +14,7 @@ const {MESSAGE: {Feedback}} = Constants;
 
 class Address extends BaseComponent {
     state={
+        // height: document.documentElement.clientHeight - (window.isWX ? window.rem * null : window.rem * 2.08),
         editShow: false
     }
 

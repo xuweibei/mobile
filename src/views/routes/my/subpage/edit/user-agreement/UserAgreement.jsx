@@ -2,7 +2,7 @@
 import {List} from 'antd-mobile';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import BaseComponent from '../../../../../../components/base/BaseComponent';
-import './UserAgreement.jsx.less';
+import './UserAgreement.less';
 
 const Item = List.Item;
 

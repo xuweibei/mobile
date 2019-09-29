@@ -216,24 +216,11 @@ class Home extends BaseComponent {
         this.suggestCargo(index);
     }
 
-    //商品商品标题
-    goodType = (type) => {
-        let status = '';
-        if (type === 1) {
-            status = '有好店';
-        } else if (type === 2) {
-            status = '有好货';
-        } else if (type === 3) {
-            status = '有新品';
-        } else if (type === 4) {
-            status = '有优惠';
-        }
-        return status;
-    }
-
     //有推荐跳转
     jumpOther = (id, index, shopId) => {
+        console.log(index);
         if (index === 0) {
+            console.log('object');
             appHistory.push(`/shopHome?id=${id}`);
         } else {
             appHistory.push(`/goodsDetail?id=${id}&shopId${shopId}`);
@@ -265,8 +252,9 @@ class Home extends BaseComponent {
                             {
                                 userToken && userToken.length > 0 ? (
                                     <div className={`nav-right ${userToken && userToken.length > 0 ? 'nav-right-login' : ''}`} style={{display: 'flex'}}>
-                                        {/* <Badge text={77} overflowCount={55}/> */}
                                         <div className="home-searchBar-icon" onClick={this.lookLook}>
+                                            {/*<Badge className="information-IM icon" text={77} overflowCount={55}/>*/}
+
                                             <div className="icon information"/>
                                         </div>
                                     </div>
@@ -315,18 +303,18 @@ class Home extends BaseComponent {
                             <div className="edge-style"/>
                             <ul>
                                 {
-                                    goodStuff.map((item, index) => (
+                                    goodStuff && goodStuff.map((item, index) => (
                                         <li key={index.toString()}>
-                                            <p className="list-title">{this.goodType(item.type)}</p>
+                                            <p className="list-title">{item.title}</p>
                                             <p className="list-desc">
-                                                <span>品质好店</span>
-                                                <span>品质好店</span>
+                                                <span>{item.intro.split(' ')[0]}</span>
+                                                <span>{item.intro.split(' ')[1]}</span>
                                             </p>
                                             <div className="img-box">
                                                 {
                                                     item.data.map((value, i) => (
-                                                        <div className="show-img" key={i.toString()}>
-                                                            <img src={value.picpath} alt="" onClick={() => this.jumpOther(value.rs_id, index, value.rs_id)}/>
+                                                        <div className="show-img" key={i.toString()} onClick={() => this.jumpOther(value.rs_id, index, value.rs_id)}>
+                                                            <img src={value.picpath} alt=""/>
                                                         </div>
                                                     ))
                                                 }

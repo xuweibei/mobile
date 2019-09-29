@@ -1,19 +1,20 @@
 /**
  * 我要开店---个体页面
  * */
-import {List, InputItem, Picker, Radio, TextareaItem, Modal, Flex} from 'antd-mobile';
+import {List, InputItem, Picker, Modal, Flex, TextareaItem} from 'antd-mobile';
 import {createForm} from 'rc-form';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import IndividualTwo from './IndividualTwo';
 import IndividualThree from './IndividualThree';
 import IndividualFour from './IndividualFour';
 import Region from '../../../../../common/region/Region';
+import GeisInputItem from '../../../../../common/form/input/GeisInputItem';
 import './Individual.less';
 
 const {urlCfg} = Configs;
 const {MESSAGE: {Form}} = Constants;
 const {showInfo, validator} = Utils;
-const RadioItem = Radio.RadioItem;
+// const RadioItem = Radio.RadioItem;
 const data = [
     {value: 1, label: '正式商户'},
     {value: 2, label: '体验商户'}
@@ -25,8 +26,8 @@ const datas = [
 class Individual extends BaseComponent {
     state = {
         editModal: '',
-        values: 2,
-        value: 2,
+        values: 1,
+        value: 1,
         discount: '', // 浮点型 (折扣率/true/1-9.5)
         shopName: '',  //字符串 (商店名称/true/1-100)
         address: '', //详细地址
@@ -51,12 +52,14 @@ class Individual extends BaseComponent {
         urban: '', //市辖区的名字
         county: '', //城市名字
         updateAudit: '',
-        editStatus: true
+        editStatus: true,
+        addressStatus: ''
     };
 
     //提交店铺信息
     postInformation = () => {
         const {cate1, cate1Id, province, urban, county, pickUpSelf, isExp, openTime, closeTime} = this.state;
+        console.log(pickUpSelf);
         const {form: {validateFields}} = this.props;
         const pca = [province, urban, county];
         validateFields({first: true, force: true}, (error, val) => {
@@ -91,6 +94,8 @@ class Individual extends BaseComponent {
         this.getCategorys();
         this.getdoBusinessTime();
         this.getUpdateAudit();
+        // this.setExp();
+        // this.setPickupSelf();
     }
 
     //获取审核失败返回的数据
@@ -110,7 +115,7 @@ class Individual extends BaseComponent {
                         discount: parseInt(res.data.discount, 10),
                         isExp: Number(res.data.type),
                         value: res.data.type - 1,
-                        pickUpSelf: res.data.pick_up_self,
+                        pickUpSelf: Number(res.data.pick_up_self),
                         values: Number(res.data.pick_up_self),
                         cshPhone: res.data.csh_phone,
                         linkName: res.data.linkName,
@@ -120,7 +125,8 @@ class Individual extends BaseComponent {
                         county: res.data.city_name && res.data.city_name[2],
                         provinceId: res.data.province_id,
                         cityId: res.data.city_id,
-                        countyId: res.data.county_id
+                        countyId: res.data.county_id,
+                        addressStatus: '1'
                     });
                 }
             });
@@ -163,6 +169,7 @@ class Individual extends BaseComponent {
 
     //设置城市
     setCity = str => {
+        console.log(str);
         this.setState({
             urban: str,
             county: ''
@@ -189,7 +196,8 @@ class Individual extends BaseComponent {
     };
 
     //设置主营行业类型
-    setCategory = val => {
+    setCategory = (val) => {
+        // e.preventDefault();
         const {category} = this.state;
         const result = category.find(item => item.value === val.toString());
         this.setState(() => ({
@@ -222,6 +230,7 @@ class Individual extends BaseComponent {
 
     //设置商户状态
     setExp = (value) => {
+        console.log(value);
         this.setState({
             isExp: value
         }, () => {
@@ -241,8 +250,8 @@ class Individual extends BaseComponent {
     //设置是否支持自提
     setPickupSelf = (values) => {
         this.setState({
-            pickUpSelf: values,
-            values
+            pickUpSelf: values
+            // values
         });
     };
 
@@ -261,12 +270,12 @@ class Individual extends BaseComponent {
     //校验商店名称
     checkShopName = (rule, value, callback) => {
         if (!validator.isEmpty(value, Form.No_StoreName, callback)) return;
-        if (!validator.checkRange(2, 30, value)) {
+        if (!validator.ckeckShopName(value)) {
             validator.showMessage(Form.Error_ShopName, callback);
             return;
         }
-        if (!validator.checkShopName(value)) {
-            validator.showMessage(Form.ShopName_Err, callback);
+        if (value.length < 2 || value.length > 30) {
+            showInfo(Form.Error_ShopName);
             return;
         }
         callback();
@@ -311,13 +320,20 @@ class Individual extends BaseComponent {
 
     //校验商户状态
     checkIsExp = (rule, value, callback) => {
-        if (!validator.isEmpty(value, Form.No_isExp, callback)) return;
+        if (!value) {
+            showInfo(Form.No_isExp);
+            return;
+        }
         callback();
     };
 
     //检验是否支持自提
     checkPickUpSelf = (rule, value, callback) => {
-        if (!validator.isEmpty(value, Form.No_pickUpSelf, callback)) return;
+        // const {pickUpSelf} = this.state;
+        if (!value) {
+            showInfo(Form.No_pickUpSelf);
+            return;
+        }
         callback();
     };
 
@@ -335,10 +351,6 @@ class Individual extends BaseComponent {
     checkCshPhone = (rule, value, callback) => {
         const myCshPhone = validator.wipeOut(value);
         if (!validator.isEmpty(myCshPhone, Form.No_cshPhone, callback)) return;
-        if (!validator.checkPhone(myCshPhone)) {
-            showInfo(Form.Error_Phone);
-            return;
-        }
         callback();
     };
 
@@ -360,7 +372,7 @@ class Individual extends BaseComponent {
         const myPhone = validator.wipeOut(value);
         if (!validator.isEmpty(myPhone, Form.No_Principal_Phone, callback)) return;
         if (!validator.checkPhone(myPhone)) {
-            showInfo(Form.No_checkPhone);
+            showInfo(Form.Error_Phone);
             return;
         }
         callback();
@@ -368,8 +380,9 @@ class Individual extends BaseComponent {
 
     //点击下一步，跳转开店人信息
     editModalMain = () => {
-        const {phone, editStatus, isExp, pickUpSelf, linkName, discount, cValue, shopName, values, category,  text, date,  openTime, closeTime, provinceId, cityId, countyId, province, urban, county,  address, cshPhone, oTValue, cTValue} = this.state;
+        const {phone, editStatus, isExp, pickUpSelf, linkName, discount, cValue, shopName, category,  text, date,  openTime, closeTime, provinceId, cityId, province, urban, county,  address, cshPhone, oTValue, cTValue, addressStatus} = this.state;
         const {getFieldDecorator} = this.props.form;
+        console.log(addressStatus, province, urban, county, provinceId, cityId, editStatus);
         const steps = ['填写店铺信息', '填写开店人信息', '填写工商信息', '绑定银行卡'];
         return (
             <div>
@@ -398,7 +411,8 @@ class Individual extends BaseComponent {
                                     <InputItem
                                         clear
                                         placeholder="请输入2-30位的店铺名称"
-                                    >店铺名称
+                                    >
+                                        店铺名称
                                     </InputItem>
                                 )}
                             {
@@ -428,21 +442,33 @@ class Individual extends BaseComponent {
                                         ],
                                         validateTrigger: 'onSubmit'
                                     })(
-                                        <div>
-                                            <Region
-                                                provinceId={provinceId}
-                                                cityId={cityId}
-                                                countyId={countyId}
-                                                provinceValue={province}
-                                                cityValue={urban}
-                                                countyValue={county}
-                                                onSetProvince={this.setProvince}
-                                                onSetCity={this.setCity}
-                                                onSetCounty={this.setCounty}
-                                                editStatus={editStatus}
-                                                editStatusChange={this.editStatusChange}
-                                                add
-                                            />
+                                        <div className="region-select">
+                                            {
+                                                addressStatus === '1' && (
+                                                    <Region
+                                                        onSetProvince={this.setProvince}
+                                                        onSetCity={this.setCity}
+                                                        onSetCounty={this.setCounty}
+                                                        provinceValue={province}
+                                                        cityValue={urban}
+                                                        countyValue={county}
+                                                        provinceId={provinceId}
+                                                        cityId={cityId}
+                                                        editStatus={editStatus}
+                                                        editStatusChange={this.editStatusChange}
+                                                    />
+                                                )
+                                            }
+                                            {
+                                                addressStatus === '' && (
+                                                    <Region
+                                                        onSetProvince={this.setProvince}
+                                                        onSetCity={this.setCity}
+                                                        onSetCounty={this.setCounty}
+                                                        add
+                                                    />
+                                                )
+                                            }
                                         </div>
                                     )
                                 }
@@ -475,7 +501,7 @@ class Individual extends BaseComponent {
                                     <div className="merchant-state own">
                                         <span className="state-left">是否支持自提</span>
                                         <span className="state-right">
-                                            {datas.map(i => (
+                                            {/*  {datas.map(i => (
                                                 <RadioItem
                                                     key={i.value}
                                                     checked={values === i.value}
@@ -483,7 +509,15 @@ class Individual extends BaseComponent {
                                                 >
                                                     {i.label}
                                                 </RadioItem>
-                                            ))}
+                                            ))}*/}
+                                            {
+                                                datas.map(i => (
+                                                    <div onClick={() => this.setPickupSelf(i.value)} className="merchant" key={i.value}>
+                                                        <span className={`switch-icon icon ${i.value === pickUpSelf ? 'switch-red' : ''}`}/>
+                                                        <span>{i.label}</span>
+                                                    </div>
+                                                ))
+                                            }
                                         </span>
                                     </div>
                                 )
@@ -548,12 +582,19 @@ class Individual extends BaseComponent {
                                     ],
                                     validateTrigger: 'onSubmit'
                                 })(
-                                    <InputItem
+                                    <GeisInputItem
+                                        type="float"
+                                        itemTitle="收款码折扣"
                                         clear
                                         placeholder="请设置8 ~ 9.5折"
-                                    >收款码折扣
-                                        <span className="nani" onClick={this.openMod}>?</span>
-                                    </InputItem>
+                                        itemStyle={(<span className="nani" onClick={this.openMod}>?</span>)}
+                                    />
+                                    // <InputItem
+                                    //     clear
+                                    //     placeholder="请设置8 ~ 9.5折"
+                                    // >收款码折扣
+                                    //     <span className="nani" onClick={this.openMod}>?</span>
+                                    // </InputItem>
                                 )
                             }
                             {
@@ -567,7 +608,7 @@ class Individual extends BaseComponent {
                                     <div className="merchant-state">
                                         <span className="state-left">商户状态</span>
                                         <span className="state-right">
-                                            {data.map(i => (
+                                            {/* {data.map(i => (
                                                 <RadioItem
                                                     key={i.value}
                                                     checked={isExp === i.value}
@@ -575,7 +616,15 @@ class Individual extends BaseComponent {
                                                 >
                                                     {i.label}
                                                 </RadioItem>
-                                            ))}
+                                            ))}*/}
+                                            {
+                                                data.map(i => (
+                                                    <div onClick={() => this.setExp(i.value)} className="merchant" key={i.value}>
+                                                        <span className={`switch-icon icon ${i.value === isExp ? 'switch-red' : ''}`}/>
+                                                        <span>{i.label}</span>
+                                                    </div>
+                                                ))
+                                            }
                                         </span>
                                     </div>
                                 )
@@ -596,6 +645,7 @@ class Individual extends BaseComponent {
                             })(
                                 <InputItem
                                     clear
+                                    maxLength={14}
                                     placeholder="请输入客服电话"
                                     type="phone"
                                 >客服电话
@@ -664,6 +714,8 @@ class Individual extends BaseComponent {
     goBack = () => {
         this.setState({
             editModal: ''
+        }, () => {
+            this.getUpdateAudit();
         });
     };
 

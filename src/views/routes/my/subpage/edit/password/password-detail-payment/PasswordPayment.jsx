@@ -4,7 +4,7 @@ import VerificationCode from '../../../../../../common/verification-code';
 import {InputGrid} from '../../../../../../common/input-grid/InputGrid';
 import './PasswordPayment.less';
 
-const {appHistory, validator, showInfo, showSuccess} = Utils;
+const {appHistory, validator, showInfo, showSuccess, getUrlParam} = Utils;
 const {urlCfg} = Configs;
 const {MESSAGE: {Form, Feedback}} = Constants;
 const getPass = { //获取验证码按钮的样式
@@ -12,8 +12,9 @@ const getPass = { //获取验证码按钮的样式
     marginRight: '18px',
     color: '#de1212',
     border: 'none',
-    marginTop: '18px',
-    background: '#fff'
+    // marginTop: '18px',
+    background: '#fff',
+    lineHeight: '44px'
 };
 class passwordPayment extends BaseComponent {
     state = {
@@ -140,6 +141,7 @@ class passwordPayment extends BaseComponent {
 
     // 确认修改
     mustSure = () => {
+        const pay = decodeURI(getUrlParam('pay', encodeURI(this.props.location.search)));//支付页面设置支付密码的时候使用
         const {num, againNum, statusPay, phoneNum} = this.state;
         const reg = /^[0-9]\d*$/;
         if (!phoneNum) {
@@ -156,7 +158,11 @@ class passwordPayment extends BaseComponent {
                             } else {
                                 showSuccess(Feedback.Set_Success);
                             }
-                            appHistory.go(-2);
+                            if (pay && pay === '1') {
+                                appHistory.go(-1);
+                            } else {
+                                appHistory.go(-2);
+                            }
                         }
                     });
             } else {
@@ -209,9 +215,11 @@ class passwordPayment extends BaseComponent {
                             }
                         </NavBar>
                         <div className="password-box">
+                            <div className="payment-code">请输入支付密码</div>
                             <div className="content">
                                 <InputGrid onInputGrid={this.inputGrid}/>
                             </div>
+                            <div className="payment-code">请再次输入支付密码</div>
                             <div className="content">
                                 <InputGrid onInputGrid={this.inputGridAgain}/>
                             </div>
