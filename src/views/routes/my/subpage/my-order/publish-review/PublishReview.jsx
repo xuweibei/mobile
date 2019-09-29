@@ -104,7 +104,7 @@ export default class PublishReview extends BaseComponent {
                 if (res.status === 0) {
                     if (fileArr.length > 0) {
                         fileArr.forEach(itemImg => {
-                            itemImg.urlB = encodeURIComponent(itemImg.urlB);
+                            itemImg.imgB = encodeURIComponent(itemImg.imgB);
                             delete itemImg.url;
                         });
                         this.fetch(urlCfg.picSave, {data: {
@@ -141,7 +141,6 @@ export default class PublishReview extends BaseComponent {
 
     render() {
         const {files, publishInfo, fileArr} = this.state;
-        console.log(fileArr, '是地方个地方');
         return (
             <div data-component="publish-review" data-role="page" className="publish-review">
                 <AppNavBar title="发表追评"/>

@@ -40,16 +40,17 @@ class PayMoney extends BaseComponent {
     };
 
     componentWillMount() {
-        this.nativeBtn = true;
         //这里是为了控制原生右滑退出
         this.props.setReturn(true);
     }
 
     componentDidMount() {
+        const selfOrder = decodeURI(getUrlParam('selfOrder', encodeURI(this.props.location.search)));
         const arrInfo = JSON.parse(getValue('orderInfo'));
-        if (arrInfo) { //如果是有listArr代表是直接下单或者从购物车过来的
+        if (arrInfo) { //如果是有arrInfo代表是直接下单或者从购物车过来的
             const date = (new Date().getTime() + 86400000) / 1000 - 1;
-            this.getLastTime(date);
+            const selfDate = (new Date().getTime() + 1800000) / 1000;
+            this.getLastTime(selfOrder === 'null' ? date : selfDate);
             this.setState({
                 orderNum: arrInfo.order,
                 listArr: arrInfo
@@ -63,7 +64,6 @@ class PayMoney extends BaseComponent {
     }
 
     componentWillReceiveProps(data, value) {
-        // if (this.nativeBtn) return;
         //原生右滑退出处理
         if (!data.returnStatus) {
             this.goBackModal();
@@ -72,7 +72,8 @@ class PayMoney extends BaseComponent {
 
     //获取数据
     getList = (onOff) => {
-        const {orderId, source} = this.state;
+        const {orderId, source, orderNum} = this.state;
+        const arr = [];
         const that = this;
         this.fetch(urlCfg.payRightInfo, {
             method: 'post',
@@ -80,14 +81,17 @@ class PayMoney extends BaseComponent {
             source: source //订单入口
         }).subscribe(res => {
             if (res.status === 0) {
+                arr.push(orderNum);
+                res.data.order = (orderNum === 'null' ? '' : arr);
                 if (onOff) { //这里是为了区分首次进来和继续支付
                     this.setState({
                         listArr: res.data
                     });
                 }
+                const selfDate = (new Date().getTime() + 5000) / 1000;
                 that.setState({
                     maturityTme: res.data.enddate //到期时间
-                }, () => that.getLastTime(res.data.enddate));
+                }, () => that.getLastTime(selfDate));
             }
         });
     };
@@ -96,6 +100,7 @@ class PayMoney extends BaseComponent {
     getLastTime = (time) => {
         const that = this;
         const orderId = decodeURI(getUrlParam('orderId', encodeURI(this.props.location.search)));
+        const arrInfo = JSON.parse(getValue('orderInfo'));
         const timeH = time * 1000;
         let timer = null;
         function getDate() {
@@ -113,14 +118,30 @@ class PayMoney extends BaseComponent {
             });
             if (supple(hour) === '00' && supple(minute) === '00' && supple(second) === '00') {
                 clearInterval(timer);
-                that.fetch(urlCfg.delMallOrder, {data: {deal: 0, id: orderId, reason: '订单超时', reason_id: 5}})
-                    .subscribe((res) => {
-                        if (res) {
-                            if (res.status === 0) {
-                                appHistory.goBack();
+                if (arrInfo) { //下单页过来的订单取消
+                    that.fetch(urlCfg.dealMallorderbyno, {data: {deal: 0, id: orderId === 'null' ? '' : orderId, order_no: arrInfo && arrInfo.order, reason: '订单超时', reason_id: 5, type: orderId === 'null' ? 2 : 1}})
+                        .subscribe((res) => {
+                            if (res) {
+                                if (res.status === 0) {
+                                    showInfo('订单取消');
+                                    appHistory.goBack();
+                                }
                             }
-                        }
-                    });
+                        });
+                } else if (orderId !== 'null') { //订单列表过来的取消
+                    that.fetch(urlCfg.delMallOrder, {data: {deal: 0, id: orderId, reason: '订单超时', reason_id: 5, type: orderId === 'null' ? 2 : 1}})
+                        .subscribe((res) => {
+                            if (res) {
+                                if (res.status === 0) {
+                                    showInfo('订单取消');
+                                    appHistory.goBack();
+                                }
+                            }
+                        });
+                }
+                //清除缓存
+                removeValue('orderInfo');
+                removeValue('orderArr');
             }
         }
 
@@ -140,19 +161,20 @@ class PayMoney extends BaseComponent {
 
     //立即支付
     payRightNow = () => {
-        const {listArr, selectIndex, orderNum} = this.state;
+        const {listArr, selectIndex} = this.state;
         //判断是否第三方支付还是CAM消费
         if (selectIndex === 0) {
             this.verifyPayword();
             return;
         }
-        if (listArr.order && listArr.order.length > 0) { //app合并付款
-            this.batchPayMoney(listArr, selectIndex);
-        } else if (selectIndex === 1) { //微信支付
-            this.wxPay(listArr, orderNum, selectIndex);
-        } else { //支付宝支付
-            this.alipay(listArr, orderNum, selectIndex);
-        }
+        this.batchPayMoney(listArr, selectIndex);
+        // if (listArr.order && listArr.order.length > 0) { //app合并付款
+        //     this.batchPayMoney(listArr, selectIndex);
+        // } else if (selectIndex === 1) { //微信支付
+        //     this.wxPay(listArr, orderNum, selectIndex);
+        // } else { //支付宝支付
+        //     this.alipay(listArr, orderNum, selectIndex);
+        // }
     };
 
     //支付平台判断
@@ -168,6 +190,7 @@ class PayMoney extends BaseComponent {
 
     //合并付款
     batchPayMoney = (listArr, selectIndex) => {
+        console.log(listArr, '水电费看了');
         // alert('合并付款');
         this.fetch(urlCfg.batchPayment, {method: 'post', data: {type: 1, payType: selectIndex === 1 ? 2 : 1, order_no: listArr.order}})
             .subscribe(res => {
