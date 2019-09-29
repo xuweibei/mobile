@@ -88,10 +88,9 @@ class PayMoney extends BaseComponent {
                         listArr: res.data
                     });
                 }
-                const selfDate = (new Date().getTime() + 5000) / 1000;
                 that.setState({
                     maturityTme: res.data.enddate //到期时间
-                }, () => that.getLastTime(selfDate));
+                }, () => that.getLastTime(res.data.enddate));
             }
         });
     };
