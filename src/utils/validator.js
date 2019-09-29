@@ -166,7 +166,7 @@ export function isEmpty(value, message, callback) {
     const boolVerify = type.indexOf('Boolean') !== -1 && value;
     //判断数组
     if (type.indexOf('Array') !== -1) {
-        arrayVerify = value.some(item => item !== '');
+        arrayVerify = value.every(item => item !== '');
     }
     //判断对象
     if (type.indexOf('Object') !== -1) {

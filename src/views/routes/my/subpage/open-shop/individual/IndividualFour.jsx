@@ -183,12 +183,13 @@ class IndividualFour extends BaseComponent {
 
     //获取选中的银行
     getBankInfo = (val) => {
-        const {banks, cValue} =  this.state;
+        const {banks} =  this.state;
         const result = banks.find((item) => item.value === val.toString());
         this.setState(() => ({
             cValue: val,
             bankName: result.label,
             bankId: result.value,
+            province: '',
             branchBank: []
         }));
         // if (cValue[0] !== val[0]) {
@@ -217,6 +218,9 @@ class IndividualFour extends BaseComponent {
         const {province} = this.state;
         if (province !== str) {
             this.setState({
+                province: str,
+                urban: '',
+                county: '',
                 branchBank: []
             });
         }
@@ -266,6 +270,15 @@ class IndividualFour extends BaseComponent {
             validator.showMessage(Form.Error_Bank, callback);
             return;
         }
+        callback();
+    };
+
+
+    //校验是否选择地址
+    checkArea = (rule, value, callback) => {
+        const {province, urban, county} = this.state;
+        const pca = [province, urban, county];
+        if (!validator.isEmpty(pca, Form.No_pca, callback)) return;
         callback();
     };
 
@@ -372,34 +385,44 @@ class IndividualFour extends BaseComponent {
                             <List.Item className="branches area" arrow="horizontal">
                                 <span>开户地区</span>
                                 {
-                                    addressStatus === '1' && (
-                                        <Region
-                                            onSetProvince={this.setProvince}
-                                            onSetCity={this.setCity}
-                                            onSetCounty={this.setCounty}
-                                            onCountyId={this.setCountyId}
-                                            provinceValue={province}
-                                            cityValue={urban}
-                                            countyValue={county}
-                                            provinceId={provinceId}
-                                            cityId={cityId}
-                                            editStatus={editStatus}
-                                            editStatusChange={this.editStatusChange}
-                                        />
-                                    )
-                                }
-                                {
-                                    addressStatus === '' && (
-                                        <Region
-                                            provinceValue={province}
-                                            cityValue={urban}
-                                            countyValue={county}
-                                            onSetProvince={this.setProvince}
-                                            onSetCity={this.setCity}
-                                            onSetCounty={this.setCounty}
-                                            onCountyId={this.setCountyId}
-                                            add
-                                        />
+                                    getFieldDecorator('area', {
+                                        // initialValue: '',
+                                        rules: [
+                                            {validator: this.checkArea}
+                                        ],
+                                        validateTrigger: 'onSubmit'
+                                    })(
+                                        <div className="region-select">
+                                            {
+                                                addressStatus === '1' && (
+                                                    <Region
+                                                        onSetProvince={this.setProvince}
+                                                        onSetCity={this.setCity}
+                                                        onSetCounty={this.setCounty}
+                                                        onCountyId={this.setCountyId}
+                                                        provinceValue={province}
+                                                        cityValue={urban}
+                                                        countyValue={county}
+                                                        provinceId={provinceId}
+                                                        cityId={cityId}
+                                                    />
+                                                )
+                                            }
+                                            {
+                                                addressStatus === '' && (
+                                                    <Region
+                                                        provinceValue={province}
+                                                        cityValue={urban}
+                                                        countyValue={county}
+                                                        onSetProvince={this.setProvince}
+                                                        onSetCity={this.setCity}
+                                                        onSetCounty={this.setCounty}
+                                                        onCountyId={this.setCountyId}
+                                                        add
+                                                    />
+                                                )
+                                            }
+                                        </div>
                                     )
                                 }
                             </List.Item>
