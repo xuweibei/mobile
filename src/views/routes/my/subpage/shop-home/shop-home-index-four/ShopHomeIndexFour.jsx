@@ -23,20 +23,32 @@ class ShopHomeIndexFour extends React.PureComponent {
         return (
             <div data-component="ShopHomeIndex" data-role="page" className="ShopHomeIndex">
                 <div className="shopHomeFourContent">
-                    <div className="compile-box">
-                        <div className={(picurl && picurl.length === 0) ? 'head no-edit-model' : 'head'} style={{background: picurl ? `url(${picurl[0]})` : '', backgroundSize: '100% 100%'}}>
-                            <div className="head-base" onClick={() => this.clickOnShow('one')}/>
-                        </div>
+                    <div className="shopHomFourBanner">
                         {
                             content && (
-                                <Carousel className="banner">
+                                <Carousel
+                                    autoplay
+                                    infinite
+                                    speed={2000}
+                                >
                                     {
-                                        content.banner.length > 0 ? content.banner.map(item => <img key={item} onClick={() => this.clickOnShow('two')} className={(content.banner.every(value => value.id !== '') && content.banner.every(value => value.url)) ? '' : 'no-edit-model'} src={item.url}/>) : <div className={content.banner.length === 0 ? 'banner-img no-edit-model' : 'banner-img'} onClick={() => this.clickOnShow('two')}/>
+                                        content.banner.length > 0 ? (
+                                            content.banner.map(item => (
+                                                <div style={{height: '158px'}}>
+                                                    <img key={item} src={item.url}/>
+                                                </div>
+                                            ))) : null
                                     }
                                 </Carousel>
                             )
                         }
-                        <div className="new-box" onClick={() => this.clickOnShow('four')}>
+                    </div>
+                    <div className="compile-box">
+                        {/* <div className={(picurl && picurl.length === 0) ? 'head no-edit-model' : 'head'} style={{background: picurl ? `url(${picurl[0]})` : '', backgroundSize: '100% 100%'}}>
+                            <div className="head-base" onClick={() => this.clickOnShow('one')}/>
+                        </div> */}
+
+                        <div className="new-box">
                             <div className="new-left"/>
                             <div className={(picurl && content && picurl[content.sort1_pr1_ix] && content.sort1_pr1_title1 && content.sort1_pr1_title2 && content.sort1_pr1_title3) ? 'new-right' : 'new no-edit-model'}>
                                 <div className="fresh">NEW</div>
@@ -53,11 +65,11 @@ class ShopHomeIndexFour extends React.PureComponent {
                         </div>
 
                         <div className="sell-box">
-                            <div className="title-bar" onClick={() => this.clickOnShow('three')}>
+                            <div className="title-bar">
                                 <div>{content && (content.sort2_title1 || 'fdsfs')}</div>
                                 <div>{content && (content.sort2_title2 || '热门商品')}</div>
                             </div>
-                            <div className="sell-commodity-box" onClick={() => this.clickOnShow('five')}>
+                            <div className="sell-commodity-box">
                                 <div className={(picurl && content && picurl[content.sort2_pr1_ix] && content.sort2_pr1_title1 && content.sort2_pr1_title2 && content.sort2_pr1_title3) ? 'sell' : 'sell no-edit-model'}>
                                     <div className="sell-goods">
                                         <img src={picurl && picurl[content.sort2_pr1_ix]} alt=""/>
@@ -125,11 +137,11 @@ class ShopHomeIndexFour extends React.PureComponent {
                                 </div>
                             </div>
                         </div>
-                        <div className={(content && content.sort3_title1 && content.sort3_title2) ? 'title-bar hot-sale' : 'title-bar no-edit-model'} onClick={() => this.clickOnShow('six')}>
+                        <div className={(content && content.sort3_title1 && content.sort3_title2) ? 'title-bar hot-sale' : 'title-bar no-edit-model'}>
                             <div>{content && (content.sort3_title1 || 'NEW')}</div>
                             <div>{content && (content.sort3_title2 || '新品')}</div>
                         </div>
-                        <div className="sell-commodity-box" onClick={() => this.clickOnShow('seven')}>
+                        <div className="sell-commodity-box">
                             <div className={(picurl && content && picurl[content.sort3_pr1_ix] && content.sort3_pr1_title1 && content.sort3_pr1_title2 && content.sort3_pr1_title3) ? 'sell-commodity' : 'sell-commodity no-edit-model'}>
                                 <div className="sell-commodity-img">
                                     <img src={picurl && picurl[content.sort3_pr1_ix]} alt=""/>

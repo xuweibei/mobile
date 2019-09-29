@@ -80,7 +80,22 @@ class ShopHomeIndexTwo extends React.PureComponent {
             <div data-component="ShopHomeIndex" data-role="page" className="ShopHomeIndex">
                 <div className="shopHomeTwoContent">
                     <div className="shopHomeTwoBanner">
-                        <img src={shopModelArr.content.banner[0].url} alt=""/>
+                        <WingBlank>
+                            <Carousel
+                                className="my-carousel"
+                                autoplay
+                                infinite
+                                speed={2000}
+                            >
+                                {
+                                    shopModelArr.content.banner.map(item => (
+                                        <div key={item} style={{height: '475px'}}>
+                                            <img key={item.ix} src={item.url} title="693"/>
+                                        </div>
+                                    ))
+                                }
+                            </Carousel>
+                        </WingBlank>
                     </div>
                     <div className="newRecommend shopHomeTwoContentPadding">
                         <div className="comTitle2 shopHomeTwoContentMarTop">
@@ -208,20 +223,24 @@ class ShopHomeIndexTwo extends React.PureComponent {
                                         selectedIndex={selectedIndex}
                                         infinite
                                     >
-                                        {shopModelArr && shopModelArr.pr_banner && shopModelArr.content.pr_banner.length > 0 && shopModelArr.content.pr_banner.map(item  => (
+                                        {shopModelArr && shopModelArr.content.pr_banner && shopModelArr.content.pr_banner.length > 0 && shopModelArr.content.pr_banner.map(item  => (
                                         // {shopModelArr.banner && shopModelArr.banner.map(item  => (
-                                            <div className="hotSellImgItem fl" key={item}>
+                                            <div className="pr_banner_bottom" style={{height: '165px', width: '275px'}} key={item}>
                                                 <img
                                                     src={item.url}
                                                     alt=""
                                                     onClick={() => this.goToGoods(item.id)}
                                                 />
-                                                <p>{item.title1}</p>
-                                                <div
-                                                    onClick={() => this.goToGoods(item.id)}
-                                                    style={{background: shopModelArr.content.bg_color}}
-                                                >
-                                                    <p>{item.title1}fdsfs<span>{item.title2}dfds </span></p>
+                                                <div className="introduce">
+                                                    <div>{item.title1}</div>
+                                                    <div
+                                                        onClick={() => this.goToGoods(item.id)}
+                                                        style={{background: shopModelArr.content.bg_color}}
+                                                    >
+                                                        <span className="money-ZH">￥</span>
+                                                        <span className="money-now">{item.title2}</span>
+                                                        <span className="money-before">{item.title3}</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         ))}

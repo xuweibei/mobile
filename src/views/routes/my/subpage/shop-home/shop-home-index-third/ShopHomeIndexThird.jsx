@@ -3,7 +3,7 @@
  * 店铺模板3
  */
 import PropTypes from 'prop-types';
-import {Carousel} from 'antd-mobile';
+import {Carousel, WingBlank} from 'antd-mobile';
 import './ShopHomeIndexThird.less';
 
 const {appHistory} = Utils;
@@ -23,25 +23,34 @@ class ShopHomeIndexThird extends React.PureComponent {
         return (
             <div data-component="ShopHomeIndex" data-role="page" className="ShopHomeIndex">
                 <div className="shopHomeThirdContent">
-                    <div className="compile-box">
-                        {/* <div className={(picurl && picurl.length === 0) ? 'head no-edit-model' : 'head'} style={{background: picurl ? `url(${picurl[0]})` : '', backgroundSize: '100% 100%', height: '499px'}}>
-                            <div className="head-base" onClick={() => this.clickOnShow('one')}/>
-                        </div> */}
+                    <div className="shopHomThirdBanner">
                         {
                             content && (
-                                <Carousel className="banner" style={{height: '249.5px'}}>
-                                    {
-                                        content.banner.length > 0 ? content.banner.map(item => <img key={item} onClick={() => this.clickOnShow('two')} className={(content.banner.every(value => value.id !== '') && content.banner.every(value => value.url)) ? '' : 'no-edit-model'} src={item.url}/>) : <div className={content.banner.length === 0 ? 'banner-img no-edit-model' : 'banner-img'} onClick={() => this.clickOnShow('two')}/>
-                                    }
-                                </Carousel>
+                                <WingBlank>
+                                    <Carousel
+                                        autoplay
+                                        infinite
+                                        speed={2000}
+                                    >
+                                        {
+                                            content.banner.length > 0 ? content.banner.map(item => (
+                                                <div key={item} style={{height: '248px'}}>
+                                                    <img src={item.url}/>
+                                                </div>
+                                            )) : null
+                                        }
+                                    </Carousel>
+                                </WingBlank>
                             )
                         }
-                        <div className="title-bar" onClick={() => this.clickOnShow('three')}>
+                    </div>
+                    <div className="compile-box">
+                        <div className="title-bar">
                             {/* <p className={(content && content.sort1_title1) ? 'time' : 'time no-edit-model'}>{content && (content.sort1_title1 || '2018/5/20')}</p> */}
                             <p className={(content && content.sort1_title1) ? 'headline' : 'hot no-edit-model'}>{content && (content.sort1_title1 || 'POPULAR COMMODITY')}</p>
                             <p className={(content && content.sort1_title2) ? 'fiery' : 'fiery no-edit-model'}>{content && (content.sort1_title2 || '热门商品')}</p>
                         </div>
-                        <div className="hot-box" onClick={() => this.clickOnShow('four')}>
+                        <div className="hot-box">
                             <div className={(picurl && content && picurl[content.sort1_pr1_ix] && content.sort1_pr1_title1 && content.sort1_pr1_title2 && content.sort1_pr1_title3) ? 'hot' : 'hot no-edit-model'}>
                                 <div className="commodity-img">
                                     <img src={picurl && picurl[content.sort1_pr1_ix]} alt=""/>
@@ -69,11 +78,11 @@ class ShopHomeIndexThird extends React.PureComponent {
                                 </div>
                             </div>
                         </div>
-                        <div className={(content && content.sort2_title1 && content.sort2_title2) ? 'title-bar' : 'title-bar no-edit-model'} onClick={() => this.clickOnShow('six')}>
+                        <div className={(content && content.sort2_title1 && content.sort2_title2) ? 'title-bar' : 'title-bar no-edit-model'}>
                             <p className="headline">{content && (content.sort2_title1 || '热销榜单')}</p>
                             <p className="fiery">{content && (content.sort2_title2 || 'SUPER HOT SALE')}</p>
                         </div>
-                        <div className="sell-box" onClick={() => this.clickOnShow('five')}>
+                        <div className="sell-box">
                             <div className={(picurl && content && picurl[content.sort2_pr1_ix] && content.sort2_pr1_title1 && content.sort2_pr1_title2 && content.sort2_pr1_title3) ? 'sell' : 'sell no-edit-model'}>
                                 <div>
                                     <img src={picurl && picurl[content.sort2_pr1_ix]} alt=""/>
@@ -101,7 +110,7 @@ class ShopHomeIndexThird extends React.PureComponent {
                                 </div>
                             </div>
                         </div>
-                        <div className="hot-box" onClick={() => this.clickOnShow('five-extra')}>
+                        <div className="hot-box">
                             <div className={(picurl && content && picurl[content.sort2_pr3_ix] && content.sort2_pr1_title1 && content.sort2_pr1_title2 && content.sort2_pr1_title3) ? 'hot' : 'sell-one no-edit-model'}>
                                 <div className="commodity-img">
                                     <img src={picurl && picurl[content.sort2_pr3_ix]} alt=""/>
@@ -129,7 +138,7 @@ class ShopHomeIndexThird extends React.PureComponent {
                                 </div>
                             </div>
                         </div>
-                        <div className="sell-two-box" onClick={() => this.clickOnShow('seven')}>
+                        <div className="sell-two-box">
                             <div className={(picurl && content && picurl[content.sort2_pr5_ix] && content.sort2_pr5_title1 && content.sort2_pr5_title2 && content.sort2_pr5_title3) ? 'sell-two' : 'sell-two no-edit-model'}>
                                 <div>
                                     <img src={picurl && picurl[content.sort2_pr5_ix]} alt=""/>

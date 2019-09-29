@@ -35,10 +35,11 @@ class ReDetail extends BaseComponent {
     }
 
     componentDidMount() {
-        const {setOrder, arr} = this.props;
+        const {setOrder, location} = this.props;
+        const timer = decodeURI(getUrlParam('time', encodeURI(location.search)));
         const obj = {'': ''};
         if (hybrid) {
-            if (arr.length > 0) {
+            if (timer === 'null') { //非购物车进入时
                 this.getOrderSelf();
             } else { //这里的情况是，原生那边跳转的时候，需要处理一些问题，所以就购物车过来的时候，存数据，这边取数据
                 getShopCartInfo('getSelfMentio', obj).then(res => {
@@ -52,9 +53,9 @@ class ReDetail extends BaseComponent {
     }
 
     componentWillReceiveProps(next) {
-        const {setOrder} = this.props;
+        const {setOrder, location} = this.props;
         const timerNext = decodeURI(getUrlParam('time', encodeURI(next.location.search)));
-        const timer = decodeURI(getUrlParam('time', encodeURI(this.props.location.search)));
+        const timer = decodeURI(getUrlParam('time', encodeURI(location.search)));
         if ((timerNext !== timer) && hybrid) {
             this.setState({
                 modal: false, //自提弹窗是否弹出

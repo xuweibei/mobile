@@ -58,7 +58,6 @@ class IndividualTwo extends BaseComponent {
             if (res.status === 0 && res.data.length !== 0) {
                 const {flagArr} = this.state;
                 const arr = flagArr;
-
                 if (res.data.pics[0]) {
                     const file = [];
                     arr[0] = true;
@@ -484,13 +483,13 @@ class IndividualTwo extends BaseComponent {
                                                             file2 && file2.map(item => (
                                                                 <li id={item.id}>
                                                                     {/* <span className="delete-icon" onClick={() => this.deleteImg('handle', item.id)}>×</span> */}
-                                                                    <img onClick={() => this.addPictrue('handle')} src={item.imgS || item.url}/>
+                                                                    <img onClick={() => this.addPictrue('hand')} src={item.imgS || item.url}/>
                                                                 </li>
                                                             ))
                                                         }
                                                         {
                                                             file2.length === 0 && (
-                                                                <li className="imgAdd-button" onClick={() => this.addPictrue('handle')}>
+                                                                <li className="imgAdd-button" onClick={() => this.addPictrue('hand')}>
                                                                     <span className="imgAdd-icon">+</span>
                                                                 </li>
                                                             )
@@ -588,6 +587,8 @@ class IndividualTwo extends BaseComponent {
         goBack = () => {
             this.setState({
                 editModal: ''
+            }, () => {
+                this.getUpdateAudit();
             });
         };
 

@@ -20,8 +20,6 @@ const tabs = [
     {title: '已完成'},
     {title: '售后'}
 ];
-
-let selArr = [];
 class ReDetail extends BaseComponent {
     state ={
         refreshing: false, //是否在下拉刷新时显示指示器
@@ -50,22 +48,20 @@ class ReDetail extends BaseComponent {
     }
 
     componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方
-        const num = this.statusChoose(nextProps.location.pathname.split('/')[2]);
-        if (hybrid) {
-            selArr.push(num);
-            if (selArr) {
-                this.setState({
-                    status: selArr[1] || selArr[0]
-                }, () => {
-                    this.init(selArr[1] || selArr[0]);
-                    selArr = [];
-                });
-            }
-        } else {
+        const numNext = this.statusChoose(nextProps.location.pathname.split('/')[2]);
+        const numPrev = this.statusChoose(this.props.location.pathname.split('/')[2]);
+        console.log(numNext, numPrev, '圣诞节快乐风和ijk');
+        if (hybrid && (numNext !== numPrev)) {
             this.setState({
-                status: num
+                status: numNext
             }, () => {
-                this.init(num);
+                this.init(numNext);
+            });
+        } else if (numNext !== numPrev) {
+            this.setState({
+                status: numNext
+            }, () => {
+                this.init(numNext);
             });
         }
     }
@@ -367,7 +363,7 @@ class ReDetail extends BaseComponent {
                         {item.is_shoper === 0 && (item.status === '1' || item.return_status === '1') && (
                             <div className="buttons">
                                 {!item.return_status && (
-                                    <div className="evaluate-button" onClick={(e) => this.serviceRefund(e, item.id)}>退款</div>
+                                    <div onClick={(e) => this.serviceRefund(e, item.id)}>退款</div>
                                 )}
                                 <div className="evaluate-button" onClick={(e) => this.skipSelf(e, item.id)}>立即使用</div>
                                 {item.return_status === '1' && (

@@ -36,6 +36,7 @@ class PersonalTwo extends BaseComponent {
     };
 
     componentDidMount() {
+        console.log('第er步');
         this.getUpdateAudit();
     }
 
@@ -190,20 +191,36 @@ class PersonalTwo extends BaseComponent {
         }}).subscribe(res => {
             if (res && res.status === 0) {
                 arr[index] = true;
-                if (res.data.name && res.data.id_num) {
-                    this.setState({
-                        flagArr: arr,
-                        userName: res.data.name,
-                        ID: res.data.id_num
-                    });
+                this.setState({
+                    flagArr: arr
+                });
+                if (res.data.pic_info && res.data.pic_info.status === 0) {
+                    if (res.data.name && res.data.id_num) {
+                        this.setState({
+                            userName: res.data.name,
+                            ID: res.data.id_num
+                        });
+                    } else if (res.data.exp) {
+                        this.setState({
+                            date: res.data.exp
+                        });
+                    }
+                    showInfo(Form.Success_Lic_Info);
+                } else if (res.data.pic_info && res.data.pic_info.status === 1) {
+                    if (ix === 0) {
+                        this.setState({
+                            file: [],
+                            userName: '',
+                            idCard: ''
+                        });
+                    } else if (ix === 1) {
+                        this.setState({
+                            file2: [],
+                            validDate: ''
+                        });
+                    }
+                    showFail(Form.Fail_Lic_Info);
                 }
-                if (res.data.exp) {
-                    this.setState({
-                        flagArr: arr,
-                        date: res.data.exp
-                    });
-                }
-                showInfo('上传成功');
             }
         });
     }
@@ -488,7 +505,7 @@ class PersonalTwo extends BaseComponent {
                                                      {
                                                          file3.length === 0 && (
                                                              <li className="imgAdd-button" onClick={() => this.addPictrue('handle')}>
-                                                                 <span className="imgAdd-icon">+</span>
+                                                                 <span className="imgAdd-icon">1+</span>
                                                              </li>
                                                          )
                                                      }

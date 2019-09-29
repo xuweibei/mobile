@@ -39,7 +39,10 @@ class NavBar extends React.PureComponent {
         rightEdit: PropTypes.bool,
         search: PropTypes.bool,
         isEdit: PropTypes.bool,
-        changeNavRight: PropTypes.bool,
+        changeNavRight: PropTypes.oneOfType([
+            PropTypes.bool,
+            PropTypes.func
+        ]),
         goToSearch: PropTypes.func,
         style: PropTypes.object,
         backgroundColor: PropTypes.string
@@ -65,7 +68,8 @@ class NavBar extends React.PureComponent {
 
     //浏览历史点击右上角回调
     changeButtonTitle = () => {
-        this.props.changeNavRight();
+        const {isEdit} = this.props;
+        this.props.changeNavRight(!isEdit);
     }
 
     //点击搜索图标

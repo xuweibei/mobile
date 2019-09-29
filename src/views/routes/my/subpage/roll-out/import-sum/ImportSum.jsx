@@ -1,8 +1,9 @@
 /*
 * cam转出 支付页面
 * */
-import {List, InputItem, Picker} from 'antd-mobile';
+import {List, Picker} from 'antd-mobile';
 import AppNavBar from '../../../../../common/navbar/NavBar';
+import GeisInputItem from '../../../../../common/form/input/GeisInputItem';
 import {InputGrid} from '../../../../../common/input-grid/InputGrid';
 import './ImportSum.less';
 
@@ -33,7 +34,7 @@ export default class importSum extends BaseComponent {
     state = {
         newsPopup: false, //支付信息是否弹窗
         pwsPopup: false, //支付密码是否弹窗
-        money: 0, //转出金额
+        money: null, //转出金额
         sValueName: ['0'], //转出方式名字 默认cam转出
         uid: '', //获取uid
         shopName: '', //获取名称
@@ -66,6 +67,7 @@ export default class importSum extends BaseComponent {
 
     //转出金额
     getInput = (res) => {
+        console.log(res);
         this.setState({
             money: res
         });
@@ -75,6 +77,8 @@ export default class importSum extends BaseComponent {
     sumbit = () => {
         const {money} = this.state;
         if (!money) {
+            showInfo(Form.No_Money);
+        } else if (!/^[0-9]+(.[0-9]{1,2})?$/.test(money)) {
             showInfo(Form.No_Money);
         } else {
             this.setState({
@@ -105,7 +109,7 @@ export default class importSum extends BaseComponent {
 
     //微信支付
     wxPay = () => {
-        alert('微信支付');
+        // alert('微信支付');
         const {money, uid} = this.state;
         this.fetch(urlCfg.userpay, {method: 'post', data: {no: uid, money, flag: 1}})
             .subscribe(res => {
@@ -121,6 +125,7 @@ export default class importSum extends BaseComponent {
                             sign: res.data.arr.sign
                         };
                         native('wxPayCallback', obj).then((data) => {
+                            native('goH5');
                             appHistory.push(`/pay-camsucess?uid=${uid}&money=${money}`);
                         });
                     }
@@ -130,13 +135,14 @@ export default class importSum extends BaseComponent {
 
     //支付宝支付
     alipay = () => {
-        alert('支付宝支付');
+        // alert('支付宝支付');
         const {money, uid} = this.state;
         this.fetch(urlCfg.userpay, {method: 'post', data: {no: uid, money, flag: 0}})
             .subscribe(res => {
                 if (res.status === 0) {
                     if (hybird) {
                         native('authInfo', res.data.response).then((data) => {
+                            native('goH5');
                             appHistory.push(`/pay-camsucess?uid=${uid}&money=${money}`);
                         });
                     }
@@ -199,9 +205,10 @@ export default class importSum extends BaseComponent {
                     </div>
                     <div className="money">
                         <List>
-                            <InputItem
-                                type="number"
+                            <GeisInputItem
+                                type="float"
                                 clear
+                                value={money}
                                 placeholder="请输转出金额"
                                 onChange={(res) => this.getInput(res)}
                             />

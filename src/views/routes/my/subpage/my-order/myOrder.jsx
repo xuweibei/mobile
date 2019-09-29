@@ -31,7 +31,6 @@ const tabs = [
     {title: '售后'}
 ];
 
-let orderArr = [];
 
 class MyOrder extends BaseComponent {
     state = {
@@ -57,22 +56,29 @@ class MyOrder extends BaseComponent {
     }
 
     componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方
-        const num = this.statusChoose(nextProps.location.pathname.split('/')[2]);
-        if (hybrid) {
-            orderArr.push(num);
-            if (orderArr && orderArr.length > 1) {
-                this.setState({
-                    status: orderArr[1]
-                }, () => {
-                    this.init(orderArr[1]);
-                    orderArr = [];
-                });
-            }
-        } else {
+        const numNext = this.statusChoose(nextProps.location.pathname.split('/')[2]);
+        const numPrev = this.statusChoose(this.props.location.pathname.split('/')[2]);
+        if (hybrid && numNext !== numPrev) {
+            const dataSource2 = new ListView.DataSource({
+                rowHasChanged: (row1, row2) => row1 !== row2
+            });
             this.setState({
-                status: num
+                page: 1,
+                // status,
+                pageCount: -1,
+                dataSource: dataSource2,
+                retainArr: [],
+                hasMore: false,
+                status: numNext
             }, () => {
-                this.init(num);
+                temp.stackData = [];
+                this.init(numNext);
+            });
+        } else if (numNext !== numPrev) {
+            this.setState({
+                status: numNext
+            }, () => {
+                this.init(numNext);
             });
         }
     }
@@ -277,13 +283,13 @@ class MyOrder extends BaseComponent {
     }
 
     //确认收货
-    confirmTake = (id, ev, returnId) => {
+    confirmTake = (id, ev) => {
         const {showConfirm} = this.props;
         const {status} = this.state;
         showConfirm({
-            title: returnId ? Form.No_Error_Has_Return : Form.No_Error_Take,
+            title: Form.No_Error_Take,
             callbacks: [null, () => {
-                this.fetch(urlCfg.confirmOrder, {data: {id: id, if_refund: returnId ? 1 : ''}})
+                this.fetch(urlCfg.confirmOrder, {data: {id: id}})
                     .subscribe((res) => {
                         if (res) {
                             if (res.status === 0) {
@@ -505,7 +511,7 @@ class MyOrder extends BaseComponent {
             blockModal = (
                 <div className="buttons">
                     {
-                        !item.all_refund && (
+                        (item.refund_button === '1') && (
                             <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
                                 {
                                     item.showButton && <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev, 1)}>申请退款</span>
@@ -535,7 +541,7 @@ class MyOrder extends BaseComponent {
                     }
                     <div className="look-button" onClick={(ev) => this.extendedReceipt(item.id, ev)}>延长收货</div>
                     <div className="look-button" onClick={(ev) => this.goApplyService(item.id, ev)}>查看物流</div>
-                    <div className="evaluate-button" onClick={(ev) => this.confirmTake(item.id, ev, item.all_refund)}>确认收货</div>
+                    <div className="evaluate-button" onClick={(ev) => this.confirmTake(item.id, ev)}>确认收货</div>
                     {/* {
                         item.all_refund === 1 ? <div className="evaluate-button" onClick={(ev) => this.revoke(item.pr_list[0].return_id, ev)}>撤销申请</div> : <div className="evaluate-button" onClick={(ev) => this.confirmTake(item.id, ev)}>确认收货</div>
                     } */}

@@ -7,14 +7,16 @@ import {List, InputItem} from 'antd-mobile';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 
 const {urlCfg} = Configs;
-const {appHistory, showInfo, systemApi: {setValue}} = Utils;
+
+const {appHistory, showInfo, native, systemApi: {setValue}} = Utils;
+const hybrid = process.env.NATIVE;
 export default class Recommender extends BaseComponent {
     constructor(props, context) {
         super(props, context);
     }
 
     state = {
-        height: document.documentElement.clientHeight - (window.isWX ? window.rem * 6.18 : window.rem * 6.3), //判断是否使用微信登入
+        height: document.documentElement.clientHeight - (window.isWX ? window.rem * null : window.rem * 1.08), //判断是否使用微信登入
         UID: '',
         phone: '',
         verification: false
@@ -76,6 +78,18 @@ export default class Recommender extends BaseComponent {
         });
     }
 
+    //点击扫一扫
+    nativeSaoMa = () => {
+        if (hybrid) {
+            const obj = {
+                pay: urlCfg.importSum,
+                write: urlCfg.consumer,
+                source: urlCfg.sourceBrowse
+            };
+            native('qrCodeScanCallback', obj);
+        }
+    }
+
     render() {
         const {height} = this.state;
         return (
@@ -83,6 +97,8 @@ export default class Recommender extends BaseComponent {
                 <AppNavBar title="确认推荐人"/>
                 <div style={{height: height}} className="recommender-box">
                     <List>
+                        <div className="survey-icon icon" onClick={this.nativeSaoMa}>1.扫码确认</div>
+                        <div className="manual">2.手动输入确认</div>
                         <InputItem
                             clear
                             type="number"

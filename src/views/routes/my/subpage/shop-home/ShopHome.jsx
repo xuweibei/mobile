@@ -62,6 +62,13 @@ class ShopHome extends BaseComponent {
         this.getShopModel();
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (hybrid) {
+            this.getShop();
+            this.getShopModel();
+        }
+    }
+
     //获取模板信息
     getShopModel = () => {
         const {currentState} = this.state;
@@ -197,14 +204,14 @@ class ShopHome extends BaseComponent {
                 <div className="goods-name" onClick={() => this.allgoods(item.id)}>
                     <div className="goods-picture">
                         <LazyLoadIndex
-                            lazyInfo={{imgUrl: item.picpath, offset: -130, overflow: true}}
+                            lazyInfo={{imgUrl: item.picpath, offset: -30, overflow: true}}
                         />
                     </div>
                     <div className="goods-information">
                         <div className="goods-explain">{item.title}</div>
                         <span className="btn-keep">记账量：{item.deposit}</span>
                         <div className="payment">
-                            <span>{item.order_num}人付款</span>
+                            <span>{item.num_sold}人付款</span>
                             <span className="payment-r">￥{item.original_price}</span>
                         </div>
                         <div className="price">￥{item.price}</div>
@@ -277,8 +284,6 @@ class ShopHome extends BaseComponent {
 
     render() {
         const {currentState, modelShow, shopModelArr, lat, lon} = this.state;
-        console.log(this.props.shopInfos, '看来圣诞节快乐');
-        console.log(modelShow, '进口量电饭锅');
         const shoppingId = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
         let blockModel = <div/>;
         switch (currentState) {
