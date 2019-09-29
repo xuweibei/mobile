@@ -156,7 +156,7 @@ export const MESSAGE = {
         No_GenRe: '请选择提现类别',
         No_Money: '请输入正确的金额',
         No_Withdraw: '请认真阅读《提现提示》',
-        failGetBankBranch: '请选择开户银行地区',
+        failGetBankBranch: '请选择开户银行或开户银行地区',
         No_EvaluateShop: '请对店铺进行评价',
         No_EvaluateLogistics: '请对物流进行评价',
         No_Evaluate: '您还没有输入任何评价',

@@ -261,6 +261,7 @@ class IndividualThree extends BaseComponent {
 
     //提交用户信息
     gotoNext = () => {
+        // this.setState({editModal: 'four'});
         const {form: {validateFields}} = this.props;
         const {threeInOne} = this.state;
         validateFields({first: true, force: true}, (error, val) => {
