@@ -454,8 +454,6 @@ class Individual extends BaseComponent {
                                                         countyValue={county}
                                                         provinceId={provinceId}
                                                         cityId={cityId}
-                                                        editStatus={editStatus}
-                                                        editStatusChange={this.editStatusChange}
                                                     />
                                                 )
                                             }
