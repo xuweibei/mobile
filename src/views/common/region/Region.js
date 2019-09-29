@@ -25,13 +25,12 @@ class Region extends BaseComponent {
 
     componentDidMount() {
         const {provinceValue, cityValue, countyValue, provinceId, cityId} = this.props;
-        console.log(11111111, provinceValue);
         this.getProvince();
         this.setState({
             provinceValue: provinceValue || '请选择所在地区',
             cityValue: cityValue || '请选择所在地区',
             countyValue: countyValue || '请选择所在地区'
-        }, () => console.log(this.state.provinceValue));
+        });
         //读取市数组
         if (provinceId) {
             this.getCity(provinceId);
@@ -46,7 +45,6 @@ class Region extends BaseComponent {
     componentWillReceiveProps(nextProps) {
         const {provinceValue} = this.state;
         const {add, editStatus} = this.props;
-        console.log(editStatus, add, provinceValue, nextProps.provinceValue);
         if (editStatus && !add && provinceValue !== nextProps.provinceValue) {
             this.setState({
                 provinceValue: nextProps.provinceValue,
@@ -101,7 +99,7 @@ class Region extends BaseComponent {
         this.setState({
             provinceValue: provinceName,
             cityValue: '请选择所在地区',
-            countyValue: '请选择所在地区',
+            countyValue: '',
             cityIndex: 0,
             countyIndex: 0,
             cityData: [],

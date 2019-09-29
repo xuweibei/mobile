@@ -169,7 +169,7 @@ export const urlCfg = {
     successfulPayment: href.apiPath + '/set-pay-type',  //支付成功后，将数据传给后端
     getMoreAccounts: href.apiPath + '/forgetpwd',  //获取更多账号
     getDfinfor: href.apiPath + '/give-info',  //用户消费，获取对方资料
-
+    getShopIntro: href.apiPath + '/shop-intro',
     importSum: href.scan + '/importSum',  //扫一扫支付
     consumer: href.scan + '/consumer',  //扫一扫核销订单
     sourceBrowse: href.scan + '/sourceBrowse', //扫一扫确认源头码

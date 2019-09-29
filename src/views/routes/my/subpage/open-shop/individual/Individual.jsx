@@ -169,6 +169,7 @@ class Individual extends BaseComponent {
 
     //设置城市
     setCity = str => {
+        console.log(str);
         this.setState({
             urban: str,
             county: ''
@@ -195,7 +196,8 @@ class Individual extends BaseComponent {
     };
 
     //设置主营行业类型
-    setCategory = val => {
+    setCategory = (val) => {
+        // e.preventDefault();
         const {category} = this.state;
         const result = category.find(item => item.value === val.toString());
         this.setState(() => ({

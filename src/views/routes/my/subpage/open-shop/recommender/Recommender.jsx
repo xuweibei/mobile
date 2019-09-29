@@ -7,7 +7,8 @@ import {List, InputItem} from 'antd-mobile';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 
 const {urlCfg} = Configs;
-const {appHistory, showInfo, native} = Utils;
+
+const {appHistory, showInfo, native, systemApi: {setValue}} = Utils;
 const hybrid = process.env.NATIVE;
 export default class Recommender extends BaseComponent {
     constructor(props, context) {
@@ -47,7 +48,6 @@ export default class Recommender extends BaseComponent {
     //验证
     verification = () => {
         const {UID, phone} = this.state;
-        console.log(UID);
         const myPhone = Number(phone.replace(/\s+/g, ''));
         this.fetch(urlCfg.setparent, {data: {
             no: Number(UID),
@@ -60,7 +60,20 @@ export default class Recommender extends BaseComponent {
                     this.setState({
                         verification: true
                     });
+                    this.shopInfo();
                 }
+            }
+        });
+    }
+
+    goBack = () => {
+        appHistory.goBack();
+    }
+
+    shopInfo = () => {
+        this.fetch(urlCfg.applyForRight).subscribe(res => {
+            if (res && res.status === 0) {
+                setValue('shopStatus', JSON.stringify(res.data.status));
             }
         });
     }
@@ -109,7 +122,7 @@ export default class Recommender extends BaseComponent {
                         <div className="large-button general" onClick={this.verification}>验证</div>
                     </div>
                     <div className="next">
-                        <div className="normal-button general">取消</div>
+                        <div className="normal-button general" onClick={this.goBack}>取消</div>
                         <div className="normal-button important" onClick={this.routeTo}>下一步</div>
                     </div>
                 </div>
