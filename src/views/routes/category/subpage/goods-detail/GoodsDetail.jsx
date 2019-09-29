@@ -109,9 +109,42 @@ class GoodsDetail extends BaseComponent {
             const {goodId} = this.state;
             if (id !== goodId) {
                 this.setState({
-                    goodId: id,
-                    selectType: '',
-                    ids: []
+                    topSwithe: true,
+                    indexId: 0,
+                    popup: false, //sku是否显示
+                    paginationNum: 1,
+                    imgHeight: 176,
+                    goodsDetail: {}, //详情界面
+                    picPath: [], //轮播
+                    shop: {}, //  详情商店数据
+                    recommend: [], //店铺商品推荐
+                    evaluate: {}, //商品评价
+                    allState: {},
+                    goodsAttr: [],
+                    stocks: [],
+                    type: '',
+                    names: '', //选中商品属性
+                    inputStatus: false, //评论框状态
+                    assess: 0, //评价顶部距离
+                    detailImg: 0, //商品详情顶部距离
+                    navHeight: 0, //导航栏到顶部的距离
+                    recommendTop: 0,
+                    collect: [], //商品收藏状态
+                    status: '1', //判断商品是否下架
+                    visible: false,
+                    half: false,
+                    text: '',
+                    lineStatus: false, //底部商品状态栏
+                    ids: [], //选中属性id
+                    goodsSku: [], //商品的结果集
+                    listHeight: [], //元素头部高度
+                    shopAddress: '', // 店铺位置
+                    lineText: '', //商品状态栏文字
+                    pickType: {}, //配送方式
+                    selectType: '', //选中配送方式 1快递 2自提
+                    clickType: 0, //打开sku的方式 0箭头 1购物车 2立即购买
+                    totalNUm: 0, //商品库存,
+                    goodId: id
                 }, () => {
                     this.init();
                 });
