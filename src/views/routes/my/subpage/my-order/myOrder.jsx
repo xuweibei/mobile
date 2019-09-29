@@ -698,7 +698,6 @@ class MyOrder extends BaseComponent {
                             <div className="goods-sku">
                                 <div className="sku-left">
                                     {items.property_content && items.property_content.map(pro => <div className="goods-size" key={pro}>{pro}</div>)}
-                                    <div>规格</div>
                                 </div>
                                 <div className="sku-right">x{items.num}</div>
                             </div>

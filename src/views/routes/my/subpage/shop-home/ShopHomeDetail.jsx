@@ -140,7 +140,7 @@ class ShopHomeDetail extends BaseComponent {
                             <div className="shopImgMore">
                                 <Carousel >
                                     {
-                                        shopInfo.album_pic && shopInfo.album_pic.length > 0 ? shopInfo.album_pic.map(item => <img src={item} alt=""/>) : <img src="https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1561427638&di=8b78ac4baa3e5f2503d5579aeba0edbc&src=http://hbimg.b0.upaiyun.com/bdaca9a07e1a8947c00c2f826ebf848750927aa24963-cATwbg_fw658" alt=""/>
+                                        shopInfo.album_pic && shopInfo.album_pic.length > 0 ? shopInfo.album_pic.map(item => <img src={item} alt=""/>) : <div className="period"/>
                                     }
                                 </Carousel>
                             </div>
