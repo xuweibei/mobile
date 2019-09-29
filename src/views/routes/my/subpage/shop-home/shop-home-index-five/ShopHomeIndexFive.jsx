@@ -36,7 +36,7 @@ class ShopHomeIndexFive extends React.PureComponent {
                                         {
                                             shopModelArr.content.banner.map(item => (
                                                 <div style={{height: '386px'}} key={item.ix}>
-                                                    <img src={item.url} title="693"/>
+                                                    <img src={item.url} onClick={() => this.goToGoods(item.id)} title="693"/>
                                                 </div>
                                             ))
                                         }
