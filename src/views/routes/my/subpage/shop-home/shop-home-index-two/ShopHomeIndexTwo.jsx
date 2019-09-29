@@ -90,7 +90,7 @@ class ShopHomeIndexTwo extends React.PureComponent {
                                 {
                                     shopModelArr.content.banner.map(item => (
                                         <div key={item} style={{height: '475px'}}>
-                                            <img key={item.ix} src={item.url} title="693"/>
+                                            <img src={item.url} onClick={() => this.goToGoods(item.id)} title="693"/>
                                         </div>
                                     ))
                                 }
@@ -225,7 +225,7 @@ class ShopHomeIndexTwo extends React.PureComponent {
                                     >
                                         {shopModelArr && shopModelArr.content.pr_banner && shopModelArr.content.pr_banner.length > 0 && shopModelArr.content.pr_banner.map(item  => (
                                         // {shopModelArr.banner && shopModelArr.banner.map(item  => (
-                                            <div className="pr_banner_bottom" style={{height: '165px', width: '275px'}} key={item}>
+                                            <div className="pr_banner_bottom" style={{height: '165px'}} key={item}>
                                                 <img
                                                     src={item.url}
                                                     alt=""
