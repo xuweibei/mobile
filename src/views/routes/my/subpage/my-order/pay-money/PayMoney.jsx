@@ -286,12 +286,11 @@ class PayMoney extends BaseComponent {
 
     //CAM消费 支付
     inputGrid = (pwd) => {
-        const {listArr, orderNum, selectIndex, money} = this.state;
-        const id = orderNum || listArr.order;//判断是否存在redux
+        const {listArr, selectIndex, money} = this.state;
         this.setState({
             pwsPopup: false
         }, () => {
-            this.fetch(urlCfg.campay, {method: 'post', data: {order_no: !listArr.order ? new Array(id) : id, pwd, money: listArr.all_price || money}})
+            this.fetch(urlCfg.campay, {method: 'post', data: {order_no: listArr.order, pwd, money: listArr.all_price || money}})
                 .subscribe(res => {
                     if (res.status === 0) {
                         appHistory.replace(`/paymentCompleted?&deposit=${res.data.capital}&id=${res.data.id}&allPrice=${res.data.total_fee}&types=${selectIndex}&if_express=${res.data.if_express}&batch=${res.data.id ? '0' : '1'}`);
