@@ -84,6 +84,7 @@ class PersonalTwo extends BaseComponent {
                                 flagArr: arr
                             });
                             if (res.data.pic_info && res.data.pic_info.status === 0) {
+                                console.log('sssssssssssssssssssssss');
                                 if (res.data.name && res.data.id_num) {
                                     this.setState({
                                         userName: res.data.name,
@@ -100,12 +101,13 @@ class PersonalTwo extends BaseComponent {
                                     this.setState({
                                         file: [],
                                         userName: '',
-                                        idCard: ''
+                                        ID: ''
                                     });
                                 } else if (ix === 1) {
                                     this.setState({
                                         file2: [],
-                                        validDate: ''
+                                        validDate: '',
+                                        date: ''
                                     });
                                 }
                                 showFail(Form.Fail_Lic_Info);
