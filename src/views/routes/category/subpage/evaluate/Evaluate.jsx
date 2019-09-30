@@ -257,7 +257,9 @@ export default class Evaluate extends BaseComponent {
                                                         )
                                                     }
                                                     <div className="chat-box">
-                                                        <div className="chat">商家回复：{item.return_content}</div>
+                                                        {
+                                                            item.return_content && (<div className="chat">商家回复：{item.return_content}</div>)
+                                                        }
                                                         <div
                                                             className="chat see"
                                                             onClick={() => this.switchTo(item.id)}
