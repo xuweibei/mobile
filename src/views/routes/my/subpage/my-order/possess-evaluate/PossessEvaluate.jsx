@@ -418,7 +418,6 @@ class PossessEvaluate extends BaseComponent {
                                     <div className="goods-sku">
                                         <div className="sku-left">
                                             {items.property_content.map(pro => <div key={pro} className="goods-size">{pro}</div>)}
-                                            <div>规格</div>
                                         </div>
                                         <div className="sku-right">x{items.num}</div>
                                     </div>
@@ -496,11 +495,15 @@ class PossessEvaluate extends BaseComponent {
                         </div>
                     </div>
                     <div className="frequency">
-                        <div>
-                            <span>浏览{item.hits}次</span>
-                            <span>点赞{item.zan_num}次</span>
-                            <span>评论{item.talk_num}次</span>
-                        </div>
+                        {
+                            userType !== '2' && (
+                                <div>
+                                    <span>浏览{item.hits}次</span>
+                                    <span>点赞{item.zan_num}次</span>
+                                    <span>评论{item.talk_num}次</span>
+                                </div>
+                            )
+                        }
                         {
                             userType !== '2' &&  (item.have_add === '1' ? <div>已追评</div> : <div className="depict" onClick={() => this.publishReview(item.id)}>写追评</div>)
                         }

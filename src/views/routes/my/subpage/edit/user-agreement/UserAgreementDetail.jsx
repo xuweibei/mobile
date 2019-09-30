@@ -12,16 +12,16 @@ const {urlCfg} = Configs;
 class UserAgreementDetail extends BaseComponent {
     //协议弹窗
     getProtocol = (num) => {
-        const {showConfirm} = this.props;
+        const {showAlert} = this.props;
         this.fetch(urlCfg.allProtocolInfo, {method: 'post', data: {type: num}})
             .subscribe(res => {
                 if (res && res.status === 0) {
-                    showConfirm({
-                        class: 'aaa',
-                        title: '协议',
-                        message: res.data.card_content,
-                        cfmBtnTexts: ['取消', '确定']
+                    console.log(res.data.card_content, 'dfdff');
+                    showAlert({
                         // callbacks: [null, () => {}]
+                        title: res.data.card_content,
+                        // message: res.data.card_content,
+                        btnText: '好'
                     });
                 }
             });
@@ -55,7 +55,7 @@ class UserAgreementDetail extends BaseComponent {
 }
 
 const mapToDispatchProps = {
-    showConfirm: actionCreator.showConfirm
+    showAlert: actionCreator.showAlert
 };
 
 export default connect(null, mapToDispatchProps)(UserAgreementDetail);

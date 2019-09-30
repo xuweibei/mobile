@@ -218,6 +218,10 @@ class PersonalOne extends BaseComponent {
     //校验负责人电话
     checkLinkName = (rule, value, callback) => {
         if (!validator.isEmpty(value, Form.No_linkName, callback)) return;
+        if (!validator.checkRange(2, 10, value)) {
+            validator.showMessage(Form.No_OpenShopName, callback);
+            return;
+        }
         callback();
     };
 
