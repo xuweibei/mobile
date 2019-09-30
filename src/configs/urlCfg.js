@@ -174,6 +174,7 @@ export const urlCfg = {
     importSum: href.scan + '/importSum',  //扫一扫支付
     consumer: href.scan + '/consumer',  //扫一扫核销订单
     sourceBrowse: href.scan + '/sourceBrowse', //扫一扫确认源头码
-    allProtocolInfo: href.apiPath + '/get-agreement'
+    // allProtocolInfo: href.apiPath + '/get-agreement',
+    protocolsCase: href.apiPath + '/clause-get' //协议接口
 
 };
