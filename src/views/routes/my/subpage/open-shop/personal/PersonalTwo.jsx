@@ -124,7 +124,6 @@ class PersonalTwo extends BaseComponent {
     getUpdateAudit = () => {
         this.fetch(urlCfg.updateAudit, {data: {type: 2}}).subscribe(res => {
             if (res.status === 0 && res.data.length !== 0) {
-                console.log(res.data.idcard_exp);
                 const {flagArr} = this.state;
                 const arr = flagArr;
                 const arr1 = [];
@@ -374,7 +373,6 @@ class PersonalTwo extends BaseComponent {
          const {form: {getFieldDecorator}} = this.props;
          const steps = ['填写店铺信息', '填写开店人信息', '填写工商信息', '绑定银行卡'];
          const {file, file2, file3, userName, ID, date} = this.state;
-         console.log(file, file2, file3, '圣诞节开发');
          return (
              <div data-component="personal-two" data-role="page" className="personal-two">
                  <AppNavBar rightExplain title="开店人信息" goBackModal={this.props.goBack}/>
