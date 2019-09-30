@@ -221,7 +221,8 @@ export default class HomeList extends BaseComponent {
     };
 
      //热销商品上拉加载
-     goodReached = () => {
+     goodReached = (e) => {
+         console.log(e);
          const {currentIndex} = this.state;
          if (currentIndex === 0) {
              this.setState(prevState => ({
@@ -359,7 +360,7 @@ export default class HomeList extends BaseComponent {
                         initialListSize={4}
                         renderRow={hotGoodsRow}
                         useBodyScroll={useBodyScroll}
-                        onEndReachedThreshold={50}
+                        // onEndReachedThreshold={1000}
                         onEndReached={this.goodReached}
                     />
                     <ListView

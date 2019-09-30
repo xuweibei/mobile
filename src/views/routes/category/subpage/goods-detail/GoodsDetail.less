@@ -269,15 +269,24 @@
             }
             .waiter{
                 color: #333;
+                width: 50px;
                 margin-right: 60px;
                 font-weight: @font-weight-bold;
             }
+            .validity{
+                color: #999;
+                text-align: center !important;
+                text-align: right;
+                flex: 1;
+            }
             .their{
                 display: flex;
+                width: 100%;
                 color: #FF2D51;
             }
             .nonsupport{
                 color: #999999;
+                flex: 1;
             }
         }
         .serve::after {
@@ -657,6 +666,13 @@
                 text-align: center;
                 color: @fiery-red;
             }
+            .disable-cart{
+                height: 80px;
+                line-height: 80px;
+                text-align: center;
+                color: #666;
+                background: #999;
+            }
             .emption{
                 height: 80px;
                 line-height: 80px;
@@ -665,6 +681,28 @@
                 background: linear-gradient(to top, #F20C00, #FF2D51);
                 margin-left: 0;
             }
+            .disable-emption{
+                height: 80px;
+                line-height: 80px;
+                text-align: center;
+                color: #666;
+                background: #999;
+                margin-left: 0;
+            }
+        }
+        .disble-btn{
+            background: #999;
+            border: none !important;
+            float: right;
+            width: 360px;
+            height: 80px;
+            border: 2px solid @fiery-red;
+            border-radius: 40px;
+            margin-top: 6px;
+            overflow: hidden;
+            padding-left: 20px;
+            line-height: 80px;
+            text-align: center !important;
         }
     }
     .bottom2{
@@ -798,6 +836,16 @@
         font-weight: @font-weight-bold;
         color: #333;
         .hairline('top',@to-light-gray);
+    }
+    .pay-now{
+        width: 360px;
+        height: 80px;
+        background:linear-gradient(0deg,rgba(255,45,81,1) 0%,rgba(242,12,0,1) 100%);
+        border-radius:40px;
+        float: right;
+        color: #fff;
+        line-height: 80px;
+        text-align: center;
     }
 }
 .ido {

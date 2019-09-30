@@ -34,6 +34,7 @@
                             line-height: 72px;
                             color: @darker-black;
                             margin: 0 20px 0 31px;
+                            width: 300px;
                             .TextareaOverflow(1);
                         }
                         .enter {
@@ -75,6 +76,7 @@
                             display: flex;
                             justify-content: space-between;
                             color: @darker-black;
+                            height: 67px;
                             .desc-title{
                                 width: 245px;
                                 .TextareaOverflow(2);
@@ -85,13 +87,23 @@
                             display: flex;
                             font-size: 20px;
                             color: @gray;
-                            margin-top: 11px;
+                            margin: 11px 0;
+                            justify-content: space-between;
                             .sku-left {
                                 display: flex;
-                                justify-content: left;
-                                flex: 2;
+                                //justify-content: left;
+                                //flex: 1;
+                                width: 350px;
+                                justify-content: space-between;
+                                margin-right: 20px;
                                 .goods-size{
-                                    margin: 0 15px 10px 15px;
+                                    flex: 1;
+                                    margin: 0 10px;
+                                    .TextareaOverflow(1);
+                                    //margin: 0 15px 10px 15px;
+                                }
+                                .goods-size:nth-child(1) {
+                                    margin-left: 0;
                                 }
                             }
                         }
@@ -360,7 +372,7 @@
         justify-content: space-between;
         color: @gray;
         font-size: @font-size-24;
-        padding-bottom:40px;
+        //padding-bottom:40px;
         span {
             margin-right: 20px;
         }
@@ -374,14 +386,19 @@
             padding: 4px 20px;
         }
         .business{
-            height:100px;
+            //height:100px;
+            width: 100%;
+            display: flex;
+            p:nth-child(1) {
+                margin-right: 230px;
+            }
             .icon-tiny:before{
                 content: '\E637';
                 color: @duckling-yellow;
                 font-size: 26px;
             }
         }
-        .business p:first-child{
+     /*   .business p:first-child{
             position: absolute;
             margin-right:20px;
             left:30px;
@@ -393,7 +410,7 @@
             right:60px;
             bottom:0px;
             font-size:28px;
-        }
+        }*/
     }
    }
 }

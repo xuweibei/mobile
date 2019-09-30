@@ -467,6 +467,7 @@ class appendOrder extends BaseComponent {
                                                                 <div className="desc-right">
                                                                     <div className="desc-title">
                                                                         {goods.title}
+                                                                        <div className="single-price">￥{goods.price}</div>
                                                                     </div>
                                                                     <div className="desc-sku">
                                                                         <div className="sku-left">
@@ -517,7 +518,7 @@ class appendOrder extends BaseComponent {
                                     <List>
                                         <InputItem
                                             placeholder="请和商家协议一致"
-                                            maxLength={200}
+                                            maxLength={50}
                                             value={order[index]}
                                             onChange={(val) => this.getRemark(val, index)}
                                         >订单备注

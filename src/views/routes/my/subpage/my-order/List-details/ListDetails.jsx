@@ -4,7 +4,6 @@ import {connect} from 'react-redux';
 import {dropByCacheKey} from 'react-router-cache-route';
 import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAction';
 import AppNavBar from '../../../../../common/navbar/NavBar';
-import {IconFont} from '../../../../../common/icon-font/IconFont';
 import CancelOrder from '../../../../../common/cancel-order/CancleOrder';
 import './ListDetails.less';
 
