@@ -431,14 +431,16 @@ class PersonalOne extends BaseComponent {
                                     ],
                                     validateTrigger: 'postInformation'//校验值的时机
                                 })(
-                                    <Picker
-                                        data={category}
-                                        cols={1}
-                                        // value={cValue}
-                                        onChange={(val) => this.category(val)}
-                                    >
-                                        <List.Item arrow="horizontal" onClick={this.onClick}>主营行业</List.Item>
-                                    </Picker>
+                                    <div className="main-business ">
+                                        <Picker
+                                            data={category}
+                                            cols={1}
+                                            // value={cValue}
+                                            onChange={(val) => this.category(val)}
+                                        >
+                                            <List.Item arrow="horizontal" onClick={this.onClick}>主营行业</List.Item>
+                                        </Picker>
+                                    </div>
                                 )
                             }
                             {
