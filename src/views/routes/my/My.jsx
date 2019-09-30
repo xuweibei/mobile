@@ -399,7 +399,7 @@ class My extends BaseComponent {
                                     />
                                     <p className="basic-data-UID" onClick={this.routeTo}>UID:{myInfo && (userInfo.no)}</p>
                                     {   //用户身份为消费商的时候展示
-                                        myInfo && myInfo.info.iden_type === '2' && <div className="icon conmuterId" onClick={this.changeYourself}>我是消费者</div>
+                                            myInfo && myInfo.info.iden_type === '2' && <div className="icon conmuterId" onClick={this.changeYourself}>我是消费者</div>
                                     }
                                     {   //用户身份为消费者时展示
                                         myInfo && myInfo.info.iden_type === '4' && <div className="icon switchId" onClick={() => this.changeYourself('shop')}>我是商家</div>

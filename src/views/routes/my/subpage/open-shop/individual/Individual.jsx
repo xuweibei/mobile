@@ -386,7 +386,7 @@ class Individual extends BaseComponent {
         const steps = ['填写店铺信息', '填写开店人信息', '填写工商信息', '绑定银行卡'];
         return (
             <div>
-                <AppNavBar rightExplain title="店铺信息"/>
+                <AppNavBar title="店铺信息"/>
                 <div className={`step-box ${window.isWX ? 'step-box-clear' : ''}`}>
                     {steps.map((item, index) => (
                         <div className="step" key={item}>

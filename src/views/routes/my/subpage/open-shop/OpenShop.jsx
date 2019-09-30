@@ -9,14 +9,13 @@ import {connect} from 'react-redux';
 import {Button} from 'antd-mobile';
 import {baseActionCreator as actionCreator} from '../../../../../redux/baseAction';
 import AppNavBar from '../../../../common/navbar/NavBar';
+import Agree from './agreement/Agreement';
 import FailureAudit from './FailureAudit';
 import Audit from './personal/Audit';
 import './OpenShop.less';
 
-// const {urlCfg} = Configs;
 const {appHistory, getUrlParam, showFail} = Utils;
 const {MESSAGE: {Feedback}} = Constants;
-// const hybrid = process.env.NATIVE;
 
 class OpenShop extends BaseComponent {
     state = {
@@ -42,54 +41,6 @@ class OpenShop extends BaseComponent {
         });
     }
 
-    //获取权限信息
-    // getApply = () => {
-    //     this.fetch(urlCfg.applyForRight).subscribe(res => {
-    //         if (res && res.status === 0) {
-    //             if (res.data.status === '1') {
-    //                 const {showConfirm} = this.props;
-    //                 showConfirm({
-    //                     title: '提示',
-    //                     message: '您还没有开店资格，暂不能开店。快去确认推荐人吧',
-    //                     btnTexts: ['去扫码', '去手动输入'],
-    //                     callbacks: [() => {
-    //                         if (window.isWX) {
-    //                             window.wx.ready(() => {
-    //                                 window.wx.scanQRCode({
-    //                                     needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
-    //                                     scanType: ['qrCode', 'barCode'], // 可以指定扫二维码还是一维码，默认二者都有
-    //                                     success: function () {
-    //                                         appHistory.push('/scanDetermine');
-    //                                     }
-    //                                 });
-    //                             });
-    //                         } else if (hybrid) {
-    //                             const obj = {
-    //                                 pay: urlCfg.importSum,
-    //                                 write: urlCfg.consumer,
-    //                                 source: urlCfg.sourceBrowse
-    //                             };
-    //                             native('qrCodeScanCallback', obj);
-    //                             native('goBack');
-    //                         }
-    //                     },
-    //                     () => { appHistory.push('/recommender') }
-    //                     ]
-    //                 });
-    //             } else if (res.data.status === '4') {
-    //                 this.setState({
-    //                     auditStatus: 'filed',
-    //                     cerType: res.data.cer_type
-    //                 });
-    //             } else if (res.data.status === '9') {
-    //                 this.setState({
-    //                     auditStatus: 'now'
-    //                 });
-    //             }
-    //         }
-    //     });
-    // }
-
     //开店
     openShop = () => {
         const {read, shopStatus, shopType} = this.state;
@@ -111,13 +62,30 @@ class OpenShop extends BaseComponent {
         }));
     };
 
+    show = () => {
+        this.setState({
+            auditStatus: 'agree'
+        });
+    }
+
+    close = () => {
+        this.setState({
+            auditStatus: 'nomal'
+        });
+    }
+
     render() {
         const {auditStatus, read, shopType} = this.state;
         return (
             <Fragment>
                 {auditStatus === 'nomal' && (
                     <div data-component="openShop" data-role="page" className="openShop">
-                        <AppNavBar rightExplain title="我要开店" nativeGoBack/>
+                        <AppNavBar
+                            rightExplain
+                            title="我要开店"
+                            nativeGoBack
+                            rightExplainClick={this.show}
+                        />
                         <div className={`store-sort ${window.isWX ? 'store-sort-clear' : ''}`}>
                             {
                                 shopType === 'net' && (
@@ -164,6 +132,11 @@ class OpenShop extends BaseComponent {
                 {
                     auditStatus === 'now' && (
                         <Audit/>
+                    )
+                }
+                {
+                    auditStatus === 'agree' && (
+                        <Agree close={this.close}/>
                     )
                 }
             </Fragment>

@@ -336,7 +336,7 @@ class IndividualThree extends BaseComponent {
         const {file, file2, file3, shopLicExp, shopLic} = this.state;
         return (
             <div>
-                <AppNavBar goBackModal={this.props.goBack} rightExplain title="个体工商户信息"/>
+                <AppNavBar goBackModal={this.props.goBack} title="个体工商户信息"/>
                 <div className={`step-box ${window.isWX ? 'step-box-clear' : ''}`}>
                     {steps.map((item, index) => (
                         <div className="step" key={item}>
