@@ -260,7 +260,7 @@ class refundDetails extends BaseComponent {
                                                 </span>
                                             </div>
                                             <div className="label">
-                                                {value.values_name}
+                                                {value.values_name.split(',').map(itemDiv => <div className="goods-size">{itemDiv}</div>)}
                                                 <span className="label-r">
                                                 x{value.pr_num }
                                                 </span>
