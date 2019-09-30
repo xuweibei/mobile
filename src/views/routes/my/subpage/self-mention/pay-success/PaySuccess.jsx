@@ -49,7 +49,7 @@ export default class PaySuccess extends BaseComponent {
                     <div className="shop-plan-center">
                         <img src={orderDetail.white_off_code} alt=""/>
                     </div>
-                    <div className="shop-plan-bottom">使用方法：自提时出示自提码给商家即可也可以到店扫码完成自提</div>
+                    <div className="shop-plan-bottom">使用方法：自提时请向商家出示此二维码完成核销</div>
                 </div>
 
                 <div className="reminder">
