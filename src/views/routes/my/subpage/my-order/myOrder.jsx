@@ -719,17 +719,15 @@ class MyOrder extends BaseComponent {
                             <div className="total-price-right"><span>合计</span>(含运费：{item.express_money})：<span className="zxa">{item.all_price}元</span></div>
                         </div>
                         {//售后状态下 退款申请中
-                            item.is_shoper === 0 && item.return_status === '1' && (
+                            item.return_status === '1' && (
                                 <div className="buttons">
                                     <div className="look-button" onClick={(ev) => this.revoke(item.return_id, ev)}>撤销申请</div>
                                     <div onClick={(ev) => this.application(ev, item.return_id)} className="evaluate-button">修改申请</div>
                                 </div>
                             )
                         }
-                        { //售后状态下 //商家已同意  is_shoper 为0是消费者的订单 1是商家的订单
-                            item.is_shoper === 0 && item.return_status === '2' && <div className="evaluate-button" onClick={(ev) => this.revoke(item.return_id, ev)}>撤销申请</div>
-                        }
-                        {item.is_shoper === 0 && this.bottomModal(item)}
+                        {item.return_status === '2' && <div className="evaluate-button" onClick={(ev) => this.revoke(item.return_id, ev)}>撤销申请</div>}
+                        {this.bottomModal(item)}
                     </div>
                 </div>
             </div>

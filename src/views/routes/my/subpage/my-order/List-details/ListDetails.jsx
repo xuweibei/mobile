@@ -286,13 +286,13 @@ class ListDetails extends BaseComponent {
                                                             <div className="btn-keep">记账量：{item.deposit}</div>
                                                         </div>
                                                         {   //订单为待评价的时候
-                                                            canInfo.is_shoper === 0 &&  (canInfo.status === '3' || canInfo.status === '4') && <div className="after-service" onClick={(ev) => this.goToIm(ev)}>申请售后</div>
+                                                            (canInfo.status === '3' || canInfo.status === '4') && <div className="after-service" onClick={(ev) => this.goToIm(ev)}>申请售后</div>
                                                         }
                                                         {   //退款中，按钮
-                                                            canInfo.is_shoper === 0 && item.button_name && <div className="after-service" onClick={(ev) => this.afterSale(ev, item.return_id)}>{item.button_name}</div>
+                                                            item.button_name && <div className="after-service" onClick={(ev) => this.afterSale(ev, item.return_id)}>{item.button_name}</div>
                                                         }
                                                         {   //订单为待发货或待收货时
-                                                            canInfo.is_shoper === 0 && !item.return_name && (canInfo.status === '1' || canInfo.status === '2') && <div className="after-service" onClick={(ev) => this.serviceRefund(canInfo, item, ev)}>申请退款</div>
+                                                            !item.return_name && (canInfo.status === '1' || canInfo.status === '2') && <div className="after-service" onClick={(ev) => this.serviceRefund(canInfo, item, ev)}>申请退款</div>
                                                         }
                                                     </div>
                                                 </div>
