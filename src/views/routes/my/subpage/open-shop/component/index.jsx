@@ -79,7 +79,7 @@ class ShopIndex extends BaseComponent {
                 title: '您可以开个人店或网店',
                 message: `${intro.person} ${intro.net}`,
                 btnTexts: ['取消', '去开店'],
-                callbacks: [null, () => this.setState({status: 'selfType'}, () => console.log(this.state.status))]
+                callbacks: [null, () => this.setState({status: 'selfType'})]
             });
         }
     };
@@ -92,6 +92,12 @@ class ShopIndex extends BaseComponent {
                     intro: res.data
                 });
             }
+        });
+    }
+
+    checkParentStatus = () => {
+        this.setState({
+            status: 'index'
         });
     }
 
@@ -116,7 +122,7 @@ class ShopIndex extends BaseComponent {
                 }
                 {
                     status === 'selfType' && (
-                        <SelfType/>
+                        <SelfType intro={this.state.intro} checkParentStatus={this.checkParentStatus}/>
                     )
                 }
             </div>

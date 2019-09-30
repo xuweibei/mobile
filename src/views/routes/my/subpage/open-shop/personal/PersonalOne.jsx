@@ -393,7 +393,7 @@ class PersonalOne extends BaseComponent {
         } = this.state;
         return (
             <div>
-                <AppNavBar rightExplain title="店铺信息"/>
+                <AppNavBar title="店铺信息"/>
                 <div className={`step-box ${window.isWX ? 'step-box-clear' : ''}`}>
                     {steps.map((item, index) => (
                         <div className="step" key={item}>

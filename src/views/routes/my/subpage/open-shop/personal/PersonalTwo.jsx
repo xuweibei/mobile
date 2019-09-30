@@ -375,7 +375,7 @@ class PersonalTwo extends BaseComponent {
          const {file, file2, file3, userName, ID, date} = this.state;
          return (
              <div data-component="personal-two" data-role="page" className="personal-two">
-                 <AppNavBar rightExplain title="开店人信息" goBackModal={this.props.goBack}/>
+                 <AppNavBar title="开店人信息" goBackModal={this.props.goBack}/>
                  <div className={`step-box ${window.isWX ? 'step-box-clear' : ''}`}>
                      {steps.map((item, index) => (
                          <div className="step" key={item}>

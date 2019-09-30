@@ -360,7 +360,7 @@ class IndividualTwo extends BaseComponent {
         const {file, file2, file3, validDate, idCard, userName} = this.state;
         return (
             <div>
-                <AppNavBar goBackModal={this.props.goBack} rightExplain title="开店人信息"/>
+                <AppNavBar goBackModal={this.props.goBack} title="开店人信息"/>
                 <div className={`step-box ${window.isWX ? 'step-box-clear' : ''}`}>
                     {
                         data.map((item) => (

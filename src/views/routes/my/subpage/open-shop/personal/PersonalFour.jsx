@@ -300,7 +300,7 @@ class PersonalFour extends BaseComponent {
         const steps = ['填写店铺信息', '填写开店人信息', '填写工商信息', '绑定银行卡'];
         return (
             <div data-component="personal-four" data-role="page" className="personal-four">
-                <AppNavBar rightExplain title="店铺信息" goBackModal={() => this.props.goBack('three')}/>
+                <AppNavBar title="店铺信息" goBackModal={() => this.props.goBack('three')}/>
                 <div className={`step-box ${window.isWX ? 'step-box-clear' : ''}`}>
                     {steps.map((item, index) => (
                         <div className="step" key={item}>

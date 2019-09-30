@@ -87,8 +87,13 @@ class NavBar extends React.PureComponent {
         }
     }
 
+    rightExplainClick = () => {
+        const {rightExplainClick} = this.props;
+        rightExplainClick();
+    }
+
     render() {
-        const {title, rightShow, redBackground, rightSearch, rightExplain, rightEdit, search, isEdit, backgroundColor, rightExplainClick} = this.props;
+        const {title, rightShow, redBackground, rightSearch, rightExplain, rightEdit, search, isEdit, backgroundColor} = this.props;
         if (window.isWX) {
             document.title = title;
             return null;
@@ -142,7 +147,7 @@ class NavBar extends React.PureComponent {
                                     }
                                     {
                                         rightExplain && (
-                                            <div className="rightExplain" onClick={rightExplainClick}>相关说明</div>
+                                            <div className="rightExplain" onClick={this.rightExplainClick}>相关说明</div>
                                         )
                                     }
                                     {/* 浏览历史导航右侧编辑功能 */}
