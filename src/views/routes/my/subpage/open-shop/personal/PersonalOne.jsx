@@ -409,7 +409,6 @@ class PersonalOne extends BaseComponent {
                             {getFieldDecorator('shopName', {
                                 initialValue: shopName,
                                 rules: [
-                                    //validator自定义校验规则 (rule, value, cb) => (value === true ? cb() : cb(true))
                                     {validator: this.checkShopName}
                                 ],
                                 validateTrigger: 'postInformation'//校验值的时机

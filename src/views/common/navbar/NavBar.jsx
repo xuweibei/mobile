@@ -25,7 +25,8 @@ class NavBar extends React.PureComponent {
         changeNavRight: false,
         goToSearch: null,
         style: {},
-        backgroundColor: ''
+        backgroundColor: '',
+        rightExplainClick: () => {}
     };
 
     static propTypes = {
@@ -45,7 +46,8 @@ class NavBar extends React.PureComponent {
         ]),
         goToSearch: PropTypes.func,
         style: PropTypes.object,
-        backgroundColor: PropTypes.string
+        backgroundColor: PropTypes.string,
+        rightExplainClick: PropTypes.func
     }
 
     //左边按钮图标点击样式
@@ -86,7 +88,7 @@ class NavBar extends React.PureComponent {
     }
 
     render() {
-        const {title, rightShow, redBackground, rightSearch, rightExplain, rightEdit, search, isEdit, backgroundColor} = this.props;
+        const {title, rightShow, redBackground, rightSearch, rightExplain, rightEdit, search, isEdit, backgroundColor, rightExplainClick} = this.props;
         if (window.isWX) {
             document.title = title;
             return null;
@@ -140,7 +142,7 @@ class NavBar extends React.PureComponent {
                                     }
                                     {
                                         rightExplain && (
-                                            <div className="rightExplain">相关说明</div>
+                                            <div className="rightExplain" onClick={rightExplainClick}>相关说明</div>
                                         )
                                     }
                                     {/* 浏览历史导航右侧编辑功能 */}

@@ -10,12 +10,18 @@ class SelfType extends React.PureComponent {
         appHistory.push(`/openShopPage?shopType=${type}&shopStatus=${num}`);
     };
 
+    show = () => {
+
+    }
+
     render() {
         return (
             <div className="chose-type">
                 <AppNavBar
                     title="选择开店类型"
                     rightExplain
+                    rightExplainClick={this.show}
+                    nativeGoBack
                 />
                 <div className="type-box" onClick={() => this.routeTo('self', 0)}>
                     <h3 className="type-title">个人店</h3>

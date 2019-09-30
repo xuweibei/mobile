@@ -79,7 +79,7 @@ class ShopIndex extends BaseComponent {
                 title: '您可以开个人店或网店',
                 message: `${intro.person} ${intro.net}`,
                 btnTexts: ['取消', '去开店'],
-                callbacks: [null, () => this.setState({status: 'selfType'})]
+                callbacks: [null, () => this.setState({status: 'selfType'}, () => console.log(this.state.status))]
             });
         }
     };
