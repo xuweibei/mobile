@@ -311,7 +311,7 @@ class refundDetails extends BaseComponent {
                     }
                     <div className="business-box">
                         <div className="business">
-                            <div className="business-left" onClick={this.goToShoper}><IconFont iconText="iconIM-zhutou"/><span>联系商家</span></div>
+                            <div className="business-left icon" onClick={this.goToShoper}><span>联系商家</span></div>
                             <span className="business-right icon" onClick={() => this.shopPhone()}>商家电话</span>
                         </div>
                     </div>
@@ -342,12 +342,16 @@ class refundDetails extends BaseComponent {
                     }
                 </div>
                 <div/>
-                <div className="cancel-order-box">
-                    {type === '2' && refundArr && refundArr.status === '1' && <div onClick={this.revoke} className="immediate-evaluation-c">撤销申请</div>}
-                    {type === '2' && refundArr && refundArr.status === '1' && <div onClick={this.application} className="immediate-evaluation">修改申请</div>}
-                    {type === '2' && refundArr && refundArr.status === '2' && <div onClick={this.revoke} className="immediate-evaluation-c">撤销申请</div>}
-                    {type === '2' && refundArr && refundArr.status === '2' && <div onClick={this.complaint} className="immediate-evaluation">投诉</div>}
-                </div>
+                {
+                    type === '2' && (
+                        <div className="cancel-order-box">
+                            {refundArr && refundArr.status === '1' && <div onClick={this.revoke} className="immediate-evaluation-c">撤销申请</div>}
+                            {refundArr && refundArr.status === '1' && <div onClick={this.application} className="immediate-evaluation">修改申请</div>}
+                            {refundArr && refundArr.status === '2' && <div onClick={this.revoke} className="immediate-evaluation-c">撤销申请</div>}
+                            {refundArr && refundArr.status === '2' && <div onClick={this.complaint} className="immediate-evaluation">投诉</div>}
+                        </div>
+                    )
+                }
             </div>
         );
     }
