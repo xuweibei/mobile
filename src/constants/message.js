@@ -104,7 +104,7 @@ export const MESSAGE = {
         Error_Bank: '银行卡格式不对',
         Bank_None: '请选择开户银行',
         Bank_Card_Num: '请输入银行卡号',
-        Error_ShopName: '店铺名称必须是2-30位中文, 数字, 英文组成',
+        Error_ShopName: '请输入2-30位店铺名称，仅支持中英文及数字。',
         Error_Phone: '请输入11位电话号码',
         Error_CasPhone: '请输入4-12位数字客服电话',
         Error_Captcha: '验证码错误',
@@ -160,6 +160,7 @@ export const MESSAGE = {
         No_EvaluateShop: '请对店铺进行评价',
         No_EvaluateLogistics: '请对物流进行评价',
         No_Evaluate: '您还没有输入任何评价',
+        No_OpenShopName: '请输入开店人姓名，且需为2~10位的中文字符',
 
 
         No_INFO: '请先验证信息'
