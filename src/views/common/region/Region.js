@@ -25,13 +25,14 @@ class Region extends BaseComponent {
 
     componentDidMount() {
         const {provinceValue, cityValue, countyValue, provinceId, cityId} = this.props;
-        console.log(11111111, provinceValue);
         this.getProvince();
+        console.log(55555);
+        console.log(provinceValue, cityValue, countyValue);
         this.setState({
             provinceValue: provinceValue || '请选择所在地区',
             cityValue: cityValue || '请选择所在地区',
             countyValue: countyValue || '请选择所在地区'
-        }, () => console.log(this.state.provinceValue));
+        });
         //读取市数组
         if (provinceId) {
             this.getCity(provinceId);
@@ -45,9 +46,11 @@ class Region extends BaseComponent {
     //判断父级是否更新
     componentWillReceiveProps(nextProps) {
         const {provinceValue} = this.state;
-        const {add, editStatus} = this.props;
-        console.log(editStatus, add, provinceValue, nextProps.provinceValue);
+        const {add, editStatus, editStatusChange} = this.props;
+        console.log(editStatus && !add && provinceValue !== nextProps.provinceValue);
         if (editStatus && !add && provinceValue !== nextProps.provinceValue) {
+            console.log(1111111);
+            console.log(nextProps.provinceValue, nextProps.countyValue, nextProps.cityValue);
             this.setState({
                 provinceValue: nextProps.provinceValue,
                 countyValue: nextProps.countyValue,
@@ -61,7 +64,9 @@ class Region extends BaseComponent {
             if (nextProps.cityId) {
                 this.getCounty(nextProps.cityId);
             }
-            this.props.editStatusChange();
+            if (editStatusChange) {
+                this.props.editStatusChange();
+            }
         }
     }
 
@@ -88,6 +93,7 @@ class Region extends BaseComponent {
     }
 
     provinceChange = (e) => {
+        console.log('选择省');
         const {provinceData} = this.state;
         if (provinceData[0].length === 0) return;
         let provinceName = '';
@@ -101,7 +107,7 @@ class Region extends BaseComponent {
         this.setState({
             provinceValue: provinceName,
             cityValue: '请选择所在地区',
-            countyValue: '请选择所在地区',
+            countyValue: '',
             cityIndex: 0,
             countyIndex: 0,
             cityData: [],
@@ -224,7 +230,7 @@ class Region extends BaseComponent {
             }
         }
         return undefined;
-    }
+    };
 
     render() {
         const {

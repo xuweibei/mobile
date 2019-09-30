@@ -189,7 +189,7 @@ class ReDetail extends BaseComponent {
 
     goBackModal = () => {
         if (appHistory.length() === 0) {
-            appHistory.replace('/selfMention/yw');
+            appHistory.replace('/selfMention');
         } else {
             appHistory.goBack();
         }

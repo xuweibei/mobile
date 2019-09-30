@@ -335,7 +335,7 @@ class ReDetail extends BaseComponent {
                                     {items.property_content.map(data => (
                                         <div className="goods-size">{data}</div>
                                     ))}
-                                    <div>规格</div>
+                                    {/*<div>规格</div>*/}
                                 </div>
                                 <div className="sku-right">x{items.num}</div>
                             </div>

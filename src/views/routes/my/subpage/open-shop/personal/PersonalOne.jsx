@@ -471,13 +471,7 @@ class PersonalOne extends BaseComponent {
                                                     onSetProvince={this.setProvince}
                                                     onSetCity={this.setCity}
                                                     onSetCounty={this.setCounty}
-                                                    provinceValue={province}
-                                                    cityValue={urban}
-                                                    countyValue={county}
-                                                    provinceId={updateAudit.province_id}
-                                                    cityId={updateAudit.city_id}
-                                                    editStatus={editStatus}
-                                                    editStatusChange={this.editStatusChange}
+                                                    add
                                                 />
                                             )
                                         }

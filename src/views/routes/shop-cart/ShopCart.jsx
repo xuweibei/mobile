@@ -757,7 +757,7 @@ class ShopCart extends BaseComponent {
                                                         </div>
                                                         <span
                                                             className="sku-right icon icon-down"
-                                                            style={{marginRight: '20px'}}
+                                                            // style={{marginRight: '20px'}}
                                                             onClick={(e) => this.openSku(e, goods)}
                                                         />
                                                     </div>
@@ -803,13 +803,15 @@ class ShopCart extends BaseComponent {
                                     }
                                 </div>
                             ))}
-                            <div className="timeout-goods">
+                            <div
+                                className="timeout-goods"
+                                style={{
+                                    display:
+                                    invalid.length > 0 ? 'block' : 'none'
+                                }}
+                            >
                                 <div
                                     className="timeout-top"
-                                    style={{
-                                        display:
-                                            invalid.length > 0 ? 'flex' : 'none'
-                                    }}
                                 >
                                     <span
                                         className={`icon ${invalidSelect ? 'icon-select-z' : 'icon-unselect-z'}`}

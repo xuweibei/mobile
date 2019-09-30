@@ -147,7 +147,6 @@ class ShopHome extends BaseComponent {
     template = (num) => {
         let block = '';
         const {shopModelArr} = this.state;
-        console.log(shopModelArr);
         switch (num) {
         case '1':
             block = <ShopHomeOne shopModelArr={shopModelArr}/>;

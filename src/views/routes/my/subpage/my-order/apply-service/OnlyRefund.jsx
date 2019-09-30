@@ -124,7 +124,7 @@ class applyService extends BaseComponent {
                             const pasArr = [];
                             fileInfo.forEach((item, index) => {
                                 pasArr.push(new Promise((resolve, reject) => {
-                                    this.fetch(urlCfg.picSave, {data: {
+                                    this.fetch(urlCfg.pictureUploadBase, {data: {
                                         type: 2,
                                         id: res.id,
                                         ix: index,

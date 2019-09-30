@@ -11,6 +11,7 @@
         }
         .icon-right:before {
             content: '\E675';
+            font-weight: 500;
         }
     }
 
@@ -183,12 +184,17 @@
                     .sku-left {
                         display: flex;
                         justify-content: left;
-                        flex: 2;
+                        flex: 1;
                         //margin-bottom:  10px;
                         .goods-size{
-                            padding: 0 15px 0 15px;
+                            flex: 1;
+                            padding: 0 20px;
                             //border-right: 1px solid @gray;
                             .hairline('right',@gray);
+                            .TextareaOverflow(1);
+                        }
+                        .goods-size:nth-child(1) {
+                            padding-left: 0;
                         }
                         .goods-size:last-child {
                             border-right: none;
@@ -258,7 +264,7 @@
 
     .order {
         padding-top: 44px;
-        padding-bottom: 10px;
+        padding-bottom: 20px;
         font-size: @font-size-24;
         color: @darker-black;
         background-color: @white;
@@ -295,6 +301,9 @@
         .order-remarks {
             display: flex;
             justify-content: flex-start;
+            span:nth-child(2) {
+                flex: 1;
+            }
         }
     }
 
@@ -314,11 +323,14 @@
                 font-size: @font-size-30;
                 flex: 1;
             }
-            i {
-                vertical-align: sub;
-            }
             .business-right {
                 border-left: 1px solid @to-light-gray;
+            }
+            .business-left:before {
+                content:'\e679';
+                color:#00AEFF;
+                margin-right:10px;
+                font-size: @font-size-30;
             }
             .business-right::before{
                 content:'\e639';
@@ -356,7 +368,7 @@
             border-radius: 100px;
             margin: auto;
             color: @fiery-red;
-            border:1px solid @fiery-red;
+            border:2px solid @fiery-red;
             font-size:24px;
         }
         .removeCollect{

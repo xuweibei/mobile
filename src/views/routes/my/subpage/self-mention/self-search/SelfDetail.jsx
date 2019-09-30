@@ -232,7 +232,7 @@ class ReDetail extends BaseComponent {
             </div>
         );
         return (
-            <div data-component="Self-mention" data-role="page" className="Self-mention">
+            <div data-component="Self-mention" data-role="page" className="self-search">
                 <AppNavBar title="线下订单" backgroundColor={navColor} goToSearch={this.goToSearch} rightShow white/>
                 <React.Fragment>
                     {pageList && pageList.length > 0 ? (

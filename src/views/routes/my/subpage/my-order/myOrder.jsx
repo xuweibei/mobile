@@ -283,11 +283,11 @@ class MyOrder extends BaseComponent {
     }
 
     //确认收货
-    confirmTake = (id, ev) => {
+    confirmTake = (id, ev, refund) => {
         const {showConfirm} = this.props;
         const {status} = this.state;
         showConfirm({
-            title: Form.No_Error_Take,
+            title: refund === '1' ? Form.No_Error_Has_Return : Form.No_Error_Take,
             callbacks: [null, () => {
                 this.fetch(urlCfg.confirmOrder, {data: {id: id}})
                     .subscribe((res) => {
@@ -541,7 +541,7 @@ class MyOrder extends BaseComponent {
                     }
                     <div className="look-button" onClick={(ev) => this.extendedReceipt(item.id, ev)}>延长收货</div>
                     <div className="look-button" onClick={(ev) => this.goApplyService(item.id, ev)}>查看物流</div>
-                    <div className="evaluate-button" onClick={(ev) => this.confirmTake(item.id, ev)}>确认收货</div>
+                    <div className="evaluate-button" onClick={(ev) => this.confirmTake(item.id, ev, item.all_refund)}>确认收货</div>
                     {/* {
                         item.all_refund === 1 ? <div className="evaluate-button" onClick={(ev) => this.revoke(item.pr_list[0].return_id, ev)}>撤销申请</div> : <div className="evaluate-button" onClick={(ev) => this.confirmTake(item.id, ev)}>确认收货</div>
                     } */}
@@ -698,7 +698,6 @@ class MyOrder extends BaseComponent {
                             <div className="goods-sku">
                                 <div className="sku-left">
                                     {items.property_content && items.property_content.map(pro => <div className="goods-size" key={pro}>{pro}</div>)}
-                                    <div>规格</div>
                                 </div>
                                 <div className="sku-right">x{items.num}</div>
                             </div>
@@ -717,7 +716,7 @@ class MyOrder extends BaseComponent {
                         </div>
                         <div className="total-price">
                             <div className="total-price-left">共{item.pr_count}件商品</div>
-                            <div className="total-price-right"><span>合计：</span><span className="zxa">{item.all_price}元</span></div>
+                            <div className="total-price-right"><span>合计</span>(含运费：{item.express_money})：<span className="zxa">{item.all_price}元</span></div>
                         </div>
                         {//售后状态下 退款申请中
                             item.is_shoper === 0 && item.return_status === '1' && (
