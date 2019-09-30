@@ -51,9 +51,8 @@ class SourceBrowse extends BaseComponent {
             .subscribe(res => {
                 if (res.status === 0) {
                     showInfo(Feedback.Bind_Success);
-                    alert(appHistory.length());
                     if (hybrid && appHistory.length() === 0) {
-                        native('native');
+                        native('goBack');
                     } else {
                         appHistory.go(-3);
                     }

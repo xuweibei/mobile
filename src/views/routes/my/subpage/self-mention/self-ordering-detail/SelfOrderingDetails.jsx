@@ -2,7 +2,6 @@ import React from 'react';
 import copy from 'copy-to-clipboard';
 import {connect} from 'react-redux';
 import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAction';
-import {IconFont} from '../../../../../common/icon-font/IconFont';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './SelfOrderingDetails.less';
 

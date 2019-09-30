@@ -196,8 +196,6 @@ class IndividualTwo extends BaseComponent {
                         idcard_exp: val.validDate
                     }}).subscribe(res => {
                     if (res.status === 0) {
-                        // FIXME: 提示信息用常量
-                        console.log('信息正确');
                         showInfo(Feedback.Handle_Success, 1);
                         this.setState({editModal: 'three'});
                     } else {

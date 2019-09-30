@@ -11,7 +11,6 @@ const {urlCfg} = Configs;
 const Fragment = React.Fragment;
 const {MESSAGE: {Form}} = Constants;
 const {showInfo, validator} = Utils;
-const RadioItem = Radio.RadioItem;
 const data = [
     {value: 1, label: '正式商户'},
     {value: 2, label: '体验商户'}
@@ -643,6 +642,7 @@ class PersonalOne extends BaseComponent {
                                 <InputItem
                                     // value={linkName}
                                     clear
+                                    maxLength={10}
                                     placeholder="开店人姓名"
                                     // onChange={val => this.onChange(val, 'linkName')}
                                 >开店人姓名
