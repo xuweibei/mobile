@@ -16,12 +16,21 @@ class UserAgreementDetail extends BaseComponent {
         this.fetch(urlCfg.allProtocolInfo, {method: 'post', data: {type: num}})
             .subscribe(res => {
                 if (res && res.status === 0) {
-                    console.log(res.data.card_content, 'dfdff');
+                    let allContent;
+                    switch (num) {
+                    case 3:
+                        allContent = res.data.secret_content;
+                        break;
+                    case 4:
+                        allContent = res.data.member_content;
+                        break;
+                    default:
+                        break;
+                    }
+
                     showAlert({
-                        // callbacks: [null, () => {}]
-                        title: res.data.card_content,
-                        // message: res.data.card_content,
-                        btnText: '好'
+                        title: allContent
+                        // btnText: '好'
                     });
                 }
             });
@@ -37,10 +46,10 @@ class UserAgreementDetail extends BaseComponent {
                 <List>
                     <div className="about-information">
                         <Item arrow="horizontal" onClick={() => {}}>版权信息</Item>
-                        <Item arrow="horizontal" onClick={() => this.getProtocol(1)}>软件许可使用协议</Item>
-                        <Item arrow="horizontal" onClick={() => this.getProtocol(2)}>特别说明</Item>
-                        <Item arrow="horizontal" onClick={() => this.getProtocol(3)}>平台服务协议</Item>
-                        <Item arrow="horizontal" onClick={() => this.getProtocol(4)}>隐私权政策</Item>
+                        <Item arrow="horizontal" onClick={() => this.getProtocol(0)}>软件许可使用协议</Item>
+                        <Item arrow="horizontal" onClick={() => this.getProtocol(0)}>特别说明</Item>
+                        <Item arrow="horizontal" onClick={() => this.getProtocol(4)}>平台服务协议</Item>
+                        <Item arrow="horizontal" onClick={() => this.getProtocol(3)}>隐私权政策</Item>
                         <Item arrow="horizontal" onClick={() => {}}>证照信息</Item>
                     </div>
                 </List>
