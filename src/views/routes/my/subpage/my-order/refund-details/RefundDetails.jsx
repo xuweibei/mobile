@@ -2,7 +2,6 @@ import {connect} from 'react-redux';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import BaseComponent from '../../../../../../components/base/BaseComponent';
 import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAction';
-import {IconFont} from '../../../../../common/icon-font/IconFont';
 import './RefundDetails.less';
 
 const {getUrlParam, appHistory, showInfo, native} = Utils;
