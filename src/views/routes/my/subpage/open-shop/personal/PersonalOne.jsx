@@ -218,6 +218,10 @@ class PersonalOne extends BaseComponent {
     //校验负责人电话
     checkLinkName = (rule, value, callback) => {
         if (!validator.isEmpty(value, Form.No_linkName, callback)) return;
+        if (!validator.checkRange(2, 10, value)) {
+            validator.showMessage(Form.No_OpenShopName, callback);
+            return;
+        }
         callback();
     };
 
@@ -389,7 +393,7 @@ class PersonalOne extends BaseComponent {
         } = this.state;
         return (
             <div>
-                <AppNavBar rightExplain title="店铺信息"/>
+                <AppNavBar title="店铺信息"/>
                 <div className={`step-box ${window.isWX ? 'step-box-clear' : ''}`}>
                     {steps.map((item, index) => (
                         <div className="step" key={item}>
@@ -405,7 +409,6 @@ class PersonalOne extends BaseComponent {
                             {getFieldDecorator('shopName', {
                                 initialValue: shopName,
                                 rules: [
-                                    //validator自定义校验规则 (rule, value, cb) => (value === true ? cb() : cb(true))
                                     {validator: this.checkShopName}
                                 ],
                                 validateTrigger: 'postInformation'//校验值的时机

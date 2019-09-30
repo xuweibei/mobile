@@ -316,11 +316,11 @@ class IndividualFour extends BaseComponent {
     editModalMain = () => {
         const {form: {getFieldDecorator}} = this.props;
         const steps = ['填写店铺信息', '填写开店人信息', '填写工商信息', '绑定银行卡'];
-        const {banks, cValue, branchBank, userName, bankCard, phone, branchBankName, provinceId, cityId, province, urban, county, addressStatus, editStatus} = this.state;
+        const {banks, cValue, branchBank, userName, bankCard, phone, branchBankName, provinceId, cityId, province, urban, county, addressStatus} = this.state;
         console.log(addressStatus);
         return (
             <div>
-                <AppNavBar goBackModal={this.props.goBack} rightExplain title="绑定银行卡"/>
+                <AppNavBar goBackModal={this.props.goBack} title="绑定银行卡"/>
                 <div className={`step-box ${window.isWX ? 'step-box-clear' : ''}`}>
                     {steps.map((item, index) => (
                         <div className="step" key={item}>

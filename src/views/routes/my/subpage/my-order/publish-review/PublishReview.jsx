@@ -104,7 +104,8 @@ export default class PublishReview extends BaseComponent {
                 if (res.status === 0) {
                     if (fileArr.length > 0) {
                         fileArr.forEach(itemImg => {
-                            itemImg.imgB = encodeURIComponent(itemImg.imgB);
+                            itemImg.urlB = encodeURIComponent(itemImg.imgB);
+                            delete itemImg.imgB;
                             delete itemImg.url;
                         });
                         this.fetch(urlCfg.picSave, {data: {

@@ -353,6 +353,10 @@ class Individual extends BaseComponent {
     //校验负责人
     checkLinkName = (rule, value, callback) => {
         if (!validator.isEmpty(value, Form.No_linkName, callback)) return;
+        if (!validator.checkRange(2, 10, value)) {
+            validator.showMessage(Form.No_OpenShopName, callback);
+            return;
+        }
         callback();
     };
 
@@ -382,7 +386,7 @@ class Individual extends BaseComponent {
         const steps = ['填写店铺信息', '填写开店人信息', '填写工商信息', '绑定银行卡'];
         return (
             <div>
-                <AppNavBar rightExplain title="店铺信息"/>
+                <AppNavBar title="店铺信息"/>
                 <div className={`step-box ${window.isWX ? 'step-box-clear' : ''}`}>
                     {steps.map((item, index) => (
                         <div className="step" key={item}>

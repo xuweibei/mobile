@@ -95,6 +95,12 @@ class ShopIndex extends BaseComponent {
         });
     }
 
+    checkParentStatus = () => {
+        this.setState({
+            status: 'index'
+        });
+    }
+
     render() {
         const {status} = this.state;
         return (
@@ -116,7 +122,7 @@ class ShopIndex extends BaseComponent {
                 }
                 {
                     status === 'selfType' && (
-                        <SelfType/>
+                        <SelfType intro={this.state.intro} checkParentStatus={this.checkParentStatus}/>
                     )
                 }
             </div>

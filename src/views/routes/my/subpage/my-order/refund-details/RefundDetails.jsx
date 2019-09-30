@@ -2,7 +2,6 @@ import {connect} from 'react-redux';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import BaseComponent from '../../../../../../components/base/BaseComponent';
 import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAction';
-import {IconFont} from '../../../../../common/icon-font/IconFont';
 import './RefundDetails.less';
 
 const {getUrlParam, appHistory, showInfo, native} = Utils;
@@ -260,7 +259,7 @@ class refundDetails extends BaseComponent {
                                                 </span>
                                             </div>
                                             <div className="label">
-                                                {value.values_name}
+                                                {value.values_name.split(',').map(itemDiv => <div className="goods-size">{itemDiv}</div>)}
                                                 <span className="label-r">
                                                 x{value.pr_num }
                                                 </span>
