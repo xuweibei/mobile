@@ -19,7 +19,7 @@ class ShopIndex extends BaseComponent {
         intro: {}
     };
 
-    componentDidMount() {
+    componentWillReceiveProps() {
         const status = decodeURI(getUrlParam('status', encodeURI(this.props.location.search)));
         const cerType = decodeURI(getUrlParam('cerType', encodeURI(this.props.location.search)));
         const localStatus = JSON.parse(getValue('shopStatus'));
