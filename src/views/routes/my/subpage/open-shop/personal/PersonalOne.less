@@ -117,14 +117,6 @@
                             width: auto;
                             margin-right: 56px;
                         }
-                        .am-input-control {
-                            input {
-                                text-align: right;
-                            }
-                            input::placeholder {
-                                text-align: right;
-                            }
-                        }
                     }
                 }
                 .regional {
@@ -144,6 +136,17 @@
             .am-list-body:before, .am-list-body:after{
                 height: 0!important;
             }
+        }
+        .main-business {
+            .hairline('bottom', @to-light-gray);
+        }
+    }
+    .am-input-control {
+        input {
+            text-align: right!important;
+        }
+        input::placeholder {
+            text-align: right!important;
         }
     }
 
