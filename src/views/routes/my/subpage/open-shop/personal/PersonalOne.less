@@ -144,29 +144,29 @@
             .am-list-body:before, .am-list-body:after{
                 height: 0!important;
             }
-            .am-list-item {
-                height: 100px;
-                padding-left: 0;
-                border-bottom: 1px solid @to-light-gray;
-                .am-list-line {
-                    padding-left: 30px;
-                    .am-list-extra {
-                        color: #bbbbbb;
-                        font-size: @font-size-28;
-                    }
-                }
-                .am-list-line::after {
-                    height: 0!important;
-                }
-            }
         }
     }
 
 
+    .am-list-item {
+        height: 100px;
+        padding-left: 0;
+        border-bottom: 1px solid @to-light-gray;
+        .am-list-line {
+            padding-left: 30px;
+            .am-list-extra {
+                color: #bbbbbb;
+                font-size: @font-size-28;
+            }
+        }
+        .am-list-line::after {
+            height: 0!important;
+        }
+    }
     .merchant-state {
         display: flex;
         justify-content: space-between;
-        padding-left: 30px;
+        padding: 0 30px;
         .state-left {
             line-height: 100px;
         }

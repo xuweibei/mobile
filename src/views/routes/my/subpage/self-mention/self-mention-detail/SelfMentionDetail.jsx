@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import './SelfMentionDetail.less';
-import {List, Radio, Flex, TextareaItem, Modal, Tabs, InputItem} from 'antd-mobile';
+import {List, Radio, TextareaItem, Modal, Tabs, InputItem} from 'antd-mobile';
 import {myActionCreator as ActionCreator} from '../../../actions/index';
 import {shopCartActionCreator} from '../../../../shop-cart/actions/index';
 import AppNavBar from '../../../../../common/navbar/NavBar';
@@ -296,11 +296,7 @@ class ReDetail extends BaseComponent {
                             }
                         </div>
                     </div>
-                    <Flex>
-                        <Flex.Item>
-                            <Radio checked={radioTreaty} className="my-radio" onClick={this.radioTreaty}>同意<span className="agreement">《到店自提协议》</span></Radio>
-                        </Flex.Item>
-                    </Flex>
+                    <div className={`my-radio icon ${radioTreaty === true ? 'endorse' : ''}`} onClick={this.radioTreaty}>同意<span className="agreement">《到店自提协议》</span></div>
                 </div>
 
                 <div className="shop-lists">
@@ -326,8 +322,7 @@ class ReDetail extends BaseComponent {
                                 </div>
                                 <div className="goods-sku">
                                     <div className="sku-left">
-                                        <div className="goods-size">{item.values_name}</div>
-                                        <div>规格</div>
+                                        {item.values_name.split(',').map(vaName => <div className="goods-size">{vaName}</div>)}
                                     </div>
                                     <div className="sku-right">x{item.num}</div>
                                 </div>

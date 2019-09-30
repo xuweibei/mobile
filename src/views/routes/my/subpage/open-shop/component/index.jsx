@@ -15,7 +15,6 @@ const hybrid = process.env.NATIVE;
 class ShopIndex extends BaseComponent {
     state={
         status: 'index',
-        sure: '',
         intro: {}
     };
 
@@ -23,9 +22,6 @@ class ShopIndex extends BaseComponent {
         const status = decodeURI(getUrlParam('status', encodeURI(this.props.location.search)));
         const cerType = decodeURI(getUrlParam('cerType', encodeURI(this.props.location.search)));
         const localStatus = JSON.parse(getValue('shopStatus'));
-        this.setState({
-            sure: status
-        });
         let myStatus;
         if (localStatus) {
             myStatus = localStatus;
@@ -62,6 +58,59 @@ class ShopIndex extends BaseComponent {
             });
         }
         this.getShopIntro();
+    }
+
+    shouldComponentUpdate(data, value) {
+        const timerOld = data.location.search.split('&')[2];
+        const timerNow = this.props.location.search.split('&')[2];
+        const status = decodeURI(getUrlParam('status', encodeURI(data.location.search)));
+        const cerType = decodeURI(getUrlParam('cerType', encodeURI(data.location.search)));
+        const localStatus = JSON.parse(getValue('shopStatus'));
+        if (hybrid && (timerOld !== timerNow)) {
+            this.setState({
+                status: 'index',
+                intro: {}
+            }, () => {
+                let myStatus;
+                if (localStatus) {
+                    myStatus = localStatus;
+                } else {
+                    myStatus = status;
+                }
+                if (myStatus === '11') {
+                    const {showConfirm} = this.props;
+                    showConfirm({
+                        title: '提示',
+                        message: '您还没有开店资格，暂不能开店。快去确认推荐人吧',
+                        btnTexts: ['取消', '确定'],
+                        callbacks: [
+                            () => {
+                                if (hybrid) {
+                                    native('goBack');
+                                } else {
+                                    appHistory.push('/my');
+                                }
+                            },
+                            () => {
+                                appHistory.push('/recommender');
+                            }
+                        ]
+                    });
+                } else if (myStatus === '4') {
+                    this.setState({
+                        auditStatus: 'filed',
+                        cerType: cerType
+                    });
+                } else if (myStatus === '9') {
+                    this.setState({
+                        auditStatus: 'now'
+                    });
+                }
+                this.getShopIntro();
+            });
+            return true;
+        }
+        return false;
     }
 
     checkPath = (type) => {
@@ -110,6 +159,7 @@ class ShopIndex extends BaseComponent {
                         <React.Fragment>
                             <AppNavBar
                                 title="我要开店"
+                                nativeGoBack
                             />
                             <div className="license"/>
                             <h2 className="select-title">您是否有营业执照?</h2>

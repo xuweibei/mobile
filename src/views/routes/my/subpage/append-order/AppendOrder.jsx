@@ -466,13 +466,13 @@ class appendOrder extends BaseComponent {
                                                                 </div>
                                                                 <div className="desc-right">
                                                                     <div className="desc-title">
-                                                                        {goods.title}
+                                                                        <div>{goods.title}</div>
                                                                         <div className="single-price">￥{goods.price}</div>
                                                                     </div>
                                                                     <div className="desc-sku">
                                                                         <div className="sku-left">
                                                                             {goods.values_name.split(',').map(item => (
-                                                                                <span key={item}>{item}</span>
+                                                                                <span className="goods-size" key={item}>{item}</span>
                                                                             ))}
 
                                                                         </div>
