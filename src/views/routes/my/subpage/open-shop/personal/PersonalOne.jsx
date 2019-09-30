@@ -642,6 +642,7 @@ class PersonalOne extends BaseComponent {
                                 <InputItem
                                     // value={linkName}
                                     clear
+                                    maxLength={10}
                                     placeholder="开店人姓名"
                                     // onChange={val => this.onChange(val, 'linkName')}
                                 >开店人姓名

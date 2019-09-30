@@ -15,13 +15,17 @@ const hybrid = process.env.NATIVE;
 class ShopIndex extends BaseComponent {
     state={
         status: 'index',
-        intro: {}
+        intro: {},
+        sure: ''
     };
 
     componentDidMount() {
         const status = decodeURI(getUrlParam('status', encodeURI(this.props.location.search)));
         const cerType = decodeURI(getUrlParam('cerType', encodeURI(this.props.location.search)));
         const localStatus = JSON.parse(getValue('shopStatus'));
+        this.setState({
+            sure: status
+        });
         let myStatus;
         if (localStatus) {
             myStatus = localStatus;
@@ -123,12 +127,12 @@ class ShopIndex extends BaseComponent {
                 btnTexts: ['取消', '去开店'],
                 callbacks: [null, () => appHistory.push(`/openShopPage?shopType=${'other'}&shopStatus=${1}`)]
             });
-        } else {
+        } else if (type === 'none') {
             showConfirm({
                 title: '您可以开个人店或网店',
                 message: `${intro.person} ${intro.net}`,
                 btnTexts: ['取消', '去开店'],
-                callbacks: [null, () => this.setState({status: 'selfType'})]
+                callbacks: [null, () => this.setState({status: 'selfType'}, () => this.forceUpdate())]
             });
         }
     };
@@ -152,6 +156,7 @@ class ShopIndex extends BaseComponent {
 
     render() {
         const {status} = this.state;
+        console.log(status);
         return (
             <div className="select-type">
                 {
