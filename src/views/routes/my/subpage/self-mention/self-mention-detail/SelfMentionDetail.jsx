@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import './SelfMentionDetail.less';
-import {List, Radio, Flex, TextareaItem, Modal, Tabs, InputItem} from 'antd-mobile';
+import {List, Radio, TextareaItem, Modal, Tabs, InputItem} from 'antd-mobile';
 import {myActionCreator as ActionCreator} from '../../../actions/index';
 import {shopCartActionCreator} from '../../../../shop-cart/actions/index';
 import AppNavBar from '../../../../../common/navbar/NavBar';

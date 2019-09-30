@@ -11,7 +11,6 @@ const {urlCfg} = Configs;
 const Fragment = React.Fragment;
 const {MESSAGE: {Form}} = Constants;
 const {showInfo, validator} = Utils;
-const RadioItem = Radio.RadioItem;
 const data = [
     {value: 1, label: '正式商户'},
     {value: 2, label: '体验商户'}
