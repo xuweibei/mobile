@@ -23,6 +23,8 @@ const datas = [
     {value: 1, label: '是'},
     {value: 0, label: '否'}
 ];
+const typeOne = '选择直接入驻，您将直接成为正式商家，设置的折扣在审核通过后即生效并享有跨界收益';
+const typeTwo = '您申请入驻体验商家享有5,000体验额度，此额度内商家折扣不生效且没有跨界收益；如您体验期超一个月或营业总额超过体验金额，将转为正式商家。成为正式商家后，您此时设置的折扣自动生效且将享有跨界收益，商家折扣可在店铺设置内修改。';
 class Individual extends BaseComponent {
     state = {
         editModal: '',
@@ -127,7 +129,8 @@ class Individual extends BaseComponent {
                         provinceId: res.data.province_id,
                         cityId: res.data.city_id,
                         countyId: res.data.county_id,
-                        addressStatus: '1'
+                        addressStatus: '1',
+                        text: Number(res.data.type) === 1 ? typeOne : typeTwo
                     });
                 }
             });
@@ -238,11 +241,11 @@ class Individual extends BaseComponent {
             const {isExp} = this.state;
             if (isExp === 1) {
                 this.setState({
-                    text: '选择直接入驻，您将直接成为正式商家，设置的折扣在审核通过后即生效并享有跨界收益。'
+                    text: typeOne
                 });
             } else if (isExp === 2) {
                 this.setState({
-                    text: '您申请入驻体验商家享有5,000体验额度，此额度内商家折扣不生效且没有跨界收益；如您体验期超一个月或营业总额超过体验金额，将转为正式商家。成为正式商家后，您此时设置的折扣自动生效且将享有跨界收益，商家折扣可在店铺设置内修改。'
+                    text: typeTwo
                 });
             }
         });
@@ -386,7 +389,7 @@ class Individual extends BaseComponent {
         const steps = ['填写店铺信息', '填写开店人信息', '填写工商信息', '绑定银行卡'];
         return (
             <div>
-                <AppNavBar rightExplain title="店铺信息"/>
+                <AppNavBar title="店铺信息"/>
                 <div className={`step-box ${window.isWX ? 'step-box-clear' : ''}`}>
                     {steps.map((item, index) => (
                         <div className="step" key={item}>
@@ -660,6 +663,7 @@ class Individual extends BaseComponent {
                             })(
                                 <InputItem
                                     clear
+                                    maxLength={10}
                                     placeholder="请输入开店人姓名"
                                 >开店人姓名
                                 </InputItem>

@@ -196,8 +196,6 @@ class IndividualTwo extends BaseComponent {
                         idcard_exp: val.validDate
                     }}).subscribe(res => {
                     if (res.status === 0) {
-                        // FIXME: 提示信息用常量
-                        console.log('信息正确');
                         showInfo(Feedback.Handle_Success, 1);
                         this.setState({editModal: 'three'});
                     } else {
@@ -360,7 +358,7 @@ class IndividualTwo extends BaseComponent {
         const {file, file2, file3, validDate, idCard, userName} = this.state;
         return (
             <div>
-                <AppNavBar goBackModal={this.props.goBack} rightExplain title="开店人信息"/>
+                <AppNavBar goBackModal={this.props.goBack} title="开店人信息"/>
                 <div className={`step-box ${window.isWX ? 'step-box-clear' : ''}`}>
                     {
                         data.map((item) => (

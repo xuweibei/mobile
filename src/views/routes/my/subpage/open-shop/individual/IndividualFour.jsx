@@ -320,7 +320,7 @@ class IndividualFour extends BaseComponent {
         console.log(addressStatus);
         return (
             <div>
-                <AppNavBar goBackModal={this.props.goBack} rightExplain title="绑定银行卡"/>
+                <AppNavBar goBackModal={this.props.goBack} title="绑定银行卡"/>
                 <div className={`step-box ${window.isWX ? 'step-box-clear' : ''}`}>
                     {steps.map((item, index) => (
                         <div className="step" key={item}>
@@ -343,6 +343,7 @@ class IndividualFour extends BaseComponent {
                                 })(
                                     <InputItem
                                         clear
+                                        maxLength={10}
                                         placeholder="请输入卡主名称"
                                     >卡主姓名
                                     </InputItem>

@@ -254,7 +254,8 @@ class PersonalThree extends BaseComponent {
         if (hybrid) {
             if (type === 'prove') {
                 const {sValue} = this.state;
-                if (sValue.length === 0) {
+                const result = seasons.some(item => item.value === sValue[0]);
+                if (!result) {
                     showInfo(Form.No_Prove_type);
                     return;
                 }
@@ -358,7 +359,7 @@ class PersonalThree extends BaseComponent {
         const {that} = this.props;
         return (
             <div data-component="personal-three" data-role="page" className="personal-three">
-                <AppNavBar rightExplain title="开店人信息" goBackModal={() => this.props.goBack('two')}/>
+                <AppNavBar title="开店人信息" goBackModal={() => this.props.goBack('two')}/>
                 <div className={`step-box ${window.isWX ? 'step-box-clear' : ''}`}>
                     {steps.map((item, index) => (
                         <div className="step" key={item}>

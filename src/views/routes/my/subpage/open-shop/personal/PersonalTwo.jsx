@@ -84,6 +84,7 @@ class PersonalTwo extends BaseComponent {
                                 flagArr: arr
                             });
                             if (res.data.pic_info && res.data.pic_info.status === 0) {
+                                console.log('sssssssssssssssssssssss');
                                 if (res.data.name && res.data.id_num) {
                                     this.setState({
                                         userName: res.data.name,
@@ -100,12 +101,13 @@ class PersonalTwo extends BaseComponent {
                                     this.setState({
                                         file: [],
                                         userName: '',
-                                        idCard: ''
+                                        ID: ''
                                     });
                                 } else if (ix === 1) {
                                     this.setState({
                                         file2: [],
-                                        validDate: ''
+                                        validDate: '',
+                                        date: ''
                                     });
                                 }
                                 showFail(Form.Fail_Lic_Info);
@@ -124,7 +126,6 @@ class PersonalTwo extends BaseComponent {
     getUpdateAudit = () => {
         this.fetch(urlCfg.updateAudit, {data: {type: 2}}).subscribe(res => {
             if (res.status === 0 && res.data.length !== 0) {
-                console.log(res.data.idcard_exp);
                 const {flagArr} = this.state;
                 const arr = flagArr;
                 const arr1 = [];
@@ -374,10 +375,9 @@ class PersonalTwo extends BaseComponent {
          const {form: {getFieldDecorator}} = this.props;
          const steps = ['填写店铺信息', '填写开店人信息', '填写工商信息', '绑定银行卡'];
          const {file, file2, file3, userName, ID, date} = this.state;
-         console.log(file, file2, file3, '圣诞节开发');
          return (
              <div data-component="personal-two" data-role="page" className="personal-two">
-                 <AppNavBar rightExplain title="开店人信息" goBackModal={this.props.goBack}/>
+                 <AppNavBar title="开店人信息" goBackModal={this.props.goBack}/>
                  <div className={`step-box ${window.isWX ? 'step-box-clear' : ''}`}>
                      {steps.map((item, index) => (
                          <div className="step" key={item}>
@@ -400,7 +400,6 @@ class PersonalTwo extends BaseComponent {
                                                      {
                                                          file && file.map(item => (
                                                              <li id={item.id}>
-                                                                 {/* <span className="delete-icon" onClick={() => this.deleteImg('forward', item.id)}>×</span> */}
                                                                  <img onClick={() => this.addPictrue('forward')} src={item.imgS || item.url}/>
                                                              </li>
                                                          ))
@@ -443,14 +442,9 @@ class PersonalTwo extends BaseComponent {
                                          hybrid ? (
                                              <div className="picture-area">
                                                  <ul>
-                                                     {/* <li>
-                                                         <span className="delete-icon" onClick={() => this.deleteImg()}>×</span>
-                                                         <img src="http://img.redocn.com/sheji/20141219/zhongguofengdaodeliyizhanbanzhijing_3744115.jpg"/>
-                                                     </li> */}
                                                      {
                                                          file2 && file2.map(item => (
                                                              <li id={item.id}>
-                                                                 {/* <span className="delete-icon" onClick={() => this.deleteImg('back', item.id)}>×</span> */}
                                                                  <img onClick={() => this.addPictrue('back')} src={item.imgS || item.url}/>
                                                              </li>
                                                          ))
@@ -466,7 +460,6 @@ class PersonalTwo extends BaseComponent {
                                              </div>
                                          )
                                              : getFieldDecorator('back', {
-                                                 // initialValue: '',
                                                  rules: [
                                                      {validator: this.checkBack}
                                                  ],
@@ -497,7 +490,6 @@ class PersonalTwo extends BaseComponent {
                                                      {
                                                          file3 && file3.map(item => (
                                                              <li id={item.id}>
-                                                                 {/* <span className="delete-icon" onClick={() => this.deleteImg('handle', item.id)}>×</span> */}
                                                                  <img onClick={() => this.addPictrue('handle')} src={item.imgS || item.url}/>
                                                              </li>
                                                          ))
@@ -512,7 +504,6 @@ class PersonalTwo extends BaseComponent {
                                                  </ul>
                                              </div>
                                          ) :  getFieldDecorator('handle', {
-                                         // initialValue: '',
                                              rules: [
                                                  {validator: this.checkHand}
                                              ],

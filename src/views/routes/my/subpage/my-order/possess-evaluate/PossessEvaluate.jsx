@@ -89,6 +89,35 @@ class PossessEvaluate extends BaseComponent {
         this.sentPas();
     }
 
+    componentWillReceiveProps(nextProps) {
+        const userType = nextProps.location.search.split('=')[1];
+        if (hybird && (userType !== this.state.userType)) {
+            this.setState({
+                dataSource: new ListView.DataSource({
+                    rowHasChanged: (row1, row2) => row1 !== row2
+                }),
+                alerdeyData: new ListView.DataSource({
+                    rowHasChanged: (row1, row2) => row1 !== row2
+                }),
+                page: 1, //已评价页码
+                pageToBe: 1, //待评价页码
+                types: this.props.evaStatus, //tab类型 默认进入页面为全部
+                pageCount: -1,
+                pageCountToBe: -1,
+                tabkey: this.props.tabValue || 0, //tab状态
+                refreshing: false, //是否显示刷新状态
+                height: document.documentElement.clientHeight - (window.isWX ? window.rem * 1.08 : window.rem * 2),
+                heightAlready: document.documentElement.clientHeight - (window.isWX ? window.rem * 2.98 : window.rem * 4.06), //已评价的列表高
+                arrChecked: arr, //已评价按钮状态切换集合
+                userType: userType, //用户身份
+                hasMore: false, //底部请求状态文字显示情况
+                requestOne: false //判断tab切换的时候是否请求接口
+            }, () => {
+                this.sentPas();
+            });
+        }
+    }
+
     //我的评价页面的请求
     sentPas = () => {
         //追评之后，从新返回的时候，。请求

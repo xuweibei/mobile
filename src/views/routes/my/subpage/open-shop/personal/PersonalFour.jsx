@@ -70,26 +70,6 @@ class PersonalFour extends BaseComponent {
         });
     };
 
-    // //切换银行账号显示内容
-    // onChecked = (values) => {
-    //     if (values === 1) {
-    //         this.setState({
-    //             cardStatus: '存折账号',
-    //             value: values
-    //         });
-    //     } else {
-    //         this.setState({
-    //             cardStatus: '银行账号',
-    //             value: values
-    //         });
-    //     }
-    //     this.setState({
-    //         value: values
-    //     }, () => {
-    //         console.log(this.state.value);
-    //     });
-    // }
-
     //获取银行
     getBank = () => {
         this.fetch(urlCfg.getBank).subscribe(res => {
@@ -136,13 +116,15 @@ class PersonalFour extends BaseComponent {
 
     //获取选中的银行
     getBankInfo = (val) => {
+        console.log(val);
         const {banks} = this.state;
         const value = val.toString();
         const result = banks.find(item => item.value === value);
         this.setState({
             cValue: val,
             bankKey: result.label,
-            bankId: result.value
+            bankId: result.value,
+            bankBranch: []
         });
     }
 
@@ -156,11 +138,11 @@ class PersonalFour extends BaseComponent {
     //获取支行列表
     getBankList = () => {
         const {countyId, bankKey} = this.state;
-        console.log(bankKey, countyId);
+        console.log(bankKey);
         if (countyId && bankKey) {
             this.fetch(urlCfg.getBankList, {data: {
                 cityId: countyId,
-                key: bankKey.substr(0, 2)
+                key: bankKey
             }}).subscribe(res => {
                 if (res && res.status === 0) {
                     const arr = [];
@@ -191,19 +173,6 @@ class PersonalFour extends BaseComponent {
             });
         }
     }
-
-    //获取短信验证码
-    // getCode = () => {
-    //     const {phone} = this.state;
-    //     const myPhone = validator.wipeOut(phone);
-    //     this.fetch(urlCfg.getCode, {data: {
-    //         phone: parseInt(myPhone, 10)
-    //     }}).subscribe(res => {
-    //         if (res && res.status === 0) {
-    //             showInfo('验证码获取成功');
-    //         }
-    //     });
-    // }
 
     //检验是否选择区域
     checkArea = (rule, value, callback) => {
@@ -300,7 +269,7 @@ class PersonalFour extends BaseComponent {
         const steps = ['填写店铺信息', '填写开店人信息', '填写工商信息', '绑定银行卡'];
         return (
             <div data-component="personal-four" data-role="page" className="personal-four">
-                <AppNavBar rightExplain title="店铺信息" goBackModal={() => this.props.goBack('three')}/>
+                <AppNavBar title="店铺信息" goBackModal={() => this.props.goBack('three')}/>
                 <div className={`step-box ${window.isWX ? 'step-box-clear' : ''}`}>
                     {steps.map((item, index) => (
                         <div className="step" key={item}>

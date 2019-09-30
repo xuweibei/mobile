@@ -2,6 +2,11 @@
 .inspect {
     .wrapTabNav {
         margin-bottom: 20px;
+        .blackNav-right {
+            .icon-right:before {
+                content: '\E675';
+            }
+        }
     }
     .am-list-item {
         height: 180px;
@@ -19,6 +24,9 @@
                 }
             }
         }
+    }
+    .am-list-line::after {
+        height: 0!important;
     }
     .scan {
         background: @white;

@@ -11,7 +11,6 @@ const {urlCfg} = Configs;
 const Fragment = React.Fragment;
 const {MESSAGE: {Form}} = Constants;
 const {showInfo, validator} = Utils;
-const RadioItem = Radio.RadioItem;
 const data = [
     {value: 1, label: '正式商户'},
     {value: 2, label: '体验商户'}
@@ -393,7 +392,7 @@ class PersonalOne extends BaseComponent {
         } = this.state;
         return (
             <div>
-                <AppNavBar rightExplain title="店铺信息"/>
+                <AppNavBar title="店铺信息"/>
                 <div className={`step-box ${window.isWX ? 'step-box-clear' : ''}`}>
                     {steps.map((item, index) => (
                         <div className="step" key={item}>
@@ -409,7 +408,6 @@ class PersonalOne extends BaseComponent {
                             {getFieldDecorator('shopName', {
                                 initialValue: shopName,
                                 rules: [
-                                    //validator自定义校验规则 (rule, value, cb) => (value === true ? cb() : cb(true))
                                     {validator: this.checkShopName}
                                 ],
                                 validateTrigger: 'postInformation'//校验值的时机
@@ -433,14 +431,16 @@ class PersonalOne extends BaseComponent {
                                     ],
                                     validateTrigger: 'postInformation'//校验值的时机
                                 })(
-                                    <Picker
-                                        data={category}
-                                        cols={1}
-                                        // value={cValue}
-                                        onChange={(val) => this.category(val)}
-                                    >
-                                        <List.Item arrow="horizontal" onClick={this.onClick}>主营行业</List.Item>
-                                    </Picker>
+                                    <div className="main-business ">
+                                        <Picker
+                                            data={category}
+                                            cols={1}
+                                            // value={cValue}
+                                            onChange={(val) => this.category(val)}
+                                        >
+                                            <List.Item arrow="horizontal" onClick={this.onClick}>主营行业</List.Item>
+                                        </Picker>
+                                    </div>
                                 )
                             }
                             {
@@ -588,7 +588,7 @@ class PersonalOne extends BaseComponent {
                                     <div className="merchant-state">
                                         <span className="state-left">商户状态</span>
                                         <span className="state-right">
-                                            {data.map(i => (
+                                            {/* {data.map(i => (
                                                 <RadioItem
                                                     key={i.value}
                                                     checked={shopStatus === i.value}
@@ -596,7 +596,15 @@ class PersonalOne extends BaseComponent {
                                                 >
                                                     {i.label}
                                                 </RadioItem>
-                                            ))}
+                                            ))}*/}
+                                            {
+                                                data.map(i => (
+                                                    <div onClick={() => this.onChecked(i.value)} className="merchant" key={i.value}>
+                                                        <span className={`switch-icon icon ${i.value === shopStatus ? 'switch-red' : ''}`}/>
+                                                        <span>{i.label}</span>
+                                                    </div>
+                                                ))
+                                            }
                                         </span>
                                     </div>
                                 )
@@ -636,6 +644,7 @@ class PersonalOne extends BaseComponent {
                                 <InputItem
                                     // value={linkName}
                                     clear
+                                    maxLength={10}
                                     placeholder="开店人姓名"
                                     // onChange={val => this.onChange(val, 'linkName')}
                                 >开店人姓名
