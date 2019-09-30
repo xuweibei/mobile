@@ -109,9 +109,42 @@ class GoodsDetail extends BaseComponent {
             const {goodId} = this.state;
             if (id !== goodId) {
                 this.setState({
-                    goodId: id,
-                    selectType: '',
-                    ids: []
+                    topSwithe: true,
+                    indexId: 0,
+                    popup: false, //sku是否显示
+                    paginationNum: 1,
+                    imgHeight: 176,
+                    goodsDetail: {}, //详情界面
+                    picPath: [], //轮播
+                    shop: {}, //  详情商店数据
+                    recommend: [], //店铺商品推荐
+                    evaluate: {}, //商品评价
+                    allState: {},
+                    goodsAttr: [],
+                    stocks: [],
+                    type: '',
+                    names: '', //选中商品属性
+                    inputStatus: false, //评论框状态
+                    assess: 0, //评价顶部距离
+                    detailImg: 0, //商品详情顶部距离
+                    navHeight: 0, //导航栏到顶部的距离
+                    recommendTop: 0,
+                    collect: [], //商品收藏状态
+                    status: '1', //判断商品是否下架
+                    visible: false,
+                    half: false,
+                    text: '',
+                    lineStatus: false, //底部商品状态栏
+                    ids: [], //选中属性id
+                    goodsSku: [], //商品的结果集
+                    listHeight: [], //元素头部高度
+                    shopAddress: '', // 店铺位置
+                    lineText: '', //商品状态栏文字
+                    pickType: {}, //配送方式
+                    selectType: '', //选中配送方式 1快递 2自提
+                    clickType: 0, //打开sku的方式 0箭头 1购物车 2立即购买
+                    totalNUm: 0, //商品库存,
+                    goodId: id
                 }, () => {
                     this.init();
                 });
@@ -224,6 +257,7 @@ class GoodsDetail extends BaseComponent {
     //添加商品到购物车
     addCart = () => {
         const {shop, goodsDetail, paginationNum, ids, selectType, status} = this.state;
+        console.log(paginationNum);
         if (shop.shoper_open_status === '0') {
             return;
         }
@@ -260,6 +294,8 @@ class GoodsDetail extends BaseComponent {
                         showFail(Feedback.Not_Allow_Repeat);
                     } else if (res.data.status === 6) {
                         showFail(Feedback.Failed_Property);
+                    } else if (res.data.status === 5) {
+                        showFail(res.message);
                     }
                 } else {
                     showInfo(Feedback.Add_Success);
@@ -445,7 +481,7 @@ class GoodsDetail extends BaseComponent {
         case '0':
             this.setState({
                 lineStatus: true,
-                lineText: '失效'
+                lineText: '已下架'
             });
             break;
         case '2':
@@ -474,6 +510,7 @@ class GoodsDetail extends BaseComponent {
 
     //改变购买数量
     onChangeCount = value => {
+        console.log(value);
         if (value > 100) {
             showFail(Form.No_Stocks);
         } else {
@@ -561,7 +598,7 @@ class GoodsDetail extends BaseComponent {
         const {
             topSwithe, popup, paginationNum, xxArr, half, ids, maskStatus,
             picPath, goodsDetail, shop, recommend, evaluate, allState, collect,
-            goodsAttr, stocks, shopAddress, lineStatus, lineText, pickType, selectType, names
+            goodsAttr, stocks, shopAddress, lineStatus, lineText, pickType, selectType, names, status
         } = this.state;
         console.log(picPath[0], '肯德基康师傅');
         const renderCount = (
@@ -719,19 +756,30 @@ class GoodsDetail extends BaseComponent {
                                     </div>
                                 </div>
                             </div>
-                            {/*    <div className="valid">
-                                <span>有效时间</span>
-                            </div>*/}
-                            <div className="serve">
-                                <div className="waiter">服务</div>
-                                <div className="their">
-                                    <span>门店可自提</span>
-                                    <span className="dolt"/>
-                                    <div className="nonsupport">
+                            {
+                                goodsDetail.effective_type === '0' ? (
+                                    <div className="serve">
+                                        <div className="waiter">服务</div>
+                                        <div className="their">
+                                            <span>门店可自提</span>
+                                            <span className="dolt"/>
+                                            <div className="nonsupport">
                                         不支持7天无理由退换货
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
+                                ) : (
+                                    <div className="serve">
+                                        <div className="waiter">有效时间</div>
+                                        <div className="their">
+                                            <div className="nonsupport">
+                                                {goodsDetail.effective_type}
+                                            </div>
+                                            <div className="validity">{goodsDetail.if_holiday === '0' ? '仅工作日有效' : '节假日通用(节假日包含周六、周日)'}</div>
+                                        </div>
+                                    </div>
+                                )
+                            }
                             <div className="shop-detali">
                                 <div className="box1">
                                     <div className="shop-logo">
@@ -778,7 +826,7 @@ class GoodsDetail extends BaseComponent {
                                                 人均消费
                                             </span>
                                             <span className="Shop-Nr">
-                                                ￥99
+                                                ￥{shop.average_consumption}
                                             </span>
                                         </div>
                                     </div>
@@ -919,22 +967,28 @@ class GoodsDetail extends BaseComponent {
                             </div>
                         </div>
                     </div>
-                    <div className="bottom-btn">
-                        <Flex>
-                            <Flex.Item
-                                className="cart"
-                                onClick={() => this.addCart()}
-                            >
+                    {
+                        goodsDetail.effective_type !== '0' ? (
+                            <div className="pay-now" onClick={() => this.emption('pay')}>立即购买</div>
+                        ) : (
+                            <div className={`${(status === '0' || status === '2') ? 'disble-btn' : 'bottom-btn'}`}>
+                                <Flex>
+                                    <Flex.Item
+                                        className={`${(status === '0' || status === '2') ? 'disable-cart' : 'cart'}`}
+                                        onClick={this.addCart}
+                                    >
                                 加入购物车
-                            </Flex.Item>
-                            <Flex.Item
-                                className="emption"
-                                onClick={() => this.emption('pay')}
-                            >
+                                    </Flex.Item>
+                                    <Flex.Item
+                                        className={`${(status === '0' || status === '2') ? 'disable-emption' : 'emption'}`}
+                                        onClick={() => this.emption('pay')}
+                                    >
                                 立即购买
-                            </Flex.Item>
-                        </Flex>
-                    </div>
+                                    </Flex.Item>
+                                </Flex>
+                            </div>
+                        )
+                    }
                 </div>
                 {/*底部弹出选择商品框*/}
                 {popup && (

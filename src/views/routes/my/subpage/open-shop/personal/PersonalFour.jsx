@@ -29,7 +29,8 @@ class PersonalFour extends BaseComponent {
         bankId: 0, //银行id
         bankKey: '', //所属银行
         pageStatus: '',
-        id: ''
+        id: '',
+        addressStatus: ''
     };
 
     componentDidMount = () => {
@@ -62,7 +63,8 @@ class PersonalFour extends BaseComponent {
                     cityId: res.data.city_id,
                     countyId: res.data.county_id,
                     id: res.data.id,
-                    branches: res.data.branchName
+                    branches: res.data.branchName,
+                    addressStatus: '1'
                 });
             }
         });
@@ -203,6 +205,14 @@ class PersonalFour extends BaseComponent {
     //     });
     // }
 
+    //检验是否选择区域
+    checkArea = (rule, value, callback) => {
+        const {province, urban, county} = this.state;
+        const pca = [province, urban, county];
+        if (!validator.isEmpty(pca, Form.No_pca, callback)) return;
+        callback();
+    };
+
     //驗證银行用户名
     checkUserName = (rule, value, callback) => {
         if (!validator.isEmpty(value, Form.No_cardHolderName, callback)) return;
@@ -285,7 +295,7 @@ class PersonalFour extends BaseComponent {
     };
 
     render() {
-        const {banks, cValue, bankBranch, branchName, phone, userName, bankCard, provinceId, cityId, countyId, province, urban, county} = this.state;
+        const {banks, cValue, bankBranch, branchName, phone, userName, bankCard, provinceId, cityId, addressStatus, province, urban, county} = this.state;
         const {getFieldDecorator} = this.props.form;
         const steps = ['填写店铺信息', '填写开店人信息', '填写工商信息', '绑定银行卡'];
         return (
@@ -361,19 +371,47 @@ class PersonalFour extends BaseComponent {
                                 }
                                 <List.Item className="branches area" arrow="horizontal">
                                     <span>开户地区</span>
-                                    <Region
-                                        provinceId={provinceId}
-                                        cityId={cityId}
-                                        countyId={countyId}
-                                        provinceValue={province}
-                                        cityValue={urban}
-                                        countyValue={county}
-                                        onSetProvince={this.setProvince}
-                                        onSetCity={this.setCity}
-                                        onSetCounty={this.setCounty}
-                                        onCountyId={this.setCountyId}
-                                        add
-                                    />
+                                    {
+                                        getFieldDecorator('area', {
+                                            // initialValue: '',
+                                            rules: [
+                                                {validator: this.checkArea}
+                                            ],
+                                            validateTrigger: 'onSubmit'
+                                        })(
+                                            <div className="region-select">
+                                                {
+                                                    addressStatus === '1' && (
+                                                        <Region
+                                                            onSetProvince={this.setProvince}
+                                                            onSetCity={this.setCity}
+                                                            onSetCounty={this.setCounty}
+                                                            onCountyId={this.setCountyId}
+                                                            provinceValue={province}
+                                                            cityValue={urban}
+                                                            countyValue={county}
+                                                            provinceId={provinceId}
+                                                            cityId={cityId}
+                                                        />
+                                                    )
+                                                }
+                                                {
+                                                    addressStatus === '' && (
+                                                        <Region
+                                                            provinceValue={province}
+                                                            cityValue={urban}
+                                                            countyValue={county}
+                                                            onSetProvince={this.setProvince}
+                                                            onSetCity={this.setCity}
+                                                            onSetCounty={this.setCounty}
+                                                            onCountyId={this.setCountyId}
+                                                            add
+                                                        />
+                                                    )
+                                                }
+                                            </div>
+                                        )
+                                    }
                                 </List.Item>
                                 {
                                     getFieldDecorator('branchName', {

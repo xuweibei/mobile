@@ -68,8 +68,6 @@ class BankCardDetail extends BaseComponent {
                         res.data.forEach(item => {
                             item.label = item.name;
                             item.value = item.id;
-                            delete item.name;
-                            delete item.id;
                         });
                     }
                     this.setState({
@@ -81,7 +79,8 @@ class BankCardDetail extends BaseComponent {
 
     //保存说
      successToast = () => {
-         const {form: {validateFields, getFieldValue}, getBankCardList} = this.props;
+         const {form: {validateFields, getFieldValue}, getBankCardList, location} = this.props;
+         const {bankArr} = this.state;
          validateFields({first: true, force: true}, (error, value) => {
              if (!error) {
                  const userName = getFieldValue('name');
@@ -93,11 +92,11 @@ class BankCardDetail extends BaseComponent {
                  this.fetch(urlCfg.addBankCard, {
                      method: 'post',
                      data: {
-                         id: this.props.location.query ? this.props.location.query.id : 0,
+                         id: location.query ? location.query.id : 0,
                          bank_id: bank[0],
                          real_name: userName,
                          idcard: userIdCard,
-                         bank_name: this.state.bankArr.find(item => item.id === bank[0]).name,
+                         bank_name: bankArr.find(item => item.id === bank[0]).name,
                          bank_number: validator.wipeOut(bankNo),
                          phone: validator.wipeOut(phone),
                          accType: 0,
@@ -111,7 +110,6 @@ class BankCardDetail extends BaseComponent {
                          appHistory.goBack();
                      }
                  });
-                 console.log('222222');
              }
          });
      };

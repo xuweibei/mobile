@@ -55,7 +55,7 @@ class PaymentCompleted extends BaseComponent {
                 appHistory.replace(`/listDetails?id=${id}`);
             }
         } else if (batch === '1') { //线下付款或线下批量付款
-            appHistory.replace(`/selfMention/yw?type=${'car'}`);
+            appHistory.replace(`/selfMention?type=${'car'}`);
         } else {
             appHistory.replace(`/selfOrderingDetails?id=${id}`);
         }

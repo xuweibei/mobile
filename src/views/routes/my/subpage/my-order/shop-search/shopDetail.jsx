@@ -571,7 +571,6 @@ class MyOrder extends BaseComponent {
                             <div className="goods-sku">
                                 <div className="sku-left">
                                     {items.property_content && items.property_content.map(pro => <div className="goods-size">{pro}</div>)}
-                                    <div>规格</div>
                                 </div>
                                 <div className="sku-right">x{items.pr_num}</div>
                             </div>
@@ -597,7 +596,7 @@ class MyOrder extends BaseComponent {
             </div>
         );
         return (
-            <div data-component="my-order" data-role="page" className={`my-order ${window.isWX ? 'WX' : ''}`}>
+            <div data-component="my-order" data-role="page" className={`online-transaction ${window.isWX ? 'WX' : ''}`}>
                 {
                     window.isWX ? null : (<AppNavBar title="线上订单" goBackModal={this.goToBack} white/>)
                 }

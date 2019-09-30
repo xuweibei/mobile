@@ -58,8 +58,8 @@ class Individual extends BaseComponent {
 
     //提交店铺信息
     postInformation = () => {
+        // this.setState({editModal: 'two'});
         const {cate1, cate1Id, province, urban, county, pickUpSelf, isExp, openTime, closeTime} = this.state;
-        console.log(pickUpSelf);
         const {form: {validateFields}} = this.props;
         const pca = [province, urban, county];
         validateFields({first: true, force: true}, (error, val) => {
@@ -102,6 +102,7 @@ class Individual extends BaseComponent {
     getUpdateAudit = () => {
         this.fetch(urlCfg.updateAudit, {data: {type: 1}})
             .subscribe(res => {
+                console.log(res.data.length);
                 if (res && res.status === 0 && res.data.length !== 0) {
                     this.setState({
                         updateAudit: res.data,
@@ -249,6 +250,7 @@ class Individual extends BaseComponent {
 
     //设置是否支持自提
     setPickupSelf = (values) => {
+        console.log(values);
         this.setState({
             pickUpSelf: values
             // values
@@ -320,20 +322,14 @@ class Individual extends BaseComponent {
 
     //校验商户状态
     checkIsExp = (rule, value, callback) => {
-        if (!value) {
-            showInfo(Form.No_isExp);
-            return;
-        }
+        if (!validator.isEmpty(value, Form.No_isExp, callback)) return;
         callback();
     };
 
     //检验是否支持自提
     checkPickUpSelf = (rule, value, callback) => {
         // const {pickUpSelf} = this.state;
-        if (!value) {
-            showInfo(Form.No_pickUpSelf);
-            return;
-        }
+        if (!validator.isEmpty(value, Form.No_pickUpSelf, callback)) return;
         callback();
     };
 
@@ -380,9 +376,9 @@ class Individual extends BaseComponent {
 
     //点击下一步，跳转开店人信息
     editModalMain = () => {
-        const {phone, editStatus, isExp, pickUpSelf, linkName, discount, cValue, shopName, category,  text, date,  openTime, closeTime, provinceId, cityId, province, urban, county,  address, cshPhone, oTValue, cTValue, addressStatus} = this.state;
+        const {phone, isExp, pickUpSelf, linkName, discount, cValue, shopName, category,  text, date,  openTime, closeTime, provinceId, cityId, province, urban, county,  address, cshPhone, oTValue, cTValue, addressStatus} = this.state;
         const {getFieldDecorator} = this.props.form;
-        console.log(addressStatus, province, urban, county, provinceId, cityId, editStatus);
+        console.log(addressStatus);
         const steps = ['填写店铺信息', '填写开店人信息', '填写工商信息', '绑定银行卡'];
         return (
             <div>
@@ -454,8 +450,6 @@ class Individual extends BaseComponent {
                                                         countyValue={county}
                                                         provinceId={provinceId}
                                                         cityId={cityId}
-                                                        editStatus={editStatus}
-                                                        editStatusChange={this.editStatusChange}
                                                     />
                                                 )
                                             }
