@@ -343,6 +343,7 @@ class IndividualFour extends BaseComponent {
                                 })(
                                     <InputItem
                                         clear
+                                        maxLength={10}
                                         placeholder="请输入卡主名称"
                                     >卡主姓名
                                     </InputItem>
