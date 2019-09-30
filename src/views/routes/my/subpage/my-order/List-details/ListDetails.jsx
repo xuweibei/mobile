@@ -405,22 +405,22 @@ class ListDetails extends BaseComponent {
                                         )) : ''
                                     }
                                 </div>
-                                <div className="cancel-order-box">
-                                    {   //退款订单
-                                        (canInfo.status === '10' || canInfo.status === '6' || canInfo.status === '4' || canInfo.status === '3') &&  <div className="cancel-order" onClick={this.deleteOrder}>删除订单</div>
-                                    }
-                                    {   //待付款订单状态可操作
-                                        canInfo.is_shoper === 0 && (canInfo.status === '0') &&  <div className="cancel-order new-style-cancel" onClick={() => this.setState({canStatus: true, canCelId: canInfo.pr_id})}>取消订单</div>
-                                    }
-                                    {
-                                        canInfo.is_shoper === 0 && this.bottomButton(canInfo.status)
-                                    }
-                                </div>
                                 {canStatus && (
                                     <CancelOrder
                                         canStateChange={this.canStateChange}
                                     />
                                 )}
+                            </div>
+                            <div className="cancel-order-box">
+                                {   //退款订单
+                                    (canInfo.status === '10' || canInfo.status === '6' || canInfo.status === '4' || canInfo.status === '3') &&  <div className="cancel-order" onClick={this.deleteOrder}>删除订单</div>
+                                }
+                                {   //待付款订单状态可操作
+                                    canInfo.is_shoper === 0 && (canInfo.status === '0') &&  <div className="cancel-order new-style-cancel" onClick={() => this.setState({canStatus: true, canCelId: canInfo.pr_id})}>取消订单</div>
+                                }
+                                {
+                                    canInfo.is_shoper === 0 && this.bottomButton(canInfo.status)
+                                }
                             </div>
                         </div>
                     ) : ''
