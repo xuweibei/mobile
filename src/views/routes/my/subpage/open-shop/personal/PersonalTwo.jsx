@@ -398,7 +398,6 @@ class PersonalTwo extends BaseComponent {
                                                      {
                                                          file && file.map(item => (
                                                              <li id={item.id}>
-                                                                 {/* <span className="delete-icon" onClick={() => this.deleteImg('forward', item.id)}>×</span> */}
                                                                  <img onClick={() => this.addPictrue('forward')} src={item.imgS || item.url}/>
                                                              </li>
                                                          ))
@@ -441,14 +440,9 @@ class PersonalTwo extends BaseComponent {
                                          hybrid ? (
                                              <div className="picture-area">
                                                  <ul>
-                                                     {/* <li>
-                                                         <span className="delete-icon" onClick={() => this.deleteImg()}>×</span>
-                                                         <img src="http://img.redocn.com/sheji/20141219/zhongguofengdaodeliyizhanbanzhijing_3744115.jpg"/>
-                                                     </li> */}
                                                      {
                                                          file2 && file2.map(item => (
                                                              <li id={item.id}>
-                                                                 {/* <span className="delete-icon" onClick={() => this.deleteImg('back', item.id)}>×</span> */}
                                                                  <img onClick={() => this.addPictrue('back')} src={item.imgS || item.url}/>
                                                              </li>
                                                          ))
@@ -464,7 +458,6 @@ class PersonalTwo extends BaseComponent {
                                              </div>
                                          )
                                              : getFieldDecorator('back', {
-                                                 // initialValue: '',
                                                  rules: [
                                                      {validator: this.checkBack}
                                                  ],
@@ -495,7 +488,6 @@ class PersonalTwo extends BaseComponent {
                                                      {
                                                          file3 && file3.map(item => (
                                                              <li id={item.id}>
-                                                                 {/* <span className="delete-icon" onClick={() => this.deleteImg('handle', item.id)}>×</span> */}
                                                                  <img onClick={() => this.addPictrue('handle')} src={item.imgS || item.url}/>
                                                              </li>
                                                          ))
@@ -510,7 +502,6 @@ class PersonalTwo extends BaseComponent {
                                                  </ul>
                                              </div>
                                          ) :  getFieldDecorator('handle', {
-                                         // initialValue: '',
                                              rules: [
                                                  {validator: this.checkHand}
                                              ],
