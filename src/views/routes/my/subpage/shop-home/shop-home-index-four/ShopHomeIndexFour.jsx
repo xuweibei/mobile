@@ -43,7 +43,7 @@ class ShopHomeIndexFour extends React.PureComponent {
                             )
                         }
                     </div>
-                    <div className="compile-box">
+                    <div className="compile-box" style={{marginTop: '30px'}}>
                         <div className="new-box">
                             <div className="new-left"/>
                             <div className={(picurl && content && picurl[content.sort1_pr1_ix] && content.sort1_pr1_title1 && content.sort1_pr1_title2 && content.sort1_pr1_title3) ? 'new-right' : 'new no-edit-model'}>

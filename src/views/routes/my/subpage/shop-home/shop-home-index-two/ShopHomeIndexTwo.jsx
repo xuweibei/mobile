@@ -97,7 +97,7 @@ class ShopHomeIndexTwo extends React.PureComponent {
                             </Carousel>
                         </WingBlank>
                     </div>
-                    <div className="newRecommend shopHomeTwoContentPadding">
+                    <div className="newRecommend shopHomeTwoContentPadding" style={{marginTop: '30px'}}>
                         <div className="comTitle2 shopHomeTwoContentMarTop">
                             <div>{shopModelArr.content.sort1_title1}</div>
                             <p>{shopModelArr.content.sort1_title2}</p>
