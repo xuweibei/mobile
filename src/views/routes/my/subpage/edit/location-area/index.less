@@ -22,6 +22,8 @@
         }
         .am-list-extra{
             flex-basis:50%;
+            white-space: initial;
+            text-align: left;
         }
 
     }
@@ -31,9 +33,17 @@
             .am-list-line {
                 .am-list-content {
                     flex: initial;
+                    margin-right: 30px;
+                    height: 100%;
+                    line-height: 88px;
+                    padding: 0;
+                    font-size: @font-size-32;
                 }
                 .am-list-extra {
                     flex: 1;
+                    line-height: 88px;
+                    padding: 0;
+                    height: 100%;
                 }
             }
         }
@@ -42,11 +52,22 @@
             justify-content: space-between;
             width: 100% !important;
             .area{
+                margin-right: 30px;
                 line-height:0.88rem;
+                font-size: @font-size-32;
             }
             .regional {
+                display: flex;
                 .gray-3 {
-                    margin: 0 30px 0 0;
+                    margin: 0 24px 0 0;
+                    max-width: 140px;
+                    font-size: @font-size-30;
+                    div:nth-child(1) {
+                        div {
+                            .TextareaOverflow(1);
+                            display: block;
+                        }
+                    }
                 }
                 .gray-3:last-child {
                     margin-right: 0;
@@ -54,6 +75,11 @@
                 .picker-inline {
                     margin-right: 0;
                     width: auto;
+                    div:nth-child(1) {
+                        div {
+                            .TextareaOverflow(1);
+                        }
+                    }
                 }
             }
         }
