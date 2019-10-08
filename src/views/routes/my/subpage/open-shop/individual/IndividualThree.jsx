@@ -69,22 +69,12 @@ class IndividualThree extends BaseComponent {
                     });
                 }
                 this.setState({
-                    // threeInOne: res.data.three_in_one,
-                    // value: Number(res.data.three_in_one),
                     shopLic: res.data.shop_lic,
                     shopLicExp: res.data.shop_lic_exp
                 });
             }
         });
     };
-
-    //设置是否三证合一
-    // setThreeInOne = (index) => {
-    //     this.setState(() => ({
-    //         threeInOne: index,
-    //         value: index
-    //     }));
-    // };
 
     //获取图片信息
     onChange = (files, type) => {
@@ -112,7 +102,6 @@ class IndividualThree extends BaseComponent {
 
     //图片转换和上传
     transImg = (file, ix, index) => {
-        console.log(index);
         if (file) {
             let imgBD = '';
             let imgS = '';

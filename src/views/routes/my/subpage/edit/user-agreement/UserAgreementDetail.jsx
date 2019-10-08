@@ -1,42 +1,44 @@
-import {List} from 'antd-mobile';
-import {connect} from 'react-redux';
+import {List, Modal} from 'antd-mobile';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import BaseComponent from '../../../../../../components/base/BaseComponent';
 import './UserAgreementDetail.less';
-import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAction';
 
 const Item = List.Item;
 const {native} = Utils;
 const {urlCfg} = Configs;
 
 class UserAgreementDetail extends BaseComponent {
+    state = ({
+        protocol: {}, //协议内容
+        modal: false
+    })
+
     //协议弹窗
     getProtocol = (num) => {
-        const {showAlert} = this.props;
-        this.fetch(urlCfg.allProtocolInfo, {method: 'post', data: {type: num}})
+        this.fetch(urlCfg.protocolsCase, {method: 'post'})
             .subscribe(res => {
                 if (res && res.status === 0) {
-                    let allContent;
-                    switch (num) {
-                    case 3:
-                        allContent = res.data.secret_content;
-                        break;
-                    case 4:
-                        allContent = res.data.member_content;
-                        break;
-                    default:
-                        break;
+                    if (res.data[num]) {
+                        this.setState({
+                            protocol: res.data[num]
+                        }, () => {
+                            this.showModal(true);
+                        });
                     }
-
-                    showAlert({
-                        title: allContent
-                        // btnText: '好'
-                    });
                 }
             });
     }
 
+    showModal = (modal) => {
+        // e.preventDefault(); // 修复 Android 上点击穿透
+        this.setState({
+            modal: modal
+        });
+    }
+
     render() {
+        const {protocol} = this.state;
+        console.log(protocol);
         return (
             <div data-component="UserAgreementDetail" data-role="page" className="UserAgreementDetail">
                 <AppNavBar title="关于"/>
@@ -47,9 +49,9 @@ class UserAgreementDetail extends BaseComponent {
                     <div className="about-information">
                         <Item arrow="horizontal" onClick={() => {}}>版权信息</Item>
                         <Item arrow="horizontal" onClick={() => this.getProtocol(0)}>软件许可使用协议</Item>
-                        <Item arrow="horizontal" onClick={() => this.getProtocol(0)}>特别说明</Item>
-                        <Item arrow="horizontal" onClick={() => this.getProtocol(4)}>平台服务协议</Item>
-                        <Item arrow="horizontal" onClick={() => this.getProtocol(3)}>隐私权政策</Item>
+                        <Item arrow="horizontal" onClick={() => {}}>特别说明</Item>
+                        <Item arrow="horizontal" onClick={() => this.getProtocol(1)}>平台服务协议</Item>
+                        <Item arrow="horizontal" onClick={() => this.getProtocol(2)}>隐私权政策</Item>
                         <Item arrow="horizontal" onClick={() => {}}>证照信息</Item>
                     </div>
                 </List>
@@ -58,13 +60,21 @@ class UserAgreementDetail extends BaseComponent {
                 </List>
                 <span className="corporate">中战华安控股集团有限公司</span>
                 <span className="edition">当前版本号：1.0.3</span>
+                <div>
+                    <Modal
+                        visible={this.state.modal}
+                        className="protocol-modal"
+                        title={protocol.title}
+                        footer={[{text: '确定', onPress: () => { this.showModal(false)() }}]}
+                    >
+                        <div style={{overflow: 'auto', height: '300px', width: '100%'}}>
+                            <div dangerouslySetInnerHTML={{__html: protocol.content}}/>
+                        </div>
+                    </Modal>
+                </div>
             </div>
         );
     }
 }
 
-const mapToDispatchProps = {
-    showAlert: actionCreator.showAlert
-};
-
-export default connect(null, mapToDispatchProps)(UserAgreementDetail);
+export default UserAgreementDetail;

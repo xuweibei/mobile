@@ -101,7 +101,6 @@ export default {
                 alertCb,
                 alertBtnText
             } = action.playload;
-
             return state.merge({
                 alertShow: true,
                 alertTitle,

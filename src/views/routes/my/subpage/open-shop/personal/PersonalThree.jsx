@@ -254,7 +254,8 @@ class PersonalThree extends BaseComponent {
         if (hybrid) {
             if (type === 'prove') {
                 const {sValue} = this.state;
-                if (sValue.length === 0) {
+                const result = seasons.some(item => item.value === sValue[0]);
+                if (!result) {
                     showInfo(Form.No_Prove_type);
                     return;
                 }
