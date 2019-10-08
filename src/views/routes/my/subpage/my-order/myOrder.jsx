@@ -13,7 +13,7 @@ import './myOrder.less';
 
 const {appHistory, showSuccess, getUrlParam, showInfo, native, setNavColor, systemApi: {removeValue}, TD} = Utils;
 const {TD_EVENT_ID} = Constants;
-const {MESSAGE: {Form, Feedback}, FIELD} = Constants;
+const {MESSAGE: {Form, Feedback}, FIELD, navColorR} = Constants;
 const {urlCfg} = Configs;
 const hybrid = process.env.NATIVE;
 
@@ -46,8 +46,7 @@ class MyOrder extends BaseComponent {
         pagesize: 10,  //每页条数
         pageCount: -1,
         hasMore: false, //底部请求状态文字显示情况
-        retainArr: [],
-        navColor: '#ff2d51' //标题头部颜色
+        retainArr: []
     };
 
     componentWillMount() {
@@ -80,6 +79,9 @@ class MyOrder extends BaseComponent {
             }, () => {
                 this.init(numNext);
             });
+        }
+        if (hybrid) {
+            setNavColor('setNavColor', {color: navColorR});
         }
     }
 
@@ -162,10 +164,6 @@ class MyOrder extends BaseComponent {
                             retainArr: prevState.retainArr.concat(res.list),
                             refreshing: false
                         }));
-                        const {navColor} = this.state;
-                        if (hybrid) {
-                            setNavColor('setNavColor', {color: navColor});
-                        }
                     }
                 }
             });
@@ -663,7 +661,7 @@ class MyOrder extends BaseComponent {
     }
 
     render() {
-        const {dataSource, hasMore, height, status, canStatus, refreshing, navColor} = this.state;
+        const {dataSource, hasMore, height, status, canStatus, refreshing} = this.state;
         const row = item => (
             <div className="shop-lists" >
                 <div className="shop-name" onClick={() => this.goShopHome(item.shop_id)}>
@@ -735,7 +733,7 @@ class MyOrder extends BaseComponent {
         return (
             <div data-component="my-order" data-role="page" className={`my-order ${window.isWX ? 'WX' : ''}`}>
                 {
-                    window.isWX ? null : (<AppNavBar title="线上订单" backgroundColor={navColor} goBackModal={this.goToBack} redBackground goToSearch={this.goToSearch} rightShow search/>)
+                    window.isWX ? null : (<AppNavBar title="线上订单" backgroundColor={navColorR} goBackModal={this.goToBack} redBackground goToSearch={this.goToSearch} rightShow search/>)
                 }
                 {   //弹出取消弹框
                     canStatus &&  (<CancelOrder canStateChange={this.canStateChange}/>)

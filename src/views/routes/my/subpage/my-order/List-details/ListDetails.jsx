@@ -7,14 +7,26 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 import CancelOrder from '../../../../../common/cancel-order/CancleOrder';
 import './ListDetails.less';
 
-const {appHistory, getUrlParam, showSuccess, native, showInfo} = Utils;
-const {MESSAGE: {Form, Feedback}} = Constants;
+const {appHistory, getUrlParam, showSuccess, native, showInfo, setNavColor} = Utils;
+const {MESSAGE: {Form, Feedback}, navColorF} = Constants;
 const {urlCfg} = Configs;
 const hybird = process.env.NATIVE;
 class ListDetails extends BaseComponent {
     state = {
         canInfo: {} //数据容器
     };
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
 
     componentDidMount() {
         this.getList();

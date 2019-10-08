@@ -137,7 +137,7 @@ class ReDetail extends BaseComponent {
         });
     };
 
-    //跳转立即自提
+    //跳转立即使用
     skipSelf = (id) => {
         appHistory.push('/paySuccess?id=' + id);
     }
@@ -214,7 +214,7 @@ class ReDetail extends BaseComponent {
                     <div className="wait-top">{selfSufficiency.status_title}</div>
                     <div className="wait-center">{selfSufficiency.status_msg}</div>
                     {((selfSufficiency.status === '1' && !selfSufficiency.return_status) || selfSufficiency.return_status === '1') && (
-                        <div className="wait-bottom" onClick={() => this.skipSelf(selfSufficiency.order_id)}>立即自提</div>
+                        <div className="wait-bottom" onClick={() => this.skipSelf(selfSufficiency.order_id)}>立即使用</div>
                     )}
                 </div>
 
