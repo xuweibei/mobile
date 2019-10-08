@@ -7,9 +7,9 @@ import ShowButton from '../top-show-button';
 import './ShopHome.less';
 
 const {urlCfg} = Configs;
-const {native, appHistory, showInfo, TD} = Utils;
+const {native, appHistory, showInfo, TD, setNavColor} = Utils;
 const {TD_EVENT_ID} = Constants;
-const {MESSAGE: {Feedback}} = Constants;
+const {MESSAGE: {Feedback}, navColorF} = Constants;
 const hybird = process.env.NATIVE;
 
 class ShopHome extends BaseComponent {
@@ -17,6 +17,18 @@ class ShopHome extends BaseComponent {
         visible: false, //右侧按钮显示与否
         shopInfo: []
     };
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
 
     componentDidMount() {
         TD.log(TD_EVENT_ID.SHOPPING_CAR.ID, TD_EVENT_ID.SHOPPING_CAR.LABEL.ADD_SHOPPING_CAR);

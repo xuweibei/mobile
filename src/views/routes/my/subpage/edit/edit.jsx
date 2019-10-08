@@ -285,12 +285,12 @@ class Edit extends BaseComponent {
                     </div>
                 </div>
                 <List className="my-list">{this.initListData()}</List>
-                <Button
+                {/* <Button
                     className="logOut"
                     onClick={this.switchingAccounts}
                 >
                     切换账号
-                </Button>
+                </Button> */}
                 {window.isWX ? null : (
                     <Button
                         className="logOut"
