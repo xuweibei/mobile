@@ -75,7 +75,12 @@ class ShopHomeIndexTwo extends React.PureComponent {
     render() {
         const {selectedIndex} = this.state;
         const {shopModelArr} = this.props;
-        console.log(shopModelArr);
+        const discountList = [
+            shopModelArr.content.sort2_pr1_ix,
+            shopModelArr.content.sort2_pr2_ix,
+            shopModelArr.content.sort2_pr3_ix,
+            shopModelArr.content.sort2_pr4_ix
+        ];
         return (
             <div data-component="ShopHomeIndex" data-role="page" className="ShopHomeIndex">
                 <div className="shopHomeTwoContent">
@@ -163,7 +168,22 @@ class ShopHomeIndexTwo extends React.PureComponent {
                             <p>{shopModelArr.content.sort2_title2}</p>
                         </div>
                         <div className="discountAreaCon">
-                            <div className="discountAreaConItem">
+                            {
+                                discountList.map(item => (
+                                    <div className="discountAreaConItem" key={item}>
+                                        <div className="discount-img">
+                                            <img onClick={() => this.goToGoods(shopModelArr.content[`sort2_pr${item - 4}_id`])} src={shopModelArr.picurl[item]} alt=""/>
+                                        </div>
+                                        <p>{shopModelArr.content[`sort2_pr${item - 4}_title1`]}</p>
+                                        <div className="price">
+                                            <span className="money-ZH">￥</span>
+                                            <span className="money-new">{shopModelArr.content[`sort2_pr${item - 4}_title2`]}</span>
+                                            <span className="money-before">{shopModelArr.content[`sort2_pr${item - 4}_title3`]}</span>
+                                        </div>
+                                    </div>
+                                ))
+                            }
+                            {/* <div className="discountAreaConItem">
                                 <div className="discount-img">
                                     <img onClick={() => this.goToGoods(shopModelArr.content.sort2_pr1_id)} src={shopModelArr.picurl[5]} alt=""/>
                                 </div>
@@ -207,7 +227,7 @@ class ShopHomeIndexTwo extends React.PureComponent {
                                     <span className="money-new">{shopModelArr.content.sort2_pr4_title2}</span>
                                     <span className="money-before">{shopModelArr.content.sort2_pr4_title3}</span>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                     <div className="hotRecommend shopHomeTwoContentPadding">
