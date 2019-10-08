@@ -498,7 +498,7 @@ class PossessEvaluate extends BaseComponent {
                         <div className="consult">{item.content}</div>
                         <div className="picture">
                             {
-                                item.picsx.length > 0 && item.picsx.map((value, index) => <LazyLoadIndex key={keyNum++} bigPicture={() => this.bigPicture(item.pics, index)} lazyInfo={{offset: -30, imgUrl: value, overflow: true}}/>)
+                                item.pics.length > 0 && item.pics.map((value, index) => <LazyLoadIndex key={keyNum++} bigPicture={() => this.bigPicture(item.pics, index)} lazyInfo={{offset: -30, imgUrl: value, overflow: true}}/>)
                             }
                         </div>
                         {/* {
@@ -508,7 +508,7 @@ class PossessEvaluate extends BaseComponent {
                             <div className="append">
                                 <div className="append-chase">追评</div>
                                 <div className="append-theory">{item.add.content}</div>
-                                {item.add && item.add.picsx && item.add.picsx.length > 0 && item.add.picsx.map((data, index) => <LazyLoadIndex bigPicture={() => this.bigPicture(item.add.pics, index)} lazyInfo={{offset: -30, imgUrl: data, overflow: true}}/>)}
+                                {item.add && item.add.pics && item.add.pics.length > 0 && item.add.pics.map((data, index) => <LazyLoadIndex bigPicture={() => this.bigPicture(item.add.pics, index)} lazyInfo={{offset: -30, imgUrl: data, overflow: true}}/>)}
                                 {item.add && item.add.return_content && <div className="reply">商家回复：{item.add.return_content}</div>}
                             </div>
                         )}
