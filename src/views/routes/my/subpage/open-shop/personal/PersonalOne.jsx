@@ -419,7 +419,7 @@ class PersonalOne extends BaseComponent {
                                     maxLength={30}
                                     type="text"
                                     // onChange={val => this.onChange(val, 'shopname')}
-                                >店铺名称
+                                >
                                 </InputItem>
                             )}
                             {
