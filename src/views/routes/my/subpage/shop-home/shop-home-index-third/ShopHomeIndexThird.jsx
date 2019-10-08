@@ -44,7 +44,7 @@ class ShopHomeIndexThird extends React.PureComponent {
                             )
                         }
                     </div>
-                    <div className="compile-box">
+                    <div className="compile-box" style={{marginTop: '30px'}}>
                         <div className="title-bar">
                             {/* <p className={(content && content.sort1_title1) ? 'time' : 'time no-edit-model'}>{content && (content.sort1_title1 || '2018/5/20')}</p> */}
                             <p className={(content && content.sort1_title1) ? 'headline' : 'hot no-edit-model'}>{content && (content.sort1_title1 || 'POPULAR COMMODITY')}</p>
