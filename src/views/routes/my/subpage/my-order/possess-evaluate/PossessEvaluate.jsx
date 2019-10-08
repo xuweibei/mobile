@@ -501,9 +501,9 @@ class PossessEvaluate extends BaseComponent {
                                 item.pics.length > 0 && item.pics.map((value, index) => <LazyLoadIndex key={keyNum++} bigPicture={() => this.bigPicture(item.pics, index)} lazyInfo={{offset: -30, imgUrl: value, overflow: true}}/>)
                             }
                         </div>
-                        {/* {
+                        {
                             item.return_content && <div>商家回复：{item.return_content}</div>
-                        }*/}
+                        }
                         {item.have_add === '1' && (
                             <div className="append">
                                 <div className="append-chase">追评</div>
@@ -516,7 +516,7 @@ class PossessEvaluate extends BaseComponent {
                     </div>
                 </div>
                 <div className="write-comment">
-                    <div className="wares" onClick={() => this.skipDetail(item.order_id)}>
+                    <div className="wares" onClick={() => this.skipDetail(item.order_id, item.if_express)}>
                         <img src={item.pr_pic} alt=""/>
                         <div className="wares-right">
                             <div className="introduce">{item.pr_title}</div>
