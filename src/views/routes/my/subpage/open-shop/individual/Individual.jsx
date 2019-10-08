@@ -415,7 +415,6 @@ class Individual extends BaseComponent {
                                         clear
                                         placeholder="请输入2-30位的店铺名称"
                                     >
-                                        店铺名称
                                     </InputItem>
                                 )}
                             {

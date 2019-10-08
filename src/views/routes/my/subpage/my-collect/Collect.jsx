@@ -391,7 +391,7 @@ class Collect extends BaseComponent {
                             </div>
                             <div className="shop-name">
                                 <div className="s-name">
-                                    <span className="store-name">店铺名称{item.shop_name}</span>
+                                    <span className="store-name">{item.shop_name}</span>
                                     <span className="enter-shop" onClick={(event) => this.shopHome(event, item.shop_id)}>
                                         <span>进店</span>
                                         <div className="icon get-into"/>
