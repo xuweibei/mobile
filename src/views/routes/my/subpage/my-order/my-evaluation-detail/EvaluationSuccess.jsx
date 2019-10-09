@@ -6,8 +6,10 @@ import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAc
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './EvaluationSuccess.less';
 
-const {appHistory} = Utils;
+const {appHistory, setNavColor} = Utils;
 const {urlCfg} = Configs;
+const {navColorF} = Constants;
+const hybird = process.env.NATIVE;
 class EvaluationSuccess extends BaseComponent {
     state = {
         recommend: [], //获取评价列表
@@ -17,6 +19,18 @@ class EvaluationSuccess extends BaseComponent {
     componentDidMount() {
         this.recommend();
         this.greatDemand();
+    }
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
     }
 
     //获取订单列表

@@ -6,6 +6,9 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 import './Information.less';
 
 const {urlCfg} = Configs;
+const hybird = process.env.NATIVE;
+const {setNavColor} = Utils;
+const {navColorF} = Constants;
 
 export default class Information extends BaseComponent {
     state = {
@@ -18,6 +21,18 @@ export default class Information extends BaseComponent {
 
     componentDidMount() {
         this.getMessage();
+    }
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
     }
 
     getMessage = () => {

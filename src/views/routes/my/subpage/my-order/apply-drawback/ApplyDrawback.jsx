@@ -3,9 +3,9 @@ import {TextareaItem, Button, ImagePicker} from 'antd-mobile';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './ApplyDrawback.less';
 
-const {dealImage, appHistory, getUrlParam, showSuccess, native} = Utils;
+const {dealImage, appHistory, getUrlParam, showSuccess, native, setNavColor} = Utils;
 const  {urlCfg} = Configs;
-const {MESSAGE: {Feedback}} = Constants;
+const {MESSAGE: {Feedback}, navColorF} = Constants;
 const hybrid = process.env.NATIVE;
 
 //退款类型
@@ -57,6 +57,18 @@ export default class applyDrawback extends BaseComponent {
 
     componentDidMount() {
         this.getList();
+    }
+
+    componentWillMount() {
+        if (hybrid) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybrid) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
     }
 
     getList = () => {

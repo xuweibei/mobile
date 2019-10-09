@@ -7,6 +7,9 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 import './UserId.less';
 
 const Item = List.Item;
+const hybird = process.env.NATIVE;
+const {setNavColor} = Utils;
+const {navColorF} = Constants;
 class UserId extends React.PureComponent {
     static defaultProps = {
         uidInfo: '',
@@ -18,10 +21,24 @@ class UserId extends React.PureComponent {
         getUid: PropTypes.func
     }
 
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
     componentDidMount() {
         const {uidInfo, getUid} = this.props;
         if (!uidInfo) {
             getUid();
+        }
+    }
+
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
         }
     }
 

@@ -6,7 +6,8 @@ import './Consumer.less';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 
 const {urlCfg} = Configs;
-const {appHistory, getUrlParam, native} = Utils;
+const {appHistory, getUrlParam, native, setNavColor} = Utils;
+const {navColorF} = Constants;
 const hybrid = process.env.NATIVE;
 class Consumer extends BaseComponent {
     state = {
@@ -20,6 +21,15 @@ class Consumer extends BaseComponent {
         this.setState({
             val
         });
+        if (hybrid) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybrid) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
     }
 
     componentDidMount() {

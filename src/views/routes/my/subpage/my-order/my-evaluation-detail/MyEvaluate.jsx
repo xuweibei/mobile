@@ -8,8 +8,8 @@ import {Radio, Flex, TextareaItem, ImagePicker} from 'antd-mobile';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 
 const {urlCfg} = Configs;
-const {appHistory, getUrlParam, dealImage, showInfo, showSuccess, native} = Utils;
-const {MESSAGE: {Form, Feedback}, IMGSIZE} = Constants;
+const {appHistory, getUrlParam, dealImage, showInfo, showSuccess, native, setNavColor} = Utils;
+const {MESSAGE: {Form, Feedback}, IMGSIZE, navColorF} = Constants;
 //评价 好评 中评 差评
 const evaluates = [
     {value: 1, title: '好评'},
@@ -66,6 +66,18 @@ export default class MyEvaluate extends BaseComponent {
                 });
             }
         });
+    }
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
     }
 
     //获取商品评价状态、好评、中评、差评

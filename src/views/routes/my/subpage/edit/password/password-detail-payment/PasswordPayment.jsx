@@ -4,9 +4,9 @@ import VerificationCode from '../../../../../../common/verification-code';
 import {InputGrid} from '../../../../../../common/input-grid/InputGrid';
 import './PasswordPayment.less';
 
-const {appHistory, validator, showInfo, showSuccess, getUrlParam} = Utils;
+const {appHistory, validator, showInfo, showSuccess, getUrlParam, setNavColor} = Utils;
 const {urlCfg} = Configs;
-const {MESSAGE: {Form, Feedback}} = Constants;
+const {MESSAGE: {Form, Feedback}, navColorF} = Constants;
 const getPass = { //获取验证码按钮的样式
     float: 'right',
     marginRight: '18px',
@@ -16,6 +16,7 @@ const getPass = { //获取验证码按钮的样式
     background: '#fff',
     lineHeight: '44px'
 };
+const hybird = process.env.NATIVE;
 class passwordPayment extends BaseComponent {
     state = {
         phoneCode: '', //电话号码初始值
@@ -23,6 +24,18 @@ class passwordPayment extends BaseComponent {
         sentPay: '', //是否已设置支付密码
         getOff: false //点击获取验证码是否可以获取，默认不可以，除非输入的电话号码符合要求
     };
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
 
     // verifyPayword = () => {//是否设置过支付密码
     //     this.fetch(urlCfg.memberStatus, {method: 'post', data: {types: 0}})

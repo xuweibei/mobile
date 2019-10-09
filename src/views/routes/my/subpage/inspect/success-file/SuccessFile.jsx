@@ -3,7 +3,8 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 import './SuccessFile.less';
 import {native} from '../../../../../../utils/native';
 
-const {appHistory} = Utils;
+const {appHistory, setNavColor} = Utils;
+const {navColorF} = Constants;
 const timer = null;
 
 const hybrid = process.env.NATIVE;
@@ -35,6 +36,18 @@ class SuccessFile extends BaseComponent {
                 }
             });
         }, 1000);
+    }
+
+    componentWillMount() {
+        if (hybrid) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybrid) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
     }
 
     goHome = () => {
