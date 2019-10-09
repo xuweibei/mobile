@@ -12,9 +12,10 @@ import HomeList from './home-list/homeList';
 import './Home.less';
 
 
-const {TD_EVENT_ID} = Constants;
+const {TD_EVENT_ID, navColorR} = Constants;
 const {urlCfg, appCfg} = Configs;
-const {appHistory, TD} = Utils;
+const {appHistory, TD, setNavColor} = Utils;
+const hybird = process.env.NATIVE;
 
 class Home extends BaseComponent {
     constructor(props, context) {
@@ -35,6 +36,9 @@ class Home extends BaseComponent {
 
     componentWillMount() {
         dropByCacheKey('CategoryListPage');
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorR});
+        }
     }
 
     componentDidMount() {
@@ -57,6 +61,12 @@ class Home extends BaseComponent {
         super.componentWillUnmount();
         const {showMenu} = this.props;
         showMenu(true);
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorR});
+        }
     }
 
     //获取开店审核结果

@@ -868,7 +868,7 @@ class ShopCart extends BaseComponent {
                                                     商品已不能购买，您可以进店查看相关商品
                                                 </div>
                                                 <div className="shop-name">
-                                                    <span>店铺名称：{shop.shop_name}</span>
+                                                    <span>{shop.shop_name}</span>
                                                     <span
                                                         onClick={() => this.goToShopHome(shop.shop_id)}
                                                     >
