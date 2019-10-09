@@ -509,7 +509,7 @@ class MyOrder extends BaseComponent {
             blockModal = (
                 <div className="buttons">
                     {
-                        (item.refund_button === '1') && (
+                        (item.refund_button === 1) && (
                             <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
                                 {
                                     item.showButton && <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev, 1)}>申请退款</span>
@@ -529,7 +529,7 @@ class MyOrder extends BaseComponent {
             blockModal = (
                 <div className="buttons">
                     {
-                        !item.all_refund && (
+                        item.refund_button === 1 && (
                             <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
                                 {
                                     item.showButton && <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev)}>申请退款</span>
@@ -714,7 +714,7 @@ class MyOrder extends BaseComponent {
                         </div>
                         <div className="total-price">
                             <div className="total-price-left">共{item.pr_count}件商品</div>
-                            <div className="total-price-right"><span>合计</span>(含运费：{item.express_money})：<span className="zxa">{item.all_price}元</span></div>
+                            <div className="total-price-right">合计：<span className="zxa">￥{item.all_price}(含运费：{item.express_money})</span></div>
                         </div>
                         {//售后状态下 退款申请中
                             item.return_status === '1' && (
