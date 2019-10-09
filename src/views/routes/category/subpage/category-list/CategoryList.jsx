@@ -116,7 +116,6 @@ class CategoryList extends BaseComponent {
     };*/
 
     goBackModal = () => {
-        const hybird = process.env.NATIVE;
         if (hybird && appHistory.length() === 0) {
             native('goBack');
         } else {
