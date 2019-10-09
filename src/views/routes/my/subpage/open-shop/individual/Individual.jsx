@@ -12,8 +12,9 @@ import GeisInputItem from '../../../../../common/form/input/GeisInputItem';
 import './Individual.less';
 
 const {urlCfg} = Configs;
-const {MESSAGE: {Form}} = Constants;
-const {showInfo, validator} = Utils;
+const {MESSAGE: {Form}, navColorF} = Constants;
+const {showInfo, validator, setNavColor} = Utils;
+const hybird = process.env.NATIVE;
 // const RadioItem = Radio.RadioItem;
 const data = [
     {value: 1, label: '正式商户'},
@@ -57,6 +58,18 @@ class Individual extends BaseComponent {
         editStatus: true,
         addressStatus: ''
     };
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
 
     //提交店铺信息
     postInformation = () => {
@@ -414,8 +427,7 @@ class Individual extends BaseComponent {
                                     <InputItem
                                         clear
                                         placeholder="请输入2-30位的店铺名称"
-                                    >
-                                    </InputItem>
+                                    />
                                 )}
                             {
                                 getFieldDecorator('category', {

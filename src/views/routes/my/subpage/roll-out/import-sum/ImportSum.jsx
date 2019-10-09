@@ -26,8 +26,8 @@ const seasons = [
 ];
 
 const {urlCfg} = Configs;
-const {MESSAGE: {Form}} = Constants;
-const {appHistory, getUrlParam, showInfo, native} = Utils;
+const {MESSAGE: {Form}, navColorF} = Constants;
+const {appHistory, getUrlParam, showInfo, native, setNavColor} = Utils;
 const hybird = process.env.NATIVE;
 
 export default class importSum extends BaseComponent {
@@ -40,6 +40,18 @@ export default class importSum extends BaseComponent {
         shopName: '', //获取名称
         sValue: '0' //转出方式id
     };
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
 
     componentDidMount() {
         this.importSum();

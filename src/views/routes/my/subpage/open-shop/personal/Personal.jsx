@@ -12,14 +12,26 @@ import Audit from  './Audit';
 import PersonalTwo from  './PersonalTwo';
 import PersonalOne from  './PersonalOne';
 
-const {getUrlParam} = Utils;
+const {getUrlParam, setNavColor} = Utils;
+const {navColorF} = Constants;
+const hybird = process.env.NATIVE;
+
 class Personal extends BaseComponent {
     state = {
         editModal: '',
         urlParams: ''
     };
 
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
     componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
         const type = decodeURI(getUrlParam('type', encodeURI(this.props.location.search)));
         if (window.location.href.includes('auditStatus')) {
             const auditStatus = decodeURI(getUrlParam('auditStatus', encodeURI(this.props.location.search)));

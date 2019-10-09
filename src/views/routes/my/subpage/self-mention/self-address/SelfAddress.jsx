@@ -2,8 +2,23 @@ import {SearchBar, Picker, Flex, List, Icon} from 'antd-mobile';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './SelfAddress.less';
 
+const {setNavColor} = Utils;
+const {navColorF} = Constants;
+const hybird = process.env.NATIVE;
 
 export default class ReDetail extends BaseComponent {
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
     render() {
         const dataInfo = [
             {
