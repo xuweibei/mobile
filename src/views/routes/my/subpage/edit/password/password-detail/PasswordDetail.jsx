@@ -50,7 +50,7 @@ class passwordDetail extends BaseComponent {
     }
 
     componentWillReceiveProps() {
-        if (hybird) {
+        if (hybrid) {
             setNavColor('setNavColor', {color: navColorF});
         }
     }

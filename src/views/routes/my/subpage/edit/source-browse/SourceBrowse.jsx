@@ -36,7 +36,7 @@ class SourceBrowse extends BaseComponent {
     }
 
     componentWillMount() {
-        if (hybird) { //设置tab颜色
+        if (hybrid) { //设置tab颜色
             setNavColor('setNavColor', {color: navColorF});
         }
     }
