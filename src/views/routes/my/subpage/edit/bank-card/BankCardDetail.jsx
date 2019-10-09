@@ -10,9 +10,10 @@ import {myActionCreator} from '../../../actions/index';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './BankCardDetail.less';
 
-const {appHistory, getUrlParam, validator, showInfo, showSuccess} = Utils;
-const {MESSAGE: {Form, Feedback}} = Constants;
+const {appHistory, getUrlParam, validator, showInfo, showSuccess, setNavColor} = Utils;
+const {MESSAGE: {Form, Feedback}, navColorF} = Constants;
 const {urlCfg} = Configs;
+const hybird = process.env.NATIVE;
 const getPass = {
     width: '100px',
     color: '#de1212',
@@ -57,6 +58,18 @@ class BankCardDetail extends BaseComponent {
             });
         }
         this.getBank();
+    }
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
     }
 
     //获取银行卡

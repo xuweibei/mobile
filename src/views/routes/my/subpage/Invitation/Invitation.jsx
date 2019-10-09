@@ -8,8 +8,8 @@ import './Invitation.less';
 import {showInfo} from '../../../../../utils/mixin';
 
 const {urlCfg} = Configs;
-const {native, getUrlParam, TD} = Utils;
-const {TD_EVENT_ID} = Constants;
+const {native, getUrlParam, TD, setNavColor} = Utils;
+const {TD_EVENT_ID, navColorF} = Constants;
 const hybird = process.env.NATIVE;
 
 //分享列表
@@ -46,6 +46,18 @@ class Invitation extends BaseComponent {
         const share = decodeURI(getUrlParam('share', encodeURI(this.props.location.search)));
         if (share !== '1') { //用来判断是否是点击分享按钮过来的，如果是，则就需要直接打开弹窗
             this.showShareActionSheet();
+        }
+    }
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
         }
     }
 

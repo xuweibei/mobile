@@ -8,6 +8,9 @@ import Income from '../single-page/income';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 
 const {urlCfg} = Configs;
+const {setNavColor} = Utils;
+const {navColorF} = Constants;
+const hybird = process.env.NATIVE;
 export default class MyAssets extends BaseComponent {
     state = {
         editModal: '', //当前状态
@@ -18,6 +21,18 @@ export default class MyAssets extends BaseComponent {
 
     componentDidMount() {
         this.getReserve();
+    }
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
     }
 
     //预收收益

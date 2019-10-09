@@ -9,8 +9,9 @@ import AppNavBar from '../../../../common/navbar/NavBar';
 import './History.less';
 
 const {urlCfg} = Configs;
-const {appHistory, showInfo, confirmDate, native} = Utils;
-const {MESSAGE: {Feedback}, FIELD} = Constants;
+const {appHistory, showInfo, confirmDate, native, setNavColor} = Utils;
+const {MESSAGE: {Feedback}, FIELD, navColorF} = Constants;
+const hybird = process.env.NATIVE;
 //tab配置信息
 const tabs = [
     {title: '商品历史', type: 1},
@@ -52,6 +53,18 @@ class History extends BaseComponent {
 
     componentDidMount() {
         this.getHistoryList();
+    }
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
     }
 
     //获取历史列表

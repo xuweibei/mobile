@@ -9,9 +9,10 @@ import {myActionCreator} from '../../../actions/index';
 import './index.less';
 
 // const CheckboxItem = Checkbox.CheckboxItem;
-const {MESSAGE: {Form, Feedback}} = Constants;
-const {appHistory, getUrlParam, validator, showInfo, showSuccess} = Utils;
+const {MESSAGE: {Form, Feedback}, navColorF} = Constants;
+const {appHistory, getUrlParam, validator, showInfo, showSuccess, setNavColor} = Utils;
 const {urlCfg} = Configs;
+const hybird = process.env.NATIVE;
 
 // FIXME: 页面需要优化
 class BasicInput extends BaseComponent {
@@ -28,6 +29,18 @@ class BasicInput extends BaseComponent {
 
     componentDidMount() {
         this.getList();
+    }
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
     }
 
     getList = () => {

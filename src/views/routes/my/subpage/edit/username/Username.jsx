@@ -5,9 +5,10 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 import {myActionCreator as actionCreator} from '../../../actions/index';
 import './Username.less';
 
-const {appHistory, showSuccess} = Utils;
-const {MESSAGE: {Feedback}} = Constants;
+const {appHistory, showSuccess, setNavColor} = Utils;
+const {MESSAGE: {Feedback}, navColorF} = Constants;
 const {urlCfg} = Configs;
+const hybird = process.env.NATIVE;
 
 class ExtName extends BaseComponent {
     state = {
@@ -18,6 +19,18 @@ class ExtName extends BaseComponent {
         const {nickname, getNickName} = this.props;
         if (!nickname) {
             getNickName();
+        }
+    }
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
         }
     }
 

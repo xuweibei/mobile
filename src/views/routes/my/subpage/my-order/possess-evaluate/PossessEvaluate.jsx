@@ -24,9 +24,9 @@ const temp = {
     isLoading: true
 };
 let keyNum = 0.11211212;
-const {FIELD} = Constants;
+const {FIELD, navColorF} = Constants;
 const {urlCfg} = Configs;
-const {appHistory, native, getUrlParam} = Utils;
+const {appHistory, native, getUrlParam, setNavColor} = Utils;
 const hybird = process.env.NATIVE;
 const arr = [{
 
@@ -89,6 +89,12 @@ class PossessEvaluate extends BaseComponent {
         this.sentPas();
     }
 
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
     componentWillReceiveProps(nextProps) {
         const userType = nextProps.location.search.split('=')[1];
         if (hybird && (userType !== this.state.userType)) {
@@ -115,6 +121,9 @@ class PossessEvaluate extends BaseComponent {
             }, () => {
                 this.sentPas();
             });
+        }
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
         }
     }
 

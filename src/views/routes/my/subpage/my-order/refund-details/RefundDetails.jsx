@@ -4,11 +4,11 @@ import BaseComponent from '../../../../../../components/base/BaseComponent';
 import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAction';
 import './RefundDetails.less';
 
-const {getUrlParam, appHistory, showInfo, native} = Utils;
+const {getUrlParam, appHistory, showInfo, native, setNavColor} = Utils;
 const {urlCfg} = Configs;
 const hybrid = process.env.NATIVE;
 
-const {MESSAGE: {Form, Feedback}} = Constants;
+const {MESSAGE: {Form, Feedback}, navColorF} = Constants;
 class refundDetails extends BaseComponent {
     state = {
         refundArr: []
@@ -16,6 +16,18 @@ class refundDetails extends BaseComponent {
 
     componentDidMount() {
         this.getInfo();
+    }
+
+    componentWillMount() {
+        if (hybrid) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybrid) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
     }
 
     getInfo = () => {

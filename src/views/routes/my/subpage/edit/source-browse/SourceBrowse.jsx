@@ -5,9 +5,9 @@ import {myActionCreator as actionCreator} from '../../../actions/index';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './SourceBrowse.less';
 
-const {native, showInfo, getUrlParam, appHistory} = Utils;
+const {native, showInfo, getUrlParam, appHistory, setNavColor} = Utils;
 const {urlCfg} = Configs;
-const {MESSAGE: {Feedback}} = Constants;
+const {MESSAGE: {Feedback}, navColorF} = Constants;
 
 const hybrid = process.env.NATIVE;
 
@@ -29,6 +29,15 @@ class SourceBrowse extends BaseComponent {
                 uid: decodeURI(getUrlParam('uid', encodeURI(next.location.search))),
                 avatarUrl: decodeURI(getUrlParam('avatarUrl', encodeURI(next.location.search)))
             });
+        }
+        if (hybrid) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
         }
     }
 

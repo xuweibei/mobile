@@ -10,8 +10,9 @@ import './index.less';
 
 const Item = List.Item;
 const {urlCfg} = Configs;
-const {MESSAGE: {Form, Feedback}} = Constants;
-const {appHistory, showInfo, validator} = Utils;
+const {MESSAGE: {Form, Feedback}, navColorF} = Constants;
+const {appHistory, showInfo, validator, setNavColor} = Utils;
+const hybird = process.env.NATIVE;
 
 class Area extends BaseComponent {
     state = {
@@ -26,6 +27,18 @@ class Area extends BaseComponent {
         const {areaInfo, getArea} = this.props;
         if (!areaInfo) {
             getArea();
+        }
+    }
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
         }
     }
 
