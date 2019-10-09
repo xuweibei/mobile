@@ -8,8 +8,9 @@ import Nothing from '../../../../common/nothing/Nothing';
 import './Evaluate.less';
 
 const {urlCfg} = Configs;
-const {appHistory, getUrlParam, showInfo, showSuccess} = Utils;
-const {MESSAGE: {Form, Feedback}, FIELD} = Constants;
+const {appHistory, getUrlParam, showInfo, showSuccess, setNavColor} = Utils;
+const {MESSAGE: {Form, Feedback}, FIELD, navColorF} = Constants;
+const hybird = process.env.NATIVE;
 
 export default class Evaluate extends BaseComponent {
     state = {
@@ -28,6 +29,18 @@ export default class Evaluate extends BaseComponent {
 
     componentDidMount() {
         this.getEvaluate();
+    }
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
     }
 
     switchTo = (id) => {

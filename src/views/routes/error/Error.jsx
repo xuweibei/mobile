@@ -8,13 +8,27 @@ import '../../../redux/reducers/baseReducer';
 import PropTypes from 'prop-types';
 
 
-const {appHistory} = Utils;
+const {appHistory, setNavColor} = Utils;
+const {navColorF} = Constants;
+const hybird = process.env.NATIVE;
 export default class Error extends BaseComponent {
     static defaultProps = {
         title: '404',
         className: 'error404',
         prompting: '页面出错'
     };
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
 
     static propTypes = {
         title: PropTypes.string,
