@@ -1,14 +1,13 @@
 
 import React from 'react';
 import './PersonalOne.less';
-import {List, InputItem, Picker, Radio, Modal, TextareaItem, Flex} from 'antd-mobile';
+import {List, InputItem, Picker, Modal, TextareaItem, Flex} from 'antd-mobile';
 import {createForm} from 'rc-form';
 import Region from '../../../../../common/region/Region';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 
 
 const {urlCfg} = Configs;
-const Fragment = React.Fragment;
 const {MESSAGE: {Form}} = Constants;
 const {showInfo, validator} = Utils;
 const data = [
@@ -45,8 +44,6 @@ class PersonalOne extends BaseComponent {
         date: [],
         oTValue: '',
         cTValue: '',
-        openTime: '',
-        closeTime: '',
         urlParams: '',
         editStatus: false,  //地区选择显示与否
         updateAudit: '', //审核填过的信息
@@ -54,9 +51,7 @@ class PersonalOne extends BaseComponent {
     };
 
     componentDidMount() {
-        console.log('第一步');
         this.getCategorys();
-        this.getdoBusinessTime();
         this.getUpdateAudit();
     }
 
@@ -81,21 +76,19 @@ class PersonalOne extends BaseComponent {
                     urban: res.data.city_name[1],
                     county: res.data.city_name[2],
                     address: res.data.address,
-                    openTime: res.data.open_time,
-                    closeTime: res.data.close_time,
                     discount: parseInt(res.data.discount, 10),
                     shopStatus: Number(res.data.type),
                     cshPhone: res.data.csh_phone,
                     linkName: res.data.linkName,
                     phone: res.data.phone,
-                    addressStatus: '1'
+                    addressStatus: '1',
+                    text: Number(res.data.type) === 1 ? DESC_ONE : DESC_TWO
                 });
             }
         });
     };
 
     onChecked = (value) => {
-        console.log(value);
         this.setState({
             shopStatus: value
         }, () => {
@@ -114,7 +107,6 @@ class PersonalOne extends BaseComponent {
 
     //  省市县的赋值
     setProvince = str => {
-        console.log(str);
         this.setState({
             province: str,
             urban: '',
@@ -172,15 +164,6 @@ class PersonalOne extends BaseComponent {
         callback();
     };
 
-    //验证开店时间
-    checkOpenTime = (rule, value, callback) => {
-        const {openTime, closeTime} = this.state;
-        const ifOpenTime = validator.isEmpty(openTime, Form.Error_Open_Time, callback);
-        const ifCloseTime = validator.isEmpty(closeTime, Form.Error_Open_Time, callback);
-        if (!ifOpenTime ||  !ifCloseTime) return;
-        callback();
-    };
-
     //验证折扣信息
     checkDiscount = (rule, value, callback) => {
         if (!value) {
@@ -196,23 +179,13 @@ class PersonalOne extends BaseComponent {
 
     //校验商户状态
     checkShopStatus = (rule, value, callback) => {
-        if (!value) {
+        const {shopStatus} = this.state;
+        if (!shopStatus) {
             showInfo(Form.No_isExp);
             return;
         }
         callback();
     };
-
-    //校验客服电话
-    // checkCshPhone = (rule, value, callback) => {
-    //     const myCshPhone = validator.wipeOut(value);
-    //     if (!validator.isEmpty(myCshPhone, Form.No_cshPhone, callback)) return;
-    //     if (!validator.checkStr(myCshPhone, 4, 12)) {
-    //         showInfo(Form.Error_CasPhone);
-    //         return;
-    //     }
-    //     callback();
-    // };
 
     //校验负责人电话
     checkLinkName = (rule, value, callback) => {
@@ -239,10 +212,6 @@ class PersonalOne extends BaseComponent {
     checkCasPhone = (rule, value, callback) => {
         const myCshPhone = validator.wipeOut(value);
         if (!validator.isEmpty(myCshPhone, Form.No_cshPhone, callback)) return;
-        // if (!validator.checkNum(Number(myCshPhone), 3, 11)) {
-        //     showInfo(Form.Error_CasPhone);
-        //     return;
-        // }
         callback();
     };
 
@@ -250,36 +219,32 @@ class PersonalOne extends BaseComponent {
     postInformation = () => {
         const {that} = this.props;
         const {form: {validateFields}} = this.props;
-        const {province, county, urban, cateId, cateName, openTime, closeTime, shopStatus} = this.state;
+        const {province, county, urban, cateId, cateName, shopStatus} = this.state;
         const pca = [province, urban, county];
         validateFields({first: true, force: true}, (error, val) => {
-            if (val && !error) {
-                if (!error) {
-                    this.fetch(urlCfg.postShopapply, {
-                        data: {
-                            shopName: val.shopName,
-                            linkName: val.linkName,
-                            phone: validator.wipeOut(val.phone),
-                            csh_phone: validator.wipeOut(val.casPhone).replace('-', ''),
-                            discount: parseFloat(val.discount),
-                            pca: pca,
-                            pick_up_self: 1,
-                            shop_type: that.state.urlParams,
-                            cate1_id: Number(cateId),
-                            cate1: cateName,
-                            is_exp: shopStatus,
-                            address: val.address,
-                            open_time: openTime,
-                            close_time: closeTime
+            if (!error) {
+                this.fetch(urlCfg.postShopapply, {
+                    data: {
+                        shopName: val.shopName,
+                        linkName: val.linkName,
+                        phone: validator.wipeOut(val.phone),
+                        csh_phone: validator.wipeOut(val.casPhone).replace('-', ''),
+                        discount: parseFloat(val.discount),
+                        pca: pca,
+                        pick_up_self: 1,
+                        shop_type: that.state.urlParams,
+                        cate1_id: Number(cateId),
+                        cate1: cateName,
+                        is_exp: shopStatus,
+                        address: val.address
+                    }
+                }).subscribe(res => {
+                    if (res) {
+                        if (res.status === 0) {
+                            that.getChildren('two');
                         }
-                    }).subscribe(res => {
-                        if (res) {
-                            if (res.status === 0) {
-                                that.getChildren('two');
-                            }
-                        }
-                    });
-                }
+                    }
+                });
             }
         });
     };
@@ -319,56 +284,6 @@ class PersonalOne extends BaseComponent {
         });
     };
 
-    //创建营业时间
-    getdoBusinessTime = () => {
-        const arr1 = [];
-        const arr2 = [];
-        for (let i = 0; i < 24; i++) {
-            if (i < 10) {
-                arr1.push({label: '0' + i + '时', value: '0' + i + ':'});
-            } else {
-                arr1.push({label: i.toString() + '时', value: i.toString() + ':'});
-            }
-        }
-        for (let i = 0; i <= 59; i++) {
-            if (i < 10) {
-                arr2.push({label: '0' + i + '分', value: '0' + i});
-            } else {
-                arr2.push({label: i.toString() + '分', value: i.toString()});
-            }
-        }
-        this.setState((prevState) => {
-            const arr = prevState.date;
-            arr.push(arr1);
-            arr.push(arr2);
-            return {
-                date: arr
-            };
-        });
-    };
-
-    //设置开店时间
-    setOpenTime = (val, type) => {
-        const {date} = this.state;
-        const result1 = date[0].find(item => item.value === val[0].toString());
-        const result2 = date[1].find(item => item.value === val[1].toString());
-        const arr = [];
-        arr.push(result1.value);
-        arr.push(result2.value);
-        if (type === 'open') {
-            this.setState({
-                oTValue: val,
-                openTime: arr.join('')
-            });
-        }
-        if (type === 'close') {
-            this.setState({
-                cTValue: val,
-                closeTime: arr.join('')
-            });
-        }
-    };
-
     //获取行业分类id和名称
     category = (val) => {
         const {category} = this.state;
@@ -387,8 +302,7 @@ class PersonalOne extends BaseComponent {
         const steps = ['填写店铺信息', '填写开店人信息', '填写工商信息', '绑定银行卡'];
         const {
             shopName, address, discount, linkName, cshPhone, addressStatus,
-            category, cValue, text, date, oTValue, cTValue, openTime, closeTime,
-            updateAudit, province, urban, county, shopStatus, phone, editStatus
+            category, cValue, text, updateAudit, province, urban, county, shopStatus, phone, editStatus
         } = this.state;
         return (
             <div>
@@ -426,7 +340,6 @@ class PersonalOne extends BaseComponent {
                                 getFieldDecorator('category', {
                                     initialValue: cValue,
                                     rules: [
-                                        //validator自定义校验规则 (rule, value, cb) => (value === true ? cb() : cb(true))
                                         {validator: this.checkCate}
                                     ],
                                     validateTrigger: 'postInformation'//校验值的时机
@@ -435,7 +348,7 @@ class PersonalOne extends BaseComponent {
                                         <Picker
                                             data={category}
                                             cols={1}
-                                            // value={cValue}
+                                            value={cValue}
                                             onChange={(val) => this.category(val)}
                                         >
                                             <List.Item arrow="horizontal" onClick={this.onClick}>主营行业</List.Item>
@@ -445,7 +358,7 @@ class PersonalOne extends BaseComponent {
                             }
                             {
                                 getFieldDecorator('area', {
-                                    initialValue: cValue,
+                                    // initialValue: cValue,
                                     rules: [
                                         {validator: this.checkArea}
                                     ],
@@ -499,65 +412,6 @@ class PersonalOne extends BaseComponent {
                                     />
                                 )
                             }
-
-                            <List.Item onClick={this.onClick} className="doBusiness-time">
-                                {
-                                    getFieldDecorator('openTime', {
-                                        initialValue: oTValue,
-                                        rules: [
-                                            {validator: this.checkOpenTime}
-                                        ],
-                                        validateTrigger: 'postInformation'//校验值的时机
-                                    })(
-                                        <Fragment>
-                                            <span>营业时间</span>
-                                            <div className="select-openTime">
-                                                <Picker
-                                                    data={date}
-                                                    title="开店时间"
-                                                    extra="请选择(可选)"
-                                                    cascade={false}
-                                                    // value={oTValue}
-                                                    onOk={v => this.setOpenTime(v, 'open')}
-                                                >
-                                                    <span
-                                                        className={this.state.openTime ? 'chose' : 'select'}
-                                                    >{openTime || '请选择'}
-                                                    </span>
-                                                </Picker>
-                                            </div>
-                                        </Fragment>
-                                    )
-                                }
-                                {
-                                    getFieldDecorator('closeTime', {
-                                        initialValue: cTValue,
-                                        rules: [
-                                            {validator: this.checkOpenTime}
-                                        ],
-                                        validateTrigger: 'postInformation'//校验值的时机
-                                    })(
-                                        <Fragment>
-                                            <span className="curved-line">~</span>
-                                            <div className="select-closeTime">
-                                                <Picker
-                                                    data={date}
-                                                    title="打烊时间"
-                                                    extra="请选择(可选)"
-                                                    cascade={false}
-                                                    // value={cTValue}
-                                                    onOk={v => this.setOpenTime(v, 'close')}
-                                                >
-                                                    <span
-                                                        className={this.state.closeTime ? 'chose' : 'select'}
-                                                    >{closeTime || '请选择'}
-                                                    </span>
-                                                </Picker>
-                                            </div>
-                                        </Fragment>
-                                    )
-                                }
-                            </List.Item>
                             {
                                 getFieldDecorator('discount', {
                                     initialValue: discount || '',
@@ -588,15 +442,6 @@ class PersonalOne extends BaseComponent {
                                     <div className="merchant-state">
                                         <span className="state-left">商户状态</span>
                                         <span className="state-right">
-                                            {/* {data.map(i => (
-                                                <RadioItem
-                                                    key={i.value}
-                                                    checked={shopStatus === i.value}
-                                                    onChange={() => this.onChecked(i.value)}
-                                                >
-                                                    {i.label}
-                                                </RadioItem>
-                                            ))}*/}
                                             {
                                                 data.map(i => (
                                                     <div onClick={() => this.onChecked(i.value)} className="merchant" key={i.value}>

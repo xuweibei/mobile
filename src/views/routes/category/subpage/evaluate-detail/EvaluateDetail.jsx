@@ -211,10 +211,13 @@ export default class EvaluateDetail extends BaseComponent {
                                     </div>
                                     <div className="review">追评</div>
                                     <div className="comment-bar">{add.content}</div>
-                                    <div className="chat-box">
-                                        <div className="chat">商家回复：{add.return_content}</div>
-                                        {/* <div className="chat">追评价：{add.content}</div> */}
-                                    </div>
+                                    {
+                                        appraise.return_content && (
+                                            <div className="chat-box">
+                                                <div className="chat">商家回复：{add.return_content}</div>
+                                            </div>
+                                        )
+                                    }
                                 </div>
                             </div>
                         </div>

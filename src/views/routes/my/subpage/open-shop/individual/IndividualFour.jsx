@@ -12,9 +12,6 @@ import Audit from '../personal/Audit';
 const {urlCfg} = Configs;
 const {MESSAGE: {Form}} = Constants;
 const {showInfo, validator} = Utils;
-/*const data = [
-    {value: 0, label: '银行卡'}
-];*/
 class IndividualFour extends BaseComponent {
     state ={
         files: [],
@@ -28,20 +25,18 @@ class IndividualFour extends BaseComponent {
         value: 0,
         id: 0,
         cValue: '',
-        bValue: '',
+        bValue: [],
         province: '', //省的名字
         urban: '', //市辖区的名字
         county: '', //城市名字
         bankCard: '', // 银行卡号,
         cardType: 1, //卡类型
         phone: '', //  手机号
-        // vcCode: '', //验证码
         countyId: '', //区id
-        // type: 2, //1：个人户；2：个体工商户
         cardStatus: '银行卡号',
         addressStatus: '',
-        editStatus: true
-        // id: ''
+        editStatus: true,
+        selectBranch: '' //回传支行名称
     };
 
     //提交绑定银行卡信息
@@ -60,10 +55,8 @@ class IndividualFour extends BaseComponent {
                         branches: branchBankName,
                         phone: validator.wipeOut(val.phone),
                         pcat: [province, urban, county],
-                        // vcode: vcCode,
                         userType: 2,
                         cardType: cardType
-                        // type: type
                     }}).subscribe(res => {
                     if (res && res.status === 0) {
                         this.fetch(urlCfg.shopFinish).subscribe(res2 => {
@@ -84,7 +77,6 @@ class IndividualFour extends BaseComponent {
 
     //父级数据变更
     editStatusChange = () => {
-        console.log('父级数据变更');
         this.setState({
             editStatus: false
         });
@@ -102,13 +94,16 @@ class IndividualFour extends BaseComponent {
                     phone: res.data.phone,
                     bankName: res.data.bankArea,
                     id: res.data.id,
-                    province: res.data.city_name && res.data.city_name[0],
-                    urban: res.data.city_name && res.data.city_name[1],
-                    county: res.data.city_name && res.data.city_name[2],
+                    province: res.data.area && res.data.area[0],
+                    urban: res.data.area && res.data.area[1],
+                    county: res.data.area && res.data.area[2],
                     provinceId: res.data.province_id,
                     cityId: res.data.city_id,
                     countyId: res.data.county_id,
-                    addressStatus: '1'
+                    addressStatus: '1',
+                    selectBranch: res.data.branches
+                }, () => {
+                    this.getBankBranch();
                 });
             }
         });
@@ -161,7 +156,7 @@ class IndividualFour extends BaseComponent {
         if (bankName && countyId) {
             this.fetch(urlCfg.getBankList, {data: {
                 cityId: countyId,
-                key: bankName.substr(0, 2)
+                key: bankName
             }}).subscribe(res => {
                 if (res.status === 0) {
                     const arr = [];
@@ -171,9 +166,17 @@ class IndividualFour extends BaseComponent {
                             value: item.code
                         });
                     });
-                    this.setState(() => ({
+                    this.setState({
                         branchBank: arr
-                    }));
+                    }, () => {
+                        if (this.state.selectBranch) {
+                            const {branchBank, selectBranch} = this.state;
+                            const num = branchBank.find(item => item.label === selectBranch);
+                            this.setState({
+                                bValue: num.value
+                            });
+                        }
+                    });
                 }
             });
         } if (!countyId || !bankName) {
@@ -189,16 +192,10 @@ class IndividualFour extends BaseComponent {
             cValue: val,
             bankName: result.label,
             bankId: result.value,
-            province: '',
-            branchBank: []
+            branchBank: [],
+            bValue: [],
+            selectBranch: ''
         }));
-        // if (cValue[0] !== val[0]) {
-        //     this.setState({
-        //         province: '',
-        //         urban: '',
-        //         county: ''
-        //     });
-        // }
     };
 
     // 获取选中的支行
@@ -206,10 +203,10 @@ class IndividualFour extends BaseComponent {
         const {branchBank} = this.state;
         if (branchBank.length !== 0) {
             const result = branchBank.find(item => item.value === val.toString());
-            this.setState(() => ({
+            this.setState({
                 branchBankName: result.label,
                 bValue: result.label
-            }));
+            });
         }
     };
 
@@ -316,7 +313,7 @@ class IndividualFour extends BaseComponent {
     editModalMain = () => {
         const {form: {getFieldDecorator}} = this.props;
         const steps = ['填写店铺信息', '填写开店人信息', '填写工商信息', '绑定银行卡'];
-        const {banks, cValue, branchBank, userName, bankCard, phone, branchBankName, provinceId, cityId, province, urban, county, addressStatus} = this.state;
+        const {banks, cValue, branchBank, userName, bankCard, phone, bValue, provinceId, cityId, province, urban, county, addressStatus} = this.state;
         console.log(addressStatus);
         return (
             <div>
@@ -387,7 +384,6 @@ class IndividualFour extends BaseComponent {
                                 <span>开户地区</span>
                                 {
                                     getFieldDecorator('area', {
-                                        // initialValue: '',
                                         rules: [
                                             {validator: this.checkArea}
                                         ],
@@ -429,7 +425,7 @@ class IndividualFour extends BaseComponent {
                             </List.Item>
                             {
                                 getFieldDecorator('branchName', {
-                                    initialValue: branchBankName,
+                                    initialValue: Array(bValue),
                                     rules: [
                                         {validator: this.checkBranchName}
                                     ],
@@ -448,33 +444,6 @@ class IndividualFour extends BaseComponent {
                                     </Picker>
                                 )
                             }
-                            {/*<List.Item>所属支行</List.Item>*/}
-                            {/*<List.Item className="select-bank">*/}
-                            {/*    <Region*/}
-                            {/*        onSetProvince={this.setProvince}*/}
-                            {/*        onSetCity={this.setCity}*/}
-                            {/*        onCountyId={this.setCountyId}*/}
-                            {/*        onSetCounty={this.setCounty}*/}
-                            {/*        add*/}
-                            {/*    />*/}
-                            {/*    {*/}
-                            {/*        getFieldDecorator('branchName', {*/}
-                            {/*            initialValue: branchBankName,*/}
-                            {/*            rules: [*/}
-                            {/*                {validator: this.checkBranchName}*/}
-                            {/*            ],*/}
-                            {/*            validateTrigger: 'submit'//校*/}
-                            {/*        })(*/}
-                            {/*            <Picker*/}
-                            {/*                data={branchBank}*/}
-                            {/*                cols={1}*/}
-                            {/*                onOk={val => this.setBankBranch(val)}*/}
-                            {/*            >*/}
-                            {/*                <List.Item arrow="horizontal" onClick={this.getBankBranch}>{bValue || '所属银行'}</List.Item>*/}
-                            {/*            </Picker>*/}
-                            {/*        )*/}
-                            {/*    }*/}
-                            {/*</List.Item>*/}
                             {
                                 getFieldDecorator('phone', {
                                     initialValue: phone,

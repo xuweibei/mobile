@@ -388,23 +388,23 @@ class GoodsDetail extends BaseComponent {
     };
 
     //跳转全部评价
-    skipAssess = id => {
-        appHistory.push(`/evaluate?id=${id}`);
-    };
+    // skipAssess = id => {
+    //     appHistory.push(`/evaluate?id=${id}`);
+    // };
 
     //判断评分等级
-    rating = num => {
-        const rank = parseInt(num, 10);
-        let val = '';
-        if (rank >= 4) {
-            val = '高';
-        } else if (rank > 2.5 && rank < 4) {
-            val = '中';
-        } else {
-            val =  '低';
-        }
-        return val;
-    };
+    // rating = num => {
+    //     const rank = parseInt(num, 10);
+    //     let val = '';
+    //     if (rank >= 4) {
+    //         val = '高';
+    //     } else if (rank > 2.5 && rank < 4) {
+    //         val = '中';
+    //     } else {
+    //         val =  '低';
+    //     }
+    //     return val;
+    // };
 
     //图片放大
     openMask = pic => {
@@ -597,7 +597,7 @@ class GoodsDetail extends BaseComponent {
     render() {
         const {
             topSwithe, popup, paginationNum, xxArr, half, ids, maskStatus,
-            picPath, goodsDetail, shop, recommend, evaluate, allState, collect,
+            picPath, goodsDetail, shop, recommend, collect,
             goodsAttr, stocks, shopAddress, lineStatus, lineText, pickType, selectType, names, status
         } = this.state;
         console.log(picPath[0], '肯德基康师傅');
@@ -666,7 +666,6 @@ class GoodsDetail extends BaseComponent {
                                         <li key={item.title} className="items">
                                             <Link activeClass="on on-tab" to={item.key} spy smooth duration={500} >
                                                 {item.title}
-                                                {/*<div className={index === indexId ? 'underlineRed' : 'underline'}/>*/}
                                             </Link>
                                         </li>
                                     ))}
@@ -831,7 +830,7 @@ class GoodsDetail extends BaseComponent {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="scores">
+                                {/* <div className="scores">
                                     <div className="shop-score">
                                         <span>店铺评分</span>
                                         <span className="score-eva">
@@ -848,9 +847,9 @@ class GoodsDetail extends BaseComponent {
                                         </span>
                                         <span className="grade-low">{this.rating(shop.logistics_mark)}</span>
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
-                            <div className="goods-assess">
+                            {/* <div className="goods-assess">
                                 <div className="assess-text">
                                     <div className="text-left">
                                         商品评价({allState.pingjia_count})
@@ -881,7 +880,7 @@ class GoodsDetail extends BaseComponent {
                                 <div className="appraise-title">
                                     {evaluate.content}
                                 </div>
-                            </div>
+                            </div> */}
                         </Element>
                         {/*店铺推荐*/}
                         <Element name="recommend" className="home-recommends">

@@ -351,7 +351,6 @@ class CategoryListView extends BaseComponent {
                                         }
                                     </Flex>
                                 </div>
-                                {/*<WhiteSpace size="md"/>*/}
                                 <ListView
                                     ref={ref => { this.listViewCon = ref }}
                                     dataSource={dataSource}

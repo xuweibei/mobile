@@ -256,7 +256,6 @@ class Individual extends BaseComponent {
         console.log(values);
         this.setState({
             pickUpSelf: values
-            // values
         });
     };
 
@@ -331,8 +330,8 @@ class Individual extends BaseComponent {
 
     //检验是否支持自提
     checkPickUpSelf = (rule, value, callback) => {
-        // const {pickUpSelf} = this.state;
-        if (!validator.isEmpty(value, Form.No_pickUpSelf, callback)) return;
+        const {pickUpSelf} = this.state;
+        if (!validator.isEmpty(pickUpSelf, Form.No_pickUpSelf, callback)) return;
         callback();
     };
 
@@ -385,7 +384,6 @@ class Individual extends BaseComponent {
     editModalMain = () => {
         const {phone, isExp, pickUpSelf, linkName, discount, cValue, shopName, category,  text, date,  openTime, closeTime, provinceId, cityId, province, urban, county,  address, cshPhone, oTValue, cTValue, addressStatus} = this.state;
         const {getFieldDecorator} = this.props.form;
-        console.log(addressStatus);
         const steps = ['填写店铺信息', '填写开店人信息', '填写工商信息', '绑定银行卡'];
         return (
             <div>
@@ -406,7 +404,6 @@ class Individual extends BaseComponent {
                                 getFieldDecorator('shopName', {
                                     initialValue: shopName,
                                     rules: [
-                                        //validator自定义校验规则 (rule, value, cb) => (value === true ? cb() : cb(true))
                                         {validator: this.checkShopName}
                                     ],
                                     validateTrigger: 'onSubmit'//校验值的时机

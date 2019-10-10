@@ -117,6 +117,11 @@ export default class HomeList extends BaseComponent {
 
     //获取商品列表
     getGoodsList = (page) => {
+        const {goodsPageCount} = this.state;
+        if (page >= goodsPageCount) {
+            showInfo(Form.Not_More_Goods, 1);
+            return;
+        }
         this.fetch(urlCfg.getGoods, {
             data: {
                 type: 1,
@@ -126,16 +131,12 @@ export default class HomeList extends BaseComponent {
             }
         }).subscribe(res => {
             if (res && res.status === 0) {
-                if (this.state.goodsPage >= res.page_count) {
-                    showInfo(Form.Not_More_Goods, 1);
-                } else {
-                    this.goodsData = this.goodsData.concat(res.data);
-                    this.setState(prevState => ({
-                        hotGoods: this.goodsData,
-                        goodsPage: prevState.goodsPage + 1,
-                        goodsPageCount: res.page_count
-                    }));
-                }
+                this.goodsData = this.goodsData.concat(res.data);
+                this.setState(prevState => ({
+                    hotGoods: this.goodsData,
+                    goodsPage: prevState.goodsPage + 1,
+                    goodsPageCount: res.page_count
+                }));
             }
         });
     };
@@ -151,16 +152,12 @@ export default class HomeList extends BaseComponent {
             }
         }).subscribe(res => {
             if (res && res.status === 0) {
-                if (this.state.exPage >= res.page_count) {
-                    showInfo(Form.Not_More_Goods, 1);
-                } else {
-                    this.exemptionData = this.exemptionData.concat(res.data);
-                    this.setState(prevState => ({
-                        exemption: this.exemptionData,
-                        exPage: prevState.exPage + 1,
-                        exPageCount: res.page_count
-                    }));
-                }
+                this.exemptionData = this.exemptionData.concat(res.data);
+                this.setState(prevState => ({
+                    exemption: this.exemptionData,
+                    exPage: prevState.exPage + 1,
+                    exPageCount: res.page_count
+                }));
             }
         });
     };
@@ -179,15 +176,11 @@ export default class HomeList extends BaseComponent {
         }).subscribe(res => {
             this.hotShopData = this.hotShopData.concat(res.data);
             if (res && res.status === 0) {
-                if (this.state.shopPage >= res.page_count) {
-                    showInfo(Form.Not_More_Shops, 1);
-                } else {
-                    this.setState(prevState => ({
-                        hotShops: this.hotShopData,
-                        shopPage: prevState.shopPage + 1,
-                        shopPageCount: res.page_count
-                    }));
-                }
+                this.setState(prevState => ({
+                    hotShops: this.hotShopData,
+                    shopPage: prevState.shopPage + 1,
+                    shopPageCount: res.page_count
+                }));
             }
         });
     };
@@ -222,7 +215,6 @@ export default class HomeList extends BaseComponent {
 
      //热销商品上拉加载
      goodReached = (e) => {
-         console.log(e);
          const {currentIndex} = this.state;
          if (currentIndex === 0) {
              this.setState(prevState => ({
@@ -236,8 +228,12 @@ export default class HomeList extends BaseComponent {
 
     //包邮商品上拉加载
     exReached = () => {
-        const {currentIndex} = this.state;
+        const {currentIndex, exPageCount} = this.state;
         if (currentIndex === 1) {
+            if (this.state.exPage > exPageCount) {
+                showInfo(Form.Not_More_Goods, 1);
+                return;
+            }
             const {exPage} = this.state;
             this.getExGoodsList(exPage);
         }
@@ -247,7 +243,11 @@ export default class HomeList extends BaseComponent {
     hotShopReached = () => {
         const {currentIndex} = this.state;
         if (currentIndex === 2) {
-            const {shopPage, latitude, longitude} = this.state;
+            const {shopPage, latitude, longitude, shopPageCount} = this.state;
+            if (shopPage > shopPageCount) {
+                showInfo(Form.Not_More_Shops, 1);
+                return;
+            }
             if (latitude && longitude) {
                 this.getHotShops(shopPage);
             }
