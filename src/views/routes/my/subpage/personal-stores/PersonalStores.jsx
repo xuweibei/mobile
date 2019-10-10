@@ -9,7 +9,8 @@ import SetWorder from './set-shop/set-worder';
 import CheckBank from './check/check';
 
 const {urlCfg} = Configs;
-const {appHistory, native} = Utils;
+const {appHistory, native, setNavColor} = Utils;
+const {navColorF} = Constants;
 const hybrid = process.env.NATIVE;
 
 class PersonalStores extends BaseComponent {
@@ -21,6 +22,18 @@ class PersonalStores extends BaseComponent {
 
     componentDidMount() {
         this.getShopInfo();
+    }
+
+    componentWillMount() {
+        if (hybrid) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybrid) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
     }
 
     //获取店铺信息

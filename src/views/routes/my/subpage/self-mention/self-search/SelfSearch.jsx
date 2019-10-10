@@ -7,7 +7,9 @@ import {connect} from 'react-redux';
 import './SelfSearch.less';
 
 const {urlCfg} = Configs;
-const {appHistory} = Utils;
+const {appHistory, setNavColor} = Utils;
+const {navColorF} = Constants;
+const hybird = process.env.NATIVE;
 
 class Search extends BaseComponent {
     state = {
@@ -21,7 +23,16 @@ class Search extends BaseComponent {
     }
 
     componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
         dropByCacheKey('CategoryListPage');
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
     }
 
     //搜索框类型跳转 false返回上级 true 进行搜索跳转

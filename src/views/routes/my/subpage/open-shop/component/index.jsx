@@ -9,15 +9,28 @@ import SelfType from './SelfType';
 import {urlCfg} from '../../../../../../configs/urlCfg';
 
 
-const {appHistory, getUrlParam, native, systemApi: {getValue}} = Utils;
-
+const {appHistory, getUrlParam, native, systemApi: {getValue}, setNavColor} = Utils;
+const {navColorF} = Constants;
 const hybrid = process.env.NATIVE;
+
 class ShopIndex extends BaseComponent {
     state={
         status: 'index',
         intro: {},
         sure: ''
     };
+
+    componentWillMount() {
+        if (hybrid) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybrid) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
 
     componentDidMount() {
         const status = decodeURI(getUrlParam('status', encodeURI(this.props.location.search)));

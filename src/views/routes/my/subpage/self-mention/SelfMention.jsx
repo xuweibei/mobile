@@ -12,7 +12,7 @@ import AppNavBar from '../../../../common/navbar/NavBar';
 
 const {appHistory, showFail, showInfo, native, getUrlParam, setNavColor} = Utils;
 const {urlCfg} = Configs;
-const {MESSAGE: {Feedback}, FIELD} = Constants;
+const {MESSAGE: {Feedback}, FIELD, navColorR} = Constants;
 const hybrid = process.env.NATIVE;
 const tabs = [
     {title: '全部'},
@@ -36,18 +36,17 @@ class ReDetail extends BaseComponent {
     }
 
     componentWillMount() {
+        if (hybrid) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorR});
+        }
         const num = this.statusChoose(this.props.location.pathname.split('/')[2]);
         this.init(num);
     }
 
-    componentDidMount() {
-        const {navColor} = this.state;
-        if (hybrid) {
-            setNavColor('setNavColor', {color: navColor});
-        }
-    }
-
     componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方
+        if (hybrid) {
+            setNavColor('setNavColor', {color: navColorR});
+        }
         const numNext = this.statusChoose(nextProps.location.pathname.split('/')[2]);
         const numPrev = this.statusChoose(this.props.location.pathname.split('/')[2]);
         console.log(numNext, numPrev, '圣诞节快乐风和ijk');

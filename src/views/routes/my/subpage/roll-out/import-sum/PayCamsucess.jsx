@@ -2,7 +2,8 @@ import React from 'react';
 import './ImportSum.less';
 import {Button, NavBar} from 'antd-mobile';
 
-const {native, appHistory, getUrlParam} = Utils;
+const {native, appHistory, getUrlParam, setNavColor} = Utils;
+const {navColorF} = Constants;
 const hybrid = process.env.NATIVE;
 
 export default class importSum extends BaseComponent {
@@ -16,6 +17,18 @@ export default class importSum extends BaseComponent {
         Nothings: false, //转出成功后显示页面
         sValue: 0 //转出方式id
     };
+
+    componentWillMount() {
+        if (hybrid) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybrid) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
 
     //确认按钮
     camSucessFn = () => {

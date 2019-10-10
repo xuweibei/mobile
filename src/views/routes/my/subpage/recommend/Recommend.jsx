@@ -7,8 +7,11 @@ import AppNavBar from '../../../../common/navbar/NavBar';
 import LazyLoad from '../../../../common/lazy-load/LazyLoad';
 import Animation from '../../../../common/animation/Animation';
 
-const {appHistory} = Utils;
+const {appHistory, setNavColor} = Utils;
+const {navColorF} = Constants;
 const {urlCfg} = Configs;
+const hybird = process.env.NATIVE;
+
 export default class Recommend extends BaseComponent {
     constructor(props, context) {
         super(props, context);
@@ -27,6 +30,18 @@ export default class Recommend extends BaseComponent {
             page: 1,
             height: document.documentElement.clientHeight - (window.isWX ? document.documentElement.clientWidth / 7.5 * 0.88 : document.documentElement.clientWidth / 7.5 * 0.88)
         };
+    }
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
     }
 
     componentDidMount() {
