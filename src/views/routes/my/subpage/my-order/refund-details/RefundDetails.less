@@ -165,35 +165,38 @@
                 color: rgba(51, 51, 51, 1);
                 font-size: @font-size-30;
                 margin: 12px 0 11px 0;
+                justify-content: space-between;
                 .introduce-l {
                     overflow: hidden;
                     -webkit-line-clamp: 2;
                     display: -webkit-box;
                     -webkit-box-orient: vertical;
-                    width: 270px;
+                    //width: 270px;
                 }
                 .introduce-r {
-                    margin-left: 51px;
+                    margin-left: 20px;
                 }
             }
             .label {
                 margin-bottom: 65px;
                 color: rgba(153, 153, 153, 1);
                 font-size: @font-size-20;
+                display: flex;
+                justify-content: space-between;
                 .label-l {
-                    margin-right: 30px;
+                    flex: 1;
+                    display: flex;
+                    .goods-size{
+                        max-width: 33%;
+                        padding-right: 20px;
+                        .TextareaOverflow(1);
+                    }
                 }
                 .label-r {
-                    float: right;
-                    margin-right: 5px;
+                    //float: right;
+                    //margin-right: 5px;
                 }
-                .goods-size{
-                    flex: 1;
-                    padding: 0 20px;
-                    //border-right: 1px solid @gray;
-                    .hairline('right',@gray);
-                    .TextareaOverflow(1);
-                }
+
             }
             .buttons{
                 margin-top: 65px;
@@ -223,7 +226,7 @@
 
         }
         .refund-box {
-            padding: 31px 47px 40px 50px;
+            padding: 30px;
             background-color: #fff;
             border-radius: 0;
             margin-top: 20px;
