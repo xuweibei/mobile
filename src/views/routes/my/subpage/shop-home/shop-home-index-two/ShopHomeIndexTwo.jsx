@@ -75,7 +75,12 @@ class ShopHomeIndexTwo extends React.PureComponent {
     render() {
         const {selectedIndex} = this.state;
         const {shopModelArr} = this.props;
-        console.log(shopModelArr);
+        const discountList = [
+            shopModelArr.content.sort2_pr1_ix,
+            shopModelArr.content.sort2_pr2_ix,
+            shopModelArr.content.sort2_pr3_ix,
+            shopModelArr.content.sort2_pr4_ix
+        ];
         return (
             <div data-component="ShopHomeIndex" data-role="page" className="ShopHomeIndex">
                 <div className="shopHomeTwoContent">
@@ -88,7 +93,7 @@ class ShopHomeIndexTwo extends React.PureComponent {
                                 speed={2000}
                             >
                                 {
-                                    shopModelArr.content.banner.map(item => (
+                                    shopModelArr && shopModelArr.picurl && shopModelArr.content && shopModelArr.content.banner.map(item => (
                                         <div key={item} style={{height: '475px'}}>
                                             <img src={item.url} onClick={() => this.goToGoods(item.id)} title="693"/>
                                         </div>
@@ -97,7 +102,7 @@ class ShopHomeIndexTwo extends React.PureComponent {
                             </Carousel>
                         </WingBlank>
                     </div>
-                    <div className="newRecommend shopHomeTwoContentPadding">
+                    <div className="newRecommend shopHomeTwoContentPadding" style={{marginTop: '30px'}}>
                         <div className="comTitle2 shopHomeTwoContentMarTop">
                             <div>{shopModelArr.content.sort1_title1}</div>
                             <p>{shopModelArr.content.sort1_title2}</p>
@@ -163,51 +168,21 @@ class ShopHomeIndexTwo extends React.PureComponent {
                             <p>{shopModelArr.content.sort2_title2}</p>
                         </div>
                         <div className="discountAreaCon">
-                            <div className="discountAreaConItem">
-                                <div className="discount-img">
-                                    <img onClick={() => this.goToGoods(shopModelArr.content.sort2_pr1_id)} src={shopModelArr.picurl[5]} alt=""/>
-                                </div>
-                                <p>{shopModelArr.content.sort2_pr1_title1}</p>
-                                <div className="price">
-                                    <span className="money-ZH">￥</span>
-                                    <span className="money-new">{shopModelArr.content.sort2_pr1_title2}</span>
-                                    <span className="money-before">{shopModelArr.content.sort2_pr1_title3}</span>
-                                </div>
-                            </div>
-
-                            <div className="discountAreaConItem">
-                                <div className="discount-img">
-                                    <img onClick={() => this.goToGoods(shopModelArr.content.sort2_pr2_id)} src={shopModelArr.picurl[6]} alt=""/>
-                                </div>
-                                <p>{shopModelArr.content.sort2_pr2_title1}</p>
-                                <div className="price">
-                                    <span className="money-ZH">￥</span>
-                                    <span className="money-new">{shopModelArr.content.sort2_pr2_title2}</span>
-                                    <span className="money-before">{shopModelArr.content.sort2_pr2_title3}</span>
-                                </div>
-                            </div>
-                            <div className="discountAreaConItem">
-                                <div className="discount-img">
-                                    <img onClick={() => this.goToGoods(shopModelArr.content.sort2_pr3_id)} src={shopModelArr.picurl[7]} alt=""/>
-                                </div>
-                                <p>{shopModelArr.content.sort2_pr3_title1}</p>
-                                <div className="price">
-                                    <span className="money-ZH">￥</span>
-                                    <span className="money-new">{shopModelArr.content.sort2_pr3_title2}</span>
-                                    <span className="money-before">{shopModelArr.content.sort2_pr3_title3}</span>
-                                </div>
-                            </div>
-                            <div className="discountAreaConItem">
-                                <div className="discount-img">
-                                    <img onClick={() => this.goToGoods(shopModelArr.content.sort2_pr4_id)} src={shopModelArr.picurl[8]} alt=""/>
-                                </div>
-                                <p>{shopModelArr.content.sort2_pr4_title1}</p>
-                                <div className="price">
-                                    <span className="money-ZH">￥</span>
-                                    <span className="money-new">{shopModelArr.content.sort2_pr4_title2}</span>
-                                    <span className="money-before">{shopModelArr.content.sort2_pr4_title3}</span>
-                                </div>
-                            </div>
+                            {
+                                discountList.map(item => (
+                                    <div className="discountAreaConItem" key={item}>
+                                        <div className="discount-img">
+                                            <img onClick={() => this.goToGoods(shopModelArr.content[`sort2_pr${item - 4}_id`])} src={shopModelArr.picurl[item]} alt=""/>
+                                        </div>
+                                        <p>{shopModelArr.content[`sort2_pr${item - 4}_title1`]}</p>
+                                        <div className="price">
+                                            <span className="money-ZH">￥</span>
+                                            <span className="money-new">{shopModelArr.content[`sort2_pr${item - 4}_title2`]}</span>
+                                            <span className="money-before">{shopModelArr.content[`sort2_pr${item - 4}_title3`]}</span>
+                                        </div>
+                                    </div>
+                                ))
+                            }
                         </div>
                     </div>
                     <div className="hotRecommend shopHomeTwoContentPadding">
@@ -225,7 +200,7 @@ class ShopHomeIndexTwo extends React.PureComponent {
                                     >
                                         {shopModelArr && shopModelArr.content.pr_banner && shopModelArr.content.pr_banner.length > 0 && shopModelArr.content.pr_banner.map(item  => (
                                         // {shopModelArr.banner && shopModelArr.banner.map(item  => (
-                                            <div className="pr_banner_bottom" style={{height: '165px'}} key={item}>
+                                            <div className="pr_banner_bottom" key={item}>
                                                 <img
                                                     src={item.url}
                                                     alt=""

@@ -13,8 +13,8 @@ import Sku from '../../common/sku/Sku';
 import './shopCart.less';
 
 const {urlCfg} = Configs;
-const {appHistory, showInfo, showSuccess, native, systemApi: {setValue}, getUrlParam} = Utils;
-const {MESSAGE: {Form, Feedback}, FIELD} = Constants;
+const {appHistory, showInfo, showSuccess, native, systemApi: {setValue}, getUrlParam, setNavColor} = Utils;
+const {MESSAGE: {Form, Feedback}, FIELD, navColorR} = Constants;
 
 const hybird = process.env.NATIVE;
 let payInNum = 0;
@@ -43,6 +43,9 @@ class ShopCart extends BaseComponent {
     };
 
     componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorR});
+        }
         this.getCart();
     }
 
@@ -52,6 +55,9 @@ class ShopCart extends BaseComponent {
     }
 
     componentWillReceiveProps(next) {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorR});
+        }
         const timerNext = decodeURI(getUrlParam('time', encodeURI(next.location.search)));
         const timer = decodeURI(getUrlParam('time', encodeURI(this.props.location.search)));
         if (timer !== timerNext) {
@@ -859,7 +865,7 @@ class ShopCart extends BaseComponent {
                                                     商品已不能购买，您可以进店查看相关商品
                                                 </div>
                                                 <div className="shop-name">
-                                                    <span>店铺名称：{shop.shop_name}</span>
+                                                    <span>{shop.shop_name}</span>
                                                     <span
                                                         onClick={() => this.goToShopHome(shop.shop_id)}
                                                     >

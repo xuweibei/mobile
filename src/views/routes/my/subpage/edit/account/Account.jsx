@@ -11,8 +11,9 @@ import './Account.less';
 const RadioItem = Radio.RadioItem;
 
 const {urlCfg} = Configs;
-const {showInfo, appHistory, systemApi: {setValue}} = Utils;
-const {MESSAGE: {Feedback}} = Constants;
+const {showInfo, appHistory, systemApi: {setValue}, setNavColor} = Utils;
+const {MESSAGE: {Feedback}, navColorF} = Constants;
+const hybird = process.env.NATIVE;
 
 class Account extends BaseComponent {
     state = {
@@ -26,6 +27,18 @@ class Account extends BaseComponent {
         const {accoutList, switchAccountList} = this.props;
         if (!accoutList) {
             switchAccountList();
+        }
+    }
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
         }
     }
 

@@ -9,9 +9,11 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 import Nothing from '../../../../../common/nothing/Nothing';
 import MyListView from '../../../../../common/my-list-view/MyListView';
 
-const {FIELD} = Constants;
+const {FIELD, navColorF} = Constants;
 const {urlCfg} = Configs;
-const {showInfo} = Utils;
+const {showInfo, setNavColor} = Utils;
+const hybird = process.env.NATIVE;
+
 export default class Record extends BaseComponent {
     state = {
         refreshing: false, //是否在下拉刷新时显示指示器
@@ -22,6 +24,18 @@ export default class Record extends BaseComponent {
         pageCount: 0, //一共多少页
         recordDtat: [] //当页数据源
     };
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
 
     componentDidMount() {
         this.withdrawList();

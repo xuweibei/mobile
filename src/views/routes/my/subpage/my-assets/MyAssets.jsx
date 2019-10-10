@@ -10,8 +10,9 @@ import './MyAssets.less';
 
 const Item = List.Item;
 const {urlCfg} = Configs;
-const {appHistory} = Utils;
-const {MESSAGE: {Form}} = Constants;
+const {appHistory, setNavColor} = Utils;
+const {MESSAGE: {Form}, navColorF} = Constants;
+const hybird = process.env.NATIVE;
 
 class MyAssets extends BaseComponent {
     state = {
@@ -22,6 +23,18 @@ class MyAssets extends BaseComponent {
     componentDidMount() {
         this.getRecord();
         this.getUserNew();
+    }
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
     }
 
     //获取用户身份

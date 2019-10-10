@@ -3,8 +3,8 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 import BaseComponent from '../../../../../../components/base/BaseComponent';
 import './Feedback.less';
 
-const {appHistory, showInfo, showSuccess, dealImage, native} = Utils;
-const {MESSAGE: {Form, Feedback}} = Constants;
+const {appHistory, showInfo, showSuccess, dealImage, native, setNavColor} = Utils;
+const {MESSAGE: {Form, Feedback}, navColorF} = Constants;
 const {urlCfg} = Configs;
 
 const seasons = [
@@ -29,6 +29,18 @@ export default class Feedbacks extends BaseComponent {
         wxUrl: [], //最后需要的url
         nativeImg: [] //原生图片集合
     };
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
 
     //选择图片方法一
     onChange = (files) => {

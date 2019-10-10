@@ -6,8 +6,8 @@ import Animation from '../../../../common/animation/Animation';
 import {ListFooter} from '../../../../common/list-footer';
 import './Notice.less';
 
-const {appHistory, showInfo, showSuccess, native} = Utils;
-const {MESSAGE: {Form, Feedback}, FIELD} = Constants;
+const {appHistory, showInfo, showSuccess, native, setNavColor} = Utils;
+const {MESSAGE: {Form, Feedback}, FIELD, navColorF} = Constants;
 const hybrid = process.env.NATIVE;
 const {urlCfg} = Configs;
 
@@ -47,6 +47,18 @@ export default class Notice extends BaseComponent {
             hasMore: false, //底部加载文字的显示
             height: document.documentElement.clientHeight - (window.isWX ? document.documentElement.clientWidth / 7.5 * 0.88 : document.documentElement.clientWidth / 7.5 * 2.3)
         };
+    }
+
+    componentWillMount() {
+        if (hybrid) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybrid) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
     }
 
     componentDidMount() {

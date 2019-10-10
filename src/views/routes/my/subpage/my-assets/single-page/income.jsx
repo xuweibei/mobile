@@ -4,8 +4,9 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 import './index.less';
 
 const {urlCfg} = Configs;
-const {showInfo, showSuccess} = Utils;
-const {MESSAGE: {Feedback}} = Constants;
+const {showInfo, showSuccess, setNavColor} = Utils;
+const {MESSAGE: {Feedback}, navColorF} = Constants;
+const hybird = process.env.NATIVE;
 
 export default class MyAssets extends BaseComponent {
     state = {
@@ -14,6 +15,18 @@ export default class MyAssets extends BaseComponent {
 
     componentDidMount() {
         this.getOriginalList();
+    }
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
     }
 
     getOriginalList = (num) => {

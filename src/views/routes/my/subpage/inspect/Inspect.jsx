@@ -6,7 +6,8 @@ import AppNavBar from '../../../../common/navbar/NavBar';
 
 const {urlCfg} = Configs;
 
-const {appHistory, showInfo, native, getUrlParam} = Utils;
+const {appHistory, showInfo, native, getUrlParam, setNavColor} = Utils;
+const {navColorF} = Constants;
 const hybrid = process.env.NATIVE;
 
 export default class Inspect extends BaseComponent {
@@ -20,6 +21,18 @@ export default class Inspect extends BaseComponent {
         this.setState({
             id
         });
+    }
+
+    componentWillMount() {
+        if (hybrid) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybrid) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
     }
 
     // //核销订单

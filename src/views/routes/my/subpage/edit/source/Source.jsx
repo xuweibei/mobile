@@ -5,14 +5,27 @@ import {myActionCreator as actionCreator} from '../../../actions/index';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './Source.less';
 
-const {showInfo, validator, appHistory} = Utils;
+const {showInfo, validator, appHistory, setNavColor} = Utils;
 const {urlCfg} = Configs;
-const {MESSAGE: {Form, Feedback}} = Constants;
+const {MESSAGE: {Form, Feedback}, navColorF} = Constants;
+const hybird = process.env.NATIVE;
 
 class Source extends BaseComponent {
     state = {
         showButton: false,
         height: document.documentElement.clientHeight - (window.isWX ? window.rem * null : window.rem * 1.08)
+    }
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
     }
 
     //设置uid

@@ -6,8 +6,8 @@ import {dropByCacheKey} from 'react-router-cache-route';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './PublishReview.less';
 
-const {getUrlParam, dealImage, showInfo, showSuccess, appHistory, native} = Utils;
-const {MESSAGE: {Form, Feedback}, IMGSIZE} = Constants;
+const {getUrlParam, dealImage, showInfo, showSuccess, appHistory, native, setNavColor} = Utils;
+const {MESSAGE: {Form, Feedback}, IMGSIZE, navColorF} = Constants;
 const {urlCfg} = Configs;
 const hybrid = process.env.NATIVE;
 export default class PublishReview extends BaseComponent {
@@ -20,6 +20,18 @@ export default class PublishReview extends BaseComponent {
 
     componentDidMount() {
         this.getList();
+    }
+
+    componentWillMount() {
+        if (hybrid) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybrid) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
     }
 
     getList = () => {

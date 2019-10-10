@@ -1,5 +1,8 @@
 @import "~style";
 .Self-mentionDetail {
+    .am-tabs-left{
+        height:200px;
+    }
     .wrapTabNav {
         .navbar {
             border-bottom: none;
@@ -60,7 +63,7 @@
                     font-size: @font-size-24;
                 }
                 .time-bottom-tow {
-                    margin-top: 15px;
+                    margin-top: 28px;
                     color: @darker-black;
                     font-size: @font-size-24;
                 }
@@ -266,6 +269,7 @@
                 }
             }
         }
+
     }
     .my-radio {
         font-size: @font-size-28;
@@ -339,45 +343,49 @@
     .showPhone{
         font-size: @font-size-24;
     }
-    .selection-time{
-        width: 100% !important;
-        .am-modal-content {
-            margin: 0 !important;
-            border-radius: 20px 20px 0 0;
-            .am-modal-header {
-                padding: 33px 0 34px;
-            }
-            .am-modal-body {
-                .am-tabs-vertical .am-tabs-tab-bar-wrap{
-                    text-align: center;
-                }
-                .am-tabs-vertical .am-tabs-content-wrap{
-                    text-align: center;
-                    height: 700px;
-                    .am-tabs-pane-wrap {
-                        background: @white;
-                    }
-                }
-                .am-tabs {
-                    background-color: #F9F9F9;
-                    .am-tabs-default-bar-content {
-                        width: 280px;
-                        height: 240px;
-                    }
-                }
-            }
+}
 
-            .am-list-content {
-                font-size: @font-size-30!important;
-                color: @dark-gray!important;
+.selection-time{
+    width: 100% !important;
+    .am-modal-content {
+        margin: 0 !important;
+        border-radius: 20px 20px 0 0;
+        .am-modal-header {
+            padding: 33px 0 34px;
+        }
+        .am-modal-body {
+            .am-tabs-left{
+                height:400px !important;
             }
-            .am-tabs-default-bar-tab-active {
-                background: @fiery-red;
-                color: @white;
+            .am-tabs-vertical .am-tabs-tab-bar-wrap{
+                text-align: center;
             }
-            .am-tabs-default-bar-underline, .am-list-body::before, .am-list-body::after {
-                height: 0!important;
+            .am-tabs-vertical .am-tabs-content-wrap{
+                text-align: center;
+                height: 700px;
+                .am-tabs-pane-wrap {
+                    background: @white;
+                }
             }
+            .am-tabs {
+                background-color: #F9F9F9;
+                .am-tabs-default-bar-content {
+                    width: 280px;
+                    height: 240px;
+                }
+            }
+        }
+
+        .am-list-content {
+            font-size: @font-size-30!important;
+            color: @dark-gray!important;
+        }
+        .am-tabs-default-bar-tab-active {
+            background: @fiery-red;
+            color: @white;
+        }
+        .am-tabs-default-bar-underline, .am-list-body::before, .am-list-body::after {
+            height: 0!important;
         }
     }
 }

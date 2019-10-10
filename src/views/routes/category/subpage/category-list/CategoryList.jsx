@@ -9,8 +9,10 @@ import CategoryListView from './CategoryListView';
 import './CategoryList.less';
 
 
-const {appHistory, getUrlParam, native, TD} = Utils;
+const {appHistory, getUrlParam, native, TD, setNavColor} = Utils;
 const {TD_EVENT_ID} = Constants;
+const hybird = process.env.NATIVE;
+const {navColorF} = Constants;
 
 class CategoryList extends BaseComponent {
     state = {
@@ -31,6 +33,9 @@ class CategoryList extends BaseComponent {
 
     componentWillMount() {
         this.init();
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
     }
 
     componentWillReceiveProps(nextProps, value) { //路由跳转时的判断，id有变化就请求
@@ -40,6 +45,9 @@ class CategoryList extends BaseComponent {
             }, () => {
                 this.init();
             });
+        }
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
         }
     }
 
@@ -108,7 +116,6 @@ class CategoryList extends BaseComponent {
     };*/
 
     goBackModal = () => {
-        const hybird = process.env.NATIVE;
         if (hybird && appHistory.length() === 0) {
             native('goBack');
         } else {

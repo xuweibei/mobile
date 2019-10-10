@@ -7,7 +7,9 @@ import './Business.less';
 
 const Item = List.Item;
 const {urlCfg} = Configs;
-const {appHistory, getUrlParam} = Utils;
+const {appHistory, getUrlParam, setNavColor} = Utils;
+const {navColorF} = Constants;
+const hybird = process.env.NATIVE;
 
 export default class CustomerInfo extends BaseComponent {
     constructor(props) {
@@ -21,6 +23,18 @@ export default class CustomerInfo extends BaseComponent {
 
     componentDidMount() {
         this.getCustomerInfo();
+    }
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
     }
 
     //获取业务信息

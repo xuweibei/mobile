@@ -7,8 +7,9 @@ import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAc
 import {InputGrid} from '../../../../../common/input-grid/InputGrid';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 
-const {appHistory, getUrlParam, native, systemApi: {setValue, getValue, removeValue}, supple, showFail, showInfo} = Utils;
+const {appHistory, getUrlParam, native, systemApi: {setValue, getValue, removeValue}, supple, showFail, showInfo, setNavColor} = Utils;
 const {urlCfg} = Configs;
+const {navColorF} = Constants;
 const hybird = process.env.NATIVE;
 const mode = [
     {
@@ -42,6 +43,9 @@ class PayMoney extends BaseComponent {
     componentWillMount() {
         //这里是为了控制原生右滑退出
         this.props.setReturn(true);
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
     }
 
     componentDidMount() {
@@ -67,6 +71,9 @@ class PayMoney extends BaseComponent {
         //原生右滑退出处理
         if (!data.returnStatus) {
             this.goBackModal();
+        }
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
         }
     }
 
@@ -115,26 +122,22 @@ class PayMoney extends BaseComponent {
             that.setState({
                 remainingTime: str
             });
-            if (supple(hour) === '00' && supple(minute) === '00' && supple(second) === '00') {
+            if ((supple(hour) === '00' && supple(minute) === '00' && supple(second) === '00') || hour.toString().indexOf('-') !== -1) {
                 clearInterval(timer);
                 if (arrInfo) { //下单页过来的订单取消
                     that.fetch(urlCfg.dealMallorderbyno, {data: {deal: 0, id: orderId === 'null' ? '' : orderId, order_no: arrInfo && arrInfo.order, reason: '订单超时', reason_id: 5, type: orderId === 'null' ? 2 : 1}})
                         .subscribe((res) => {
-                            if (res) {
-                                if (res.status === 0) {
-                                    showInfo('订单取消');
-                                    appHistory.goBack();
-                                }
+                            if (res && res.status === 0) {
+                                showInfo('订单取消');
+                                appHistory.goBack();
                             }
                         });
                 } else if (orderId !== 'null') { //订单列表过来的取消
                     that.fetch(urlCfg.delMallOrder, {data: {deal: 0, id: orderId, reason: '订单超时', reason_id: 5, type: orderId === 'null' ? 2 : 1}})
                         .subscribe((res) => {
-                            if (res) {
-                                if (res.status === 0) {
-                                    showInfo('订单取消');
-                                    appHistory.goBack();
-                                }
+                            if (res && res.status === 0) {
+                                showInfo('订单取消');
+                                appHistory.goBack();
                             }
                         });
                 }
@@ -143,12 +146,8 @@ class PayMoney extends BaseComponent {
                 removeValue('orderArr');
             }
         }
-
-        getDate();
+        // getDate();
         timer = setInterval(getDate, 1000);
-        this.setState({
-            timer
-        });
     };
 
     //选择支付方式

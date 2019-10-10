@@ -24,9 +24,9 @@ const temp = {
     isLoading: true
 };
 let keyNum = 0.11211212;
-const {FIELD} = Constants;
+const {FIELD, navColorF} = Constants;
 const {urlCfg} = Configs;
-const {appHistory, native, getUrlParam} = Utils;
+const {appHistory, native, getUrlParam, setNavColor} = Utils;
 const hybird = process.env.NATIVE;
 const arr = [{
 
@@ -89,6 +89,12 @@ class PossessEvaluate extends BaseComponent {
         this.sentPas();
     }
 
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
     componentWillReceiveProps(nextProps) {
         const userType = nextProps.location.search.split('=')[1];
         if (hybird && (userType !== this.state.userType)) {
@@ -115,6 +121,9 @@ class PossessEvaluate extends BaseComponent {
             }, () => {
                 this.sentPas();
             });
+        }
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
         }
     }
 
@@ -498,17 +507,17 @@ class PossessEvaluate extends BaseComponent {
                         <div className="consult">{item.content}</div>
                         <div className="picture">
                             {
-                                item.picsx.length > 0 && item.picsx.map((value, index) => <LazyLoadIndex key={keyNum++} bigPicture={() => this.bigPicture(item.pics, index)} lazyInfo={{offset: -30, imgUrl: value, overflow: true}}/>)
+                                item.pics.length > 0 && item.pics.map((value, index) => <LazyLoadIndex key={keyNum++} bigPicture={() => this.bigPicture(item.pics, index)} lazyInfo={{offset: -30, imgUrl: value, overflow: true}}/>)
                             }
                         </div>
-                        {/* {
+                        {
                             item.return_content && <div>商家回复：{item.return_content}</div>
-                        }*/}
+                        }
                         {item.have_add === '1' && (
                             <div className="append">
                                 <div className="append-chase">追评</div>
                                 <div className="append-theory">{item.add.content}</div>
-                                {item.add && item.add.picsx && item.add.picsx.length > 0 && item.add.picsx.map((data, index) => <LazyLoadIndex bigPicture={() => this.bigPicture(item.add.pics, index)} lazyInfo={{offset: -30, imgUrl: data, overflow: true}}/>)}
+                                {item.add && item.add.pics && item.add.pics.length > 0 && item.add.pics.map((data, index) => <LazyLoadIndex bigPicture={() => this.bigPicture(item.add.pics, index)} lazyInfo={{offset: -30, imgUrl: data, overflow: true}}/>)}
                                 {item.add && item.add.return_content && <div className="reply">商家回复：{item.add.return_content}</div>}
                             </div>
                         )}
@@ -516,7 +525,7 @@ class PossessEvaluate extends BaseComponent {
                     </div>
                 </div>
                 <div className="write-comment">
-                    <div className="wares" onClick={() => this.skipDetail(item.order_id)}>
+                    <div className="wares" onClick={() => this.skipDetail(item.order_id, item.if_express)}>
                         <img src={item.pr_pic} alt=""/>
                         <div className="wares-right">
                             <div className="introduce">{item.pr_title}</div>

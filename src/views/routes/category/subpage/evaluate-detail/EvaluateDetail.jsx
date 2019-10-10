@@ -7,8 +7,9 @@ import AppNavBar from '../../../../common/navbar/NavBar';
 import './EvaluateDetail.less';
 
 const {urlCfg} = Configs;
-const {getUrlParam, showInfo} = Utils;
-const {MESSAGE: {Form, Feedback}} = Constants;
+const {getUrlParam, showInfo, setNavColor} = Utils;
+const {MESSAGE: {Form, Feedback}, navColorF} = Constants;
+const hybird = process.env.NATIVE;
 
 export default class EvaluateDetail extends BaseComponent {
     state = {
@@ -26,6 +27,18 @@ export default class EvaluateDetail extends BaseComponent {
 
     componentDidMount() {
         this.getEvaDetail();
+    }
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
     }
 
     //显示评论弹窗

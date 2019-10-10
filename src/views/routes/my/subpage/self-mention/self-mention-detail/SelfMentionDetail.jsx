@@ -9,7 +9,8 @@ import {showFail, showInfo} from '../../../../../../utils/mixin';
 import BaseComponent from '../../../../../../components/base/BaseComponent';
 
 const {urlCfg} = Configs;
-const {validator, appHistory, getUrlParam, systemApi: {setValue, getValue, removeValue}, getShopCartInfo, native} = Utils;
+const {validator, setNavColor, appHistory, getUrlParam, systemApi: {setValue, getValue, removeValue}, getShopCartInfo, native} = Utils;
+const {navColorF} = Constants;
 const hybrid = process.env.NATIVE;
 
 class ReDetail extends BaseComponent {
@@ -34,6 +35,12 @@ class ReDetail extends BaseComponent {
         textarea: '' //获取备注信息
     }
 
+    componentWillMount() {
+        if (hybrid) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
     componentDidMount() {
         const {setOrder, location} = this.props;
         const timer = decodeURI(getUrlParam('time', encodeURI(location.search)));
@@ -53,6 +60,9 @@ class ReDetail extends BaseComponent {
     }
 
     componentWillReceiveProps(next) {
+        if (hybrid) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
         const {setOrder, location} = this.props;
         const timerNext = decodeURI(getUrlParam('time', encodeURI(next.location.search)));
         const timer = decodeURI(getUrlParam('time', encodeURI(location.search)));
@@ -99,7 +109,8 @@ class ReDetail extends BaseComponent {
                         alertPhone: res.phone,
                         goodsArr: res.data.data,
                         shopdata: res.data,
-                        address: res.sufficiency.sufficiency_address
+                        address: res.sufficiency.sufficiency_address,
+                        onOffDisable: !res.sufficiency.sufficiency_address
                     });
                 } else if (res.status === 1) {
                     showFail(res.message);
@@ -141,6 +152,7 @@ class ReDetail extends BaseComponent {
 
     //选择自提日期
     onChangeTab=(tab) => {
+        console.log(tab, '接口史蒂芬霍金看');
         this.setState({
             valueItem: null,
             currentTab: tab.key
@@ -168,22 +180,26 @@ class ReDetail extends BaseComponent {
         });
     }
 
-    renderContent = (key) => (
-        <div className="renderContent-wrap">
-            {this.state.OrderSelf.sufficiency && (
-                <List>
-                    {this.state.rdata[key].list && this.state.rdata[key].list.map(item => (
-                        <div className="renderContent" key={item.value} onClick={() => this.radioChange(item.label, item.value)}>
-                            {item.label}
-                            <Radio
-                                checked={this.state.valueItem === item.value}
-                            />
-                        </div>
-                    ))}
-                </List>
-            )}
-        </div>
-    )
+    renderContent = (key) => {
+        key = Number(key);
+        console.log(this.state.rdata, key, '打瞌睡卢浮宫');
+        return (
+            <div className="renderContent-wrap">
+                {this.state.OrderSelf.sufficiency && (
+                    <List>
+                        {this.state.rdata[key].list && this.state.rdata[key].list.map(item => (
+                            <div className="renderContent" key={item.value} onClick={() => this.radioChange(item.label, item.value)}>
+                                {item.label}
+                                <Radio
+                                    checked={this.state.valueItem === item.value}
+                                />
+                            </div>
+                        ))}
+                    </List>
+                )}
+            </div>
+        );
+    }
 
     //立即付款
     submitSelf = () => {
@@ -256,7 +272,7 @@ class ReDetail extends BaseComponent {
 
     render() {
         const arr = JSON.parse(getValue('orderArr'));
-        const {OrderSelf, radioTreaty, modal, tabsr, currentTab, value, alertPhone, showPhone, shopdata, goodsArr, address, textarea} = this.state;
+        const {OrderSelf, radioTreaty, modal, tabsr, currentTab, value, alertPhone, showPhone, shopdata, goodsArr, address, textarea, onOffDisable} = this.state;
         return (
             <div data-component="Self-mentionDetail" data-role="page" className="Self-mentionDetail">
                 <AppNavBar goBackModal={this.goBackModal} rightShow title="确认订单"/>
@@ -358,7 +374,7 @@ class ReDetail extends BaseComponent {
                         <span className="total-left">合计：</span>
                         <span className="total-right">￥{OrderSelf.all_price}</span>
                     </div>
-                    <div className="altogether-right" onClick={this.submitSelf}>立即付款</div>
+                    <div className="altogether-right" onClick={this.submitSelf} disable={onOffDisable}>立即付款</div>
                 </div>
                 {arr && arr[0].if_express !== '3' && (
                     <Modal

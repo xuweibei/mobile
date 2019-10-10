@@ -3,15 +3,27 @@ import {TextareaItem, ImagePicker} from 'antd-mobile';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './MyComplain.less';
 
-const {dealImage, showInfo, appHistory, showSuccess, getUrlParam, native} = Utils;
+const {dealImage, showInfo, appHistory, showSuccess, getUrlParam, native, setNavColor} = Utils;
 const {urlCfg} = Configs;
-const {MESSAGE: {Form, Feedback}} = Constants;
+const {MESSAGE: {Form, Feedback}, navColorF} = Constants;
 const hybrid = process.env.NATIVE;
 export default class MyComplain extends BaseComponent {
     state = {
         files: [],
         fileMain: []
     };
+
+    componentWillMount() {
+        if (hybrid) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybrid) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
 
     //问题反馈内容
     questionMain = (value) => {

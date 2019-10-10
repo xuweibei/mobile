@@ -11,9 +11,10 @@ import Sku from '../../../../common/sku/Sku';
 import './GoodsDetail.less';
 
 const {urlCfg} = Configs;
-const {appHistory, getUrlParam, showFail, showInfo, native, TD, systemApi: {setValue, removeValue}} = Utils;
-const {MESSAGE: {Form, Feedback}, TD_EVENT_ID} = Constants;
+const {appHistory, getUrlParam, showFail, showInfo, native, TD, systemApi: {setValue, removeValue}, setNavColor} = Utils;
+const {MESSAGE: {Form, Feedback}, TD_EVENT_ID, navColorF} = Constants;
 const hybrid = process.env.NATIVE;
+const hybird = process.env.NATIVE;
 
 const myImg = src => (
     <img src={require(`../../../../../assets/images/${src}`)} className="am-icon am-icon-xs"/>
@@ -87,6 +88,12 @@ class GoodsDetail extends BaseComponent {
         scrollSpy.unmount();
     }
 
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
     init = () => {
         scrollSpy.update();
         scrollSpy.mount(document);
@@ -149,6 +156,9 @@ class GoodsDetail extends BaseComponent {
                     this.init();
                 });
             }
+        }
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
         }
     }
 

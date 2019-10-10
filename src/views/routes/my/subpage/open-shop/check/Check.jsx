@@ -6,9 +6,25 @@ import './Check.less';
 import {InputItem} from 'antd-mobile';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 
+const hybird = process.env.NATIVE;
+const {setNavColor} = Utils;
+const {navColorF} = Constants;
+
 export default class Check extends BaseComponent {
     constructor(props, context) {
         super(props, context);
+    }
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
     }
 
     render() {

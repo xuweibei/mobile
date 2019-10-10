@@ -13,7 +13,7 @@ import './myOrder.less';
 
 const {appHistory, showSuccess, getUrlParam, showInfo, native, setNavColor, systemApi: {removeValue}, TD} = Utils;
 const {TD_EVENT_ID} = Constants;
-const {MESSAGE: {Form, Feedback}, FIELD} = Constants;
+const {MESSAGE: {Form, Feedback}, FIELD, navColorR} = Constants;
 const {urlCfg} = Configs;
 const hybrid = process.env.NATIVE;
 
@@ -46,8 +46,7 @@ class MyOrder extends BaseComponent {
         pagesize: 10,  //每页条数
         pageCount: -1,
         hasMore: false, //底部请求状态文字显示情况
-        retainArr: [],
-        navColor: '#ff2d51' //标题头部颜色
+        retainArr: []
     };
 
     componentWillMount() {
@@ -80,6 +79,9 @@ class MyOrder extends BaseComponent {
             }, () => {
                 this.init(numNext);
             });
+        }
+        if (hybrid) {
+            setNavColor('setNavColor', {color: navColorR});
         }
     }
 
@@ -162,10 +164,6 @@ class MyOrder extends BaseComponent {
                             retainArr: prevState.retainArr.concat(res.list),
                             refreshing: false
                         }));
-                        const {navColor} = this.state;
-                        if (hybrid) {
-                            setNavColor('setNavColor', {color: navColor});
-                        }
                     }
                 }
             });
@@ -511,7 +509,7 @@ class MyOrder extends BaseComponent {
             blockModal = (
                 <div className="buttons">
                     {
-                        (item.refund_button === '1') && (
+                        (item.refund_button === 1) && (
                             <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
                                 {
                                     item.showButton && <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev, 1)}>申请退款</span>
@@ -531,7 +529,7 @@ class MyOrder extends BaseComponent {
             blockModal = (
                 <div className="buttons">
                     {
-                        !item.all_refund && (
+                        item.refund_button === 1 && (
                             <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
                                 {
                                     item.showButton && <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev)}>申请退款</span>
@@ -663,7 +661,7 @@ class MyOrder extends BaseComponent {
     }
 
     render() {
-        const {dataSource, hasMore, height, status, canStatus, refreshing, navColor} = this.state;
+        const {dataSource, hasMore, height, status, canStatus, refreshing} = this.state;
         const row = item => (
             <div className="shop-lists" >
                 <div className="shop-name" onClick={() => this.goShopHome(item.shop_id)}>
@@ -716,20 +714,23 @@ class MyOrder extends BaseComponent {
                         </div>
                         <div className="total-price">
                             <div className="total-price-left">共{item.pr_count}件商品</div>
-                            <div className="total-price-right"><span>合计</span>(含运费：{item.express_money})：<span className="zxa">{item.all_price}元</span></div>
+                            <div className="total-price-right">合计：<span className="zxa">￥{item.all_price}(含运费：{item.express_money})</span></div>
                         </div>
                         {//售后状态下 退款申请中
-                            item.is_shoper === 0 && item.return_status === '1' && (
+                            item.return_status === '1' && (
                                 <div className="buttons">
                                     <div className="look-button" onClick={(ev) => this.revoke(item.return_id, ev)}>撤销申请</div>
                                     <div onClick={(ev) => this.application(ev, item.return_id)} className="evaluate-button">修改申请</div>
                                 </div>
                             )
                         }
-                        { //售后状态下 //商家已同意  is_shoper 为0是消费者的订单 1是商家的订单
-                            item.is_shoper === 0 && item.return_status === '2' && <div className="evaluate-button" onClick={(ev) => this.revoke(item.return_id, ev)}>撤销申请</div>
-                        }
-                        {item.is_shoper === 0 && this.bottomModal(item)}
+                        {item.return_status === '2'
+                        && (
+                            <div className="buttons">
+                                <div className="evaluate-button" onClick={(ev) => this.revoke(item.return_id, ev)}>撤销申请</div>
+                            </div>
+                        )}
+                        {this.bottomModal(item)}
                     </div>
                 </div>
             </div>
@@ -737,7 +738,7 @@ class MyOrder extends BaseComponent {
         return (
             <div data-component="my-order" data-role="page" className={`my-order ${window.isWX ? 'WX' : ''}`}>
                 {
-                    window.isWX ? null : (<AppNavBar title="线上订单" backgroundColor={navColor} goBackModal={this.goToBack} redBackground goToSearch={this.goToSearch} rightShow search/>)
+                    window.isWX ? null : (<AppNavBar title="线上订单" backgroundColor={navColorR} goBackModal={this.goToBack} redBackground goToSearch={this.goToSearch} rightShow search/>)
                 }
                 {   //弹出取消弹框
                     canStatus &&  (<CancelOrder canStateChange={this.canStateChange}/>)

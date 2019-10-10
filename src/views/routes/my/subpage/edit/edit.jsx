@@ -9,9 +9,9 @@ import {baseActionCreator} from '../../../../../redux/baseAction';
 import './edit.less';
 
 const Item = List.Item;
-const {appHistory, systemApi: {removeValue}, native, showInfo, getUrlParam} = Utils;
+const {appHistory, systemApi: {removeValue}, native, showInfo, getUrlParam, setNavColor} = Utils;
 const {urlCfg} = Configs;
-const {LOCALSTORAGE, MESSAGE: {Feedback}} = Constants;
+const {LOCALSTORAGE, MESSAGE: {Feedback}, navColorF} = Constants;
 const hybird = process.env.NATIVE;
 
 class Edit extends BaseComponent {
@@ -23,6 +23,18 @@ class Edit extends BaseComponent {
         const userType = decodeURI(getUrlParam('userType', encodeURI(this.props.location.search)));
         //全局储存用户身份
         this.props.setUseType(userType);
+    }
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
     }
 
     //初始化列表数据
@@ -285,12 +297,12 @@ class Edit extends BaseComponent {
                     </div>
                 </div>
                 <List className="my-list">{this.initListData()}</List>
-                <Button
+                {/* <Button
                     className="logOut"
                     onClick={this.switchingAccounts}
                 >
                     切换账号
-                </Button>
+                </Button> */}
                 {window.isWX ? null : (
                     <Button
                         className="logOut"

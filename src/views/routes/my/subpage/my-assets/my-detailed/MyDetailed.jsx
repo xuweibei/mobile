@@ -7,8 +7,10 @@ import Nothing from '../../../../../common/nothing/Nothing';
 import {showInfo} from '../../../../../../utils/mixin';
 import './MyDetailed.less';
 
-const {FIELD} = Constants;
+const {FIELD, navColorF} = Constants;
 const {urlCfg} = Configs;
+const {setNavColor} = Utils;
+const hybird = process.env.NATIVE;
 
 export default class MyDetailed extends BaseComponent {
     state = {
@@ -22,6 +24,18 @@ export default class MyDetailed extends BaseComponent {
 
     componentDidMount() {
         this.gainList();
+    }
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
     }
 
     //获取列表信息

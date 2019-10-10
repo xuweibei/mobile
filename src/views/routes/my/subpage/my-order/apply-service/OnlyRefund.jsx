@@ -5,8 +5,8 @@ import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAc
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './ApplyService.less';
 
-const {appHistory, showInfo, dealImage, getUrlParam, native, TD} = Utils;
-const {MESSAGE: {Form, Feedback}, TD_EVENT_ID} = Constants;
+const {appHistory, showInfo, dealImage, getUrlParam, native, TD, setNavColor} = Utils;
+const {MESSAGE: {Form, Feedback}, TD_EVENT_ID, navColorF} = Constants;
 const {urlCfg} = Configs;
 //退货退款类型
 const molds = [
@@ -35,6 +35,18 @@ class applyService extends BaseComponent {
         selectIndexs: null, //退款数组赋值
         nativePicNum: 9 //动态计算原生图片数量
     };
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
 
     //开启退款原因选择
     blockedOut = () => {
