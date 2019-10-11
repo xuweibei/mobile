@@ -724,7 +724,12 @@ class MyOrder extends BaseComponent {
                                 </div>
                             )
                         }
-                        {item.return_status === '2' && <div className="evaluate-button" onClick={(ev) => this.revoke(item.return_id, ev)}>撤销申请</div>}
+                        {item.return_status === '2'
+                        && (
+                            <div className="buttons">
+                                <div className="evaluate-button" onClick={(ev) => this.revoke(item.return_id, ev)}>撤销申请</div>
+                            </div>
+                        )}
                         {this.bottomModal(item)}
                     </div>
                 </div>

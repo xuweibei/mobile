@@ -84,8 +84,8 @@ class PersonalTwo extends BaseComponent {
                                 flagArr: arr
                             });
                             if (res.data.pic_info && res.data.pic_info.status === 0) {
-                                console.log('sssssssssssssssssssssss');
                                 if (res.data.name && res.data.id_num) {
+                                    console.log('object');
                                     this.setState({
                                         userName: res.data.name,
                                         ID: res.data.id_num
@@ -331,14 +331,6 @@ class PersonalTwo extends BaseComponent {
             return;
         }
         callback();
-    };
-
-    //是否长期有效
-    check = (e) => {
-        this.setState({
-            checked: e.target.checked,
-            disabled: e.target.checked
-        });
     };
 
      //提交用户 信息

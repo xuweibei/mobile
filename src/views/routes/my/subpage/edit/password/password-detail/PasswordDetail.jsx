@@ -8,10 +8,10 @@ import GeisInputItem from '../../../../../../common/form/input/GeisInputItem';
 import {baseActionCreator as actionCreator} from '../../../../../../../redux/baseAction';
 import './PasswordDetail.less';
 
-const {appHistory, validator, showInfo, showSuccess, getUrlParam, native} = Utils;
+const {appHistory, validator, showInfo, showSuccess, getUrlParam, native, setNavColor} = Utils;
 const {urlCfg} = Configs;
 const hybrid = process.env.NATIVE;
-const {MESSAGE: {Form, Feedback}} = Constants;
+const {MESSAGE: {Form, Feedback}, navColorF} = Constants;
 const getPass = { //获取验证码按钮的样式
     float: 'right',
     marginRight: '18px',
@@ -41,6 +41,18 @@ class passwordDetail extends BaseComponent {
         this.setState({ //用于判断是否是忘记密码过来的
             isLoagin: (decodeURI(getUrlParam('login', encodeURI(this.props.location.search))) !== 'null') ? decodeURI(getUrlParam('login', encodeURI(this.props.location.search))) : 0
         });
+    }
+
+    componentWillMount() {
+        if (hybrid) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybrid) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
     }
 
     //验证支付密码是否设置

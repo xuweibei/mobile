@@ -4,9 +4,10 @@ import './BindPhone.less';
 import {connect} from 'react-redux';
 import {baseActionCreator as actionCreator} from '../../../redux/baseAction';
 
-const {appHistory, validator, showInfo} = Utils;
+const {appHistory, validator, showInfo, setNavColor} = Utils;
 const {urlCfg, appCfg} = Configs;
-const {MESSAGE: {Form, LOGIN}, COUNTERNUM} = Constants;
+const {MESSAGE: {Form, LOGIN}, COUNTERNUM, navColorF} = Constants;
+const hybird = process.env.NATIVE;
 
 class BindPhone extends BaseComponent {
     constructor(props, context) {
@@ -18,6 +19,18 @@ class BindPhone extends BaseComponent {
         phone: '',
         resetTime: COUNTERNUM,
         text: LOGIN.GET_CODE
+    }
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
     }
 
     //获取输入的电话号码和密码

@@ -17,6 +17,23 @@ class ShopHomeIndexFour extends React.PureComponent {
         appHistory.push(`/goodsDetail?id=${num}`);
     }
 
+    //热销商品组件
+    hotSellComponent = (ix, id, pic, title1, title2, title3) => (
+        <div className="sell-commodity">
+            <div className="sell-commodity-img">
+                <img src={pic} onClick={() => this.goToGoods(id)} alt=""/>
+            </div>
+            <div className="headline-price-take">
+                <div className="headline">{title1}</div>
+                <div className="price">
+                    <span className="money-ZH">￥</span>
+                    <span className="money-now">{title2}</span>
+                    <span className="money-before">{title3}</span>
+                </div>
+            </div>
+        </div>
+    )
+
     render() {
         const {shopModelArr: {picurl, content}, shopModelArr} = this.props;
         console.log(shopModelArr);
@@ -79,58 +96,10 @@ class ShopHomeIndexFour extends React.PureComponent {
                                         </div>
                                     </div>
                                 </div>
-                                <div className={(picurl && content && picurl[content.sort2_pr2_ix] && content.sort2_pr2_title1 && content.sort2_pr2_title2 && content.sort2_pr2_title3) ? 'sell-commodity' : 'sell-commodity no-edit-model'}>
-                                    <div className="sell-commodity-img">
-                                        <img src={picurl && picurl[content.sort2_pr2_ix]} onClick={() => this.goToGoods(content.sort2_pr2_id)} alt=""/>
-                                    </div>
-                                    <div className="headline-price-take">
-                                        <div className="headline">{content && content.sort2_pr2_title1}</div>
-                                        <div className="price">
-                                            <span className="money-ZH">￥</span>
-                                            <span className="money-now">{content && content.sort2_pr2_title2}</span>
-                                            <span className="money-before">{content && content.sort2_pr2_title3}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className={(picurl && content && picurl[content.sort2_pr3_ix] && content.sort2_pr3_title1 && content.sort2_pr3_title2 && content.sort2_pr3_title3) ? 'sell-commodity' : 'sell-commodity no-edit-model'}>
-                                    <div className="sell-commodity-img">
-                                        <img src={picurl && picurl[content.sort2_pr3_ix]} onClick={() => this.goToGoods(content.sort2_pr3_id)} alt=""/>
-                                    </div>
-                                    <div className="headline-price-take">
-                                        <div className="headline">{content && content.sort2_pr3_title1}</div>
-                                        <div className="price">
-                                            <span className="money-ZH">￥</span>
-                                            <span className="money-now">{content && content.sort2_pr3_title2}</span>
-                                            <span className="money-before">{content && content.sort2_pr3_title3}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className={(picurl && content && picurl[content.sort2_pr4_ix] && content.sort2_pr4_title1 && content.sort2_pr4_title2 && content.sort2_pr4_title3) ? 'sell-commodity' : 'sell-commodity no-edit-model'}>
-                                    <div className="sell-commodity-img">
-                                        <img src={picurl && picurl[content.sort2_pr4_ix]} onClick={() => this.goToGoods(content.sort2_pr4_id)} alt=""/>
-                                    </div>
-                                    <div className="headline-price-take">
-                                        <div className="headline">{content && content.sort2_pr4_title1}</div>
-                                        <div className="price">
-                                            <span className="money-ZH">￥</span>
-                                            <span className="money-now">{content && content.sort2_pr4_title2}</span>
-                                            <span className="money-before">{content && content.sort2_pr4_title3}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className={(picurl && content && picurl[content.sort2_pr5_ix] && content.sort2_pr5_title1 && content.sort2_pr5_title2 && content.sort2_pr5_title3) ? 'sell-commodity' : 'sell-commodity no-edit-model'}>
-                                    <div className="sell-commodity-img">
-                                        <img src={picurl && picurl[content.sort2_pr5_ix]} onClick={() => this.goToGoods(content.sort2_pr5_id)} alt=""/>
-                                    </div>
-                                    <div className="headline-price-take">
-                                        <div className="headline">{content && content.sort2_pr5_title1}</div>
-                                        <div className="price">
-                                            <span className="money-ZH">￥</span>
-                                            <span className="money-now">{content && content.sort2_pr5_title2}</span>
-                                            <span className="money-before">{content && content.sort2_pr5_title3}</span>
-                                        </div>
-                                    </div>
-                                </div>
+                                {this.hotSellComponent(content.sort2_pr2_ix, content.sort2_pr2_id, picurl[content.sort2_pr2_ix], content.sort2_pr2_title1, content.sort2_pr2_title2, content.sort2_pr2_title3)}
+                                {this.hotSellComponent(content.sort2_pr3_ix, content.sort2_pr3_id, picurl[content.sort2_pr3_ix], content.sort2_pr3_title1, content.sort2_pr3_title2, content.sort2_pr3_title3)}
+                                {this.hotSellComponent(content.sort2_pr4_ix, content.sort2_pr4_id, picurl[content.sort2_pr4_ix], content.sort2_pr4_title1, content.sort2_pr4_title2, content.sort2_pr4_title3)}
+                                {this.hotSellComponent(content.sort2_pr5_ix, content.sort2_pr5_id, picurl[content.sort2_pr5_ix], content.sort2_pr5_title1, content.sort2_pr5_title2, content.sort2_pr5_title3)}
                             </div>
                         </div>
                         <div className={(content && content.sort3_title1 && content.sort3_title2) ? 'title-bar hot-sale' : 'title-bar no-edit-model'}>
@@ -138,58 +107,10 @@ class ShopHomeIndexFour extends React.PureComponent {
                             <div>{content && (content.sort3_title2 || '新品')}</div>
                         </div>
                         <div className="sell-commodity-box">
-                            <div className={(picurl && content && picurl[content.sort3_pr1_ix] && content.sort3_pr1_title1 && content.sort3_pr1_title2 && content.sort3_pr1_title3) ? 'sell-commodity' : 'sell-commodity no-edit-model'}>
-                                <div className="sell-commodity-img">
-                                    <img src={picurl && picurl[content.sort3_pr1_ix]} onClick={() => this.goToGoods(content.sort3_pr1_id)} alt=""/>
-                                </div>
-                                <div className="headline-price-take">
-                                    <div className="headline">{content && content.sort3_pr1_title1}</div>
-                                    <div className="price">
-                                        <span className="money-ZH">￥</span>
-                                        <span className="money-now">{content && content.sort3_pr1_title2}</span>
-                                        <span className="money-before">{content && content.sort3_pr1_title3}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className={(picurl && content && picurl[content.sort3_pr2_ix] && content.sort3_pr2_title1 && content.sort3_pr2_title2 && content.sort3_pr2_title3) ? 'sell-commodity' : 'sell-commodity no-edit-model'}>
-                                <div className="sell-commodity-img">
-                                    <img src={picurl && picurl[content.sort3_pr2_ix]} onClick={() => this.goToGoods(content.sort3_pr2_id)} alt=""/>
-                                </div>
-                                <div className="headline-price-take">
-                                    <div className="headline">{content && content.sort3_pr2_title1}</div>
-                                    <div className="price">
-                                        <span className="money-ZH">￥</span>
-                                        <span className="money-now">{content && content.sort3_pr2_title2}</span>
-                                        <span className="money-before">{content && content.sort3_pr2_title3}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className={(picurl && content && picurl[content.sort3_pr3_ix] && content.sort3_pr3_title1 && content.sort3_pr3_title2 && content.sort3_pr3_title3) ? 'sell-commodity' : 'sell-commodity no-edit-model'}>
-                                <div className="sell-commodity-img">
-                                    <img src={picurl && picurl[content.sort3_pr3_ix]} onClick={() => this.goToGoods(content.sort3_pr3_id)} alt=""/>
-                                </div>
-                                <div className="headline-price-take">
-                                    <div className="headline">{content && content.sort3_pr3_title1}</div>
-                                    <div className="price">
-                                        <span className="money-ZH">￥</span>
-                                        <span className="money-now">{content && content.sort3_pr3_title2}</span>
-                                        <span className="money-before">{content && content.sort3_pr3_title3}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className={(picurl && content && picurl[content.sort3_pr4_ix] && content.sort3_pr4_title1 && content.sort3_pr4_title2 && content.sort3_pr4_title3) ? 'sell-commodity' : 'sell-commodity no-edit-model'}>
-                                <div className="sell-commodity-img">
-                                    <img src={picurl && picurl[content.sort3_pr4_ix]} onClick={() => this.goToGoods(content.sort3_pr4_id)} alt=""/>
-                                </div>
-                                <div className="headline-price-take">
-                                    <div className="headline">{content && content.sort3_pr4_title1}</div>
-                                    <div className="price">
-                                        <span className="money-ZH">￥</span>
-                                        <span className="money-now">{content && content.sort3_pr4_title2}</span>
-                                        <span className="money-before">{content && content.sort3_pr4_title3}</span>
-                                    </div>
-                                </div>
-                            </div>
+                            {this.hotSellComponent(content.sort3_pr1_ix, content.sort3_pr1_id, picurl[content.sort3_pr1_ix], content.sort3_pr1_title1, content.sort3_pr1_title2, content.sort3_pr1_title3)}
+                            {this.hotSellComponent(content.sort3_pr2_ix, content.sort3_pr2_id, picurl[content.sort3_pr2_ix], content.sort3_pr2_title1, content.sort3_pr2_title2, content.sort3_pr2_title3)}
+                            {this.hotSellComponent(content.sort3_pr3_ix, content.sort3_pr3_id, picurl[content.sort3_pr3_ix], content.sort3_pr3_title1, content.sort3_pr3_title2, content.sort3_pr3_title3)}
+                            {this.hotSellComponent(content.sort3_pr4_ix, content.sort3_pr4_id, picurl[content.sort3_pr4_ix], content.sort3_pr4_title1, content.sort3_pr4_title2, content.sort3_pr4_title3)}
                         </div>
                     </div>
                 </div>

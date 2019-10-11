@@ -12,8 +12,9 @@ import GeisInputItem from '../../../../../common/form/input/GeisInputItem';
 import './Individual.less';
 
 const {urlCfg} = Configs;
-const {MESSAGE: {Form}} = Constants;
-const {showInfo, validator} = Utils;
+const {MESSAGE: {Form}, navColorF} = Constants;
+const {showInfo, validator, setNavColor} = Utils;
+const hybird = process.env.NATIVE;
 // const RadioItem = Radio.RadioItem;
 const data = [
     {value: 1, label: '正式商户'},
@@ -57,6 +58,18 @@ class Individual extends BaseComponent {
         editStatus: true,
         addressStatus: ''
     };
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
 
     //提交店铺信息
     postInformation = () => {
@@ -256,7 +269,6 @@ class Individual extends BaseComponent {
         console.log(values);
         this.setState({
             pickUpSelf: values
-            // values
         });
     };
 
@@ -331,8 +343,8 @@ class Individual extends BaseComponent {
 
     //检验是否支持自提
     checkPickUpSelf = (rule, value, callback) => {
-        // const {pickUpSelf} = this.state;
-        if (!validator.isEmpty(value, Form.No_pickUpSelf, callback)) return;
+        const {pickUpSelf} = this.state;
+        if (!validator.isEmpty(pickUpSelf, Form.No_pickUpSelf, callback)) return;
         callback();
     };
 
@@ -385,7 +397,6 @@ class Individual extends BaseComponent {
     editModalMain = () => {
         const {phone, isExp, pickUpSelf, linkName, discount, cValue, shopName, category,  text, date,  openTime, closeTime, provinceId, cityId, province, urban, county,  address, cshPhone, oTValue, cTValue, addressStatus} = this.state;
         const {getFieldDecorator} = this.props.form;
-        console.log(addressStatus);
         const steps = ['填写店铺信息', '填写开店人信息', '填写工商信息', '绑定银行卡'];
         return (
             <div>
@@ -406,7 +417,6 @@ class Individual extends BaseComponent {
                                 getFieldDecorator('shopName', {
                                     initialValue: shopName,
                                     rules: [
-                                        //validator自定义校验规则 (rule, value, cb) => (value === true ? cb() : cb(true))
                                         {validator: this.checkShopName}
                                     ],
                                     validateTrigger: 'onSubmit'//校验值的时机
@@ -414,8 +424,7 @@ class Individual extends BaseComponent {
                                     <InputItem
                                         clear
                                         placeholder="请输入2-30位的店铺名称"
-                                    >
-                                    </InputItem>
+                                    />
                                 )}
                             {
                                 getFieldDecorator('category', {

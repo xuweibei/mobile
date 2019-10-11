@@ -47,7 +47,6 @@ class Region extends BaseComponent {
     componentWillReceiveProps(nextProps) {
         const {provinceValue} = this.state;
         const {add, editStatus, editStatusChange} = this.props;
-        console.log(editStatus && !add && provinceValue !== nextProps.provinceValue);
         if (editStatus && !add && provinceValue !== nextProps.provinceValue) {
             console.log(1111111);
             console.log(nextProps.provinceValue, nextProps.countyValue, nextProps.cityValue);

@@ -13,8 +13,8 @@ import Sku from '../../common/sku/Sku';
 import './shopCart.less';
 
 const {urlCfg} = Configs;
-const {appHistory, showInfo, showSuccess, native, systemApi: {setValue}, getUrlParam} = Utils;
-const {MESSAGE: {Form, Feedback}, FIELD} = Constants;
+const {appHistory, showInfo, showSuccess, native, systemApi: {setValue}, getUrlParam, setNavColor} = Utils;
+const {MESSAGE: {Form, Feedback}, FIELD, navColorR} = Constants;
 
 const hybird = process.env.NATIVE;
 let payInNum = 0;
@@ -43,6 +43,9 @@ class ShopCart extends BaseComponent {
     };
 
     componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorR});
+        }
         this.getCart();
     }
 
@@ -52,6 +55,9 @@ class ShopCart extends BaseComponent {
     }
 
     componentWillReceiveProps(next) {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorR});
+        }
         const timerNext = decodeURI(getUrlParam('time', encodeURI(next.location.search)));
         const timer = decodeURI(getUrlParam('time', encodeURI(this.props.location.search)));
         if (timer !== timerNext) {
@@ -160,15 +166,6 @@ class ShopCart extends BaseComponent {
             cfmBtnTexts: ['取消', '确定'],
             callbacks: [null, () => { this.publicDelete([id]) }]
         });
-        // Modal.alert('删除', '确定删除这些商品吗', [
-        //     {text: '取消', style: 'default'},
-        //     {
-        //         text: '确定',
-        //         onPress: () => {
-        //             this.publicDelete([id]);
-        //         }
-        //     }
-        // ]);
     };
 
     //清空过期产品

@@ -6,8 +6,10 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 import './ApplyService.less';
 
 
-const {showInfo, appHistory, getUrlParam} = Utils;
+const {showInfo, appHistory, getUrlParam, setNavColor} = Utils;
+const {navColorF} = Constants;
 const {urlCfg} = Configs;
+const hybird = process.env.NATIVE;
 class ApplyServiceDetail extends BaseComponent {
     state = {
         applyTitle: '请选择',
@@ -18,6 +20,18 @@ class ApplyServiceDetail extends BaseComponent {
     componentDidMount() {
         this.getList();
         this.getLogisticsList();
+    }
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
     }
 
     //获取商家信息

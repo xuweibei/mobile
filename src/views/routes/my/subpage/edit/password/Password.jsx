@@ -3,8 +3,22 @@ import {connect} from 'react-redux';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './Password.less';
 
-const {appHistory} = Utils;
+const {appHistory, setNavColor} = Utils;
+const {navColorF} = Constants;
+const hybird = process.env.NATIVE;
 class Password extends BaseComponent {
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
     //修改登录密码
     passwordDetail = () => {
         appHistory.push('/passwordDetail');

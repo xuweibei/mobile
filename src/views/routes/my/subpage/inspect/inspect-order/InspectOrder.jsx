@@ -4,7 +4,8 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 import './InspectOrder.less';
 
 const {urlCfg} = Configs;
-const {appHistory, native} = Utils;
+const {appHistory, native, setNavColor} = Utils;
+const {navColorR} = Constants;
 const hybrid = process.env.NATIVE;
 
 export default class InspectOrder extends BaseComponent {
@@ -16,6 +17,18 @@ export default class InspectOrder extends BaseComponent {
 
     componentDidMount() {
         this.whiteList();
+    }
+
+    componentWillMount() {
+        if (hybrid) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorR});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybrid) {
+            setNavColor('setNavColor', {color: navColorR});
+        }
     }
 
     //跳珠核销扫码

@@ -9,15 +9,14 @@ import Animation from '../../../../common/animation/Animation';
 import {ListFooter} from '../../../../common/list-footer';
 import './Collect.less';
 
-
-const {FIELD} = Constants;
 const tabs = [
     {title: '商品'},
     {title: '店铺'}
 ];
-const {appHistory, native, showInfo} = Utils;
+const {appHistory, native, showInfo, setNavColor} = Utils;
 const {urlCfg} = Configs;
-const {MESSAGE: {Form, Feedback}} = Constants;
+const {MESSAGE: {Form, Feedback}, FIELD, navColorF} = Constants;
+const hybird = process.env.NATIVE;
 
 class Collect extends BaseComponent {
     constructor(props) {
@@ -52,6 +51,18 @@ class Collect extends BaseComponent {
 
     componentDidMount() {
         this.getCollectionList(this.state.pageShop);
+    }
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
     }
 
     //获取列表数据

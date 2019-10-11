@@ -8,8 +8,10 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 
 const {urlCfg} = Configs;
 
-const {appHistory, showInfo, native, systemApi: {setValue}} = Utils;
+const {appHistory, showInfo, native, systemApi: {setValue}, setNavColor} = Utils;
+const {navColorF} = Constants;
 const hybrid = process.env.NATIVE;
+
 export default class Recommender extends BaseComponent {
     constructor(props, context) {
         super(props, context);
@@ -20,6 +22,18 @@ export default class Recommender extends BaseComponent {
         UID: '',
         phone: '',
         verification: false
+    }
+
+    componentWillMount() {
+        if (hybrid) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybrid) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
     }
 
     routeTo = () => {

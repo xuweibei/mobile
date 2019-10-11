@@ -8,9 +8,10 @@ import {myActionCreator} from '../../../actions/index';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './Address.less';
 
-const {appHistory, showSuccess} = Utils;
+const {appHistory, showSuccess, setNavColor} = Utils;
 const {urlCfg} = Configs;
-const {MESSAGE: {Feedback}} = Constants;
+const {MESSAGE: {Feedback}, navColorF} = Constants;
+const hybird = process.env.NATIVE;
 
 class Address extends BaseComponent {
     state={
@@ -22,6 +23,18 @@ class Address extends BaseComponent {
         const {addressList, getAddress} = this.props;
         if (!addressList) {
             getAddress();
+        }
+    }
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
         }
     }
 

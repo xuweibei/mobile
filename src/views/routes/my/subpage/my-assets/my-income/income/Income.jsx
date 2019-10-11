@@ -11,7 +11,9 @@ import './Income.less';
 
 
 const {urlCfg} = Configs;
-const {getUrlParam} = Utils;
+const {getUrlParam, setNavColor} = Utils;
+const {navColorF} = Constants;
+const hybird = process.env.NATIVE;
 
 const temp = {
     stackData: [],
@@ -42,6 +44,18 @@ export default class MyAssets extends BaseComponent {
     componentDidMount() {
         this.getDaril();
         this.getEveryData();
+    }
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
     }
 
     //当天收入

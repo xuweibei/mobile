@@ -12,8 +12,8 @@ import './Business.less';
 const Item = List.Item;
 const Brief = Item.Brief;
 const {urlCfg} = Configs;
-const {FIELD} = Constants;
-const {appHistory, native} = Utils;
+const {FIELD, navColorF} = Constants;
+const {appHistory, native, setNavColor} = Utils;
 //tab配置信息
 const tabs = [
     {title: '全部', type: 0},
@@ -21,6 +21,7 @@ const tabs = [
     {title: '职工', type: 3},
     {title: '会员', type: 1}
 ];
+const hybird = process.env.NATIVE;
 
 class Customer extends BaseComponent {
     constructor(props) {
@@ -42,6 +43,18 @@ class Customer extends BaseComponent {
 
     componentDidMount() {
         this.getCustomerList();
+    }
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
     }
 
     //获取业务数据，第一页需记录总页数和总人数，并在翻页时回传后端。noLoading为true时不显示菊花图

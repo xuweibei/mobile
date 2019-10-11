@@ -5,9 +5,11 @@ import MyListView from '../../../../../common/my-list-view/MyListView';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './SelfSearch.less';
 
-const {appHistory, getUrlParam, showFail, showInfo, systemApi: {removeValue}} = Utils;
+const {appHistory, getUrlParam, showFail, showInfo, systemApi: {removeValue}, setNavColor} = Utils;
 const {urlCfg} = Configs;
-const {MESSAGE: {Feedback}, FIELD} = Constants;
+const {MESSAGE: {Feedback}, FIELD, navColorR} = Constants;
+const hybird = process.env.NATIVE;
+
 class ReDetail extends BaseComponent {
     state ={
         refreshing: false, //是否在下拉刷新时显示指示器
@@ -19,6 +21,18 @@ class ReDetail extends BaseComponent {
         pageList: [], //列表信息
         orderId: 0, //订单id
         navColor: '#ff2d51' //nav背景颜色
+    }
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorR});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorR});
+        }
     }
 
     componentDidMount() {
