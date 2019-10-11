@@ -87,9 +87,9 @@ class shopList extends BaseComponent {
                                         <img src={item.picpath} alt=""/>
                                     </div>
                                     <div className="right-content">
-                                        <div className="star-box">
+                                        {/* <div className="star-box">
                                             {this.renderStar(item.shop_mark)}
-                                        </div>
+                                        </div>*/}
                                         <div className="list-title">
                                             <p>{item.shopName}</p>
                                             <p>人均消费 <span>￥{item.consume_per}</span></p>

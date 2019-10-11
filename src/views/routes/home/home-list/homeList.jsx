@@ -330,9 +330,9 @@ export default class HomeList extends BaseComponent {
                     <div className="details-bottom">
                         <p>{item.shopName}</p >
                         <div className="star-consume">
-                            <div key={item.shop_mark}>
+                           {/* <div key={item.shop_mark}>
                                 {this.renderStar(item.shop_mark)}
-                            </div>
+                            </div>*/}
                             <div key={item.consume_per}>人均￥{item.consume_per}</div>
                         </div>
                         <div className="time-distance ">
