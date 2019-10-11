@@ -17,15 +17,9 @@ import MyLogistics from './subpage/my-logistics/MyLogistics';
 import './My.less';
 import {showInfo} from '../../../utils/mixin';
 
-<<<<<<< HEAD
-const {appHistory, rollStatus: {offRoll, openRoll, getScrollTop}, systemApi: {removeValue}} = Utils;
-// const {urlCfg} = Configs;
-=======
-const {appHistory, rollStatus: {offRoll, openRoll, getScrollTop}, systemApi: {removeValue}, setNavColor} = Utils;
-const {urlCfg} = Configs;
+const {appHistory, rollStatus: {offRoll, openRoll, getScrollTop}, setNavColor} = Utils;
 const hybird = process.env.NATIVE;
 const {navColorR} = Constants;
->>>>>>> 78b6370ec15e2d714e43cedcec6470e51ce687fb
 
 //线上订单模块
 const myOrderIconData = [
