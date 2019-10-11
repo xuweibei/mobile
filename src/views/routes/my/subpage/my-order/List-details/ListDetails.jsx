@@ -175,8 +175,8 @@ class ListDetails extends BaseComponent {
         const blockMadel = new Map([
             ['0', <div className="immediate-evaluation new-style-paynow" onClick={this.payNow}>立即付款</div>],
             ['1', <div className="immediate-evaluation deliver" onClick={this.remindDelivery}>提醒发货</div>],
-            ['2', <div className="immediate-evaluation" onClick={this.confirmTake}>确认收货</div>],
-            ['3', <div className="immediate-evaluation" onClick={this.promptlyEstimate}>立即评价</div>]
+            ['2', <div className="immediate-evaluation" onClick={this.confirmTake}>确认收货</div>]
+            // ['3', <div className="immediate-evaluation" onClick={this.promptlyEstimate}>立即评价</div>]//暂时屏蔽
         ]);
         return blockMadel.get(num);
     }
@@ -208,7 +208,12 @@ class ListDetails extends BaseComponent {
 
     //前往im
     goToIm = (ev) => {
-        showInfo('前往im');
+        const {canInfo} = this.state;
+        if (hybird) {
+            native('goToShoper', {shopNo: canInfo.shop_no, id: canInfo.order_id, type: '1', shopNickName: canInfo.nickname, imType: '2', groud: '0'});//groud 为0 单聊，1群聊 imType 1商品2订单3空白  type 1商品 2订单
+        } else {
+            showInfo('联系商家');
+        }
         ev.stopPropagation();
     }
 
@@ -297,7 +302,7 @@ class ListDetails extends BaseComponent {
                                                         <div className="accounting">
                                                             <div className="btn-keep">记账量：{item.deposit}</div>
                                                         </div>
-                                                        {   //订单为待评价的时候
+                                                        {/* {   //订单为待评价的时候
                                                             (canInfo.status === '3' || canInfo.status === '4') && <div className="after-service" onClick={(ev) => this.goToIm(ev)}>申请售后</div>
                                                         }
                                                         {   //退款中，按钮
@@ -305,7 +310,7 @@ class ListDetails extends BaseComponent {
                                                         }
                                                         {   //订单为待发货或待收货时
                                                             !item.return_name && (canInfo.status === '1' || canInfo.status === '2') && <div className="after-service" onClick={(ev) => this.serviceRefund(canInfo, item, ev)}>申请退款</div>
-                                                        }
+                                                        } 暂时屏蔽*/}
                                                     </div>
                                                 </div>
                                             ))

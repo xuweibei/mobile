@@ -50,7 +50,7 @@ export const MESSAGE = {
         No_lgPhone: '暂无物流电话',
         No_Click: '抱歉，需要在自动确认收货三天内才可申请成功',
         No_Error_Take: '确认收货前，请仔细核对商品。确保商品无误。是否确认收货。',
-        No_Error_Has_Return: '该订单中存在有退款记录的商品,确认收货将关闭退款。',
+        No_Error_Has_Return: '该订单中存在有退款记录的商品,确认收货将撤销退款申请。',
         No_Difference: '请输入与本人身份证一致的银行卡号，仅支持借记卡',
         No_Merchant: '您不是商家，没有业务收入，是否前往申请开店',
         You_Extension_Agent: '您是推广员，没有业务收入',

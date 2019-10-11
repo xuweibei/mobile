@@ -17,8 +17,7 @@ import MyLogistics from './subpage/my-logistics/MyLogistics';
 import './My.less';
 import {showInfo} from '../../../utils/mixin';
 
-const {appHistory, rollStatus: {offRoll, openRoll, getScrollTop}, systemApi: {removeValue}, setNavColor} = Utils;
-const {urlCfg} = Configs;
+const {appHistory, rollStatus: {offRoll, openRoll, getScrollTop}, setNavColor} = Utils;
 const hybird = process.env.NATIVE;
 const {navColorR} = Constants;
 

@@ -217,7 +217,7 @@ class ReDetail extends BaseComponent {
                         {/*等待使用*/}
                         {(item.status === '1' && item.return_status === '0') && (
                             <div className="buttons">
-                                <div onClick={() => this.serviceRefund(item.id)}>退款</div>
+                                {/* <div onClick={() => this.serviceRefund(item.id)}>退款</div> //暂时屏蔽 */}
                                 <div className="evaluate-button" onClick={() => this.skipSelf(item.id)}>立即使用</div>
                             </div>
                         )}
@@ -225,7 +225,7 @@ class ReDetail extends BaseComponent {
                         {item.status === '2' && (
                             <div className="buttons">
                                 <span className="look-button delete" onClick={() => this.deleteOrder(item.id)}>删除</span>
-                                <div className="evaluate-button" onClick={() => this.promptlyAssess(item.id)}>待评价</div>
+                                {/* <div className="evaluate-button" onClick={() => this.promptlyAssess(item.id)}>待评价</div> 暂时屏蔽*/}
                             </div>
                         )}
                         {/*订单完成*/}

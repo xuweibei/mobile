@@ -1,4 +1,5 @@
 import {connect} from 'react-redux';
+import {dropByCacheKey} from 'react-router-cache-route';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import BaseComponent from '../../../../../../components/base/BaseComponent';
 import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAction';
@@ -33,7 +34,6 @@ class refundDetails extends BaseComponent {
     getInfo = () => {
         const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
         this.fetch(urlCfg.refundDetail, {
-            method: 'post',
             data: {id}
         }).subscribe(res => {
             if (res.status === 0) {
@@ -113,7 +113,8 @@ class refundDetails extends BaseComponent {
                                 revoke: false
                             });
                             if (res.data.if_express === '1') {
-                                appHistory.replace('/myOrder/sh');
+                                dropByCacheKey('OrderPage');//清除我的订单的缓存
+                                appHistory.go(-2);
                             } else {
                                 appHistory.replace('/selfMention');
                             }
@@ -221,7 +222,7 @@ class refundDetails extends BaseComponent {
     goToShoper = () => {
         const {refundArr} = this.state;
         if (hybrid) {
-            native('goToShoper', {shopNo: refundArr.no, id: refundArr.order_id, type: '1', shopNickName: refundArr.nickname, imType: '2', groud: '0'});//groud 为0 单聊，1群聊 imType 1商品2订单3空白  type 1商品 2订单
+            native('goToShoper', {shopNo: refundArr.shop_no, id: refundArr.order_id, type: '1', shopNickName: refundArr.nickname, imType: '2', groud: '0'});//groud 为0 单聊，1群聊 imType 1商品2订单3空白  type 1商品 2订单
         } else {
             showInfo('联系商家');
         }
