@@ -166,15 +166,6 @@ class ShopCart extends BaseComponent {
             cfmBtnTexts: ['取消', '确定'],
             callbacks: [null, () => { this.publicDelete([id]) }]
         });
-        // Modal.alert('删除', '确定删除这些商品吗', [
-        //     {text: '取消', style: 'default'},
-        //     {
-        //         text: '确定',
-        //         onPress: () => {
-        //             this.publicDelete([id]);
-        //         }
-        //     }
-        // ]);
     };
 
     //清空过期产品

@@ -27,8 +27,8 @@ const tabs = [
     {title: '待付款'},
     {title: '待发货'},
     {title: '待收货'},
-    {title: '待评价'},
-    {title: '售后'}
+    {title: '待评价'}
+    // {title: '售后'} //暂时屏蔽
 ];
 
 
@@ -285,7 +285,7 @@ class MyOrder extends BaseComponent {
         const {showConfirm} = this.props;
         const {status} = this.state;
         showConfirm({
-            title: refund === '1' ? Form.No_Error_Has_Return : Form.No_Error_Take,
+            title: (refund === 1 || refund === 2) ? Form.No_Error_Has_Return : Form.No_Error_Take,
             callbacks: [null, () => {
                 this.fetch(urlCfg.confirmOrder, {data: {id: id}})
                     .subscribe((res) => {
@@ -724,7 +724,12 @@ class MyOrder extends BaseComponent {
                                 </div>
                             )
                         }
-                        {item.return_status === '2' && <div className="evaluate-button" onClick={(ev) => this.revoke(item.return_id, ev)}>撤销申请</div>}
+                        {item.return_status === '2'
+                        && (
+                            <div className="buttons">
+                                <div className="evaluate-button" onClick={(ev) => this.revoke(item.return_id, ev)}>撤销申请</div>
+                            </div>
+                        )}
                         {this.bottomModal(item)}
                     </div>
                 </div>

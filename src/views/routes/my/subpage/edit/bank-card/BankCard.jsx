@@ -150,7 +150,7 @@ class BankCard extends BaseComponent {
                                 <p className="explain">CAM余额提现卡</p>
                                 <div className={this.backgroundImng(item.bankId) ? 'background-blue' : 'background-red'}>
                                     <div className="background-t">
-                                        <div className="logo" style={{backgroundPosition: bankImg[item.bankId] ? `${bankImg[22][0] / 50}rem ${bankImg[item.bankId][1] / 50}rem` : '1000px 1000px'}}/>
+                                        <div className="logo" style={{backgroundPosition: bankImg[item.bankId] ? `${bankImg[item.bankId][0] / 50}rem ${bankImg[item.bankId][1] / 50}rem` : '1000px 1000px'}}/>
                                         <div className="background-tl">{item.bankArea}</div>
                                     </div>
                                     <div className="card">

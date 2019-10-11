@@ -36,7 +36,7 @@ class ApplyServiceDetail extends BaseComponent {
 
     //获取商家信息
     getList = () => {
-        const id = decodeURI(getUrlParam('shopId', encodeURI(this.props.location.search)));
+        const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
         this.fetch(urlCfg.getShopInfo, {method: 'post', data: {id}})
             .subscribe(res => {
                 if (res.status === 0) {

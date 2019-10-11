@@ -17,8 +17,7 @@ import MyLogistics from './subpage/my-logistics/MyLogistics';
 import './My.less';
 import {showInfo} from '../../../utils/mixin';
 
-const {appHistory, rollStatus: {offRoll, openRoll, getScrollTop}, systemApi: {removeValue}, setNavColor} = Utils;
-const {urlCfg} = Configs;
+const {appHistory, rollStatus: {offRoll, openRoll, getScrollTop}, setNavColor} = Utils;
 const hybird = process.env.NATIVE;
 const {navColorR} = Constants;
 
@@ -256,40 +255,41 @@ class My extends BaseComponent {
     //页面跳转
     jumpRouter = (url) => {
         if (url === '/selectType') {
-            removeValue('shopStatus');
-            this.fetch(urlCfg.applyForRight).subscribe(res => {
-                if (res && res.status === 0) {
-                    // setValue('shopStatus', JSON.stringify(res.data.status));
-                    this.setState({
-                        openShopStatus: res.data.status
-                    }, () => {
-                        const {openShopStatus} = this.state;
-                        if (openShopStatus === 9) {
-                            appHistory.push(`/openShopPage?shopType=${res.data.shop_type}&auditStatus=${'now'}`);
-                        } else if (openShopStatus === 6) {
-                            showInfo('您已提交过开店申请，请不要重复提交！');
-                            return;
-                        } else if (openShopStatus === 4) {
-                            appHistory.push(`/openShopPage?shopType=${res.data.shop_type}&auditStatus=${'filed'}`);
-                        } else if (openShopStatus === 3) {
-                            // if (res.data.shop_type === 2 || res.data.shop_type === 0) {
-                            //     appHistory.push(`/personal?shopType=${res.data.shop_type}&auditStatus=${'three'}`);
-                            // } else {
-                            //     appHistory.push(`/individual?shopType=${res.data.shop_type}&auditStatus=${'three'}`);
-                            // }
-                            appHistory.push(`/openShopPage?shopType=${res.data.shop_type}&auditStatus=${''}`);
-                        } else if (openShopStatus === 7) {
-                            if (res.data.shop_type === 2 || res.data.shop_type === 0) {
-                                appHistory.push(`/personal?shopType=${res.data.shop_type}&auditStatus=${'four'}`);
-                            } else {
-                                appHistory.push(`/individual?shopType=${res.data.shop_type}&auditStatus=${'four'}`);
-                            }
-                        } else {
-                            appHistory.push(`${url}?status=${this.state.openShopStatus}&cerType=${res.data.shop_type}`);
-                        }
-                    });
-                }
-            });
+            showInfo('等等');
+            // removeValue('shopStatus');
+            // this.fetch(urlCfg.applyForRight).subscribe(res => {
+            //     if (res && res.status === 0) {
+            //         // setValue('shopStatus', JSON.stringify(res.data.status));
+            //         this.setState({
+            //             openShopStatus: res.data.status
+            //         }, () => {
+            //             const {openShopStatus} = this.state;
+            //             if (openShopStatus === 9) {
+            //                 appHistory.push(`/openShopPage?shopType=${res.data.shop_type}&auditStatus=${'now'}`);
+            //             } else if (openShopStatus === 6) {
+            //                 showInfo('您已提交过开店申请，请不要重复提交！');
+            //                 return;
+            //             } else if (openShopStatus === 4) {
+            //                 appHistory.push(`/openShopPage?shopType=${res.data.shop_type}&auditStatus=${'filed'}`);
+            //             } else if (openShopStatus === 3) {
+            //                 // if (res.data.shop_type === 2 || res.data.shop_type === 0) {
+            //                 //     appHistory.push(`/personal?shopType=${res.data.shop_type}&auditStatus=${'three'}`);
+            //                 // } else {
+            //                 //     appHistory.push(`/individual?shopType=${res.data.shop_type}&auditStatus=${'three'}`);
+            //                 // }
+            //                 appHistory.push(`/selectType?shopType=${res.data.shop_type}&auditStatus=${''}`);
+            //             } else if (openShopStatus === 7) {
+            //                 if (res.data.shop_type === 2 || res.data.shop_type === 0) {
+            //                     appHistory.push(`/personal?shopType=${res.data.shop_type}&auditStatus=${'four'}`);
+            //                 } else {
+            //                     appHistory.push(`/individual?shopType=${res.data.shop_type}&auditStatus=${'four'}`);
+            //                 }
+            //             } else {
+            //                 appHistory.push(`${url}?status=${this.state.openShopStatus}&cerType=${res.data.shop_type}`);
+            //             }
+            //         });
+            //     }
+            // });
         } else {
             appHistory.push(url);
         }

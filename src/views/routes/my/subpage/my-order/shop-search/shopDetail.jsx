@@ -416,11 +416,11 @@ class MyOrder extends BaseComponent {
         case '1': //待发货
             blockModal = (
                 <div className="buttons">
-                    <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
+                    {/* <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
                         {
                             item.showButton && <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev)}>申请退款</span>
                         }
-                    </div>
+                    </div> 暂时屏蔽 */}
                     <div className="evaluate-button" onClick={() => this.remindDelivery([item.id, item.can_tip])}>提醒发货</div>
                 </div>
             );
@@ -428,11 +428,11 @@ class MyOrder extends BaseComponent {
         case '2'://待收货
             blockModal = (
                 <div className="buttons">
-                    <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
+                    {/* <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
                         {
                             item.showButton && <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev)}>申请退款</span>
                         }
-                    </div>
+                    </div> 暂时屏蔽*/}
                     {
                         item.delayed_receiving === '0' && <div className="look-button" onClick={(ev) => this.extendedReceipt(item.id, ev)}>延长收货</div>
                     }
@@ -445,7 +445,7 @@ class MyOrder extends BaseComponent {
             blockModal = (
                 <div className="buttons">
                     <div className="look-button" onClick={(ev) => this.goApplyService(item.id, ev)}>查看物流</div>
-                    <div className="evaluate-button" onClick={(ev) => this.promptlyEstimate(item.id, ev)}>立即评价</div>
+                    {/* <div className="evaluate-button" onClick={(ev) => this.promptlyEstimate(item.id, ev)}>立即评价</div>暂时屏蔽 */}
                 </div>
             );
             break;

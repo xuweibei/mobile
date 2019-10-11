@@ -30,6 +30,8 @@ class PersonalFour extends BaseComponent {
         bankKey: '', //所属银行
         pageStatus: '',
         id: '',
+        bValue: [],
+        selectBranch: '', //回传支行名称
         addressStatus: ''
     };
 
@@ -56,15 +58,17 @@ class PersonalFour extends BaseComponent {
                     bankId: res.data.bankId,
                     phone: res.data.phone,
                     bankKey: res.data.bankArea,
-                    province: res.data.city_name && res.data.city_name[0],
-                    urban: res.data.city_name && res.data.city_name[1],
-                    county: res.data.city_name && res.data.city_name[2],
+                    province: res.data.area && res.data.area[0],
+                    urban: res.data.area && res.data.area[1],
+                    county: res.data.area && res.data.area[2],
                     provinceId: res.data.province_id,
                     cityId: res.data.city_id,
                     countyId: res.data.county_id,
                     id: res.data.id,
-                    branches: res.data.branchName,
+                    selectBranch: res.data.branches,
                     addressStatus: '1'
+                }, () => {
+                    this.getBankList();
                 });
             }
         });
@@ -116,7 +120,6 @@ class PersonalFour extends BaseComponent {
 
     //获取选中的银行
     getBankInfo = (val) => {
-        console.log(val);
         const {banks} = this.state;
         const value = val.toString();
         const result = banks.find(item => item.value === value);
@@ -124,7 +127,9 @@ class PersonalFour extends BaseComponent {
             cValue: val,
             bankKey: result.label,
             bankId: result.value,
-            bankBranch: []
+            bankBranch: [],
+            bValue: []
+            // branchName: ''
         });
     }
 
@@ -138,7 +143,6 @@ class PersonalFour extends BaseComponent {
     //获取支行列表
     getBankList = () => {
         const {countyId, bankKey} = this.state;
-        console.log(bankKey);
         if (countyId && bankKey) {
             this.fetch(urlCfg.getBankList, {data: {
                 cityId: countyId,
@@ -154,6 +158,15 @@ class PersonalFour extends BaseComponent {
                     });
                     this.setState({
                         bankBranch: arr
+                    }, () => {
+                        if (this.state.selectBranch) {
+                            const {bankBranch, selectBranch} = this.state;
+                            const num = bankBranch.find(item => item.label === selectBranch);
+                            console.log(bankBranch, selectBranch, num);
+                            this.setState({
+                                bValue: num.value
+                            });
+                        }
                     });
                 }
             });
@@ -165,11 +178,11 @@ class PersonalFour extends BaseComponent {
     //获取支行信息
     getBankBranchInfo = (val) => {
         const {bankBranch} = this.state;
-        console.log(val);
         const result = bankBranch.find(item => item.value === val.toString());
         if (result) {
             this.setState({
-                branchName: result.label
+                branchName: result.label,
+                bValue: result.label
             });
         }
     }
@@ -264,7 +277,7 @@ class PersonalFour extends BaseComponent {
     };
 
     render() {
-        const {banks, cValue, bankBranch, branchName, phone, userName, bankCard, provinceId, cityId, addressStatus, province, urban, county} = this.state;
+        const {banks, cValue, bankBranch, phone, userName, bankCard, provinceId, cityId, addressStatus, province, urban, county, bValue} = this.state;
         const {getFieldDecorator} = this.props.form;
         const steps = ['填写店铺信息', '填写开店人信息', '填写工商信息', '绑定银行卡'];
         return (
@@ -292,12 +305,10 @@ class PersonalFour extends BaseComponent {
                                         validateTrigger: 'submit'//校验值的时机
                                     })(
                                         <InputItem
-                                            // value={userName}
                                             clear
                                             placeholder="请输入卡主名称"
                                             maxLength="10"
                                             type="text"
-                                            // onChange={val => this.getInfo(val, 'name')}
                                         >卡主姓名
                                         </InputItem>
                                     )
@@ -384,7 +395,7 @@ class PersonalFour extends BaseComponent {
                                 </List.Item>
                                 {
                                     getFieldDecorator('branchName', {
-                                        initialValue: branchName,
+                                        initialValue: Array(bValue),
                                         rules: [
                                             {validator: this.checkBranchName}
                                         ],
@@ -413,10 +424,7 @@ class PersonalFour extends BaseComponent {
                                     })(
                                         <InputItem
                                             clear
-                                            // maxLength="11"
-                                            // value={}
                                             type="phone"
-                                            // onChange={val => this.getInfo(val, 'phone')}
                                             placeholder="请输入手机号码"
                                         >银行预留手机号
                                         </InputItem>
@@ -427,7 +435,6 @@ class PersonalFour extends BaseComponent {
                         </div>
                     </div>
                     <div className="button">
-                        {/*<div className="large-button general">先保存，下次填</div>*/}
                         <div className="large-button important" onClick={this.submit}>提交申请</div>
                     </div>
                 </div>
