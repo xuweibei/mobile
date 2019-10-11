@@ -258,6 +258,7 @@
                 font-size: @font-size-30;
                 margin-bottom: 24px;
                 color: @darker-black;
+                .TextOverflow();
             }
         }
     }
@@ -265,11 +266,8 @@
     .headline-price {
         //height: 24px;
         .headline {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 1!important;
-            -webkit-box-orient: vertical;
+            .TextOverflow();
+            width: 50%;
         }
     }
 }
