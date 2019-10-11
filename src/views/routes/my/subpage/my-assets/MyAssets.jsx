@@ -64,6 +64,10 @@ class MyAssets extends BaseComponent {
         appHistory.push('/myDetailed');
     }
 
+    newMyIcom = () => { //新的我的收入 芳芳说这么改
+        appHistory.push('/icome?status=6');
+    }
+
     //点击我的收入的各种弹框提示
     goToMyIcome = () => {
         const {showConfirm, showAlert, userTypes} = this.props;
@@ -102,13 +106,13 @@ class MyAssets extends BaseComponent {
                                 nativeGoBack
                                 title="资产管理"
                             />
-                            <div className="detailed" onClick={this.detailed}>明细</div>
+                            {/* <div className="detailed" onClick={this.detailed}>明细</div>  芳芳说先屏蔽*/}
                         </div>
                     )
                 }
                 <div className="money-show">
-                    <div onClick={this.goToMyIcome}>
-                        <span>{this.state.Detailed.all_taking || '暂无'}</span>
+                    <div onClick={this.newMyIcom}>
+                        <span>{this.state.Detailed.all_taking || '0'}</span>
                         <p>业务收入</p>
                     </div>
                     <div onClick={() => appHistory.push('/preparatory-mounth')}>

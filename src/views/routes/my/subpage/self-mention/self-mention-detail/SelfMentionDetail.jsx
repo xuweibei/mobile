@@ -172,7 +172,6 @@ class ReDetail extends BaseComponent {
 
     renderContent = (key) => {
         key = Number(key);
-        console.log(this.state.rdata, key, '打瞌睡卢浮宫');
         return (
             <div className="renderContent-wrap">
                 {this.state.OrderSelf.sufficiency && (
