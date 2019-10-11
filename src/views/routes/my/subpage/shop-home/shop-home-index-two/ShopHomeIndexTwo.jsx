@@ -207,7 +207,7 @@ class ShopHomeIndexTwo extends React.PureComponent {
                                                     onClick={() => this.goToGoods(item.id)}
                                                 />
                                                 <div className="introduce">
-                                                    <div>{item.title1}</div>
+                                                    <div className="introduce-title">{item.title1}</div>
                                                     <div
                                                         onClick={() => this.goToGoods(item.id)}
                                                         style={{background: shopModelArr.content.bg_color}}
