@@ -19,7 +19,7 @@ const getPass = { //获取验证码按钮的样式
 const hybird = process.env.NATIVE;
 class passwordPayment extends BaseComponent {
     state = {
-        phoneCode: '', //电话号码初始值
+        phoneNum: '', //电话号码初始值
         editModal: 'default', //当前状态
         sentPay: '', //是否已设置支付密码
         getOff: false //点击获取验证码是否可以获取，默认不可以，除非输入的电话号码符合要求
@@ -59,7 +59,7 @@ class passwordPayment extends BaseComponent {
     //获取验证码
     getPhoneCode = () => {
         const {phoneNum} = this.state;
-        if (phoneNum.length === 0) {
+        if (!phoneNum) {
             showInfo(Form.No_Phone);
             return;
         }
