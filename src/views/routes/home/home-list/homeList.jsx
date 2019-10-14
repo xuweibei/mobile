@@ -329,17 +329,19 @@ export default class HomeList extends BaseComponent {
                     <img src={item.picpath} alt=""/>
                     <div className="details-bottom">
                         <p>{item.shopName}</p >
-                        <div className="star-consume">
-                           {/* <div key={item.shop_mark}>
+                        {/*<div className="star-consume">
+                            <div key={item.shop_mark}>
                                 {this.renderStar(item.shop_mark)}
-                            </div>*/}
+                            </div>
                             <div key={item.consume_per}>人均￥{item.consume_per}</div>
                         </div>
                         <div className="time-distance ">
                             <span>营业时间{item.open_time}-{item.close_time}</span>
+                        </div>*/}
+                        <div className="place region">
+                            <span>{item.address}</span>
                         </div>
                         <div className="place">
-                            <span>{item.address}</span>
                             <span>{item.distance}km</span>
                         </div>
                     </div>
