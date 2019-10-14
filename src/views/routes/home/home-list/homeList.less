@@ -124,13 +124,12 @@
             .details-bottom {
                 padding: 26px 21px 22px;
                 p {
-                    letter-spacing: 2px;
-                    overflow: hidden;
-                    -webkit-line-clamp:2;
-                    display: -webkit-box;
-                    -webkit-box-orient:vertical;
+                    height: 67px;
+                    .TextareaOverflow(2);
+                    font-weight: bold;
                     font-size: @font-size-30;
                     color: @darker-black;
+                    margin-bottom: 38px;
                 }
                 .star-consume {
                     margin-top: -4px;
@@ -165,14 +164,18 @@
                     justify-content: space-between;
                     margin-bottom: 7px;
                 }
+                .region {
+                    margin-bottom: 24px;
+                }
                 .place{
                     color: @gray;
                     font-size: @font-size-20;
-                    display: flex;
-                    justify-content: space-between;
-                    span:nth-child(2) {
-                        margin-left: 30px;
-                    }
+                    text-align: right;
+                    //display: flex;
+                    //justify-content: space-between;
+                    //span:nth-child(2) {
+                    //    margin-left: 30px;
+                    //}
                     //overflow: hidden;
                     //-webkit-line-clamp:1;
                     //display: -webkit-box;
