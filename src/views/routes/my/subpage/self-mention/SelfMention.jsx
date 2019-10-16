@@ -49,7 +49,6 @@ class ReDetail extends BaseComponent {
         }
         const numNext = this.statusChoose(nextProps.location.pathname.split('/')[2]);
         const numPrev = this.statusChoose(this.props.location.pathname.split('/')[2]);
-        console.log(numNext, numPrev, '圣诞节快乐风和ijk');
         if (hybrid && (numNext !== numPrev)) {
             this.setState({
                 status: numNext
@@ -361,9 +360,9 @@ class ReDetail extends BaseComponent {
                         {/*等待使用*/}
                         {(item.status === '1' || item.return_status === '1') && (
                             <div className="buttons">
-                                {!item.return_status && (
+                                {/* {!item.return_status && (
                                     <div onClick={(e) => this.serviceRefund(e, item.id)}>退款</div>
-                                )}
+                                )} */}
                                 <div className="evaluate-button" onClick={(e) => this.skipSelf(e, item.id)}>立即使用</div>
                                 {item.return_status === '1' && (
                                     <div className="evaluate-button" onClick={(e) => this.skipAfterSale(e, item.return_id)}>查看详情</div>
