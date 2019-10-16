@@ -25,7 +25,8 @@ const getRowData = (dataBlob, sectionID, rowID) => rowID[sectionID];//获取每�
 const dataSource = new ListView.DataSource({
     getRowData,
     getSectionHeaderData: getSectionData,
-    rowHasChanged: (row1, row2) => row1 !== row2,
+    // rowHasChanged: (row1, row2) => row1 !== row2,
+    rowHasChanged: () => true,
     sectionHeaderHasChanged: (s1, s2) => s1 !== s2
 });
 
@@ -99,12 +100,13 @@ class History extends BaseComponent {
                 this.stackData = [...this.stackData, ...item.data];
             }
         });
-        console.log('handleResult', this.sectionIDs, this.rowIDs, this.stackData);
+        console.log('数据源', this.sectionIDs, this.rowIDs);
         this.setState((prevState) => ({
             data: prevState.data.cloneWithRowsAndSections(this.dataBlobs, this.sectionIDs, this.rowIDs),
             pageCount: res.page_count,
             isLoading: false
         }), () => {
+            console.log(this.state.data);
             if (page < this.state.pageCount) {
                 this.setState({
                     hasMore: true
@@ -282,8 +284,6 @@ class History extends BaseComponent {
     changeNavRight = (isEdit) => {
         this.setState({
             isEdit
-        }, () => {
-            console.log('点击顶部导航右侧按钮', this.state.isEdit);
         });
     };
 
@@ -300,7 +300,7 @@ class History extends BaseComponent {
                 checkedIds: [...newArr]
             }, () => {
                 this.checkedIds = newArr;
-                console.log('移除选中id', this.state.checkedIds, this.stackData);
+                console.log('移除选中id', this.state.checkedIds);
             });
         } else {
             this.stackData.map(v => {
@@ -312,7 +312,7 @@ class History extends BaseComponent {
             this.setState({
                 checkedIds: [...this.checkedIds]
             }, () => {
-                console.log('添加选中id', this.state.checkedIds, this.stackData);
+                console.log('添加选中id', this.state.checkedIds);
             });
         }
 
@@ -409,27 +409,6 @@ class History extends BaseComponent {
                 </span>
             ))
         );
-        //渲染listView
-        const list = (
-            <ListView
-                dataSource={data}
-                style={{height}}
-                initialListSize={5}
-                renderSectionHeader={(sectionData, sectionID) => {
-                    console.log('sectionID', sectionID);
-                    return (
-                        <div className="history-list-section">
-                            {confirmDate(sectionData)}
-                        </div>
-                    );
-                }}
-                pageSize={5}
-                renderRow={row}
-                onEndReachedThreshold={50}
-                onEndReached={this.onEndReached}
-                renderFooter={this.renderFooter}
-            />
-        );
         return (
             <div className="browsing-history">
                 {window.isWX ? null : (
@@ -456,8 +435,21 @@ class History extends BaseComponent {
                         {(data && data.getRowCount() > 0) ? (
                             // listView滚动后renderRow里的状态不会刷新，只能直接重新渲染listView
                             <React.Fragment>
-                                {isEdit && list}
-                                {!isEdit && list}
+                                <ListView
+                                    dataSource={data}
+                                    style={{height}}
+                                    initialListSize={5}
+                                    renderSectionHeader={(sectionData) => (
+                                        <div className="history-list-section">
+                                            {confirmDate(sectionData)}
+                                        </div>
+                                    )}
+                                    pageSize={5}
+                                    renderRow={row}
+                                    onEndReachedThreshold={50}
+                                    onEndReached={this.onEndReached}
+                                    renderFooter={this.renderFooter}
+                                />
                             </React.Fragment>
                         ) : (
                             <Nothing
