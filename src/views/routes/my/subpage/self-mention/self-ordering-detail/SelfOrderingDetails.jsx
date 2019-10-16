@@ -400,10 +400,11 @@ class ReDetail extends BaseComponent {
                                     <div className="cancel-order" onClick={(e) => this.serviceRefund(e, selfSufficiency.order_id)}>申请售后</div>
                                 )
                                 } */}
-                            {selfSufficiency.return_name && <div className="cancel-order" onClick={(e) => this.skipAfterSale(e, selfSufficiency.return_id)}>{selfSufficiency.return_name}</div>}
+                            {/* {selfSufficiency.return_name && <div className="cancel-order" onClick={(e) => this.skipAfterSale(e, selfSufficiency.return_id)}>{selfSufficiency.return_name}</div>} */}
                         </div>
                     )}
                 </div>
+                }
             </div>
         );
     }

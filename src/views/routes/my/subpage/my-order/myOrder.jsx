@@ -26,8 +26,8 @@ const tabs = [
     {title: '全部'},
     {title: '待付款'},
     {title: '待发货'},
-    {title: '待收货'},
-    {title: '待评价'}
+    {title: '待收货'}
+    // {title: '待评价'}
     // {title: '售后'} //暂时屏蔽
 ];
 
