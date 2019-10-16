@@ -78,7 +78,7 @@ class Invitation extends BaseComponent {
         // const {showConfirm} = this.props;
         this.fetch(urlCfg.GeneratingInvitationCode, {method: 'post', data: {id: 1}})
             .subscribe((res) => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     // if (!res.data.child) {  //如果是一个没有绑定下级的消费者，进行二维码分享，则跳出弹窗提示：如果您分享并成功绑定新用户，您将失去开店资格。-取消分享 -确认分享
                     //     showConfirm({
                     //         title: '如果您分享并成功绑定新用户，您将失去开店资格',
