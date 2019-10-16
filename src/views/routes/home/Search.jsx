@@ -4,7 +4,9 @@
 import {InputItem, Button, Icon} from 'antd-mobile';
 import {dropByCacheKey} from 'react-router-cache-route';
 import {connect} from 'react-redux';
+import {baseActionCreator as actionCreator} from '../../../redux/baseAction';
 import './Search.less';
+import {getUrlParam} from '../../../utils/mixin';
 
 const {urlCfg} = Configs;
 const {appHistory, native, TD, setNavColor} = Utils;
@@ -20,6 +22,10 @@ class Search extends BaseComponent {
     }
 
     componentDidMount() {
+        const shopSearch = decodeURI(getUrlParam('shopSearch', encodeURI(this.props.location.search)));
+        if (shopSearch === 'null') { //如果是非店铺跳过来，则将店铺id清除
+            this.props.setshoppingId('');
+        }
         this.searchList();
     }
 
@@ -33,6 +39,10 @@ class Search extends BaseComponent {
     componentWillReceiveProps() {
         if (hybird) {
             setNavColor('setNavColor', {color: navColorF});
+        }
+        const shopSearch = decodeURI(getUrlParam('shopSearch', encodeURI(this.props.location.search)));
+        if (shopSearch === 'null') { //如果是非店铺跳过来，则将店铺id清除
+            this.props.setshoppingId('');
         }
     }
 
@@ -48,7 +58,7 @@ class Search extends BaseComponent {
             } else {
                 appHistory.push(`/categoryList?flag=${true}&keywords=${encodeURI(keywords)}&id=${''}`);
             }
-        } else if (hybird && !this.props.shoppingId) {
+        } else if (hybird && appHistory.length() === 0) {
             native('goBack');
         } else {
             appHistory.goBack();
@@ -154,4 +164,7 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect(mapStateToProps, null)(Search);
+const mapDispatchToProps = {
+    setshoppingId: actionCreator.setshoppingId
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Search);

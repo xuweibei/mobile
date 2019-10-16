@@ -119,6 +119,7 @@
             .panel-right{
                 flex: 1;
                 margin-left: 60px;
+                //display: flex;
                 .close-panel{
                     text-align: right;
                     .icon-close:before{
@@ -129,16 +130,22 @@
                 }
                 .price{
                     margin-top: 90px;
+                    display: flex;
                     span{
+                        max-width: 130px;
+                        .TextareaOverflow(1);
+                        display: block;
                         &:nth-child(1){
                             color: @fiery-red;
                             font-size: 48px;
                             margin-right: 20px;
+                            max-width: 250px;
                         }
                         &:nth-child(2){
                             font-size: @font-size-28;
                             color: @gray;
-                            text-decoration-line: line-through;
+                            //text-decoration-line: line-through;
+                            margin-top: 20px;
                         }
                     }
                 }

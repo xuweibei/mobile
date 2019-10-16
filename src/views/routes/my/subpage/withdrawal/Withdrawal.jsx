@@ -331,7 +331,7 @@ class Withdrawal extends BaseComponent {
                             <div>
                                 {(bankId !== 0) && (
                                     <div className="bank-card">
-                                        <div className="logo" style={{backgroundPosition: bankImg[incomeData.banks[bankIndex].bankId] ? `${bankImg[21][0] / 50}rem ${bankImg[incomeData.banks[bankIndex].bankId][1] / 50}rem` : '0px 0px'}}/>
+                                        <div className="logo" style={{backgroundPosition: bankImg[incomeData.banks[bankIndex].bankId] ? `${bankImg[incomeData.banks[bankIndex].bankId][0] / 50}rem ${bankImg[incomeData.banks[bankIndex].bankId][1] / 50}rem` : '0px 0px'}}/>
                                         {/*<div src={require('../../../../../assets/images/' + incomeData.banks[bankIndex].bankId + '.png')}/>*/}
                                         <div className="bank-title">{incomeData.banks[bankIndex].show_info}</div>
                                     </div>

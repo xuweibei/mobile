@@ -100,12 +100,12 @@ export const MESSAGE = {
         Error_Address: '地址不完整',
         Error_Open_Time: '请设置开店时间',
         Error_UserName: '请输入正确的卡主姓名',
-        Error_ID: '请输入18位公民身份证号',
-        Error_Bank: '银行卡格式不对',
+        Error_ID: '请输入正确的的公民身份证号码',
+        Error_Bank: '请输入正确的银行卡号',
         Bank_None: '请选择开户银行',
         Bank_Card_Num: '请输入银行卡号',
         Error_ShopName: '请输入2-30位店铺名称，仅支持中英文及数字。',
-        Error_Phone: '请输入11位电话号码',
+        Error_Phone: '请输入正确的手机号码',
         Error_CasPhone: '请输入4-12位数字客服电话',
         Error_Captcha: '验证码错误',
         Code_Error: '请输入验证码',
@@ -229,7 +229,7 @@ export const MESSAGE = {
         Collect_Success: '加入收藏夹成功',
         Select_Add: '请选择需要添加的商品',
         Select_Del: '请选择需要删除的物品',
-        WeChat_Popup: '根据微信官方要求，微信账户要进行实名认证才能提现到微信零钱（需至少绑定一张银行卡）。CAM收益10员起提，并收6%手续费。其他收入1元起提，免手续费。提现到银行卡，单笔金额不能少于1000元。'
+        WeChat_Popup: '根据微信官方要求，微信账户要进行实名认证才能提现到微信零钱（需至少绑定一张银行卡）。CAM收益10元起提，并收6%手续费。其他收入1元起提，免手续费。提现到银行卡，单笔金额不能少于1000元。'
 
     }
 };

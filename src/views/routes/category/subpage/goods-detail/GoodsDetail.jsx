@@ -24,10 +24,10 @@ const listText = [
         title: '商品',
         key: 'goods'
     },
-    {
-        title: '评价',
-        key: 'evaluate'
-    },
+    // {
+    //     title: '评价',
+    //     key: 'evaluate'
+    // },
     {
         title: '推荐',
         key: 'recommend'
@@ -94,6 +94,7 @@ class GoodsDetail extends BaseComponent {
         }
     }
 
+    // 初始化滚动
     init = () => {
         scrollSpy.update();
         scrollSpy.mount(document);
@@ -213,7 +214,6 @@ class GoodsDetail extends BaseComponent {
         const lon = shop.longitude;
         myGeo.getLocation(new window.BMap.Point(lon, lat), result => {
             if (result) {
-                console.log(result);
                 const city = result.addressComponents.city;
                 const province = result.addressComponents.province;
                 const shopAddress = province + city;
@@ -241,9 +241,7 @@ class GoodsDetail extends BaseComponent {
 
     //确定按钮点击
     confirmSku = (type, ids, names) => {
-        // console.log('选中规格值名称', names);
         const {clickType} = this.state;
-        // console.log('选中商品属性ID：', type, ids);
         this.setState({
             selectType: type,
             ids: ids,
@@ -606,11 +604,10 @@ class GoodsDetail extends BaseComponent {
 
     render() {
         const {
-            topSwithe, popup, paginationNum, xxArr, half, ids, maskStatus,
+            topSwithe, popup, paginationNum, ids, maskStatus,
             picPath, goodsDetail, shop, recommend, collect,
             goodsAttr, stocks, shopAddress, lineStatus, lineText, pickType, selectType, names, status
         } = this.state;
-        console.log(picPath[0], '肯德基康师傅');
         const renderCount = (
             <List>
                 <List.Item
@@ -812,11 +809,11 @@ class GoodsDetail extends BaseComponent {
                                             <span className="Shop-Nl">
                                                 {shop.shopName}
                                             </span>
-                                            {half && (
+                                            {/* {half && (
                                                 <div className="shop-star">
                                                     <div className="icon icon-stars"/>
                                                 </div>
-                                            )}
+                                            )} */}
                                             <div className="shop-btn">
                                                 {/* <div className="shop-det">
                                                     店铺详情
@@ -834,7 +831,7 @@ class GoodsDetail extends BaseComponent {
                                             {/*<span className="Shop-Nl">
                                                 {shop.shopName}
                                             </span>*/}
-                                            <span className="Shop-Nr">
+                                            <span>
                                                 人均消费
                                             </span>
                                             <span className="Shop-Nr">

@@ -10,10 +10,6 @@ import './CancleOrder.less';
 const RadioItem = Radio.RadioItem;
 
 class CancelOrder extends React.Component {
-    static propTypes = {
-        canStateChange: PropTypes.func.isRequired
-    }
-
     state = {
         value: ''
     };
@@ -24,6 +20,10 @@ class CancelOrder extends React.Component {
         {label: '不想要了', value: 3},
         {label: '其他原因', value: 4}
     ];
+
+    static propTypes = {
+        canStateChange: PropTypes.func.isRequired
+    }
 
     //单选改变
     checkedChange = (data) => {

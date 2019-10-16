@@ -176,7 +176,8 @@ class Collect extends BaseComponent {
                 tabKey: 1,
                 statusNum: 2,
                 shopState: true,
-                hasMore: false
+                hasMore: false,
+                isEdit: false
             }, () => {
                 if (!shopState) {
                     this.getCollectionList(pageShopping);
@@ -186,7 +187,8 @@ class Collect extends BaseComponent {
             this.setState({
                 tabKey: 0,
                 statusNum: 1,
-                hasMore: false
+                hasMore: false,
+                isEdit: false
             }, () => {
                 if (!shopState) {
                     this.getCollectionList(pageShopping);
@@ -214,11 +216,19 @@ class Collect extends BaseComponent {
     changeNavRight = () => {
         // FIXME: 代码优化一下
         // 店铺收藏下，点击完成如果不做重新赋值处理，回不到编辑的状态
-        const arr = this.temp.stackData.map(item => Object.assign({}, item));
-        this.setState((prevState) => ({
-            isEdit: !prevState.isEdit,
-            goodsSource: prevState.goodsSource.cloneWithRows(arr)
-        }));
+        const {tabKey} = this.state;
+        const arr = tabKey === 0 ? this.temp.stackData.map(item => Object.assign({}, item)) : this.temp.stackShopData.map(item => Object.assign({}, item));
+        if (tabKey === 0) {
+            this.setState((prevState) => ({
+                isEdit: !prevState.isEdit,
+                goodsSource: prevState.goodsSource.cloneWithRows(arr)
+            }));
+        } else {
+            this.setState((prevState) => ({
+                isEdit: !prevState.isEdit,
+                shopSource: prevState.shopSource.cloneWithRows(arr)
+            }));
+        }
     };
 
     //点击单选
@@ -334,7 +344,6 @@ class Collect extends BaseComponent {
     messageMain = (row, row2) => {
         const {tabKey, goodsSource, isEdit, height, shopSource, refreshing, hasMore} = this.state;
         let blockModal = <div/>;
-        console.log(height);
         if (tabKey === 0 ? goodsSource.getRowCount() > 0 : shopSource.getRowCount() > 0) {
             blockModal = (
                 <ListView
@@ -443,8 +452,7 @@ class Collect extends BaseComponent {
     }
 
     goBackModal = () => {
-        const hybirid = process.env.NATIVE;
-        if (hybirid) {
+        if (hybird) {
             native('goBack');
         } else {
             appHistory.goBack();

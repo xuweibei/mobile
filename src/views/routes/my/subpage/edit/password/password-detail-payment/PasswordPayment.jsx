@@ -223,9 +223,7 @@ class passwordPayment extends BaseComponent {
                             className="nab"
                             icon={<Icon type="left" size="lg" onClick={() => { this.setState({editModal: 'default'}) }}/>}
                         >
-                            {
-                                '设置支付密码'
-                            }
+                            设置支付密码
                         </NavBar>
                         <div className="password-box">
                             <div className="payment-code">请输入支付密码</div>

@@ -25,7 +25,8 @@ const getRowData = (dataBlob, sectionID, rowID) => rowID[sectionID];//获取每�
 const dataSource = new ListView.DataSource({
     getRowData,
     getSectionHeaderData: getSectionData,
-    rowHasChanged: (row1, row2) => row1 !== row2,
+    // rowHasChanged: (row1, row2) => row1 !== row2,
+    rowHasChanged: () => true,
     sectionHeaderHasChanged: (s1, s2) => s1 !== s2
 });
 
@@ -86,31 +87,26 @@ class History extends BaseComponent {
     //处理接口请求结果
     handleResult = (res) => {
         const {page} = this.state;
-        const sectionIDs = [];
-        const rowIDs = [];
-        res.data.forEach((item, index) => {
+        res.data.forEach(item => {
             //判断后一页是否有和前一页同一天的数据
-            if (item.day.indexOf(this.sectionIDs)) {
-                rowIDs[this.rowIDs.length - 1] = [{
-                    [`${item.day}`]: [rowIDs[this.rowIDs.length - 1][`${item.day}`], ...item.data]
+            if (this.sectionIDs.includes(item.day)) {
+                this.rowIDs[this.rowIDs.length - 1] = [{
+                    [`${item.day}`]: [...this.rowIDs[this.rowIDs.length - 1][0][`${item.day}`], ...item.data]
                 }];
                 this.stackData = [...this.stackData, ...item.data];
             } else {
-                sectionIDs[index] = item.day;
-                rowIDs[index] = [{
-                    [`${item.day}`]: [...item.data]
-                }];
+                this.sectionIDs = [...this.sectionIDs, item.day];
+                this.rowIDs = [...this.rowIDs, [{[`${item.day}`]: [...item.data]}]];
                 this.stackData = [...this.stackData, ...item.data];
             }
         });
-        this.sectionIDs = [...this.sectionIDs, ...sectionIDs];
-        this.rowIDs = [...this.rowIDs, ...rowIDs];
-        console.log('handleResult', this.sectionIDs, this.rowIDs, this.stackData);
+        console.log('数据源', this.sectionIDs, this.rowIDs);
         this.setState((prevState) => ({
             data: prevState.data.cloneWithRowsAndSections(this.dataBlobs, this.sectionIDs, this.rowIDs),
             pageCount: res.page_count,
             isLoading: false
         }), () => {
+            console.log(this.state.data);
             if (page < this.state.pageCount) {
                 this.setState({
                     hasMore: true
@@ -133,7 +129,8 @@ class History extends BaseComponent {
             pageCount: -1,
             isLoading: false,
             hasMore: false,
-            checkedIds: []
+            checkedIds: [],
+            isEdit: false
         }, () => {
             this.getHistoryList();
         });
@@ -214,7 +211,7 @@ class History extends BaseComponent {
                                     {/* <span>休息中</span> */}
                                 </div>
                                 <div className="shop-row-right">
-                                {/*    <div className="shop-row-right-first">
+                                    {/*    <div className="shop-row-right-first">
                                         {this.renderStar(item.shop_mark)}
                                     </div>*/}
                                     <div className="shop-row-right-second">
@@ -287,8 +284,6 @@ class History extends BaseComponent {
     changeNavRight = (isEdit) => {
         this.setState({
             isEdit
-        }, () => {
-            console.log('点击顶部导航右侧按钮', this.state.isEdit);
         });
     };
 
@@ -302,10 +297,10 @@ class History extends BaseComponent {
             });
             const newArr = this.checkedIds.filter(id => id !== item.id);
             this.setState({
-                checkedIds: newArr
+                checkedIds: [...newArr]
             }, () => {
                 this.checkedIds = newArr;
-                console.log('移除选中id', this.state.checkedIds, this.stackData);
+                console.log('移除选中id', this.state.checkedIds);
             });
         } else {
             this.stackData.map(v => {
@@ -315,11 +310,21 @@ class History extends BaseComponent {
             });
             this.checkedIds = this.checkedIds.concat(item.id);
             this.setState({
-                checkedIds: this.checkedIds
+                checkedIds: [...this.checkedIds]
             }, () => {
-                console.log('添加选中id', this.state.checkedIds, this.stackData);
+                console.log('添加选中id', this.state.checkedIds);
             });
         }
+
+        const dataSource2 = new ListView.DataSource({
+            getRowData,
+            getSectionHeaderData: getSectionData,
+            rowHasChanged: (row1, row2) => row1 !== row2,
+            sectionHeaderHasChanged: (s1, s2) => s1 !== s2
+        });
+        this.setState((prevState) => ({
+            data: dataSource2.cloneWithRowsAndSections(this.dataBlobs, this.sectionIDs, this.rowIDs)
+        }));
     };
 
     //点击加入收藏夹回调
@@ -404,24 +409,6 @@ class History extends BaseComponent {
                 </span>
             ))
         );
-        //渲染listView
-        const list = (
-            <ListView
-                dataSource={data}
-                style={{height}}
-                initialListSize={5}
-                renderSectionHeader={sectionData => (
-                    <div className="history-list-section">
-                        {confirmDate(sectionData)}
-                    </div>
-                )}
-                pageSize={5}
-                renderRow={row}
-                onEndReachedThreshold={50}
-                onEndReached={this.onEndReached}
-                renderFooter={this.renderFooter}
-            />
-        );
         return (
             <div className="browsing-history">
                 {window.isWX ? null : (
@@ -438,7 +425,7 @@ class History extends BaseComponent {
 
                     />
                 )}
-                <div className={tabKey === 0 ? 'history-list-goods' : 'history-list-shop'}>
+                <div className={tabKey === 0 ? `history-list-goods ${isEdit ? 'base' : ''}` : `history-list-shop ${isEdit ? 'base' : ''}`}>
                     <Tabs
                         tabs={tabs}
                         initialPage={tabKey}
@@ -448,8 +435,21 @@ class History extends BaseComponent {
                         {(data && data.getRowCount() > 0) ? (
                             // listView滚动后renderRow里的状态不会刷新，只能直接重新渲染listView
                             <React.Fragment>
-                                {isEdit && list}
-                                {!isEdit && list}
+                                <ListView
+                                    dataSource={data}
+                                    style={{height}}
+                                    initialListSize={5}
+                                    renderSectionHeader={(sectionData) => (
+                                        <div className="history-list-section">
+                                            {confirmDate(sectionData)}
+                                        </div>
+                                    )}
+                                    pageSize={5}
+                                    renderRow={row}
+                                    onEndReachedThreshold={50}
+                                    onEndReached={this.onEndReached}
+                                    renderFooter={this.renderFooter}
+                                />
                             </React.Fragment>
                         ) : (
                             <Nothing

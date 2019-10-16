@@ -65,12 +65,18 @@
                 }
                 .info-basic-data{
                     margin-left: 36px;
+                    .designation {
+                        display: flex;
+                        .am-badge {
+                            margin-top: 5px;
+                        }
+                    }
                     .basic-data-name{
                         .TextareaOverflow(1);
-                        width: 300px;
+                        max-width: 300px;
                         font-size:36px;
                         color: @white;
-                        display: block;
+                        // display: block;
                     }
                     .am-badge {
                         .am-badge-text {
@@ -290,6 +296,9 @@
                         font-family:@font-family;
                         font-weight:@font-weight-normal;
                     }
+                    .am-grid-item:before {
+                        padding-bottom: 170px;
+                    }
                 }
             }
             .logistics-box {
@@ -358,10 +367,11 @@
             }
             .orderInfo{
                 position: relative;
-                padding-top:70px;
+                padding-top:80px;
                 .orderLogo{
                     position: absolute;
-                    left:50px;
+                    left:50%;
+                    margin-left: -22px;
                     top:10px;
                 }
                 .selfOrder{
@@ -377,6 +387,9 @@
                 }
             }
         }
+    }
+    .my-order-form:nth-child(5) {
+        margin-bottom: 100px;
     }
 
     .my-property{

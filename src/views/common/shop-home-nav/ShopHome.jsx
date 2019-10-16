@@ -55,7 +55,7 @@ class ShopHome extends BaseComponent {
 
     //店内搜索
     shopSearch = () => {
-        appHistory.push('/search');
+        appHistory.push('/search?shopSearch=1');
     }
 
     //收藏商店
@@ -139,7 +139,7 @@ class ShopHome extends BaseComponent {
 
     render() {
         const {shopModelArr, show} = this.props;
-        const {shopInfo, starsArr, half, visible} = this.state;
+        const {shopInfo, visible} = this.state;
         return (
             show ? '' : (
                 <div className="home-bar">

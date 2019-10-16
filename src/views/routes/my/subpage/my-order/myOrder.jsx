@@ -26,8 +26,8 @@ const tabs = [
     {title: '全部'},
     {title: '待付款'},
     {title: '待发货'},
-    {title: '待收货'},
-    {title: '待评价'}
+    {title: '待收货'}
+    // {title: '待评价'}
     // {title: '售后'} //暂时屏蔽
 ];
 
@@ -244,7 +244,7 @@ class MyOrder extends BaseComponent {
             ['0', '等待付款'],
             ['1', '等待发货'],
             ['2', '卖家已发货'],
-            ['3', '待评价'],
+            ['3', '交易完成'],
             ['4', '交易完成'],
             ['5', '退款中'],
             ['10', '已取消'],
@@ -508,7 +508,7 @@ class MyOrder extends BaseComponent {
         case '1': //待发货
             blockModal = (
                 <div className="buttons">
-                    {
+                    {/* {
                         (item.refund_button === 1) && (
                             <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
                                 {
@@ -517,7 +517,7 @@ class MyOrder extends BaseComponent {
                             </div>
 
                         )
-                    }
+                    } */}
                     {
                         !item.all_refund && <div className="evaluate-button" onClick={() => this.remindDelivery([item.id, item.can_tip])}>提醒发货</div>
                     }
@@ -528,7 +528,7 @@ class MyOrder extends BaseComponent {
         case '2'://待收货
             blockModal = (
                 <div className="buttons">
-                    {
+                    {/* {
                         item.refund_button === 1 && (
                             <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
                                 {
@@ -536,7 +536,7 @@ class MyOrder extends BaseComponent {
                                 }
                             </div>
                         )
-                    }
+                    } */}
                     <div className="look-button" onClick={(ev) => this.extendedReceipt(item.id, ev)}>延长收货</div>
                     <div className="look-button" onClick={(ev) => this.goApplyService(item.id, ev)}>查看物流</div>
                     <div className="evaluate-button" onClick={(ev) => this.confirmTake(item.id, ev, item.all_refund)}>确认收货</div>
@@ -551,7 +551,7 @@ class MyOrder extends BaseComponent {
             blockModal = (
                 <div className="buttons">
                     <div className="look-button" onClick={(ev) => this.goApplyService(item.id, ev)}>查看物流</div>
-                    <div className="evaluate-button" onClick={(ev) => this.promptlyEstimate(item.id, ev)}>立即评价</div>
+                    {/* <div className="evaluate-button" onClick={(ev) => this.promptlyEstimate(item.id, ev)}>立即评价</div> */}
                 </div>
             );
             break;
@@ -716,20 +716,20 @@ class MyOrder extends BaseComponent {
                             <div className="total-price-left">共{item.pr_count}件商品</div>
                             <div className="total-price-right">合计：<span className="zxa">￥{item.all_price}(含运费：{item.express_money})</span></div>
                         </div>
-                        {//售后状态下 退款申请中
+                        {/* {//售后状态下 退款申请中
                             item.return_status === '1' && (
                                 <div className="buttons">
                                     <div className="look-button" onClick={(ev) => this.revoke(item.return_id, ev)}>撤销申请</div>
                                     <div onClick={(ev) => this.application(ev, item.return_id)} className="evaluate-button">修改申请</div>
                                 </div>
                             )
-                        }
-                        {item.return_status === '2'
+                        } */}
+                        {/* {item.return_status === '2'
                         && (
                             <div className="buttons">
                                 <div className="evaluate-button" onClick={(ev) => this.revoke(item.return_id, ev)}>撤销申请</div>
                             </div>
-                        )}
+                        )} */}
                         {this.bottomModal(item)}
                     </div>
                 </div>

@@ -1,9 +1,8 @@
 import {connect} from 'react-redux';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './SuccessFile.less';
-import {native} from '../../../../../../utils/native';
 
-const {appHistory, setNavColor} = Utils;
+const {appHistory, setNavColor, native} = Utils;
 const {navColorF} = Constants;
 const timer = null;
 
@@ -35,7 +34,7 @@ class SuccessFile extends BaseComponent {
                     }
                 }
             });
-        }, 1000);
+        }, 10000);
     }
 
     componentWillMount() {
@@ -73,23 +72,23 @@ class SuccessFile extends BaseComponent {
                 <ul className="success-info">
                     <li>
                         <span>订单编号</span>
-                        <span>{info.order_no}</span>
+                        <span>{info && info.order_no}</span>
                     </li>
                     <li>
                         <span>订单金额</span>
-                        <span>{info.price}</span>
+                        <span>{info && info.price}</span>
                     </li>
                     <li>
                         <span>订单记账量</span>
-                        <span>{info.deposit}</span>
+                        <span>{info && info.deposit}</span>
                     </li>
                     <li>
                         <span>核销时间</span>
-                        <span>{info.recive_date}</span>
+                        <span>{info && info.recive_date}</span>
                     </li>
                 </ul>
                 <div className="btn-box">
-                    <div onClick={this.orderDetail}>查看订单</div>
+                    {/* <div onClick={this.orderDetail}>查看订单</div> */}
                     <div onClick={this.goHome}>返回首页</div>
                 </div>
             </div>

@@ -11,24 +11,6 @@ const hybird = process.env.NATIVE;
 // FIXME: 从新优化
 //已优化
 class NavBar extends React.PureComponent {
-    static defaultProps = {
-        goBackModal: null,
-        nativeGoBack: false,
-        title: '',
-        rightShow: false,
-        redBackground: false,
-        rightSearch: false,
-        rightExplain: false,
-        rightEdit: false,
-        search: false,
-        isEdit: false,
-        changeNavRight: false,
-        goToSearch: null,
-        style: {},
-        backgroundColor: '',
-        rightExplainClick: () => {}
-    };
-
     static propTypes = {
         goBackModal: PropTypes.func,
         nativeGoBack: PropTypes.bool,
@@ -49,6 +31,24 @@ class NavBar extends React.PureComponent {
         backgroundColor: PropTypes.string,
         rightExplainClick: PropTypes.func
     }
+
+    static defaultProps = {
+        goBackModal: null,
+        nativeGoBack: false,
+        title: '',
+        rightShow: false,
+        redBackground: false,
+        rightSearch: false,
+        rightExplain: false,
+        rightEdit: false,
+        search: false,
+        isEdit: false,
+        changeNavRight: false,
+        goToSearch: null,
+        style: {},
+        backgroundColor: '',
+        rightExplainClick: () => {}
+    };
 
     //左边按钮图标点击样式
     backAway = () => {
