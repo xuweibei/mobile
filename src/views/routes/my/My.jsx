@@ -15,7 +15,6 @@ import {myActionCreator} from './actions/index';
 import {FooterBar} from '../../common/foot-bar/FooterBar';
 import MyLogistics from './subpage/my-logistics/MyLogistics';
 import './My.less';
-import {showInfo} from '../../../utils/mixin';
 
 const {appHistory, rollStatus: {offRoll, openRoll, getScrollTop}, setNavColor} = Utils;
 const hybird = process.env.NATIVE;

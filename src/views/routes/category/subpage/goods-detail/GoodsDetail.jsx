@@ -606,11 +606,10 @@ class GoodsDetail extends BaseComponent {
 
     render() {
         const {
-            topSwithe, popup, paginationNum, xxArr, half, ids, maskStatus,
+            topSwithe, popup, paginationNum, half, ids, maskStatus,
             picPath, goodsDetail, shop, recommend, collect,
             goodsAttr, stocks, shopAddress, lineStatus, lineText, pickType, selectType, names, status
         } = this.state;
-        console.log(picPath[0], '肯德基康师傅');
         const renderCount = (
             <List>
                 <List.Item

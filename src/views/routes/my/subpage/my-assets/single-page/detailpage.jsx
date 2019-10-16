@@ -114,7 +114,7 @@ export default class Detailpage extends BaseComponent {
                         >交易时间：
                         </InputItem>
                         <InputItem
-                            value={this.payFs()}
+                            value={this.payFs(detailArr)}
                             editable={false}
                         >支付方式:
                         </InputItem>

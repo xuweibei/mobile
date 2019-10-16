@@ -152,7 +152,6 @@ class ReDetail extends BaseComponent {
 
     //选择自提日期
     onChangeTab=(tab) => {
-        console.log(tab, '接口史蒂芬霍金看');
         this.setState({
             valueItem: null,
             currentTab: tab.key

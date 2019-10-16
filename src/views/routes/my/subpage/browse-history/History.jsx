@@ -127,7 +127,8 @@ class History extends BaseComponent {
             pageCount: -1,
             isLoading: false,
             hasMore: false,
-            checkedIds: []
+            checkedIds: [],
+            isEdit: false
         }, () => {
             this.getHistoryList();
         });
@@ -296,7 +297,7 @@ class History extends BaseComponent {
             });
             const newArr = this.checkedIds.filter(id => id !== item.id);
             this.setState({
-                checkedIds: newArr
+                checkedIds: [...newArr]
             }, () => {
                 this.checkedIds = newArr;
                 console.log('移除选中id', this.state.checkedIds, this.stackData);
@@ -309,11 +310,21 @@ class History extends BaseComponent {
             });
             this.checkedIds = this.checkedIds.concat(item.id);
             this.setState({
-                checkedIds: this.checkedIds
+                checkedIds: [...this.checkedIds]
             }, () => {
                 console.log('添加选中id', this.state.checkedIds, this.stackData);
             });
         }
+
+        const dataSource2 = new ListView.DataSource({
+            getRowData,
+            getSectionHeaderData: getSectionData,
+            rowHasChanged: (row1, row2) => row1 !== row2,
+            sectionHeaderHasChanged: (s1, s2) => s1 !== s2
+        });
+        this.setState((prevState) => ({
+            data: dataSource2.cloneWithRowsAndSections(this.dataBlobs, this.sectionIDs, this.rowIDs)
+        }));
     };
 
     //点击加入收藏夹回调
@@ -384,22 +395,19 @@ class History extends BaseComponent {
         const height = document.documentElement.clientHeight - (window.isWX ? window.rem * 1.07 : window.rem * 1.95);
         //每行渲染样式
         const row = v => (
-            v.map((item) => {
-                console.log('itemitem', item.id);
-                return (
-                    <span key={item.id} className={isEdit ? 'history-list-show' : 'history-list-hide'}>
-                        {isEdit && (
-                            <div className="history-list-show-select">
-                                <span
-                                    className={checkedIds.includes(item.id) ? 'icon select' : 'icon unselect'}
-                                    onClick={() => this.onChangeCheck(item)}
-                                />
-                            </div>
-                        )}
-                        {this.renderListItem(item)}
-                    </span>
-                );
-            })
+            v.map((item) => (
+                <span key={item.id} className={isEdit ? 'history-list-show' : 'history-list-hide'}>
+                    {isEdit && (
+                        <div className="history-list-show-select">
+                            <span
+                                className={checkedIds.includes(item.id) ? 'icon select' : 'icon unselect'}
+                                onClick={() => this.onChangeCheck(item)}
+                            />
+                        </div>
+                    )}
+                    {this.renderListItem(item)}
+                </span>
+            ))
         );
         //渲染listView
         const list = (
