@@ -17,8 +17,8 @@ const hybrid = process.env.NATIVE;
 const tabs = [
     {title: '全部'},
     {title: '未完成'},
-    {title: '已完成'},
-    {title: '售后'}
+    {title: '已完成'}
+    // {title: '售后'}
 ];
 class ReDetail extends BaseComponent {
     state ={

@@ -27,22 +27,24 @@ export default class HomeList extends BaseComponent {
     }
 
     state = {
-        hotGoods: [],
-        latitude: '',
-        longitude: '',
-        recommendShop: [],
+        hotGoods: [], //热销商品
+        latitude: '', //经纬度
+        longitude: '', //经纬度
         exemption: [], //包邮商品
         hotShops: [], //星级商店
         goodsPage: 1, //热销page页
         exPage: 1, //包邮page页
         shopPage: 1, //热门店铺page页
-        useBodyScroll: true,
-        currentIndex: 0,
-        tabStatus: false,
-        tabTop: 0,
-        goodsPageCount: -1,
-        exPageCount: -1,
-        shopPageCount: -1
+        useBodyScroll: true, // body滚动
+        currentIndex: 0, //当前tab索引
+        tabStatus: false, // tab头部是否显示状态
+        tabTop: 0, // tap头部距离顶部距离
+        goodsPageCount: -1, //热销商品页数
+        exPageCount: -1, //包邮商品页数
+        shopPageCount: -1, //星店商品页数
+        hotStatus: false, // 热销商品加载状态
+        exStatus: false, // 包邮商品加载状态
+        shopStatus: false // 星店加载状态
     }
 
     componentDidMount() {
@@ -60,7 +62,7 @@ export default class HomeList extends BaseComponent {
             });
         }
         this.getExGoodsList();
-        // this.getHotShops();
+        this.getHotShops();
     }
 
     componentWillUnmount() {
@@ -117,11 +119,6 @@ export default class HomeList extends BaseComponent {
 
     //获取商品列表
     getGoodsList = (page) => {
-        const {goodsPageCount} = this.state;
-        if (page >= goodsPageCount) {
-            showInfo(Form.Not_More_Goods, 1);
-            return;
-        }
         this.fetch(urlCfg.getGoods, {
             data: {
                 type: 1,
@@ -165,13 +162,15 @@ export default class HomeList extends BaseComponent {
     //获取首页商店
     getHotShops = (page) => {
         const {latitude, longitude} = this.state;
+        const local = JSON.parse(getValue('local'));
+        console.log(local, 'ssssssssssssssssssss');
         this.fetch(urlCfg.getHomeShops, {
             data: {
                 type: 2,
                 page: page || 1,
                 pagesize: 4,
-                latitude: latitude,
-                longitude: longitude
+                latitude: (local && local.lat) || latitude,
+                longitude: (local && local.lon) || longitude
             }
         }).subscribe(res => {
             this.hotShopData = this.hotShopData.concat(res.data);
@@ -193,20 +192,20 @@ export default class HomeList extends BaseComponent {
         });
         if (index === 1) {
             const {exPage, exPageCount} = this.state;
-            if (exPage === exPageCount) {
+            if (exPage >= exPageCount) {
                 return;
             }
             this.getExGoodsList(exPage);
         } else if (index === 2) {
             const {shopPage, shopPageCount} = this.state;
-            if (shopPage === shopPageCount) {
+            console.log(shopPage, shopPageCount);
+            if (shopPage >= shopPageCount) {
                 return;
             }
             this.getHotShops(shopPage);
         } else {
             const {goodsPage, goodsPageCount} = this.state;
-            console.log(goodsPage, goodsPageCount);
-            if (goodsPage === goodsPageCount) {
+            if (goodsPage >= goodsPageCount) {
                 return;
             }
             this.getGoodsList(goodsPage);
@@ -215,14 +214,16 @@ export default class HomeList extends BaseComponent {
 
      //热销商品上拉加载
      goodReached = (e) => {
-         const {currentIndex} = this.state;
+         const {currentIndex, goodsPageCount} = this.state;
          if (currentIndex === 0) {
-             this.setState(prevState => ({
-                 goodsPage: prevState.goodsPage + 1
-             }), () => {
-                 const {goodsPage} = this.state;
-                 this.getGoodsList(goodsPage);
-             });
+             if (this.state.goodsPage > goodsPageCount) {
+                 this.setState({
+                     hotStatus: true
+                 });
+                 return;
+             }
+             const {goodsPage} = this.state;
+             this.getGoodsList(goodsPage);
          }
      };
 
@@ -231,7 +232,9 @@ export default class HomeList extends BaseComponent {
         const {currentIndex, exPageCount} = this.state;
         if (currentIndex === 1) {
             if (this.state.exPage > exPageCount) {
-                showInfo(Form.Not_More_Goods, 1);
+                this.setState({
+                    exStatus: true
+                });
                 return;
             }
             const {exPage} = this.state;
@@ -245,7 +248,9 @@ export default class HomeList extends BaseComponent {
         if (currentIndex === 2) {
             const {shopPage, latitude, longitude, shopPageCount} = this.state;
             if (shopPage > shopPageCount) {
-                showInfo(Form.Not_More_Shops, 1);
+                this.setState({
+                    shopStatus: true
+                });
                 return;
             }
             if (latitude && longitude) {
@@ -270,13 +275,18 @@ export default class HomeList extends BaseComponent {
         return arr;
     };
 
+    //跳转商品详情页
     goCate = (id) => {
         appHistory.push(`/goodsDetail?id=${id}`);
     };
 
+    //跳转店铺首页
     goShopHome = (id, lat, lon) => {
         appHistory.push(`/shopHome?id=${id}&lat=${lat}&lon=${lon}`);
     };
+
+    // 底部渲染
+    renderFooter = (bool) => (bool ? (<div>我是有底线的</div>) : (<div>正在加载</div>))
 
     render() {
         const tabs = [
@@ -329,15 +339,6 @@ export default class HomeList extends BaseComponent {
                     <img src={item.picpath} alt=""/>
                     <div className="details-bottom">
                         <p>{item.shopName}</p >
-                        {/*<div className="star-consume">
-                            <div key={item.shop_mark}>
-                                {this.renderStar(item.shop_mark)}
-                            </div>
-                            <div key={item.consume_per}>人均￥{item.consume_per}</div>
-                        </div>
-                        <div className="time-distance ">
-                            <span>营业时间{item.open_time}-{item.close_time}</span>
-                        </div>*/}
                         <div className="place region">
                             <span>{item.address}</span>
                         </div>
@@ -348,7 +349,7 @@ export default class HomeList extends BaseComponent {
                 </div>
             </div>
         );
-        const {hotGoods, exemption, hotShops, useBodyScroll, tabStatus} = this.state;
+        const {hotGoods, exemption, hotShops, useBodyScroll, tabStatus, hotStatus, shopStatus, exStatus} = this.state;
         return (
             <div ref={ref => { this.tabsList = ref }} className={`tabs-list ${tabStatus ? 'fiexd-tabs' : ''}`}>
                 <Tabs
@@ -360,15 +361,16 @@ export default class HomeList extends BaseComponent {
                         ref={ref => { this[`listViewCon${0}`] = ref }}
                         dataSource={this.dataSource.cloneWithRows(hotGoods)}
                         initialListSize={4}
+                        renderFooter={() => this.renderFooter(hotStatus)}
                         renderRow={hotGoodsRow}
                         useBodyScroll={useBodyScroll}
-                        // onEndReachedThreshold={1000}
                         onEndReached={this.goodReached}
                     />
                     <ListView
                         ref={ref => { this[`listViewCon${1}`] = ref }}
                         dataSource={this.dataSource.cloneWithRows(exemption)}
                         initialListSize={4}
+                        renderFooter={() => this.renderFooter(exStatus)}
                         renderRow={ex}
                         useBodyScroll={useBodyScroll}
                         onEndReachedThreshold={50}
@@ -379,6 +381,7 @@ export default class HomeList extends BaseComponent {
                         dataSource={this.dataSource.cloneWithRows(hotShops)}
                         initialListSize={4}
                         renderRow={shopData}
+                        renderFooter={() => this.renderFooter(shopStatus)}
                         useBodyScroll={useBodyScroll}
                         onEndReachedThreshold={50}
                         onEndReached={this.hotShopReached}

@@ -55,7 +55,7 @@ class ShopHome extends BaseComponent {
 
     //店内搜索
     shopSearch = () => {
-        appHistory.push('/search');
+        appHistory.push('/search?shopSearch=1');
     }
 
     //收藏商店

@@ -255,7 +255,8 @@ class My extends BaseComponent {
     //页面跳转
     jumpRouter = (url) => {
         if (url === '/selectType') {
-            showInfo('等等');
+            appHistory.push('/openShopPage');
+            // showInfo('等等');
             // removeValue('shopStatus');
             // this.fetch(urlCfg.applyForRight).subscribe(res => {
             //     if (res && res.status === 0) {
