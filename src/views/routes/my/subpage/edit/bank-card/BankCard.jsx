@@ -183,7 +183,7 @@ class BankCard extends BaseComponent {
                                     {bankInfo.shoper.map(item => (
                                         <div key={item.id} className={this.backgroundImng(item.bankId) ? 'background-blue' : 'background-red'}>
                                             <div className="background-t">
-                                                <div className="logo" style={{backgroundPosition: bankImg[item.bankId] ? `${bankImg[21][0]}px ${bankImg[item.bankId][1]}px` : '1000px 1000px'}}/>
+                                                <div className="logo" style={{backgroundPosition: bankImg[item.bankId] ? `${bankImg[item.bankId][0]}px ${bankImg[item.bankId][1]}px` : '1000px 1000px'}}/>
                                                 <div className="background-tl">{item.bankArea}</div>
                                             </div>
                                             <div className="card">

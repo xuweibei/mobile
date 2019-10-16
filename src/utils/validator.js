@@ -134,7 +134,7 @@ export function ID(num) {
 
 //银行卡号验证
 export function bankCard(num) {
-    return /^\d{15,20}$/.test(num);
+    return /^\d{16,22}$/.test(num);
 }
 
 //uid验证
