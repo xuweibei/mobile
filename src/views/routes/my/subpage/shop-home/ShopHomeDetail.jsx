@@ -19,12 +19,8 @@ class ShopHomeDetail extends BaseComponent {
     };
 
     componentDidMount() {
-        // console.log(window.BMap);
-        this.renderMap();
+        // this.renderMap();
         this.getList();
-        // FIXME: 这个是什么作用
-        //之前测试原生右滑问题解决。可以删除
-        // window.ontouchmove = '';
     }
 
     getList = () => {
@@ -110,7 +106,7 @@ class ShopHomeDetail extends BaseComponent {
                                 {
                                     shopInfo.open_time && <div className="store-name-t">营业时间{shopInfo.open_time}</div>
                                 }
-                                <div className="store-name-b">{shopInfo.addre}</div>
+                                <div className="store-name-b">{shopInfo.addre + ' ' + shopInfo.address}</div>
                             </div>
                         </div>
                         {/*滑动查看电话*/}
@@ -137,7 +133,7 @@ class ShopHomeDetail extends BaseComponent {
                         {/*图册*/}
                         <div className="Atlas">
                             <div className="Atlas-n">商家图册</div>
-                            <div className="shopImgMore">
+                            <div className="shop-img-more">
                                 <Carousel >
                                     {
                                         shopInfo.album_pic && shopInfo.album_pic.length > 0 ? shopInfo.album_pic.map(item => <img src={item} alt=""/>) : <div className="period"/>
@@ -147,11 +143,10 @@ class ShopHomeDetail extends BaseComponent {
                             {/*<img src={require('../../../../assets/images/Atlas.png')} alt=""/>*/}
                         </div>
                         {/*地址*/}
-                        <div className="business-address">
+                        {/* <div className="business-address">
                             <div className="Atlas-n">商家地址</div>
-                            {/*<img src={require('../../../../assets/images/Atlas.png')} alt=""/>*/}
                             <div id="map" style={{height: '500px', marginBottom: '100px'}}/>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>

@@ -92,7 +92,7 @@ class CategoryList extends BaseComponent {
 
     //返回上一級
     routeTo = () => {
-        if (hybird) {
+        if (hybird && appHistory.length() === 0) {
             native('goBack');
         } else {
             appHistory.goBack();
