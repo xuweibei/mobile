@@ -8,18 +8,17 @@ import './Nothing.less';
 
 const {FIELD} = Constants;
 class Nothing extends React.PureComponent {
-    static defaultProps = {
-        title: '',
-        onClick() {}
-    };
-
-
     static propTypes = {
         title: PropTypes.string,
         text: PropTypes.string.isRequired,
         onClick: PropTypes.func,
         loadingShow: PropTypes.bool.isRequired
     }
+
+    static defaultProps = {
+        title: '',
+        onClick() {}
+    };
 
     state = {
         noThing: ''

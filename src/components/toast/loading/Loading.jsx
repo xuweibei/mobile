@@ -7,15 +7,6 @@ import {LayeredComponentMixin} from '../../hoc/LayeredComponentMixin';
 
 
 class Loading extends React.PureComponent {
-    static defaultProps = {
-        visible: false,
-        color: '#fff',
-        delay: 300,
-        type: 'balls',
-        height: 16,
-        width: 16
-    };
-
     static propTypes = {
         visible: PropTypes.bool,
         delay: PropTypes.number,
@@ -31,6 +22,14 @@ class Loading extends React.PureComponent {
         ])
     };
 
+    static defaultProps = {
+        visible: false,
+        color: '#fff',
+        delay: 300,
+        type: 'balls',
+        height: 16,
+        width: 16
+    };
 
     constructor(props, context) {
         super(props, context);

@@ -214,9 +214,9 @@ class History extends BaseComponent {
                                     {/* <span>休息中</span> */}
                                 </div>
                                 <div className="shop-row-right">
-                                {/*    <div className="shop-row-right-first">
-                                        {this.renderStar(item.shop_mark)}
-                                    </div>*/}
+                                    {/* <div className="shop-row-right-first">
+                                       {this.renderStar(item.shop_mark)}
+                                   </div> */}
                                     <div className="shop-row-right-second">
                                         <span className="store-name">{item.shopName}</span>
                                         <span>人均消费 <span>￥{item.average}</span></span>

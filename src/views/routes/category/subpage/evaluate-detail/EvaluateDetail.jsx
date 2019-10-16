@@ -192,49 +192,47 @@ export default class EvaluateDetail extends BaseComponent {
                 <AppNavBar title="商品评价"/>
                 {/* 用户评论*/}
                 <div className="comment-box">
-                    {
-                        <div className="user-reviews">
-                            <div className="user bottom">
-                                <div className="user-top">
-                                    <div className="logo">
-                                        <img src={appraise.avatarUrl} alt=""/>
-                                    </div>
-                                    <div className="name">
-                                        <div className="user-name">{appraise.nickname}</div>
-                                        <div className="time">{appraise.crtdate}
-                                            <div className="frequency-l">浏览:{appraise.hits}</div>
-                                        </div>
-                                    </div>
-                                    <div className="logo-left">
-                                        {appraise.zan_num} <span
-                                            className={`icon support ${appraise.zan === 1 ? 'active-color' : ''}`}
-                                        />
+                    <div className="user-reviews">
+                        <div className="user bottom">
+                            <div className="user-top">
+                                <div className="logo">
+                                    <img src={appraise.avatarUrl} alt=""/>
+                                </div>
+                                <div className="name">
+                                    <div className="user-name">{appraise.nickname}</div>
+                                    <div className="time">{appraise.crtdate}
+                                        <div className="frequency-l">浏览:{appraise.hits}</div>
                                     </div>
                                 </div>
-                                <div className="frames">
-                                    <div className="word">{appraise.content}</div>
-                                    <div className="picture">
-                                        <ul>
-                                            {
-                                                pics && pics.map(pic => (
-                                                    <li onClick={() => this.openMask(pic)}><img src={pic} alt=""/></li>
-                                                ))
-                                            }
-                                        </ul>
-                                    </div>
-                                    <div className="review">追评</div>
-                                    <div className="comment-bar">{add.content}</div>
-                                    {
-                                        appraise.return_content && (
-                                            <div className="chat-box">
-                                                <div className="chat">商家回复：{add.return_content}</div>
-                                            </div>
-                                        )
-                                    }
+                                <div className="logo-left">
+                                    {appraise.zan_num} <span
+                                        className={`icon support ${appraise.zan === 1 ? 'active-color' : ''}`}
+                                    />
                                 </div>
                             </div>
+                            <div className="frames">
+                                <div className="word">{appraise.content}</div>
+                                <div className="picture">
+                                    <ul>
+                                        {
+                                            pics && pics.map(pic => (
+                                                <li onClick={() => this.openMask(pic)}><img src={pic} alt=""/></li>
+                                            ))
+                                        }
+                                    </ul>
+                                </div>
+                                <div className="review">追评</div>
+                                <div className="comment-bar">{add.content}</div>
+                                {
+                                    appraise.return_content && (
+                                        <div className="chat-box">
+                                            <div className="chat">商家回复：{add.return_content}</div>
+                                        </div>
+                                    )
+                                }
+                            </div>
                         </div>
-                    }
+                    </div>
                     <div className="all-comments">
                         <h1 className="title">全部评论({res.num})</h1>
                         {
