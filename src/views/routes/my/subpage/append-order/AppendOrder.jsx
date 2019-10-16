@@ -142,7 +142,6 @@ class appendOrder extends BaseComponent {
         }
         const addArr = [];
         if (address) {
-            console.log('只是心撒旦画');
             addArr.push({
                 ...address
             });
@@ -265,7 +264,7 @@ class appendOrder extends BaseComponent {
                         order: infoArry,
                         invoice
                     }, () => {
-                        console.log(this.state.shopInfo);
+                        // console.log(this.state.shopInfo);
                         const {goods} = this.state;
                         if (goods && goods.length > 0) {
                             goods.forEach(item => {
@@ -289,7 +288,8 @@ class appendOrder extends BaseComponent {
     };
 
     //发票弹框显示状态
-    showPanel = (index) => {
+    showPanel = (a, index) => {
+        console.log(a);
         this.setState({
             invoiceStatus: true,
             invoiceIndex: index
@@ -482,8 +482,8 @@ class appendOrder extends BaseComponent {
                                                                     </div>
                                                                     <div className="desc-sku">
                                                                         <div className="sku-left">
-                                                                            {goods.values_name.split(',').map(item => (
-                                                                                <span className="goods-size" key={item}>{item}</span>
+                                                                            {goods.values_name.split(',').map((item, idx) => (
+                                                                                <span className="goods-size" key={item + idx.toString()}>{item}</span>
                                                                             ))}
 
                                                                         </div>
@@ -535,7 +535,7 @@ class appendOrder extends BaseComponent {
                                         >订单备注
                                         </InputItem>
                                         {
-                                            shop.data.map(goods => goods.if_invoice.includes('1')) && (<List.Item onClick={() => { this.showPanel(index) }} className="invoice">发票抬头</List.Item>)
+                                            shop.data.map(goods => goods.if_invoice.includes('1')) && (<List.Item key={index.toString()} onClick={() => { this.showPanel(index) }} className="invoice">发票抬头</List.Item>)
                                         }
                                         {/* <InputItem
                                             // value={card[index]}
@@ -593,7 +593,7 @@ class appendOrder extends BaseComponent {
                                     <div className="rise-content">
                                         {
                                             kind.map((item, index) => (
-                                                <div className={currentIndex === index ? 'active' : ''} onClick={() => this.checkIndex(index)} key={item}>{item.title}</div>
+                                                <div className={currentIndex === index ? 'active' : ''} onClick={() => this.checkIndex(index)} key={item + index.toString()}>{item.title}</div>
                                             ))
                                         }
                                     </div>

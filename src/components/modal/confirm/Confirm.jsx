@@ -11,14 +11,6 @@ import {baseActionCreator as actionCreator} from '../../../redux/baseAction';
 import './index.less';
 
 class Confirm extends React.PureComponent {
-    static defaultProps = {
-        visible: false,
-        title: '',
-        message: '',
-        btnTexts: List(['取消', '确认']),
-        callbacks: null
-    }
-
     static propTypes = {
         visible: PropTypes.bool,
         title: PropTypes.string,
@@ -27,6 +19,14 @@ class Confirm extends React.PureComponent {
         callbacks: ImmutablePropTypes.list,
         hideConfirm: PropTypes.func.isRequired
     };
+
+    static defaultProps = {
+        visible: false,
+        title: '',
+        message: '',
+        btnTexts: List(['取消', '确认']),
+        callbacks: null
+    }
 
     constructor(props, context) {
         super(props, context);

@@ -1,9 +1,8 @@
 import {connect} from 'react-redux';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './SuccessFile.less';
-import {native} from '../../../../../../utils/native';
 
-const {appHistory, setNavColor} = Utils;
+const {appHistory, setNavColor, native} = Utils;
 const {navColorF} = Constants;
 const timer = null;
 
@@ -89,7 +88,7 @@ class SuccessFile extends BaseComponent {
                     </li>
                 </ul>
                 <div className="btn-box">
-                    <div onClick={this.orderDetail}>查看订单</div>
+                    {/* <div onClick={this.orderDetail}>查看订单</div> */}
                     <div onClick={this.goHome}>返回首页</div>
                 </div>
             </div>

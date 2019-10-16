@@ -360,7 +360,7 @@ class passwordDetail extends BaseComponent {
                                 className="nab"
                                 icon={<Icon type="left" size="lg" onClick={() => { this.setState({passShow: false, phoneShow: true}) }}/>}
                             >
-                                {'设置登录密码'}
+                                设置登录密码
                             </NavBar>
                             <div className="cipher-box">
                                 {

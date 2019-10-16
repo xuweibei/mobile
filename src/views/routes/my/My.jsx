@@ -15,7 +15,6 @@ import {myActionCreator} from './actions/index';
 import {FooterBar} from '../../common/foot-bar/FooterBar';
 import MyLogistics from './subpage/my-logistics/MyLogistics';
 import './My.less';
-import {showInfo} from '../../../utils/mixin';
 
 const {appHistory, rollStatus: {offRoll, openRoll, getScrollTop}, setNavColor} = Utils;
 const hybird = process.env.NATIVE;
@@ -405,10 +404,12 @@ class My extends BaseComponent {
                                     </div>
                                 </div>
                                 <div className="info-basic-data">
-                                    <span className="basic-data-name">{myInfo && (userInfo.nickname || '')}</span>
-                                    <Badge
-                                        text={myInfo && (userInfo.typeName)}
-                                    />
+                                    <div className="designation">
+                                        <span className="basic-data-name">{myInfo && (userInfo.nickname || '')}</span>
+                                        <Badge
+                                            text={myInfo && (userInfo.typeName)}
+                                        />
+                                    </div>
                                     <p className="basic-data-UID" onClick={this.routeTo}>UID:{myInfo && (userInfo.no)}</p>
                                     {   //用户身份为消费商的时候展示
                                         myInfo && myInfo.info.iden_type === '2' && <div className="icon conmuterId" onClick={this.changeYourself}>我是消费者</div>
