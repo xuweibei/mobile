@@ -101,7 +101,7 @@ class NavBar extends React.PureComponent {
         return (
             window.isWX ? null : (
                 <div className="wrapTabNav">
-                    <div className="navbar" style={{backgroundColor: backgroundColor || '#fff'}}>
+                    <div className="navbar" style={{backgroundColor: backgroundColor || '@white'}}>
                         { redBackground //红底
                             ? (
                                 <div>

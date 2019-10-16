@@ -66,15 +66,15 @@
                     span:nth-child(1) {
                         padding: 3px 15px;
                         color: @white;
-                        border:1px solid rgba(255,45,81,1);
-                        background:linear-gradient(0deg,rgba(255,45,81,1) 0%,rgba(242,12,0,1) 100%);
+                        border:1px solid @fiery-red;
+                        background:linear-gradient(0deg,@fiery-red 0%,@garnet-red 100%);
                         border-radius:15px;
                         margin-right: 20px;
                     }
                     .goods-row-right-isout {
                         padding: 6px 14px;
-                        color: #fff;
-                        background:rgba(102,102,102,1);
+                        color: @white;
+                        background:@dark-gray;
                         border-radius:50px;
                     }
                     .goods-row-right-city {
@@ -104,8 +104,8 @@
                     .goods-row-right-isout {
                         font-size: 18px;
                         padding: 6px 14px;
-                        color: #fff;
-                        background:rgba(102,102,102,1);
+                        color: @white;
+                        background:@dark-gray;
                         border-radius:50px;
                     }
                 }
@@ -301,7 +301,7 @@
     }
     .unselect::before{
         content: '\E611';
-        color: #999999;
+        color: @gray;
     }
     .select:before {
         content: '\E610';
@@ -319,7 +319,7 @@
         justify-content: space-between;
         width: 100%;
         line-height: 88px;
-        box-shadow:0px 2px 7px 1px rgba(255, 146, 150, 0.35);
+        box-shadow:@box-shadow-0271;
         padding: 0 30px;
         background: @white;
         .history-menu-left {

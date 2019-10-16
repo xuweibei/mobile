@@ -563,7 +563,7 @@ export default class Notice extends BaseComponent {
                                 className="clear"
                                 onChange={this.tabChange}
                             >
-                                <div style={{backgroundColor: '#fff'}}>
+                                <div style={{backgroundColor: '@white'}}>
                                     <div className={`text-content ${rightStatus === 2 ? 'complete' : ''}`}>
                                         {this.messageModule(row)}
                                     </div>
@@ -575,7 +575,7 @@ export default class Notice extends BaseComponent {
                                 <div className="footer-bar">
                                     <TabBar
                                         unselectedTintColor="#595959"
-                                        tintColor="#333"
+                                        tintColor="@darker-black"
                                         barTintColor="white"
                                         hidden={false}
                                         tabBarPosition="bottom"

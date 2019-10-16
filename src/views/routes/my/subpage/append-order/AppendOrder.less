@@ -8,7 +8,7 @@
     //     }
     // }
     .single-price{
-        color: #333;
+        color: @darker-black;
         font-size: @font-size-30;
         text-align: right;
         width: 144px;
@@ -36,10 +36,10 @@
         font-size: @font-size-30;
         display: flex;
         justify-content: space-between;
-        background-color: #FFFFFF;
+        background-color: @white;
         .chose-add{
             line-height: 80px;
-            color: #999;
+            color: @gray;
             font-size: @font-size-38;
         }
         .address-left{
@@ -104,7 +104,7 @@
             }
         }
         .distance-box {
-            background: #fff;
+            background: @white;
         }
         .distance {
             padding: 0 30px 30px;
@@ -176,7 +176,7 @@
         }
         .num-right{
             font-size: 30px;
-            color: #333;
+            color: @darker-black;
             flex: 1;
             text-align: right;
             padding-top: 5px;
@@ -189,7 +189,7 @@
             //width: 150px;
             height: 30px;
             font-size: @font-size-20;
-            color: #FFFFFF;
+            color: @white;
             .directionalGradation(150deg, @garnet-red, @fiery-red);
             font-weight: 500;
             //margin-top: 16px;
@@ -260,7 +260,7 @@
         display: inline-block;
     }
     .am-icon{
-        color: #999 !important;
+        color: @gray !important;
     }
     .order-message{
         height: 90px;
@@ -268,7 +268,7 @@
         color: @darker-black;
         font-size: @font-size-30;
         line-height: 90px;
-        //border-bottom: 1px solid #EEEEEE;
+        //border-bottom: 1px solid @to-light-gray;
         .hairline('bottom',@to-light-gray);
     }
     .am-list-item{
@@ -329,9 +329,9 @@
         left: 50%;
         bottom: 0;
         transform: translateX(-50%);
-        background: #fff;
+        background: @white;
         line-height: 100px;
-        background: rgba(255, 255, 255, 1);
+        background: @white;
         box-shadow: 0 0 20px 0 rgba(204, 204, 204, 0.3);
         .pay-left {
             space {
@@ -362,13 +362,13 @@
             height: 80px;
             line-height: 76px !important;
             margin-top: 10px !important;
-            background: linear-gradient(0deg, rgba(242, 12, 0, 1) 0%, rgba(255, 45, 81, 1) 100%);
-            box-shadow: 0 4px 35px 0 rgba(242, 13, 3, 0.4);
+            background: linear-gradient(0deg, @garnet-red 0%, @fiery-red 100%);
+            box-shadow: 0 4px 35px 0 @button-shadow-red;
             border-radius: 40px;
 
             span {
                 display: inline-block !important;
-                color: #fff !important;
+                color: @white !important;
                 height: 100% !important;
                 line-height: 76px !important;
                 font-size: @font-size-30 !important;
@@ -380,7 +380,7 @@
         bottom: 100px;
         background: #FF8900;
         height: 88px;
-        color: #fff;
+        color: @white;
         font-size: 30px;
         text-align: center;
         line-height: 88px;
@@ -413,8 +413,8 @@
 
         .panel-info{
             height: 1100px;
-            border-radius:20px 20px 0px 0px;
-            background: #fff;
+            border-radius:20px 20px 0 0;
+            background: @white;
             position: absolute;
             width: 100%;
             bottom: 0;
@@ -438,10 +438,10 @@
                     .kind-select{
                         width:212px;
                         height:50px;
-                        background:rgba(255,255,255,1);
-                        border:2px solid rgba(255,45,81,1);
+                        background:@white;
+                        border:2px solid @fiery-red;
                         border-radius:25px;
-                        color: #FF2D51;
+                        color: @fiery-red;
                         font-size: @font-size-24;
                         line-height: 50px;
                         text-align: center;
@@ -465,8 +465,8 @@
                         flex: 0 0 140px;
                         width:140px;
                         height:50px;
-                        background:rgba(255,255,255,1);
-                        border:2px solid rgba(153,153,153,1);
+                        background:@white;
+                        border:2px solid @gray;
                         border-radius:25px;
                         line-height: 50px;
                         font-size: @font-size-24;
@@ -493,7 +493,7 @@
                         margin-bottom: 20px;
                     }
                     span {
-                        color: #F20C00;
+                        color: @garnet-red;
                     }
                 }
                 .personage {
@@ -539,10 +539,10 @@
             .am-button{
                 width:660px;
                 height:100px;
-                background:linear-gradient(180deg,rgba(255,45,81,1) 0%,rgba(242,12,0,1) 100%);
-                box-shadow:0px 4px 35px 0px rgba(242,13,3,0.4);
+                background:linear-gradient(180deg,@fiery-red 0%,@garnet-red 100%);
+                box-shadow:@button-box-shadow;
                 border-radius:50px;
-                color: #fff;
+                color: @white;
                 position: absolute;
                 bottom: 30px;
             }

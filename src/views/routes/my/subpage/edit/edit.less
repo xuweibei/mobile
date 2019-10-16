@@ -13,7 +13,7 @@
         color: @darker-black;
         font-weight: @font-weight-bold;
         height: 88px;
-        background: #fff;
+        background: @white;
     }
     .banner{
         display: flex;
@@ -22,8 +22,8 @@
         font-family: @font-family;
         font-size: @font-size-30;
         font-weight: 500;
-        background: #666666;
-        color: #fff;
+        background: @dark-gray;
+        color: @white;
         background: url("./../../../../../assets/images/bgbgg.png") 0 0 no-repeat;
         background-size: 100% 380px;
         .banner-center{
@@ -125,7 +125,7 @@
         padding: 40px 0;
         background: @white;
         .am-button{
-            color: #FFFFFF;
+            color: @white;
             font-size: @font-size-36;
             font-family: @font-family;
             background: @fiery-red;
@@ -141,7 +141,7 @@
     .am-list-item .am-list-line {
         padding-left: 30px;
         position: relative;
-        .hairline('bottom', #eee)!important;
+        .hairline('bottom', @to-light-gray)!important;
     }
     .am-list-body::after {
         height: 0 !important;
@@ -155,7 +155,7 @@
         margin-right: 28px;
     }
     .pig:before,.phone:before,.lock:before,.before:before,.address:before,.binding:before,.bankCard:before,.locationarea:before,.news:before,.feedback:before,.about:before {
-        color: rgba(242, 12, 0, 1);
+        color: @garnet-red;
         font-size: 54px;
     }
     .area{
@@ -197,7 +197,7 @@
         content: '\E654';
     }
     .am-list-body {
-        background: #F9F9F9;
+        background: @back-color;
     }
     .am-list-item {
         padding-left: 0;
@@ -229,10 +229,10 @@
     .logOut{
         width:660px;
         height:100px;
-        background: linear-gradient(180deg, #ff2d51 0%, #f20c00 100%);
+        background: linear-gradient(180deg, @fiery-red 0%, @garnet-red 100%);
         margin:20px auto;
         border-radius: 50px;
-        color:#fff;
+        color:@white;
     }
     .am-button::before {
         border: none!important;

@@ -2,7 +2,7 @@
 
 .cash {
     position: relative;
-    background: #F9F9F9;
+    background: @back-color;
     //.cash-content{
     //  .aroundBlank();
     //}
@@ -40,7 +40,7 @@
                 font-size: @font-size-38;
                 font-weight: @font-weight-bold;
                 font-family: @font-family;
-                color: rgba(255, 254, 254, 1);
+                color: #fffefe;
                 z-index: 1;
             }
         }
@@ -57,12 +57,12 @@
     .assetBg{
         width:750px;
         height:164px;
-        background:rgba(255,87,116,1);
+        background:#ff5774;
         p{
             width:100%;
             text-align: center;
             font-size:30px;
-            color:#fff;
+            color:@white;
             padding-top:30px;
             span{
                 font-size:20px;
@@ -74,7 +74,7 @@
             display: block;
             width:100%;
             text-align: center;
-            color:#fff;
+            color:@white;
             margin-top:10px;
         }
     }
@@ -83,7 +83,7 @@
         height:166px;
         margin-top:40px;
         border-radius: 20px;
-        box-shadow: 0 0.1rem 0.24rem 0 rgba(204, 204, 204, 0.2);
+        box-shadow: @button-box-shadow-light-gray;
     }
     .moneyShow div:first-child{
         float:left;
@@ -92,7 +92,7 @@
         padding-right:120px;
         margin-left:100px;
         span{
-            color:#FF2D51;
+            color:@fiery-red;
             font-size:30px;
             display: inline-block;
             margin-bottom:20px;
@@ -110,7 +110,7 @@
         margin-top:30px;
         margin-right:130px;
         span{
-            color:#FF2D51;
+            color:@fiery-red;
             font-size:30px;
             display: inline-block;
             margin-bottom:20px;
@@ -142,8 +142,8 @@
                 width: 100%;
                 height: 90px;
 
-                background: rgba(255, 255, 255, 1);
-                box-shadow: 0 2px 18px 0 rgba(255, 146, 150, 0.35);
+                background: @white;
+                box-shadow:@box-shadow-02180;
                 border-radius: 45px;
 
                 .am-tabs-default-bar-tab {
@@ -171,7 +171,7 @@
                     width: 36px !important;
                     height: 8px;
                     bottom: 14px;
-                    background: rgba(255, 45, 81, 1);
+                    background: @fiery-red;
                     border-radius: 4px;
                     margin-left: 23%;
                 }
@@ -191,14 +191,14 @@
 
         .am-input-label-5 {
             font-size: 30px;
-            color: #999;
+            color: @gray;
         }
 
         .am-tabs-default-bar-underline {
             width: 40px !important;
             height: 8px;
             bottom: -0.1rem;
-            background: rgba(255, 45, 81, 1);
+            background: @fiery-red;
             border-radius: 4px;
             margin-left: 10%;
             margin-bottom: 12px;
@@ -207,7 +207,7 @@
         .am-input-control {
             input {
                 font-size: 30px;
-                color: #333;
+                color: @darker-black;
             }
         }
     }
@@ -254,7 +254,7 @@
                 height: 80px;
                 line-height: 80px;
                 font-weight: bold;
-                color: #333;
+                color: @darker-black;
 
                 span:nth-child(1) {
                     float: left;
@@ -270,7 +270,7 @@
             }
 
             p:nth-child(2) {
-                color: #666;
+                color: @dark-gray;
 
                 span:nth-child(1) {
                     float: left;
@@ -290,7 +290,7 @@
                 top: 50px;
                 right: 40px;
                 font-size: 48px;
-                color: #333 !important;
+                color: @darker-black !important;
                 width: 130px;
                 font-weight: bold;
             }
@@ -319,7 +319,7 @@
         }
 
         .unde-line {
-            //border-bottom:1px solid #EEEEEE;
+            //border-bottom:1px solid @to-light-gray;
             .hairline('bottom', @to-light-gray);
             padding-top: 10px;
             height: 1.4rem;
@@ -399,13 +399,13 @@
             .am-list-footer {
                 line-height: 80px;
                 padding: 0 30px;
-                background: #f9f9f9;
+                background: @back-color;
             }
         }
     }
 
     .menu-line {
-        background: #fff;
+        background: @white;
         height: 100px;
 
         .assets-img {
@@ -437,7 +437,7 @@
 
         .line {
             //border-bottom:1px solid rgba(204,204,204,0.5);
-            .hairline('bottom', rgba(204, 204, 204, 0.5));
+            .hairline('bottom', @button-hairline-light-gray);
 
             .am-input-label-5 {
                 font-size: 30px;
@@ -456,7 +456,7 @@
 
             input {
                 font-size: 30px;
-                color: #666666;
+                color: @dark-gray;
                 padding-right: 10px;
             }
 
@@ -488,7 +488,7 @@
 
         input {
             font-size: 60px !important;
-            color: #999;
+            color: @gray;
             margin-top: 30px;
         }
 
@@ -503,7 +503,7 @@
             display: block;
             width: 23px;
             height: 44px;
-            color: #999;
+            color: @gray;
         }
     }
 
@@ -550,7 +550,7 @@
         height: 292px;
         position: relative;
         background: #FF5774;
-        color: #fff;
+        color: @white;
 
         p {
             position: absolute;

@@ -36,7 +36,7 @@
         }
         .am-list-item .am-input-control input {
             text-align: left;
-            border: 1px solid rgba(238, 238, 238, 1);
+            border: 1px solid @to-light-gray;
             border-radius:100px;
             padding: 27px 80px 27px 30px;
             width: 590px;
@@ -54,7 +54,7 @@
         .send-out {
             line-height: 102px;
             padding: 0 33px 0 26px;
-            color: rgba(255, 45, 81, 1);
+            color: @fiery-red;
             font-size: @font-size-30;
         }
         .am-list-body {
@@ -64,7 +64,7 @@
             height: 0;
         }
         html:not([data-scale]) .am-list-body div:not(:last-child) .am-list-line::after,html:not([data-scale]) .am-list-item:not(:last-child) .am-list-line::after,html:not([data-scale]) .am-list-body::before {
-            height: 0px;
+            height: 0;
         }
 
 
@@ -90,7 +90,7 @@
         width: 100%;
         height: 192px;
         margin-bottom: 20px;
-        background-color: #fff;
+        background-color: @white;
         .evaluate {
             height: 100%;
             padding: 0 20px;
@@ -99,8 +99,8 @@
                 font-size: @font-size-24;
                 display: inline-block;
                 border-radius: 30px;
-                border: 1px solid #999999;
-                color: #999999;
+                border: 1px solid @gray;
+                color: @gray;
                 margin: 32px 15px 0;
                 line-height: 50px;
                 padding: 0 30px;
@@ -113,16 +113,16 @@
     }
 
     .user-reviews {
-        background-color: #fff;
+        background-color: @white;
     }
     .user-reviews-box {
         width:100%;
-        background-color: #fff;
+        background-color: @white;
         .user {
             width: 100%;
             justify-content: space-between;
             padding-bottom: 40px;
-            //border-bottom: 1px solid #EEEEEE;
+            //border-bottom: 1px solid @to-light-gray;
             .hairline('bottom',@to-light-gray);
         }
         .user::after {
@@ -164,19 +164,19 @@
         .user-name {
             font-size: @font-size-28;
             margin-top: 3px;
-            color: #333333;
+            color: @darker-black;
             display: inline;
         }
         .time {
             font-size: @font-size-24;
             margin-top: 8px;
-            color: #999999;
+            color: @gray;
         }
     }
     .logo-left {
         font-size: @font-size-20;
         margin: 40px 0 0 0;
-        color: #666666;
+        color: @dark-gray;
         .support:after {
             content: '\E63f';
             font-size: @font-size-32;
@@ -188,13 +188,13 @@
     .word {
         margin-top: 20px;
         font-size: @font-size-28;
-        color: #666666;
+        color: @dark-gray;
         display: flex;
         .word-l {
             margin-right: 10px;
         }
         .word-c {
-            color: #FF2D51;
+            color: @fiery-red;
         }
         .word-r {
             flex: 1;
@@ -221,11 +221,11 @@
     }
     .review {
         padding: 22px 0 21px 7px;
-        color: #FF2D51;
+        color: @fiery-red;
         font-size: @font-size-28;
     }
     .comment-bar {
-        color: #666666;
+        color: @dark-gray;
         font-size: @font-size-28;
         margin-left: 7px;
     }
@@ -235,11 +235,11 @@
         justify-content: space-between;
         margin-top: 21px;
         .frequency-l {
-            color: #999999;
+            color: @gray;
             font-size: @font-size-24;
         }
         .frequency-r {
-            color: #666666;
+            color: @dark-gray;
             font-size: @font-size-20;
             float: right;
 
@@ -259,15 +259,15 @@
     .chat-box {
         margin-top: 20px;
         padding: 1px 19px;
-        background-color: #EEEEEE;
+        background-color: @to-light-gray;
         border-radius: 26px;
         .chat {
             font-size: @font-size-24;
-            color: #666666;
+            color: @dark-gray;
             margin: 19px 0;
         }
         .see {
-            color: #990000;
+            color: @link-color;
         }
     }
 }
