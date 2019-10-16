@@ -300,10 +300,7 @@ export default class HomeList extends BaseComponent {
                 <div className="hot-content">
                     <p>{item.title}</p>
                     <span className="tally">记账量：{item.deposit}</span>
-                    {
-                        item.price_ori !== '0.00' && (<div className="original">￥{item.price_ori}</div>)
-
-                    }
+                    <div className="original">{item.price_ori === '0.00' ?  '' : '￥' + item.price_ori}</div>
                     <div className="current">
                         <span>￥<span>{item.price}</span></span>
                         <span>
