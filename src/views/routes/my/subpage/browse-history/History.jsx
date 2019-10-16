@@ -446,7 +446,7 @@ class History extends BaseComponent {
 
                     />
                 )}
-                <div className={tabKey === 0 ? 'history-list-goods' : 'history-list-shop'}>
+                <div className={tabKey === 0 ? `history-list-goods ${isEdit ? 'base' : ''}` : `history-list-shop ${isEdit ? 'base' : ''}`}>
                     <Tabs
                         tabs={tabs}
                         initialPage={tabKey}
