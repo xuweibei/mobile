@@ -169,19 +169,20 @@ class ShopHome extends BaseComponent {
                             </div>
                             <div className="home-title">
                                 <div className="home-icons">
-                                    {
+                                    <span className="text">{shopInfo && shopInfo.shopName}</span>
+                                    {/*{
                                         starsArr && starsArr.map((item, index) => <div key={item} className="icon icon-tiny"/>)
                                     }
                                     {
                                         half && <div className="icon icon-ban"/>
-                                    }
+                                    }*/}
                                     {
                                         shopInfo && shopInfo.shoper_open_status === '0' && <span className="reatIng">休息中</span>
                                     }
                                     {/* <span style={{color: '#FFCC00'}}>{shopInfo.shop_mark}分</span> */}
                                 </div>
                                 <div className="home-text">
-                                    <span className="text">{shopInfo && shopInfo.shopName}</span>
+                                    {/*<span className="text">{shopInfo && shopInfo.shopName}</span>*/}
                                     <span className="text-num">人均消费 ￥{shopInfo && shopInfo.conper}元</span>
                                 </div>
                             </div>

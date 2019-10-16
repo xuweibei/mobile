@@ -86,25 +86,19 @@ class History extends BaseComponent {
     //处理接口请求结果
     handleResult = (res) => {
         const {page} = this.state;
-        const sectionIDs = [];
-        const rowIDs = [];
-        res.data.forEach((item, index) => {
+        res.data.forEach(item => {
             //判断后一页是否有和前一页同一天的数据
-            if (item.day.indexOf(this.sectionIDs)) {
-                rowIDs[this.rowIDs.length - 1] = [{
-                    [`${item.day}`]: [rowIDs[this.rowIDs.length - 1][`${item.day}`], ...item.data]
+            if (this.sectionIDs.includes(item.day)) {
+                this.rowIDs[this.rowIDs.length - 1] = [{
+                    [`${item.day}`]: [...this.rowIDs[this.rowIDs.length - 1][0][`${item.day}`], ...item.data]
                 }];
                 this.stackData = [...this.stackData, ...item.data];
             } else {
-                sectionIDs[index] = item.day;
-                rowIDs[index] = [{
-                    [`${item.day}`]: [...item.data]
-                }];
+                this.sectionIDs = [...this.sectionIDs, item.day];
+                this.rowIDs = [...this.rowIDs, [{[`${item.day}`]: [...item.data]}]];
                 this.stackData = [...this.stackData, ...item.data];
             }
         });
-        this.sectionIDs = [...this.sectionIDs, ...sectionIDs];
-        this.rowIDs = [...this.rowIDs, ...rowIDs];
         console.log('handleResult', this.sectionIDs, this.rowIDs, this.stackData);
         this.setState((prevState) => ({
             data: prevState.data.cloneWithRowsAndSections(this.dataBlobs, this.sectionIDs, this.rowIDs),
@@ -214,9 +208,9 @@ class History extends BaseComponent {
                                     {/* <span>休息中</span> */}
                                 </div>
                                 <div className="shop-row-right">
-                                    <div className="shop-row-right-first">
+                                    {/*    <div className="shop-row-right-first">
                                         {this.renderStar(item.shop_mark)}
-                                    </div>
+                                    </div>*/}
                                     <div className="shop-row-right-second">
                                         <span className="store-name">{item.shopName}</span>
                                         <span>人均消费 <span>￥{item.average}</span></span>
@@ -390,19 +384,22 @@ class History extends BaseComponent {
         const height = document.documentElement.clientHeight - (window.isWX ? window.rem * 1.07 : window.rem * 1.95);
         //每行渲染样式
         const row = v => (
-            v.map((item) => (
-                <span key={item.id} className={isEdit ? 'history-list-show' : 'history-list-hide'}>
-                    {isEdit && (
-                        <div className="history-list-show-select">
-                            <span
-                                className={checkedIds.includes(item.id) ? 'icon select' : 'icon unselect'}
-                                onClick={() => this.onChangeCheck(item)}
-                            />
-                        </div>
-                    )}
-                    {this.renderListItem(item)}
-                </span>
-            ))
+            v.map((item) => {
+                console.log('itemitem', item.id);
+                return (
+                    <span key={item.id} className={isEdit ? 'history-list-show' : 'history-list-hide'}>
+                        {isEdit && (
+                            <div className="history-list-show-select">
+                                <span
+                                    className={checkedIds.includes(item.id) ? 'icon select' : 'icon unselect'}
+                                    onClick={() => this.onChangeCheck(item)}
+                                />
+                            </div>
+                        )}
+                        {this.renderListItem(item)}
+                    </span>
+                );
+            })
         );
         //渲染listView
         const list = (
@@ -410,11 +407,14 @@ class History extends BaseComponent {
                 dataSource={data}
                 style={{height}}
                 initialListSize={5}
-                renderSectionHeader={sectionData => (
-                    <div className="history-list-section">
-                        {confirmDate(sectionData)}
-                    </div>
-                )}
+                renderSectionHeader={(sectionData, sectionID) => {
+                    console.log('sectionID', sectionID);
+                    return (
+                        <div className="history-list-section">
+                            {confirmDate(sectionData)}
+                        </div>
+                    );
+                }}
                 pageSize={5}
                 renderRow={row}
                 onEndReachedThreshold={50}

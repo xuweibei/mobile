@@ -800,7 +800,7 @@ class GoodsDetail extends BaseComponent {
                                     </div>
                                     <div className="shop-detail">
                                         <div className="Star">
-                                            {xxArr
+                                            {/*{xxArr
                                             && xxArr.map(item => (
                                                 <div
                                                     className="shop-star"
@@ -808,7 +808,10 @@ class GoodsDetail extends BaseComponent {
                                                 >
                                                     <div className="icon icon-star"/>
                                                 </div>
-                                            ))}
+                                            ))}*/}
+                                            <span className="Shop-Nl">
+                                                {shop.shopName}
+                                            </span>
                                             {half && (
                                                 <div className="shop-star">
                                                     <div className="icon icon-stars"/>
@@ -828,9 +831,9 @@ class GoodsDetail extends BaseComponent {
                                             </div>
                                         </div>
                                         <div className="Shop-N">
-                                            <span className="Shop-Nl">
+                                            {/*<span className="Shop-Nl">
                                                 {shop.shopName}
-                                            </span>
+                                            </span>*/}
                                             <span className="Shop-Nr">
                                                 人均消费
                                             </span>

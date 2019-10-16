@@ -34,17 +34,18 @@
             .list-detail{
                 display: flex;
                 justify-content: space-between;
-                height: 160px;
+                //height: 160px;
                 padding-left: 30px;
                 //margin-bottom:1px;
                 .hairline('bottom',@to-light-gray);
                 .item-desc{
                     width: 542px;
-                    margin-top: 30px;
+                    padding: 30px 0;
+                    //margin-top: 30px;
                     .address-name{
                         font-size: @font-size-30;
                         color: @darker-black;
-                        .TextareaOverflow(1);
+                        //.TextareaOverflow(1);
                         span{
                             color:red;
                         }
@@ -67,8 +68,12 @@
                     box-sizing: border-box;
                     font-size: @font-size-28;
                     .button-inner{
-                        line-height: 100px;
+                        height: 100%;
+                        //line-height: 100px;
                         //border-left: 1px solid @gray;
+                        display: flex;
+                        justify-content: center;
+                        flex-direction: column;
                         .hairline('left',@gray);
                     }
                     .button-inner::before {
