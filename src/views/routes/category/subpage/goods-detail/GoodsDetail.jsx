@@ -834,7 +834,7 @@ class GoodsDetail extends BaseComponent {
                                             {/*<span className="Shop-Nl">
                                                 {shop.shopName}
                                             </span>*/}
-                                            <span className="Shop-Nr">
+                                            <span>
                                                 人均消费
                                             </span>
                                             <span className="Shop-Nr">

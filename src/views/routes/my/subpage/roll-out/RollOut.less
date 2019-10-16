@@ -4,7 +4,7 @@
         margin-bottom: 20px;
     }
     .import-box {
-        padding: 80px 45px 59px;
+        padding: 80px 45px 66px;
         background: @white;
         .import-UID {
             display: flex;
@@ -16,11 +16,16 @@
                     width: 529px;
                     .am-list-item {
                         height: 100px;
-                        border: 1px solid #E5E5E5;
+                        border: 2px solid #E5E5E5;
                         border-radius: 100px;
                     }
                     .am-list-item .am-input-control input{
                         padding: 5px 0;
+
+                    }
+                    input::placeholder {
+                        //vertical-align: sub;
+                        padding-top: 5px;
                     }
                 }
                 .am-list-body:before, .am-list-body:after{
