@@ -6,6 +6,10 @@ import {is} from 'immutable';
 import {baseActionCreator as actionCreator} from '../../redux/baseAction';
 
 class BaseComponent extends React.Component {
+    static propTypes = {
+        children: PropTypes.array
+    };
+
     static contextTypes = {
         store: PropTypes.object
     };
@@ -14,9 +18,6 @@ class BaseComponent extends React.Component {
         children: null
     };
 
-    static propTypes = {
-        children: PropTypes.array
-    };
 
     constructor(props, context) {
         super(props, context);

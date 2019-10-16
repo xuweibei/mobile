@@ -10,15 +10,15 @@ import './FindPopup.less';
 // let n = 0;
 
 class FindPopup extends React.PureComponent {
-    static defaultProps = {
-        visible: false,
-        className: ''
-    };
-
     static propTypes = {
         visible: PropTypes.bool,
         className: PropTypes.string,
         children: PropTypes.element.isRequired
+    };
+
+    static defaultProps = {
+        visible: false,
+        className: ''
     };
 
     constructor(props, context) {

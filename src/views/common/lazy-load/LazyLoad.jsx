@@ -5,14 +5,14 @@ import LazyLoad from 'react-lazyload';
 import PropTypes from 'prop-types';
 
 export default class LazyLoadIndex extends React.PureComponent {
-    static defaultProps = {
-        bigPicture() {}
-    };
-
     static propTypes = {
         lazyInfo: PropTypes.object.isRequired,
         bigPicture: PropTypes.func
     }
+
+    static defaultProps = {
+        bigPicture() {}
+    };
 
     lazyImg = () => <img src={require('../../../assets/images/Lazy-loading.png')} alt="正在加载。。。"/>;
 

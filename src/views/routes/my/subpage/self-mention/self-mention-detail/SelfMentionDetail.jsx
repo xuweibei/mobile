@@ -202,9 +202,9 @@ class ReDetail extends BaseComponent {
     //立即付款
     submitSelf = () => {
         const {value, radioTreaty, alertPhone, currentTab, textarea, shopdata} = this.state;
-        const {setOrderInfo, arr} = this.props;
+        const {setOrderInfo, arr, carId} = this.props;
         const shopArr = [];
-        console.log(shopdata);
+        // console.log(shopdata);
         shopArr.push({shop_id: shopdata.shop_id});
         if (shopdata.data.length > 0) {
             shopdata.data.forEach(items => {
@@ -238,7 +238,7 @@ class ReDetail extends BaseComponent {
                     timer: arr[0].if_express === '3' ? '' : value,
                     source: sou,
                     remarks: textarea,
-                    car_id: [],
+                    car_id: carId,
                     type: arr[0].if_express === '3' ? '2' : '1'
                 }
             })

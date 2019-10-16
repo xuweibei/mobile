@@ -5,14 +5,14 @@ import PropTypes from 'prop-types';
 import {withRouter} from 'react-router-dom';
 
 class ScrollToTop extends React.PureComponent {
-    static defaultProps = {
-        children: null,
-        location: null
-    };
-
     static propTypes = {
         children: PropTypes.object,
         location: PropTypes.object
+    };
+
+    static defaultProps = {
+        children: null,
+        location: null
     };
 
     componentDidUpdate(prevProps) {
