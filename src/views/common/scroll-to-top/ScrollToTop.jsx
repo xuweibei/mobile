@@ -15,13 +15,29 @@ class ScrollToTop extends React.PureComponent {
         location: PropTypes.object
     };
 
+    state = {
+        hasError: false
+    }
+
     componentDidUpdate(prevProps) {
         if (this.props.location.pathname !== prevProps.location.pathname) {
             window.scrollTo(0, 0);
         }
     }
 
+    componentDidCatch(error, info) {
+        console.log('errrrrrrrrrr', error, info);
+        this.setState(prevState => ({
+            hasError: !prevState.hasError
+            // error: error,
+            // info: info
+        }));
+    }
+
     render() {
+        if (this.state.hasError) {
+            return <h1>虽然你遇到BUG的时候挺狼狈，但是你改BUG的样子真的很靓仔！</h1>;
+        }
         return this.props.children;
     }
 }
