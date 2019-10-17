@@ -404,10 +404,6 @@ class ReDetail extends BaseComponent {
                             </div>
                         )} */}
                 </div>
-<<<<<<< HEAD
-                {/* } */}
-=======
->>>>>>> d46e9c0ff70ee4a870771713873773e475392675
             </div>
         );
     }
