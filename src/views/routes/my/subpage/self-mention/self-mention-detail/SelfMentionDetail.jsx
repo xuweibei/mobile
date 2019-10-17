@@ -265,7 +265,7 @@ class ReDetail extends BaseComponent {
 
     goBackModal = () => {
         const timer = decodeURI(getUrlParam('time', encodeURI(this.props.location.search)));
-        if (timer) {
+        if (timer !== 'null') {
             native('goBack');
         } else if (appHistory.length() === 0) {
             appHistory.replace('/selfMention/yw');

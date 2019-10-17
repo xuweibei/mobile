@@ -190,7 +190,11 @@ class ReDetail extends BaseComponent {
     //调起地图
     openMap = () => {
         const {selfSufficiency} = this.state;
-        appHistory.push(`/find?longitude=${selfSufficiency.sufficiency_longitude}&latitude=${selfSufficiency.sufficiency_latitude}`);
+        if (hybrid) {
+            native('goFindMap', {longitude: selfSufficiency.sufficiency_longitude, latitude: selfSufficiency.sufficiency_latitude});
+        } else {
+            appHistory.push(`/find?longitude=${selfSufficiency.sufficiency_longitude}&latitude=${selfSufficiency.sufficiency_latitude}`);
+        }
     }
 
     //跳转到商品详情
@@ -311,7 +315,7 @@ class ReDetail extends BaseComponent {
                         </div>
                         <div className="payment-time">
                             <span className="payment-time-left">支付时间：</span>
-                            <span className="payment-time-center">{selfSufficiency.pay_date}</span>
+                            <span className="payment-time-center">{(selfSufficiency.pay_date && selfSufficiency.pay_date === '0') ? '' : (selfSufficiency.pay_date || '')}</span>
                         </div>
                         <div className="order-remarks">
                             <span className="order-remarks-left">订单备注：</span>
