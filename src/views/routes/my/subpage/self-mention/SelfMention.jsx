@@ -32,7 +32,7 @@ class ReDetail extends BaseComponent {
         pageList: [], //列表信息
         orderId: 0, //订单id
         canStatus: false, //是否弹出取消框
-        navColor: '#ff2d51' //nav背景颜色
+        navColor: '@fiery-red' //nav背景颜色
     }
 
     componentWillMount() {

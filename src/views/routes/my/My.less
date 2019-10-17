@@ -1,6 +1,8 @@
 @import "~style";
 
 .my{
+    //公用box-shadow
+    @box-shadow-inner: 0 10px 24px 0 rgba(204,204,204,0.2);
     position: relative;
     touch-action: pan-y;
    /* .my-bg{
@@ -14,12 +16,12 @@
     .icon-notice:before {
         margin: 0 19px 0 15px;
         content: '\E676';
-        color: #fff;
+        color: @white;
     }
     .icon-notice-l:before {
         margin: 0 19px 0 15px;
         content: '\E675';
-        color: #fff;
+        color: @white;
     }
 
     .my-top{
@@ -28,7 +30,7 @@
                 text-align: right;
                 .am-icon{
                     margin-left:21px ;
-                    color:#fff;
+                    color:@white;
                 }
             }
             .my-info-basic{
@@ -43,8 +45,8 @@
                         width: 100%;
                         height: 100%;
                         border-radius: 80px;
-                        background:rgba(255,255,255,1);
-                        border:8px solid rgba(255,167,182,1);
+                        background:@white;
+                        border:8px solid #ffa7b6;
                         overflow: hidden;
                         padding: 5px;
                         .basic-basic-img{
@@ -73,20 +75,20 @@
                         .TextareaOverflow(1);
                         max-width: 300px;
                         font-size:36px;
-                        color: #ffffff;
-                        //display: block;
+                        color: @white;
+                        // display: block;
                     }
                     .am-badge {
                         .am-badge-text {
                             margin-left: 24px;
-                            background: linear-gradient(0deg, rgb(254, 196, 7) 0%, rgb(252, 139, 0) 100%);
+                            background: linear-gradient(0deg, #fec407 0%, #fc8b00 100%);
                             border-radius: 28px;
                         }
                     }
                     .basic-data-UID{
                         margin-top: 16px;
                         font-size:30px;
-                        color: #ffffff;
+                        color: @white;
                     }
                     .am-badge-text {
                         z-index: 0;
@@ -104,7 +106,7 @@
                         right:-30px;
                         top:60px;
                         background:#FEC407;
-                        color:#fff;
+                        color:@white;
                         font-size:24px;
                         line-height:50px;
                         border-radius: 50px 0 0 50px;
@@ -114,12 +116,12 @@
                     }
                     .switchId:before{
                         content: '\E669';
-                        color: #fff;
+                        color: @white;
                         margin:0 10px;
                     }
                     .conmuterId:before{
                         content: '\E669';
-                        color: #fff;
+                        color: @white;
                         margin:0 10px;
                     }
                 }
@@ -127,9 +129,9 @@
         }
         .my-top-icon{
             height: 170px;
-            background:rgba(255,255,255,1);
+            background:@white;
             //background: rebeccapurple;
-            box-shadow:0 10px 24px 0 rgba(204,204,204,0.2);
+            box-shadow:@box-shadow-inner;
             border-radius:20px;
             .am-grid{
                 height: 100%;
@@ -148,7 +150,7 @@
                             font-size: @font-size-30!important;
                             font-family: @font-family;
                             font-weight: @font-weight-normal;
-                            color: #666;
+                            color: @dark-gray;
                         }
                     }
                 }
@@ -168,7 +170,7 @@
         height:220px;
         margin-top: 40px;
         //background:rgba(255,217,217,1);
-        box-shadow:0 10px 24px 0 rgba(204,204,204,0.2);
+        box-shadow:@box-shadow-inner;
         border-radius:20px;
         margin-bottom: 100px;
         img {
@@ -201,7 +203,7 @@
         height:166px;
         margin-top:40px;
         border-radius: 20px;
-        box-shadow: 0 0.1rem 0.24rem 0 rgba(204, 204, 204, 0.2);
+        box-shadow: @button-box-shadow-light-gray;
         display: flex;
         padding-bottom: 30px;
         justify-content: space-between;
@@ -211,7 +213,7 @@
             border-right:1px solid #EDEDED;
             margin-top:30px;
             span{
-                color:#FF2D51;
+                color:@fiery-red;
                 font-size:48px;
                 display: block;
                 margin-bottom:20px;
@@ -243,7 +245,7 @@
                 font-size: @font-size-32;
                 font-family: @font-family;
                 font-weight: @font-weight-bold;
-                color:#666;
+                color:@dark-gray;
             }
             .order-box-see{
                 cursor:pointer;
@@ -261,8 +263,8 @@
             }
         }
         .my-selfOrder-icon{
-            background:rgba(255,255,255,1);
-            box-shadow:0 10px 24px 0 rgba(204,204,204,0.2);
+            background:@white;
+            box-shadow:@box-shadow-inner;
             border-radius:20px;
             .am-flexbox{
                 height:180px;
@@ -276,8 +278,8 @@
         }
         .my-order-icon{
             //height:166px;
-            background:rgba(255,255,255,1);
-            box-shadow:0 10px 24px 0 rgba(204,204,204,0.2);
+            background:@white;
+            box-shadow:@box-shadow-inner;
             border-radius:20px;
             padding-bottom: 37px;
             .am-grid{
@@ -294,6 +296,9 @@
                         font-family:@font-family;
                         font-weight:@font-weight-normal;
                     }
+                    .am-grid-item:before {
+                        padding-bottom: 170px;
+                    }
                 }
             }
             .logistics-box {
@@ -306,7 +311,7 @@
                         display: flex;
                         justify-content: space-between;
                         font-size: @font-size-20;
-                        color: #999;
+                        color: @gray;
                         margin: 16px 0 18px 0;
                     }
                     .l-position {
@@ -328,10 +333,10 @@
                                 }
                                 .state-left:before {
                                     content: '\E659';
-                                    color: #FF2D51;
+                                    color: @fiery-red;
                                 }
                                 .state-right {
-                                    color: #FF2D51;
+                                    color: @fiery-red;
                                     font-size: @font-size-24;
                                 }
                             }
@@ -341,7 +346,7 @@
                                 overflow: hidden;
                                 width: 460px;
                                 margin-left: 14px;
-                                color: #999;
+                                color: @gray;
                                 font-size: @font-size-24;
                             }
                         }
@@ -362,10 +367,11 @@
             }
             .orderInfo{
                 position: relative;
-                padding-top:70px;
+                padding-top:80px;
                 .orderLogo{
                     position: absolute;
-                    left:50px;
+                    left:50%;
+                    margin-left: -22px;
                     top:10px;
                 }
                 .selfOrder{
@@ -376,17 +382,20 @@
                     right:-12px;
                     top:0px;
                     .am-badge-text{
-                        background:#F20C00;
+                        background:@garnet-red;
                     }
                 }
             }
         }
     }
+    .my-order-form:nth-child(5) {
+        margin-bottom: 100px;
+    }
 
     .my-property{
         height:126px;
-        background:rgba(255,255,255,1);
-        box-shadow:0 10px 24px 0 rgba(204,204,204,0.2);
+        background:@white;
+        box-shadow:@box-shadow-inner;
         border-radius:20px;
         display: flex;
         justify-content: space-around;
@@ -401,7 +410,7 @@
         }
         .Profit:before {
             content: '\E635';
-            color: rgba(242, 12, 0, 1);
+            color: @garnet-red;
         }
 
         .my-property-name{
@@ -411,9 +420,9 @@
         }
     }
     .cam-info{
-        box-shadow:0 10px 24px 0 rgba(204,204,204,0.2);
+        box-shadow:@box-shadow-inner;
         border-radius: 20px;
-        background:#fff;
+        background:@white;
         padding: 40px 60px;
         margin-bottom:100px;
         overflow: hidden;
@@ -442,9 +451,9 @@
 
    }
    .conumer-info{
-        box-shadow:0 10px 24px 0 rgba(204,204,204,0.2);
+        box-shadow:@box-shadow-inner;
         border-radius: 20px;
-        background:#fff;
+        background:@white;
         padding:30px 0 0 30px;
        overflow: hidden;
         ul{
@@ -495,7 +504,7 @@
             .transport {
                 text-align: center;
                 position: relative;
-                background:linear-gradient(-90deg,rgba(242,12,0,1) 0%,rgba(255,45,81,1) 100%);
+                background:linear-gradient(-90deg,@garnet-red 0%,@fiery-red 100%);
                 border-radius:20px 20px 0 0;
                 .railing-state {
                     font-size: @font-size-42;
@@ -562,7 +571,7 @@
                     display: block;
                 }
                 .logisticsActive{
-                    color:#666 !important;
+                    color:@dark-gray !important;
                 }
                 .transport-details {
                     padding: 0 48px 0 41px;
@@ -639,7 +648,7 @@
                 .contact-box {
                     width: 172px;
                     height: 50px;
-                    background:rgba(246,243,247,1);
+                    background:#f6f3f7;
                     border-radius:25px;
                     text-align: center;
                     line-height: 48px;
@@ -653,7 +662,7 @@
                     }
                     .contact:before {
                         content: '\E639';
-                        color: #FF2D51;
+                        color: @fiery-red;
                         font-size: @font-size-24;
                         margin-right: 12px;
                     }
@@ -691,7 +700,7 @@
                 width: 44px!important;
                 height: 44px!important;
                 line-height: 44px;
-                background:linear-gradient(270deg,rgba(242,12,0,1),rgba(255,45,81,1));
+                background:linear-gradient(270deg,@garnet-red,@fiery-red);
             }
             .status-icon:before {
                 content: '\E659';
@@ -765,28 +774,28 @@
 
     .payment:before {
         content: '\E629';
-        color: #F20C00;
+        color: @garnet-red;
     }
     .delivery:before {
         content: '\E628';
-        color: #F20C00;
+        color: @garnet-red;
     }
     .issue:before {
         content: '\E67d';
-        color: #F20C00;
+        color: @garnet-red;
     }
     .evaluate:before {
         content: '\E62a';
-        color: #F20C00;
+        color: @garnet-red;
     }
     .self-mention:before {
         content: '\E65b';
-        color: #F20C00;
+        color: @garnet-red;
     }
 
     .sale:before {
         content: '\E631';
-        color: #F20C00;
+        color: @garnet-red;
     }
     .marketing:before {
         content: '\E631';
@@ -810,27 +819,27 @@
 
     .shop:before {
         content: '\E66f';
-        color: #6633ff;
+        color: @sapphire-blue;
     }
     .tOut:before {
         content: '\E66d';
-        color: #6633ff;
+        color: @sapphire-blue;
     }
     .icome:before {
         content: '\E66b';
-        color: #6633ff;
+        color: @sapphire-blue;
     }
     .custer:before {
         content: '\E66a';
-        color: #6633ff;
+        color: @sapphire-blue;
     }
     .busin:before {
         content: '\E67a';
-        color: #6633ff;
+        color: @sapphire-blue;
     }
     .asset:before {
         content: '\E66e';
-        color: #6633ff;
+        color: @sapphire-blue;
     }
 }
 .my:before {

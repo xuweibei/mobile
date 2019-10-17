@@ -82,8 +82,8 @@
             width: 100%;
             margin-top: 90px;
             .am-button{
-                background:linear-gradient(180deg,rgba(255,45,81,1) 0%,rgba(242,12,0,1) 100%) !important;
-                box-shadow:0px 4px 35px 0px rgba(242,13,3,0.4) !important;
+                background:linear-gradient(180deg,@fiery-red 0%,@garnet-red 100%) !important;
+                box-shadow:@button-box-shadow !important;
             }
         }
         .vcode-button{
@@ -123,7 +123,7 @@
         //width: 100%;
         //top: 0;
         //bottom: -100px;
-        //background: #fff;
+        //background: @white;
         //padding-bottom: 300px;
         //position: relative;
         //width: 100%;
@@ -141,7 +141,7 @@
             .inp-item{
                 height: 122px;
                 width: 100%;
-                border-bottom: 2px solid #CCCCCC;
+                border-bottom: 2px solid @light-gray;
                 padding: 20px 0;
                 box-sizing: border-box;
                 line-height: 122px;
@@ -167,7 +167,7 @@
                     }
                     .icon-close:before{
                         content: '\E67b';
-                        color: #ccc;
+                        color: @light-gray;
                         margin: 0 30px;
                     }
                 }
@@ -217,8 +217,8 @@
             margin-top: 84px;
             margin-bottom: 50px;
             .large-button {
-                background:linear-gradient(180deg, #ff2d51 0%, #f20c00 100%)!important;
-                box-shadow: 0 0.04rem 0.35rem 0 rgba(242, 13, 3, 0.4);
+                background:linear-gradient(180deg, @fiery-red 0%, @garnet-red 100%)!important;
+                box-shadow: 0 0.04rem 0.35rem 0 @button-shadow-red;
             }
         }
         .thirdparty {
@@ -240,14 +240,14 @@
                     width: 26%;
                     height: 1px;
                     display: inline-block;
-                    border: 1px solid #EEEEEE;
+                    border: 1px solid @to-light-gray;
                     vertical-align: middle;
                     margin: 0 30px;
                 }
                 //.line{
                 //    width: 240px;
                 //    padding-bottom: 10px;
-                //    border-bottom: 1px solid #EEEEEE;
+                //    border-bottom: 1px solid @to-light-gray;
                 //}
             }
             .wxLogin{
@@ -304,7 +304,7 @@
     .checkMethods{
         display: flex;
         justify-content: space-between;
-        color: #990000;
+        color: @link-color;
         padding: 0 45px;
         font-size: @font-size-28;
     }
