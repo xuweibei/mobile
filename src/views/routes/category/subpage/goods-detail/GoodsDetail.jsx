@@ -634,6 +634,7 @@ class GoodsDetail extends BaseComponent {
                                     className="banner-img"
                                 />
                             </div>
+<<<<<<< HEAD
                         ))}
                     </Carousel>
                 </Element>
@@ -647,6 +648,104 @@ class GoodsDetail extends BaseComponent {
                         <div className="money-keep">
                             <div className="btn-keep">
                                 记账量：{goodsDetail.deposit}
+=======
+                            {
+                                goodsDetail.effective_type === '0' ? (
+                                    <div className="serve">
+                                        <div className="waiter">服务</div>
+                                        <div className="their">
+                                            <span>门店可自提</span>
+                                            <span className="dolt"/>
+                                            <div className="nonsupport">
+                                        不支持7天无理由退换货
+                                            </div>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="serve">
+                                        <div className="waiter">有效时间</div>
+                                        <div className="their">
+                                            <div className="nonsupport">
+                                                {goodsDetail.effective_type}
+                                            </div>
+                                            <div className="validity">{goodsDetail.if_holiday === '0' ? '仅工作日有效' : '节假日通用(节假日包含周六、周日)'}</div>
+                                        </div>
+                                    </div>
+                                )
+                            }
+                            <div className="shop-detali">
+                                <div className="box1">
+                                    <div className="shop-logo">
+                                        <img
+                                            className="logo-img"
+                                            src={shop.picpath}
+                                            alt=""
+                                        />
+                                    </div>
+                                    <div className="shop-detail">
+                                        <div className="Star">
+                                            {/*{xxArr
+                                            && xxArr.map(item => (
+                                                <div
+                                                    className="shop-star"
+                                                    key={item}
+                                                >
+                                                    <div className="icon icon-star"/>
+                                                </div>
+                                            ))}*/}
+                                            <span className="Shop-Nl">
+                                                {shop.shopName}
+                                            </span>
+                                            {/* {half && (
+                                                <div className="shop-star">
+                                                    <div className="icon icon-stars"/>
+                                                </div>
+                                            )} */}
+                                            <div className="shop-btn">
+                                                {/* <div className="shop-det">
+                                                    店铺详情
+                                                </div> */}
+                                                <div
+                                                    className="auxiliary-button red"
+                                                    onClick={() => this.ShopH(shop.id)
+                                                    }
+                                                >
+                                                    进店逛逛
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="Shop-N">
+                                            {/*<span className="Shop-Nl">
+                                                {shop.shopName}
+                                            </span>*/}
+                                            <span>
+                                                人均消费
+                                            </span>
+                                            <span className="Shop-Nr">
+                                                ￥{shop.average_consumption}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                {/* <div className="scores">
+                                    <div className="shop-score">
+                                        <span>店铺评分</span>
+                                        <span className="score-eva">
+                                            {shop.shop_mark}
+                                        </span>
+                                        <span className="grade-height">
+                                            {this.rating(shop.shop_mark)}
+                                        </span>
+                                    </div>
+                                    <div className="logistics-score">
+                                        <span>物流评分</span>
+                                        <span className="score-eva">
+                                            {shop.logistics_mark}
+                                        </span>
+                                        <span className="grade-low">{this.rating(shop.logistics_mark)}</span>
+                                    </div>
+                                </div> */}
+>>>>>>> d46e9c0ff70ee4a870771713873773e475392675
                             </div>
                         </div>
                     </div>

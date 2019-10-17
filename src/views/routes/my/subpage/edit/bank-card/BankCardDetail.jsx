@@ -20,7 +20,7 @@ const getPass = {
     fontSize: '0.3rem',
     border: 'none',
     marginTop: '18px',
-    background: '#fff'
+    background: '@white'
 };
 class BankCardDetail extends BaseComponent {
     state = {
@@ -294,6 +294,7 @@ class BankCardDetail extends BaseComponent {
                                      clear
                                      type="bankCard"
                                      placeholder="请输入银行卡号"
+                                     maxLength={25}
                                  >银行卡号
                                  </InputItem>
                              )

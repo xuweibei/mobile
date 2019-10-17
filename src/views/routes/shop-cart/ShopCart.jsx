@@ -706,7 +706,7 @@ class ShopCart extends BaseComponent {
                                             <div className="avatar">
                                                 <img src={shop.shop_logo} alt="" className="image"/>
                                             </div>
-                                            <span>{shop.shop_name}</span>
+                                            <span className="avatar-name">{shop.shop_name}</span>
                                         </div>
                                         <div className="top-enter">
                                             <span onClick={() => this.goToShopHome(shop)}>进店</span>

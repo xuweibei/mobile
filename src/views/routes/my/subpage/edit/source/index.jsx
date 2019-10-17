@@ -1,5 +1,5 @@
 import AppNavBar from '../../../../../common/navbar/NavBar';
-import './Source.less';
+import './SourceIndex.less';
 
 const {appHistory, native, setNavColor} = Utils;
 const {navColorF} = Constants;

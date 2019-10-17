@@ -51,7 +51,7 @@
             height: 72px;
             margin-right: 20px;
             border-radius: 50%;
-            background:linear-gradient(0deg,rgba(242,12,0,1),rgba(255,45,81,1));
+            background:linear-gradient(0deg,@garnet-red,@fiery-red);
         }
         .message-left:before {
             content: '\E659';
@@ -91,7 +91,9 @@
             display: flex;
             margin-bottom: 19px;
             .name {
+                max-width: 200px;
                 margin-right: 40px;
+                .TextOverflow();
             }
         }
         .address-bottom{
@@ -106,7 +108,7 @@
     .shop-lists{
         .aroundBlank();
         margin: 20px auto 0;
-        background: #ffffff;
+        background: @white;
         overflow: hidden;
         //border-bottom: 1px solid @to-light-gray;
         .hairline('bottom',@to-light-gray);
@@ -334,7 +336,7 @@
             }
             .business-right::before{
                 content:'\e639';
-                color:#FF2D51;
+                color:@fiery-red;
                 margin-right:10px;
                 font-size: @font-size-30;
             }
@@ -359,6 +361,7 @@
         .collection-center {
             flex: 1;
             line-height: 72px;
+            .TextOverflow();
         }
         .collection-right {
             width: 140px;
@@ -379,8 +382,8 @@
             border-radius: 100px;
             margin: auto;
             padding-top: 1px;
-            color: #ccc;
-            border:1px solid #ccc;
+            color: @light-gray;
+            border:1px solid @light-gray;
             font-size:24px;
         }
     }
@@ -459,7 +462,7 @@
         bottom: 0;
         justify-content: flex-end;
         background-color: @white;
-        box-shadow:0 2px 7px 1px rgba(255, 146, 150, 0.35);
+        box-shadow:@box-shadow-0271;
         .cancel-order {
             width: 140px;
             height: 50px;
@@ -476,7 +479,7 @@
             height:100px;
             line-height:100px;
             border-radius: 0;
-            //border-top:1px solid #CCCCCC;
+            //border-top:1px solid @light-gray;
             border-right:none;
             border-left:none;
             border-bottom:none;
@@ -484,8 +487,8 @@
             //bottom:0;
             //left:0;
             font-size:36px;
-            color:#666;
-            background:#fff;
+            color:@dark-gray;
+            background:@white;
         }
         .immediate-evaluation {
             width: 140px;
@@ -503,7 +506,7 @@
             height:100px;
             line-height:100px;
             border-radius: 0;
-            //border-top:1px solid #CCCCCC;
+            //border-top:1px solid @light-gray;
             border-right:none;
             border-left:none;
             border-bottom:none;
@@ -511,8 +514,8 @@
             //bottom:0;
             //right:0;
             font-size:36px;
-            color:#fff;
-            background:linear-gradient(0deg,rgba(242,12,0,1) 0%,rgba(255,45,81,1) 100%);
+            color:@white;
+            background:linear-gradient(0deg,@garnet-red 0%,@fiery-red 100%);
         }
         .deliver{
             color:@fiery-red;

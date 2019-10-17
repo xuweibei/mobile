@@ -350,7 +350,7 @@ class ListDetails extends BaseComponent {
                                     </div>
                                     <div className="payment-time">
                                         <span className="payment-time-left">支付时间：</span>
-                                        <span className="payment-time-center">{canInfo.pay_date}</span>
+                                        <span className="payment-time-center">{(canInfo.pay_date && canInfo.pay_date === '0') ? '' : (canInfo.pay_date || '') }</span>
                                     </div>
                                     <div className="order-remarks">
                                         <span className="order-remarks-left">订单备注：</span>

@@ -179,7 +179,7 @@ class ShopHome extends BaseComponent {
                                     {
                                         shopInfo && shopInfo.shoper_open_status === '0' && <span className="reatIng">休息中</span>
                                     }
-                                    {/* <span style={{color: '#FFCC00'}}>{shopInfo.shop_mark}分</span> */}
+                                    {/* <span style={{color: '@duckling-yellow'}}>{shopInfo.shop_mark}分</span> */}
                                 </div>
                                 <div className="home-text">
                                     {/*<span className="text">{shopInfo && shopInfo.shopName}</span>*/}

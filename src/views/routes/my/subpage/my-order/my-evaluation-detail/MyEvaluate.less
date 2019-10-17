@@ -9,7 +9,7 @@
     }
     .navbar .nav-left .icon-left:before {
         content: '\E646';
-        color: #333;
+        color: @darker-black;
     }
     .navbar .nav-right .icon-right:before {
         content: '';
@@ -22,7 +22,7 @@
             .trade-name {
                 padding-bottom: 30px;
                 display: flex;
-                //border-bottom: 1px solid rgba(238, 238, 238, 1);
+                //border-bottom: 1px solid @to-light-gray;
                 .hairline('bottom',@to-light-gray);
                 img {
                     width: 100px;
@@ -34,13 +34,13 @@
         .side-margin {
             padding: 0 30px;
             padding-bottom: 20px;
-            //border-bottom: 1px solid rgba(238, 238, 238, 1);
+            //border-bottom: 1px solid @to-light-gray;
             .hairline('bottom',@to-light-gray);
             box-sizing: border-box;
             background: @white;
             .describes{
                 margin-bottom: 40px;
-                border-top:1px solid #ccc;
+                border-top:1px solid @light-gray;
                 .describe-text{
                     margin-bottom: 26px;
                 }
@@ -79,39 +79,39 @@
         display: flex;
         justify-content: space-between;
         .score-left {
-            color: rgba(51, 51, 51, 1);
+            color: @darker-black;
             margin-top: 16px;
             font-size: @font-size-28;
         }
         .stars:before {
             content: '\E637';
-            color: rgba(255, 204, 0, 1);
+            color: @duckling-yellow;
             font-size: @font-size-46;
         }
         .starsRight:before {
             content: '\E637';
-            color: rgba(204, 204, 204, 1);
+            color: @light-gray;
             font-size: @font-size-46;
         }
     }
     .Release {
         margin: 40px 45px 47px 45px;
         line-height: 100px;
-        background-color: rgba(255, 45, 81, 1);
+        background-color: @fiery-red;
         display: flex;
         justify-content: center;
         border-radius: 50px;
         .Release-right {
-            color: rgba(255, 255, 255, 1);
+            color: @white;
             font-size: @font-size-36;
         }
     }
     .am-radio-inner {
         border-radius: 50%;
-        border: 1px solid rgba(153, 153, 153, 1);
+        border: 1px solid @gray;
     }
     .am-radio.am-radio-checked .am-radio-inner {
-        border: 1px solid rgba(153, 153, 153, 1);
+        border: 1px solid @gray;
     }
     .choice {
         display: flex;
@@ -138,7 +138,7 @@
         transform: translate(-50%,-50%) !important;
         width: 16px;
         height: 16px;
-        background: #FF2D51;
+        background: @fiery-red;
         border-radius: 50%;
         border-width: 0;
     }
@@ -163,8 +163,8 @@
                     position: absolute;
                     right: 10px;
                     top: 10px;
-                    color: rgba(255, 255, 255, 0.6);
-                    background: rgba(0, 0, 0, 0.3);
+                    color: @light-white;
+                    background: @light-black;
                 }
                 img {
                     width: 140px;
@@ -175,8 +175,8 @@
             .imgAdd-button {
                 width: 140px;
                 height: 140px;
-                background: rgba(255, 255, 255, 1);
-                border: 1px solid rgba(229, 229, 229, 1);
+                background: @white;
+                border: 1px solid #e5e5e5;
                 border-radius: 10px;
                 position: relative;
                 span {
@@ -188,7 +188,7 @@
                     color: #FF5774;
                     line-height: 44px;
                     text-align: center;
-                    background: #fff;
+                    background: @white;
                     font-size: 44px;
                     position: absolute;
                     top: 50%;

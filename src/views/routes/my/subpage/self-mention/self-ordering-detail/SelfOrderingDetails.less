@@ -45,6 +45,14 @@
                 justify-content: space-between;
                 font-size: @font-size-30;
                 color: @darker-black;
+                .shop-name-left {
+                    flex: 1;
+                    margin-right: 5px;
+                }
+                .shop-name-right {
+                    max-width: 200px;
+                    .TextOverflow();
+                }
             }
             .time {
                 font-size: @font-size-24;
@@ -81,7 +89,7 @@
     .shop-lists{
         .aroundBlank();
         margin: 20px auto 0;
-        background: #ffffff;
+        background: @white;
         overflow: hidden;
         //border-bottom: 1px solid @to-light-gray;
         .hairline('bottom',@to-light-gray);
@@ -257,24 +265,24 @@
             justify-content: space-between;
             .number-center {
                 flex: 1;
+                margin-right: 50px;
+                .TextOverflow();
             }
             .number-right {
                 color: @link-color;
             }
         }
-        .order-time {
+        .order-time, .payment-time, .order-remarks {
             display: flex;
             justify-content: flex-start;
-
+            span:nth-child(2) {
+                flex: 1;
+            }
         }
         .payment-time {
-            display: flex;
-            justify-content: flex-start;
-
-        }
-        .order-remarks {
-            display: flex;
-            justify-content: flex-start;
+            span:nth-child(2) {
+                .TextOverflow();
+            }
         }
     }
 
@@ -284,7 +292,8 @@
         font-size: @font-size-30;
         color: @darker-black;
         height: 90px;
-        line-height: 90px;
+        line-height: 54px;
+        padding: 18px 0;
         background-color: @white;
         .business-left,.business-center,.business-right {
             width: 250px;
@@ -334,6 +343,8 @@
         .collection-center {
             flex: 1;
             line-height: 72px;
+            margin-right: 40px;
+            .TextOverflow();
         }
         .collection-right {
             width: 140px;
@@ -421,7 +432,7 @@
         display: flex;
         justify-content: flex-end;
         background-color: @white;
-        box-shadow:0 2px 7px 1px rgba(255, 146, 150, 0.35);
+        box-shadow:@box-shadow-0271;
         .assessment {
             display: flex;
         }

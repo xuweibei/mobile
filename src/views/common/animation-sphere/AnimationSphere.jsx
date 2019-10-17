@@ -55,7 +55,7 @@ class Circle {
         this.y0 = config.y0 || 0;
         this.radius = config.r || 0;
         this.fillStyle = this.getCircleColor(this.x0, this.y0, this.radius);
-        this.shadowColor = config.shadowColor || 'rgb(222,189,237)';
+        this.shadowColor = config.shadowColor || '#debded';
         this.shadowBlur = config.shadowBlur || 10;
         this.shadowOffsetX = 0;
         this.shadowOffsetY = this.radius;
@@ -67,8 +67,8 @@ class Circle {
     //  圆的渐变填充色
     getCircleColor(x0, y0, r) {
         const lineargradient = this.ctx.createLinearGradient(x0 + r, y0 - r, x0 - r, y0 + r);
-        lineargradient.addColorStop(0, 'rgb(223,113,172)');
-        lineargradient.addColorStop(1, 'rgb(136,69,233)');
+        lineargradient.addColorStop(0, '#df71ac');
+        lineargradient.addColorStop(1, '#8845e9');
         return lineargradient;
     }
 

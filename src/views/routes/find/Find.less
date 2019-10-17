@@ -26,8 +26,8 @@
         z-index:2;
         opacity:0.6;
         .am-search{
-            background:#FFF;
-            border:2px solid rgba(204,204,204,1);
+            background:@white;
+            border:2px solid @light-gray;
             border-radius: 0.4rem;
             padding: 0;
             height: 80px;
@@ -65,7 +65,7 @@
             font-size: @font-size-30;
             font-weight: @font-weight-normal;
             font-family: @font-family;
-            color:#fff;
+            color:@white;
         }
     }
 
@@ -75,8 +75,8 @@
         border-radius: 0 0 20px 20px;
         width:630px;
         //height:112px;
-        background:rgba(255,255,255,1);
-        box-shadow:0 0 40px 0 rgba(102,102,102,0.4);
+        background:@white;
+        box-shadow:0 0 40px 0 @ligth-gray;
         opacity:0.9;
         position: absolute;
         top: 88px;
@@ -100,7 +100,7 @@
             text-align: center !important;
             line-height: 70px !important;
             font-size: @font-size-30 !important;
-            color: #333 !important;
+            color: @darker-black !important;
             border-radius:0 0 20px 20px !important;
         }
     }
@@ -127,7 +127,7 @@
         height: 88px;
         .directionalGradation(90deg, @garnet-red, @fiery-red);
         font-size: 40px;
-        color: #FFFFFF;
+        color: @white;
         line-height: 88px;
         font-weight: bold;
         text-align: center;
@@ -135,19 +135,19 @@
     .icon-container{
         width: 100px;
         height: 270px;
-        background: #fff;
+        background: @white;
         position: fixed;
         right: 30px;
         top: 360px;
         border-radius: 50px;
         font-size: 20px;
-        color: #666;
+        color: @dark-gray;
         //display: flex;
         flex-direction: column;
         align-items: center;
         padding: 30px 10px 1px;
         box-sizing: border-box;
-        box-shadow:0 0 40px 0 rgba(102,102,102,0.4);
+        box-shadow:0 0 40px 0 @ligth-gray;
         opacity:0.9;
         text-align: center;
         .position{
@@ -188,7 +188,7 @@
         }
     }
     .am-button{
-        background:linear-gradient(183deg,rgba(255,45,81,1) 0%,rgba(242,12,0,1) 100%) !important;
+        background:linear-gradient(183deg,@fiery-red 0%,@garnet-red 100%) !important;
         box-shadow:0 0 24px 0 rgba(120,17,20,0.4) !important;
         text-align: center !important;
 
@@ -196,24 +196,24 @@
     .icon-search:before{
         content: '\e62e';
         font-size: 70px;
-        color: #FFFFFF;
+        color: @white;
         line-height: 130px;
     }
     .out{
         width: 100px;
         height: 100px;
-        background: #fff;
+        background: @white;
         border-radius: 50px;
         position: absolute;
         right: 30px;
         top: 240px;
         font-size: 20px;
-        color: #333;
+        color: @darker-black;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        box-shadow:0 0 40px 0 rgba(102,102,102,0.4);
+        box-shadow:0 0 40px 0 @ligth-gray;
         opacity:0.9;
         i {
             font-size: @font-size-32;
@@ -228,11 +228,11 @@
         div{
             width:265px;
             height:80px;
-            background:linear-gradient(180deg,rgba(255,45,81,1) 0%,rgba(242,12,0,1) 100%);
-            box-shadow:0px 0px 24px 0px rgba(120,17,20,0.4);
+            background:linear-gradient(180deg, @fiery-red 0%, @garnet-red 100%);
+            box-shadow:0 0 24px 0 rgba(120,17,20,0.4);
             border-radius:40px;
             line-height: 80px;
-            color: #FFFFFF;
+            color: @white;
             font-size: 36px;
 
         }
@@ -250,15 +250,15 @@
     .BMapLabel{
         width:160px !important;
         height:52px !important;
-        background:rgba(255,255,255,1) !important;
-        box-shadow:0px 30px 40px 0px rgba(102,102,102,0.4) !important;
+        background:@white !important;
+        box-shadow:0 30px 40px 0 @ligth-gray !important;
         opacity:0.9 !important;
         border-radius:26px !important;
         border: none !important;
         text-align: center !important;
         line-height: 52px !important;
         font-size: @font-size-30 !important;
-        color: #333 !important;
+        color: @darker-black !important;
     }
     .am-button:before {
         border: none!important;
