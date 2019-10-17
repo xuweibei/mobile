@@ -245,6 +245,7 @@ class BankCardDetail extends BaseComponent {
                                      clear
                                      placeholder="请输入户主名称"
                                      editable={!userInfo.realname}
+                                     maxLength={8}
                                  >户主姓名
                                  </InputItem>
                              )
@@ -294,7 +295,7 @@ class BankCardDetail extends BaseComponent {
                                      clear
                                      type="bankCard"
                                      placeholder="请输入银行卡号"
-                                     maxLength={25}
+                                     maxLength={26}
                                  >银行卡号
                                  </InputItem>
                              )

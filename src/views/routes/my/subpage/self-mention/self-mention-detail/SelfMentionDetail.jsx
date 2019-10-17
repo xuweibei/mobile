@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import './SelfMentionDetail.less';
 import {List, Radio, TextareaItem, Modal, Tabs, InputItem} from 'antd-mobile';
 import {myActionCreator as ActionCreator} from '../../../actions/index';
+import {baseActionCreator} from '../../../../../../redux/baseAction';
 import {shopCartActionCreator} from '../../../../shop-cart/actions/index';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import {showFail, showInfo} from '../../../../../../utils/mixin';
@@ -252,6 +253,16 @@ class ReDetail extends BaseComponent {
         }
     }
 
+    //点击弹出到店协议
+    viewShopFile = (ev) => {
+        const {showAlert} = this.props;
+        showAlert({
+            title: '这是到店协议',
+            btnText: '好'
+        });
+        ev.stopPropagation();
+    }
+
     goBackModal = () => {
         const timer = decodeURI(getUrlParam('time', encodeURI(this.props.location.search)));
         if (timer) {
@@ -310,7 +321,7 @@ class ReDetail extends BaseComponent {
                             }
                         </div>
                     </div>
-                    <div className={`my-radio icon ${radioTreaty === true ? 'endorse' : ''}`} onClick={this.radioTreaty}>同意<span className="agreement">《到店自提协议》</span></div>
+                    <div className={`my-radio icon ${radioTreaty === true ? 'endorse' : ''}`} onClick={this.radioTreaty}>同意<span className="agreement" onClick={this.viewShopFile}>《到店自提协议》</span></div>
                 </div>
 
                 <div className="shop-lists">
@@ -409,7 +420,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
     setOrder: shopCartActionCreator.setOrder,
-    setOrderInfo: ActionCreator.setOrderInformation
+    setOrderInfo: ActionCreator.setOrderInformation,
+    showAlert: baseActionCreator.showAlert
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ReDetail);

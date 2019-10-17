@@ -52,6 +52,9 @@ class MyOrder extends BaseComponent {
     componentWillMount() {
         const num = this.statusChoose(this.props.location.pathname.split('/')[2]);
         this.init(num);
+        if (hybrid) {
+            setNavColor('setNavColor', {color: navColorR});
+        }
     }
 
     componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方
@@ -111,6 +114,7 @@ class MyOrder extends BaseComponent {
             numStr = 0;
             break;
         case 'fh':
+        case 'fhp'://支付成功之后过来
             numStr = 1;
             break;
         case 'sh':

@@ -78,7 +78,7 @@ export default class Detailpage extends BaseComponent {
     //支付方式
     payFs = (detailArr) => {
         if (detailArr && detailArr.pay_status === '1') {
-            return '微信支付';
+            return '第三方支付';
         } if (detailArr && detailArr.pay_status === '0') {
             return '余额支付';
         }

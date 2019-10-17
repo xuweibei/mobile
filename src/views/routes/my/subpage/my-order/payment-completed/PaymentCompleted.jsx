@@ -63,7 +63,7 @@ class PaymentCompleted extends BaseComponent {
         const batch = decodeURI(getUrlParam('batch', encodeURI(this.props.location.search))); //订单购买方式 线上 线下
         if (express === '1') { //线上
             if (batch === '1') { //线上批量付款
-                appHistory.replace('/myOrder/fh');
+                appHistory.replace('/myOrder/fhp');
             } else {
                 appHistory.replace(`/listDetails?id=${id}`);
             }
