@@ -14,5 +14,8 @@ export const FIELD = {
     No_Goods: '啥玩意也没有啊。',
     Await: '您的开店申请已提交，审核结果在3个工作日内公布，您可登陆网站WWW.XXX.COM查看相关信息。',
     Audit_Failure: '您填写的信息有误，请前往填写后再次提交审核。',
-    Succeed: ''
+    Succeed: '',
+    Page_Crash: '当前页面已崩溃，请返回前一页',
+    Net_Error: '网络异常，请稍后再试',
+    Server_Error: '服务器异常，请稍后再试'
 };

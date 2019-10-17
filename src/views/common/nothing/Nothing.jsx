@@ -79,6 +79,15 @@ class Nothing extends React.PureComponent {
         case FIELD.Audit_Failure:
             str = 'audit-failure';
             break;
+        case FIELD.Page_Crash:
+            str = 'audit-failure';
+            break;
+        case FIELD.Net_Error:
+            str = 'net-error';
+            break;
+        case FIELD.Server_Error:
+            str = 'audit-failure';
+            break;
         default: str = '';
         }
         this.setState({
