@@ -3,7 +3,7 @@
     .change-cart{
         width:186px;
         height:50px;
-        background:linear-gradient(-90deg,rgba(255,204,0,1) 0%,rgba(255,255,110,1) 100%);
+        background:linear-gradient(-90deg,@duckling-yellow 0%,#ffff6e 100%);
         border-radius:25px 0px 0px 25px;
         position: fixed;
         text-align: center;
@@ -33,8 +33,8 @@
         padding-bottom: 0;
     }
     .loadDown{
-        background:linear-gradient(-90deg,rgba(101,50,255,1) 0%,rgba(146,110,255,1) 100%) !important;
-        color: #fff;
+        background:linear-gradient(-90deg,#6531ff 0%,#926eff 100%) !important;
+        color: @white;
     }
     touch-action: pan-y;
     .none {
@@ -47,7 +47,7 @@
         height: 88px;
         justify-content: space-between;
         padding: 0 30px;
-        color: #fff;
+        color: @white;
         background: @crimson-red;
         position: relative;
         .shop-title {
@@ -73,8 +73,8 @@
         display: flex;
         width:690px;
         height:90px;
-        background:rgba(255,255,255,1);
-        box-shadow:0px 2px 18px 0px rgba(255, 146, 150, 0.35);
+        background:@white;
+        box-shadow:@box-shadow-02180;
         border-radius:45px;
         font-size: @font-size-30;
         color:@darker-black;
@@ -109,7 +109,7 @@
     .shopCart-content {
         margin: 0 30px 20px;
         .shopCart-goods {
-            background: #fff;
+            background: @white;
             padding: 30px 0;
             border-radius: 20px;
             margin-top: 20px;
@@ -194,7 +194,7 @@
             }
             .num-right {
                 font-size: 30px;
-                color: #333;
+                color: @darker-black;
                 flex: 1;
                 text-align: right;
                 padding: 5px 20px 0 0;
@@ -207,7 +207,7 @@
                 width: 150px;
                 height: 30px;
                 font-size: @font-size-20;
-                color: #FFFFFF;
+                color: @white;
                 .directionalGradation(150deg, @garnet-red, @fiery-red);
                 font-weight: 500;
                 margin-top: 16px;
@@ -246,8 +246,8 @@
                         height:50px;
                         text-align: center;
                         line-height: 50px;
-                        background:rgba(255,255,255,1);
-                        border:2px solid rgba(255,45,81,1);
+                        background:@white;
+                        border:2px solid @fiery-red;
                         border-radius:25px;
                         color: @fiery-red;
                     }
@@ -266,7 +266,7 @@
                 }
         }
         .timeout-goods {
-            background-color: #fff;
+            background-color: @white;
             border-radius: 30px;
             padding: 0 0 30px;
             margin: 20px 0;
@@ -275,7 +275,7 @@
                 display: flex;
                 .timeout-text {
                     line-height: 72px;
-                    color: #666;
+                    color: @dark-gray;
                     font-size: @font-size-30;
                 }
                 .title-right {
@@ -332,7 +332,7 @@
                             .TextareaOverflow(1);
                         }
                         span:nth-child(2) {
-                            color: #666;
+                            color: @dark-gray;
                             font-weight: bold;
                             margin-left: 30px;
                         }
@@ -345,7 +345,7 @@
                         line-height: 32px;
                         text-align: center;
                         background: @gray;
-                        color: #FFFFFF;
+                        color: @white;
                         display: inline-block;
                         border-radius: 20px;
                         font-size: 20px;
@@ -362,7 +362,7 @@
         position: fixed;
         bottom: 100px;
         left: 50%;
-        background: #fff;
+        background: @white;
         transform: translateX(-50%);
         justify-content: space-between;
         padding-left: 30px;
@@ -403,7 +403,7 @@
             font-size: 36px;
             margin-left: 22px;
             background: @fiery-red;
-            color: #fff;
+            color: @white;
             span {
                 margin-left: 15px;
             }
@@ -522,7 +522,7 @@
         font-size: 30px;
         margin: 0 19px 0 15px;
         content: '\e643';
-        color: #666;
+        color: @dark-gray;
         vertical-align: super;
 
     }

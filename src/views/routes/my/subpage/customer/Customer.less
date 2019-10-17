@@ -2,18 +2,18 @@
 .customer-count {
     padding: 80px 0 132px;
     text-align: center;
-    background: #FF2D51;
+    background: @fiery-red;
     position: absolute;
     width: 100%;
     z-index: 1;
     p {
         font-size: 72px;
-        color: #fff;
+        color: @white;
         margin-bottom: 15px;
     }
     span {
         font-size: 28px;
-        color: #fff;
+        color: @white;
     }
 }
 .customer-list {
@@ -22,18 +22,18 @@
         width: 100%;
         top: 300px;
         bottom: 0;
-        background: #fff;
+        background: @white;
         height: auto;
         .am-tabs-tab-bar-wrap {
             padding: 0 30px;
             margin-bottom:50px;
             .am-tabs-default-bar {
                 border-radius: 100px;
-                box-shadow:0px 2px 18px 0px rgba(255, 146, 150, 0.35);
+                box-shadow:@box-shadow-02180;
                 .am-tabs-default-bar-content {
                     height: 90px;
                     .am-tabs-default-bar-tab {
-                        border-right: 1px solid #eee;
+                        border-right: 1px solid @to-light-gray;
                         height: 60px;
                         margin-top: 14px;
                     }
@@ -62,7 +62,7 @@
             height: 6px;
             border-radius: 100px;
             margin-bottom: 14px;
-            background:#FF2D51;
+            background:@fiery-red;
         }
     }
     .customer-uid {
@@ -73,8 +73,8 @@
         .customer-tag {
             font-size: 16px;
             padding: 4px 11px;
-            color: #fff;
-            background: #6633FF;
+            color: @white;
+            background: @sapphire-blue;
             height: 30px;
             border-radius: 50px;
             line-height: 24px;
@@ -86,7 +86,7 @@
     display: flex;
     justify-content: space-between;
     padding: 29px 60px;
-    background: #FF2D51;
+    background: @fiery-red;
     .basic-avatar {
         background-size: 160px !important;
         background: url(../../../../../assets/images/avatar.png) no-repeat center;
@@ -96,10 +96,10 @@
         height: 140px;
         border-radius: 50%;
         margin-right: 61px;
-        border:8px solid rgba(255,167,182,1);
+        border:8px solid #ffa7b6;
     }
     .info-name {
-        color: #fff;
+        color: @white;
         font-size: 36px;
         padding: 29px 0 30px;
         flex: 1;

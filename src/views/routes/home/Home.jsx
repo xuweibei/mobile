@@ -251,7 +251,7 @@ class Home extends BaseComponent {
                                     )
                                 }
                             </div>
-                            <div className={`home-searchBar-fence ${userToken && userToken.length > 0 ? 'search-login' : ''}`} style={{color: '#fff'}}>
+                            <div className={`home-searchBar-fence ${userToken && userToken.length > 0 ? 'search-login' : ''}`} style={{color: '@white'}}>
                                 <SearchBar
                                     placeholder="输入您要搜索的商品"
                                     showCancelButton

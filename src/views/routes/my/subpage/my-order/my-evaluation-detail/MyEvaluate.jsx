@@ -279,7 +279,7 @@ export default class MyEvaluate extends BaseComponent {
                                     <div className="choice">
                                         {evaluates.map(items => (
                                             <Flex>
-                                                <Flex.Item style={{padding: '15px 0', color: '#333', flex: 'none'}}></Flex.Item>
+                                                <Flex.Item style={{padding: '15px 0', color: '@darker-black', flex: 'none'}}></Flex.Item>
                                                 <Flex.Item>
                                                     <Radio checked={estimate[index] === items.value} onChange={this.onChange.bind(this, [items.value, index])}>{items.title}</Radio>
                                                 </Flex.Item>
@@ -336,7 +336,7 @@ export default class MyEvaluate extends BaseComponent {
                         <div className="side-margin">
                             <div className="anonymous">
                                 <Flex>
-                                    <Flex.Item style={{padding: '15px 0', color: '#333', flex: 'none'}}></Flex.Item>
+                                    <Flex.Item style={{padding: '15px 0', color: '@darker-black', flex: 'none'}}></Flex.Item>
                                     <Flex.Item>
                                         <Radio checked={anonymous} onClick={this.anonymous}>匿名评价</Radio>
                                     </Flex.Item>

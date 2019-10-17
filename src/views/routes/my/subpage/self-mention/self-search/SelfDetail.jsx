@@ -20,7 +20,7 @@ class ReDetail extends BaseComponent {
         pageCount: -1, //一共有多少页
         pageList: [], //列表信息
         orderId: 0, //订单id
-        navColor: '#ff2d51' //nav背景颜色
+        navColor: '@fiery-red' //nav背景颜色
     }
 
     componentWillMount() {

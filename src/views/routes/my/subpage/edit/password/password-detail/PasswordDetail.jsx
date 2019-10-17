@@ -18,7 +18,7 @@ const getPass = { //获取验证码按钮的样式
     color: '#de1212',
     border: 'none',
     // marginTop: '18px',
-    background: '#fff',
+    background: '@white',
     lineHeight: '44px'
 };
 

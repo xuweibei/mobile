@@ -1,6 +1,5 @@
 @import "~style";
 .tabs-list {
-    //padding: 0 30px;
     margin-bottom: 20px;
     .am-tabs-horizontal {
         .am-tabs-tab-bar-wrap {
@@ -8,7 +7,7 @@
         }
     }
     .am-tabs-content-wrap {
-        padding: 30px 0px 0;
+        padding: 30px 0 0;
         background: @white;
         .am-tabs-pane-wrap {
             background: @font-size-16;
@@ -32,7 +31,6 @@
     .hot {
         width: 335px;
         // height: 545px;
-        //box-shadow:0px 4px 80px 0px rgba(153,153,153,0.2);
         margin-bottom: 20px;
         border-radius: 20px;
         border: 1px solid #e6e6e6;
@@ -47,18 +45,19 @@
         .hot-content {
             padding: 0 21px 19px;
             p {
-                color: #333;
+                color: @darker-black;
                 margin-bottom: 9px;
                 font-weight: bold;
+                height: 68px;
                 //height: 63px;
                 .TextareaOverflow(@num:2);
                 font-size: @font-size-30;
             }
             .tally {
                 padding: 5px 12px;
-                color: #fff;
+                color: @white;
                 font-size: @font-size-20;
-                background:linear-gradient(90deg,rgba(255,45,81,1) 0%,rgba(242,12,0,1) 100%);
+                background:linear-gradient(90deg,@fiery-red 0%,@garnet-red 100%);
                 border-radius: 50px;
                 font-family:PingFang-SC-Bold;
                 font-weight:bold;
@@ -69,6 +68,7 @@
                 font-size: @font-size-20;
                 //margin-bottom: 8px;
                 color: @gray;
+                height: 22px;
                 //margin-top: 25px;
             }
             .current {

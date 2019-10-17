@@ -20,7 +20,7 @@ const getPass = {
     fontSize: '0.3rem',
     border: 'none',
     marginTop: '18px',
-    background: '#fff'
+    background: '@white'
 };
 class BankCardDetail extends BaseComponent {
     state = {

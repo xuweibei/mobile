@@ -3,11 +3,11 @@
 
 .collect{
     html {
-        background: #fff;
+        background: @white;
     }
     background: @back-color;
     .nab{
-        background: #fff;
+        background: @white;
         height: 88px;
         color: @darker-black;
         font-size: 38px;
@@ -29,7 +29,7 @@
         width: 100%;
         //border-bottom: 1px solid @to-light-gray;
         .hairline('bottom',@to-light-gray)!important;
-        background: #fff;
+        background: @white;
         padding: 32px 0;
         .goods-box {
             display: flex;
@@ -56,7 +56,7 @@
             }
             .goods-sku{
                 display: flex;
-                color: rgba(153, 153, 153, 1);
+                color: @gray;
                 font-size: @font-size-20;
                 margin-top: 10px;
                 span{
@@ -72,7 +72,7 @@
                     width: 150px;
                     height: 30px;
                     line-height: 30px;
-                    color: #fff;
+                    color: @white;
                     background: @fiery-red;
                     text-align: center;
                     border-radius: 15px;
@@ -84,11 +84,11 @@
                     display: inline-block;
                     width:90px;
                     height:30px;
-                    color:#fff;
+                    color:@white;
                     border-radius: 30px;
                     text-align: center;
                     line-height:30px;
-                    background:#666666;
+                    background:@dark-gray;
                     margin-left:-60px;
                 }
             }
@@ -234,7 +234,7 @@
                            height: 40px;
                            line-height: 30px;
                            text-align: center;
-                           color: #eee;
+                           color: @to-light-gray;
                            font-size: 20px;
                            background: rgba(0,0,0,0.4);
                        }
@@ -258,15 +258,15 @@
         width: 36px !important;
         height: 8px;
         margin-left: 22.5%;
-        background: #FF2D51;
+        background: @fiery-red;
     }
     .Shop-Nl {
         font-size: @font-size-30;
-        color: rgba(153, 153, 153, 1);
+        color: @gray;
         margin-right: 20px;
     }
     .Shop-Nr {
-        color: rgba(153, 153, 153, 1);
+        color: @gray;
         font-size: @font-size-24;
         margin-right: 15px;
     }
@@ -344,7 +344,7 @@
     }
     .unselect::before{
         content: '\E611';
-        color: #999999;
+        color: @gray;
     }
     .select:before {
         content: '\E610';
@@ -358,7 +358,7 @@
         justify-content: space-between;
         width: 100%;
         line-height: 88px;
-        box-shadow:0px 2px 7px 1px rgba(255, 146, 150, 0.35);
+        box-shadow:@box-shadow-0271;
         padding: 0 30px;
         background: @white;
         z-index: 2;
@@ -379,7 +379,7 @@
         border-radius: 50px;
     }
     .am-tabs-default-bar-tab {
-        //border-right: 1px solid #EEEEEE;
+        //border-right: 1px solid @to-light-gray;
         .hairline('right',@to-light-gray);
     }
     #m-tabs-0-1 {

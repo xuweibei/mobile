@@ -4,9 +4,9 @@
 @red: #cf2545;
 
 // 颜色应用场景
-@app-header-color: @red;
+// @app-header-color: @red;
 //链接字段(色值:#990000)
-@link-color: #990000;
+@link-color: #900;
 
 /*
 *       标准色
@@ -18,25 +18,27 @@
 *       辅助色
 *   辅助、提示类文字、图标、 按钮等
 */
-@duckling-yellow: #ffcc00;
-@sapphire-blue: #6633ff;
-@darker-black: #333333;
+@duckling-yellow: #fc0;
+@sapphire-blue: #63f;
+@darker-black: #333;
 
 @ginger-yellow: #FFCEBD;
 @pink-yellow: #FFE1C0;
-@crimson-red: #FF0000;
-@gray: #999999;
+@crimson-red: #F00;
+@gray: #999;
 @light-gray: #ccc;
-@dark-gray: #666666;
-@white: white;
-@to-light-gray: #EEEEEE;
-
+@dark-gray: #666;
+@white: #fff;
+@to-light-gray: #EEE;
+@light-black: rgba(0, 0, 0, 0.3);
+@light-white: rgba(255, 255, 255, 0.6);
+@ligth-gray: rgba(102,102,102,0.4);
 /*      渐变色
     色块、图标、插图等
 */
-@red-gradient:linear-gradient(#FF2D51,#F20C00);
-@purple-gradient:linear-gradient(#CCCCFF,#6633FF);
-@yellow-gradient:linear-gradient(#FFFFCC,#FFCC00);
+@red-gradient:linear-gradient(@fiery-red,@garnet-red);
+@purple-gradient:linear-gradient(#CCF,@sapphire-blue);
+@yellow-gradient:linear-gradient(#FFC,@duckling-yellow);
 //背景色
 @back-color: #F9F9F9;
 
@@ -73,6 +75,13 @@
 
 //按钮
 @button-shadow-red: rgba(242, 13, 3, 0.4);
+@button-hairline-light-gray: rgba(204, 204, 204, 0.5);
+//阴影
+@button-box-shadow: 0 4px 35px 0 @button-shadow-red;
+@button-box-shadow-light-gray: 0 0.1rem 0.24rem 0 rgba(204, 204, 204, 0.2);
+@box-shadow-0271: 0 2px 7px 1px rgba(255, 146, 150, 0.35);
+@box-shadow-02180: 0 2px 18px 0 rgba(255, 146, 150, 0.35);
+@box-hsadow-00200: 0 0 20px 0 rgba(204,204,204,0.3);
 
 //两翼留边距
 @padding-wingBlank: 32px;

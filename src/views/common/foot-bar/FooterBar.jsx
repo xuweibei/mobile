@@ -32,7 +32,7 @@ class FooterBar extends React.PureComponent {
                             <div className="footer-bar">
                                 <TabBar
                                     unselectedTintColor="#595959"
-                                    tintColor="#333"
+                                    tintColor="@darker-black"
                                     barTintColor="white"
                                     hidden={false}
                                     tabBarPosition="bottom"

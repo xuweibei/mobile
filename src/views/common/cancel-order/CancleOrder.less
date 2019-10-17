@@ -1,9 +1,11 @@
+@import "~style";
+
 .cancel-wrap{
     width:100%;
     position:fixed;
     left:0;
     bottom:0;
-    background:#fff;
+    background:@white;
     border-radius: 20px 20px 0 0;
     z-index:3;
     .choose-btn{
@@ -18,11 +20,11 @@
     }
     .choose-btn span:first-child{
         float:left;
-        color:#ccc;
+        color:@light-gray;
     }
     .choose-btn span:last-child{
         float:right;
-        color:#FF2D51;
+        color:@fiery-red;
     }
     .choose-info{
         padding:0 0 60px 30px;
@@ -36,8 +38,8 @@
             }
         }
         .am-radio-inner{
-            background: #fff;
-            border:1px solid #ccc;
+            background: @white;
+            border:1px solid @light-gray;
             border-radius: 0.2rem;
             // padding: 10px;
             width:36px;
@@ -48,7 +50,7 @@
             right: 0.13rem;
             width: 0.1rem;
             height: 0.2rem;
-            border-color:#fff;
+            border-color:@white;
         }
         .am-list-item{
             padding:0;

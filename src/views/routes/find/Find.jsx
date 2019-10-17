@@ -182,7 +182,7 @@ class Find extends BaseComponent {
         walk.setSearchCompleteCallback(() => {
             const pts = walk.getResults().getPlan(0).getRoute(0).getPath();
             this.polyline = new window.BMap.Polyline(pts, {
-                strokeColor: '#FF2D51',
+                strokeColor: '@fiery-red',
                 strokeWeight: 3,
                 strokeOpacity: 1,
                 strokeStyle: 'solid',
@@ -422,7 +422,7 @@ class Find extends BaseComponent {
         walk.setSearchCompleteCallback(() => {
             const pts = walk.getResults().getPlan(0).getRoute(0).getPath();
             const polylines = new window.BMap.Polyline(pts, {
-                strokeColor: '#FF2D51',
+                strokeColor: '@fiery-red',
                 strokeWeight: 3,
                 strokeOpacity: 1,
                 strokeStyle: 'solid',

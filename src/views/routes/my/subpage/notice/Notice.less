@@ -2,9 +2,9 @@
 
 .notice {
     //height: 100vh;
-    //background: #ffffff;
+    //background: @white;
     .am-navbar{
-        background:#fff;
+        background:@white;
         color:#000;
         width: 100%;
         margin-bottom: 20px;
@@ -17,7 +17,7 @@
         top: 0;
         bottom: 0;
         padding-top: 110px;
-        //background: #fff;
+        //background: @white;
         //margin-top:108px;
         .am-tabs-content-wrap {
             margin-top: 20px;
@@ -28,7 +28,7 @@
     }
     .footer-bar {
         width: 100%;
-        box-shadow:0 0 10px 0 rgba(238,238,238,1);
+        box-shadow:0 0 10px 0 @to-light-gray;
         height:100px;
         .homePage:before,.homePage-active:before,.share:before,.share-active:before,.find:before,.find-active:before,.shopCart:before,.shopCart-active:before,.my:before,.my-active:before {
             font-style: normal;
@@ -142,7 +142,7 @@
                 font-size: @font-size-30;
                 flex: 0 0 476px;
                  width: 476px;
-                color: rgba(51, 51, 51, 1);
+                color: @darker-black;
                 .TextareaOverflow(1) !important;
                 text-align: left;
                 font-weight: bold;
@@ -197,11 +197,11 @@
             }
             .title-read{
                 font-size: @font-size-30;
-                color: #999;
+                color: @gray;
             }
             .dateRead{
                 font-size: @font-size-28;
-                color: #999;
+                color: @gray;
                 font-weight: 500;
             }
         }
@@ -261,7 +261,7 @@
                         }
                         .dateRead {
                             font-size: @font-size-28;
-                            color: #999;
+                            color: @gray;
                             font-weight: 500;
                         }
                     }
@@ -318,13 +318,13 @@
     //.am-tab-bar-bar .am-tab-bar-tab-title {
     //    font-weight:500;
     //    margin-left: -15px;
-    //    color:rgba(51,51,51,1);
+    //    color:@darker-black;
     //}
     //.am-list-item .am-list-line .am-list-content {
     //    padding: 0;
     //    margin: 0;
     //    font-size: 28px;
-    //    color:rgba(51,51,51,1);
+    //    color:@darker-black;
     //}
     //.am-list-thumb:nth-child(1) {
     //    margin-left: 10px;
@@ -353,7 +353,7 @@
     .am-tabs-default-bar-underline {
         width: 36px!important;
         height: 8px;
-        background-color: #FF2D51;
+        background-color: @fiery-red;
         bottom: 15px;
         margin-left: 170px;
         border-radius:10px;
@@ -371,7 +371,7 @@
         position: absolute;
         top: 0;
         bottom: 0;
-        //background: #fff;
+        //background: @white;
         margin-top:0 !important;
     }
 }
