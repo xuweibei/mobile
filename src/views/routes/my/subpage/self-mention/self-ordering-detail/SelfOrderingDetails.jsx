@@ -404,7 +404,7 @@ class ReDetail extends BaseComponent {
                         </div>
                     )}
                 </div>
-                }
+                {/* } */}
             </div>
         );
     }

@@ -163,7 +163,6 @@ export default class HomeList extends BaseComponent {
     getHotShops = (page) => {
         const {latitude, longitude} = this.state;
         const local = JSON.parse(getValue('local'));
-        console.log(local, 'ssssssssssssssssssss');
         this.fetch(urlCfg.getHomeShops, {
             data: {
                 type: 2,
