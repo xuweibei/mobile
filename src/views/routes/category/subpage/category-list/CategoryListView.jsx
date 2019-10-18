@@ -267,7 +267,6 @@ class CategoryListView extends BaseComponent {
 
     //渲染排序
     renderLine = (initStatus, index, currentIndex, showStatus) => {
-        // console.log(showStatus);
         if (initStatus && index === currentIndex) {
             return (
                 showStatus[currentIndex] && index === currentIndex ? (
@@ -304,7 +303,7 @@ class CategoryListView extends BaseComponent {
                             <span className="bookkeeping-right">{item.province + item.city}</span>
                         </div>
                         <div className="payment">
-                            <span>{item.num_sold}人付款</span>
+                            <span>销量:{item.num_sold}</span>
                             <span className="payment-right">￥{item.price_original}</span>
                         </div>
                         <div className="price">

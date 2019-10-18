@@ -57,7 +57,6 @@ class GoodsDetail extends BaseComponent {
         lineStatus: false, //底部商品状态栏
         ids: [], //选中属性id
         goodsSku: [], //商品的结果集
-        listHeight: [], //元素头部高度
         shopAddress: '', // 店铺位置
         lineText: '', //商品状态栏文字
         pickType: {}, //配送方式
@@ -68,15 +67,19 @@ class GoodsDetail extends BaseComponent {
     };
 
     componentDidMount() {
-        this.getGoodsDetail();
-        window.addEventListener('scroll', this.handleScroll);
-        scrollSpy.update();
+        this.init();
     }
 
     componentWillMount() {
         if (hybird) { //设置tab颜色
             setNavColor('setNavColor', {color: navColorF});
         }
+    }
+
+    init = () => {
+        this.getGoodsDetail();
+        window.addEventListener('scroll', this.handleScroll);
+        scrollSpy.update();
     }
 
     //网页滚动
@@ -113,7 +116,6 @@ class GoodsDetail extends BaseComponent {
                     lineStatus: false, //底部商品状态栏
                     ids: [], //选中属性id
                     goodsSku: [], //商品的结果集
-                    listHeight: [], //元素头部高度
                     shopAddress: '', // 店铺位置
                     lineText: '', //商品状态栏文字
                     pickType: {}, //配送方式
@@ -213,16 +215,11 @@ class GoodsDetail extends BaseComponent {
             names,
             popup: false
         }, () => {
-            switch (clickType) { //判断确认后的回调 1加入购物车 2立即购买
-            case 1:
+            if (clickType === 1) {
                 TD.log(TD_EVENT_ID.STORE.ID, TD_EVENT_ID.STORE.LABEL.STORE_HOME);
                 this.addCart();
-                break;
-            case 2:
+            } else if (clickType === 2) {
                 this.emption();
-                break;
-            default:
-                return;
             }
         });
     };
@@ -230,11 +227,7 @@ class GoodsDetail extends BaseComponent {
     //添加商品到购物车
     addCart = () => {
         const {shop, goodsDetail, paginationNum, ids, selectType, status} = this.state;
-
-        if (shop.shoper_open_status === '0') {
-            return;
-        }
-        if (status === '0' || status === '2') {
+        if (shop.shoper_open_status === '0' || status === '0' || status === '2') {
             return;
         }
         if (paginationNum === 0 || ids.length === 0) {
@@ -283,10 +276,7 @@ class GoodsDetail extends BaseComponent {
     //立即购买
     emption = () => {
         const {shop, status} = this.state;
-        if (shop.shoper_open_status === '0') {
-            return;
-        }
-        if (status === '0' || status === '2') {
+        if (shop.shoper_open_status === '0' || status === '0' || status === '2') {
             return;
         }
         const id = decodeURI(
@@ -780,55 +770,3 @@ const mapDispatchToProps = {
     setOrderStatus: actionCreator.setOrderStatus
 };
 export default connect(null, mapDispatchToProps)(GoodsDetail);
-
-
-/* /* <div className="scores">
-                            <div className="shop-score">
-                            <span>店铺评分</span>
-                                        <span className="score-eva">
-                                            {shop.shop_mark}
-                                        </span>
-                                        <span className="grade-height">
-                                            {this.rating(shop.shop_mark)}
-                                        </span>
-                                    </div>
-                                    <div className="logistics-score">
-                                        <span>物流评分</span>
-                                        <span className="score-eva">
-                                            {shop.logistics_mark}
-                                        </span>
-                                        <span className="grade-low">{this.rating(shop.logistics_mark)}</span>
-                                    </div>
-                                </div> */
-/* <div className="goods-assess">
-                                <div className="assess-text">
-                                    <div className="text-left">
-                                        商品评价({allState.pingjia_count})
-                                    </div>
-                                    <div
-                                        className="text-right"
-                                        onClick={() => this.skipAssess(goodsDetail.id)
-                                        }
-                                    >
-                                        查看全部
-                                        <span className="icon icon-right"/>
-                                    </div>
-                                </div>
-                                <div className="appraise">
-                                    <div className="appraise-head">
-                                        <div className="head-logo">
-                                            <img
-                                                className="head-img"
-                                                src={evaluate.avatarUrl}
-                                                alt=""
-                                            />
-                                        </div>
-                                        <div className="head-text">
-                                            {evaluate.nickname}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="appraise-title">
-                                    {evaluate.content}
-                                </div>
-                            </div> */
