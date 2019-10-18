@@ -118,9 +118,13 @@ class Rxios {
                         })
                         .catch(err => {
                             console.log(err); // 错误捕获统一处理
+                            const code = [500, 501, 502, 503, 504, 505];
                             store.dispatch(actionCreator.hideLoading());
                             if (err.message === 'Network Error') {
                                 showFail(MESSAGE.Network_Error);
+                                appHistory.replace('/network-error');
+                            } else if (err.response && code.indexOf(err.response.status) !== -1) {
+                                appHistory.replace('/server-error');
                             }
                             subject.error(err);
                         })

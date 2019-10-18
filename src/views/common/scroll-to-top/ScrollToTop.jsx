@@ -1,9 +1,15 @@
 /*
 * 页面跳转，滚动条返回顶部
+* 错误边界
 * */
 import PropTypes from 'prop-types';
 import {withRouter} from 'react-router-dom';
+import AppNavBar from '../navbar/NavBar';
+import Nothing from '../nothing/Nothing';
 
+const {appHistory, setNavColor} = Utils;
+const {FIELD, navColorF} = Constants;
+const hybird = process.env.NATIVE;
 class ScrollToTop extends React.PureComponent {
     static propTypes = {
         children: PropTypes.object,
@@ -19,23 +25,42 @@ class ScrollToTop extends React.PureComponent {
         hasError: false
     }
 
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorF});
+        }
+    }
+
     componentDidUpdate(prevProps) {
         if (this.props.location.pathname !== prevProps.location.pathname) {
             window.scrollTo(0, 0);
         }
     }
 
-    componentDidCatch(error, info) {
-        this.setState(prevState => ({
-            hasError: !prevState.hasError
-            // error: error,
-            // info: info
-        }));
+    static getDerivedStateFromError() {
+        return {hasError: true};
     }
 
     render() {
-        if (this.state.hasError) {
-            return <h1>虽然你遇到BUG的时候挺狼狈，但是你改BUG的样子真的很靓仔！</h1>;
+        const {hasError} = this.state;
+        if (hasError) {
+            console.log('页面崩溃页面崩溃页面崩溃页面崩溃页面崩溃页面崩溃');
+            return (
+                <React.Fragment>
+                    <AppNavBar title="页面崩溃"/>
+                    <Nothing
+                        text={FIELD.Page_Crash}
+                        title="返回"
+                        onClick={() => appHistory.goBack()}
+                    />
+                </React.Fragment>
+            );
         }
         return this.props.children;
     }

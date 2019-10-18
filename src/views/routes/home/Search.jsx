@@ -49,6 +49,7 @@ class Search extends BaseComponent {
     //搜索框类型跳转 false返回上级 true 进行搜索跳转
     searchType = () => {
         const {textStatus, keywords} = this.state;
+        console.log(keywords, 'ssssssssssssss');
         TD.log(TD_EVENT_ID.SEEK.ID, TD_EVENT_ID.SEEK.LABEL.SEEK_STUFF);
         if (textStatus) {
             if (keywords.length === 0) {
@@ -77,7 +78,6 @@ class Search extends BaseComponent {
                         });
                     }
                 }
-                // console.log(TD);
             });
     };
 
@@ -106,8 +106,7 @@ class Search extends BaseComponent {
             <div data-component="search" data-role="page" className="search">
                 <div className="search-box ">
                     <InputItem
-                        className=""
-                        type="text"
+                        type="search"
                         placeholder="请输入商品名称"
                         clear
                         onChange={(val) => this.getKeyWords(val)}
@@ -116,7 +115,8 @@ class Search extends BaseComponent {
                     </InputItem>
                     <div
                         className="search-cancel"
-                        onClick={() => this.searchType()}
+                        ref={ref => { this.btn = ref }}
+                        onClick={this.searchType}
                     >{textStatus ? '搜索' : '取消'}
                     </div>
                 </div>
