@@ -2,7 +2,7 @@
 * 首页
 * */
 import {connect} from 'react-redux';
-import {Carousel, Grid, SearchBar, Toast, WhiteSpace, Modal} from 'antd-mobile';
+import {Carousel, Grid, SearchBar, Toast, WhiteSpace} from 'antd-mobile';
 import {dropByCacheKey} from 'react-router-cache-route';
 import {systemApi} from '../../../utils/systemApi';
 import {FooterBar} from '../../common/foot-bar/FooterBar';
@@ -69,31 +69,6 @@ class Home extends BaseComponent {
         }
     }
 
-    //获取开店审核结果
-    getJurisdiction = () => {
-        this.fetch(urlCfg.getShopJurisdiction)
-            .subscribe((res) => {
-                if (res) {
-                    if (res.status === 0 && res.data.status === 10) {
-                        Modal.alert('审核通过', '您的开店申请已通过，请前去签约', [
-                            {
-                                text: '取消',
-                                onPress: () => {
-                                    appHistory.goBack();
-                                }
-                            },
-                            {
-                                text: '确定',
-                                onPress: () => {
-                                    window.location.href = res.data.url;
-                                }
-                            }
-                        ]);
-                    }
-                }
-            });
-    }
-
     goToLogin = () => {
         const {userToken} = this.state;
         if (userToken && userToken.length > 0) {
@@ -116,7 +91,6 @@ class Home extends BaseComponent {
                     if (res.status === 0) {
                         const {setUserToken} = this.props;
                         setUserToken(res.LoginSessionKey);
-                        this.getJurisdiction();
                     }
                 }
             }, err => {
@@ -212,25 +186,10 @@ class Home extends BaseComponent {
         appHistory.push(`/goodsDetail?id=${item.id1}`);
     };
 
-    openAcc = () => {
-        // console.log('执行了');
-        this.setState(prevState => ({
-            show: !prevState.show
-        }));
-    }
-
-    order = index => {
-        this.setState({
-            order: index
-        });
-        this.suggestCargo(index);
-    }
-
     //有推荐跳转
     jumpOther = (id, index, shopId) => {
         console.log(index);
         if (index === 0) {
-            console.log('object');
             appHistory.push(`/shopHome?id=${id}`);
         } else {
             appHistory.push(`/goodsDetail?id=${id}&shopId${shopId}`);

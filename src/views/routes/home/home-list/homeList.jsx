@@ -197,7 +197,6 @@ export default class HomeList extends BaseComponent {
             this.getExGoodsList(exPage);
         } else if (index === 2) {
             const {shopPage, shopPageCount} = this.state;
-            console.log(shopPage, shopPageCount);
             if (shopPage >= shopPageCount) {
                 return;
             }
@@ -247,8 +246,11 @@ export default class HomeList extends BaseComponent {
         if (currentIndex === 2) {
             const {shopPage, latitude, longitude, shopPageCount} = this.state;
             if (shopPage > shopPageCount) {
+                console.log('ssssssssssssssssssssssssssss');
                 this.setState({
                     shopStatus: true
+                }, () => {
+                    console.log(this.state.shopStatus);
                 });
                 return;
             }
@@ -259,20 +261,20 @@ export default class HomeList extends BaseComponent {
     };
 
     //星星评价
-    renderStar = (num) => {
-        const slot = num.split('.')[1];
-        const value = Number(num);
-        const arr = [];
-        for (let i = 0; i < Math.floor(value); i++) {
-            const star = <div className="icon icon-star"/>;
-            arr.push(star);
-        }
-        if (slot >= 5) {
-            const stars = <div className="icon icon-ban"/>;
-            arr.push(stars);
-        }
-        return arr;
-    };
+    // renderStar = (num) => {
+    //     const slot = num.split('.')[1];
+    //     const value = Number(num);
+    //     const arr = [];
+    //     for (let i = 0; i < Math.floor(value); i++) {
+    //         const star = <div className="icon icon-star"/>;
+    //         arr.push(star);
+    //     }
+    //     if (slot >= 5) {
+    //         const stars = <div className="icon icon-ban"/>;
+    //         arr.push(stars);
+    //     }
+    //     return arr;
+    // };
 
     //跳转商品详情页
     goCate = (id) => {
