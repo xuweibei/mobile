@@ -24,25 +24,24 @@ class ShopHome extends BaseComponent {
         }
     }
 
-    componentWillReceiveProps() {
+    componentWillReceiveProps(nextProps) {
         if (hybird) {
+            const {id} = this.nextProps;
             setNavColor('setNavColor', {color: navColorF});
+            if (id !== this.props.id) {
+                this.getList(id);
+            }
         }
     }
 
     componentDidMount() {
         TD.log(TD_EVENT_ID.SHOPPING_CAR.ID, TD_EVENT_ID.SHOPPING_CAR.LABEL.ADD_SHOPPING_CAR);
-        this.getList();
+        const {id, shoppingId} = this.props;
+        this.getList(id || shoppingId);
     }
 
-    getList = () => {
-        let id = '';
-        if (this.props.id) {
-            id = this.props.id;
-        } else {
-            id = this.props.shoppingId;
-        }
-        this.fetch(urlCfg.storeDetails, {data: {id: id}})
+    getList = (id) => {
+        this.fetch(urlCfg.storeDetails, {data: {id}})
             .subscribe(res => {
                 if (res.status === 0) {
                     this.starsShow(res.data.shop_mark);

@@ -8,8 +8,16 @@ import './InputGrid.less';
 class InputGrid extends React.PureComponent {
     static propTypes = {
         onInputGrid: PropTypes.func.isRequired,
-        focus: PropTypes.bool.isRequired
+        focus: PropTypes.bool,
+        clearPropsInput: PropTypes.func, //父级清除value
+        num: PropTypes.number //第几个input
     };
+
+    static defaultProps = {
+        focus: false,
+        clearPropsInput: () => {},
+        num: 0
+    }
 
     state = {
         valueGrid: [],
@@ -23,7 +31,6 @@ class InputGrid extends React.PureComponent {
     }
 
     inputGrid = (e) => {
-        console.log(e, '了水电费进口量');
         const {valueGrid} = this.state;
         const val = e.target.value;
         const str = e.target;
@@ -51,11 +58,16 @@ class InputGrid extends React.PureComponent {
         }
     }
 
+    //单击时清除value值
     clearInput = () => {
+        const {clearPropsInput, num} = this.props;
         this.setState({
             value: '',
             valueGrid: []
         });
+        if (clearPropsInput) {
+            clearPropsInput(num);
+        }
     }
 
     //渲染函数

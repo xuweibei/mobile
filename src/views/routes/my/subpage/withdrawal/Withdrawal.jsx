@@ -137,19 +137,17 @@ class Withdrawal extends BaseComponent {
                                 } else {
                                     for (let i = 0; i < incomeData.banks.length; i++) {
                                         if (selectorIndex === '0') {
-                                            this.setState({
-                                                bankId: incomeData.banks[i].id,
-                                                bankIndex: i
-                                            }, () => {
-                                                console.log(incomeData.banks[i].id, 'userType0');
-                                            });
+                                            if (incomeData.banks[i].userType !== '2') {
+                                                this.setState({
+                                                    bankId: incomeData.banks[i].id,
+                                                    bankIndex: i
+                                                });
+                                            }
                                         } else if (selectorIndex === '1') {
                                             if (incomeData.banks[i].userType === '2') {
                                                 this.setState({
                                                     bankId: incomeData.banks[i].id,
                                                     bankIndex: i
-                                                }, () => {
-                                                    console.log(incomeData.banks[i].id, 'userType2');
                                                 });
                                             }
                                         }

@@ -184,8 +184,6 @@ class passwordPayment extends BaseComponent {
         } else {
             showInfo(Form.Error_PayPassword);
         }
-        // FIXME: 这个跟没有返回值是一样的
-        //已优化
     }
 
     //第一个输入框
@@ -212,6 +210,19 @@ class passwordPayment extends BaseComponent {
         });
     }
 
+    //单击时清除对应value值
+    clearPropsInput = (num) => {
+        if (num === 1) {
+            this.setState({
+                num: ''
+            });
+        } else {
+            this.setState({
+                againNum: ''
+            });
+        }
+    }
+
     render() {
         const {editModal, getOff} = this.state;
         const {getFieldDecorator} = this.props.form;//getFieldDecorator用于和表单进行双向绑定
@@ -228,11 +239,11 @@ class passwordPayment extends BaseComponent {
                         <div className="password-box">
                             <div className="payment-code">请输入支付密码</div>
                             <div className="content">
-                                <InputGrid onInputGrid={this.inputGrid}/>
+                                <InputGrid num={1} onInputGrid={this.inputGrid} clearPropsInput={this.clearPropsInput}/>
                             </div>
                             <div className="payment-code">请再次输入支付密码</div>
                             <div className="content">
-                                <InputGrid onInputGrid={this.inputGridAgain}/>
+                                <InputGrid num={2} onInputGrid={this.inputGridAgain} clearPropsInput={this.clearPropsInput}/>
                             </div>
                             <div className="payment-box">
                                 <div className="difference">不可与登入密码相同</div>

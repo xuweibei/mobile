@@ -122,9 +122,9 @@ class Invitation extends BaseComponent {
         if (hybird) {
             const obj = {
                 type: value + 1,
-                title: '',
-                content: '',
-                url: '',
+                title: '分享',
+                content: '个人二维码',
+                url: shareArr,
                 imgUrl: shareArr
             };
             if (shareArr) {

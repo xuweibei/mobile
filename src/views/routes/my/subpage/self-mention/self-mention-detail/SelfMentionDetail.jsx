@@ -256,8 +256,9 @@ class ReDetail extends BaseComponent {
     //点击弹出到店协议
     viewShopFile = (ev) => {
         const {showAlert} = this.props;
+        const {OrderSelf} = this.state;
         showAlert({
-            title: '这是到店协议',
+            title: OrderSelf.agree,
             btnText: '好'
         });
         ev.stopPropagation();

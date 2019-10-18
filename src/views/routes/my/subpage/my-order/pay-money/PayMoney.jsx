@@ -57,10 +57,8 @@ class PayMoney extends BaseComponent {
             this.getLastTime(selfOrder === 'null' ? date : selfDate);
             this.setState({
                 orderNum: arrInfo.order,
-                listArr: arrInfo
-            });
-            this.setState({
-                maturityTme: date //到期时间
+                listArr: arrInfo,
+                maturityTme: selfOrder === 'null' ? date : selfDate //到期时间
             });
         } else { //这里表示从线上订单点击付款过来的
             this.getList(true);
