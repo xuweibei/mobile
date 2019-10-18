@@ -27,7 +27,7 @@ class ShopCart extends BaseComponent {
         valid: [], //未失效商品
         invalid: [], //失效商品
         totalSelect: false, //全部商品选中
-        invalidSelect: false, //失效商品选中状态
+        // invalidSelect: false, //失效商品选中状态
         ware: false, //中断
         count: 0, //结算数量
         goodsCount: 0, // 商品数量
@@ -80,7 +80,7 @@ class ShopCart extends BaseComponent {
         }
     };
 
-    //获取购物车数据
+    //获取购物车数据 初始化状态
     getCart = (status) => {
         this.fetch(urlCfg.showCateValue, {data: {
             if_express: status || 1
@@ -179,9 +179,9 @@ class ShopCart extends BaseComponent {
         }).subscribe(res => {
             if (res.status === 0) {
                 this.getCart();
-                this.setState({
-                    invalidSelect: false
-                });
+                // this.setState({
+                //     invalidSelect: false
+                // });
             }
         });
     };
@@ -205,24 +205,14 @@ class ShopCart extends BaseComponent {
                 text: ['取消', '确定'],
                 callbacks: [null, () => { this.publicDelete(goodsArr) }]
             });
-            // Modal.alert('删除', '确定删除这些商品吗', [
-            //     {text: '取消', style: 'default'},
-            //     {
-            //         text: '确定',
-            //         onPress: () => {
-            //             this.publicDelete(goodsArr);
-            //         }
-            //     }
-            // ]);
         }
     };
 
     //切换顶部按钮
     toggle = () => {
-        const {toggle} = this.state;
-        this.setState({
-            toggle: !toggle
-        });
+        this.setState(prevState => ({
+            toggle: !prevState.toggle
+        }));
     };
 
     //切换单选状态
@@ -304,7 +294,6 @@ class ShopCart extends BaseComponent {
             setIds(cartArr);
             if (hybird) { ////这里的情况是，原生那边跳转的时候，需要处理一些问题，所以就购物车过来的时候，存数据，这边取数据
                 const obj = {arr, cartArr};//储存redux
-                console.log(obj, '线上储存');
                 native('settlement', obj);//app点击结算的时候
             } else {
                 appHistory.push(`/appendorder?source=${1}`);
@@ -312,13 +301,13 @@ class ShopCart extends BaseComponent {
         }
     };
 
-    //失效商品选中
-    checkInvalidSelect = () => {
-        const {invalidSelect} = this.state;
-        this.setState({
-            invalidSelect: !invalidSelect
-        });
-    };
+    // //失效商品选中
+    // checkInvalidSelect = () => {
+    //     const {invalidSelect} = this.state;
+    //     this.setState({
+    //         invalidSelect: !invalidSelect
+    //     });
+    // };
 
     //结算商品数量
     getGoodsCount = () => {
@@ -643,7 +632,7 @@ class ShopCart extends BaseComponent {
             totalSelect,
             valid,
             invalid,
-            invalidSelect,
+            // invalidSelect,
             popup,
             attributes,
             stocks,
@@ -681,7 +670,6 @@ class ShopCart extends BaseComponent {
                         </div>
                     ) : null}
                 </div>
-                {/* <div className={`change-cart ${loadDown ? 'loadDown' : ''}`} onClick={this.changeCart}><span className="icon icon-change"/>{cartText}</div> */}
                 <div className="shop-tabs">
                     {
                         textStyle.map((item, index) => (
@@ -809,10 +797,10 @@ class ShopCart extends BaseComponent {
                                 <div
                                     className="timeout-top"
                                 >
-                                    <span
+                                    {/* <span
                                         className={`icon ${invalidSelect ? 'icon-select-z' : 'icon-unselect-z'}`}
                                         onClick={this.checkInvalidSelect}
-                                    />
+                                    /> */}
                                     <p className="timeout-text">失效商品</p>
                                     <div className="title-right">
                                         <span
