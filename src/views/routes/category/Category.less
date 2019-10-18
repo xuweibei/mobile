@@ -14,10 +14,10 @@
     // .am-tabs-default-bar-content {
     //     width: 200px !important;
     //     // height: 100px;
-    //     // border-bottom: 1px solid #666;
+    //     // border-bottom: 1px solid @dark-gray;
     //     .am-tabs-default-bar-tab {
     //         height: 100px !important;
-    //         border-bottom: 1px solid #666
+    //         border-bottom: 1px solid @dark-gray
     //     }
     // }
     .test{
@@ -32,7 +32,7 @@
         }
 
         .am-tabs-tab-bar-wrap {
-            background: rgba(255, 255, 255, 1);
+            background: @white;
             box-shadow: 0 0 40px 0 rgba(102, 102, 102, 0.4);
             opacity: 0.9;
             width: 200px;
@@ -47,9 +47,9 @@
                 font-size: @font-size-30;
                 font-family: @font-family;
                 font-weight: @font-weight-normal;
-                color: #666;
+                color: @dark-gray;
                 margin: 0 15px;
-                //border-bottom: 1px solid rgba(238,238,238,1) !important;
+                //border-bottom: 1px solid @to-light-gray !important;
                 .hairline('bottom', @to-light-gray) !important;
 
                 &::after {
@@ -125,7 +125,7 @@
                             font-size: @font-size-30;
                             font-family: @font-family;
                             font-weight: @font-weight-normal;
-                            color: #666;
+                            color: @dark-gray;
                         }
 
                         .line {

@@ -1,14 +1,14 @@
 @import "~style";
 .Evaluation-success {
     .navbar .nav-left .icon-left:before,.navbar .nav-right .icon-right:before {
-        color: #333;
+        color: @darker-black;
     }
 
     .loogEvaluation {
-        background-color: rgba(255, 45, 81, 1);
+        background-color: @fiery-red;
         padding: 39px 45px 40px;
         .Evaluation-t {
-            color: rgba(255, 254, 254, 1);
+            color: #fffefe;
             font-size: @font-size-48;
             text-align: center;
             margin-bottom:21px;
@@ -16,13 +16,13 @@
         .Evaluation-c {
             margin: 0 140px 19px;
             text-align: center;
-            color: rgba(255, 255, 255, 1);
+            color: @white;
             font-size: @font-size-24;
             letter-spacing: 1px;
         }
         .Evaluation-b {
-            color: rgba(255, 45, 81, 1);
-            background-color: rgba(255, 255, 255, 1);
+            color: @fiery-red;
+            background-color: @white;
             font-size: @font-size-36;
             width: 660px;
             height: 100px;
@@ -46,7 +46,7 @@
             .Evaluation-t{
                 flex: 1;
                 text-align: center;
-                color: rgba(153, 153, 153, 1);
+                color: @gray;
                 font-size: @font-size-28;
             }
         }
@@ -54,7 +54,7 @@
             content: '';
             width: 240px;
             height: 2px;
-            background-color:rgba(238, 238, 238, 1);
+            background-color:@to-light-gray;
             margin-top: 13px;
         }
     }
@@ -72,7 +72,7 @@
         }
     }
     .goods {
-        //border-bottom: 1px solid rgba(238, 238, 238, 1);
+        //border-bottom: 1px solid @to-light-gray;
         .hairline('bottom',@to-light-gray);
         margin-top: 30px;
         .goods-name {
@@ -95,7 +95,7 @@
             position: relative;
             .goods-explain {
                 font-size: @font-size-28;
-                color: rgba(51, 51, 51, 1);
+                color: @darker-black;
                 padding: 5px 28px 0 0 ;
                 display: block;
                 line-height: 38px;
@@ -152,11 +152,11 @@
             height: 40px;
             padding: 8px 0;
             li {
-                color: rgba(153, 153, 153, 1);
+                color: @gray;
                 float: left;
                 padding: 0 20px;
                 font-size: @font-size-20;
-                border-right: 1px solid rgba(153, 153, 153, 1);
+                border-right: 1px solid @gray;
             }
         }
         .goods-label li:last-child {
@@ -170,21 +170,21 @@
             justify-content: space-between;
             margin-top: 4px;
             .bookkeeping-l {
-                color: rgba(255, 255, 255, 1);
+                color: @white;
                 font-size: @font-size-20;
                 padding: 6px 17px 6px 18px;
-                .directionalGradation(150deg, rgba(255, 45, 81, 1), rgba(242, 12, 0, 1) );
+                .directionalGradation(150deg, @fiery-red, @garnet-red );
                 border-radius: 20px;
             }
             .bookkeeping-r {
-                color: rgba(153, 153, 153, 1);
+                color: @gray;
                 font-size: @font-size-20;
                 line-height: 35px;
             }
         }
         .payment {
             font-size: @font-size-20;
-            color: rgba(153, 153, 153, 1);
+            color: @gray;
             margin-top: 21px;
             .payment-r {
                 float: right;
@@ -203,12 +203,12 @@
                 display: flex;
                 justify-content: flex-start;
                 .enter-l {
-                    color: rgba(153, 153, 153, 1);
+                    color: @gray;
                     font-size: @font-size-20;
                     margin-right: 30px;
                 }
                 .enter-r {
-                    color: rgba(102, 102, 102, 1);
+                    color: @dark-gray;
                     //line-height: 30px;
                     display: flex;
                     font-size: @font-size-20;
@@ -226,7 +226,7 @@
             .price-r {
                 font-size: @font-size-36;
                 padding-top: 8px;
-                color: rgba(255, 45, 81, 1);
+                color: @fiery-red;
                 margin-right: 3px;
             }
         }

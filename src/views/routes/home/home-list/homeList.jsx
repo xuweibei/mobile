@@ -163,7 +163,6 @@ export default class HomeList extends BaseComponent {
     getHotShops = (page) => {
         const {latitude, longitude} = this.state;
         const local = JSON.parse(getValue('local'));
-        console.log(local, 'ssssssssssssssssssss');
         this.fetch(urlCfg.getHomeShops, {
             data: {
                 type: 2,
@@ -318,7 +317,7 @@ export default class HomeList extends BaseComponent {
                     <p>{item.title}</p>
                     <span className="tally">记账量：{item.deposit}</span>
                     <div className="original-box">
-                        <div className="original">￥{item.price_ori}</div>
+                        <div className="original">{item.price_ori === '0.00' ?  '' : '￥' + item.price_ori}</div>
                     </div>
                     <div className="current">
                         <span>￥<span>{item.price}</span></span>

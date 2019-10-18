@@ -12,7 +12,7 @@ const hybird = process.env.NATIVE;
 
 const getPass = { //获取验证码按钮的样式
     border: 'none',
-    background: '#fff',
+    background: '@white',
     color: 'red',
     float: 'right',
     lineHeight: '44px'

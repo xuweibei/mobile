@@ -36,13 +36,13 @@ const myOrderIconData = [
         text: '待收货',
         className: 'icon issue',
         num: 0
-    },
+    }
     /*{
         text: '待评价',
         className: 'icon evaluate',
         num: 0
     },*/
-   /* {
+    /* {
         text: '售后',
         className: 'icon sale',
         num: 0

@@ -99,10 +99,10 @@
     .panel{
         width: 100%;
         //height: 100%;
-        background: #fff;
+        background: @white;
         //position: fixed;
         bottom: 0;
-        border-radius:20px 20px 0px 0px;
+        border-radius:20px 20px 0 0;
         padding: 30px;
         .panel-top{
             display: flex;
@@ -124,7 +124,7 @@
                     text-align: right;
                     .icon-close:before{
                         content: '\E618';
-                        color: #999;
+                        color: @gray;
                         font-size: 45px;
                     }
                 }
@@ -163,10 +163,10 @@
                         max-width: 200px;
                         padding: 0 20px;
                         height:30px;
-                        border:1px solid rgba(255,45,81,1);
-                        background:linear-gradient(0deg,rgba(255,45,81,1) 0%,rgba(242,12,0,1) 100%);
+                        border:1px solid @fiery-red;
+                        background:linear-gradient(0deg,@fiery-red 0%,@garnet-red 100%);
                         border-radius:15px;
-                        color: #FFFFFF;
+                        color: @white;
                         text-align: center;
                         .TextareaOverflow(@num:1);
                         display: block;
@@ -190,8 +190,8 @@
                     button{
                         width:140px;
                         height:50px;
-                        background:rgba(255,255,255,1);
-                        border:2px solid rgba(153,153,153,1);
+                        background:@white;
+                        border:2px solid @gray;
                         border-radius:25px;
                         color: @gray;
                         font-size: @font-size-24;
@@ -214,7 +214,7 @@
                         height:50px;
                         line-height: 50px;
                         text-align: center;
-                        background:rgba(255,255,255,1);
+                        background:@white;
                         border:2px solid @gray;
                         border-radius:25px;
                         margin-right: 30px;
@@ -228,7 +228,7 @@
                         height:50px;
                         line-height: 50px;
                         text-align: center;
-                        background:rgba(255,255,255,1);
+                        background:@white;
                         border:2px solid @fiery-red;
                         border-radius:25px;
                         margin-right: 30px;
@@ -242,11 +242,11 @@
         .am-button{
             // width:120px;
             height:100px;
-            background:linear-gradient(180deg,rgba(255,45,81,1) 0%,rgba(242,12,0,1) 100%);
-            box-shadow:0 4px 35px 0 rgba(242,13,3,0.4);
+            background:linear-gradient(180deg,@fiery-red 0%,@garnet-red 100%);
+            box-shadow:@button-box-shadow;
             border-radius:50px;
             margin-top: 60px;
-            color: #FFFFFF;
+            color: @white;
             // position: fixed !important;
             bottom: 0 !important;
         }

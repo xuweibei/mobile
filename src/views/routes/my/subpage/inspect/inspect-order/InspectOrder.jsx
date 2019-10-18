@@ -12,7 +12,7 @@ export default class InspectOrder extends BaseComponent {
     state = {
         list: [],
         status: '',
-        navColor: '#ff2d51' //标题头部颜色
+        navColor: '@fiery-red' //标题头部颜色
     }
 
     componentDidMount() {

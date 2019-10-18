@@ -311,10 +311,10 @@ module.exports = (env = {}) => {
                     return /node_modules.*\.(js|jsx)$/.test(module.resource)
                 }
             }),
-            new webpack.optimize.CommonsChunkPlugin({  // 将webpack引导程序逻辑提取到单独的文件中
+            /*new webpack.optimize.CommonsChunkPlugin({  // 将webpack引导程序逻辑提取到单独的文件中
                 name: "manifest",
                 minChunks: Infinity
-            }),
+            }),*/
             new webpack.DefinePlugin({
                 /* 定义环境变量 NODE_ENV ，在开发代码中区分环境 */
                 'process.env': {

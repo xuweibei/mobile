@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {Picker, InputItem, Button} from 'antd-mobile';
 import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAction';
 import AppNavBar from '../../../../../common/navbar/NavBar';
-import './ApplyService.less';
+import './ReturnGoods.less';
 
 
 const {showInfo, appHistory, getUrlParam, setNavColor} = Utils;

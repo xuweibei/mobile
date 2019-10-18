@@ -18,7 +18,7 @@ const getPass = { //获取验证码按钮的样式
     color: '#de1212',
     border: 'none',
     // marginTop: '18px',
-    background: '#fff',
+    background: '@white',
     lineHeight: '44px'
 };
 
@@ -408,10 +408,19 @@ class passwordDetail extends BaseComponent {
                     && (
                         <div className="retrieve-account">
                             <div className="retri-main">
-                                <p>请选择您要找回的账号</p>
+                                {/* <p>请选择您要找回的账号</p> */}
                                 <ul>
                                     {
-                                        accountList && accountList.map((item, idnex) => <li className={item.check ? 'check' : ''} onClick={() => this.checkOne(idnex)}><img src={item.avatarUrl}/><span>{item.no}</span></li>)
+                                        accountList && accountList.map((item, idnex) => (
+                                            <li className={item.check ? 'check' : ''} onClick={() => this.checkOne(idnex)}>
+                                                <img src={item.avatarUrl}/>
+                                                <span className="check-second">
+                                                    <img className="check-bd" src={require('../../../../../../../assets/images/bd-icon.png')} alt=""/>
+                                                    <span>uid：{item.no}</span>
+                                                </span>
+                                                <span className="icon check-last"/>
+                                            </li>
+                                        ))
                                     }
                                 </ul>
                                 <div className="retri-btn">

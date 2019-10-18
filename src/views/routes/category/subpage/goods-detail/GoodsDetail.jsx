@@ -5,6 +5,8 @@
 import {Carousel, Flex, Icon, List, Popover, Stepper} from 'antd-mobile';
 import {connect} from 'react-redux';
 import {Link, Element, scrollSpy, animateScroll} from 'react-scroll';
+import Recommend from './components/Recommend';
+import Evaluate from './components/Evaluate';
 import {shopCartActionCreator as action} from '../../../shop-cart/actions';
 import {baseActionCreator as actionCreator} from '../../../../../redux/baseAction';
 import Sku from '../../../../common/sku/Sku';
@@ -24,10 +26,6 @@ const listText = [
         title: '商品',
         key: 'goods'
     },
-    // {
-    //     title: '评价',
-    //     key: 'evaluate'
-    // },
     {
         title: '推荐',
         key: 'recommend'
@@ -42,34 +40,23 @@ const Item = Popover.Item;
 class GoodsDetail extends BaseComponent {
     state = {
         topSwithe: true,
-        indexId: 0,
         popup: false, //sku是否显示
         paginationNum: 1,
-        imgHeight: 176,
         goodsDetail: {}, //详情界面
         picPath: [], //轮播
         shop: {}, //  详情商店数据
         recommend: [], //店铺商品推荐
-        evaluate: {}, //商品评价
-        allState: {},
         goodsAttr: [],
         stocks: [],
         type: '',
-        names: '', //选中商品属性
-        inputStatus: false, //评论框状态
-        assess: 0, //评价顶部距离
-        detailImg: 0, //商品详情顶部距离
-        navHeight: 0, //导航栏到顶部的距离
-        recommendTop: 0,
+        names: [], //选中商品属性
         collect: [], //商品收藏状态
         status: '1', //判断商品是否下架
         visible: false,
-        half: false,
         text: '',
         lineStatus: false, //底部商品状态栏
         ids: [], //选中属性id
         goodsSku: [], //商品的结果集
-        listHeight: [], //元素头部高度
         shopAddress: '', // 店铺位置
         lineText: '', //商品状态栏文字
         pickType: {}, //配送方式
@@ -83,30 +70,24 @@ class GoodsDetail extends BaseComponent {
         this.init();
     }
 
-    componentWillUnmount() {
-        super.componentWillUnmount();
-        scrollSpy.unmount();
-    }
-
     componentWillMount() {
         if (hybird) { //设置tab颜色
             setNavColor('setNavColor', {color: navColorF});
         }
     }
 
-    // 初始化滚动
     init = () => {
-        scrollSpy.update();
-        scrollSpy.mount(document);
-        scrollSpy.addSpyHandler(this.handleScroll, document);
         this.getGoodsDetail();
+        window.addEventListener('scroll', this.handleScroll);
+        scrollSpy.update();
     }
 
     //网页滚动
     handleScroll=(e) => {
-        if (e / window.devicePixelRatio > 100) {
+        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        if (scrollTop / window.devicePixelRatio > 50) {
             this.setState({topSwithe: false});
-        } else if (e / window.devicePixelRatio <= 100) {
+        } else if (scrollTop / window.devicePixelRatio <= 100) {
             this.setState({topSwithe: true});
         }
     }
@@ -118,34 +99,23 @@ class GoodsDetail extends BaseComponent {
             if (id !== goodId) {
                 this.setState({
                     topSwithe: true,
-                    indexId: 0,
                     popup: false, //sku是否显示
                     paginationNum: 1,
-                    imgHeight: 176,
                     goodsDetail: {}, //详情界面
                     picPath: [], //轮播
                     shop: {}, //  详情商店数据
                     recommend: [], //店铺商品推荐
-                    evaluate: {}, //商品评价
-                    allState: {},
                     goodsAttr: [],
                     stocks: [],
                     type: '',
-                    names: '', //选中商品属性
-                    inputStatus: false, //评论框状态
-                    assess: 0, //评价顶部距离
-                    detailImg: 0, //商品详情顶部距离
-                    navHeight: 0, //导航栏到顶部的距离
-                    recommendTop: 0,
+                    names: [], //选中商品属性
                     collect: [], //商品收藏状态
                     status: '1', //判断商品是否下架
                     visible: false,
-                    half: false,
                     text: '',
                     lineStatus: false, //底部商品状态栏
                     ids: [], //选中属性id
                     goodsSku: [], //商品的结果集
-                    listHeight: [], //元素头部高度
                     shopAddress: '', // 店铺位置
                     lineText: '', //商品状态栏文字
                     pickType: {}, //配送方式
@@ -168,7 +138,6 @@ class GoodsDetail extends BaseComponent {
         const {goodId} = this.state;
         this.fetch(urlCfg.getGoodsDetail, {data: {id: goodId}}).subscribe(res => {
             if (res.status === 0) {
-                this.starShow(res.shop.shop_mark);
                 animateScroll.scrollToTop();
                 const stocks = [];
                 res.sku.forEach(item => {
@@ -185,9 +154,7 @@ class GoodsDetail extends BaseComponent {
                         goodsDetail: res.data,
                         picPath: res.data.picpath,
                         shop: res.shop, // 店铺信息,
-                        // rank: res.shop.shop_mark,
                         recommend: res.recommend_pr, // 商品推荐
-                        evaluate: res.pingjia,
                         allState: res,
                         collect: res.had_coll,
                         status: res.data.status,
@@ -248,16 +215,11 @@ class GoodsDetail extends BaseComponent {
             names,
             popup: false
         }, () => {
-            switch (clickType) { //判断确认后的回调 1加入购物车 2立即购买
-            case 1:
+            if (clickType === 1) {
                 TD.log(TD_EVENT_ID.STORE.ID, TD_EVENT_ID.STORE.LABEL.STORE_HOME);
                 this.addCart();
-                break;
-            case 2:
+            } else if (clickType === 2) {
                 this.emption();
-                break;
-            default:
-                return;
             }
         });
     };
@@ -265,11 +227,7 @@ class GoodsDetail extends BaseComponent {
     //添加商品到购物车
     addCart = () => {
         const {shop, goodsDetail, paginationNum, ids, selectType, status} = this.state;
-        console.log(paginationNum);
-        if (shop.shoper_open_status === '0') {
-            return;
-        }
-        if (status === '0' || status === '2') {
+        if (shop.shoper_open_status === '0' || status === '0' || status === '2') {
             return;
         }
         if (paginationNum === 0 || ids.length === 0) {
@@ -318,10 +276,7 @@ class GoodsDetail extends BaseComponent {
     //立即购买
     emption = () => {
         const {shop, status} = this.state;
-        if (shop.shoper_open_status === '0') {
-            return;
-        }
-        if (status === '0' || status === '2') {
+        if (shop.shoper_open_status === '0' || status === '0' || status === '2') {
             return;
         }
         const id = decodeURI(
@@ -374,6 +329,7 @@ class GoodsDetail extends BaseComponent {
                 }
             }).subscribe(res => {
                 if (res && res.status === 0) {
+                    showInfo('收藏成功！');
                     this.getGoodsDetail();
                 }
             });
@@ -390,29 +346,11 @@ class GoodsDetail extends BaseComponent {
             }
         }).subscribe(res => {
             if (res && res.status === 0) {
+                showInfo('取消收藏成功!');
                 this.getGoodsDetail();
             }
         });
     };
-
-    //跳转全部评价
-    // skipAssess = id => {
-    //     appHistory.push(`/evaluate?id=${id}`);
-    // };
-
-    //判断评分等级
-    // rating = num => {
-    //     const rank = parseInt(num, 10);
-    //     let val = '';
-    //     if (rank >= 4) {
-    //         val = '高';
-    //     } else if (rank > 2.5 && rank < 4) {
-    //         val = '中';
-    //     } else {
-    //         val =  '低';
-    //     }
-    //     return val;
-    // };
 
     //图片放大
     openMask = pic => {
@@ -422,6 +360,7 @@ class GoodsDetail extends BaseComponent {
         });
     };
 
+    // 关闭图片mask
     maskClose = () => {
         this.setState({
             maskPic: '',
@@ -430,25 +369,11 @@ class GoodsDetail extends BaseComponent {
     };
 
     //跳转店铺首页
-    ShopH = id => {
+    shopH = id => {
         appHistory.push(`/shopHome?id=${id}`);
     };
 
-    //星星显示
-    starShow = num => {
-        const a = num.slice(0, 1);
-        const b = num.slice(2, 3);
-        const arr = Array.from({length: a}, (v, k) => k);
-        if (Number(b) <= 9 && Number(b) > 0) {
-            this.setState({
-                half: true
-            });
-        }
-        this.setState({
-            xxArr: arr
-        });
-    };
-
+    // 跳转购物车
     shopCart = () => {
         //判断订单状态
         this.props.setOrderStatus('');
@@ -464,6 +389,7 @@ class GoodsDetail extends BaseComponent {
         }
     };
 
+    // 跳转回首页
     goHome = (val, key) => {
         if (hybrid && key === 0) {
             native('goHome');
@@ -506,6 +432,7 @@ class GoodsDetail extends BaseComponent {
         }
     };
 
+    // 返回上一级
     goBackModal = () => {
         if (hybrid && appHistory.length() === 0) {
             native('goBack');
@@ -518,7 +445,6 @@ class GoodsDetail extends BaseComponent {
 
     //改变购买数量
     onChangeCount = value => {
-        console.log(value);
         if (value > 100) {
             showFail(Form.No_Stocks);
         } else {
@@ -593,7 +519,7 @@ class GoodsDetail extends BaseComponent {
         </Popover>
     )
 
-    //店铺详情跳转
+    // 推荐商品点击
     goToShopRecom = (id) => {
         this.setState({
             goodId: id
@@ -661,7 +587,6 @@ class GoodsDetail extends BaseComponent {
                                     {window.isWX ? null : (
                                         <div
                                             className="icon icon-back"
-                                            // onClick={appHistory.goBack}
                                             onClick={this.goBackModal}
                                         />
                                     )}
@@ -669,7 +594,7 @@ class GoodsDetail extends BaseComponent {
                             </li>
                             <li className="list">
                                 <ul>
-                                    {listText.map((item, index) => (
+                                    {listText.map(item => (
                                         <li key={item.title} className="items">
                                             <Link activeClass="on on-tab" to={item.key} spy smooth duration={500} >
                                                 {item.title}
@@ -686,15 +611,142 @@ class GoodsDetail extends BaseComponent {
                         </ul>
                     </div>
                 )}
-                <div className="goods-detail-wrapper">
-                    <div className="container">
-                        <div className="goods-banner">
+                {/* <div className="goods-detail-wrapper"> */}
+                <Element name="goods" className="goods-banner">
+                    <Carousel autoplay={false} infinite>
+                        {picPath.map((item) => (
+                            <div
+                                key={item}
+                                onClick={e => this.openMask(e)}
+                            >
+                                <img
+                                    src={item}
+                                    className="banner-img"
+                                />
+                            </div>
+                        ))}
+                    </Carousel>
+                </Element>
+                {/*商品详情规格*/}
+                <div className="goods-norms">
+                    <div className="norms-money">
+                        <div className="money">
+                                ￥{goodsDetail.price}{' '}
+                            <p className="money-max">￥{goodsDetail.price_original}</p>
+                        </div>
+                        <div className="money-keep">
+                            <div className="btn-keep">
+                                记账量：{goodsDetail.deposit}
+                            </div>
+                        </div>
+                        <div className="norms-title">
+                            {goodsDetail.title}
+                        </div>
+                        <div className="norms-bottom">
+                            <Flex>
+                                <Flex.Item>
+                                    <div className="bot-left">
+                                    邮费：
+                                        {'￥' + goodsDetail.express_money || '免邮'}
+                                    </div>
+                                </Flex.Item>
+                                <Flex.Item>
+                                    <div className="bot-center">
+                                    销量：{goodsDetail.num_sold}
+                                    </div>
+                                </Flex.Item>
+                                <Flex.Item>
+                                    <div className="bot-right">
+                                        {shopAddress}
+                                    </div>
+                                </Flex.Item>
+                            </Flex>
+                        </div>
+                    </div>
+                    {/*店铺、商品规格*/}
+                    <Evaluate
+                        names={names}
+                        goodsDetail={goodsDetail}
+                        Element={Element}
+                        shop={shop}
+                        shopH={this.shopH}
+                        openSku={this.openSku}
+                    />
+                    {/*店铺推荐*/}
+                    <Recommend
+                        recommend={recommend}
+                        Element={Element}
+                        goToShopRecom={this.goToShopRecom}
+                    />
+                    {/*商品详情*/}
+                    <Element name="details" className="detail-img lis" dangerouslySetInnerHTML={{__html: goodsDetail.intro}}/>
+                    {lineStatus ? <div className="timeout">{lineText}</div> : null}
+                    {/*底部固定购买栏*/}
+                    {
+                        shop.shoper_open_status === '0' && (<div className="rest">该店暂未营业</div>)
+                    }
+                    <div className="goodsDetail-bottom">
+                        <div className="icons-warp">
+                            <div className="icons">
+                                <div className="phone-cart" onClick={this.goToShoper}>
+                                    <div className="icon icon-phone"/>
+                                    <div className="phone-text" >联系卖家</div>
+                                </div>
+                                <div className="phone-cart" onClick={this.collect}>
+                                    <div className={`icon ${collect.length > 0 ? 'icon-collect-active' : 'icon-collect'}`}/>
+                                    <div className="phone-text">收藏</div>
+                                </div>
+                                <div className="phone-cart" onClick={this.shopCart}>
+                                    <div className="icon icon-cart"/>
+                                    <div className="phone-text">
+                                    购物车
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {
+                            goodsDetail.effective_type === '0' ? (
+                                <div className={`${(status === '0' || status === '2') ? 'disble-btn' : 'bottom-btn'}`}>
+                                    <Flex>
+                                        <Flex.Item
+                                            className={`${(status === '0' || status === '2') ? 'disable-cart' : 'cart'}`}
+                                            onClick={this.addCart}
+                                        >
+                                加入购物车
+                                        </Flex.Item>
+                                        <Flex.Item
+                                            className={`${(status === '0' || status === '2') ? 'disable-emption' : 'emption'}`}
+                                            onClick={() => this.emption('pay')}
+                                        >
+                                立即购买
+                                        </Flex.Item>
+                                    </Flex>
+                                </div>
+                            ) : (
+                                <div className="pay-now" onClick={() => this.emption('pay')}>立即购买</div>
+                            )
+                        }
+                    </div>
+                    {/*底部弹出选择商品框*/}
+                    {popup && (
+                        <Sku
+                            detail={goodsDetail}
+                            attributes={goodsAttr}
+                            stocks={stocks}
+                            cover={picPath[0]}
+                            select={ids}
+                            onClose={this.closeSku}
+                            onSubmit={this.confirmSku}
+                            extra={renderCount}
+                            type={pickType}
+                            selectType={selectType}
+                        />
+                    )}
+                    {maskStatus && (
+                        <div className="picMask" onClick={this.maskClose}>
                             <Carousel autoplay={false} infinite>
-                                {picPath.map((item) => (
-                                    <div
-                                        key={item}
-                                        onClick={e => this.openMask(e)}
-                                    >
+                                {picPath.map(item => (
+                                    <div key={item}>
                                         <img
                                             src={item}
                                             className="banner-img"
@@ -704,331 +756,8 @@ class GoodsDetail extends BaseComponent {
                                 ))}
                             </Carousel>
                         </div>
-                        {/*商品详情规格*/}
-                        <Element name="goods" className="goods-norms">
-                            <div className="norms-money">
-                                <div className="money">
-                                    ￥{goodsDetail.price}{' '}
-                                    <p className="money-max">￥{goodsDetail.price_original}</p>
-                                </div>
-                                <div className="money-keep">
-                                    <div className="btn-keep">
-                                        记账量：{goodsDetail.deposit}
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="norms-title">
-                                {goodsDetail.title}
-                            </div>
-                            <div className="norms-bottom">
-                                <Flex>
-                                    <Flex.Item>
-                                        <div className="bot-left">
-                                            邮费：
-                                            {'￥' + goodsDetail.express_money || '免邮'}
-                                        </div>
-                                    </Flex.Item>
-                                    <Flex.Item>
-                                        <div className="bot-center">
-                                            销量：{goodsDetail.num_sold}
-                                        </div>
-                                    </Flex.Item>
-                                    <Flex.Item>
-                                        <div className="bot-right">
-                                            {shopAddress}
-                                        </div>
-                                    </Flex.Item>
-                                </Flex>
-                            </div>
-                        </Element>
-                        {/*店铺、商品规格*/}
-                        <Element name="evaluate" className="goods-shop">
-                            <div className="framing">
-                                <div
-                                    className="goods-select"
-                                    onClick={this.openSku}
-                                >
-                                    <div className="select-left">
-                                        <div className="chose">选择</div>
-                                        <div className="attrs">
-                                            <span>选择</span>
-                                            {
-                                                names && names.map((item, index) => (<span key={index.toString()}>{item}</span>))
-                                            }
-                                        </div>
-                                    </div>
-                                    <div className="select-right">
-                                        <span className="icon right-icon"/>
-                                    </div>
-                                </div>
-                            </div>
-                            {
-                                goodsDetail.effective_type === '0' ? (
-                                    <div className="serve">
-                                        <div className="waiter">服务</div>
-                                        <div className="their">
-                                            <span>门店可自提</span>
-                                            <span className="dolt"/>
-                                            <div className="nonsupport">
-                                        不支持7天无理由退换货
-                                            </div>
-                                        </div>
-                                    </div>
-                                ) : (
-                                    <div className="serve">
-                                        <div className="waiter">有效时间</div>
-                                        <div className="their">
-                                            <div className="nonsupport">
-                                                {goodsDetail.effective_type}
-                                            </div>
-                                            <div className="validity">{goodsDetail.if_holiday === '0' ? '仅工作日有效' : '节假日通用(节假日包含周六、周日)'}</div>
-                                        </div>
-                                    </div>
-                                )
-                            }
-                            <div className="shop-detali">
-                                <div className="box1">
-                                    <div className="shop-logo">
-                                        <img
-                                            className="logo-img"
-                                            src={shop.picpath}
-                                            alt=""
-                                        />
-                                    </div>
-                                    <div className="shop-detail">
-                                        <div className="Star">
-                                            {/*{xxArr
-                                            && xxArr.map(item => (
-                                                <div
-                                                    className="shop-star"
-                                                    key={item}
-                                                >
-                                                    <div className="icon icon-star"/>
-                                                </div>
-                                            ))}*/}
-                                            <span className="Shop-Nl">
-                                                {shop.shopName}
-                                            </span>
-                                            {/* {half && (
-                                                <div className="shop-star">
-                                                    <div className="icon icon-stars"/>
-                                                </div>
-                                            )} */}
-                                            <div className="shop-btn">
-                                                {/* <div className="shop-det">
-                                                    店铺详情
-                                                </div> */}
-                                                <div
-                                                    className="auxiliary-button red"
-                                                    onClick={() => this.ShopH(shop.id)
-                                                    }
-                                                >
-                                                    进店逛逛
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="Shop-N">
-                                            {/*<span className="Shop-Nl">
-                                                {shop.shopName}
-                                            </span>*/}
-                                            <span>
-                                                人均消费
-                                            </span>
-                                            <span className="Shop-Nr">
-                                                ￥{shop.average_consumption}
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                {/* <div className="scores">
-                                    <div className="shop-score">
-                                        <span>店铺评分</span>
-                                        <span className="score-eva">
-                                            {shop.shop_mark}
-                                        </span>
-                                        <span className="grade-height">
-                                            {this.rating(shop.shop_mark)}
-                                        </span>
-                                    </div>
-                                    <div className="logistics-score">
-                                        <span>物流评分</span>
-                                        <span className="score-eva">
-                                            {shop.logistics_mark}
-                                        </span>
-                                        <span className="grade-low">{this.rating(shop.logistics_mark)}</span>
-                                    </div>
-                                </div> */}
-                            </div>
-                            {/* <div className="goods-assess">
-                                <div className="assess-text">
-                                    <div className="text-left">
-                                        商品评价({allState.pingjia_count})
-                                    </div>
-                                    <div
-                                        className="text-right"
-                                        onClick={() => this.skipAssess(goodsDetail.id)
-                                        }
-                                    >
-                                        查看全部
-                                        <span className="icon icon-right"/>
-                                    </div>
-                                </div>
-                                <div className="appraise">
-                                    <div className="appraise-head">
-                                        <div className="head-logo">
-                                            <img
-                                                className="head-img"
-                                                src={evaluate.avatarUrl}
-                                                alt=""
-                                            />
-                                        </div>
-                                        <div className="head-text">
-                                            {evaluate.nickname}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="appraise-title">
-                                    {evaluate.content}
-                                </div>
-                            </div> */}
-                        </Element>
-                        {/*店铺推荐*/}
-                        <Element name="recommend" className="home-recommends">
-                            <h2 className="recommend-commodity-names">
-                                店铺推荐
-                            </h2>
-                            <div className="Scroll-infeed">
-                                <div className="home-recommend-main">
-                                    {recommend.map(item => (
-                                        <div
-                                            className="home-recommend-individual"
-                                            key={item.id}
-                                            onClick={() => this.goToShopRecom(item.id)}
-                                        >
-                                            <div className="recommend-individual-imgParent">
-                                                <img
-                                                    className="recommend-individual-img"
-                                                    src={item.picpath}
-                                                    alt=""
-                                                />
-                                            </div>
-                                            <h3 className="recommend-individual-title">
-                                                {item.title}
-                                            </h3>
-                                            <div className="recommend-concessional-box">
-                                                <div className="recommend-concessional-rate">
-                                                    {item.price}
-                                                </div>
-                                                <div className="recommend-original-price">
-                                                    ￥{item.price}
-                                                </div>
-                                            </div>
-                                            <div className="recommend-accounting-volume">
-                                                记账量：{item.deposit}
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                            <div className="recommend-commodity-detail">
-                                <div className="currency-detail">
-                                    <Flex className="currency-detail-title">
-                                        <Flex.Item className="title-border"/>
-                                        <Flex.Item className="title-center">
-                                            商品详情
-                                        </Flex.Item>
-                                        <Flex.Item className="title-border"/>
-                                    </Flex>
-                                </div>
-                            </div>
-                        </Element>
-                        {/*商品详情*/}
-                        <Element name="details" className="detail-img lis" dangerouslySetInnerHTML={{__html: goodsDetail.intro}}/>
-                        {/* <img
-                                className="img"
-                                src={require('../../../../../assets/images/dateil.png')}
-                                alt=""
-                            /> */}
-                        {/*失效*/}
-                    </div>
+                    )}
                 </div>
-                {lineStatus ? <div className="timeout">{lineText}</div> : null}
-                {/*底部固定购买栏*/}
-                {
-                    shop.shoper_open_status === '0' && (<div className="rest">该店暂未营业</div>)
-                }
-                <div className="goodsDetail-bottom">
-                    <div className="icons-warp">
-                        <div className="icons">
-                            <div className="phone-cart" onClick={this.goToShoper}>
-                                <div className="icon icon-phone"/>
-                                <div className="phone-text" >联系卖家</div>
-                            </div>
-                            <div className="phone-cart" onClick={() => this.collect()}>
-                                <div className={`icon ${collect.length > 0 ? 'icon-collect-active' : 'icon-collect'}`}/>
-                                <div className="phone-text">收藏</div>
-                            </div>
-                            <div className="phone-cart" onClick={this.shopCart}>
-                                <div className="icon icon-cart"/>
-                                <div className="phone-text">
-                                    购物车
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {
-                        goodsDetail.effective_type !== '0' ? (
-                            <div className="pay-now" onClick={() => this.emption('pay')}>立即购买</div>
-                        ) : (
-                            <div className={`${(status === '0' || status === '2') ? 'disble-btn' : 'bottom-btn'}`}>
-                                <Flex>
-                                    <Flex.Item
-                                        className={`${(status === '0' || status === '2') ? 'disable-cart' : 'cart'}`}
-                                        onClick={this.addCart}
-                                    >
-                                加入购物车
-                                    </Flex.Item>
-                                    <Flex.Item
-                                        className={`${(status === '0' || status === '2') ? 'disable-emption' : 'emption'}`}
-                                        onClick={() => this.emption('pay')}
-                                    >
-                                立即购买
-                                    </Flex.Item>
-                                </Flex>
-                            </div>
-                        )
-                    }
-                </div>
-                {/*底部弹出选择商品框*/}
-                {popup && (
-                    <Sku
-                        detail={goodsDetail}
-                        attributes={goodsAttr}
-                        stocks={stocks}
-                        cover={picPath[0]}
-                        select={ids}
-                        onClose={this.closeSku}
-                        onSubmit={this.confirmSku}
-                        extra={renderCount}
-                        type={pickType}
-                        selectType={selectType}
-                    />
-                )}
-                {maskStatus && (
-                    <div className="picMask" onClick={this.maskClose}>
-                        <Carousel autoplay={false} infinite>
-                            {picPath.map(item => (
-                                <div key={item}>
-                                    <img
-                                        src={item}
-                                        className="banner-img"
-                                        alt=""
-                                    />
-                                </div>
-                            ))}
-                        </Carousel>
-                    </div>
-                )}
             </div>
         );
     }

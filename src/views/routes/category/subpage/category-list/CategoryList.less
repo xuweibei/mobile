@@ -11,16 +11,16 @@
         //position: fixed;
         //top: 0;
         left: 50%;
-        background: #fff;
+        background: @white;
         transform: translateX(-50%);
         z-index: 9999;
     }
     .nav{
         .am-navbar-right{
-            color: #666 !important;
+            color: @dark-gray !important;
         }
         .am-icon-left{
-            color: #666 !important;
+            color: @dark-gray !important;
         }
         position: fixed !important;
         top: 0 !important;
@@ -56,7 +56,7 @@
     .search-box{
         position: fixed;
         width: 100%;
-        background: #FFF;
+        background: @white;
         display: flex;
         justify-content: space-around;
         align-items:baseline ;
@@ -219,7 +219,7 @@
             padding: 30px;
             display: flex;
 /*            margin: 0 30px;*/
-            background: #fff;
+            background: @white;
         }
     }
     .goods-picture {
@@ -237,7 +237,7 @@
         flex: 1;
         .goods-explain {
             font-size: @font-size-28;
-            color: rgba(51, 51, 51, 1);
+            color: @darker-black;
             height: 80px;
             margin-bottom: 20px;
             padding: 5px 28px 0 0 ;
@@ -257,7 +257,7 @@
             float: left;
             padding: 0 20px;
             font-size: @font-size-20;
-            //border-right: 1px solid rgba(153, 153, 153, 1);
+            //border-right: 1px solid @gray;
             .hairline('right',@gray);
         }
     }
@@ -271,22 +271,22 @@
         display: flex;
         justify-content: space-between;
         .bookkeeping-left {
-            color: rgba(255, 255, 255, 1);
+            color: @white;
             font-size: @font-size-20;
             padding: 0 17px 0 18px;
             line-height: 36px;
-            .directionalGradation(150deg, rgba(255, 45, 81, 1), rgba(242, 12, 0, 1) );
+            .directionalGradation(150deg, @fiery-red, @garnet-red );
             border-radius: 20px;
         }
         .bookkeeping-right {
-            color: rgba(153, 153, 153, 1);
+            color: @gray;
             font-size: @font-size-20;
             line-height: 35px;
         }
     }
     .payment {
         font-size: @font-size-20;
-        color: rgba(153, 153, 153, 1);
+        color: @gray;
         margin-top: 21px;
         .payment-right {
             width: 127px;
@@ -306,7 +306,7 @@
             justify-content: flex-start;
             .enter-left {
                 width: 120px;
-                color: rgba(153, 153, 153, 1);
+                color: @gray;
                 font-size: @font-size-20;
                 margin-right: 30px;
                 -webkit-line-clamp:1;
@@ -315,7 +315,7 @@
                 overflow: hidden;
             }
             .enter-right {
-                color: rgba(102, 102, 102, 1);
+                color: @dark-gray;
                 //line-height: 30px;
                 display: flex;
                 font-size: @font-size-20;
@@ -333,7 +333,7 @@
         .price-right {
             font-size: @font-size-36;
             padding-top: 3px;
-            color: rgba(255, 45, 81, 1);
+            color: @fiery-red;
             margin-right: 3px;
             width: 180px;
             text-align: right;
@@ -370,6 +370,7 @@
     }
     .am-list-view-scrollview {
         //margin-top: 90px;
+        height: 85vh;
     }
 }
 
@@ -408,7 +409,7 @@
             .am-list-line {
                 height: 60px;
                 line-height: 60px;
-                background-color: #f9f9f9;
+                background-color: @back-color;
                 margin: auto;
                 padding: 0 30px;
                 border-radius:100px;
@@ -435,6 +436,6 @@
     .seek-right {
         line-height: 88px;
         margin-left: 21px;
-        color: #FF2D51;
+        color: @fiery-red;
     }
 }

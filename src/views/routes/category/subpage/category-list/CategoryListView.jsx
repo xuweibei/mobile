@@ -54,7 +54,7 @@ class CategoryListView extends BaseComponent {
 
         this.state = {
             dataSource,
-            height: document.documentElement.clientHeight - (window.isWX ? window.rem * 1.08 : window.rem * 1.99),
+            // height: document.documentElement.clientHeight - (window.isWX ? window.rem * 1.08 : window.rem * 1.99),
             hasFetch: false,
             page: 1,
             pageCount: -1,
@@ -205,22 +205,26 @@ class CategoryListView extends BaseComponent {
         appHistory.push(`/shopHome?id=${id}`);
     };
 
+    //下拉刷新
     onRefresh = () => {
         this.setState({
             refreshing: true,
-            isLoading: true
+            isLoading: true,
+            currentIndex: null,
+            showStatus: [false, false, false],
+            flag: [false, false, false]
         }, () => {
             this.getCategoryList(0, true);
         });
     };
 
     //底部提示
-    footer = () => (
-        !this.state.hasMore && (
-            // FIXME: 样式写less里面
-            <div style={{padding: 10, textAlign: 'center'}}>加载完成</div>
-        )
-    )
+    // footer = () => (
+    //     !this.state.hasMore && (
+    //         // FIXME: 样式写less里面
+    //         <div style={{padding: 10, textAlign: 'center'}}>加载完成</div>
+    //     )
+    // )
 
     // 过滤tab点击切换
     filterTab = (index) => {
@@ -263,7 +267,6 @@ class CategoryListView extends BaseComponent {
 
     //渲染排序
     renderLine = (initStatus, index, currentIndex, showStatus) => {
-        // console.log(showStatus);
         if (initStatus && index === currentIndex) {
             return (
                 showStatus[currentIndex] && index === currentIndex ? (
@@ -285,7 +288,7 @@ class CategoryListView extends BaseComponent {
     };
 
     render() {
-        const {dataSource, height, hasFetch, currentIndex, showStatus, initStatus, refreshing} = this.state;
+        const {dataSource, hasFetch, currentIndex, showStatus, initStatus, refreshing} = this.state;
         const shopId = this.props.shoppingId;
         const row = (item) => (
             <div className="goods" key={item.id} onClick={() => this.switchTo(item.id)}>
@@ -297,11 +300,11 @@ class CategoryListView extends BaseComponent {
                         <div className="goods-explain">{item.title}</div>
                         <div className="bookkeeping">
                             <span className="bookkeeping-left">记账量：{item.deposit}</span>
-                            <span className="bookkeeping-right">北京</span>
+                            <span className="bookkeeping-right">{item.province + item.city}</span>
                         </div>
                         <div className="payment">
-                            <span>{item.num_sold}人付款</span>
-                            <span className="payment-right">￥{item.deposit}</span>
+                            <span>销量:{item.num_sold}</span>
+                            <span className="payment-right">￥{item.price_original}</span>
                         </div>
                         <div className="price">
                             {!shopId && (
@@ -357,9 +360,9 @@ class CategoryListView extends BaseComponent {
                                     initialListSize={this.temp.pagesize}
                                     renderBodyComponent={() => <ListBody/>}
                                     renderRow={row}
-                                    style={{
-                                        height
-                                    }}
+                                    // style={{
+                                    //     height
+                                    // }}
                                     pageSize={this.temp.pagesize}
                                     onEndReachedThreshold={100}
                                     onEndReached={this.onEndReached}

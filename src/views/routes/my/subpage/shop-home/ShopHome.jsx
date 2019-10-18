@@ -13,6 +13,7 @@ import ShopHomeFour from './shop-home-index-four/ShopHomeIndexFour';
 import ShopHomeFive from './shop-home-index-five/ShopHomeIndexFive';
 import ShopHomeDetail from './ShopHomeDetail';
 import LazyLoadIndex from '../../../../common/lazy-load/LazyLoad';
+import Top from '../../../../common/top/Top';
 import Nothing from '../../../../common/nothing/Nothing';
 import Animation from '../../../../common/animation/Animation';
 import {ListFooter} from '../../../../common/list-footer';
@@ -301,6 +302,7 @@ class ShopHome extends BaseComponent {
         return (
             <React.Fragment>
                 <ShopHomes id={shoppingId} shopModelArr={shopModelArr} show={currentState === 'business'}/>
+                <Top/>
                 {blockModel}
                 {
                     currentState && <ShopFooter onTabChange={(data) => { this.onTabChange(data) }} active="shopHome" haveModalAll={modelShow}/>
