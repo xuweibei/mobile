@@ -311,10 +311,10 @@ module.exports = (env = {}) => {
                     return /node_modules.*\.(js|jsx)$/.test(module.resource)
                 }
             }),
-            new webpack.optimize.CommonsChunkPlugin({  // 将webpack引导程序逻辑提取到单独的文件中
+            /*new webpack.optimize.CommonsChunkPlugin({  // 将webpack引导程序逻辑提取到单独的文件中
                 name: "manifest",
                 minChunks: Infinity
-            }),
+            }),*/
             new webpack.DefinePlugin({
                 /* 定义环境变量 NODE_ENV ，在开发代码中区分环境 */
                 'process.env': {
@@ -370,7 +370,11 @@ module.exports = (env = {}) => {
 
     ENV.isDevServer() && (clientConfig.devServer = {
         disableHostCheck: true,
+<<<<<<< HEAD
         host: '192.168.31.20',
+=======
+        host: IP,
+>>>>>>> b0710f7225e7f2a5475e9e954b7a1b3db6419748
         hot: true,  // 是否开启模块热替换功能
         inline: true,
         compress: true,  // 是否开启 gzip 压缩
