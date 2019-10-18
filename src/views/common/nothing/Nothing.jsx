@@ -86,7 +86,7 @@ class Nothing extends React.PureComponent {
             str = 'net-error';
             break;
         case FIELD.Server_Error:
-            str = 'audit-failure';
+            str = 'server-error';
             break;
         default: str = '';
         }
