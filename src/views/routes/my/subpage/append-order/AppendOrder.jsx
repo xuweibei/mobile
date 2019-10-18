@@ -186,14 +186,14 @@ class appendOrder extends BaseComponent {
     };
 
     //保存身份证
-    getIdCart = (val, index) => {
-        const {IDcard} = this.state;
-        const array = IDcard.concat([]);
-        array[index] = val;
-        this.setState({
-            IDcard: array
-        });
-    };
+    // getIdCart = (val, index) => {
+    //     const {IDcard} = this.state;
+    //     const array = IDcard.concat([]);
+    //     array[index] = val;
+    //     this.setState({
+    //         IDcard: array
+    //     });
+    // };
 
     //獲取備注信息
     getRemark = (val, index) => {
@@ -277,7 +277,8 @@ class appendOrder extends BaseComponent {
     };
 
     //发票弹框显示状态
-    showPanel = (index) => {
+    showPanel = (index, a) => {
+        console.log(a);
         this.setState({
             invoiceStatus: true,
             invoiceIndex: index
@@ -494,7 +495,7 @@ class appendOrder extends BaseComponent {
                                         >订单备注
                                         </InputItem>
                                         {
-                                            shop.data.map(goods => goods.if_invoice.includes('1')) && (<List.Item key={index.toString()} onClick={() => { this.showPanel(index) }} className="invoice">发票抬头</List.Item>)
+                                            shop.data.some(goods => goods.if_invoice === '1') && (<List.Item key={index.toString()} onClick={() => { this.showPanel(index, shop) }} className="invoice">发票抬头</List.Item>)
                                         }
                                     </List>
                                     <div className="payable">

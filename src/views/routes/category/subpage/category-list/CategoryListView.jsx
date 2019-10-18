@@ -54,7 +54,7 @@ class CategoryListView extends BaseComponent {
 
         this.state = {
             dataSource,
-            height: document.documentElement.clientHeight - (window.isWX ? window.rem * 1.08 : window.rem * 1.99),
+            // height: document.documentElement.clientHeight - (window.isWX ? window.rem * 1.08 : window.rem * 1.99),
             hasFetch: false,
             page: 1,
             pageCount: -1,
@@ -219,12 +219,12 @@ class CategoryListView extends BaseComponent {
     };
 
     //底部提示
-    footer = () => (
-        !this.state.hasMore && (
-            // FIXME: 样式写less里面
-            <div style={{padding: 10, textAlign: 'center'}}>加载完成</div>
-        )
-    )
+    // footer = () => (
+    //     !this.state.hasMore && (
+    //         // FIXME: 样式写less里面
+    //         <div style={{padding: 10, textAlign: 'center'}}>加载完成</div>
+    //     )
+    // )
 
     // 过滤tab点击切换
     filterTab = (index) => {
@@ -288,7 +288,7 @@ class CategoryListView extends BaseComponent {
     };
 
     render() {
-        const {dataSource, height, hasFetch, currentIndex, showStatus, initStatus, refreshing} = this.state;
+        const {dataSource, hasFetch, currentIndex, showStatus, initStatus, refreshing} = this.state;
         const shopId = this.props.shoppingId;
         const row = (item) => (
             <div className="goods" key={item.id} onClick={() => this.switchTo(item.id)}>
@@ -360,9 +360,9 @@ class CategoryListView extends BaseComponent {
                                     initialListSize={this.temp.pagesize}
                                     renderBodyComponent={() => <ListBody/>}
                                     renderRow={row}
-                                    style={{
-                                        height
-                                    }}
+                                    // style={{
+                                    //     height
+                                    // }}
                                     pageSize={this.temp.pagesize}
                                     onEndReachedThreshold={100}
                                     onEndReached={this.onEndReached}
