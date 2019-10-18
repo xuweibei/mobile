@@ -78,8 +78,7 @@ class CategoryList extends BaseComponent {
             this.setState({
                 textStatus: true
             });
-        }
-        if (val.length === 0) {
+        } else if (val.length === 0) {
             this.setState({
                 textStatus: false
             });
@@ -91,13 +90,13 @@ class CategoryList extends BaseComponent {
     };
 
     //返回上一級
-    routeTo = () => {
-        if (hybird && appHistory.length() === 0) {
-            native('goBack');
-        } else {
-            appHistory.goBack();
-        }
-    };
+    // routeTo = () => {
+    //     if (hybird && appHistory.length() === 0) {
+    //         native('goBack');
+    //     } else {
+    //         appHistory.goBack();
+    //     }
+    // };
 
     //父组件传子组件方法
     onRef = (ref) => {
@@ -111,14 +110,11 @@ class CategoryList extends BaseComponent {
         if (textStatus) {
             this.searchGoods();
         } else {
-            this.routeTo();
+            this.goBackModal();
         }
     };
 
-    /*goToShop = () => {
-        appHistory.push({pathname: '/shopHomeIndexOne'});
-    };*/
-
+    // 返回上一级
     goBackModal = () => {
         if (hybird && appHistory.length() === 0) {
             native('goBack');
@@ -141,10 +137,11 @@ class CategoryList extends BaseComponent {
                         <div className="seek">
                             <div className="seek-left">
                                 <InputItem
-                                    type="text"
+                                    type="search"
                                     clear
                                     maxLength={20}
                                     placeholder="搜索商品"
+                                    onKeyPress={this.textClick}
                                     onChange={(val) => this.getThisKeyWords(val)}
                                 >
                                     <div className="icon icon-lookup"/>
@@ -156,7 +153,6 @@ class CategoryList extends BaseComponent {
                         <AppNavBar
                             title={text}
                             goBackModal={this.goBackModal}
-                            // onClick={() => this.routeTo()}
                             status="123"
                         />
                     )

@@ -7,15 +7,15 @@ const CategoryPage = Loadable({
     loading: () => null
 });
 
-const EvaluatePage = Loadable({
-    loader: () => import(/* webpackChunkName: 'hybird' */ './subpage/evaluate/Evaluate'),
-    loading: () => null
-});
+// const EvaluatePage = Loadable({
+//     loader: () => import(/* webpackChunkName: 'hybird' */ './subpage/evaluate/Evaluate'),
+//     loading: () => null
+// });
 
-const EvaluateDetailPage = Loadable({
-    loader: () => import(/* webpackChunkName: 'hybird' */ './subpage/evaluate-detail/EvaluateDetail'),
-    loading: () => null
-});
+// const EvaluateDetailPage = Loadable({
+//     loader: () => import(/* webpackChunkName: 'hybird' */ './subpage/evaluate-detail/EvaluateDetail'),
+//     loading: () => null
+// });
 
 const CategoryListPage = Loadable({
     loader: () => import(/* webpackChunkName: 'hybird' */ './subpage/category-list/CategoryList'),
@@ -35,8 +35,8 @@ const Classify = () => {
             <React.Fragment>
                 <CacheRoute path="/categoryList" cacheKey="CategoryListPage" component={CategoryListPage} when="back"/>
                 <CacheRoute path="/goodsDetail" cacheKey="GoodsDetailPage" component={GoodsDetailPage}/>
-                <CacheRoute path="/evaluate" component={EvaluatePage}/>
-                <Route path="/evaluateDetail" component={EvaluateDetailPage}/>
+                {/* <CacheRoute path="/evaluate" component={EvaluatePage}/>
+                <Route path="/evaluateDetail" component={EvaluateDetailPage}/> */}
             </React.Fragment>
         );
     }
@@ -45,8 +45,8 @@ const Classify = () => {
             <Route path="/category" component={CategoryPage}/>
             <CacheRoute path="/categoryList" cacheKey="CategoryListPage" component={CategoryListPage} when="back"/>
             <CacheRoute path="/goodsDetail" cacheKey="GoodsDetailPage" component={GoodsDetailPage}/>
-            <CacheRoute path="/evaluate" component={EvaluatePage}/>
-            <Route path="/evaluateDetail" component={EvaluateDetailPage}/>
+            {/* <CacheRoute path="/evaluate" component={EvaluatePage}/>
+            <Route path="/evaluateDetail" component={EvaluateDetailPage}/> */}
         </React.Fragment>
     );
 };

@@ -277,8 +277,7 @@ class appendOrder extends BaseComponent {
     };
 
     //发票弹框显示状态
-    showPanel = (index, a) => {
-        console.log(a);
+    showPanel = (index) => {
         this.setState({
             invoiceStatus: true,
             invoiceIndex: index
@@ -495,7 +494,7 @@ class appendOrder extends BaseComponent {
                                         >订单备注
                                         </InputItem>
                                         {
-                                            shop.data.some(goods => goods.if_invoice === '1') && (<List.Item key={index.toString()} onClick={() => { this.showPanel(index, shop) }} className="invoice">发票抬头</List.Item>)
+                                            shop.data.some(goods => goods.if_invoice === '1') && (<List.Item key={index.toString()} onClick={() => { this.showPanel(index) }} className="invoice">发票抬头</List.Item>)
                                         }
                                     </List>
                                     <div className="payable">
@@ -516,7 +515,7 @@ class appendOrder extends BaseComponent {
                         <span>合计：</span>
                         <span>￥{total}</span>
                     </div>
-                    <Button onClick={() => this.postOrder()} disabled={!notAllow}>立即付款</Button>
+                    <Button onClick={this.postOrder} disabled={!notAllow}>立即付款</Button>
                 </div>
                 {
                     invoiceStatus && (
@@ -557,7 +556,6 @@ class appendOrder extends BaseComponent {
                                                 <InputItem
                                                     placeholder="请填写纳税人识别号"
                                                     maxLength={50}
-                                                    // defaultValue={invoice && invoice[invoiceIndex].tax_id}
                                                     onChange={(e) => { this.invoiceChange(e, 'invoiceNum') }}
                                                 >
                                                     <span>*</span>纳税人识别号
@@ -570,7 +568,6 @@ class appendOrder extends BaseComponent {
                                                     <InputItem
                                                         placeholder="请填写开户银行"
                                                         maxLength={50}
-                                                        // defaultValue={invoice && invoice[invoiceIndex].bank}
                                                         onChange={(e) => { this.invoiceChange(e, 'invoiceBank') }}
                                                     >
                                                         开户银行
@@ -578,14 +575,12 @@ class appendOrder extends BaseComponent {
                                                     <InputItem
                                                         placeholder="请填写企业地址"
                                                         maxLength={50}
-                                                        // defaultValue={invoice && invoice[invoiceIndex].enterprise_addr}
                                                         onChange={(e) => { this.invoiceChange(e, 'invoiceAddress') }}
                                                     >
                                                         企业地址
                                                     </InputItem>
                                                     <InputItem
                                                         placeholder="请填写银行卡号"
-                                                        // defaultValue={invoice && invoice[invoiceIndex].bank_card_no}
                                                         maxLength={50}
                                                         type="number"
                                                         onChange={(e) => { this.invoiceChange(e, 'bankCard') }}
@@ -606,7 +601,6 @@ class appendOrder extends BaseComponent {
                                         }
                                     </List>
                                 </div>
-
                                 <Button onClick={this.saveInvoice}>确定</Button>
                             </div>
                         </div>
