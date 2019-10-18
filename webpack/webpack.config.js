@@ -370,12 +370,7 @@ module.exports = (env = {}) => {
 
     ENV.isDevServer() && (clientConfig.devServer = {
         disableHostCheck: true,
-<<<<<<< HEAD
-        // host: IP,
-        host: '192.168.31.228',
-=======
-        host: '192.168.31.20',
->>>>>>> a638510478892ad0c58347ec6c63302603d69d56
+        host: IP,
         hot: true,  // 是否开启模块热替换功能
         inline: true,
         compress: true,  // 是否开启 gzip 压缩
