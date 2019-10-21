@@ -26,7 +26,7 @@ class ShopHome extends BaseComponent {
 
     componentWillReceiveProps(nextProps) {
         if (hybird) {
-            const {id} = this.nextProps;
+            const {id} = nextProps;
             setNavColor('setNavColor', {color: navColorF});
             if (id !== this.props.id) {
                 this.getList(id);

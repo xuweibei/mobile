@@ -82,7 +82,7 @@ class InputGrid extends React.PureComponent {
                     <div className="frame-biu-one"/>
                     <div className="frame-biu-one"/>
                 </div>
-                <input className="input-pws" maxLength="6" value={value} type="test" ref={number => { this.numInput = number }} onChange={this.inputGrid} onClick={this.clearInput}/>
+                <input className="input-pws" maxLength="6" value={value} type="text" ref={number => { this.numInput = number }} onChange={this.inputGrid} onClick={this.clearInput}/>
             </div>
         );
     }
