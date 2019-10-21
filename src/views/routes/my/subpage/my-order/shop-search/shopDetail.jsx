@@ -9,7 +9,7 @@ import Nothing from '../../../../../common/nothing/Nothing';
 import LazyLoadIndex  from '../../../../../common/lazy-load/LazyLoad';
 import CancelOrder from '../../../../../common/cancel-order/CancleOrder';
 import Animation from '../../../../../common/animation/Animation';
-import './ShopSearch.less';
+import './ShopDetail.less';
 
 const {appHistory, showSuccess, showInfo, getUrlParam} = Utils;
 const {MESSAGE: {Form, Feedback}, FIELD} = Constants;
