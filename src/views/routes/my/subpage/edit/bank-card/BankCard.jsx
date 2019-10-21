@@ -6,10 +6,9 @@ import {InputGrid} from '../../../../../common/input-grid/InputGrid';
 import {myActionCreator} from '../../../actions/index';
 import './BankCard.less';
 
-const {appHistory, showSuccess, setNavColor} = Utils;
+const {appHistory, showSuccess} = Utils;
 const {urlCfg} = Configs;
-const {MESSAGE: {Feedback}, navColorF} = Constants;
-const hybird = process.env.NATIVE;
+const {MESSAGE: {Feedback}} = Constants;
 class BankCard extends BaseComponent {
     state = {
         userBankArr: [], //用户信息
@@ -43,23 +42,11 @@ class BankCard extends BaseComponent {
         }
     }
 
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
     //获取列表数据
     getList = () => {
         this.fetch(urlCfg.getTheBankCardList, {method: 'post', data: {}})
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     this.setState({
                         userBankArr: res.data.user,
                         shopBankArr: res.data.shoper

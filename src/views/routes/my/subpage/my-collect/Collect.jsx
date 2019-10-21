@@ -13,9 +13,9 @@ const tabs = [
     {title: '商品'},
     {title: '店铺'}
 ];
-const {appHistory, native, showInfo, setNavColor} = Utils;
+const {appHistory, native, showInfo} = Utils;
 const {urlCfg} = Configs;
-const {MESSAGE: {Form, Feedback}, FIELD, navColorF} = Constants;
+const {MESSAGE: {Form, Feedback}, FIELD} = Constants;
 const hybird = process.env.NATIVE;
 
 class Collect extends BaseComponent {
@@ -53,68 +53,50 @@ class Collect extends BaseComponent {
         this.getCollectionList(this.state.pageShop);
     }
 
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
     //获取列表数据
     getCollectionList = (page, noLoading = false) => {
         const {statusNum, tabKey} = this.state;
         this.temp.isLoading = true;
-        this.fetch(urlCfg.CollectionList, {
-            method: 'post',
-            data: {
-                type: statusNum,
-                page,
-                pagesize: this.temp.pagesize
-            }
-        }, noLoading).subscribe((res) => {
-            this.temp.isLoading = false;
-            if (res && res.status === 0) {
-                if (tabKey === 0) {
-                    if (page === 1) {
-                        this.temp.stackData = res.data;
+        this.fetch(urlCfg.CollectionList, {data: {type: statusNum, page,  pagesize: this.temp.pagesize}}, noLoading)
+            .subscribe((res) => {
+                this.temp.isLoading = false;
+                if (res && res.status === 0) {
+                    if (tabKey === 0) {
+                        if (page === 1) {
+                            this.temp.stackData = res.data;
+                        } else {
+                            this.temp.stackData = this.temp.stackData.concat(res.data);
+                        }
+                        if (page >= res.page_count) {
+                            this.setState({
+                                hasMore: false
+                            });
+                        }
+                        this.setState((prevState) => ({
+                            goodsSource: prevState.goodsSource.cloneWithRows(this.temp.stackData),
+                            pageCountShop: res.page_count,
+                            refreshing: false
+                        }));
                     } else {
-                        this.temp.stackData = this.temp.stackData.concat(res.data);
-                    }
-                    if (page >= res.page_count) {
-                        this.setState({
-                            hasMore: false
-                        });
-                    }
-                    this.setState((prevState) => ({
-                        goodsSource: prevState.goodsSource.cloneWithRows(this.temp.stackData),
-                        pageCountShop: res.page_count,
-                        refreshing: false
-                    }));
-                } else {
-                    if (page === 1) {
-                        this.temp.stackShopData = res.data;
-                    } else {
-                        this.temp.stackShopData = this.temp.stackShopData.concat(res.data);
-                    }
+                        if (page === 1) {
+                            this.temp.stackShopData = res.data;
+                        } else {
+                            this.temp.stackShopData = this.temp.stackShopData.concat(res.data);
+                        }
 
-                    if (page >= res.page_count) {
-                        this.setState({
-                            hasMore: false
-                        });
+                        if (page >= res.page_count) {
+                            this.setState({
+                                hasMore: false
+                            });
+                        }
+                        this.setState((prevState) => ({
+                            shopSource: prevState.shopSource.cloneWithRows(this.temp.stackShopData),
+                            pageCountShopping: res.page_count,
+                            refreshing: false
+                        }));
                     }
-                    this.setState((prevState) => ({
-                        shopSource: prevState.shopSource.cloneWithRows(this.temp.stackShopData),
-                        pageCountShopping: res.page_count,
-                        refreshing: false
-                    }));
                 }
-            }
-        });
+            });
     };
 
     //下拉刷新
@@ -125,14 +107,14 @@ class Collect extends BaseComponent {
             this.setState({
                 pageShop: 1
             }, () => {
-                this.getCollectionList(this.state.pageShop, true);
+                this.getCollectionList(1, true);
             });
         } else {
             this.temp.stackShopData = [];
             this.setState({
                 pageShopping: 1
             }, () => {
-                this.getCollectionList(this.state.pageShopping, true);
+                this.getCollectionList(1, true);
             });
         }
     };
@@ -220,8 +202,6 @@ class Collect extends BaseComponent {
 
     //点击顶部导航右侧按钮 编辑按钮
     changeNavRight = () => {
-        // FIXME: 代码优化一下
-        // 店铺收藏下，点击完成如果不做重新赋值处理，回不到编辑的状态
         const {tabKey} = this.state;
         const arr = tabKey === 0 ? this.temp.stackData.map(item => Object.assign({}, item)) : this.temp.stackShopData.map(item => Object.assign({}, item));
         if (tabKey === 0) {
@@ -268,19 +248,15 @@ class Collect extends BaseComponent {
     onDelList = () => {
         const {tabKey} = this.state;
         if (tabKey === 0) {
-            const onOff =  this.temp.stackData.some(item => (item.select));
-            if (onOff) {
+            if (this.temp.stackData.some(item => (item.select))) {
                 this.deleteFn(1, this.temp.stackData);
             } else {
                 showInfo(Form.No_Select_Select);
             }
+        } else if (this.temp.stackShopData.some(item => (item.select))) {
+            this.deleteFn(2, this.temp.stackShopData);
         } else {
-            const onOff =  this.temp.stackShopData.some(item => (item.select));
-            if (onOff) {
-                this.deleteFn(2, this.temp.stackShopData);
-            } else {
-                showInfo(Form.No_Select_Select);
-            }
+            showInfo(Form.No_Select_Select);
         }
     }
 
@@ -290,13 +266,7 @@ class Collect extends BaseComponent {
         const {showConfirm} = this.props;
         showConfirm({
             title: Form.Whether_Empty_Favorite,
-            callbacks: [null, () => {
-                if (tabKey === 0) {
-                    this.deleteFn(1);
-                } else {
-                    this.deleteFn(2);
-                }
-            }]
+            callbacks: [null, () => { this.deleteFn(tabKey === 0 ? 1 : 2) }]
         });
     }
 
@@ -311,9 +281,9 @@ class Collect extends BaseComponent {
                 }
             });
         }
-        this.fetch(urlCfg.cancelCollect, {method: 'post', data: {ids, type}})
+        this.fetch(urlCfg.cancelCollect, {data: {ids, type}})
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     if (ids.length > 0) {
                         showInfo(Feedback.Del_Success);
                     } else {

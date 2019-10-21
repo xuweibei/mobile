@@ -9,8 +9,7 @@ import {baseActionCreator as actionCreator} from '../../../../../redux/baseActio
 import AppNavBar from '../../../../common/navbar/NavBar';
 import './AppendOrder.less';
 
-const {appHistory, showFail, getUrlParam, getShopCartInfo, systemApi: {setValue, removeValue, getValue}, native, setNavColor} = Utils;
-const {navColorF} = Constants;
+const {appHistory, showFail, getUrlParam, getShopCartInfo, systemApi: {setValue, removeValue, getValue}, native} = Utils;
 const {urlCfg} = Configs;
 
 const nowTimeStamp = Date.now();
@@ -102,20 +101,11 @@ class appendOrder extends BaseComponent {
                 });//原生方法获取前面的redux
             });
         }
-        if (hybrid) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
     }
 
     componentWillUnmount() {
         const {saveAddress} = this.props;
         saveAddress('');
-    }
-
-    componentWillMount() {
-        if (hybrid) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
     }
 
     //地址页面跳转

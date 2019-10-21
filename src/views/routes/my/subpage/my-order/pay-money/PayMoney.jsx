@@ -7,9 +7,8 @@ import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAc
 import {InputGrid} from '../../../../../common/input-grid/InputGrid';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 
-const {appHistory, getUrlParam, native, systemApi: {setValue, getValue, removeValue}, supple, showFail, showInfo, setNavColor} = Utils;
+const {appHistory, getUrlParam, native, systemApi: {setValue, getValue, removeValue}, supple, showFail, showInfo} = Utils;
 const {urlCfg} = Configs;
-const {navColorF} = Constants;
 const hybird = process.env.NATIVE;
 const mode = [
     {
@@ -43,9 +42,6 @@ class PayMoney extends BaseComponent {
     componentWillMount() {
         //这里是为了控制原生右滑退出
         this.props.setReturn(true);
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
     }
 
     componentDidMount() {
@@ -69,9 +65,6 @@ class PayMoney extends BaseComponent {
         //原生右滑退出处理
         if (!data.returnStatus) {
             this.goBackModal();
-        }
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
         }
     }
 

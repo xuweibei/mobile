@@ -12,10 +12,8 @@ import {categoryActionCreator} from './actions/index';
 import {baseActionCreator} from '../../../redux/baseAction';
 import './Category.less';
 
-const hybird = process.env.NATIVE;
 const {urlCfg} = Configs;
-const {navColorF} = Constants;
-const {appHistory, setNavColor} = Utils;
+const {appHistory} = Utils;
 
 
 class Category extends BaseComponent {
@@ -38,18 +36,6 @@ class Category extends BaseComponent {
         const {showMenu, setIndex} = this.props;
         showMenu(true);
         setIndex(currentIndex);
-    }
-
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
     }
 
     // tabs切换方法

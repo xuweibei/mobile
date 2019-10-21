@@ -5,11 +5,10 @@ import {connect} from 'react-redux';
 import {baseActionCreator as actionCreator} from '../../../../../redux/baseAction';
 import AppNavBar from '../../../../common/navbar/NavBar';
 import './Invitation.less';
-import {showInfo} from '../../../../../utils/mixin';
 
 const {urlCfg} = Configs;
-const {native, getUrlParam, TD, setNavColor} = Utils;
-const {TD_EVENT_ID, navColorF} = Constants;
+const {native, getUrlParam, TD, showInfo} = Utils;
+const {TD_EVENT_ID} = Constants;
 const hybird = process.env.NATIVE;
 
 //分享列表
@@ -37,8 +36,7 @@ const dataList = [
 
 class Invitation extends BaseComponent {
     state = {
-        imgId: 0, //储存生成分享码的图片
-        maskStatus: false //底部分享按钮显示
+        imgId: 0 //储存生成分享码的图片
     };
 
     componentDidMount() {
@@ -46,18 +44,6 @@ class Invitation extends BaseComponent {
         const share = decodeURI(getUrlParam('share', encodeURI(this.props.location.search)));
         if (share !== '1') { //用来判断是否是点击分享按钮过来的，如果是，则就需要直接打开弹窗
             this.showShareActionSheet();
-        }
-    }
-
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
         }
     }
 
@@ -97,28 +83,24 @@ class Invitation extends BaseComponent {
             });
     }
 
-    //弹出分享框
+    componentWillReceiveProps() {
+        ActionSheet.close();//关闭分享
+    }
+
+    //弹出分享框maskImg
     showShareActionSheet = () => {
-        const {maskStatus} = this.state;
-        this.setState({
-            maskStatus: !maskStatus
-        });
         if (!window.isWX) {
             ActionSheet.showShareActionSheetWithOptions({
                 options: dataList,
                 message: '分享'
-            },
-            this.shareTrue);
+            }, this.shareTrue);
         }
     };
 
     //确认分享方式
     shareTrue = (value) => {
-        const {shareArr, maskStatus} = this.state;
+        const {shareArr} = this.state;
         TD.log(TD_EVENT_ID.MY.ID, TD_EVENT_ID.MY.LABEL.SHARE);
-        this.setState({
-            maskStatus: !maskStatus
-        });
         if (hybird) {
             const obj = {
                 type: value + 1,
@@ -156,7 +138,7 @@ class Invitation extends BaseComponent {
                 }
                 <div className="mask">
                     <div className="mask-img">
-                        <img src={shareArr} alt=""/>
+                        <img src={shareArr} alt="" ref={(img) => { this.maskImg = img }}/>
                     </div>
                 </div>
                 <Button

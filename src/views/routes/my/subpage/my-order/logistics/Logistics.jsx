@@ -6,8 +6,7 @@ import {Accordion, List} from 'antd-mobile';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './Logistics.less';
 
-const {getUrlParam, native, appHistory, setNavColor} = Utils;
-const {navColorF} = Constants;
+const {getUrlParam, native, appHistory} = Utils;
 const {urlCfg} = Configs;
 const hybrid = process.env.NATIVE;
 export default class MyOrder extends BaseComponent {
@@ -25,18 +24,6 @@ export default class MyOrder extends BaseComponent {
         const id = decodeURI(getUrlParam('lgId', encodeURI(this.props.location.search)));
         this.getLog(id);
         this.initMap();
-    }
-
-    componentWillMount() {
-        if (hybrid) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybrid) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
     }
 
     initMap = () => {

@@ -7,8 +7,7 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAction';
 import './PaymentCompleted.less';
 
-const {appHistory, getUrlParam, native, systemApi: {getValue, removeValue}, setNavColor} = Utils;
-const {navColorF} = Constants;
+const {appHistory, getUrlParam, native, systemApi: {getValue, removeValue}} = Utils;
 const hybrid = process.env.NATIVE;
 const mode = [
     {
@@ -34,18 +33,6 @@ class PaymentCompleted extends BaseComponent {
         //清除缓存
         removeValue('orderInfo');
         removeValue('orderArr');
-    }
-
-    componentWillMount() {
-        if (hybrid) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybrid) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
     }
 
     goToHome = () => {

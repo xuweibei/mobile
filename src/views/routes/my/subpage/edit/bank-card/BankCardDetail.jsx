@@ -10,10 +10,9 @@ import {myActionCreator} from '../../../actions/index';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './BankCardDetail.less';
 
-const {appHistory, getUrlParam, validator, showInfo, showSuccess, setNavColor} = Utils;
-const {MESSAGE: {Form, Feedback}, navColorF} = Constants;
+const {appHistory, getUrlParam, validator, showInfo, showSuccess} = Utils;
+const {MESSAGE: {Form, Feedback}} = Constants;
 const {urlCfg} = Configs;
-const hybird = process.env.NATIVE;
 const getPass = {
     width: '100px',
     color: '#de1212',
@@ -51,25 +50,13 @@ class BankCardDetail extends BaseComponent {
     componentDidMount() {
         const {userTypes} = this.state;
         const {showAlert} = this.props;
-        if (userTypes === '2') {
+        if (userTypes === '2') { //商家身份进入时提示
             showAlert({
                 title: Form.No_Difference,
                 btnText: '好'
             });
         }
         this.getBank();
-    }
-
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
     }
 
     //获取银行卡
@@ -90,7 +77,7 @@ class BankCardDetail extends BaseComponent {
             });
     }
 
-    //保存说
+    //保存
      successToast = () => {
          const {form: {validateFields, getFieldValue}, getBankCardList, location} = this.props;
          const {bankArr} = this.state;

@@ -7,9 +7,9 @@ import ShowButton from '../top-show-button';
 import './ShopHome.less';
 
 const {urlCfg} = Configs;
-const {native, appHistory, showInfo, TD, setNavColor} = Utils;
+const {native, appHistory, showInfo, TD} = Utils;
 const {TD_EVENT_ID} = Constants;
-const {MESSAGE: {Feedback}, navColorF} = Constants;
+const {MESSAGE: {Feedback}} = Constants;
 const hybird = process.env.NATIVE;
 
 class ShopHome extends BaseComponent {
@@ -18,16 +18,9 @@ class ShopHome extends BaseComponent {
         shopInfo: []
     };
 
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
     componentWillReceiveProps(nextProps) {
         if (hybird) {
             const {id} = nextProps;
-            setNavColor('setNavColor', {color: navColorF});
             if (id !== this.props.id) {
                 this.getList(id);
             }

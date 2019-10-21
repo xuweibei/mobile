@@ -11,7 +11,7 @@ import Animation from '../../../../common/animation/Animation';
 import {ListFooter} from '../../../../common/list-footer';
 import './myOrder.less';
 
-const {appHistory, showSuccess, getUrlParam, showInfo, native, setNavColor, systemApi: {removeValue}, TD} = Utils;
+const {appHistory, showSuccess, getUrlParam, showInfo, native, systemApi: {removeValue}, TD} = Utils;
 const {TD_EVENT_ID} = Constants;
 const {MESSAGE: {Form, Feedback}, FIELD, navColorR} = Constants;
 const {urlCfg} = Configs;
@@ -52,9 +52,6 @@ class MyOrder extends BaseComponent {
     componentWillMount() {
         const num = this.statusChoose(this.props.location.pathname.split('/')[2]);
         this.init(num);
-        if (hybrid) {
-            setNavColor('setNavColor', {color: navColorR});
-        }
     }
 
     componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方
@@ -82,9 +79,6 @@ class MyOrder extends BaseComponent {
             }, () => {
                 this.init(numNext);
             });
-        }
-        if (hybrid) {
-            setNavColor('setNavColor', {color: navColorR});
         }
     }
 
@@ -742,7 +736,7 @@ class MyOrder extends BaseComponent {
         return (
             <div data-component="my-order" data-role="page" className={`my-order ${window.isWX ? 'WX' : ''}`}>
                 {
-                    window.isWX ? null : (<AppNavBar title="线上订单" backgroundColor={navColorR} goBackModal={this.goToBack} redBackground goToSearch={this.goToSearch} rightShow search/>)
+                    window.isWX ? null : (<AppNavBar title="线上订单" backgroundColor={navColorR} goBackModal={this.goToBack} redBackground goToSearch={this.goToSearch} rightShow search color={navColorR}/>)
                 }
                 {   //弹出取消弹框
                     canStatus &&  (<CancelOrder canStateChange={this.canStateChange}/>)

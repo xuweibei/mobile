@@ -5,9 +5,9 @@ import {myActionCreator as actionCreator} from '../../../actions/index';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './SourceBrowse.less';
 
-const {native, showInfo, getUrlParam, appHistory, setNavColor} = Utils;
+const {native, showInfo, getUrlParam, appHistory} = Utils;
 const {urlCfg} = Configs;
-const {MESSAGE: {Feedback}, navColorF} = Constants;
+const {MESSAGE: {Feedback}} = Constants;
 
 const hybrid = process.env.NATIVE;
 
@@ -30,16 +30,8 @@ class SourceBrowse extends BaseComponent {
                 avatarUrl: decodeURI(getUrlParam('avatarUrl', encodeURI(next.location.search)))
             });
         }
-        if (hybrid) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
     }
 
-    componentWillMount() {
-        if (hybrid) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
 
     //重新扫码
     sureSaoAgain = () => {
@@ -56,16 +48,17 @@ class SourceBrowse extends BaseComponent {
     //确认绑定
     sureBind = () => {
         const {uid, phone} = this.state;
-        this.fetch(urlCfg.confirmationReferees, {method: 'post', data: {no: uid, type: 0, phone}})
+        const {getUserInfo} = this.props;
+        this.fetch(urlCfg.confirmationReferees, {data: {no: uid, type: 0, phone}})
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     showInfo(Feedback.Bind_Success);
                     if (hybrid && appHistory.length() === 0) {
                         native('goBack');
                     } else {
                         appHistory.go(-3);
                     }
-                    this.props.getUserInfo();
+                    getUserInfo();
                 }
             });
     }

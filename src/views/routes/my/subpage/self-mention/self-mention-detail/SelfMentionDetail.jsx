@@ -6,12 +6,10 @@ import {myActionCreator as ActionCreator} from '../../../actions/index';
 import {baseActionCreator} from '../../../../../../redux/baseAction';
 import {shopCartActionCreator} from '../../../../shop-cart/actions/index';
 import AppNavBar from '../../../../../common/navbar/NavBar';
-import {showFail, showInfo} from '../../../../../../utils/mixin';
 import BaseComponent from '../../../../../../components/base/BaseComponent';
 
 const {urlCfg} = Configs;
-const {validator, setNavColor, appHistory, getUrlParam, systemApi: {setValue, getValue, removeValue}, getShopCartInfo, native} = Utils;
-const {navColorF} = Constants;
+const {validator, showFail, showInfo, appHistory, getUrlParam, systemApi: {setValue, getValue, removeValue}, getShopCartInfo, native} = Utils;
 const hybrid = process.env.NATIVE;
 
 class ReDetail extends BaseComponent {
@@ -36,12 +34,6 @@ class ReDetail extends BaseComponent {
         textarea: '' //获取备注信息
     }
 
-    componentWillMount() {
-        if (hybrid) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
     componentDidMount() {
         const {setOrder, location} = this.props;
         const timer = decodeURI(getUrlParam('time', encodeURI(location.search)));
@@ -61,9 +53,6 @@ class ReDetail extends BaseComponent {
     }
 
     componentWillReceiveProps(next) {
-        if (hybrid) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
         const {setOrder, location} = this.props;
         const timerNext = decodeURI(getUrlParam('time', encodeURI(next.location.search)));
         const timer = decodeURI(getUrlParam('time', encodeURI(location.search)));

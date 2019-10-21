@@ -11,7 +11,7 @@ import './PasswordDetail.less';
 const {appHistory, validator, showInfo, showSuccess, getUrlParam, native, setNavColor} = Utils;
 const {urlCfg} = Configs;
 const hybrid = process.env.NATIVE;
-const {MESSAGE: {Form, Feedback}, navColorF} = Constants;
+const {MESSAGE: {Form, Feedback}, navColorR} = Constants;
 const getPass = { //获取验证码按钮的样式
     float: 'right',
     marginRight: '18px',
@@ -34,33 +34,28 @@ class passwordDetail extends BaseComponent {
         sentPay: '', //是否设置支付密码,
         getOff: false, //点击获取验证码是否可以获取，默认不可以，除非输入的电话号码符合要求
         moreAccount: false, // 展示更多账号供其选择，忘记密码的时候
-        accountList: [] //更多账号的列表
+        accountList: [], //更多账号的列表
+        isLoagin: decodeURI(getUrlParam('login', encodeURI(this.props.location.search))) !== 'null' ? decodeURI(getUrlParam('login', encodeURI(this.props.location.search))) : 0
     };
-
-    componentDidMount() {
-        this.setState({ //用于判断是否是忘记密码过来的
-            isLoagin: (decodeURI(getUrlParam('login', encodeURI(this.props.location.search))) !== 'null') ? decodeURI(getUrlParam('login', encodeURI(this.props.location.search))) : 0
-        });
-    }
 
     componentWillMount() {
         if (hybrid) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
+            setNavColor('setNavColor', {color: navColorR});
         }
     }
 
     componentWillReceiveProps() {
         if (hybrid) {
-            setNavColor('setNavColor', {color: navColorF});
+            setNavColor('setNavColor', {color: navColorR});
         }
     }
 
     //验证支付密码是否设置
     verifyPayword = () => {
         const {isLoagin, uid} = this.state;
-        this.fetch(urlCfg.memberStatus, {method: 'post', data: {types: 0, chk_pass: isLoagin || 0, no: uid}}, true)
+        this.fetch(urlCfg.memberStatus, {data: {types: 0, chk_pass: isLoagin || 0, no: uid}}, true)
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     if (res.data.status !== 0) { //status为0为已设置，其他都是未设置
                         this.setState({
                             statusPay: 1 //
@@ -74,15 +69,20 @@ class passwordDetail extends BaseComponent {
     getPhoneCode = () => {
         const {form: {getFieldValue}} = this.props;
         const phoneNum = getFieldValue('phone');
-        if (!phoneNum) return showInfo(Form.No_Phone);
-        if (!validator.checkPhone(validator.wipeOut(phoneNum))) return showInfo(Form.Error_Phone);
-        this.fetch(urlCfg.getTheAuthenticationCode, {method: 'post', data: {phone: validator.wipeOut(phoneNum)}})
+        if (!phoneNum) {
+            showInfo(Form.No_Phone);
+            return;
+        }
+        if (!validator.checkPhone(validator.wipeOut(phoneNum))) {
+            showInfo(Form.Error_Phone);
+            return;
+        }
+        this.fetch(urlCfg.getTheAuthenticationCode, {data: {phone: validator.wipeOut(phoneNum)}})
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     showSuccess(Feedback.Send_Success);
                 }
             });
-        return undefined;
     };
 
     //点击下一步的时候
@@ -92,9 +92,9 @@ class passwordDetail extends BaseComponent {
         if (isLoagin === '1') {
             validateFields({first: true}, (error, value) => {
                 if (!error) {
-                    this.fetch(urlCfg.getMoreAccounts, {method: 'post', data: {phone: validator.wipeOut(phoneNum)}})
+                    this.fetch(urlCfg.getMoreAccounts, {data: {phone: validator.wipeOut(phoneNum)}})
                         .subscribe(res => {
-                            if (res.status === 0) {
+                            if (res && res.status === 0) {
                                 if (res.data.length > 1) { //账号超过一个的时候展示选择框
                                     this.setState({
                                         moreAccount: true,
@@ -120,32 +120,28 @@ class passwordDetail extends BaseComponent {
 
     //下一步
     nextPage = () => {
-        const {form: {validateFields, getFieldValue}} = this.props;
+        const {form: {validateFields, getFieldValue}, showConfirm} = this.props;
         const {passShow, phoneNum, statusPay, isLoagin, uid} = this.state;
         !passShow && validateFields({first: true}, (error, value) => {
             const phoneCode = getFieldValue('authCode');
             if (!error) {
                 this.fetch(urlCfg.verificationVerificationCode, {method: 'post', data: {phone: validator.wipeOut(phoneNum), uid, vcode: validator.wipeOut(phoneCode), chk_pass: isLoagin || 0}})
                     .subscribe(res => {
-                        if (res.status === 0) {
+                        if (res && res.status === 0) {
                             this.setState({
                                 phoneShow: false,
                                 passShow: true
                             });
                         }
                     });
-            } else {
-                console.log('错误');
-                console.log(error, value);
             }
         });
         passShow && validateFields({first: true}, (error, value) => {
-            const {showConfirm} = this.props;
             const firstPass = getFieldValue('firstPass');
             if (!error) {
-                this.fetch(urlCfg.modifyLoginPassword, {method: 'post', data: {pwd: firstPass, no: uid, phone: validator.wipeOut(phoneNum), chk_pass: isLoagin || 0}})
+                this.fetch(urlCfg.modifyLoginPassword, {data: {pwd: firstPass, no: uid, phone: validator.wipeOut(phoneNum), chk_pass: isLoagin || 0}})
                     .subscribe(res => {
-                        if (res.status === 0) {
+                        if (res && res.status === 0) {
                             if (isLoagin === '1') { //忘记密码状态下设置成功
                                 if (hybrid) {
                                     native('loginoutCallback');
@@ -166,9 +162,6 @@ class passwordDetail extends BaseComponent {
                             }
                         }
                     });
-            } else {
-                console.log('错误');
-                console.log(error, value);
             }
         });
     };
@@ -217,17 +210,9 @@ class passwordDetail extends BaseComponent {
     //输入电话号码
     phoneChange = (data) => {
         this.setState({
-            phoneNum: data
+            phoneNum: data,
+            getOff: !!validator.checkPhone(validator.wipeOut(data)) //验证手机号是否正确
         });
-        if (validator.checkPhone(validator.wipeOut(data))) {
-            this.setState({//手机号码符合要求，就可以点击获取验证码
-                getOff: true
-            });
-        } else {
-            this.setState({//不符合则点击无效
-                getOff: false
-            });
-        }
     };
 
     //校验密码
@@ -236,14 +221,10 @@ class passwordDetail extends BaseComponent {
         if (password.length > 0) {
             if (!validator.checkPassWord(password)) {
                 showInfo(Form.Error_Password_Length);
-                this.setState({
-                    reEdit: false
-                });
-            } else {
-                this.setState({
-                    reEdit: true
-                });
             }
+            this.setState({
+                reEdit: !!validator.checkPassWord(password)
+            });
         } else {
             showInfo(Form.No_Password);
         }
@@ -252,18 +233,15 @@ class passwordDetail extends BaseComponent {
     //选择某一个账号
     checkOne = (index) => {
         const {accountList} = this.state;
-        const arr = accountList;
         let uid = '';
-        arr.forEach((item, num) => {
+        accountList.forEach((item, num) => {
             if (index === num) {
-                item.check = true;
                 uid = item.no;
-            } else {
-                item.check = false;
             }
+            item.check = index === num;
         });
         this.setState({
-            accountList: [...arr],
+            accountList,
             uid
         });
     };
@@ -272,7 +250,7 @@ class passwordDetail extends BaseComponent {
     mastSure = () => {
         const {uid} = this.state;
         if (!uid) {
-            showInfo('请选择账号');
+            showInfo(Form.No_Account);
         } else {
             this.setState({
                 moreAccount: false
@@ -404,8 +382,7 @@ class passwordDetail extends BaseComponent {
                     )
                 }
                 {
-                    moreAccount
-                    && (
+                    moreAccount && (
                         <div className="retrieve-account">
                             <div className="retri-main">
                                 {/* <p>请选择您要找回的账号</p> */}
