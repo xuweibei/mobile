@@ -50,7 +50,6 @@ class ScrollToTop extends React.PureComponent {
     render() {
         const {hasError} = this.state;
         if (hasError) {
-            console.log('页面崩溃页面崩溃页面崩溃页面崩溃页面崩溃页面崩溃');
             return (
                 <React.Fragment>
                     <AppNavBar title="页面崩溃"/>

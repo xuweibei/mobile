@@ -415,7 +415,7 @@ class passwordDetail extends BaseComponent {
                                             <li className={item.check ? 'check' : ''} onClick={() => this.checkOne(idnex)}>
                                                 <img src={item.avatarUrl}/>
                                                 <span className="check-second">
-                                                    <img className="check-bd" src={require('../../../../../../../assets/images/bd-icon.png')} alt=""/>
+                                                    <img className="check-bd" src={item.logo} alt=""/>
                                                     <span>uid：{item.no}</span>
                                                 </span>
                                                 <span className="icon check-last"/>
@@ -423,16 +423,18 @@ class passwordDetail extends BaseComponent {
                                         ))
                                     }
                                 </ul>
-                                <div className="retri-btn">
-                                    <span onClick={() => this.setState({
-                                        moreAccount: false
-                                    })}
-                                    >取消
-                                    </span>
-                                    <span
-                                        onClick={this.mastSure}
-                                    >确定
-                                    </span>
+                                <div className="retri-btn-box">
+                                    <div className="retri-btn">
+                                        <span onClick={() => this.setState({
+                                            moreAccount: false
+                                        })}
+                                        >取消
+                                        </span>
+                                        <span
+                                            onClick={this.mastSure}
+                                        >确定
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>

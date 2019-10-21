@@ -55,16 +55,15 @@ class CategoryListView extends BaseComponent {
         this.state = {
             dataSource,
             // height: document.documentElement.clientHeight - (window.isWX ? window.rem * 1.08 : window.rem * 1.99),
-            hasFetch: false,
-            page: 1,
-            pageCount: -1,
-            currentIndex: null,
-            refreshing: false,
-            hasMore: true,
+            hasFetch: false, //是否还可以发情请求
+            page: 1, // 当前页数
+            pageCount: -1, // 总页数
+            currentIndex: null, // 当前点击筛选框按钮
+            refreshing: false, // 刷新状态
+            hasMore: true, // 是否还有数据
             flag: [false, false, false],
             showStatus: [false, false, false],
-            initStatus: false,
-            compareIndex: null,
+            initStatus: false, // 判断是否显示筛选框
             id: props.id.toString()
         };
     }
@@ -98,75 +97,47 @@ class CategoryListView extends BaseComponent {
             }
         }
 
-        const shopId = this.props.shoppingId;
+        // const shopId = this.props.shoppingId;
         const {page} = this.state;
         const keywords = this.props.keywords;
         this.temp.isLoading = true;
 
-        //判断是否是店铺搜索
-        if (shopId) {
-            this.fetch(urlCfg.allGoodsInTheShop, {
-                data: {
-                    page: page,
-                    pagesize: this.temp.pagesize,
-                    id: shopId || '',
-                    key: '' || keywords
-                }
-            })
-                .subscribe((res) => {
-                    this.temp.isLoading = false;
-                    if (res.status === 0) {
-                        if (page === 1) {
-                            this.temp.stackData = res.data.data;
-                        } else {
-                            this.temp.stackData = this.temp.stackData.concat(res.data.data);
-                        }
-                        this.setState((prevState) => (
-                            {
-                                dataSource: prevState.dataSource.cloneWithRows(this.temp.stackData),
-                                pageCount: res.page_count,
-                                hasFetch: true
-                            }
-                        ));
+
+        this.fetch(urlCfg.getCategoryList, {
+            data: {
+                page: page,
+                pagesize: this.temp.pagesize,
+                id: id,
+                types: 2,
+                order: num || null,
+                keyword: '' || keywords
+            }
+        }, noLoading)
+            .subscribe((res) => {
+                this.temp.isLoading = false;
+                if (res.status === 0) {
+                    if (this.state.isLoading) {
+                        setTimeout(() => {
+                            this.setState({
+                                refreshing: false,
+                                isLoading: false
+                            });
+                        }, 600);
                     }
-                });
-        } else {
-            this.fetch(urlCfg.getCategoryList, {
-                data: {
-                    page: page,
-                    pagesize: this.temp.pagesize,
-                    id: id,
-                    types: 2,
-                    order: num || null,
-                    keyword: '' || keywords
-                }
-            }, noLoading)
-                .subscribe((res) => {
-                    this.temp.isLoading = false;
-                    if (res.status === 0) {
-                        if (this.state.isLoading) {
-                            setTimeout(() => {
-                                this.setState({
-                                    refreshing: false,
-                                    isLoading: false
-                                });
-                            }, 600);
-                        }
-                        if (page === 1) {
-                            this.temp.stackData = res.data;
-                        } else {
-                            this.temp.stackData = this.temp.stackData.concat(res.data);
-                        }
-                        this.setState((prevState) => (
-                            {
-                                dataSource: prevState.dataSource.cloneWithRows(this.temp.stackData),
-                                pageCount: res.page_count,
-                                hasFetch: true
-                            }
-                        ));
+                    if (page === 1) {
+                        this.temp.stackData = res.data;
+                    } else {
+                        this.temp.stackData = this.temp.stackData.concat(res.data);
                     }
-                });
-        }
+                    this.setState((prevState) => (
+                        {
+                            dataSource: prevState.dataSource.cloneWithRows(this.temp.stackData),
+                            pageCount: res.page_count,
+                            hasFetch: true
+                        }
+                    ));
+                }
+            });
     };
 
     //emptyGoTo 空白页跳转
@@ -217,14 +188,6 @@ class CategoryListView extends BaseComponent {
             this.getCategoryList(0, true);
         });
     };
-
-    //底部提示
-    // footer = () => (
-    //     !this.state.hasMore && (
-    //         // FIXME: 样式写less里面
-    //         <div style={{padding: 10, textAlign: 'center'}}>加载完成</div>
-    //     )
-    // )
 
     // 过滤tab点击切换
     filterTab = (index) => {

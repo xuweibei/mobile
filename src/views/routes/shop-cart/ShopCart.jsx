@@ -450,13 +450,7 @@ class ShopCart extends BaseComponent {
 
     //进入店铺
     goToShopHome = (shop) => {
-        console.log(shop);
-        let id;
-        if (shop.data) {
-            id = shop.data[0].shop_id;
-        } else {
-            id = shop.shop_id;
-        }
+        const id = shop.data ? shop.data[0].shop_id : shop.shop_id;
         if (hybird) {
             native('shopHome', {id: id});
         } else {

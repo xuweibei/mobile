@@ -175,6 +175,6 @@ export const urlCfg = {
     consumer: href.scan + '/consumer',  //扫一扫核销订单
     sourceBrowse: href.scan + '/sourceBrowse', //扫一扫确认源头码
     getQrCode: href.apiPath + '/wx-miniqr', //获取开店二维码
-    protocolsCase: href.apiPath + '/clause-get' //协议接口
-
+    protocolsCase: href.apiPath + '/clause-get', //协议接口
+    getAgreement: href.apiPath + '/get-agreement' // 获取协议
 };
