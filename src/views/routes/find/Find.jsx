@@ -14,7 +14,7 @@ import '../../../redux/reducers/baseReducer';
 import './Find.less';
 
 
-const {MESSAGE: {Form, Feedback}, TD_EVENT_ID, BASE_64: {LOCATION, CURRENT_LOCATION}, navColorR} = Constants;
+const {MESSAGE: {Form, Feedback}, TD_EVENT_ID, BASE_64: {LOCATION, CURRENT_LOCATION}} = Constants;
 // const marker = require('./../../../assets/images/xxdw.png');
 // const self = require('./../../../assets/images/xxzz.png');
 // const self = LOCATION;
@@ -24,9 +24,8 @@ const Marker = new window.BMap.Icon(LOCATION, new window.BMap.Size(30, 30), {
     anchor: new window.BMap.Size(10, 25)
 });
 
-const {appHistory, showInfo, getUrlParam, TD, systemApi: {setValue, getValue}, setNavColor} = Utils;
+const {appHistory, showInfo, getUrlParam, TD, systemApi: {setValue, getValue}} = Utils;
 const {urlCfg} = Configs;
-const hybird = process.env.NATIVE;
 
 class Find extends BaseComponent {
     state = {
@@ -86,18 +85,6 @@ class Find extends BaseComponent {
         super.componentWillUnmount();
         const {showMenu} = this.props;
         showMenu(true);
-    }
-
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorR});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorR});
-        }
     }
 
     //获取搜索地址信息

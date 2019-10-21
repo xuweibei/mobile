@@ -3,14 +3,13 @@ import {connect} from 'react-redux';
 import './SelfMentionDetail.less';
 import {List, Radio, TextareaItem, Modal, Tabs, InputItem} from 'antd-mobile';
 import {myActionCreator as ActionCreator} from '../../../actions/index';
+import {baseActionCreator} from '../../../../../../redux/baseAction';
 import {shopCartActionCreator} from '../../../../shop-cart/actions/index';
 import AppNavBar from '../../../../../common/navbar/NavBar';
-import {showFail, showInfo} from '../../../../../../utils/mixin';
 import BaseComponent from '../../../../../../components/base/BaseComponent';
 
 const {urlCfg} = Configs;
-const {validator, setNavColor, appHistory, getUrlParam, systemApi: {setValue, getValue, removeValue}, getShopCartInfo, native} = Utils;
-const {navColorF} = Constants;
+const {validator, showFail, showInfo, appHistory, getUrlParam, systemApi: {setValue, getValue, removeValue}, getShopCartInfo, native} = Utils;
 const hybrid = process.env.NATIVE;
 
 class ReDetail extends BaseComponent {
@@ -35,12 +34,6 @@ class ReDetail extends BaseComponent {
         textarea: '' //获取备注信息
     }
 
-    componentWillMount() {
-        if (hybrid) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
     componentDidMount() {
         const {setOrder, location} = this.props;
         const timer = decodeURI(getUrlParam('time', encodeURI(location.search)));
@@ -60,9 +53,6 @@ class ReDetail extends BaseComponent {
     }
 
     componentWillReceiveProps(next) {
-        if (hybrid) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
         const {setOrder, location} = this.props;
         const timerNext = decodeURI(getUrlParam('time', encodeURI(next.location.search)));
         const timer = decodeURI(getUrlParam('time', encodeURI(location.search)));
@@ -252,9 +242,20 @@ class ReDetail extends BaseComponent {
         }
     }
 
+    //点击弹出到店协议
+    viewShopFile = (ev) => {
+        const {showAlert} = this.props;
+        const {OrderSelf} = this.state;
+        showAlert({
+            title: OrderSelf.agree,
+            btnText: '好'
+        });
+        ev.stopPropagation();
+    }
+
     goBackModal = () => {
         const timer = decodeURI(getUrlParam('time', encodeURI(this.props.location.search)));
-        if (timer) {
+        if (timer !== 'null') {
             native('goBack');
         } else if (appHistory.length() === 0) {
             appHistory.replace('/selfMention/yw');
@@ -310,7 +311,7 @@ class ReDetail extends BaseComponent {
                             }
                         </div>
                     </div>
-                    <div className={`my-radio icon ${radioTreaty === true ? 'endorse' : ''}`} onClick={this.radioTreaty}>同意<span className="agreement">《到店自提协议》</span></div>
+                    <div className={`my-radio icon ${radioTreaty === true ? 'endorse' : ''}`} onClick={this.radioTreaty}>同意<span className="agreement" onClick={this.viewShopFile}>《到店自提协议》</span></div>
                 </div>
 
                 <div className="shop-lists">
@@ -409,7 +410,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
     setOrder: shopCartActionCreator.setOrder,
-    setOrderInfo: ActionCreator.setOrderInformation
+    setOrderInfo: ActionCreator.setOrderInformation,
+    showAlert: baseActionCreator.showAlert
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ReDetail);

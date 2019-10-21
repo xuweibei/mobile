@@ -11,5 +11,5 @@ export {BASE_64} from './imagebase64';
 export const COUNTERNUM = 60;
 export const IMGSIZE = 2048000;//图片上传限制大小
 export const  VERIFY_FAILED = '\u0020';  // 空格
-export const navColorF = '#fff';
+export const navColorF = '#ffffff';
 export const navColorR = '#ff2d51';

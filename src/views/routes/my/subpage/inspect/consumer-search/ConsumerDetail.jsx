@@ -5,7 +5,7 @@ import './ConsumerSearch.less';
 
 const {urlCfg} = Configs;
 
-const {appHistory, native, getUrlParam, setNavColor} = Utils;
+const {appHistory, native, getUrlParam} = Utils;
 const {navColorR} = Constants;
 const hybrid = process.env.NATIVE;
 
@@ -17,18 +17,6 @@ export default class InspectOrder extends BaseComponent {
 
     componentDidMount() {
         this.whiteList();
-    }
-
-    componentWillMount() {
-        if (hybrid) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorR});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybrid) {
-            setNavColor('setNavColor', {color: navColorR});
-        }
     }
 
     //跳珠核销扫码
@@ -83,7 +71,7 @@ export default class InspectOrder extends BaseComponent {
         const {list} = this.state;
         return (
             <div className="inspect-order">
-                <AppNavBar rightShow title="核销订单" nativeGoBack/>
+                <AppNavBar rightShow title="核销订单" nativeGoBack color={navColorR}/>
                 <div className="shortcut">
                     <span>快捷核销</span>
                     <span onClick={this.sureSaoCode} className="icon icon-shortcut"/>

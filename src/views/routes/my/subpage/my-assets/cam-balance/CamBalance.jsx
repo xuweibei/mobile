@@ -1,6 +1,5 @@
 
 /**cam余额*/
-// FIXME: 代码再优化下
 import {ListView} from 'antd-mobile';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import Detailpage from '../single-page/detailpage';
@@ -9,9 +8,6 @@ import './CamBalance.less';
 
 
 const {urlCfg} = Configs;
-const {setNavColor} = Utils;
-const {navColorF} = Constants;
-const hybird = process.env.NATIVE;
 export default class MyAssets extends BaseComponent {
     constructor(props, context) {
         super(props, context);
@@ -25,7 +21,7 @@ export default class MyAssets extends BaseComponent {
         };
         this.state = {
             dataSource,
-            height: document.documentElement.clientHeight - (window.isWX ? window.rem * 1.08 : window.rem * 1.08),
+            height: document.documentElement.clientHeight - (window.isWX ? window.rem * 1.08 : window.rem * 6.36),
             editModal: '', //当前状态
             page: 1,
             pageCount: -1,
@@ -37,34 +33,16 @@ export default class MyAssets extends BaseComponent {
         this.getAssetList();
     }
 
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
     getAssetList = () => {
         this.temp.isLoading = true;
         const {page} = this.state;
         this.setState({
             hasMore: true
         }, () => {
-            this.fetch(urlCfg.myListOfAssets, {
-                method: 'post',
-                data: {
-                    page: page,
-                    pagesize: this.temp.pagesize,
-                    tp: 5
-                }})
+            this.fetch(urlCfg.myListOfAssets, {data: {page: page,  pagesize: this.temp.pagesize, tp: 5}})
                 .subscribe(res => {
                     this.temp.isLoading = false;
-                    if (res.status === 0) {
+                    if (res && res.status === 0) {
                         if (page === 1) {
                             this.temp.stackData = res.data.data;
                         } else {
@@ -115,16 +93,6 @@ export default class MyAssets extends BaseComponent {
                 this.getAssetList();
             });
         }
-    };
-
-    //金额前的正负号
-    paySymbol = (value) => {
-        if (value === '1') {
-            return '+';
-        } if (value === '0') {
-            return '-';
-        }
-        return '';
     };
 
     //底部结构
@@ -188,7 +156,7 @@ export default class MyAssets extends BaseComponent {
         const row = (item) => (
             <div onClick={() => this.detailedPage(item)}>
                 <div className="asset-info unde-line">
-                    <p><span>{item.desc}</span><span>{this.paySymbol(item.types) }{item.scalar}</span></p>
+                    <p><span>{item.desc}</span><span>{item.types === '1' ? '+' : '-' }{item.scalar}</span></p>
                     <p><span>{item.crtdate}</span><span>余额：{item.remain}</span></p>
                 </div>
             </div>

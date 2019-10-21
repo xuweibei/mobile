@@ -5,8 +5,8 @@ import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAc
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './SelfOrderingDetails.less';
 
-const {showSuccess, appHistory, getUrlParam, native, showFail, showInfo, setNavColor} = Utils;
-const {MESSAGE: {Feedback}, navColorF} = Constants;
+const {showSuccess, appHistory, getUrlParam, native, showFail, showInfo} = Utils;
+const {MESSAGE: {Feedback}} = Constants;
 const {urlCfg} = Configs;
 const hybrid = process.env.NATIVE;
 //right:0未付款;1已付款（待使用）;3已使用（未评价）;4交易成功（已评价）;10取消订单 ;11删除订单;12申请退款成功关闭订单;13商家关闭订单14商家删除订单
@@ -19,18 +19,6 @@ class ReDetail extends BaseComponent {
         recommendGoods: [], //推荐商品列表
         collectId: null, //判斷是否收藏
         shopId: 0 //订单shop_id
-    }
-
-    componentWillMount() {
-        if (hybrid) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybrid) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
     }
 
     componentDidMount() {
@@ -190,7 +178,11 @@ class ReDetail extends BaseComponent {
     //调起地图
     openMap = () => {
         const {selfSufficiency} = this.state;
-        appHistory.push(`/find?longitude=${selfSufficiency.sufficiency_longitude}&latitude=${selfSufficiency.sufficiency_latitude}`);
+        if (hybrid) {
+            native('goFindMap', {longitude: selfSufficiency.sufficiency_longitude, latitude: selfSufficiency.sufficiency_latitude});
+        } else {
+            appHistory.push(`/find?longitude=${selfSufficiency.sufficiency_longitude}&latitude=${selfSufficiency.sufficiency_latitude}`);
+        }
     }
 
     //跳转到商品详情
@@ -221,7 +213,6 @@ class ReDetail extends BaseComponent {
         return (
             <div data-component="Self-orderingDetails" data-role="page" className="Self-orderingDetails">
                 <AppNavBar goBackModal={this.goBackModal} title="订单详情"/>
-
                 <div className="wait-box">
                     <div className="wait-top">{selfSufficiency.status_title}</div>
                     <div className="wait-center">{selfSufficiency.status_msg}</div>
@@ -311,7 +302,7 @@ class ReDetail extends BaseComponent {
                         </div>
                         <div className="payment-time">
                             <span className="payment-time-left">支付时间：</span>
-                            <span className="payment-time-center">{selfSufficiency.pay_date}</span>
+                            <span className="payment-time-center">{(selfSufficiency.pay_date && selfSufficiency.pay_date === '0') ? '' : (selfSufficiency.pay_date || '')}</span>
                         </div>
                         <div className="order-remarks">
                             <span className="order-remarks-left">订单备注：</span>

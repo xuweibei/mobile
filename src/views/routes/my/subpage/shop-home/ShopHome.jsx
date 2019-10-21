@@ -59,35 +59,40 @@ class ShopHome extends BaseComponent {
     }
 
     componentDidMount() {
-        this.getShop();
-        this.getShopModel();
+        const shoppingId = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
+        this.getShop(shoppingId);
+        this.getShopModel(shoppingId);
     }
 
     componentWillReceiveProps(nextProps) {
         if (hybrid) {
-            this.getShop();
-            this.getShopModel();
+            const shoppingId = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
+            const nextId = decodeURI(getUrlParam('id', encodeURI(nextProps.location.search)));
+            if (shoppingId !== nextId) {
+                this.getShop(nextId);
+                this.getShopModel(nextId);
+            }
         }
     }
 
     //获取模板信息
-    getShopModel = () => {
-        const {currentState} = this.state;
-        const shoppingId = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
-        this.fetch(urlCfg.shopModel, {method: 'post', data: {shop_id: shoppingId}})
+    getShopModel = (id) => {
+        // const {currentState} = this.state;
+        this.fetch(urlCfg.shopModel, {method: 'post', data: {shop_id: id}})
             .subscribe(res => {
                 if (res.status === 0) {
                     //判断有无模板
                     if (res.data) {
                         this.setState({
-                            currentState: currentState || 'homePage',
+                            currentState: 'homePage',
                             shopModelArr: res.data,
                             modelShow: true
                         });
                     } else {
                         this.setState({
-                            currentState: currentState || 'modal',
-                            shopModelArr: res.data
+                            currentState: 'modal',
+                            shopModelArr: res.data,
+                            modelShow: false
                         });
                     }
                 }
@@ -95,19 +100,18 @@ class ShopHome extends BaseComponent {
     }
 
     //获取商店内的所有商品
-    getShop = (noShowLoading = false) => {
+    getShop = (id, noShowLoading = false) => {
         const {setshoppingId} = this.props;
         const {page} = this.state;
         this.temp.isLoading = true;
         this.setState({
             hasMore: true
         });
-        const shoppingId = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
-        setshoppingId(shoppingId);
+        setshoppingId(id);
         this.fetch(urlCfg.allGoodsInTheShop, {
             method: 'post',
             data: {
-                id: shoppingId,
+                id,
                 page: page,
                 pagesize: this.temp.pagesize
             }}, noShowLoading)
@@ -173,12 +177,13 @@ class ShopHome extends BaseComponent {
     //上拉刷新
     onEndReached = () => {
         const {page, pageCount} = this.state;
+        const shoppingId = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
         if (this.temp.isLoading) return;
         if (pageCount > page) {
             this.setState((pervState) => ({
                 page: pervState.page + 1
             }), () => {
-                this.getShop();
+                this.getShop(shoppingId);
             });
         } else {
             this.setState({
@@ -189,10 +194,11 @@ class ShopHome extends BaseComponent {
 
     //下拉加载
     onRefresh = () => {
+        const shoppingId = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
         this.setState({
             refreshing: true
         }, () => {
-            this.getShop(true);
+            this.getShop(shoppingId, true);
         });
     };
 

@@ -11,9 +11,7 @@ import './Income.less';
 
 
 const {urlCfg} = Configs;
-const {getUrlParam, setNavColor} = Utils;
-const {navColorF} = Constants;
-const hybird = process.env.NATIVE;
+const {getUrlParam} = Utils;
 
 const temp = {
     stackData: [],
@@ -46,30 +44,12 @@ export default class MyAssets extends BaseComponent {
         this.getEveryData();
     }
 
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
     //当天收入
     getDaril = () => {
         const {statusNum} = this.state;
         temp.isLoading = true;
         const {page} = this.state;
-        this.fetch(urlCfg.dailyIncome, {
-            method: 'post',
-            data: {
-                page: page,
-                pagesize: 100000,
-                types: statusNum
-            }})
+        this.fetch(urlCfg.dailyIncome, {data: {page: page, pagesize: 100000, types: statusNum}})
             .subscribe(res => {
                 temp.isLoading = false;
                 if (res && res.status === 0) {
@@ -88,16 +68,10 @@ export default class MyAssets extends BaseComponent {
         this.setState({
             hasMore: true
         });
-        this.fetch(urlCfg.dailyIncomeAll, {
-            method: 'post',
-            data: {
-                page: page,
-                pagesize: temp.pagesize,
-                types: statusNum
-            }})
+        this.fetch(urlCfg.dailyIncomeAll, {data: {page: page, pagesize: temp.pagesize, types: statusNum}})
             .subscribe(res => {
                 temp.isLoading = false;
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     if (res.data) {
                         if (page === 1) {
                             temp.stackData = res.data.other_list;
@@ -157,16 +131,6 @@ export default class MyAssets extends BaseComponent {
         });
     };
 
-    //金额前的正负号
-    paySymbol = (value) => {
-        if (value === '1') {
-            return '+';
-        } if (value === '0') {
-            return '-';
-        }
-        return '';
-    };
-
     //底部结构
     defaultModel = (row) => {
         const {todayArr, exceed, dataSource, height, userInfo, statusNum, hasMore} = this.state;
@@ -203,7 +167,7 @@ export default class MyAssets extends BaseComponent {
                                 {todayArr.map(item =>  (
                                     <div onClick={() => this.detailedPage(item)}>
                                         <div className="asset-info unde-line">
-                                            <p><span>{item.desc}</span><span>{this.paySymbol(item.types) }{item.scalar}</span></p>
+                                            <p><span>{item.desc}</span><span>{item.types === '1' ? '+' : '-'}{item.scalar}</span></p>
                                             <p><span>{item.crtdate}</span></p>
                                         </div>
                                     </div>
@@ -217,7 +181,7 @@ export default class MyAssets extends BaseComponent {
                                         return  (
                                             <div onClick={() => this.detailedPage(item)}>
                                                 <div className="asset-info unde-line">
-                                                    <p><span>{item.desc}</span><span>{this.paySymbol(item.types) }{item.scalar}</span></p>
+                                                    <p><span>{item.desc}</span><span>{item.types === '1' ? '+' : '-'}{item.scalar}</span></p>
                                                     <p><span>{item.crtdate}</span></p>
                                                 </div>
                                             </div>

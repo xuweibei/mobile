@@ -11,9 +11,8 @@ import {InputGrid} from '../../../../common/input-grid/InputGrid';
 import AppNavBar from '../../../../common/navbar/NavBar';
 
 const {urlCfg} = Configs;
-const {showInfo, validator, appHistory, setNavColor} = Utils;
+const {showInfo, validator, appHistory} = Utils;
 const {MESSAGE: {Form, Feedback}, navColorR} = Constants;
-const hybird = process.env.NATIVE;
 
 const tabs = [
     {title: '微信零钱'},
@@ -53,18 +52,6 @@ class Withdrawal extends BaseComponent {
             34: [-150, -75]
         }
     };
-
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorR});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorR});
-        }
-    }
 
     componentDidMount() {
         this.income();
@@ -137,19 +124,17 @@ class Withdrawal extends BaseComponent {
                                 } else {
                                     for (let i = 0; i < incomeData.banks.length; i++) {
                                         if (selectorIndex === '0') {
-                                            this.setState({
-                                                bankId: incomeData.banks[i].id,
-                                                bankIndex: i
-                                            }, () => {
-                                                console.log(incomeData.banks[i].id, 'userType0');
-                                            });
+                                            if (incomeData.banks[i].userType !== '2') {
+                                                this.setState({
+                                                    bankId: incomeData.banks[i].id,
+                                                    bankIndex: i
+                                                });
+                                            }
                                         } else if (selectorIndex === '1') {
                                             if (incomeData.banks[i].userType === '2') {
                                                 this.setState({
                                                     bankId: incomeData.banks[i].id,
                                                     bankIndex: i
-                                                }, () => {
-                                                    console.log(incomeData.banks[i].id, 'userType2');
                                                 });
                                             }
                                         }
@@ -278,7 +263,7 @@ class Withdrawal extends BaseComponent {
             <div className={`Withdrawal extract ${withdrawId === 0 ? 'withdrawColor' : ''}`}>
                 <div className="cash-content">
                     <div className="cash-content-navbar">
-                        <AppNavBar nativeGoBack title="CAM提现"/>
+                        <AppNavBar nativeGoBack title="CAM提现" color={navColorR}/>
                     </div>
                     <div style={{height: height}} className="cash-content-tabs">
                         <Tabs

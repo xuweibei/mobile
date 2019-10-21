@@ -5,26 +5,14 @@ import {List, InputItem} from 'antd-mobile';
 import AppNavBar from '../../../../common/navbar/NavBar';
 
 const {urlCfg} = Configs;
-const {showInfo, validator, appHistory, native, setNavColor} = Utils;
-const {MESSAGE: {Form}, navColorF} = Constants;
+const {showInfo, validator, appHistory, native} = Utils;
+const {MESSAGE: {Form}} = Constants;
 const hybrid = process.env.NATIVE;
 
 export default class ReDetail extends BaseComponent {
     state = {
         uidList: [], //最近转出记录列表
         uid: '' //获取uid
-    }
-
-    componentWillMount() {
-        if (hybrid) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybrid) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
     }
 
     componentDidMount() {

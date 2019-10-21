@@ -1,31 +1,16 @@
 /**确认源头UID页面 */
-import {connect} from 'react-redux';
 import {List, InputItem, Button} from 'antd-mobile';
-import {myActionCreator as actionCreator} from '../../../actions/index';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './Source.less';
 
-const {showInfo, validator, appHistory, setNavColor} = Utils;
+const {showInfo, validator, appHistory} = Utils;
 const {urlCfg} = Configs;
-const {MESSAGE: {Form, Feedback}, navColorF} = Constants;
-const hybird = process.env.NATIVE;
+const {MESSAGE: {Form, Feedback}} = Constants;
 
-class Source extends BaseComponent {
+export default class Source extends BaseComponent {
     state = {
         showButton: false,
         height: document.documentElement.clientHeight - (window.isWX ? window.rem * null : window.rem * 1.08)
-    }
-
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
     }
 
     //设置uid
@@ -71,17 +56,18 @@ class Source extends BaseComponent {
         const {uid, phone} = this.state;
         this.fetch(urlCfg.confirmationReferees, {method: 'post', data: {no: uid, type, phone: validator.wipeOut(phone)}})
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     this.setState({
                         showButton: true
+                    }, () => {
+                        showInfo(Feedback.Ver_Success);
+                        this.fetch(urlCfg.getDfinfor, {data: {no: uid}})
+                            .subscribe(data => {
+                                if (data && data.status === 0) {
+                                    appHistory.push(`/sourceBrowse?nickname=${encodeURI(data.data.nickname)}&phone=${validator.wipeOut(phone)}&uid=${uid}&avatarUrl=${data.data.avatarUrl}`);
+                                }
+                            });
                     });
-                    showInfo(Feedback.Ver_Success);
-                    this.fetch(urlCfg.getDfinfor, {data: {no: uid}})
-                        .subscribe(data => {
-                            if (data.status === 0) {
-                                appHistory.push(`/sourceBrowse?nickname=${encodeURI(data.data.nickname)}&phone=${validator.wipeOut(phone)}&uid=${uid}&avatarUrl=${data.data.avatarUrl}`);
-                            }
-                        });
                 }
             });
     };
@@ -96,7 +82,6 @@ class Source extends BaseComponent {
 
     render() {
         const {height} = this.state;
-        console.log(height);
         return (
             <div data-component="source" data-role="page" className="source">
                 <AppNavBar title="确认源头UID" goBackModal={this.goBackModal}/>
@@ -129,9 +114,3 @@ class Source extends BaseComponent {
         );
     }
 }
-
-const mapDispatchToProps = {
-    delEdit: actionCreator.delEdit
-};
-
-export default connect(null, mapDispatchToProps)(Source);

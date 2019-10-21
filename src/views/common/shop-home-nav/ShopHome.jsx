@@ -7,9 +7,9 @@ import ShowButton from '../top-show-button';
 import './ShopHome.less';
 
 const {urlCfg} = Configs;
-const {native, appHistory, showInfo, TD, setNavColor} = Utils;
+const {native, appHistory, showInfo, TD} = Utils;
 const {TD_EVENT_ID} = Constants;
-const {MESSAGE: {Feedback}, navColorF} = Constants;
+const {MESSAGE: {Feedback}} = Constants;
 const hybird = process.env.NATIVE;
 
 class ShopHome extends BaseComponent {
@@ -18,31 +18,23 @@ class ShopHome extends BaseComponent {
         shopInfo: []
     };
 
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
+    componentWillReceiveProps(nextProps) {
         if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
+            const {id} = nextProps;
+            if (id !== this.props.id) {
+                this.getList(id);
+            }
         }
     }
 
     componentDidMount() {
         TD.log(TD_EVENT_ID.SHOPPING_CAR.ID, TD_EVENT_ID.SHOPPING_CAR.LABEL.ADD_SHOPPING_CAR);
-        this.getList();
+        const {id, shoppingId} = this.props;
+        this.getList(id || shoppingId);
     }
 
-    getList = () => {
-        let id = '';
-        if (this.props.id) {
-            id = this.props.id;
-        } else {
-            id = this.props.shoppingId;
-        }
-        this.fetch(urlCfg.storeDetails, {data: {id: id}})
+    getList = (id) => {
+        this.fetch(urlCfg.storeDetails, {data: {id}})
             .subscribe(res => {
                 if (res.status === 0) {
                     this.starsShow(res.data.shop_mark);

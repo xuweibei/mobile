@@ -4,7 +4,7 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 import './InspectOrder.less';
 
 const {urlCfg} = Configs;
-const {appHistory, native, setNavColor} = Utils;
+const {appHistory, native} = Utils;
 const {navColorR} = Constants;
 const hybrid = process.env.NATIVE;
 
@@ -17,18 +17,6 @@ export default class InspectOrder extends BaseComponent {
 
     componentDidMount() {
         this.whiteList();
-    }
-
-    componentWillMount() {
-        if (hybrid) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorR});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybrid) {
-            setNavColor('setNavColor', {color: navColorR});
-        }
     }
 
     //跳珠核销扫码
@@ -88,7 +76,7 @@ export default class InspectOrder extends BaseComponent {
         const {list, navColor} = this.state;
         return (
             <div className="inspect-order">
-                <AppNavBar title="核销订单" nativeGoBack goToSearch={this.goToSearch} backgroundColor={navColor} rightShow redBackground search/>
+                <AppNavBar title="核销订单" nativeGoBack goToSearch={this.goToSearch} backgroundColor={navColor} rightShow redBackground search color={navColorR}/>
                 <div className="shortcut">
                     <span>快捷核销</span>
                     <span onClick={this.sureSaoCode} className="icon icon-shortcut"/>

@@ -4,28 +4,14 @@ import BaseComponent from '../../../../../../components/base/BaseComponent';
 import './UserAgreementDetail.less';
 
 const Item = List.Item;
-const {native, setNavColor} = Utils;
-const {navColorF} = Constants;
+const {native} = Utils;
 const {urlCfg} = Configs;
-const hybird = process.env.NATIVE;
 
 class UserAgreementDetail extends BaseComponent {
     state = ({
         protocol: {}, //协议内容
         modal: false
     })
-
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
 
     //协议弹窗
     getProtocol = (num) => {

@@ -7,9 +7,6 @@ import {ListFooter} from '../../../../../common/list-footer';
 import './index.less';
 
 const {urlCfg} = Configs;
-const {setNavColor} = Utils;
-const {navColorF} = Constants;
-const hybird = process.env.NATIVE;
 export default class Myincone extends BaseComponent {
     constructor(props, context) {
         super(props, context);
@@ -32,18 +29,6 @@ export default class Myincone extends BaseComponent {
 
     componentDidMount() {
         this.getReserve();
-    }
-
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
     }
 
     //我的收入
