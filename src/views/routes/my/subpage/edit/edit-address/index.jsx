@@ -9,10 +9,9 @@ import {myActionCreator} from '../../../actions/index';
 import './index.less';
 
 // const CheckboxItem = Checkbox.CheckboxItem;
-const {MESSAGE: {Form, Feedback}, navColorF} = Constants;
-const {appHistory, getUrlParam, validator, showInfo, showSuccess, setNavColor} = Utils;
+const {MESSAGE: {Form, Feedback}} = Constants;
+const {appHistory, getUrlParam, validator, showInfo, showSuccess} = Utils;
 const {urlCfg} = Configs;
-const hybird = process.env.NATIVE;
 
 // FIXME: 页面需要优化
 class BasicInput extends BaseComponent {
@@ -31,24 +30,12 @@ class BasicInput extends BaseComponent {
         this.getList();
     }
 
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
     getList = () => {
         const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
         if (id) {
             this.fetch(urlCfg.editAddressOne, {method: 'post', data: {id: id}})
                 .subscribe(res => {
-                    if (res.status === 0) {
+                    if (res && res.status === 0) {
                         this.setState({
                             addressArr: res.data,
                             province: res.data.province[0],
@@ -66,14 +53,17 @@ class BasicInput extends BaseComponent {
         const {defaultState} = this.state;
         this.setState({
             defaultState: !defaultState
-        }, () => {
-            console.log(defaultState);
         });
     };
 
     //点击保存
     saveData = () => {
-        const {province, urban, county} = this.state;
+        const {province, urban, county, defaultState} = this.state;
+        const {form: {getFieldsValue}} = this.props;
+        const account = getFieldsValue().account;
+        const addressAll = getFieldsValue().addressAll;
+        const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
+        const phone = getFieldsValue().phone;
         const district = [];
         if (province) {
             district.push(province);
@@ -84,33 +74,44 @@ class BasicInput extends BaseComponent {
         if (county) {
             district.push(county);
         }
-        const account = this.props.form.getFieldsValue().account;
-        const addressAll = this.props.form.getFieldsValue().addressAll;
-        const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
-        const phone = this.props.form.getFieldsValue().phone;
         //表单验证
-        if (!validator.checkRange(2, 20, account)) return showInfo(Form.No_Name);
-        if (!phone) return showInfo(Form.No_Phone);
-        if (!validator.checkPhone(validator.wipeOut(phone))) return showInfo(Form.Error_Phone);
-        if (district.length < 3) return showInfo(Form.Error_Address);
-        if (!addressAll) return showInfo(Form.Error_Address_Required);
-        if (addressAll.length < 3) return showInfo(Form.Error_Address_Length);
-
-        this.fetch(urlCfg.addedOrEditedAddress, {method: 'post', data: {id: id, linkname: account, linktel: validator.wipeOut(phone), pca: district, address: addressAll, if_default: this.state.defaultState ? '1' : '0'}})
+        if (!validator.checkRange(2, 20, account)) {
+            showInfo(Form.No_Name);
+            return;
+        }
+        if (!phone) {
+            showInfo(Form.No_Phone);
+            return;
+        }
+        if (!validator.checkPhone(validator.wipeOut(phone))) {
+            showInfo(Form.Error_Phone);
+            return;
+        }
+        if (district.length < 3) {
+            showInfo(Form.Error_Address);
+            return;
+        }
+        if (!addressAll) {
+            showInfo(Form.Error_Address_Required);
+            return;
+        }
+        if (addressAll.length < 3) {
+            showInfo(Form.Error_Address_Length);
+            return;
+        }
+        this.fetch(urlCfg.addedOrEditedAddress, {method: 'post', data: {id: id, linkname: account, linktel: validator.wipeOut(phone), pca: district, address: addressAll, if_default: defaultState ? '1' : '0'}})
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     const {getAddress} = this.props;
                     getAddress();
                     showSuccess(Feedback.Edit_Success);
                     appHistory.goBack();
                 }
             });
-        return undefined;
     };
 
     //父级数据变更
     editStatusChange = () => {
-        console.log('富技术局');
         this.setState({
             editStatus: false
         });
@@ -141,17 +142,16 @@ class BasicInput extends BaseComponent {
     };
 
     //地址删除
-    deleteData = (data) => {
-        const that = this;
+    deleteData = () => {
         const {showConfirm, getAddress} = this.props;
         showConfirm({
             title: '确定删除吗?',
             btnTexts: ['取消', '确定'],
             callbacks: [null, () => {
                 const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
-                that.fetch(urlCfg.deleteAddress, {method: 'post', data: {id: id}})
+                this.fetch(urlCfg.deleteAddress, {method: 'post', data: {id: id}})
                     .subscribe(res => {
-                        if (res.status === 0) {
+                        if (res && res.status === 0) {
                             showSuccess(Feedback.Del_Success);
                             getAddress();
                             appHistory.goBack();
@@ -164,7 +164,6 @@ class BasicInput extends BaseComponent {
     render() {
         const {getFieldProps, getFieldError} = this.props.form;
         const {province, urban, county, addressArr, editStatus, addressStatus, height, defaultState} = this.state;
-        console.log(province, urban, county, addressArr.province_id, addressArr.city_id, editStatus);
         return (
             <div data-component="add-address" data-role="page" className="add-address">
                 <AppNavBar title="地址管理"/>
@@ -189,28 +188,27 @@ class BasicInput extends BaseComponent {
                         <div className="receiving-address">
                             <InputItem>
                                 {
-                                    addressStatus === '1'
-                                        ? (
-                                            <Region
-                                                onSetProvince={this.setProvince}
-                                                onSetCity={this.setCity}
-                                                onSetCounty={this.setCounty}
-                                                provinceValue={province}
-                                                cityValue={urban}
-                                                countyValue={county}
-                                                provinceId={addressArr.province_id}
-                                                cityId={addressArr.city_id}
-                                                editStatus={editStatus}
-                                                editStatusChange={this.editStatusChange}
-                                            />
-                                        ) : (
-                                            <Region
-                                                onSetProvince={this.setProvince}
-                                                onSetCity={this.setCity}
-                                                onSetCounty={this.setCounty}
-                                                add
-                                            />
-                                        )
+                                    addressStatus === '1' ? (
+                                        <Region
+                                            onSetProvince={this.setProvince}
+                                            onSetCity={this.setCity}
+                                            onSetCounty={this.setCounty}
+                                            provinceValue={province}
+                                            cityValue={urban}
+                                            countyValue={county}
+                                            provinceId={addressArr.province_id}
+                                            cityId={addressArr.city_id}
+                                            editStatus={editStatus}
+                                            editStatusChange={this.editStatusChange}
+                                        />
+                                    ) : (
+                                        <Region
+                                            onSetProvince={this.setProvince}
+                                            onSetCity={this.setCity}
+                                            onSetCounty={this.setCounty}
+                                            add
+                                        />
+                                    )
                                 }
                             </InputItem>
                         </div>
@@ -224,7 +222,7 @@ class BasicInput extends BaseComponent {
                             {/*  <CheckboxItem onChange={(data) => this.onChangeDefault(data)} checked={defaultState}>
                                 {'设为默认地址'}
                             </CheckboxItem>*/}
-                            <div onClick={this.onChangeDefault} className={`icon default-icon ${defaultState === true ? 'default-red' : ''}`}>设为默认地址</div>
+                            <div onClick={this.onChangeDefault} className={`icon default-icon ${defaultState ? 'default-red' : ''}`}>设为默认地址</div>
                         </div>
                         <Button className="save" onClick={this.saveData}>保存</Button>
                         {addressStatus === '1' && <Button className="delete" onClick={this.deleteData}>删除</Button>}

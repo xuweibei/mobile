@@ -57,11 +57,11 @@ class ShopCart extends BaseComponent {
     componentWillReceiveProps(next) {
         if (hybird) {
             setNavColor('setNavColor', {color: navColorR});
-        }
-        const timerNext = decodeURI(getUrlParam('time', encodeURI(next.location.search)));
-        const timer = decodeURI(getUrlParam('time', encodeURI(this.props.location.search)));
-        if (timer !== timerNext) {
-            this.changeCart(this.state.currentIndex);
+            const timerNext = decodeURI(getUrlParam('time', encodeURI(next.location.search)));
+            const timer = decodeURI(getUrlParam('time', encodeURI(this.props.location.search)));
+            if (timer !== timerNext) {
+                this.changeCart(this.state.currentIndex);
+            }
         }
     }
 

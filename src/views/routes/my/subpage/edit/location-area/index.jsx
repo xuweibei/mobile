@@ -10,10 +10,8 @@ import './index.less';
 
 const Item = List.Item;
 const {urlCfg} = Configs;
-const {MESSAGE: {Form, Feedback}, navColorF} = Constants;
-const {appHistory, showInfo, validator, setNavColor} = Utils;
-const hybird = process.env.NATIVE;
-
+const {MESSAGE: {Form, Feedback}} = Constants;
+const {appHistory, showInfo, validator} = Utils;
 class Area extends BaseComponent {
     state = {
         height: document.documentElement.clientHeight - (window.isWX ? window.rem * null : window.rem * 1.08), //是微信扣除头部高度
@@ -27,18 +25,6 @@ class Area extends BaseComponent {
         const {areaInfo, getArea} = this.props;
         if (!areaInfo) {
             getArea();
-        }
-    }
-
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
         }
     }
 
@@ -68,8 +54,6 @@ class Area extends BaseComponent {
 
     //校验是否选择地址
     checkArea = (rule, value, callback) => {
-        // FIXME: 代码要优化
-        //已以优化
         const {province, urban, county} = this.state;
         if (!province || !urban || !county) {
             validator.showMessage(Form.No_pca, callback);
@@ -96,7 +80,6 @@ class Area extends BaseComponent {
                     });
                 return;
             }
-            console.log('错误', error, val);
         });
     };
 

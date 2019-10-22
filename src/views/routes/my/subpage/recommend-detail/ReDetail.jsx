@@ -5,8 +5,8 @@ import React from 'react';
 import './ReDetail.less';
 
 const Item = Popover.Item;
-const {appHistory, getUrlParam, showSuccess, native, showInfo, setNavColor} = Utils;
-const {MESSAGE: {Feedback}, navColorF} = Constants;
+const {appHistory, getUrlParam, showSuccess, native, showInfo} = Utils;
+const {MESSAGE: {Feedback}} = Constants;
 const {urlCfg} = Configs;
 const hybird = process.env.NATIVE;
 const myImg = src => (
@@ -22,18 +22,6 @@ export default class ReDetail extends BaseComponent {
             maskStatus: false, //显示分享选择按钮
             recommendDetail: {}
         };
-    }
-
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
     }
 
     componentDidMount() {

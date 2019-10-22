@@ -9,8 +9,13 @@ import './Search.less';
 import {getUrlParam} from '../../../utils/mixin';
 
 const {urlCfg} = Configs;
+<<<<<<< HEAD
 const {appHistory, TD, setNavColor, goBackModal} = Utils;
 const {TD_EVENT_ID, navColorF} = Constants;
+=======
+const {appHistory, native, TD} = Utils;
+const {TD_EVENT_ID} = Constants;
+>>>>>>> d1b64d495517a03c434454de93205efa406ec7b2
 const hybird = process.env.NATIVE;
 
 class Search extends BaseComponent {
@@ -31,15 +36,9 @@ class Search extends BaseComponent {
 
     componentWillMount() {
         dropByCacheKey('CategoryListPage');
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
     }
 
     componentWillReceiveProps() {
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
         const shopSearch = decodeURI(getUrlParam('shopSearch', encodeURI(this.props.location.search)));
         if (shopSearch === 'null') { //如果是非店铺跳过来，则将店铺id清除
             this.props.setshoppingId('');

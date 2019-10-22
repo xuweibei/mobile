@@ -48,6 +48,9 @@
                 .shop-name-left {
                     flex: 1;
                     margin-right: 5px;
+                    max-width: 2rem;
+                    text-overflow: ellipsis;
+                    overflow: hidden
                 }
                 .shop-name-right {
                     max-width: 200px;
@@ -112,7 +115,9 @@
                     line-height: 72px;
                     color: @darker-black;
                     margin: 0 20px 0 31px;
-                    .TextareaOverflow(1);
+                    max-width: 400px;
+                    text-overflow:ellipsis;
+                    overflow: hidden;
                 }
             }
             span {

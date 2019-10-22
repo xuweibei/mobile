@@ -61,21 +61,32 @@
                 height: 332px;
                 margin:70px auto;
             } */
-            .c-box{
-                background: url('../src/assets/images/c-bg.png');
-                height: 400px;
-                padding-top: 220px;
-                text-align: center;
+            body{
+                margin: 0;
+            }
+            #loading{
+                position: relative;
                 height: 100vh;
-                
+                background-color: #ff5b53;
+                /* transition: display 1s ease 0; */
+            }
+            .c-box{
+                /* background: url('../src/assets/images/c-bg.png'); */
+                padding-top: 200px;
+                text-align: center;
+                background-color: #ff5b53;
+                position: absolute;
+                top: 0;
+                width: 100%;
             }
             #c-logo{
-                height: 110px;
+                height: 87px;
             }
             .c-logo{
                 margin: auto;
                 width: 86px;
-                border-radius: 10px;
+                height: 0;
+                border-radius: 20px;
                 box-sizing: border-box;
                 background-color: #fff;
                 /* box-shadow: ; */
@@ -83,19 +94,19 @@
                 -ms-transform:rotateY(88deg); 	/* IE 9 */
                 -moz-transform:rotateY(88deg); 	/* Firefox */
                 -webkit-transform:rotateY(88deg); /* Safari 和 Chrome */
-                animation:myFirst 1s ease-out 0s 1 forwards;
-                -moz-animation:myFirst 1s ease-out 0s 1 forwards; /* Firefox */
-                -webkit-animation:myFirst 1s ease-out 0s 1 forwards; /* Safari and Chrome */
-                -o-animation:myFirst 1s ease-out 0s 1 forwards; /* Opera */
+                animation:myFirst 2s ease-out 0.2s infinite forwards;
+                -moz-animation:myFirst 2s ease-out 0.2s infinite forwards; /* Firefox */
+                -webkit-animation:myFirst 2s ease-out 0.2s infinite forwards; /* Safari and Chrome */
+                -o-animation:myFirst 2s ease-out 0.2s infinite forwards; /* Opera */
             }
             .c-logo img{
                 width: 46px;
                 height: 47px;
                 opacity: 0;
-                animation:mySecond 1s ease-in 1s 1 forwards;
-                -moz-animation:mySecond 1s ease-in 1s 1 forwards; /* Firefox */
-                -webkit-animation:mySecond 1s ease-in 1s 1 forwards; /* Safari and Chrome */
-                -o-animation:mySecond 1s ease-in 1s 1 forwards; /* Opera */
+                animation:mySecond 2s ease-in 0.2s infinite forwards;
+                -moz-animation:mySecond 2s ease-in 0.2s infinite forwards; /* Firefox */
+                -webkit-animation:mySecond 2s ease-in 0.2s infinite forwards; /* Safari and Chrome */
+                -o-animation:mySecond 2s ease-in 0.2s infinite forwards; /* Opera */
             }
             .c-mask{
                 position: absolute;
@@ -104,24 +115,33 @@
                 background-color: #ff5b53;
                 top: 0;
                 z-index: 10;
-                animation:myMask 1s linear 1s 1 forwards;
-                -moz-animation:myMask 1s linear 1s 1 forwards; /* Firefox */
-                -webkit-animation:myMask 1s linear 1s 1 forwards; /* Safari and Chrome */
-                -o-animation:myMask 1s linear 1s 1 forwards; /* Opera */
+                animation:myMask 2s linear 0.2s infinite forwards;
+                -moz-animation:myMask 2s linear 0.2s infinite forwards; /* Firefox */
+                -webkit-animation:myMask 2s linear 0.2s infinite forwards; /* Safari and Chrome */
+                -o-animation:myMask 2s linear 0.2s infinite forwards; /* Opera */
             }
             @keyframes myFirst {
                 0% {height: 0;transform: rotateY(88deg);padding: 0;}
-                30% {height: 87px;transform: rotateY(88deg);padding:10px 20px;}
-                100% {height: 87px;transform: rotateY(720deg);padding:10px 20px;}
+                20% {height: 87px;transform: rotateY(88deg);padding: 0;}
+                50% {height: 87px;transform: rotateY(720deg);padding:15px 20px;}
+                100% {height: 87px;transform: rotateY(720deg);padding:15px 20px;}
             }
             @keyframes mySecond {
                 0% {transform:scale(0);opacity: 0;}
-                40% {transform:scale(1.2);opacity: 1;}
-                50% {transform:scale(0.8);opacity: 1;}
+                50% {transform:scale(0);opacity: 0;}
+                55% {transform: scale(0.5);opacity: 1;}
+                58% {transform: scale(0.5);opacity: 1;}
+                59% {transform: scale(0.8);opacity: 1;}
+                60% {transform:scale(1.1);opacity: 1;}
+                70% {transform:scale(0.8);opacity: 1;}
+                80% {transform:scale(0.8);opacity: 1;}
+                95% {transform: scale(1);opacity: 1;}
                 100% {transform: scale(1);opacity: 1;}
             }
             @keyframes myMask {
                 0% {left: 0;}
+                20% {left: 0;}
+                50% {left: 300px;}
                 100% {left: 300px;}
             }
         </style>
@@ -130,18 +150,19 @@
         <!-- <div id="loading" class="loading-canvas"><canvas id="canvas" class="canvas-drawing" height="450" width="450"></canvas></div> -->
         <div id="root"></div>
         <div id="loading">
+            <img width="100%;height: 100%;" src="../src/assets/images/c-bg.png" alt="">
             <div class="c-box">
-              <div id="c-logo">
-                <div class="c-logo">
-                  <img src="../src/assets/images/c-logo.png" alt="">
+                <div id="c-logo">
+                    <div class="c-logo">
+                        <img src="../src/assets/images/c-logo.png" alt="">
+                    </div>
                 </div>
-              </div>
-              <div style="position: relative;overflow: hidden;">
-                  <div style="height: 50px;line-height: 50px;color: #fff;font-size: 20px;letter-spacing: 1px;">优质商品 快乐选购</div>
-                  <div class="c-mask"></div>
-              </div>
+                <div style="position: relative;overflow: hidden;">
+                    <div style="height: 50px;line-height: 50px;color: #fff;font-size: 20px;letter-spacing: 1px;">优质商品 快乐选购</div>
+                    <div class="c-mask"></div>
+                </div>
             </div>
-          </div>
+        </div>
         <script>
             // let myCanvas=document.querySelector('canvas');
             // let ctx=myCanvas.getContext('2d');
@@ -175,7 +196,7 @@
             var loadingAnimation = document.getElementById("loading");
             if (window.loading.style) {
                 if (window.loading.style.cssText) {
-                    loadingAnimation.style.display = "none"
+                    loadingAnimation.style.display = "block";
                 }
             }
         </script>

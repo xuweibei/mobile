@@ -9,10 +9,10 @@ import Nothing from '../../../../../common/nothing/Nothing';
 import LazyLoadIndex  from '../../../../../common/lazy-load/LazyLoad';
 import CancelOrder from '../../../../../common/cancel-order/CancleOrder';
 import Animation from '../../../../../common/animation/Animation';
-import './ShopSearch.less';
+import './ShopDetail.less';
 
 const {appHistory, showSuccess, showInfo, getUrlParam} = Utils;
-const {MESSAGE: {Form, Feedback}, FIELD} = Constants;
+const {MESSAGE: {Form, Feedback}, FIELD, navColorR} = Constants;
 const {urlCfg} = Configs;
 
 const temp = {
@@ -598,7 +598,7 @@ class MyOrder extends BaseComponent {
         return (
             <div data-component="my-order" data-role="page" className={`online-transaction ${window.isWX ? 'WX' : ''}`}>
                 {
-                    window.isWX ? null : (<AppNavBar title="线上订单" goBackModal={this.goToBack} white/>)
+                    window.isWX ? null : (<AppNavBar title="线上订单" goBackModal={this.goToBack} white color={navColorR}/>)
                 }
                 {   //弹出取消弹框
                     canStatus &&  (<CancelOrder canStateChange={this.canStateChange}/>)

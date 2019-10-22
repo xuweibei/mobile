@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import {TabBar} from 'antd-mobile';
 import './ShopFooter.less';
 
+const hybrid = process.env.NATIVE;
+
 
 class ShopFooter extends React.PureComponent {
     static propTypes = {
@@ -17,6 +19,18 @@ class ShopFooter extends React.PureComponent {
         selectedTab: this.props.active,
         haveModalAll: this.props.haveModalAll //判断该店铺是否有模板，没有的话，就不显示店铺模板信息
     };
+
+    componentWillReceiveProps(nextProps) {
+        if (hybrid) {
+            const haveNext = nextProps.haveModalAll;
+            const have = this.props.haveModalAll;
+            if (haveNext !== have) {
+                this.setState({
+                    haveModalAll: haveNext
+                });
+            }
+        }
+    }
 
     gotoPage = (path) => {
         this.props.onTabChange(path);

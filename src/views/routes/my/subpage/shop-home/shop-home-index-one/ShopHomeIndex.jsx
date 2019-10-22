@@ -3,13 +3,16 @@
  */
 import PropTypes from 'prop-types';
 import './ShopHomeIndex.less';
-import {Carousel, WingBlank} from 'antd-mobile';
+// import {Carousel, WingBlank} from 'antd-mobile';
+import GoodsTitle from '../components/GoodsTitle';
+import CarouselComponent from '../components/CarouselComponent';
+import Products from '../components/Products';
 
 const {appHistory} = Utils;
 
 class ShopHomeIndex extends React.PureComponent {
     static propTypes = {
-        shopModelArr: PropTypes.array.isRequired
+        shopModelArr: PropTypes.object.isRequired
     };
 
     goToGoods = (num) => {
@@ -53,34 +56,17 @@ class ShopHomeIndex extends React.PureComponent {
         return (
             <div data-component="ShopHomeIndex" data-role="page" className="ShopHomeIndex">
                 <div className="shopHomeContent">
-                    <div style={{background: content.bg_color}} className="shopHomeBanner">
-                        {
-                            (content && content.banner && content.banner.length > 0) ? (
-                                <WingBlank>
-                                    <Carousel
-                                        className="my-carousel"
-                                        autoplay
-                                        infinite
-                                        speed={2000}
-                                    >
-                                        {
-                                            content.banner.map(item => (
-                                                <div key={item} style={{height: '475px'}}>
-                                                    <img src={item.url} onClick={() => this.goToGoods(item.id)} title="693"/>
-                                                </div>
-                                            ))
-                                        }
-                                    </Carousel>
-                                </WingBlank>
-                            ) : <img title="图片"/>
-                        }
-                    </div>
+                    <CarouselComponent
+                        content={content}
+                        cHeight={475}
+                    />
                     <div className="items" style={{marginTop: '30px'}}>
-                        <div className="title">
-                            <p className="marginTop">{content.sort1_title1}</p>
-                            <h2>{content.sort1_title2}</h2>
-                            <h3>{content.sort1_title3}</h3>
-                        </div>
+                        <GoodsTitle
+                            title1={content.sort1_title1}
+                            title2={content.sort1_title2}
+                            title3={content.sort1_title3}
+                            modalId={1}
+                        />
                         <div className="hotImgShow">
                             {
                                 hotSellList.map(item => (
@@ -95,7 +81,6 @@ class ShopHomeIndex extends React.PureComponent {
                                                     <span className="money-before">{item.title3}</span>
                                                 </div>
                                             </div>
-                                            {/* <div onClick={() => this.goToGoods(content.sort1_pr1_id)} className="textTip fr">{content.buy_name}</div> */}
                                         </div>
                                     </div>
                                 ))
@@ -103,49 +88,25 @@ class ShopHomeIndex extends React.PureComponent {
                         </div>
                     </div>
                     <div className="items">
-                        <div className="title">
-                            <h2>{content.sort2_title1}</h2>
-                            <h3>{content.sort2_title2}</h3>
-                        </div>
-                        <div className="hotImgBottom">
-                            <div className="bottomImg">
-                                {
-                                    newSellList1.map(item => (
-                                        <div className="bottomImgLeft" key={item}>
-                                            <div className="marginBot">
-                                                <img onClick={() => this.goToGoods(content[`sort2_pr${item - 2}_id`])} src={picurl[item]} alt=""/>
-                                                <div className="margin-bot-box">
-                                                    <div className="margin-bot-content-top">{content[`sort2_pr${item - 2}_title1`]}</div>
-                                                    <div className="margin-bot-content-bot">
-                                                        <span className="money-ZH">￥</span>
-                                                        <span className="money-now">{content[`sort2_pr${item - 2}_title2`]}</span>
-                                                        <span className="money-before">{content[`sort2_pr${item - 2}_title3`]}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))
-                                }
-                            </div>
-                        </div>
-                        <div className="newImgShow">
-                            {
-                                newSellList2.map(item => (
-                                    <div className="newImgBottom" key={item}>
-                                        <img onClick={() => this.goToGoods(content[`sort2_pr${item - 2}_id`])} src={picurl[item]} alt=""/>
-                                        <div className="priceInfo">
-                                            <div className="shop-title-small">{content[`sort2_pr${item - 2}_title1`]}</div>
-                                            <div className="shopPeiceSmall">
-                                                <span className="money-ZH">￥</span>
-                                                <span className="money-now">{content[`sort2_pr${item - 2}_title2`]}</span>
-                                                <span className="money-before">{content[`sort2_pr${item - 2}_title3`]}</span>
-                                            </div>
-                                            {/* <div onClick={() => this.goToGoods(content.sort2_pr3_id)} className="textTip fr">{content.buy_name}</div> */}
-                                        </div>
-                                    </div>
-                                ))
-                            }
-                        </div>
+                        <GoodsTitle
+                            title1={content.sort2_title1}
+                            title2={content.sort2_title2}
+                            modalId={1}
+                        />
+                        <Products
+                            content={content}
+                            sort={2}
+                            newSellList={newSellList1}
+                            picurl={picurl}
+                            mode2={2}
+                        />
+                        <Products
+                            content={content}
+                            sort={2}
+                            newSellList={newSellList2}
+                            picurl={picurl}
+                            mode2={2}
+                        />
                     </div>
                 </div>
             </div>

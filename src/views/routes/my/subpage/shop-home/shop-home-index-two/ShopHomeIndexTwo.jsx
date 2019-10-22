@@ -4,6 +4,9 @@
 import PropTypes from 'prop-types';
 import {Carousel, WingBlank} from 'antd-mobile';
 import './ShopHomeIndexTwo.less';
+import CarouselComponent from '../components/CarouselComponent';
+import GoodsTitle from '../components/GoodsTitle';
+import Products from '../components/Products';
 
 
 const {appHistory} = Utils;
@@ -75,7 +78,13 @@ class ShopHomeIndexTwo extends React.PureComponent {
     render() {
         const {selectedIndex} = this.state;
         const {shopModelArr: {content, picurl}} = this.props;
-        const discountList = [
+        const discountList1 = [
+            content.sort1_pr1_ix,
+            content.sort1_pr2_ix,
+            content.sort1_pr3_ix,
+            content.sort1_pr4_ix
+        ];
+        const discountList2 = [
             content.sort2_pr1_ix,
             content.sort2_pr2_ix,
             content.sort2_pr3_ix,
@@ -83,113 +92,45 @@ class ShopHomeIndexTwo extends React.PureComponent {
         ];
         return (
             <div data-component="ShopHomeIndex" data-role="page" className="ShopHomeIndex">
-                <div className="shopHomeTwoContent">
-                    <div className="shopHomeTwoBanner">
-                        <WingBlank>
-                            <Carousel
-                                className="my-carousel"
-                                autoplay
-                                infinite
-                                speed={2000}
-                            >
-                                {
-                                    content && picurl && content && content.banner.map(item => (
-                                        <div key={item} style={{height: '475px'}}>
-                                            <img src={item.url} onClick={() => this.goToGoods(item.id)} title="693"/>
-                                        </div>
-                                    ))
-                                }
-                            </Carousel>
-                        </WingBlank>
+                <div className="shopHomeTwoContent shopHomeContent">
+                    <CarouselComponent
+                        content={content}
+                        cHeight={541}
+                    />
+                    <div className="newRecommend shopHomeTwoContentPadding items" style={{marginTop: '30px'}}>
+                        <GoodsTitle
+                            title1={content.sort1_title1}
+                            title2={content.sort1_title2}
+                            modalId={2}
+                        />
+                        <Products
+                            newSellList={discountList1}
+                            content={content}
+                            picurl={picurl}
+                            sort={1}
+                            mode2={0}
+                        />
                     </div>
-                    <div className="newRecommend shopHomeTwoContentPadding" style={{marginTop: '30px'}}>
-                        <div className="comTitle2 shopHomeTwoContentMarTop">
-                            <div>{content.sort1_title1}</div>
-                            <p>{content.sort1_title2}</p>
-                        </div>
-                        <div className="newRecommendCon">
-                            <div className="newRecommendConImg">
-                                <div className="newRecommendConImgLeft">
-                                    <div className="newArrivals-one">
-                                        <div className="new-img-one">
-                                            <img onClick={() => this.goToGoods(content.sort1_pr1_id)} src={picurl[1]} alt=""/>
-                                        </div>
-                                        <p>{content.sort1_pr1_title1}</p>
-                                        <div className="price">
-                                            <span className="money-ZH">￥</span>
-                                            <span className="money-new">{content.sort1_pr1_title2}</span>
-                                            <span className="money-before">{content.sort1_pr1_title3}</span>
-                                        </div>
-                                    </div>
-                                    <div className="newArrivals-two">
-                                        <div className="new-img-two">
-                                            <img onClick={() => this.goToGoods(content.sort1_pr2_id)} src={picurl[2]} alt=""/>
-                                        </div>
-                                        <p>{content.sort1_pr2_title1}</p>
-                                        <div className="price">
-                                            <span className="money-ZH">￥</span>
-                                            <span className="money-new">{content.sort1_pr2_title2}</span>
-                                            <span className="money-before">{content.sort1_pr2_title3}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="newRecommendConImgRight">
-                                    <div className="newArrivals-two">
-                                        <div className="new-img-two">
-                                            <img onClick={() => this.goToGoods(content.sort1_pr3_id)} src={picurl[3]} alt=""/>
-                                        </div>
-                                        <p>{content.sort1_pr3_title1}</p>
-                                        <div className="price">
-                                            <span className="money-ZH">￥</span>
-                                            <span className="money-new">{content.sort1_pr3_title2}</span>
-                                            <span className="money-before">{content.sort1_pr3_title3}</span>
-                                        </div>
-                                    </div>
-                                    <div className="newArrivals-one">
-                                        <div className="new-img-one">
-                                            <img onClick={() => this.goToGoods(content.sort1_pr4_id)} src={picurl[4]} alt=""/>
-                                        </div>
-                                        <p>{content.sort1_pr4_title1}</p>
-                                        <div className="price">
-                                            <span className="money-ZH">￥</span>
-                                            <span className="money-new">{content.sort1_pr4_title2}</span>
-                                            <span className="money-before">{content.sort1_pr4_title3}</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-
+                    <div className="discountArea shopHomeTwoContentPadding items">
+                        <GoodsTitle
+                            title1={content.sort2_title1}
+                            title2={content.sort2_title2}
+                            modalId={2}
+                        />
+                        <Products
+                            newSellList={discountList2}
+                            content={content}
+                            picurl={picurl}
+                            sort={2}
+                            mode2={4}
+                        />
                     </div>
-                    <div className="discountArea shopHomeTwoContentPadding">
-                        <div className="comTitle2 shopHomeTwoContentMarTop">
-                            <div>{content.sort2_title1}</div>
-                            <p>{content.sort2_title2}</p>
-                        </div>
-                        <div className="discountAreaCon">
-                            {
-                                discountList.map(item => (
-                                    <div className="discountAreaConItem" key={item}>
-                                        <div className="discount-img">
-                                            <img onClick={() => this.goToGoods(content[`sort2_pr${item - 4}_id`])} src={picurl[item]} alt=""/>
-                                        </div>
-                                        <p>{content[`sort2_pr${item - 4}_title1`]}</p>
-                                        <div className="price">
-                                            <span className="money-ZH">￥</span>
-                                            <span className="money-new">{content[`sort2_pr${item - 4}_title2`]}</span>
-                                            <span className="money-before">{content[`sort2_pr${item - 4}_title3`]}</span>
-                                        </div>
-                                    </div>
-                                ))
-                            }
-                        </div>
-                    </div>
-                    <div className="hotRecommend shopHomeTwoContentPadding">
-                        <div className="comTitle2 shopHomeTwoContentMarTop">
-                            <div>{content.sort3_title1}</div>
-                            <p>{content.sort3_title2}</p>
-                        </div>
+                    <div className="hotRecommend shopHomeTwoContentPadding items">
+                        <GoodsTitle
+                            title1={content.sort3_title1}
+                            title2={content.sort3_title2}
+                            modalId={2}
+                        />
                         <div className="hotSellRecommendCon" style={{background: content.bg_color}}>
                             <div className="hotSellImg">
                                 <WingBlank>

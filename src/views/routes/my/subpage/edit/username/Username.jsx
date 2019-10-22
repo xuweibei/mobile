@@ -5,10 +5,9 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 import {myActionCreator as actionCreator} from '../../../actions/index';
 import './Username.less';
 
-const {appHistory, showSuccess, setNavColor} = Utils;
-const {MESSAGE: {Feedback}, navColorF} = Constants;
+const {appHistory, showSuccess} = Utils;
+const {MESSAGE: {Feedback}} = Constants;
 const {urlCfg} = Configs;
-const hybird = process.env.NATIVE;
 
 class ExtName extends BaseComponent {
     state = {
@@ -19,18 +18,6 @@ class ExtName extends BaseComponent {
         const {nickname, getNickName} = this.props;
         if (!nickname) {
             getNickName();
-        }
-    }
-
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
         }
     }
 
@@ -50,9 +37,9 @@ class ExtName extends BaseComponent {
         const {form: {validateFields}, getUserInfo, getNickName, getMyInfo} = this.props;
         validateFields({first: true, force: true}, (error, val) => {
             if (!error) {
-                this.fetch(urlCfg.modifyNickname, {method: 'post', data: {nickname: val.nickname}})
+                this.fetch(urlCfg.modifyNickname, {data: {nickname: val.nickname}})
                     .subscribe((res) => {
-                        if (res.status === 0) {
+                        if (res && res.status === 0) {
                             showSuccess(Feedback.Edit_Success);
                             getNickName();//当前页面
                             getUserInfo();//设置页面
@@ -62,9 +49,7 @@ class ExtName extends BaseComponent {
                     });
                 return;
             }
-            console.log('错误', error, val);
         });
-        return undefined;
     }
 
     render() {

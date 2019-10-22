@@ -6,7 +6,8 @@ import './PasswordPayment.less';
 
 const {appHistory, validator, showInfo, showSuccess, getUrlParam, setNavColor} = Utils;
 const {urlCfg} = Configs;
-const {MESSAGE: {Form, Feedback}, navColorF} = Constants;
+const {MESSAGE: {Form, Feedback}, navColorR} = Constants;
+const hybrid = process.env.NATIVE;
 const getPass = { //获取验证码按钮的样式
     float: 'right',
     marginRight: '18px',
@@ -16,7 +17,6 @@ const getPass = { //获取验证码按钮的样式
     background: '@white',
     lineHeight: '44px'
 };
-const hybird = process.env.NATIVE;
 class passwordPayment extends BaseComponent {
     state = {
         phoneNum: '', //电话号码初始值
@@ -24,18 +24,6 @@ class passwordPayment extends BaseComponent {
         sentPay: '', //是否已设置支付密码
         getOff: false //点击获取验证码是否可以获取，默认不可以，除非输入的电话号码符合要求
     };
-
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
 
     // verifyPayword = () => {//是否设置过支付密码
     //     this.fetch(urlCfg.memberStatus, {method: 'post', data: {types: 0}})
@@ -56,6 +44,19 @@ class passwordPayment extends BaseComponent {
     //         });
     // }
 
+
+    componentWillMount() {
+        if (hybrid) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorR});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybrid) {
+            setNavColor('setNavColor', {color: navColorR});
+        }
+    }
+
     //获取验证码
     getPhoneCode = () => {
         const {phoneNum} = this.state;
@@ -67,14 +68,12 @@ class passwordPayment extends BaseComponent {
             showInfo(Form.Error_Phone);
             return;
         }
-        this.fetch(urlCfg.getTheAuthenticationCode, {method: 'post', data: {phone: phoneNum.replace(/\s*/g, '')}})
+        this.fetch(urlCfg.getTheAuthenticationCode, {data: {phone: phoneNum.replace(/\s*/g, '')}})
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     showSuccess(Feedback.Send_Success);
                 }
             });
-        // FIXME: 这个跟没有返回值是一样的
-        //已优化
     }
 
     //验证手机号码
@@ -110,17 +109,9 @@ class passwordPayment extends BaseComponent {
     //输入电话号码
     phoneChange = (data) => {
         this.setState({
-            phoneNum: data
+            phoneNum: data,
+            getOff: !!validator.checkPhone(data.replace(/\s*/g, ''))//手机号码符合要求，就可以点击获取验证码
         });
-        if (validator.checkPhone(data.replace(/\s*/g, ''))) {
-            this.setState({//手机号码符合要求，就可以点击获取验证码
-                getOff: true
-            });
-        } else {
-            this.setState({//不符合则点击无效
-                getOff: false
-            });
-        }
     }
 
     //输入验证码
@@ -137,17 +128,14 @@ class passwordPayment extends BaseComponent {
             const phoneCode = getFieldValue('authCode');
             const phoneNum = getFieldValue('phone');
             if (!error) {
-                this.fetch(urlCfg.verificationVerificationCode, {method: 'post', data: {phone: phoneNum.replace(/\s*/g, ''), chk_pass: 0, vcode: phoneCode.replace(/\s*/g, '')}})
+                this.fetch(urlCfg.verificationVerificationCode, {data: {phone: phoneNum.replace(/\s*/g, ''), chk_pass: 0, vcode: phoneCode.replace(/\s*/g, '')}})
                     .subscribe(res => {
-                        if (res.status === 0) {
+                        if (res && res.status === 0) {
                             this.setState({
                                 editModal: 'passEdit'
                             });
                         }
                     });
-            } else {
-                console.log('错误');
-                console.log(error, value);
             }
         });
     }
@@ -163,9 +151,9 @@ class passwordPayment extends BaseComponent {
         }
         if (reg.test(num) && reg.test(againNum)) {
             if (num === againNum) {
-                this.fetch(urlCfg.updatePaymentPassword, {method: 'post', data: {pwd: num, phone: phoneNum.replace(/\s*/g, '')}})
+                this.fetch(urlCfg.updatePaymentPassword, {data: {pwd: num, phone: phoneNum.replace(/\s*/g, '')}})
                     .subscribe(res => {
-                        if (res.status === 0) {
+                        if (res && res.status === 0) {
                             if (statusPay !== 1) {
                                 showSuccess(Feedback.Change_Password_Success);
                             } else {
@@ -184,8 +172,6 @@ class passwordPayment extends BaseComponent {
         } else {
             showInfo(Form.Error_PayPassword);
         }
-        // FIXME: 这个跟没有返回值是一样的
-        //已优化
     }
 
     //第一个输入框
@@ -212,6 +198,19 @@ class passwordPayment extends BaseComponent {
         });
     }
 
+    //单击时清除对应value值
+    clearPropsInput = (num) => {
+        if (num === 1) {
+            this.setState({
+                num: ''
+            });
+        } else {
+            this.setState({
+                againNum: ''
+            });
+        }
+    }
+
     render() {
         const {editModal, getOff} = this.state;
         const {getFieldDecorator} = this.props.form;//getFieldDecorator用于和表单进行双向绑定
@@ -228,11 +227,11 @@ class passwordPayment extends BaseComponent {
                         <div className="password-box">
                             <div className="payment-code">请输入支付密码</div>
                             <div className="content">
-                                <InputGrid onInputGrid={this.inputGrid}/>
+                                <InputGrid num={1} onInputGrid={this.inputGrid} clearPropsInput={this.clearPropsInput}/>
                             </div>
                             <div className="payment-code">请再次输入支付密码</div>
                             <div className="content">
-                                <InputGrid onInputGrid={this.inputGridAgain}/>
+                                <InputGrid num={2} onInputGrid={this.inputGridAgain} clearPropsInput={this.clearPropsInput}/>
                             </div>
                             <div className="payment-box">
                                 <div className="difference">不可与登入密码相同</div>

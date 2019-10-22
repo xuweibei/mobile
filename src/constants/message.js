@@ -33,6 +33,7 @@ export const MESSAGE = {
         No_NickName: '请输入昵称，且需为2~20位的字符',
         No_Phone: '请输入电话号码',
         No_Password: '请输入密码',
+        No_Account: '请选择账号',
         // No_Purchase: '购买商品数量不能为0',（商品最低为1）
         No_Repeat: '不能重复添加商品',
         No_Search_Address: '请输入你想搜索的地址',

@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './NavBar.less';
-import {showInfo} from '../../../utils/mixin';
 
-const {appHistory, native} = Utils;
+const {appHistory, native, showInfo, setNavColor} = Utils;
 const hybird = process.env.NATIVE;
+const {navColorF} = Constants;
 // const hashs = window.location.hash;
 // const str = hashs.substring(hashs.length - 8);
 // const hash = str;
@@ -30,7 +30,11 @@ class NavBar extends React.PureComponent {
         style: PropTypes.object,
         backgroundColor: PropTypes.string,
         rightExplainClick: PropTypes.func,
+<<<<<<< HEAD
         show: PropTypes.bool
+=======
+        color: PropTypes.string
+>>>>>>> d1b64d495517a03c434454de93205efa406ec7b2
     }
 
     static defaultProps = {
@@ -49,8 +53,23 @@ class NavBar extends React.PureComponent {
         style: {},
         show: true,
         backgroundColor: '',
-        rightExplainClick: () => {}
+        rightExplainClick: () => {},
+        color: ''
     };
+
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            const {color} = this.props;
+            setNavColor('setNavColor', {color: color || navColorF});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            const {color} = this.props;
+            setNavColor('setNavColor', {color: color || navColorF});
+        }
+    }
 
     //左边按钮图标点击样式
     backAway = () => {

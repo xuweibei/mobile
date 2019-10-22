@@ -7,8 +7,7 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAction';
 import './PaymentCompleted.less';
 
-const {appHistory, getUrlParam, native, systemApi: {getValue, removeValue}, setNavColor} = Utils;
-const {navColorF} = Constants;
+const {appHistory, getUrlParam, native, systemApi: {getValue, removeValue}} = Utils;
 const hybrid = process.env.NATIVE;
 const mode = [
     {
@@ -36,18 +35,6 @@ class PaymentCompleted extends BaseComponent {
         removeValue('orderArr');
     }
 
-    componentWillMount() {
-        if (hybrid) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybrid) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
     goToHome = () => {
         if (hybrid) {
             native('goHome');
@@ -63,7 +50,7 @@ class PaymentCompleted extends BaseComponent {
         const batch = decodeURI(getUrlParam('batch', encodeURI(this.props.location.search))); //订单购买方式 线上 线下
         if (express === '1') { //线上
             if (batch === '1') { //线上批量付款
-                appHistory.replace('/myOrder/fh');
+                appHistory.replace('/myOrder/fhp');
             } else {
                 appHistory.replace(`/listDetails?id=${id}`);
             }

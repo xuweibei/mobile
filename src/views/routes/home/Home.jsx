@@ -12,10 +12,9 @@ import HomeList from './home-list/homeList';
 import './Home.less';
 
 
-const {TD_EVENT_ID, navColorR} = Constants;
+const {TD_EVENT_ID} = Constants;
 const {urlCfg, appCfg} = Configs;
-const {appHistory, TD, setNavColor} = Utils;
-const hybird = process.env.NATIVE;
+const {appHistory, TD} = Utils;
 
 class Home extends BaseComponent {
     constructor(props, context) {
@@ -36,9 +35,6 @@ class Home extends BaseComponent {
 
     componentWillMount() {
         dropByCacheKey('CategoryListPage');
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorR});
-        }
     }
 
     componentDidMount() {
@@ -63,6 +59,7 @@ class Home extends BaseComponent {
         showMenu(true);
     }
 
+<<<<<<< HEAD
     componentWillReceiveProps() {
         if (hybird) {
             setNavColor('setNavColor', {color: navColorR});
@@ -70,6 +67,8 @@ class Home extends BaseComponent {
     }
 
     // 判断是否是登录状态 如果不是前往登录
+=======
+>>>>>>> d1b64d495517a03c434454de93205efa406ec7b2
     goToLogin = () => {
         const {userToken} = this.state;
         if (userToken && userToken.length > 0) {

@@ -8,8 +8,7 @@ import '../../../redux/reducers/baseReducer';
 import PropTypes from 'prop-types';
 
 
-const {appHistory, setNavColor} = Utils;
-const {navColorF} = Constants;
+const {appHistory, native} = Utils;
 const hybird = process.env.NATIVE;
 export default class Error extends BaseComponent {
     static defaultProps = {
@@ -17,18 +16,6 @@ export default class Error extends BaseComponent {
         className: 'error404',
         prompting: '页面出错'
     };
-
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
 
     static propTypes = {
         title: PropTypes.string,
@@ -51,7 +38,7 @@ export default class Error extends BaseComponent {
                     className="error-title"
                     mode="light"
                     icon={<Icon type="left" size="lg"/>}
-                    onLeftClick={() => { appHistory.goBack() }}
+                    onLeftClick={() => { (hybird && appHistory.length() === 0) ? native('goBack') : appHistory.goBack() }}
                 >
                     {title}
                 </NavBar>

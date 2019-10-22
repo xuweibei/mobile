@@ -4,25 +4,11 @@ import './PaySuccess.less';
 import {urlCfg} from '../../../../../../configs';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 
-const {getUrlParam, showFail, setNavColor} = Utils;
-const {navColorF} = Constants;
-const hybird = process.env.NATIVE;
+const {getUrlParam, showFail} = Utils;
 
 export default class PaySuccess extends BaseComponent {
     state = {
         orderDetail: [] //数据
-    }
-
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
     }
 
     componentDidMount() {

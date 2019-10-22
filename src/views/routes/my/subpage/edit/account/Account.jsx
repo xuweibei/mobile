@@ -11,9 +11,8 @@ import './Account.less';
 const RadioItem = Radio.RadioItem;
 
 const {urlCfg} = Configs;
-const {showInfo, appHistory, systemApi: {setValue}, setNavColor} = Utils;
-const {MESSAGE: {Feedback}, navColorF} = Constants;
-const hybird = process.env.NATIVE;
+const {showInfo, appHistory, systemApi: {setValue}} = Utils;
+const {MESSAGE: {Feedback}} = Constants;
 
 class Account extends BaseComponent {
     state = {
@@ -30,18 +29,6 @@ class Account extends BaseComponent {
         }
     }
 
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
     //添加地址
     addAounted =() => {
         appHistory.push('/addAccount');
@@ -52,7 +39,7 @@ class Account extends BaseComponent {
         const {showConfirm, switchAccountList, removeUserInfo, removebankInfo, removeNickNameInfo, removeAressInfo, removeRegionInfo, removeUserIdInfo} = this.props;
         this.fetch(urlCfg.switchAccountInfo, {method: 'post', data: {id: id, password}})
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     if (res.data.status === 1) {
                         showInfo(res.data.message);
                         if (res.message === 'success') {
@@ -122,7 +109,7 @@ class Account extends BaseComponent {
 
     //删除用户弹框
     deleteList = (value, id, num) => {
-        const {showAlert, switchAccountList} = this.props;
+        const {showAlert, switchAccountList, showConfirm} = this.props;
         if (num === '1') {
             showAlert({
                 title: '主账号不能删除',
@@ -130,7 +117,6 @@ class Account extends BaseComponent {
             });
             return;
         }
-        const {showConfirm} = this.props;
         showConfirm({
             title: `是否删除账号 ${value}`,
             callbacks: [null, () => {
