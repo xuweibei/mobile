@@ -126,16 +126,12 @@ class Home extends BaseComponent {
     mallBanner = () => {
         this.fetch(urlCfg.homeBanner)
             .subscribe((res) => {
-                if (res) {
-                    if (res.status === 0) {
-                        this.setState({
-                            mallBanner: res.data,
-                            navPic: res.home_pic.pic1
-                        });
-                    }
+                if (res && res.status === 0) {
+                    this.setState({
+                        mallBanner: res.data,
+                        navPic: res.home_pic.pic1
+                    });
                 }
-            }, err => {
-                Toast.info(err.message);
             });
     };
 
@@ -241,7 +237,6 @@ class Home extends BaseComponent {
                                 activeStyle
                                 columnNum={5}
                                 square
-                                // isCarousel
                                 hasLine={false}
                                 onClick={(el, idx) => this.goToCategory(el, idx)}
                             />
