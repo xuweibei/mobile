@@ -83,7 +83,7 @@ class ShopHomeIndexFive extends React.PureComponent {
                             </div>
                         </div>
                         <div className="popular-three">
-                            <div style={{background: content.bg_color}} className="popular-three-left"/>
+                            <div style={{background: '#a52f15'}} className="popular-three-left"/>
                             <div className="popular-three-right">
                                 <img onClick={() => this.goToGoods(content.sort2_pr2_id)} src={picurl[6]} alt=""/>
                                 <div className="introduce">

@@ -148,14 +148,14 @@ class ShopHomeIndexTwo extends React.PureComponent {
                                                     onClick={() => this.goToGoods(item.id)}
                                                 />
                                                 <div className="introduce">
-                                                    <div className="introduce-title">{item.title1}</div>
+                                                    <div className="introduce-title">{item.title}</div>
                                                     <div
                                                         onClick={() => this.goToGoods(item.id)}
                                                         style={{background: content.bg_color}}
                                                     >
                                                         <span className="money-ZH">￥</span>
-                                                        <span className="money-now">{item.title2}</span>
-                                                        <span className="money-before">{item.title3}</span>
+                                                        <span className="money-now">{item.price}</span>
+                                                        <span className="money-before">{item.price_original}</span>
                                                     </div>
                                                 </div>
                                             </div>

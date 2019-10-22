@@ -19,29 +19,13 @@ class ShopHomeIndexThird extends React.PureComponent {
         appHistory.push(`/goodsDetail?id=${num}`);
     }
 
-    //热门商品组件
-    hotSellComponent = (ix, id, pic, title1, title2, title3, uniqueClassName) => (
-        // const {shopModelArr: {picurl}} = this.props;
-        <div className={uniqueClassName}>
-            <div className="commodity-img">
-                <img src={pic} onClick={() => this.goToGoods(id)} alt=""/>
-            </div>
-            <div className="headline-price">
-                <div className="headline">{title1}</div>
-                <div className="price">
-                    <span className="money-ZH">￥</span>
-                    <span className="money-now">{title2}</span>
-                    <span className="money-before">{title3}</span>
-                </div>
-            </div>
-        </div>
-    )
-
     render() {
         const {shopModelArr: {content, picurl}} = this.props;
-        const GoodsList1 = [
+        const GoodsList3 = [
             content.sort2_pr1_ix,
-            content.sort2_pr2_ix,
+            content.sort2_pr2_ix
+        ];
+        const GoodsList1 = [
             content.sort2_pr3_ix,
             content.sort2_pr4_ix,
             content.sort2_pr5_ix,
@@ -71,12 +55,21 @@ class ShopHomeIndexThird extends React.PureComponent {
                             mode2={0}
                         />
                     </div>
-                    <div className="items compile-box">
+                    <div className="items compile-box compile-box-second">
                         <GoodsTitle
                             title1={content.sort2_title1}
                             title2={content.sort2_title2}
                             modalId={3}
                         />
+                        <Products
+                            newSellList={GoodsList3}
+                            content={content}
+                            picurl={picurl}
+                            sort={2}
+                            mode2={2}
+                        />
+                    </div>
+                    <div className="items compile-box">
                         <Products
                             newSellList={GoodsList1}
                             content={content}
