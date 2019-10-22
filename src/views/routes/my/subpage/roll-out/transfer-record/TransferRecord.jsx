@@ -7,10 +7,8 @@ import Nothing from '../../../../../common/nothing/Nothing';
 import MyListView from '../../../../../common/my-list-view/MyListView';
 import './TransferRecord.less';
 
-const {setNavColor} = Utils;
-const {FIELD, navColorF} = Constants;
+const {FIELD} = Constants;
 const {urlCfg} = Configs;
-const hybird = process.env.NATIVE;
 
 export default class transferRecord extends BaseComponent {
     state = {
@@ -22,18 +20,6 @@ export default class transferRecord extends BaseComponent {
         pageCount: 0, //一共多少页
         recordDtat: [] //当页数据源
     };
-
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
 
     componentDidMount() {
         this.withdrawList();

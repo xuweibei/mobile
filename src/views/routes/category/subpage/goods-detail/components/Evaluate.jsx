@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import './Evaluate.less';
 
 export default class Evaluate extends React.PureComponent {
     static propTypes = {

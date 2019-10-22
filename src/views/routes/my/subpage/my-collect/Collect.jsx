@@ -4,7 +4,7 @@ import {Tabs, ListView, PullToRefresh} from 'antd-mobile';
 import {baseActionCreator as actionCreator} from '../../../../../redux/baseAction';
 import AppNavBar from '../../../../common/navbar/NavBar';
 import Nothing from '../../../../common/nothing/Nothing';
-import LazyLoad from '../../../../common/lazy-load/LazyLoad';
+// import LazyLoad from '../../../../common/lazy-load/LazyLoad';
 import Animation from '../../../../common/animation/Animation';
 import {ListFooter} from '../../../../common/list-footer';
 import './Collect.less';
@@ -13,9 +13,9 @@ const tabs = [
     {title: '商品'},
     {title: '店铺'}
 ];
-const {appHistory, native, showInfo, setNavColor} = Utils;
+const {appHistory, native, showInfo} = Utils;
 const {urlCfg} = Configs;
-const {MESSAGE: {Form, Feedback}, FIELD, navColorF} = Constants;
+const {MESSAGE: {Form, Feedback}, FIELD} = Constants;
 const hybird = process.env.NATIVE;
 
 class Collect extends BaseComponent {
@@ -53,68 +53,50 @@ class Collect extends BaseComponent {
         this.getCollectionList(this.state.pageShop);
     }
 
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
     //获取列表数据
     getCollectionList = (page, noLoading = false) => {
         const {statusNum, tabKey} = this.state;
         this.temp.isLoading = true;
-        this.fetch(urlCfg.CollectionList, {
-            method: 'post',
-            data: {
-                type: statusNum,
-                page,
-                pagesize: this.temp.pagesize
-            }
-        }, noLoading).subscribe((res) => {
-            this.temp.isLoading = false;
-            if (res && res.status === 0) {
-                if (tabKey === 0) {
-                    if (page === 1) {
-                        this.temp.stackData = res.data;
+        this.fetch(urlCfg.CollectionList, {data: {type: statusNum, page,  pagesize: this.temp.pagesize}}, noLoading)
+            .subscribe((res) => {
+                this.temp.isLoading = false;
+                if (res && res.status === 0) {
+                    if (tabKey === 0) {
+                        if (page === 1) {
+                            this.temp.stackData = res.data;
+                        } else {
+                            this.temp.stackData = this.temp.stackData.concat(res.data);
+                        }
+                        if (page >= res.page_count) {
+                            this.setState({
+                                hasMore: false
+                            });
+                        }
+                        this.setState((prevState) => ({
+                            goodsSource: prevState.goodsSource.cloneWithRows(this.temp.stackData),
+                            pageCountShop: res.page_count,
+                            refreshing: false
+                        }));
                     } else {
-                        this.temp.stackData = this.temp.stackData.concat(res.data);
-                    }
-                    if (page >= res.page_count) {
-                        this.setState({
-                            hasMore: false
-                        });
-                    }
-                    this.setState((prevState) => ({
-                        goodsSource: prevState.goodsSource.cloneWithRows(this.temp.stackData),
-                        pageCountShop: res.page_count,
-                        refreshing: false
-                    }));
-                } else {
-                    if (page === 1) {
-                        this.temp.stackShopData = res.data;
-                    } else {
-                        this.temp.stackShopData = this.temp.stackShopData.concat(res.data);
-                    }
+                        if (page === 1) {
+                            this.temp.stackShopData = res.data;
+                        } else {
+                            this.temp.stackShopData = this.temp.stackShopData.concat(res.data);
+                        }
 
-                    if (page >= res.page_count) {
-                        this.setState({
-                            hasMore: false
-                        });
+                        if (page >= res.page_count) {
+                            this.setState({
+                                hasMore: false
+                            });
+                        }
+                        this.setState((prevState) => ({
+                            shopSource: prevState.shopSource.cloneWithRows(this.temp.stackShopData),
+                            pageCountShopping: res.page_count,
+                            refreshing: false
+                        }));
                     }
-                    this.setState((prevState) => ({
-                        shopSource: prevState.shopSource.cloneWithRows(this.temp.stackShopData),
-                        pageCountShopping: res.page_count,
-                        refreshing: false
-                    }));
                 }
-            }
-        });
+            });
     };
 
     //下拉刷新
@@ -125,14 +107,14 @@ class Collect extends BaseComponent {
             this.setState({
                 pageShop: 1
             }, () => {
-                this.getCollectionList(this.state.pageShop, true);
+                this.getCollectionList(1, true);
             });
         } else {
             this.temp.stackShopData = [];
             this.setState({
                 pageShopping: 1
             }, () => {
-                this.getCollectionList(this.state.pageShopping, true);
+                this.getCollectionList(1, true);
             });
         }
     };
@@ -170,29 +152,35 @@ class Collect extends BaseComponent {
 
     //切换tab
     tabChange = (data, index) => {
-        const {shopState, pageShopping} = this.state;
+        // const {shopState, pageShopping} = this.state;
         if (index === 1) {
+            this.temp.stackShopData = [];
             this.setState({
                 tabKey: 1,
                 statusNum: 2,
                 shopState: true,
-                hasMore: false,
-                isEdit: false
+                hasMore: true,
+                isEdit: false,
+                pageShopping: 1
             }, () => {
-                if (!shopState) {
-                    this.getCollectionList(pageShopping);
-                }
+                // if (!shopState) {
+                //     this.getCollectionList(pageShopping);
+                // }
+                this.getCollectionList(1);
             });
         } else {
+            this.temp.stackData = [];
             this.setState({
                 tabKey: 0,
                 statusNum: 1,
-                hasMore: false,
-                isEdit: false
+                hasMore: true,
+                isEdit: false,
+                pageShop: 1
             }, () => {
-                if (!shopState) {
-                    this.getCollectionList(pageShopping);
-                }
+                // if (!shopState) {
+                //     this.getCollectionList(pageShopping);
+                // }
+                this.getCollectionList(1);
             });
         }
     };
@@ -214,8 +202,6 @@ class Collect extends BaseComponent {
 
     //点击顶部导航右侧按钮 编辑按钮
     changeNavRight = () => {
-        // FIXME: 代码优化一下
-        // 店铺收藏下，点击完成如果不做重新赋值处理，回不到编辑的状态
         const {tabKey} = this.state;
         const arr = tabKey === 0 ? this.temp.stackData.map(item => Object.assign({}, item)) : this.temp.stackShopData.map(item => Object.assign({}, item));
         if (tabKey === 0) {
@@ -262,19 +248,15 @@ class Collect extends BaseComponent {
     onDelList = () => {
         const {tabKey} = this.state;
         if (tabKey === 0) {
-            const onOff =  this.temp.stackData.some(item => (item.select));
-            if (onOff) {
+            if (this.temp.stackData.some(item => (item.select))) {
                 this.deleteFn(1, this.temp.stackData);
             } else {
                 showInfo(Form.No_Select_Select);
             }
+        } else if (this.temp.stackShopData.some(item => (item.select))) {
+            this.deleteFn(2, this.temp.stackShopData);
         } else {
-            const onOff =  this.temp.stackShopData.some(item => (item.select));
-            if (onOff) {
-                this.deleteFn(2, this.temp.stackShopData);
-            } else {
-                showInfo(Form.No_Select_Select);
-            }
+            showInfo(Form.No_Select_Select);
         }
     }
 
@@ -284,13 +266,7 @@ class Collect extends BaseComponent {
         const {showConfirm} = this.props;
         showConfirm({
             title: Form.Whether_Empty_Favorite,
-            callbacks: [null, () => {
-                if (tabKey === 0) {
-                    this.deleteFn(1);
-                } else {
-                    this.deleteFn(2);
-                }
-            }]
+            callbacks: [null, () => { this.deleteFn(tabKey === 0 ? 1 : 2) }]
         });
     }
 
@@ -305,9 +281,9 @@ class Collect extends BaseComponent {
                 }
             });
         }
-        this.fetch(urlCfg.cancelCollect, {method: 'post', data: {ids, type}})
+        this.fetch(urlCfg.cancelCollect, {data: {ids, type}})
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     if (ids.length > 0) {
                         showInfo(Feedback.Del_Success);
                     } else {
@@ -386,7 +362,8 @@ class Collect extends BaseComponent {
                 <div className="goods" key={item.id} onClick={() => this.shopGoods(item.pr_id)}>
                     <div className="goods-box">
                         <div>
-                            <LazyLoad lazyInfo={{imgUrl: item.picpath, offset: -50, overflow: true}}/>
+                            {/* <LazyLoad lazyInfo={{imgUrl: item.picpath, offset: -50, overflow: true}}/> */}
+                            <img src={item.picpath}/>
                         </div>
                         <div className="desc">
                             <div className="desc-title">{item.title}</div>
@@ -406,7 +383,7 @@ class Collect extends BaseComponent {
                                 <div className="city">{item.city || '北京'}</div>
                             </div>
                             <div className="pay">
-                                <div>{item.order_num}人付款</div>
+                                <div>销售量：{item.num_sold}</div>
                                 <div className="dele">￥{item.price_original}</div>
                             </div>
                             <div className="shop-name">
@@ -425,7 +402,8 @@ class Collect extends BaseComponent {
             ) : (
                 <div className="shop-content" key={item.id}>
                     <div className="shop-name" onClick={(event) => this.shopHome(event, item.shop_id)}>
-                        <LazyLoad lazyInfo={{imgUrl: item.picpath, offset: -30, overflow: true}}/>
+                        {/* <LazyLoad lazyInfo={{imgUrl: item.picpath, offset: -30, overflow: true}}/> */}
+                        <img src={item.picpath}/>
                         <div className="shop-space ">
                             <p>{item.shop_name}</p>
                             <span className="Shop-Nr">人均消费</span>
@@ -436,12 +414,13 @@ class Collect extends BaseComponent {
                     <div className="shop-goods">
                         {
                             item.pr && item.pr.length ? item.pr.map(data => (
-                                <div className="item" key={data.title} onClick={() => this.shopGoods(data.id)}>
-                                    <div className="image">
-                                        <LazyLoad lazyInfo={{imgUrl: data.picpath, offset: -50, overflow: true}}/>
+                                <div className="item" key={data.title}>
+                                    <div className="image" onClick={() => this.shopGoods(data.id)}>
+                                        {/* <LazyLoad lazyInfo={{imgUrl: data.picpath, offset: -50, overflow: true}}/> */}
+                                        <img src={item.picpath}/>
                                         <span>{data.price}</span>
                                     </div>
-                                    <p>{data.title}</p>
+                                    <p onClick={() => this.shopGoods(data.id)}>{data.title}</p>
                                 </div>
                             )) : ''
                         }

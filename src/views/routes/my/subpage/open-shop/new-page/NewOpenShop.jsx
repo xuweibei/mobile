@@ -15,6 +15,9 @@ export default () => {
         });
     }, []);
 
+    const goTo = () => {
+        window.open('www.shop.zzha.vip.com');
+    };
     return (
         <div className="open-shop">
             <AppNavBar
@@ -40,7 +43,7 @@ export default () => {
                 </div>
 
                 <div className="client-desc runtime-desc">
-                    进入网址：<a href="www.shop.zzha.vip.com"><span>www.shop.zzha.vip.com</span></a> 登陆后即可进行开店申请
+                    进入网址<span onClick={goTo}>www.shop.zzha.vip.com</span> 登陆后即可进行开店申请
                 </div>
             </div>
         </div>

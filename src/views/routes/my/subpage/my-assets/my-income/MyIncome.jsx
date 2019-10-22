@@ -5,23 +5,10 @@ import {InputItem} from 'antd-mobile';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './MyIncome.less';
 
-const {appHistory, native, setNavColor} = Utils;
-const {navColorF} = Constants;
+const {appHistory, native} = Utils;
 const hybrid = process.env.NATIVE;
 
 export default class MyAssets extends BaseComponent {
-    componentWillMount() {
-        if (hybrid) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybrid) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
     //去往我的收入页面
     goToIcome = (value) => {
         appHistory.push(`/icome?status=${value}`);

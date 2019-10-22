@@ -3,8 +3,10 @@
  * 店铺模板3
  */
 import PropTypes from 'prop-types';
-import {Carousel, WingBlank} from 'antd-mobile';
 import './ShopHomeIndexThird.less';
+import GoodsTitle from '../components/GoodsTitle';
+import CarouselComponent from '../components/CarouselComponent';
+import Products from '../components/Products';
 
 const {appHistory} = Utils;
 
@@ -37,58 +39,51 @@ class ShopHomeIndexThird extends React.PureComponent {
 
     render() {
         const {shopModelArr: {content, picurl}} = this.props;
+        const GoodsList1 = [
+            content.sort2_pr1_ix,
+            content.sort2_pr2_ix,
+            content.sort2_pr3_ix,
+            content.sort2_pr4_ix,
+            content.sort2_pr5_ix,
+            content.sort2_pr6_ix,
+            content.sort2_pr7_ix,
+            content.sort2_pr8_ix
+        ];
+        const GoodsList2 = [content.sort1_pr1_ix, content.sort1_pr2_ix];
         return (
             <div data-component="ShopHomeIndex" data-role="page" className="ShopHomeIndex">
-                <div className="shopHomeThirdContent">
-                    <div className="shopHomThirdBanner">
-                        {
-                            content && (
-                                <WingBlank>
-                                    <Carousel
-                                        autoplay
-                                        infinite
-                                        speed={2000}
-                                    >
-                                        {
-                                            content.banner.length > 0 ? content.banner.map(item => (
-                                                <div key={item} style={{height: '248px'}}>
-                                                    <img src={item.url} onClick={() => this.goToGoods(item.id)}/>
-                                                </div>
-                                            )) : null
-                                        }
-                                    </Carousel>
-                                </WingBlank>
-                            )
-                        }
+                <div className="shopHomeThirdContent shopHomeContent">
+                    <CarouselComponent
+                        content={content}
+                        cHeight={248}
+                    />
+                    <div className="compile-box items" style={{marginTop: '30px'}}>
+                        <GoodsTitle
+                            title1={content.sort1_title1}
+                            title2={content.sort1_title2}
+                            modalId={3}
+                        />
+                        <Products
+                            newSellList={GoodsList2}
+                            content={content}
+                            picurl={picurl}
+                            sort={1}
+                            mode2={0}
+                        />
                     </div>
-                    <div className="compile-box" style={{marginTop: '30px'}}>
-                        <div className="title-bar">
-                            {/* <p className={(content && content.sort1_title1) ? 'time' : 'time no-edit-model'}>{content && (content.sort1_title1 || '2018/5/20')}</p> */}
-                            <p className={(content && content.sort1_title1) ? 'headline' : 'hot no-edit-model'}>{content && (content.sort1_title1 || 'POPULAR COMMODITY')}</p>
-                            <p className={(content && content.sort1_title2) ? 'fiery' : 'fiery no-edit-model'}>{content && (content.sort1_title2 || '热门商品')}</p>
-                        </div>
-                        <div className="hot-box">
-                            {this.hotSellComponent(content.sort1_pr1_ix, content.sort1_pr1_id, picurl[content.sort1_pr1_ix], content.sort1_pr1_title1, content.sort1_pr1_title2, content.sort1_pr1_title3, 'hot')}
-                            {this.hotSellComponent(content.sort1_pr2_ix, content.sort1_pr2_id, picurl[content.sort1_pr2_ix], content.sort1_pr2_title1, content.sort1_pr2_title2, content.sort1_pr2_title3, 'hot')}
-                        </div>
-                        <div className={(content && content.sort2_title1 && content.sort2_title2) ? 'title-bar' : 'title-bar no-edit-model'}>
-                            <p className="headline">{content && (content.sort2_title1 || '热销榜单')}</p>
-                            <p className="fiery">{content && (content.sort2_title2 || 'SUPER HOT SALE')}</p>
-                        </div>
-                        <div className="sell-box">
-                            {this.hotSellComponent(content.sort2_pr1_ix, content.sort2_pr1_id, picurl[content.sort2_pr1_ix], content.sort2_pr1_title1, content.sort2_pr1_title2, content.sort2_pr1_title3, 'sell')}
-                            {this.hotSellComponent(content.sort2_pr2_ix, content.sort2_pr2_id, picurl[content.sort2_pr2_ix], content.sort2_pr2_title1, content.sort2_pr2_title2, content.sort2_pr2_title3, 'sell')}
-                        </div>
-                        <div className="hot-box">
-                            {this.hotSellComponent(content.sort2_pr3_ix, content.sort2_pr3_id, picurl[content.sort2_pr3_ix], content.sort2_pr3_title1, content.sort2_pr3_title2, content.sort2_pr3_title3, 'hot')}
-                            {this.hotSellComponent(content.sort2_pr4_ix, content.sort2_pr4_id, picurl[content.sort2_pr4_ix], content.sort2_pr4_title1, content.sort2_pr4_title2, content.sort2_pr4_title3, 'hot')}
-                        </div>
-                        <div className="sell-two-box">
-                            {this.hotSellComponent(content.sort2_pr5_ix, content.sort2_pr5_id, picurl[content.sort2_pr5_ix], content.sort2_pr5_title1, content.sort2_pr5_title2, content.sort2_pr5_title3, 'sell-two')}
-                            {this.hotSellComponent(content.sort2_pr6_ix, content.sort2_pr6_id, picurl[content.sort2_pr6_ix], content.sort2_pr6_title1, content.sort2_pr6_title2, content.sort2_pr6_title3, 'sell-two')}
-                            {this.hotSellComponent(content.sort2_pr7_ix, content.sort2_pr7_id, picurl[content.sort2_pr7_ix], content.sort2_pr7_title1, content.sort2_pr7_title2, content.sort2_pr7_title3, 'sell-two')}
-                            {this.hotSellComponent(content.sort2_pr8_ix, content.sort2_pr8_id, picurl[content.sort2_pr8_ix], content.sort2_pr8_title1, content.sort2_pr8_title2, content.sort2_pr8_title3, 'sell-two')}
-                        </div>
+                    <div className="items compile-box">
+                        <GoodsTitle
+                            title1={content.sort2_title1}
+                            title2={content.sort2_title2}
+                            modalId={3}
+                        />
+                        <Products
+                            newSellList={GoodsList1}
+                            content={content}
+                            picurl={picurl}
+                            sort={2}
+                            mode2={2}
+                        />
                     </div>
                 </div>
             </div>

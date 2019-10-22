@@ -13,8 +13,7 @@ const {FIELD} = Constants;
 const Item = List.Item;
 const Brief = Item.Brief;
 const {urlCfg} = Configs;
-const {appHistory, native, setNavColor} = Utils;
-const {navColorF} = Constants;
+const {appHistory, native} = Utils;
 const hybirid = process.env.NATIVE;
 //tab配置信息
 const tabs = [
@@ -42,18 +41,6 @@ class Customer extends BaseComponent {
 
     componentDidMount() {
         this.getCustomerList();
-    }
-
-    componentWillMount() {
-        if (hybirid) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybirid) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
     }
 
     //获取客户数据，第一页需记录总页数和总人数，并在翻页时回传后端。noLoading为true时不显示菊花图

@@ -6,9 +6,6 @@ import './index.less';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 
 const {urlCfg} = Configs;
-const {setNavColor} = Utils;
-const {navColorF} = Constants;
-const hybird = process.env.NATIVE;
 export default class Detailpage extends BaseComponent {
     state = {
         detailArr: []
@@ -16,18 +13,6 @@ export default class Detailpage extends BaseComponent {
 
     componentDidMount() {
         this.getAmount(this.props.currentData.id);
-    }
-
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
     }
 
     getAmount = (num) => {
@@ -78,7 +63,7 @@ export default class Detailpage extends BaseComponent {
     //支付方式
     payFs = (detailArr) => {
         if (detailArr && detailArr.pay_status === '1') {
-            return '微信支付';
+            return '第三方支付';
         } if (detailArr && detailArr.pay_status === '0') {
             return '余额支付';
         }

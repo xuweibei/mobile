@@ -4,10 +4,8 @@ import BaseComponent from '../../../../../../components/base/BaseComponent';
 import './UserAgreementDetail.less';
 
 const Item = List.Item;
-const {native, setNavColor} = Utils;
-const {navColorF} = Constants;
+const {native} = Utils;
 const {urlCfg} = Configs;
-const hybird = process.env.NATIVE;
 
 class UserAgreementDetail extends BaseComponent {
     state = ({
@@ -15,29 +13,37 @@ class UserAgreementDetail extends BaseComponent {
         modal: false
     })
 
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
     //协议弹窗
     getProtocol = (num) => {
-        this.fetch(urlCfg.protocolsCase, {method: 'post'})
+        this.fetch(urlCfg.getAgreement, {method: 'post', data: {type: num}})
             .subscribe(res => {
                 if (res && res.status === 0) {
-                    if (res.data[num]) {
-                        this.setState({
-                            protocol: res.data[num]
-                        }, () => {
-                            this.showModal(true);
-                        });
+                    if (res.data) {
+                        if (num === 1) {
+                            this.setState({
+                                protocol: res.data.pr_content
+                            }, () => {
+                                this.showModal(true);
+                            });
+                        } else if (num === 2) {
+                            this.setState({
+                                protocol: res.data.card_content
+                            }, () => {
+                                this.showModal(true);
+                            });
+                        } else if (num === 3) {
+                            this.setState({
+                                protocol: res.data.secret_content
+                            }, () => {
+                                this.showModal(true);
+                            });
+                        } else {
+                            this.setState({
+                                protocol: res.data.member_content
+                            }, () => {
+                                this.showModal(true);
+                            });
+                        }
                     }
                 }
             });
@@ -52,7 +58,6 @@ class UserAgreementDetail extends BaseComponent {
 
     render() {
         const {protocol} = this.state;
-        console.log(protocol);
         return (
             <div data-component="UserAgreementDetail" data-role="page" className="UserAgreementDetail">
                 <AppNavBar title="关于"/>
@@ -62,10 +67,10 @@ class UserAgreementDetail extends BaseComponent {
                 <List>
                     <div className="about-information">
                         <Item arrow="horizontal" onClick={() => {}}>版权信息</Item>
-                        <Item arrow="horizontal" onClick={() => this.getProtocol(0)}>软件许可使用协议</Item>
-                        <Item arrow="horizontal" onClick={() => {}}>特别说明</Item>
-                        <Item arrow="horizontal" onClick={() => this.getProtocol(1)}>平台服务协议</Item>
-                        <Item arrow="horizontal" onClick={() => this.getProtocol(2)}>隐私权政策</Item>
+                        <Item arrow="horizontal" onClick={() => this.getProtocol(1)}>软件许可使用协议</Item>
+                        <Item arrow="horizontal" onClick={() => this.getProtocol(3)}>特别说明</Item>
+                        <Item arrow="horizontal" onClick={() => this.getProtocol(2)}>平台服务协议</Item>
+                        <Item arrow="horizontal" onClick={() => this.getProtocol(4)}>隐私权政策</Item>
                         <Item arrow="horizontal" onClick={() => {}}>证照信息</Item>
                     </div>
                 </List>
@@ -79,10 +84,13 @@ class UserAgreementDetail extends BaseComponent {
                         visible={this.state.modal}
                         className="protocol-modal"
                         title={protocol.title}
-                        footer={[{text: '确定', onPress: () => { this.showModal(false)() }}]}
+                        footer={[{text: '确定', onPress: () => { this.showModal(false) }}]}
                     >
-                        <div style={{overflow: 'auto', height: '300px', width: '100%'}}>
-                            <div dangerouslySetInnerHTML={{__html: protocol.content}}/>
+                        <div style={{overflow: 'auto', height: '100%', width: '100%'}}>
+                            {/* <div dangerouslySetInnerHTML={{__html: protocol.content}}/> */}
+                            <div>
+                                {protocol}
+                            </div>
                         </div>
                     </Modal>
                 </div>

@@ -1,5 +1,6 @@
 import {Flex} from 'antd-mobile';
 import PropTypes from 'prop-types';
+import './Recommend.less';
 
 export default class Recommend extends React.PureComponent {
     static propTypes = {

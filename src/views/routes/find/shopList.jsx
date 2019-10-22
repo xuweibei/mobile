@@ -5,9 +5,8 @@ import {connect} from 'react-redux';
 import AppNavBar from '../../common/navbar/NavBar';
 import './shopList.less';
 
-const {appHistory, getUrlParam, native} = Utils;
+const {appHistory, getUrlParam, goBackModal} = Utils;
 const {urlCfg} = Configs;
-const hybird = process.env.NATIVE;
 class shopList extends BaseComponent {
     constructor(props, context) {
         super(props, context);
@@ -62,20 +61,11 @@ class shopList extends BaseComponent {
         appHistory.push(`/shopHome?id=${id}`);
     }
 
-    goBackModal = () => {
-        if (hybird && appHistory.length() === 0) {
-            native('goBack');
-        } else {
-            appHistory.goBack();
-        }
-    }
-
-
     render() {
         const {shopListData} = this.state;
         return (
             <div className="shop-list">
-                <AppNavBar goBackModal={this.goBackModal} title="商店列表"/>
+                <AppNavBar goBackModal={goBackModal} title="商店列表"/>
 
                 <ul className="list-content">
                     {

@@ -5,10 +5,9 @@ import MyListView from '../../../../../common/my-list-view/MyListView';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './SelfSearch.less';
 
-const {appHistory, getUrlParam, showFail, showInfo, systemApi: {removeValue}, setNavColor} = Utils;
+const {appHistory, getUrlParam, showFail, showInfo, systemApi: {removeValue}} = Utils;
 const {urlCfg} = Configs;
 const {MESSAGE: {Feedback}, FIELD, navColorR} = Constants;
-const hybird = process.env.NATIVE;
 
 class ReDetail extends BaseComponent {
     state ={
@@ -21,18 +20,6 @@ class ReDetail extends BaseComponent {
         pageList: [], //列表信息
         orderId: 0, //订单id
         navColor: '@fiery-red' //nav背景颜色
-    }
-
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorR});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorR});
-        }
     }
 
     componentDidMount() {
@@ -247,7 +234,7 @@ class ReDetail extends BaseComponent {
         );
         return (
             <div data-component="Self-mention" data-role="page" className="self-search">
-                <AppNavBar title="线下订单" backgroundColor={navColor} goToSearch={this.goToSearch} rightShow white/>
+                <AppNavBar title="线下订单" backgroundColor={navColor} goToSearch={this.goToSearch} rightShow white color={navColorR}/>
                 <React.Fragment>
                     {pageList && pageList.length > 0 ? (
                         <MyListView

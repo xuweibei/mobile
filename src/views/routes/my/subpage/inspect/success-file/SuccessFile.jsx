@@ -2,8 +2,7 @@ import {connect} from 'react-redux';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './SuccessFile.less';
 
-const {appHistory, setNavColor, native} = Utils;
-const {navColorF} = Constants;
+const {appHistory, native} = Utils;
 const timer = null;
 
 const hybrid = process.env.NATIVE;
@@ -35,18 +34,6 @@ class SuccessFile extends BaseComponent {
                 }
             });
         }, 10000);
-    }
-
-    componentWillMount() {
-        if (hybrid) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybrid) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
     }
 
     goHome = () => {

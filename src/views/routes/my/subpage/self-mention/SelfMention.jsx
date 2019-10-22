@@ -10,7 +10,7 @@ import CancelOrder from '../../../../common/cancel-order/CancleOrder';
 import MyListView from '../../../../common/my-list-view/MyListView';
 import AppNavBar from '../../../../common/navbar/NavBar';
 
-const {appHistory, showFail, showInfo, native, getUrlParam, setNavColor} = Utils;
+const {appHistory, showFail, showInfo, native, getUrlParam} = Utils;
 const {urlCfg} = Configs;
 const {MESSAGE: {Feedback}, FIELD, navColorR} = Constants;
 const hybrid = process.env.NATIVE;
@@ -36,17 +36,11 @@ class ReDetail extends BaseComponent {
     }
 
     componentWillMount() {
-        if (hybrid) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorR});
-        }
         const num = this.statusChoose(this.props.location.pathname.split('/')[2]);
         this.init(num);
     }
 
     componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方
-        if (hybrid) {
-            setNavColor('setNavColor', {color: navColorR});
-        }
         const numNext = this.statusChoose(nextProps.location.pathname.split('/')[2]);
         const numPrev = this.statusChoose(this.props.location.pathname.split('/')[2]);
         if (hybrid && (numNext !== numPrev)) {
@@ -395,7 +389,7 @@ class ReDetail extends BaseComponent {
         );
         return (
             <div data-component="Self-mention" data-role="page" className="Self-mention">
-                <AppNavBar title="线下订单" backgroundColor={navColor} goBackModal={this.goBackModal} goToSearch={this.goToSearch} rightShow redBackground search/>
+                <AppNavBar title="线下订单" backgroundColor={navColor} goBackModal={this.goBackModal} goToSearch={this.goToSearch} rightShow redBackground search color={navColorR}/>
                 <div>
                     <Tabs
                         tabs={tabs}
