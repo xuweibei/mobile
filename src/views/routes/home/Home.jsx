@@ -59,16 +59,13 @@ class Home extends BaseComponent {
         showMenu(true);
     }
 
-<<<<<<< HEAD
-    componentWillReceiveProps() {
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorR});
-        }
-    }
+    // componentWillReceiveProps() {
+    //     if (hybird) {
+    //         setNavColor('setNavColor', {color: navColorR});
+    //     }
+    // }
 
     // 判断是否是登录状态 如果不是前往登录
-=======
->>>>>>> d1b64d495517a03c434454de93205efa406ec7b2
     goToLogin = () => {
         const {userToken} = this.state;
         if (userToken && userToken.length > 0) {

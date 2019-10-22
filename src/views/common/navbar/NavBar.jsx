@@ -30,11 +30,8 @@ class NavBar extends React.PureComponent {
         style: PropTypes.object,
         backgroundColor: PropTypes.string,
         rightExplainClick: PropTypes.func,
-<<<<<<< HEAD
-        show: PropTypes.bool
-=======
+        show: PropTypes.bool,
         color: PropTypes.string
->>>>>>> d1b64d495517a03c434454de93205efa406ec7b2
     }
 
     static defaultProps = {

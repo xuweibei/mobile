@@ -9,14 +9,8 @@ import './Search.less';
 import {getUrlParam} from '../../../utils/mixin';
 
 const {urlCfg} = Configs;
-<<<<<<< HEAD
-const {appHistory, TD, setNavColor, goBackModal} = Utils;
-const {TD_EVENT_ID, navColorF} = Constants;
-=======
-const {appHistory, native, TD} = Utils;
+const {appHistory, TD, goBackModal} = Utils;
 const {TD_EVENT_ID} = Constants;
->>>>>>> d1b64d495517a03c434454de93205efa406ec7b2
-const hybird = process.env.NATIVE;
 
 class Search extends BaseComponent {
     state = {

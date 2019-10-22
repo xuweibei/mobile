@@ -7,11 +7,8 @@ import ShowButton from '../top-show-button';
 import './ShopHome.less';
 
 const {urlCfg} = Configs;
-<<<<<<< HEAD
-const {appHistory, showInfo, TD, setNavColor, goBackModal} = Utils;
-=======
-const {native, appHistory, showInfo, TD} = Utils;
->>>>>>> d1b64d495517a03c434454de93205efa406ec7b2
+
+const {appHistory, showInfo, TD, goBackModal} = Utils;
 const {TD_EVENT_ID} = Constants;
 const {MESSAGE: {Feedback}} = Constants;
 const hybird = process.env.NATIVE;
