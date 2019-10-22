@@ -4,7 +4,7 @@ import './CarouselComponent.less';
 
 export default class CarouselComponent extends BaseComponent {
     render() {
-        const {content, cHeight} = this.props;
+        const {content, cHeight, goToGoods} = this.props;
         return (
             <div style={{background: content.bg_color}} className="shopHomeBanner">
                 {
@@ -19,7 +19,7 @@ export default class CarouselComponent extends BaseComponent {
                                 {
                                     content.banner.map(item => (
                                         <div key={item} style={{height: cHeight + 'px'}}>
-                                            <img src={item.url} onClick={() => this.goToGoods(item.id)} title="693"/>
+                                            <img src={item.url} onClick={() => goToGoods(item.id)} title="693"/>
                                         </div>
                                     ))
                                 }

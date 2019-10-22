@@ -59,6 +59,7 @@ class ShopHomeIndex extends React.PureComponent {
                     <CarouselComponent
                         content={content}
                         cHeight={475}
+                        goToGoods={this.goToGoods}
                     />
                     <div className="items" style={{marginTop: '30px'}}>
                         <GoodsTitle
@@ -99,6 +100,7 @@ class ShopHomeIndex extends React.PureComponent {
                             newSellList={newSellList1}
                             picurl={picurl}
                             mode2={2}
+                            goToGoods={this.goToGoods}
                         />
                         <Products
                             content={content}
@@ -106,6 +108,7 @@ class ShopHomeIndex extends React.PureComponent {
                             newSellList={newSellList2}
                             picurl={picurl}
                             mode2={2}
+                            goToGoods={this.goToGoods}
                         />
                     </div>
                 </div>

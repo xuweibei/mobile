@@ -3,15 +3,14 @@ import './Products.less';
 
 export default class Products extends BaseComponent {
     render() {
-        const {newSellList, content, picurl, sort, mode2} = this.props;
-        console.log(newSellList, content, picurl, sort);
+        const {newSellList, content, picurl, sort, mode2, goToGoods} = this.props;
         return (
             <div className="newImgShow">
                 {
                     newSellList.map(item => (
                         <div className="bottomImgLeft" key={item}>
                             <div className="marginBot">
-                                <img onClick={() => this.goToGoods(content[`sort${sort}_pr${item - mode2}_id`])} src={picurl[item]} alt=""/>
+                                <img onClick={() => goToGoods(content[`sort${sort}_pr${item - mode2}_id`])} src={picurl[item]} alt=""/>
                                 <div className="margin-bot-box">
                                     <div className="margin-bot-content-top">{content[`sort${sort}_pr${item - mode2}_title1`]}</div>
                                     <div className="margin-bot-content-bot">

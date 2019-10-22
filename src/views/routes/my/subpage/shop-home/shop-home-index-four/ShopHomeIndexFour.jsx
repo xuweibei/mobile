@@ -39,6 +39,7 @@ class ShopHomeIndexFour extends React.PureComponent {
                     <CarouselComponent
                         content={content}
                         cHeight={158}
+                        goToGoods={this.goToGoods}
                     />
                     <div className="compile-box items" style={{marginTop: '30px', paddingLeft: '0', paddingRight: '0'}}>
                         <div className="new-box">
@@ -84,6 +85,7 @@ class ShopHomeIndexFour extends React.PureComponent {
                             newSellList={goodsList2}
                             picurl={picurl}
                             mode2={1}
+                            goToGoods={this.goToGoods}
                         />
                     </div>
                     <div className="items compile-box compile-box-second">
@@ -98,6 +100,7 @@ class ShopHomeIndexFour extends React.PureComponent {
                             newSellList={goodsList3}
                             picurl={picurl}
                             mode2={6}
+                            goToGoods={this.goToGoods}
                         />
                     </div>
                 </div>
