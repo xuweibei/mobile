@@ -42,10 +42,10 @@ class UserAgreementDetail extends BaseComponent {
                             protocolTitle = '软件许可使用协议';
                         } else if (num === 2) {
                             protocol = res.data.card_content;
-                            protocolTitle = '特别说明';
+                            protocolTitle = '平台服务协议';
                         } else if (num === 3) {
                             protocol = res.data.secret_content;
-                            protocolTitle = '平台服务协议';
+                            protocolTitle = '特别说明';
                         } else if (num === 4) {
                             protocol = res.data.member_content;
                             protocolTitle = '版本信息隐私权政策';
@@ -104,11 +104,8 @@ class UserAgreementDetail extends BaseComponent {
                                 this.showModal(false);
                             }}]}
                     >
-                        <div style={{overflow: 'auto', height: '100%', width: '100%'}}>
-                            {/* <div dangerouslySetInnerHTML={{__html: protocol.content}}/> */}
-                            <div>
-                                {protocol}
-                            </div>
+                        <div className="protocol-content">
+                            {protocol}
                         </div>
                     </Modal>
                 </div>
