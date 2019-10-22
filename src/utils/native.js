@@ -87,18 +87,20 @@ export const setNavColor = (str, obj) =>  new Promise((resolve, reject) => {
 //获取购物车点击结算的时候的跳转数据
 export const getShopCartInfo = (str, obj, callBack) => new Promise((resolve, reject) => {
     setTimeout(() => {
-        hybrid && window.WebViewJavascriptBridge.callHandler(
-            str,
-            JSON.stringify(obj),
-            (responseData) => {
-                const info = JSON.parse(responseData);
-                if (info.status === '0') {
-                    resolve(info);
-                } else {
-                    showInfo(info.message);
+        if (window.WebViewJavascriptBridge && window.WebViewJavascriptBridge.callHandler && hybrid) {
+            window.WebViewJavascriptBridge.callHandler(
+                str,
+                JSON.stringify(obj),
+                (responseData) => {
+                    const info = JSON.parse(responseData);
+                    if (info.status === '0') {
+                        resolve(info);
+                    } else {
+                        showInfo(info.message);
+                    }
                 }
-            }
-        );
+            );
+        }
     }, 500);
 });
 

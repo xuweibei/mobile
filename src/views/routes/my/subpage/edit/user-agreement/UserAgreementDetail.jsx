@@ -32,31 +32,28 @@ class UserAgreementDetail extends BaseComponent {
 
     //协议弹窗
     getProtocol = (num) => {
-        let protocol = '';
-        let protocolTitle = '';
-        this.fetch(urlCfg.getAgreement, {method: 'post', data: {type: num}})
+        this.fetch(urlCfg.getAgreement, {data: {type: num}})
             .subscribe(res => {
                 if (res && res.status === 0) {
                     if (res.data) {
-                        if (num === 1) {
-                            protocol = res.data.pr_content;
-                            protocolTitle = '软件许可使用协议';
-                        } else if (num === 2) {
-                            protocol = res.data.card_content;
-                            protocolTitle = '平台服务协议';
-                        } else if (num === 3) {
-                            protocol = res.data.secret_content;
-                            protocolTitle = '特别说明';
-                        } else if (num === 4) {
-                            protocol = res.data.member_content;
-                            protocolTitle = '版本信息隐私权政策';
-                        } else {
-                            protocol = '';
-                        }
+                        const proArr = new Map([
+                            [1, res.data.pr_content],
+                            [2, res.data.card_content],
+                            [3, res.data.secret_content],
+                            [4, res.data.member_content]
+                        ]);
+                        const proArrTitle = new Map([
+                            [1, '软件许可使用协议'],
+                            [2, '平台服务协议'],
+                            [3, '特别说明'],
+                            [4, '版本信息隐私权政策']
+                        ]);
                         this.setState({
-                            protocol,
-                            protocolTitle
-                        }, () => this.showModal(true));
+                            protocol: proArr.get(num) || '',
+                            protocolTitle: proArrTitle.get(num) || ''
+                        }, () => {
+                            this.showModal(true);
+                        });
                     }
                 }
             });

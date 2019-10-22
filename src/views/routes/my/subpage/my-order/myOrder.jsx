@@ -50,13 +50,13 @@ class MyOrder extends BaseComponent {
     };
 
     componentWillMount() {
-        const num = this.statusChoose(this.props.location.pathname.split('/')[2]);
+        const num = this.statusChoose(this.props.location.pathname.split('/')[2]) || -1;
         this.init(num);
     }
 
     componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方
-        const numNext = this.statusChoose(nextProps.location.pathname.split('/')[2]);
-        const numPrev = this.statusChoose(this.props.location.pathname.split('/')[2]);
+        const numNext = this.statusChoose(nextProps.location.pathname.split('/')[2]) || -1;
+        const numPrev = this.statusChoose(this.props.location.pathname.split('/')[2]) || -1;
         if (hybrid && numNext !== numPrev) {
             const dataSource2 = new ListView.DataSource({
                 rowHasChanged: (row1, row2) => row1 !== row2
