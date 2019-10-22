@@ -19,23 +19,6 @@ class ShopHomeIndexFour extends React.PureComponent {
         appHistory.push(`/goodsDetail?id=${num}`);
     }
 
-    //热销商品组件
-    hotSellComponent = (ix, id, pic, title1, title2, title3) => (
-        <div className="sell-commodity">
-            <div className="sell-commodity-img">
-                <img src={pic} onClick={() => this.goToGoods(id)} alt=""/>
-            </div>
-            <div className="headline-price-take">
-                <div className="headline">{title1}</div>
-                <div className="price">
-                    <span className="money-ZH">￥</span>
-                    <span className="money-now">{title2}</span>
-                    <span className="money-before">{title3}</span>
-                </div>
-            </div>
-        </div>
-    )
-
     render() {
         const {shopModelArr: {picurl, content}} = this.props;
         const goodsList2 = [
@@ -56,6 +39,7 @@ class ShopHomeIndexFour extends React.PureComponent {
                     <CarouselComponent
                         content={content}
                         cHeight={158}
+                        goToGoods={this.goToGoods}
                     />
                     <div className="compile-box items" style={{marginTop: '30px', paddingLeft: '0', paddingRight: '0'}}>
                         <div className="new-box">
@@ -101,13 +85,14 @@ class ShopHomeIndexFour extends React.PureComponent {
                             newSellList={goodsList2}
                             picurl={picurl}
                             mode2={1}
+                            goToGoods={this.goToGoods}
                         />
                     </div>
-                    <div className="items compile-box">
+                    <div className="items compile-box compile-box-second">
                         <GoodsTitle
                             title1={content.sort3_title1}
                             title2={content.sort3_title2}
-                            modalId={1}
+                            modalId={4}
                         />
                         <Products
                             content={content}
@@ -115,6 +100,7 @@ class ShopHomeIndexFour extends React.PureComponent {
                             newSellList={goodsList3}
                             picurl={picurl}
                             mode2={6}
+                            goToGoods={this.goToGoods}
                         />
                     </div>
                 </div>

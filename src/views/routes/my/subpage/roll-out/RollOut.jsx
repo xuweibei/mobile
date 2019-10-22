@@ -23,12 +23,10 @@ export default class ReDetail extends BaseComponent {
     rollOutList = () => {
         this.fetch(urlCfg.getRollout)
             .subscribe(res => {
-                if (res) {
-                    if (res.status === 0) {
-                        this.setState({
-                            uidList: res.data
-                        });
-                    }
+                if (res && res.status === 0) {
+                    this.setState({
+                        uidList: res.data
+                    });
                 }
             });
     }
@@ -48,10 +46,8 @@ export default class ReDetail extends BaseComponent {
         } else {
             this.fetch(urlCfg.dfinfo, {data: {no: uid}})
                 .subscribe(res => {
-                    if (res) {
-                        if (res.status === 0) {
-                            appHistory.push(`/importSum?uid=${uid}&shopName=${encodeURI(res.data.shopName)}`);
-                        }
+                    if (res && res.status === 0) {
+                        this.skipSum(uid, res.data.shopName);
                     }
                 });
         }

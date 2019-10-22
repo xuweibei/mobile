@@ -51,6 +51,7 @@ class MyOrder extends BaseComponent {
 
     componentWillMount() {
         const num = this.statusChoose(this.props.location.pathname.split('/')[2]);
+        console.log(num, '饥渴的共获得发几个');
         this.init(num);
     }
 
@@ -102,28 +103,16 @@ class MyOrder extends BaseComponent {
 
     //进入订单页面，判断为什么状态
     statusChoose = (str) => {
-        let numStr = -1;
-        switch (str) {
-        case 'fk':
-            numStr = 0;
-            break;
-        case 'fh':
-        case 'fhp'://支付成功之后过来
-            numStr = 1;
-            break;
-        case 'sh':
-            numStr = 2;
-            break;
-        case 'pj':
-            numStr = 3;
-            break;
-        case 'ssh':
-            numStr = 4;
-            break;
-        default:
-            numStr = -1;
-        }
-        return numStr;
+        const arr = new Map([
+            ['qb', -1],
+            ['fk', 0],
+            ['fh', 1],
+            ['fhp', 1],
+            ['sh', 2],
+            ['pj', 3],
+            ['ssh', 4]
+        ]);
+        return arr.get(str);
     }
 
     //获取订单列表
@@ -134,35 +123,26 @@ class MyOrder extends BaseComponent {
             hasMore: true
         });
         this.fetch(urlCfg.mallOrder,
-            {
-                data: {
-                    status: status,
-                    page,
-                    pagesize: temp.pagesize,
-                    pageCount: pageCount
-                }
-            }, noLoading)
+            {data: {status, page,  pagesize: temp.pagesize, pageCount}}, noLoading)
             .subscribe((res) => {
-                if (res) {
-                    temp.isLoading = false;
-                    if (res.status === 0) {
-                        if (page === 1) {
-                            temp.stackData = res.list;
-                        } else {
-                            temp.stackData = temp.stackData.concat(res.list);
-                        }
-                        if (page >= res.pageCount) {
-                            this.setState({
-                                hasMore: false
-                            });
-                        }
-                        this.setState((prevState) => ({
-                            dataSource: prevState.dataSource.cloneWithRows(temp.stackData),
-                            pageCount: res.pageCount,
-                            retainArr: prevState.retainArr.concat(res.list),
-                            refreshing: false
-                        }));
+                temp.isLoading = false;
+                if (res && res.status === 0) {
+                    if (page === 1) {
+                        temp.stackData = res.list;
+                    } else {
+                        temp.stackData = temp.stackData.concat(res.list);
                     }
+                    if (page >= res.pageCount) {
+                        this.setState({
+                            hasMore: false
+                        });
+                    }
+                    this.setState((prevState) => ({
+                        dataSource: prevState.dataSource.cloneWithRows(temp.stackData),
+                        pageCount: res.pageCount,
+                        retainArr: prevState.retainArr.concat(res.list),
+                        refreshing: false
+                    }));
                 }
             });
     }
@@ -174,10 +154,10 @@ class MyOrder extends BaseComponent {
         this.setState({
             hasMore: true
         });
-        this.fetch(urlCfg.refundMllOder, {method: 'post', data: {page, pageCount, pagesize: temp.pagesize}}, noLoading)
+        this.fetch(urlCfg.refundMllOder, {data: {page, pageCount, pagesize: temp.pagesize}}, noLoading)
             .subscribe(res => {
                 temp.isLoading = false;
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     if (page === 1) {
                         temp.stackData = res.list;
                     } else {
@@ -261,17 +241,15 @@ class MyOrder extends BaseComponent {
         showConfirm({
             title: Form.Whether_delete,
             callbacks: [null, () => {
-                this.fetch(urlCfg.delMallOrder, {data: {deal: 1, id: id}})
+                this.fetch(urlCfg.delMallOrder, {data: {deal: 1, id}})
                     .subscribe((res) => {
-                        if (res) {
-                            if (res.status === 0) {
+                        if (res && res.status === 0) {
                             //操作数据，将已经选中取消的id进行去除，
-                                const arr = retainArr.filter(item => item.id !== id);
-                                this.setState((prevState) => ({
-                                    dataSource: prevState.dataSource.cloneWithRows(arr),
-                                    retainArr: arr
-                                }));
-                            }
+                            const arr = retainArr.filter(item => item.id !== id);
+                            this.setState((prevState) => ({
+                                dataSource: prevState.dataSource.cloneWithRows(arr),
+                                retainArr: arr
+                            }));
                         }
                     });
             }]
@@ -285,22 +263,20 @@ class MyOrder extends BaseComponent {
         showConfirm({
             title: (refund === 1 || refund === 2) ? Form.No_Error_Has_Return : Form.No_Error_Take,
             callbacks: [null, () => {
-                this.fetch(urlCfg.confirmOrder, {data: {id: id}})
+                this.fetch(urlCfg.confirmOrder, {data: {id}})
                     .subscribe((res) => {
-                        if (res) {
-                            if (res.status === 0) {
-                                const dataSource = new ListView.DataSource({
-                                    rowHasChanged: (row1, row2) => row1 !== row2
-                                });
-                                temp.stackData = [];
-                                this.setState({
-                                    page: 1,
-                                    retainArr: [],
-                                    dataSource
-                                }, () => {
-                                    this.getMallOrder(status, this.state.page);
-                                });
-                            }
+                        if (res && res.status === 0) {
+                            const dataSource = new ListView.DataSource({
+                                rowHasChanged: (row1, row2) => row1 !== row2
+                            });
+                            temp.stackData = [];
+                            this.setState({
+                                page: 1,
+                                retainArr: [],
+                                dataSource
+                            }, () => {
+                                this.getMallOrder(status, this.state.page);
+                            });
                         }
                     });
             }]
@@ -481,7 +457,6 @@ class MyOrder extends BaseComponent {
                                 status: 2,
                                 page: 1
                             });
-
                             //确定撤销后，跳转到待收货那列
                             this.gotoMyOrder(3);
                         }
@@ -676,7 +651,7 @@ class MyOrder extends BaseComponent {
                         <p>{item.shopName}</p>
                         <div className="icon enter"/>
                     </div>
-                    <div className="right">{item.return_name ? item.return_name : this.tabTopName(item.status)}</div>
+                    <div className="right">{item.return_name || this.tabTopName(item.status)}</div>
                     {/* <div className="right">{item.return_status !== '0' ? item.return_name : this.tabTopName(item.status)}</div> */}
                 </div>
                 {item.pr_list && item.pr_list.map(items => (

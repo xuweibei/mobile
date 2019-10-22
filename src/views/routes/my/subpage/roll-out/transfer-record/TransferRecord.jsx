@@ -18,7 +18,8 @@ export default class transferRecord extends BaseComponent {
         page: 1, //当前页数
         pagesize: 20, //每页条数
         pageCount: 0, //一共多少页
-        recordDtat: [] //当页数据源
+        recordDtat: [], //当页数据源
+        height: document.documentElement.clientHeight - (window.isWX ? 0 : window.rem * 1.08) //滚动容器高度
     };
 
     componentDidMount() {
@@ -31,19 +32,17 @@ export default class transferRecord extends BaseComponent {
         const {page, pagesize, pageCount} = this.state;
         this.fetch(urlCfg.myListOfAssets, {data: {tp: 3, page, pagesize, page_count: pageCount}}, drawCircle)
             .subscribe(res => {
-                if (res) {
-                    if (res.status === 0) {
-                        if (page === 1) {
-                            this.setState({
-                                refreshing: false,
-                                recordDtat: res.data.data,
-                                pageCount: res.data.page_count
-                            });
-                        } else {
-                            this.setState(prevState => ({
-                                recordDtat: prevState.recordDtat.concat(res.data.data)
-                            }));
-                        }
+                if (res && res.status === 0) {
+                    if (page === 1) {
+                        this.setState({
+                            refreshing: false,
+                            recordDtat: res.data.data,
+                            pageCount: res.data.page_count
+                        });
+                    } else {
+                        this.setState(prevState => ({
+                            recordDtat: prevState.recordDtat.concat(res.data.data)
+                        }));
                     }
                 }
             });
@@ -78,10 +77,7 @@ export default class transferRecord extends BaseComponent {
     }
 
     render() {
-        const {recordDtat, refreshing, isLoading, hasMore} = this.state;
-
-        //滚动容器高度
-        const height = document.documentElement.clientHeight - (window.isWX ? 0 : window.rem * 1.08);
+        const {recordDtat, refreshing, isLoading, hasMore, height} = this.state;
 
         //每行渲染样式
         const row = item => (

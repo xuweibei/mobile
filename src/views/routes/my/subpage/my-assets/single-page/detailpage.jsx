@@ -8,7 +8,7 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 const {urlCfg} = Configs;
 export default class Detailpage extends BaseComponent {
     state = {
-        detailArr: []
+        detailArr: {}
     };
 
     componentDidMount() {
@@ -16,9 +16,9 @@ export default class Detailpage extends BaseComponent {
     }
 
     getAmount = (num) => {
-        this.fetch(urlCfg.detailsOfAmount, {method: 'post', data: {id: num}})
+        this.fetch(urlCfg.detailsOfAmount, {data: {id: num}})
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     this.setState({
                         detailArr: res.data
                     });
@@ -26,48 +26,37 @@ export default class Detailpage extends BaseComponent {
             });
     }
 
-    //金额前的符号
-    payYuan = (detailArr) => {
-        if (detailArr) {
-            if (detailArr.types === '1') {
-                return '+';
-            } if (detailArr.types === '0') {
-                return '-';
-            }
-            return '';
-        }
-        return '';
-    }
-
     //收入与否
     payMoney = (detailArr) => {
+        let str = '';
         if (detailArr.types === '1') {
-            return '收入';
-        } if (detailArr.types === '0') {
-            return '支出';
+            str = '收入';
+        } else if (detailArr.types === '0') {
+            str = '支出';
         }
-
-        return '';
+        return str;
     }
 
     //支付状态
     payState = (detailArr) => {
-        if (detailArr && detailArr.pay_status === '1') {
-            return '已支付';
-        } if (detailArr && detailArr.pay_status === '0') {
-            return '未支付';
+        let str = '';
+        if (detailArr.pay_status === '1') {
+            str = '已支付';
+        } else if (detailArr.pay_status === '0') {
+            str = '未支付';
         }
-        return '';
+        return str;
     }
 
     //支付方式
     payFs = (detailArr) => {
-        if (detailArr && detailArr.pay_status === '1') {
-            return '第三方支付';
-        } if (detailArr && detailArr.pay_status === '0') {
-            return '余额支付';
+        let str = '';
+        if (detailArr.pay_status === '1') {
+            str =  '第三方支付';
+        } else if (detailArr.pay_status === '0') {
+            str =  '余额支付';
         }
-        return '';
+        return str;
     }
 
     render() {
@@ -84,7 +73,7 @@ export default class Detailpage extends BaseComponent {
                     </div>
 
                     <div className="amount">
-                        <p>{this.payYuan(detailArr)}{detailArr ? detailArr.scalar : ''}元</p>
+                        <p>{detailArr.types === '1' ? '+' : '-'}{detailArr.scalar || ''}元</p>
                         <span>{this.payMoney(detailArr)}金额</span>
                     </div>
                     <div className="other">
@@ -94,7 +83,7 @@ export default class Detailpage extends BaseComponent {
                         >交易状态：
                         </InputItem>
                         <InputItem
-                            value={detailArr ? detailArr.pay_date : ''}
+                            value={detailArr.pay_date || ''}
                             editable={false}
                         >交易时间：
                         </InputItem>
@@ -105,12 +94,12 @@ export default class Detailpage extends BaseComponent {
                         </InputItem>
                         <InputItem
                             editable={false}
-                            value={detailArr ? detailArr.order_no : ''}
+                            value={detailArr.order_no || ''}
                         >交易单号:
                         </InputItem>
                         <InputItem
                             editable={false}
-                            value={detailArr ? detailArr.UID : ''}
+                            value={detailArr.UID || ''}
                         >U I D:
                         </InputItem>
                     </div>

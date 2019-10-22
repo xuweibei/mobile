@@ -4,46 +4,58 @@ import BaseComponent from '../../../../../../components/base/BaseComponent';
 import './UserAgreementDetail.less';
 
 const Item = List.Item;
-const {native} = Utils;
+const {native, getUrlParam} = Utils;
 const {urlCfg} = Configs;
+const itemLists = [
+    {title: '版本信息', params: null},
+    {title: '软件许可使用协议', params: 1},
+    {title: '特别说明', params: 3},
+    {title: '平台服务协议', params: 2},
+    {title: '版本信息隐私权政策', params: 4},
+    {title: '证照信息', params: null}
+];
 
 class UserAgreementDetail extends BaseComponent {
+    componentWillMount() {
+        const type = decodeURI(getUrlParam('type', encodeURI(this.props.location.search)));
+        if (type !== 'null') {
+            this.getProtocol(type);
+        }
+    }
+
     state = ({
         protocol: {}, //协议内容
+        protocolTitle: '', //协议标题
         modal: false
     })
 
     //协议弹窗
     getProtocol = (num) => {
+        let protocol = '';
+        let protocolTitle = '';
         this.fetch(urlCfg.getAgreement, {method: 'post', data: {type: num}})
             .subscribe(res => {
                 if (res && res.status === 0) {
                     if (res.data) {
                         if (num === 1) {
-                            this.setState({
-                                protocol: res.data.pr_content
-                            }, () => {
-                                this.showModal(true);
-                            });
+                            protocol = res.data.pr_content;
+                            protocolTitle = '软件许可使用协议';
                         } else if (num === 2) {
-                            this.setState({
-                                protocol: res.data.card_content
-                            }, () => {
-                                this.showModal(true);
-                            });
+                            protocol = res.data.card_content;
+                            protocolTitle = '平台服务协议';
                         } else if (num === 3) {
-                            this.setState({
-                                protocol: res.data.secret_content
-                            }, () => {
-                                this.showModal(true);
-                            });
+                            protocol = res.data.secret_content;
+                            protocolTitle = '特别说明';
+                        } else if (num === 4) {
+                            protocol = res.data.member_content;
+                            protocolTitle = '版本信息隐私权政策';
                         } else {
-                            this.setState({
-                                protocol: res.data.member_content
-                            }, () => {
-                                this.showModal(true);
-                            });
+                            protocol = '';
                         }
+                        this.setState({
+                            protocol,
+                            protocolTitle
+                        }, () => this.showModal(true));
                     }
                 }
             });
@@ -57,21 +69,20 @@ class UserAgreementDetail extends BaseComponent {
     }
 
     render() {
-        const {protocol} = this.state;
+        const {protocol, modal, protocolTitle} = this.state;
         return (
             <div data-component="UserAgreementDetail" data-role="page" className="UserAgreementDetail">
                 <AppNavBar title="关于"/>
                 <List>
-                    <Item arrow="horizontal" onClick={() => {}}>给我评价</Item>
+                    <Item arrow="horizontal" onClick={() => { native('evalMe') }}>给我评价</Item>
                 </List>
                 <List>
                     <div className="about-information">
-                        <Item arrow="horizontal" onClick={() => {}}>版权信息</Item>
-                        <Item arrow="horizontal" onClick={() => this.getProtocol(1)}>软件许可使用协议</Item>
-                        <Item arrow="horizontal" onClick={() => this.getProtocol(3)}>特别说明</Item>
-                        <Item arrow="horizontal" onClick={() => this.getProtocol(2)}>平台服务协议</Item>
-                        <Item arrow="horizontal" onClick={() => this.getProtocol(4)}>隐私权政策</Item>
-                        <Item arrow="horizontal" onClick={() => {}}>证照信息</Item>
+                        {
+                            itemLists.map(item => (
+                                <Item arrow="horizontal" key={item.title} onClick={() => this.getProtocol(item.params)}>{item.title}</Item>
+                            ))
+                        }
                     </div>
                 </List>
                 <List>
@@ -81,16 +92,20 @@ class UserAgreementDetail extends BaseComponent {
                 <span className="edition">当前版本号：1.0.3</span>
                 <div>
                     <Modal
-                        visible={this.state.modal}
+                        visible={modal}
                         className="protocol-modal"
-                        title={protocol.title}
-                        footer={[{text: '确定', onPress: () => { this.showModal(false) }}]}
+                        title={protocolTitle}
+                        footer={[{text: '确定',
+                            onPress: () => {
+                                const type = decodeURI(getUrlParam('type', encodeURI(this.props.location.search)));
+                                if (type !== 'null') {
+                                    native('loginout');
+                                }
+                                this.showModal(false);
+                            }}]}
                     >
-                        <div style={{overflow: 'auto', height: '100%', width: '100%'}}>
-                            {/* <div dangerouslySetInnerHTML={{__html: protocol.content}}/> */}
-                            <div>
-                                {protocol}
-                            </div>
+                        <div className="protocol-content">
+                            {protocol}
                         </div>
                     </Modal>
                 </div>

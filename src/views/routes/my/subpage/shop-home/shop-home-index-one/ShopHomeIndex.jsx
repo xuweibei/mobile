@@ -55,10 +55,11 @@ class ShopHomeIndex extends React.PureComponent {
         ];
         return (
             <div data-component="ShopHomeIndex" data-role="page" className="ShopHomeIndex">
-                <div className="shopHomeContent">
+                <div className="shopHomeContent shopHomeOneContent">
                     <CarouselComponent
                         content={content}
                         cHeight={475}
+                        goToGoods={this.goToGoods}
                     />
                     <div className="items" style={{marginTop: '30px'}}>
                         <GoodsTitle
@@ -89,8 +90,8 @@ class ShopHomeIndex extends React.PureComponent {
                     </div>
                     <div className="items">
                         <GoodsTitle
-                            title1={content.sort2_title1}
-                            title2={content.sort2_title2}
+                            title2={content.sort2_title1}
+                            title3={content.sort2_title2}
                             modalId={1}
                         />
                         <Products
@@ -99,6 +100,7 @@ class ShopHomeIndex extends React.PureComponent {
                             newSellList={newSellList1}
                             picurl={picurl}
                             mode2={2}
+                            goToGoods={this.goToGoods}
                         />
                         <Products
                             content={content}
@@ -106,6 +108,7 @@ class ShopHomeIndex extends React.PureComponent {
                             newSellList={newSellList2}
                             picurl={picurl}
                             mode2={2}
+                            goToGoods={this.goToGoods}
                         />
                     </div>
                 </div>

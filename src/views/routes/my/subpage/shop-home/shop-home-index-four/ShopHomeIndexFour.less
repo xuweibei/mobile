@@ -65,29 +65,13 @@
             font-size: 16px;
             color: @light-gray;
         }
-        .ant-carousel,.banner-img {
-            width: 372px;
-            // height: 447px;
-            .slick-active{
-                height:145px;
-            }
-            img{
-                width:100%;
-                display:block;
-            }
-            .slick-slide {
-                div {
-                    height: inherit;
-                }
-            }
-        }
+        
         //标题栏
         .title-bar {
             color: @white;
             text-align: center;
-            margin-bottom: 40px;
-            //margin-bottom: 20px;
-            //font-size: 16px;
+            padding-top: 60px;
+            padding-bottom: 60px;
             div:nth-child(1) {
                 display: inline-block;
                 font-size: @font-size-28;
@@ -97,8 +81,6 @@
             }
             div:nth-child(2) {
                 font-size: @font-size-30;
-                //margin-top: 5px;
-                //color: @light-gray;
             }
         }
         .hot-sale {
@@ -179,6 +161,15 @@
         .headline {
             .TextOverflow();
             width: 50%;
+        }
+    }
+    .compile-box-second{
+        .title-bar div:nth-child(1){
+            color: #666;
+            border-bottom: 1px solid #666;
+        }
+        .title-bar div:nth-child(2){
+            color: #666;
         }
     }
 }

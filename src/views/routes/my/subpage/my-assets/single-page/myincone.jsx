@@ -42,19 +42,13 @@ export default class Myincone extends BaseComponent {
             hasMore: true
         }, () => {
             this.fetch(noClick ? urlCfg.budgetaryRevenue : urlCfg.dailyIncome, {
-                method: 'post',
-                data: {
-                    types: noClick ? '' : statusNum,
-                    page: page,
-                    pagesize: this.temp.pageSize,
-                    time: crtdate
-                }}, noLoading)
+                data: {types: noClick ? '' : statusNum, page, pagesize: this.temp.pageSize, time: crtdate}}, noLoading)
                 .subscribe(res => {
                     this.temp.isLoading = false;
                     this.setState({
                         hasMore: false
                     });
-                    if (res.status === 0) {
+                    if (res && res.status === 0) {
                         if (page === 1) {
                             this.temp.stackData = res.data.today_data;
                         } else {
@@ -105,16 +99,6 @@ export default class Myincone extends BaseComponent {
             });
         }
     };
-
-    //金额前的正负号
-    paySymbol = (value) => {
-        if (value === '1') {
-            return '+';
-        } if (value === '0') {
-            return '-';
-        }
-        return '';
-    }
 
     //下拉刷新
     onRefresh = () => {
@@ -197,7 +181,7 @@ export default class Myincone extends BaseComponent {
         const row = (item) => (
             <div className="asset-info-wrap" onClick={noClick ? '' : () => this.detailedPage(item)}>
                 <div className="asset-info unde-line">
-                    <p><span>{item.desc}</span><span>{this.paySymbol(item.types) }{item.scalar}</span></p>
+                    <p><span>{item.desc}</span><span>{item.types === '1' ? '+' : '-'}{item.scalar}</span></p>
                     <p><span>{item.crtdate}</span><span>余额: {item.remain}</span></p>
                 </div>
             </div>
@@ -205,7 +189,7 @@ export default class Myincone extends BaseComponent {
         const row2 = (item) => (
             <div className="asset-info-wrap" onClick={noClick ? '' : () => this.detailedPage(item)}>
                 <div className="asset-info unde-line">
-                    <p><span>{item.desc}</span><span className="no-end">{this.paySymbol(item.types) }{item.scalar}</span></p>
+                    <p><span>{item.desc}</span><span className="no-end">{item.types === '1' ? '+' : '-'}{item.scalar}</span></p>
                     <p><span>{item.crtdate}</span></p>
                 </div>
             </div>

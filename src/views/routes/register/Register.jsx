@@ -583,10 +583,11 @@ class Register extends BaseComponent {
                             <div className="register-bottom">
                                 <div className="register-title">
                                     登录即注册，且代表同意
-                                    <p className="bottom-red">《用户协议》、
+                                    <p className="bottom-red" onClick={() => this.getAgreement(4)}>《用户协议》、
                                     </p>
                                     <p
                                         className="bottom-red"
+                                        onClick={() => this.getAgreement(3)}
                                     >《隐私政策》
                                     </p>
                                 </div>

@@ -4,6 +4,7 @@ import {Drawer, List, Carousel} from 'antd-mobile';
 const {showInfo, native, appHistory} = Utils;
 const {MESSAGE: {Form}} = Constants;
 
+const hybrid = process.env.NATIVE;
 export default class MyLogistics extends BaseComponent {
     state = {
         open: false,
@@ -25,41 +26,21 @@ export default class MyLogistics extends BaseComponent {
 
     //物流状态
     logisticsStatus = (num) => {
-        let str = '';
-        switch (num) {
-        case '0':
-            str = '物流单号暂无结果';
-            break;
-        case '3':
-            str = '在途';
-            break;
-        case '4':
-            str = '揽件';
-            break;
-        case '5':
-            str = '疑难';
-            break;
-        case '6':
-            str = '签收';
-            break;
-        case '7':
-            str = '退签';
-            break;
-        case '8':
-            str = '派件';
-            break;
-        case '9':
-            str = '退回';
-            break;
-        default:
-            str = '物流单号暂无结果';
-        }
-        return str;
+        const arr = new Map([
+            ['0', '物流单号暂无结果'],
+            ['3', '在途'],
+            ['4', '揽件'],
+            ['5', '疑难'],
+            ['6', '签收'],
+            ['7', '退签'],
+            ['8', '派件'],
+            ['9', '退回']
+        ]);
+        return arr.get(num);
     }
 
     //拨打电话
     callPhone = (tel) => {
-        const hybrid = process.env.NATIVE;
         if (hybrid) {
             native('callTel', {phoneNum: tel});
         }
@@ -153,7 +134,7 @@ export default class MyLogistics extends BaseComponent {
     }
 
     render() {
-        const {logInfo} = this.props;
+        const {logInfo, closeLogitasce} = this.props;
         const {open, selectIndex, phoneArr} = this.state;
         const sidebar = (
             <List>
@@ -173,7 +154,7 @@ export default class MyLogistics extends BaseComponent {
                         }
                     </Carousel>
                 </div>
-                <div className="fork-wrap"><span className="icon fork" onClick={this.props.closeLogitasce}/></div>
+                <div className="fork-wrap"><span className="icon fork" onClick={closeLogitasce}/></div>
                 <div className="complete" onClick={this.goToMoOrder}>查看全部</div>
                 {phoneArr[selectIndex].length > 0 && <Drawer open={open} className={open ? 'am-drawer-fixed' : ''} position="bottom" sidebar={sidebar}/>}
 

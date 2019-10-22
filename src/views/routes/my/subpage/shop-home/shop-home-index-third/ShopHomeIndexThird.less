@@ -1,26 +1,6 @@
 @import "~style";
 .shopHomeThirdContent {
     padding-bottom: 100px;
-    .shopHomThirdBanner{
-        //width:750px;
-        width:100%;
-        background:#CAD9EC;
-        img{
-            width:100%;
-        }
-        .am-wingblank.am-wingblank-lg{
-            padding: 0;
-            margin: 0;
-            .slider-list{
-                height: 248px !important;
-            }
-        }
-        .slider-decorator-0{
-            width: unset !important;
-            bottom: unset !important;
-            right: 10px !important;
-        }
-    }
     .comTitle3{
        text-align:center;
        color:#090909;
@@ -41,8 +21,6 @@
    }
    //编辑面板
    .compile-box {
-       //margin-right: 48px;
-       //标题
        .compile {
            margin-bottom: 12px;
            font-size:16px;
@@ -168,6 +146,20 @@
                margin-bottom: 24px;
                .TextareaOverflow(@num:1)
            }
+       }
+   }
+   .compile-box-second{
+       padding: 0 !important;
+       .newImgShow{
+            background-color: #5D9DAF;
+            padding-left: 47px;
+            padding-right: 74px;
+            .bottomImgLeft div.marginBot .margin-bot-box .margin-bot-content-top{
+                color: @white !important;
+            }
+            .money-ZH, .money-now, .money-before{
+                color: @white;
+            }
        }
    }
 }

@@ -22,9 +22,9 @@ export default class MyAssets extends BaseComponent {
 
     //预收收益
     getReserve = () => {
-        this.fetch(urlCfg.reserveIncome, {method: 'post', data: {}})
+        this.fetch(urlCfg.reserveIncome)
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     this.setState({
                         reserveArr: res.data
                     });
@@ -110,23 +110,22 @@ export default class MyAssets extends BaseComponent {
                             <div className="menu-line">
                                 <div className="icon assets-img lilac-logo"/>
                                 {
-                                    reserveArr && (reserveArr.point_ori
-                                        ? (
-                                            <InputItem
-                                                editable={false}
-                                                value={reserveArr.point_ori}
-                                                className="line-small"
-                                            >原始定量
-                                            </InputItem>
-                                        ) : (
-                                            <InputItem
-                                                onClick={() => this.setState({editModal: 'income'})}
-                                                editable={false}
-                                                value="去设置"
-                                                className="line-small"
-                                            >原始定量<span className="right icon"/>
-                                            </InputItem>
-                                        ))
+                                    reserveArr && (reserveArr.point_ori ? (
+                                        <InputItem
+                                            editable={false}
+                                            value={reserveArr.point_ori}
+                                            className="line-small"
+                                        >原始定量
+                                        </InputItem>
+                                    ) : (
+                                        <InputItem
+                                            onClick={() => this.setState({editModal: 'income'})}
+                                            editable={false}
+                                            value="去设置"
+                                            className="line-small"
+                                        >原始定量<span className="right icon"/>
+                                        </InputItem>
+                                    ))
                                 }
                             </div>
                         </div>

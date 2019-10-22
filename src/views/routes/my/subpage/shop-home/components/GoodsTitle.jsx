@@ -9,11 +9,11 @@ export default class GoodsTitle extends BaseComponent {
                 {
                     modalId === 1 && (
                         <div className="title">
-                            <p className="marginTop">{title1}</p>
-                            <h2>{title2}</h2>
                             {
-                                title3 && <h3>{title3}</h3>
+                                title1 && <p className="marginTop">{title1}</p>
                             }
+                            <h2>{title2}</h2>
+                            <h3>{title3}</h3>
                         </div>
                     )}
                 {
@@ -27,16 +27,16 @@ export default class GoodsTitle extends BaseComponent {
                 {
                     modalId === 3 && (
                         <div className="title-bar">
-                            <p className={(title1) ? 'headline' : 'hot no-edit-model'}>{title1 || 'POPULAR COMMODITY'}</p>
-                            <p className={(title2) ? 'fiery' : 'fiery no-edit-model'}>{title2 || '热门商品'}</p>
+                            <p className="headline">{title1}</p>
+                            <p className="fiery">{title2}</p>
                         </div>
                     )
                 }
                 {
                     modalId === 4 && (
                         <div className="title-bar">
-                            <div>{title1 || 'fdsfs'}</div>
-                            <div>{title2 || '热门商品'}</div>
+                            <div>{title1}</div>
+                            <div>{title2}</div>
                         </div>
                     )
                 }
