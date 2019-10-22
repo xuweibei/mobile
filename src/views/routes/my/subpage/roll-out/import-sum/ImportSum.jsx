@@ -67,7 +67,6 @@ export default class importSum extends BaseComponent {
 
     //转出金额
     getInput = (res) => {
-        console.log(res);
         this.setState({
             money: res
         });
@@ -111,18 +110,19 @@ export default class importSum extends BaseComponent {
     wxPay = () => {
         // alert('微信支付');
         const {money, uid} = this.state;
-        this.fetch(urlCfg.userpay, {method: 'post', data: {no: uid, money, flag: 1}})
+        this.fetch(urlCfg.userpay, {data: {no: uid, money, flag: 1}})
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     if (hybird) {
+                        const {arr} = res.data;
                         const obj = {
-                            prepayid: res.data.arr.prepayid,
-                            appid: res.data.arr.appid,
-                            partnerid: res.data.arr.partnerid,
-                            package: res.data.arr.package,
-                            noncestr: res.data.arr.noncestr,
-                            timestamp: res.data.arr.timestamp,
-                            sign: res.data.arr.sign
+                            prepayid: arr.prepayid,
+                            appid: arr.appid,
+                            partnerid: arr.partnerid,
+                            package: arr.package,
+                            noncestr: arr.noncestr,
+                            timestamp: arr.timestamp,
+                            sign: arr.sign
                         };
                         native('wxPayCallback', obj).then((data) => {
                             native('goH5');
@@ -139,7 +139,7 @@ export default class importSum extends BaseComponent {
         const {money, uid} = this.state;
         this.fetch(urlCfg.userpay, {method: 'post', data: {no: uid, money, flag: 0}})
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     if (hybird) {
                         native('authInfo', res.data.response).then((data) => {
                             native('goH5');
@@ -155,7 +155,7 @@ export default class importSum extends BaseComponent {
         const {money, uid} = this.state;
         this.fetch(urlCfg.userpay, {data: {no: uid, pwd, money, flag: 2}})
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     appHistory.push(`/pay-camsucess?uid=${uid}&money=${money}`);
                 }
             });

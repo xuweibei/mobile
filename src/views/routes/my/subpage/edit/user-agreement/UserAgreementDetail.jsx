@@ -4,10 +4,17 @@ import BaseComponent from '../../../../../../components/base/BaseComponent';
 import './UserAgreementDetail.less';
 
 const Item = List.Item;
-const {native} = Utils;
+const {native, getUrlParam} = Utils;
 const {urlCfg} = Configs;
 
 class UserAgreementDetail extends BaseComponent {
+    componentWillMount() {
+        const type = decodeURI(getUrlParam('type', encodeURI(this.props.location.search)));
+        if (type !== 'null') {
+            this.getProtocol(type);
+        }
+    }
+
     state = ({
         protocol: {}, //协议内容
         modal: false
@@ -57,12 +64,12 @@ class UserAgreementDetail extends BaseComponent {
     }
 
     render() {
-        const {protocol} = this.state;
+        const {protocol, modal} = this.state;
         return (
             <div data-component="UserAgreementDetail" data-role="page" className="UserAgreementDetail">
                 <AppNavBar title="关于"/>
                 <List>
-                    <Item arrow="horizontal" onClick={() => {}}>给我评价</Item>
+                    <Item arrow="horizontal" onClick={() => { native('evalMe') }}>给我评价</Item>
                 </List>
                 <List>
                     <div className="about-information">
@@ -81,10 +88,17 @@ class UserAgreementDetail extends BaseComponent {
                 <span className="edition">当前版本号：1.0.3</span>
                 <div>
                     <Modal
-                        visible={this.state.modal}
+                        visible={modal}
                         className="protocol-modal"
                         title={protocol.title}
-                        footer={[{text: '确定', onPress: () => { this.showModal(false) }}]}
+                        footer={[{text: '确定',
+                            onPress: () => {
+                                const type = decodeURI(getUrlParam('type', encodeURI(this.props.location.search)));
+                                if (type !== 'null') {
+                                    native('loginout');
+                                }
+                                this.showModal(false);
+                            }}]}
                     >
                         <div style={{overflow: 'auto', height: '100%', width: '100%'}}>
                             {/* <div dangerouslySetInnerHTML={{__html: protocol.content}}/> */}

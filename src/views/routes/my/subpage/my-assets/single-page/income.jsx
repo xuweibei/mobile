@@ -17,9 +17,9 @@ export default class MyAssets extends BaseComponent {
     }
 
     getOriginalList = (num) => {
-        this.fetch(urlCfg.originalQuantification, {method: 'post', data: {}})
+        this.fetch(urlCfg.originalQuantification)
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     this.setState({
                         infoArr: res.data
                     });
@@ -29,10 +29,11 @@ export default class MyAssets extends BaseComponent {
 
     //确定按钮
     originalTrue = () => {
-        if (this.state.originNum) {
-            this.fetch(urlCfg.originalQuantification, {method: 'post', data: {invori: this.state.originNum}})
+        const {originNum} = this.state;
+        if (originNum) {
+            this.fetch(urlCfg.originalQuantification, {data: {invori: originNum}})
                 .subscribe(res => {
-                    if (res.status === 0) {
+                    if (res && res.status === 0) {
                         showSuccess(Feedback.Set_Success);
                         this.props.getBackChange();
                     }
@@ -43,6 +44,7 @@ export default class MyAssets extends BaseComponent {
     }
 
     render() {
+        const {infoArr} = this.state;
         return (
             <div data-component="cash" data-role="page" className="cash">
                 <div className="cash-content-navbar">
@@ -50,7 +52,7 @@ export default class MyAssets extends BaseComponent {
                 </div>
                 <div className="ration-content">
                     <p className="tips">根据自己的消费水平，在600-5000之间，以100为单位自由确定（只能确定一次），确定后会获得10倍预备收益</p>
-                    <List renderHeader={() => `可用记账：${this.state.infoArr.length > 0 ? this.state.infoArr[0].capital : ''}`} >
+                    <List renderHeader={() => `可用记账：${infoArr.length > 0 ? infoArr[0].capital : ''}`} >
                         <InputItem
                             moneyKeyboardAlign="left"
                             placeholder="请输入100的整倍数"

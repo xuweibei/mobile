@@ -28,7 +28,7 @@ export default class MyAssets extends BaseComponent {
         });
         this.state = {
             dataSource,
-            height: document.documentElement.clientHeight - (window.isWX ? window.rem * 6.18 : window.rem * 6.3),
+            height: document.documentElement.clientHeight - (window.isWX ? window.rem * 6.18 : window.rem * 6.36),
             statusNum: decodeURI(getUrlParam('status', encodeURI(this.props.location.search))),
             editModal: '', //当前状态
             todayArr: [], //我的收入的数据
@@ -49,12 +49,7 @@ export default class MyAssets extends BaseComponent {
     getDaril = () => {
         temp.isLoading = true;
         const {page} = this.state;
-        this.fetch(urlCfg.budgetaryRevenue, {
-            method: 'post',
-            data: {
-                page: page,
-                page_count: 100000
-            }})
+        this.fetch(urlCfg.budgetaryRevenue, {data: {page: page, page_count: 100000}})
             .subscribe(res => {
                 temp.isLoading = false;
                 if (res.status === 0) {
@@ -73,20 +68,13 @@ export default class MyAssets extends BaseComponent {
         this.setState({
             hasMore: true
         }, () => {
-            this.fetch(urlCfg.budgetaryRevenueOther, {
-                method: 'post',
-                data: {
-                    page: page,
-                    pagesize: temp.pagesize,
-                    page_count: 5,
-                    date: date
-                }})
+            this.fetch(urlCfg.budgetaryRevenueOther, {data: {page, pagesize: temp.pagesize, page_count: 5, date}})
                 .subscribe(res => {
                     temp.isLoading = false;
                     this.setState({
                         hasMore: false
                     });
-                    if (res.status === 0) {
+                    if (res && res.status === 0) {
                         if (res.data) {
                             if (page === 1) {
                                 temp.stackData = res.data.other_list;
@@ -148,16 +136,6 @@ export default class MyAssets extends BaseComponent {
         });
     };
 
-    //金额前的正负号
-    paySymbol = (value) => {
-        if (value === '1') {
-            return '+';
-        } if (value === '0') {
-            return '-';
-        }
-        return '';
-    };
-
     //底部结构
     defaultModel = (row) => {
         const {todayArr, exceed, dataSource, height, userInfo, hasMore} = this.state;
@@ -194,23 +172,23 @@ export default class MyAssets extends BaseComponent {
                     </div>
                     <div className="asset-info-wrap">
                         {((todayArr.length > 0 && !exceed) ?  (
-                            <div>
+                            <div className="totday-wrap">
                                 {todayArr.map(item => (
                                     <div className="asset-info unde-line">
-                                        <p><span>{item.desc}</span><span className="nowMoney">{this.paySymbol(item.types)}{item.scalar}</span></p>
+                                        <p><span>{item.desc}</span><span className="nowMoney">{item.types === '1' ? '+' : '-'}{item.scalar}</span></p>
                                         <p><span>{item.crtdate}</span></p>
                                     </div>
                                 ))}
                             </div>
                         ) : '')}
                         {((todayArr.length > 0 && todayArr.length > 6 && exceed) ?  (
-                            <div>
+                            <div className="totday-wrap">
                                 {todayArr.map((item, index) => {
                                     if (index < 6) {
                                         return (
                                             // <div onClick={() => this.detailedPage(item)}>
                                             <div className="asset-info unde-line">
-                                                <p><span>{item.desc}</span><span className="nowMoney">{this.paySymbol(item.types) }{item.scalar}</span></p>
+                                                <p><span>{item.desc}</span><span className="nowMoney">{item.types === '1' ? '+' : '-'}{item.scalar}</span></p>
                                                 <p><span>{item.crtdate}</span></p>
                                             </div>
                                         );
@@ -222,8 +200,6 @@ export default class MyAssets extends BaseComponent {
 
                             </div>
                         ) : '')}
-                        {/* <div className="other-day"> */}
-                        {/* </div> */}
                         {
                             dataSource.getRowCount() > 0 ? (
                                 <ListView

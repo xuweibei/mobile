@@ -163,7 +163,7 @@ export default class MyAssets extends BaseComponent {
                     </div>
                     <div className="asset-info-wrap">
                         {((todayArr.length > 0 && exceed) ?  (
-                            <div>
+                            <div className="totday-wrap">
                                 {todayArr.map(item =>  (
                                     <div onClick={() => this.detailedPage(item)}>
                                         <div className="asset-info unde-line">
@@ -175,7 +175,7 @@ export default class MyAssets extends BaseComponent {
                             </div>
                         ) : '')}
                         {((todayArr.length > 0 && todayArr.length > 6 && !exceed) ?  (
-                            <div>
+                            <div className="totday-wrap">
                                 {todayArr.map((item, index) => {
                                     if (index < 6) {
                                         return  (
