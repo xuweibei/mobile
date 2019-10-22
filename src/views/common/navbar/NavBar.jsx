@@ -29,7 +29,8 @@ class NavBar extends React.PureComponent {
         goToSearch: PropTypes.func,
         style: PropTypes.object,
         backgroundColor: PropTypes.string,
-        rightExplainClick: PropTypes.func
+        rightExplainClick: PropTypes.func,
+        show: PropTypes.bool
     }
 
     static defaultProps = {
@@ -46,6 +47,7 @@ class NavBar extends React.PureComponent {
         changeNavRight: false,
         goToSearch: null,
         style: {},
+        show: true,
         backgroundColor: '',
         rightExplainClick: () => {}
     };
@@ -93,7 +95,7 @@ class NavBar extends React.PureComponent {
     }
 
     render() {
-        const {title, rightShow, redBackground, rightSearch, rightExplain, rightEdit, search, isEdit, backgroundColor} = this.props;
+        const {title, rightShow, redBackground, rightSearch, show, rightExplain, rightEdit, search, isEdit, backgroundColor} = this.props;
         if (window.isWX) {
             document.title = title;
             return null;
@@ -105,9 +107,13 @@ class NavBar extends React.PureComponent {
                         { redBackground //红底
                             ? (
                                 <div>
-                                    <div className="nav-left" onClick={this.backAway} style={this.props.style}>
-                                        <div className="icon-left icon"/>
-                                    </div>
+                                    {
+                                        show && (
+                                            <div className="nav-left" onClick={this.backAway}>
+                                                <div className="icon-left icon"/>
+                                            </div>
+                                        )
+                                    }
                                     <span className="nav-title">{title}</span>
                                     {
                                         rightShow && ( //是否展示 im图标
@@ -127,9 +133,13 @@ class NavBar extends React.PureComponent {
                             )
                             : (
                                 <div>
-                                    <div className="blackNav-left" onClick={this.backAway} style={this.props.style}>
-                                        <div className="icon-left icon"/>
-                                    </div>
+                                    {
+                                        show && (
+                                            <div className="blackNav-left" onClick={this.backAway} style={this.props.style}>
+                                                <div className="icon-left icon"/>
+                                            </div>
+                                        )
+                                    }
                                     <span className="blackNav-title">{title}</span>
                                     {
                                         rightShow && ( //是否展示 im图标

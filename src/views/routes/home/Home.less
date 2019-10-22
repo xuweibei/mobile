@@ -60,12 +60,21 @@
                 content: '\E634';
                 font-size: 44px;
             }
-            .information:before {
+            // .information:before {
+            //     content: '\E675';
+            //     margin: 0 16px;
+            //     font-size: @font-size-44;
+            // }
+            .information:after {
+                content: '\E678';
+                font-size: @font-size-44;
+            }
+            .unInformation::before {
                 content: '\E675';
                 margin: 0 16px;
                 font-size: @font-size-44;
             }
-            .information:after {
+            .unInformation::after {
                 content: '\E678';
                 font-size: @font-size-44;
             }

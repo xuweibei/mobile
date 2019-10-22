@@ -7,7 +7,7 @@ import {baseActionCreator as actionCreator} from '../../../../../redux/baseActio
 import AppNavBar from '../../../../common/navbar/NavBar';
 import './ShopHomeDetail.less';
 
-const {appHistory, native} = Utils;
+const {native, goBackModal} = Utils;
 const {urlCfg} = Configs;
 const hybird = process.env.NATIVE;
 
@@ -84,11 +84,7 @@ class ShopHomeDetail extends BaseComponent {
 
     goBackModal = () => {
         this.props.setshoppingId('');
-        if (hybird && appHistory.length() === 0) {
-            native('goBack');
-        } else {
-            appHistory.goBack();
-        }
+        goBackModal();
     }
 
     render() {

@@ -246,7 +246,6 @@ export default class HomeList extends BaseComponent {
         if (currentIndex === 2) {
             const {shopPage, latitude, longitude, shopPageCount} = this.state;
             if (shopPage > shopPageCount) {
-                console.log('ssssssssssssssssssssssssssss');
                 this.setState({
                     shopStatus: true
                 }, () => {

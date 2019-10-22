@@ -9,7 +9,7 @@ import CategoryListView from './CategoryListView';
 import './CategoryList.less';
 
 
-const {appHistory, getUrlParam, native, TD, setNavColor} = Utils;
+const {getUrlParam, TD, setNavColor, goBackModal} = Utils;
 const {TD_EVENT_ID} = Constants;
 const hybird = process.env.NATIVE;
 const {navColorF} = Constants;
@@ -25,7 +25,6 @@ class CategoryList extends BaseComponent {
         changeNav: 'false', //顶部当行状态
         keywords: '', //搜索关键字
         pageCount: 0, //总共页数
-        pulldownMsg: '',
         keywords1: '',
         textStatus: false,
         shopId: parseInt(getUrlParam('id', this.props.location.search), 10) || ''
@@ -89,15 +88,6 @@ class CategoryList extends BaseComponent {
         });
     };
 
-    //返回上一級
-    // routeTo = () => {
-    //     if (hybird && appHistory.length() === 0) {
-    //         native('goBack');
-    //     } else {
-    //         appHistory.goBack();
-    //     }
-    // };
-
     //父组件传子组件方法
     onRef = (ref) => {
         this.child = ref;
@@ -111,15 +101,6 @@ class CategoryList extends BaseComponent {
             this.searchGoods();
         } else {
             this.goBackModal();
-        }
-    };
-
-    // 返回上一级
-    goBackModal = () => {
-        if (hybird && appHistory.length() === 0) {
-            native('goBack');
-        } else {
-            appHistory.goBack();
         }
     };
 
@@ -152,7 +133,7 @@ class CategoryList extends BaseComponent {
                     ) : (
                         <AppNavBar
                             title={text}
-                            goBackModal={this.goBackModal}
+                            goBackModal={goBackModal}
                             status="123"
                         />
                     )

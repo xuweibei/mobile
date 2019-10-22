@@ -7,7 +7,7 @@ import ShowButton from '../top-show-button';
 import './ShopHome.less';
 
 const {urlCfg} = Configs;
-const {native, appHistory, showInfo, TD, setNavColor} = Utils;
+const {appHistory, showInfo, TD, setNavColor, goBackModal} = Utils;
 const {TD_EVENT_ID} = Constants;
 const {MESSAGE: {Feedback}, navColorF} = Constants;
 const hybird = process.env.NATIVE;
@@ -130,11 +130,7 @@ class ShopHome extends BaseComponent {
     //返回
     backAway = () => {
         this.props.setshoppingId('');
-        if (hybird && appHistory.length() === 0) {
-            native('goBack');
-        } else {
-            appHistory.goBack();
-        }
+        goBackModal();
     };
 
     render() {
