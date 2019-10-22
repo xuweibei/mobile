@@ -96,6 +96,7 @@ class ShopHomeIndexTwo extends React.PureComponent {
                     <CarouselComponent
                         content={content}
                         cHeight={541}
+                        goToGoods={this.goToGoods}
                     />
                     <div className="newRecommend shopHomeTwoContentPadding items" style={{marginTop: '30px'}}>
                         <GoodsTitle
@@ -109,6 +110,7 @@ class ShopHomeIndexTwo extends React.PureComponent {
                             picurl={picurl}
                             sort={1}
                             mode2={0}
+                            goToGoods={this.goToGoods}
                         />
                     </div>
                     <div className="discountArea shopHomeTwoContentPadding items">
@@ -123,6 +125,7 @@ class ShopHomeIndexTwo extends React.PureComponent {
                             picurl={picurl}
                             sort={2}
                             mode2={4}
+                            goToGoods={this.goToGoods}
                         />
                     </div>
                     <div className="hotRecommend shopHomeTwoContentPadding items">

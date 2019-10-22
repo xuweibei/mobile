@@ -40,6 +40,7 @@ class ShopHomeIndexThird extends React.PureComponent {
                     <CarouselComponent
                         content={content}
                         cHeight={248}
+                        goToGoods={this.goToGoods}
                     />
                     <div className="compile-box items" style={{marginTop: '30px'}}>
                         <GoodsTitle
@@ -53,6 +54,7 @@ class ShopHomeIndexThird extends React.PureComponent {
                             picurl={picurl}
                             sort={1}
                             mode2={0}
+                            goToGoods={this.goToGoods}
                         />
                     </div>
                     <div className="items compile-box compile-box-second">
@@ -67,6 +69,7 @@ class ShopHomeIndexThird extends React.PureComponent {
                             picurl={picurl}
                             sort={2}
                             mode2={2}
+                            goToGoods={this.goToGoods}
                         />
                     </div>
                     <div className="items compile-box">
@@ -76,6 +79,7 @@ class ShopHomeIndexThird extends React.PureComponent {
                             picurl={picurl}
                             sort={2}
                             mode2={2}
+                            goToGoods={this.goToGoods}
                         />
                     </div>
                 </div>
