@@ -148,3 +148,11 @@ global.clearCache = function () {
 global.restHistory = function () {
     appHistory.reduction();
 };
+
+export function goBackModal() {
+    if (hybrid && appHistory.length() === 0) {
+        native('goBack');
+    } else {
+        appHistory.goBack();
+    }
+}

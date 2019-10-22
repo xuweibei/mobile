@@ -614,7 +614,7 @@ class ShopCart extends BaseComponent {
                 cartArr.push(item.id);
             }
         });
-        console.log(cartArr);
+        // console.log(cartArr);
         const {setOrderInfo, setIds} = this.props;
         setOrderInfo(arr);
         setIds(cartArr);

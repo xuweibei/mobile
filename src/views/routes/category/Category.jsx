@@ -65,8 +65,8 @@ class Category extends BaseComponent {
         const {currentIndex} = this.state;
         return (
             <div data-component="category" data-role="page" className={classNames('category', {WX: window.isWX})}>
-                {/*FIXME: 建议不要用style属性，造成歧义*/}
-                <AppNavBar title="分类" style={{display: 'none'}}/>
+                {/*FIXME: 建议不要用style属性，造成歧义 已优化*/ }
+                <AppNavBar title="分类" show={false}/>
                 <div className="category-main content-box">
                     {categoryData && (
                         <Tabs

@@ -24,7 +24,9 @@ const baseActionTypes = keyMirror({
     SET_ORDERSTATUS: '', //我的订单的tab状态
     SET_EVA: '', //全部评价的评价状态
     SET_USER_TYPE: '', //全部评价的评价状态
-    SET_RETURN: '' //与原生右滑交互
+    SET_RETURN: '', //与原生右滑交互
+    GET_AGREEMENT: '',
+    SET_AGREEMENT: ''
 });
 
 /**
@@ -263,6 +265,26 @@ function  _setReturn(onOff) {
         }
     };
 }
+
+function  _getAgreement(data) {
+    console.log(data);
+    return {
+        type: baseActionTypes.GET_AGREEMENT,
+        payload: {
+            data
+        }
+    };
+}
+
+function  _setAgreement(data) {
+    return {
+        type: baseActionTypes.SET_AGREEMENT,
+        payload: {
+            data
+        }
+    };
+}
+
 const baseActionCreator = {
     showLoading: _showLoading,
     hideLoading: _hideLoading,
@@ -279,7 +301,9 @@ const baseActionCreator = {
     setOrderStatus: _setOrderStatus,
     setEvaStatus: _setEvaStatus,
     setUseType: _setUseType,
-    setReturn: _setReturn
+    setReturn: _setReturn,
+    getAgreement: _getAgreement,
+    setAgreement: _setAgreement
 };
 
 

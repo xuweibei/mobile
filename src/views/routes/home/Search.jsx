@@ -9,9 +9,8 @@ import './Search.less';
 import {getUrlParam} from '../../../utils/mixin';
 
 const {urlCfg} = Configs;
-const {appHistory, native, TD} = Utils;
+const {appHistory, TD, goBackModal} = Utils;
 const {TD_EVENT_ID} = Constants;
-const hybird = process.env.NATIVE;
 
 class Search extends BaseComponent {
     state = {
@@ -52,10 +51,8 @@ class Search extends BaseComponent {
             } else {
                 appHistory.push(`/categoryList?flag=${true}&keywords=${encodeURI(keywords)}&id=${''}`);
             }
-        } else if (hybird && appHistory.length() === 0) {
-            native('goBack');
         } else {
-            appHistory.goBack();
+            goBackModal();
         }
     };
 

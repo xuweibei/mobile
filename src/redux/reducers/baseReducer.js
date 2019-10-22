@@ -50,6 +50,9 @@ const {createReducer} = Utils,
     },
     returnStatus = {
         returnStatus: false //与原生右滑交互
+    },
+    agreement = {
+        agreementInfo: {}
     };
 /**
  * baseState 初始化 1
@@ -66,7 +69,8 @@ const baseState = Immutable.fromJS({
     ...tabValue,
     ...shoppingId,
     ...orderStatus,
-    ...returnStatus
+    ...returnStatus,
+    ...agreement
 });
 
 export function resetLoadingNum() {
@@ -172,6 +176,11 @@ export default {
         },
         [ActionTypes.SET_RETURN](state, action) {
             return state.set('returnStatus', action.playload.onOff);
+        },
+        [ActionTypes.SET_AGREEMENT](state, action) {
+            const {data} = action.payload;
+            const agreementInfo = state.get('agreementInfo').merge(data);
+            return state.set('agreementInfo', agreementInfo);
         }
     })
 };

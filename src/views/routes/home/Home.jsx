@@ -59,6 +59,13 @@ class Home extends BaseComponent {
         showMenu(true);
     }
 
+    // componentWillReceiveProps() {
+    //     if (hybird) {
+    //         setNavColor('setNavColor', {color: navColorR});
+    //     }
+    // }
+
+    // 判断是否是登录状态 如果不是前往登录
     goToLogin = () => {
         const {userToken} = this.state;
         if (userToken && userToken.length > 0) {
@@ -67,7 +74,7 @@ class Home extends BaseComponent {
         appHistory.push('/login');
     };
 
-    //跳转登陆
+    //微信跳转 跳转登陆
     login() {
         return this.fetch(urlCfg.login, {
             data: {
@@ -88,7 +95,7 @@ class Home extends BaseComponent {
             });
     }
 
-    //跳转分类
+    //跳转分类列表
     goToCategory = (el, index) => {
         TD.log(TD_EVENT_ID.HOME.ID, TD_EVENT_ID.HOME.LABEL.LOOK_MAIN_CLASSIFY);
         // console.log(TD);
@@ -132,32 +139,12 @@ class Home extends BaseComponent {
             });
     };
 
-    //扫一扫
-    lookLook = () => {
-        const {userToken} = this.state;
-        if (userToken && userToken.length > 0 && !window.isWX) {
-            return;
-        }
-        if (window.isWX) {
-            window.wx.ready(() => {
-                window.wx.scanQRCode({
-                    needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
-                    scanType: ['qrCode', 'barCode'], // 可以指定扫二维码还是一维码，默认二者都有
-                    success: function (res) {
-                        // const result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
-                    }
-                });
-            });
-        }
-    };
-
     //有好货
     goodStuff = () => {
         this.fetch(urlCfg.getHomeGoods)
             .subscribe((res) => {
                 if (res) {
                     TD.log(TD_EVENT_ID.HOME.ID, TD_EVENT_ID.HOME.LABEL.LOOK_AREA);
-                    console.log(TD_EVENT_ID.HOME.ID);
                     if (res.status === 0) {
                         this.setState({
                             goodStuff: res.data
@@ -167,18 +154,29 @@ class Home extends BaseComponent {
             });
     }
 
+    //扫一扫
+    lookLook = () => {
+        const {userToken} = this.state;
+        if (userToken && userToken.length > 0 && !window.isWX) {
+            return;
+        }
+        if (!userToken) {
+            appHistory.push('/login');
+        }
+    };
+
     //跳转到搜索页面
     gotoSearch = () => {
         appHistory.push({pathname: '/search'});
     };
 
+    // 跳转商品详情
     switchTo = (item) => {
         appHistory.push(`/goodsDetail?id=${item.id1}`);
     };
 
     //有推荐跳转
     jumpOther = (id, index, shopId) => {
-        console.log(index);
         if (index === 0) {
             appHistory.push(`/shopHome?id=${id}`);
         } else {
@@ -210,12 +208,8 @@ class Home extends BaseComponent {
                             </div>
                             {
                                 userToken && userToken.length > 0 ? (
-                                    <div className={`nav-right ${userToken && userToken.length > 0 ? 'nav-right-login' : ''}`} style={{display: 'flex'}}>
-                                        <div className="home-searchBar-icon" onClick={this.lookLook}>
-                                            {/*<Badge className="information-IM icon" text={77} overflowCount={55}/>*/}
-
-                                            <div className="icon information"/>
-                                        </div>
+                                    <div className="home-searchBar-icon" onClick={this.lookLook}>
+                                        <div className="icon unInformation"/>
                                     </div>
                                 ) : (
                                     <div className="home-searchBar-icon" onClick={this.lookLook}>

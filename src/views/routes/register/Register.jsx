@@ -34,7 +34,8 @@ class Register extends BaseComponent {
         currentIndex: -1,
         currentUser: {},
         fouceShow: '',
-        asdsdf: ''
+        agreementStatus: false, // 协议状态
+        agreeType: 0
     };
 
     componentWillMount() {
@@ -91,8 +92,6 @@ class Register extends BaseComponent {
         ev.stopPropagation();
         this.setState({
             fouceShow: '2'
-        }, () => {
-            console.log(this.state.fouceShow);
         });
     }
 
@@ -100,8 +99,6 @@ class Register extends BaseComponent {
         ev.stopPropagation();
         this.setState({
             fouceShow: ''
-        }, () => {
-            console.log(this.state.fouceShow);
         });
     }
 
@@ -158,7 +155,6 @@ class Register extends BaseComponent {
             visible={this.state.modal1}
             transparent
             maskClosable={false}
-            // onClose={this.onClose('modal1')}
             footer={[
                 {text: '取消', onPress: () =>  this.onClose()},
                 {text: '确定', onPress: () => this.onSure()}
@@ -463,9 +459,32 @@ class Register extends BaseComponent {
         });
     }
 
+    //协议窗口弹出
+    getAgreement = (type) => {
+        const {getAgreement, agreement} = this.props;
+        this.setState({
+            agreementStatus: true,
+            agreeType: type
+        });
+        if (!agreement.has('member_content') && type === 4) {
+            getAgreement({type});
+        }
+        if (!agreement.has('secret_content') && type === 3) {
+            getAgreement({type});
+        }
+    }
+
+    // 关闭协议弹窗
+    closeAgree = () => {
+        this.setState({
+            agreementStatus: false
+        });
+    }
+
     render() {
-        const {convert, phone, maxLength, code, text, lineText, forgotText, verification, textType, shadow, eyes, fouceShow} = this.state;
-        console.log(phone);
+        const {convert, agreementStatus, phone, maxLength, code, text, lineText, forgotText, verification, textType, shadow, eyes, fouceShow, agreeType} = this.state;
+        const {agreement} = this.props;
+        console.log(agreement.get('pr_content'));
         return (
             <div className="login-register">
                 {this.loginModal()}
@@ -497,10 +516,11 @@ class Register extends BaseComponent {
                             <div className="register-bottom">
                                 <div className="register-title">
                                     登录即注册，且代表同意
-                                    <p className="bottom-red">《用户协议》、
+                                    <p className="bottom-red" onClick={() => this.getAgreement(4)}>《用户协议》、
                                     </p>
                                     <p
                                         className="bottom-red"
+                                        onClick={() => this.getAgreement(3)}
                                     >《隐私政策》
                                     </p>
                                 </div>
@@ -603,6 +623,17 @@ class Register extends BaseComponent {
                         </div>
                     ) : null
                 }
+                <Modal
+                    visible={agreementStatus}
+                    transparent
+                    closable
+                    onClose={this.closeAgree}
+                    className="agreement-leijiang"
+                >
+                    <div style={{height: 500, width: '100%'}}>
+                        {agreeType === 4 ? agreement.get('member_content') : agreement.get('secret_content')}
+                    </div>
+                </Modal>
             </div>
         );
     }
@@ -611,12 +642,14 @@ class Register extends BaseComponent {
 const mapStateToProps = (state) => {
     const base = state.get('base');
     return {
-        token: base.get('token')
+        token: base.get('token'),
+        agreement: base.get('agreementInfo')
     };
 };
 
 const mapDispatchToProps = {
     setUserToken: actionCreator.setUserToken,
+    getAgreement: actionCreator.getAgreement,
     showMenu: actionCreator.showMenu
 };
 
