@@ -11,7 +11,7 @@ class UserAgreementDetail extends BaseComponent {
     componentWillMount() {
         const type = decodeURI(getUrlParam('type', encodeURI(this.props.location.search)));
         if (type !== 'null') {
-            this.getProtocol(type);
+            this.getProtocol(Number(type));
         }
     }
 
@@ -90,7 +90,7 @@ class UserAgreementDetail extends BaseComponent {
                     <Modal
                         visible={modal}
                         className="protocol-modal"
-                        title={protocol.title}
+                        title="协议"
                         footer={[{text: '确定',
                             onPress: () => {
                                 const type = decodeURI(getUrlParam('type', encodeURI(this.props.location.search)));

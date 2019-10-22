@@ -21,7 +21,7 @@ const temp = {
     pagesize: 5
 };
 
-class MyOrder extends BaseComponent {
+class MyOrderSearch extends BaseComponent {
     state = {
         dataSource: new ListView.DataSource({
             rowHasChanged: (row1, row2) => row1 !== row2
@@ -45,36 +45,7 @@ class MyOrder extends BaseComponent {
     //请求数据
     getInfo = () => {
         const {status, page} = this.state;
-        if (status === 4) { //退款申请成功后，返回售后列表
-            this.refundMllOder(page);
-        } else {
-            this.getMallOrder(status, page);
-        }
-    }
-
-    //进入订单页面，判断为什么状态
-    statusChoose = (str) => {
-        let numStr = -1;
-        switch (str) {
-        case 'fk':
-            numStr = 0;
-            break;
-        case 'fh':
-            numStr = 1;
-            break;
-        case 'sh':
-            numStr = 2;
-            break;
-        case 'pj':
-            numStr = 3;
-            break;
-        case 'ssh':
-            numStr = 4;
-            break;
-        default:
-            numStr = -1;
-        }
-        return numStr;
+        this.getMallOrder(status, page);
     }
 
     //获取订单列表
@@ -86,50 +57,14 @@ class MyOrder extends BaseComponent {
             {
                 page,
                 pagesize: temp.pagesize,
-                pageCount: pageCount,
+                pageCount,
                 status: -1,
                 key: decodeURI(getUrlParam('keywords', encodeURI(this.props.location.search)))
             }
             }, noLoading)
             .subscribe((res) => {
-                if (res) {
-                    temp.isLoading = false;
-                    if (res.status === 0) {
-                        if (page === 1) {
-                            temp.stackData = res.list;
-                        } else {
-                            temp.stackData = temp.stackData.concat(res.list);
-                        }
-                        document.onclick =  () => { res.list.forEach(item => { item.showButton = false }) };
-                        res.list.forEach(item => { item.showButton = false });
-                        //为待付款需要取消订单的时候，或者售后订单需要删除的时候，将数据储存一份。
-                        this.setState((prevState) => ({
-                            retainArr: prevState.retainArr.concat(res.list)
-                        }));
-                        if (page >= res.pageCount) {
-                            this.setState({
-                                hasMore: false
-                            });
-                        }
-                        this.setState((prevState) => ({
-                            dataSource: prevState.dataSource.cloneWithRows(temp.stackData),
-                            pageCount: res.pageCount,
-                            refreshing: false
-                        }
-                        ));
-                    }
-                }
-            });
-    }
-
-    //售后接口请求
-    refundMllOder = (page, noLoading = false) => {
-        temp.isLoading = true;
-        const {pageCount} = this.state;
-        this.fetch(urlCfg.refundMllOder, {method: 'post', data: {page, pageCount, pagesize: temp.pagesize}}, noLoading)
-            .subscribe(res => {
                 temp.isLoading = false;
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     if (page === 1) {
                         temp.stackData = res.list;
                     } else {
@@ -139,6 +74,11 @@ class MyOrder extends BaseComponent {
                     this.setState((prevState) => ({
                         retainArr: prevState.retainArr.concat(res.list)
                     }));
+                    if (page >= res.pageCount) {
+                        this.setState({
+                            hasMore: false
+                        });
+                    }
                     this.setState((prevState) => ({
                         dataSource: prevState.dataSource.cloneWithRows(temp.stackData),
                         pageCount: res.pageCount,
@@ -148,30 +88,6 @@ class MyOrder extends BaseComponent {
                 }
             });
     }
-
-    //tab状态变更
-    tabChange = (data, index) => {
-        const dataSource2 = new ListView.DataSource({
-            rowHasChanged: (row1, row2) => row1 !== row2
-        });
-        const status = index - 1;
-        //储存我的订单的tab状态在哪一个
-        this.props.setOrderStatus(status);
-        this.setState({
-            page: 1,
-            status,
-            pageCount: -1,
-            dataSource: dataSource2,
-            retainArr: []
-        }, () => {
-            temp.stackData = [];
-            if (status === 4) {
-                this.refundMllOder(this.state.page);
-            } else {
-                this.getMallOrder(this.state.status, this.state.page);
-            }
-        });
-    };
 
     //进店
     goShopHome = (id) => {
@@ -192,8 +108,14 @@ class MyOrder extends BaseComponent {
             ['0', '等待付款'],
             ['1', '等待发货'],
             ['2', '卖家已发货'],
-            ['3', '待评价'],
-            ['4', '交易完成']
+            ['3', '交易完成'],
+            ['4', '交易完成'],
+            ['5', '退款中'],
+            ['10', '已取消'],
+            ['11', '已删除'],
+            ['12', '申请退款成功关闭订单'],
+            ['13', '商家关闭订单'],
+            ['14', '商家删除订单']
         ]);
         return nameAll.get(num);
     }
@@ -205,17 +127,15 @@ class MyOrder extends BaseComponent {
         showConfirm({
             title: '确定删除该订单？',
             callbacks: [null, () => {
-                this.fetch(urlCfg.delMallOrder, {data: {deal: 1, id: id}})
+                this.fetch(urlCfg.delMallOrder, {data: {deal: 1, id}})
                     .subscribe((res) => {
-                        if (res) {
-                            if (res.status === 0) {
+                        if (res && res.status === 0) {
                             //操作数据，将已经选中取消的id进行去除，
-                                const arr = retainArr.filter(item => item.id !== id);
-                                this.setState((prevState) => ({
-                                    dataSource: prevState.dataSource.cloneWithRows(arr),
-                                    retainArr: arr
-                                }));
-                            }
+                            const arr = retainArr.filter(item => item.id !== id);
+                            this.setState((prevState) => ({
+                                dataSource: prevState.dataSource.cloneWithRows(arr),
+                                retainArr: arr
+                            }));
                         }
                     });
             }]
@@ -229,22 +149,20 @@ class MyOrder extends BaseComponent {
         showConfirm({
             title: '是否确认收货！',
             callbacks: [null, () => {
-                this.fetch(urlCfg.confirmOrder, {data: {id: id}})
+                this.fetch(urlCfg.confirmOrder, {data: {id}})
                     .subscribe((res) => {
-                        if (res) {
-                            if (res.status === 0) {
-                                const dataSouece = new ListView.DataSource({
-                                    rowHasChanged: (row1, row2) => row1 !== row2
-                                });
-                                temp.stackData = [];
-                                this.setState({
-                                    page: 1,
-                                    retainArr: [],
-                                    dataSouece
-                                }, () => {
-                                    this.getMallOrder(status, this.state.page);
-                                });
-                            }
+                        if (res && res.status === 0) {
+                            const dataSouece = new ListView.DataSource({
+                                rowHasChanged: (row1, row2) => row1 !== row2
+                            });
+                            temp.stackData = [];
+                            this.setState({
+                                page: 1,
+                                retainArr: [],
+                                dataSouece
+                            }, () => {
+                                this.getMallOrder(status, 1);
+                            });
                         }
                     });
             }]
@@ -256,9 +174,9 @@ class MyOrder extends BaseComponent {
     canStateChange = (state, value) => {
         const {canCelId, retainArr} = this.state;
         if (state === 'mastSure' && value) {
-            this.fetch(urlCfg.delMallOrder, {method: 'post', data: {deal: 0, id: canCelId, reason: value.label, reason_id: value.value}})
+            this.fetch(urlCfg.delMallOrder, {data: {deal: 0, id: canCelId, reason: value.label, reason_id: value.value}})
                 .subscribe(res => {
-                    if (res.status === 0) {
+                    if (res && res.status === 0) {
                         showSuccess(Feedback.Cancel_Success);
                         //操作数据，将已经选中取消的id进行去除，
                         const arr = retainArr.filter(item => item.id !== canCelId);
@@ -307,9 +225,9 @@ class MyOrder extends BaseComponent {
         showConfirm({
             title: (Form.Whether_Lengthen),
             callbacks: [null, () => {
-                this.fetch(urlCfg.delayedReceipt, {method: 'post', data: {order_id: id}})
+                this.fetch(urlCfg.delayedReceipt, {data: {order_id: id}})
                     .subscribe(res => {
-                        if (res.status === 0) {
+                        if (res && res.status === 0) {
                             showSuccess(Feedback.receipt_Success);
                             const arr = [];
                             retainArr.forEach((item) => {
@@ -347,7 +265,7 @@ class MyOrder extends BaseComponent {
         if (data[1] === 1) {
             this.fetch(urlCfg.remindOrder, {data: {id: data[0]}})
                 .subscribe((res) => {
-                    if (res.status === 0) {
+                    if (res && res.status === 0) {
                         showInfo(res.message);
                     }
                 });
@@ -362,44 +280,6 @@ class MyOrder extends BaseComponent {
         ev.stopPropagation();
     }
 
-    //控制显示与否申请退款按钮
-    showRetunButton = (item, ev) => {
-        const {retainArr} = this.state;
-        const arr = [];
-        retainArr.forEach(value => {
-            if (item.id === value.id) {
-                value.showButton = !value.showButton;
-            }
-            //赋址改变，为重新渲染
-            arr.push(Object.assign({}, value));
-        });
-        this.setState((prevState) => ({
-            dataSource: prevState.dataSource.cloneWithRows(arr),
-            retainArr: arr
-        }));
-        ev.stopPropagation();
-    }
-
-    //点击其他位置，将弹出的 申请退款 按钮隐藏
-    closeButton = () => {
-        const {retainArr} = this.state;
-        const arr = [];
-        retainArr.forEach(value => {
-            value.showButton = false;
-            //赋址改变，为重新渲染
-            arr.push(Object.assign({}, value));
-        });
-        this.setState((prevState) => ({
-            dataSource: prevState.dataSource.cloneWithRows(arr),
-            retainArr: arr
-        }));
-    }
-
-    //发表追评
-    publishReview = (id, ev) => {
-        appHistory.push(`/publishReview?id=${id}`);
-        ev.stopPropagation();
-    }
 
     //底部按钮
     bottomModal = (item) => {
@@ -416,11 +296,6 @@ class MyOrder extends BaseComponent {
         case '1': //待发货
             blockModal = (
                 <div className="buttons">
-                    {/* <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
-                        {
-                            item.showButton && <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev)}>申请退款</span>
-                        }
-                    </div> 暂时屏蔽 */}
                     <div className="evaluate-button" onClick={() => this.remindDelivery([item.id, item.can_tip])}>提醒发货</div>
                 </div>
             );
@@ -428,11 +303,6 @@ class MyOrder extends BaseComponent {
         case '2'://待收货
             blockModal = (
                 <div className="buttons">
-                    {/* <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
-                        {
-                            item.showButton && <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev)}>申请退款</span>
-                        }
-                    </div> 暂时屏蔽*/}
                     {
                         item.delayed_receiving === '0' && <div className="look-button" onClick={(ev) => this.extendedReceipt(item.id, ev)}>延长收货</div>
                     }
@@ -445,7 +315,6 @@ class MyOrder extends BaseComponent {
             blockModal = (
                 <div className="buttons">
                     <div className="look-button" onClick={(ev) => this.goApplyService(item.id, ev)}>查看物流</div>
-                    {/* <div className="evaluate-button" onClick={(ev) => this.promptlyEstimate(item.id, ev)}>立即评价</div>暂时屏蔽 */}
                 </div>
             );
             break;
@@ -460,30 +329,6 @@ class MyOrder extends BaseComponent {
             blockModal = <div/>;
         }
         return blockModal;
-    }
-
-    //点击多选
-    checkAllStatus = (data, ev) => {
-        const {retainArr} = this.state;
-        const arr = [];
-        const checkArr = [];//选中的订单集合
-        retainArr.forEach(item => {
-            if (data.id === item.id) {
-                item.select = !item.select;
-            }
-            if (item.select) {
-                checkArr.push(item);
-            }
-            //赋址改变，为重新渲染
-            arr.push(Object.assign({}, item));
-        });
-        this.setState((prevState) => ({
-            dataSource: prevState.dataSource.cloneWithRows(arr),
-            retainArr: arr,
-            checkArr
-        }));
-
-        ev.stopPropagation();
     }
 
     //搜索点击
@@ -501,11 +346,7 @@ class MyOrder extends BaseComponent {
             pageCount: -1
         }, () => {
             temp.stackData = [];
-            if (status === 4) {
-                this.refundMllOder(this.state.page, true);
-            } else {
-                this.getMallOrder(status, this.state.page, true);
-            }
+            this.getMallOrder(status, 1, true);
         });
     };
 
@@ -522,11 +363,7 @@ class MyOrder extends BaseComponent {
                 page: pervState.page + 1,
                 hasMore: true
             }), () => {
-                if (status === 4) {
-                    this.refundMllOder(this.state.page);
-                } else {
-                    this.getMallOrder(status, this.state.page);
-                }
+                this.getMallOrder(status, this.state.page);
             });
         }
     };
@@ -542,14 +379,6 @@ class MyOrder extends BaseComponent {
             <div className="shop-lists" >
                 <div className="shop-name" onClick={() => this.goShopHome(item.shop_id)}>
                     <div className="shop-title">
-                        {/* { 是否多条订单一起付款
-                            item.status === '0' && (
-                                <span
-                                    className={`icon ${item.select ? 'icon-select-z' : 'icon-unselect-z'}`}
-                                    onClick={(ev) => this.checkAllStatus(item, ev)}
-                                />
-                            )
-                        } */}
                         <LazyLoadIndex lazyInfo={{offset: -30, imgUrl: item.picpath, overflow: true}}/>
                         <p>{item.shopName}</p>
                         <div className="icon enter"/>
@@ -575,9 +404,6 @@ class MyOrder extends BaseComponent {
                                 <div className="sku-right">x{items.pr_num}</div>
                             </div>
                             <div className="btn-keep">记账量：{items.deposit}</div>
-                            <div className="buttons drawback">
-                                {(item.status === '5') && <div className="evaluate-button" onClick={(ev) => this.refundDetails(item.id, ev)}>查看详情</div>}
-                            </div>
                         </div>
                     </div>
                 ))}
@@ -598,7 +424,7 @@ class MyOrder extends BaseComponent {
         return (
             <div data-component="my-order" data-role="page" className={`online-transaction ${window.isWX ? 'WX' : ''}`}>
                 {
-                    window.isWX ? null : (<AppNavBar title="线上订单" goBackModal={this.goToBack} white color={navColorR}/>)
+                    window.isWX ? null : (<AppNavBar title="线上订单" backgroundColor={navColorR} redBackground goBackModal={this.goToBack} white color={navColorR}/>)
                 }
                 {   //弹出取消弹框
                     canStatus &&  (<CancelOrder canStateChange={this.canStateChange}/>)
@@ -610,7 +436,6 @@ class MyOrder extends BaseComponent {
                                 <ListView
                                     dataSource={dataSource}
                                     initialListSize={temp.pagesize}
-                                    // renderBodyComponent={() => <ListBody/>}
                                     renderRow={row}
                                     style={{
                                         height: height
@@ -625,10 +450,7 @@ class MyOrder extends BaseComponent {
                                             onRefresh={this.onRefresh}
                                             damping={70}
                                             indicator={{
-                                                // activate: <Animation ref={ref => { this.Animation = ref }}/>,
-                                                // deactivate: ' ',
                                                 release: <Animation ref={ref => { this.Animation = ref }}/>
-                                                // finish: <Animation ref={ref => { this.Animation = ref }}/>
                                             }}
                                         />
                                     )}
@@ -642,16 +464,8 @@ class MyOrder extends BaseComponent {
     }
 }
 
-const mapStateToProps = state => {
-    const base = state.get('base');
-    return {
-        orderStatus: base.get('orderStatus')
-    };
-};
-
 const mapDispatchToProps = {
-    setOrderStatus: actionCreator.setOrderStatus,
     showConfirm: actionCreator.showConfirm
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(MyOrder);
+export default connect(null, mapDispatchToProps)(MyOrderSearch);

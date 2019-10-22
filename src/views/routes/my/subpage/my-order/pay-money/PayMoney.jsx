@@ -7,7 +7,7 @@ import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAc
 import {InputGrid} from '../../../../../common/input-grid/InputGrid';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 
-const {appHistory, getUrlParam, native, systemApi: {setValue, getValue, removeValue}, supple, showFail, showInfo} = Utils;
+const {appHistory, getUrlParam, native, systemApi: {getValue, removeValue}, supple, showFail, showInfo} = Utils;
 const {urlCfg} = Configs;
 const hybird = process.env.NATIVE;
 const mode = [
@@ -45,12 +45,12 @@ class PayMoney extends BaseComponent {
     }
 
     componentDidMount() {
-        const selfOrder = decodeURI(getUrlParam('selfOrder', encodeURI(this.props.location.search)));
         const arrInfo = JSON.parse(getValue('orderInfo'));
         if (arrInfo) { //如果是有arrInfo代表是直接下单或者从购物车过来的
+            const selfOrder = decodeURI(getUrlParam('selfOrder', encodeURI(this.props.location.search)));
             const date = (new Date().getTime() + 86400000) / 1000 - 1;
             const selfDate = (new Date().getTime() + 1800000) / 1000;
-            this.getLastTime(selfOrder === 'null' ? date : selfDate);
+            this.getLastTime(selfOrder === 'null' ? date : selfDate);//是否是自提订单
             this.setState({
                 orderNum: arrInfo.order,
                 listArr: arrInfo,
@@ -72,13 +72,9 @@ class PayMoney extends BaseComponent {
     getList = (onOff) => {
         const {orderId, source, orderNum} = this.state;
         const arr = [];
-        const that = this;
-        this.fetch(urlCfg.payRightInfo, {
-            method: 'post',
-            data: {order_id: orderId},
-            source: source //订单入口
+        this.fetch(urlCfg.payRightInfo, {data: {order_id: orderId}, source //订单入口
         }).subscribe(res => {
-            if (res.status === 0) {
+            if (res && res.status === 0) {
                 arr.push(orderNum);
                 res.data.order = (orderNum === 'null' ? '' : arr);
                 if (onOff) { //这里是为了区分首次进来和继续支付
@@ -86,9 +82,9 @@ class PayMoney extends BaseComponent {
                         listArr: res.data
                     });
                 }
-                that.setState({
+                this.setState({
                     maturityTme: res.data.enddate //到期时间
-                }, () => that.getLastTime(res.data.enddate));
+                }, () => this.getLastTime(res.data.enddate));
             }
         });
     };
@@ -154,109 +150,27 @@ class PayMoney extends BaseComponent {
         //判断是否第三方支付还是CAM消费
         if (selectIndex === 0) {
             this.verifyPayword();
-            return;
-        }
-        this.batchPayMoney(listArr, selectIndex);
-        // if (listArr.order && listArr.order.length > 0) { //app合并付款
-        //     this.batchPayMoney(listArr, selectIndex);
-        // } else if (selectIndex === 1) { //微信支付
-        //     this.wxPay(listArr, orderNum, selectIndex);
-        // } else { //支付宝支付
-        //     this.alipay(listArr, orderNum, selectIndex);
-        // }
-    };
-
-    //支付平台判断
-    paymentPlatform = () => {
-        let num = '';
-        if (hybird) {
-            num = 1;
         } else {
-            num = 2;
+            this.batchPayMoney(listArr, selectIndex);
         }
-        return num;
-    }
+    };
 
     //合并付款
     batchPayMoney = (listArr, selectIndex) => {
-        console.log(listArr, '水电费看了');
         // alert('合并付款');
-        this.fetch(urlCfg.batchPayment, {method: 'post', data: {type: 1, payType: selectIndex === 1 ? 2 : 1, order_no: listArr.order}})
+        this.fetch(urlCfg.batchPayment, {data: {type: 1, payType: selectIndex === 1 ? 2 : 1, order_no: listArr.order}})
             .subscribe(res => {
-                if (res.status === 0) {
-                    if (selectIndex === 1) { //微信
-                        native('payWX', {qrCode: res.data.appPayRequest.qrCode, order_no: listArr.order[0], type: this.paymentPlatform(), payType: 2}).then((data) => {
-                            native('goH5', {'': ''});
-                            appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&types=${selectIndex}&deposit=${listArr.all_deposit}&if_express=${res.if_express}&batch=1`);
-                        }).catch(data => {
-                            native('goH5', {'': ''});
-                            showFail(data.message);
-                        });
-                    } else {
-                        native('payAliPay', {qrCode: res.data.appPayRequest.qrCode, order_no: listArr.order[0], type: this.paymentPlatform(), payType: 1}).then((data) => {
-                            native('goH5', {'': ''});
-                            appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&types=${selectIndex}&deposit=${listArr.all_deposit}&if_express=${res.if_express}&batch=1`);
-                        }).catch(data => {
-                            native('goH5', {'': ''});
-                            showFail(data.message);
-                        });
-                    }
+                if (res && res.status === 0) {
+                    //selectIndex === 1为微信支付
+                    native(selectIndex === 1 ? 'payWX' : 'payAliPay', {qrCode: res.data.appPayRequest.qrCode, order_no: listArr.order[0], type: hybird ? 1 : 2, payType: selectIndex === 1 ? 2 : 1}).then((data) => {
+                        native('goH5', {'': ''});
+                        appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&types=${selectIndex}&deposit=${listArr.all_deposit}&if_express=${res.if_express}&batch=1`);
+                    }).catch(data => {
+                        native('goH5', {'': ''});
+                        showFail(data.message);
+                    });
                     if (res.data.status === 1) {
                         showInfo(res.data.message);
-                    }
-                }
-            });
-    }
-
-    //微信支付
-    wxPay = (listArr, orderNum, selectIndex) => {
-        // alert('微信支付');
-        this.fetch(urlCfg.wechatPayment, {method: 'post', data: {type: 1, order_no: orderNum}})
-            .subscribe(res => {
-                if (res.status === 0) {
-                    if (hybird) {
-                        const obj = {
-                            prepayid: res.data.arr.prepayid,
-                            appid: res.data.arr.appid,
-                            partnerid: res.data.arr.partnerid,
-                            package: res.data.arr.package,
-                            noncestr: res.data.arr.noncestr,
-                            timestamp: res.data.arr.timestamp,
-                            sign: res.data.arr.sign
-                        };
-                        native('wxPayCallback', obj).then((data) => {
-                            native('goH5', {'': ''});
-                            appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&id=${listArr.order_id}&types=${selectIndex}&deposit=${listArr.deposit}&if_express=${res.data.if_express}`);
-                        }).catch(data => {
-                            native('goH5', {'': ''});
-                            showFail(data.message);
-                        });
-                    } else {
-                        // window.location.href = res.data.mweb_url;
-                    }
-                }
-            });
-    }
-
-    //支付宝支付
-    alipay = (listArr, orderNum, selectIndex) => {
-        // alert('支付宝支付');
-        this.fetch(urlCfg.alipayPayment, {method: 'post', data: {type: 1, order_no: orderNum}})
-            .subscribe(res => {
-                if (res.status === 0) {
-                    if (hybird) {
-                        native('authInfo', res.data.response).then((data) => {
-                            native('goH5', {'': ''});
-                            setValue('orderId', listArr.order_id);
-                            if (data.status === '0') {
-                                appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&id=${listArr.order_id}&types=${selectIndex}&deposit=${listArr.deposit}&if_express=${res.data.if_express}`);
-                            }
-                        }).catch(data => {
-                            native('goH5', {'': ''});
-                            showFail(data.message);
-                        });
-                    } else {
-                        // window.location.href = res.data.mweb_url;
                     }
                 }
             });
@@ -280,9 +194,9 @@ class PayMoney extends BaseComponent {
         this.setState({
             pwsPopup: false
         }, () => {
-            this.fetch(urlCfg.campay, {method: 'post', data: {order_no: listArr.order, pwd, money: listArr.all_price || money}})
+            this.fetch(urlCfg.campay, {data: {order_no: listArr.order, pwd, money: listArr.all_price || money}})
                 .subscribe(res => {
-                    if (res.status === 0) {
+                    if (res && res.status === 0) {
                         appHistory.replace(`/paymentCompleted?&deposit=${res.data.capital}&id=${res.data.id}&allPrice=${res.data.total_fee}&types=${selectIndex}&if_express=${res.data.if_express}&batch=${res.data.id ? '0' : '1'}`);
                     }
                 });
@@ -292,7 +206,7 @@ class PayMoney extends BaseComponent {
     //验证支付密码是否设置
     verifyPayword = (pwd) => {
         const {showConfirm} = this.props;
-        this.fetch(urlCfg.memberStatus, {method: 'post', data: {types: 0, chk_pass: 0}})
+        this.fetch(urlCfg.memberStatus, {data: {types: 0, chk_pass: 0}})
             .subscribe(res => {
                 if (res.status === 0) {
                     if (res.data.status !== 0) { //status为0为已设置，其他都是未设置
@@ -384,9 +298,7 @@ class PayMoney extends BaseComponent {
                     <div className="surplus-bottom">
                         <span className="remaining-time">支付剩余时间</span>
                         <span className="reciprocal">
-                            {
-                                remainingTime
-                            }
+                            {remainingTime}
                         </span>
                     </div>
                 </div>

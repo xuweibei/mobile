@@ -51,7 +51,6 @@ class MyOrder extends BaseComponent {
 
     componentWillMount() {
         const num = this.statusChoose(this.props.location.pathname.split('/')[2]);
-        console.log(num, '饥渴的共获得发几个');
         this.init(num);
     }
 

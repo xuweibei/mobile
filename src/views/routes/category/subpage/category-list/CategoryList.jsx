@@ -100,7 +100,7 @@ class CategoryList extends BaseComponent {
         if (textStatus) {
             this.searchGoods();
         } else {
-            this.goBackModal();
+            goBackModal();
         }
     };
 
