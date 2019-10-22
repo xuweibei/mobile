@@ -675,48 +675,6 @@ class GoodsDetail extends BaseComponent {
                     {
                         shop.shoper_open_status === '0' && (<div className="rest">该店暂未营业</div>)
                     }
-                    <div className="goodsDetail-bottom">
-                        <div className="icons-warp">
-                            <div className="icons">
-                                <div className="phone-cart" onClick={this.goToShoper}>
-                                    <div className="icon icon-phone"/>
-                                    <div className="phone-text" >联系卖家</div>
-                                </div>
-                                <div className="phone-cart" onClick={this.collect}>
-                                    <div className={`icon ${collect.length > 0 ? 'icon-collect-active' : 'icon-collect'}`}/>
-                                    <div className="phone-text">收藏</div>
-                                </div>
-                                <div className="phone-cart" onClick={this.shopCart}>
-                                    <div className="icon icon-cart"/>
-                                    <div className="phone-text">
-                                    购物车
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {
-                            goodsDetail.effective_type === '0' ? (
-                                <div className={`${(status === '0' || status === '2') ? 'disble-btn' : 'bottom-btn'}`}>
-                                    <Flex>
-                                        <Flex.Item
-                                            className={`${(status === '0' || status === '2') ? 'disable-cart' : 'cart'}`}
-                                            onClick={this.addCart}
-                                        >
-                                加入购物车
-                                        </Flex.Item>
-                                        <Flex.Item
-                                            className={`${(status === '0' || status === '2') ? 'disable-emption' : 'emption'}`}
-                                            onClick={() => this.emption('pay')}
-                                        >
-                                立即购买
-                                        </Flex.Item>
-                                    </Flex>
-                                </div>
-                            ) : (
-                                <div className="pay-now" onClick={() => this.emption('pay')}>立即购买</div>
-                            )
-                        }
-                    </div>
                     {/*底部弹出选择商品框*/}
                     {popup && (
                         <Sku
@@ -747,6 +705,48 @@ class GoodsDetail extends BaseComponent {
                             </Carousel>
                         </div>
                     )}
+                </div>
+                <div className="goodsDetail-bottom">
+                    <div className="icons-warp">
+                        <div className="icons">
+                            <div className="phone-cart" onClick={this.goToShoper}>
+                                <div className="icon icon-phone"/>
+                                <div className="phone-text" >联系卖家</div>
+                            </div>
+                            <div className="phone-cart" onClick={this.collect}>
+                                <div className={`icon ${collect.length > 0 ? 'icon-collect-active' : 'icon-collect'}`}/>
+                                <div className="phone-text">收藏</div>
+                            </div>
+                            <div className="phone-cart" onClick={this.shopCart}>
+                                <div className="icon icon-cart"/>
+                                <div className="phone-text">
+                                    购物车
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {
+                        goodsDetail.effective_type === '0' ? (
+                            <div className={`${(status === '0' || status === '2') ? 'disble-btn' : 'bottom-btn'}`}>
+                                <Flex>
+                                    <Flex.Item
+                                        className={`${(status === '0' || status === '2') ? 'disable-cart' : 'cart'}`}
+                                        onClick={this.addCart}
+                                    >
+                                加入购物车
+                                    </Flex.Item>
+                                    <Flex.Item
+                                        className={`${(status === '0' || status === '2') ? 'disable-emption' : 'emption'}`}
+                                        onClick={() => this.emption('pay')}
+                                    >
+                                立即购买
+                                    </Flex.Item>
+                                </Flex>
+                            </div>
+                        ) : (
+                            <div className="pay-now" onClick={() => this.emption('pay')}>立即购买</div>
+                        )
+                    }
                 </div>
             </div>
         );

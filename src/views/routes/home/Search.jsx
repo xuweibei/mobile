@@ -56,6 +56,25 @@ class Search extends BaseComponent {
         }
     };
 
+    // 键盘搜索键事件
+    keyDown = (e) => {
+        if (e.keyCode === 13) {
+            const {textStatus, keywords} = this.state;
+            TD.log(TD_EVENT_ID.SEEK.ID, TD_EVENT_ID.SEEK.LABEL.SEEK_STUFF);
+            if (textStatus) {
+                if (keywords.length === 0) {
+                    this.setState({
+                        textStatus: false
+                    });
+                } else {
+                    appHistory.push(`/categoryList?flag=${true}&keywords=${encodeURI(keywords)}&id=${''}`);
+                }
+            } else {
+                goBackModal();
+            }
+        }
+    }
+
     //获取热门搜索,历史搜索
     searchList = () => {
         this.fetch(urlCfg.homeSearch)
@@ -96,10 +115,10 @@ class Search extends BaseComponent {
             <div data-component="search" data-role="page" className="search">
                 <div className="search-box">
                     <InputItem
-                        type="search"
+                        type="text"
                         placeholder="请输入商品名称"
                         clear
-                        onKeyPress={this.searchType}
+                        onKeyDown={this.keyDown}
                         onChange={(val) => this.getKeyWords(val)}
                     >
                         <Icon type="search"/>

@@ -100,9 +100,22 @@ class CategoryList extends BaseComponent {
         if (textStatus) {
             this.searchGoods();
         } else {
-            this.goBackModal();
+            goBackModal();
         }
     };
+
+    // 键盘点击事件
+    keyDown = (e) => {
+        if (e.keyCode === 13) {
+            const {textStatus} = this.state;
+            TD.log(TD_EVENT_ID.SEEK.ID, TD_EVENT_ID.SEEK.LABEL.SEEK_STUFF);
+            if (textStatus) {
+                this.searchGoods();
+            } else {
+                goBackModal();
+            }
+        }
+    }
 
     render() {
         const {text, changeNav, textStatus, shopId} = this.state;
@@ -122,7 +135,7 @@ class CategoryList extends BaseComponent {
                                     clear
                                     maxLength={20}
                                     placeholder="搜索商品"
-                                    onKeyPress={this.textClick}
+                                    onKeyDown={this.keyDown}
                                     onChange={(val) => this.getThisKeyWords(val)}
                                 >
                                     <div className="icon icon-lookup"/>
