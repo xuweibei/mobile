@@ -1,0 +1,61 @@
+@import "~style";
+
+.hotImgShow{
+  //padding-left:88px;
+  .top{
+      margin:0 50px 40px;
+      .priceInfo{
+          .infoLeft{
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              .shopTitleSmall{
+                  font-size: 30px;
+                  color:#040100;
+                  .TextOverflow();
+              }
+          }
+      }
+      img{
+          display:block;
+          //width:574px;
+          width:100%;
+          height:366px;
+          margin-bottom:20px;
+      }
+  }
+  .middle{
+      padding-left:60px;
+      margin:0 88px;
+      overflow:hidden;
+      display: flex;
+      justify-content: space-between;
+      .leftImg{
+          width:100%;
+          margin-right:26px;
+          img{
+              display:block;
+              width:100%;
+              height: 3.66rem;
+          }
+      }
+      .rightText{
+          color:#444341;
+          position: relative;
+          width:300px;
+          .rightTextCon{
+              width:220px;
+              height:100%;
+              font-size:23px;
+              position: absolute;
+              bottom:0;
+              .priceInfo{
+                  .shopTitleSmall{
+                      line-height:20px;
+                      margin-bottom:8px;
+                  }
+              }
+          }
+      }
+  }
+}
