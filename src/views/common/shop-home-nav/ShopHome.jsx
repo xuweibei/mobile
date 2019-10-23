@@ -54,11 +54,12 @@ class ShopHome extends BaseComponent {
     //收藏商店
     shopCollextion = () => {
         const {shopInfo} = this.state;
+        const {id} = this.props;
         this.fetch(urlCfg.addCollectShop, {data: {shop_id: shopInfo.id, shop_name: shopInfo.shopName}})
             .subscribe(res => {
                 if (res && res.status === 0) {
                     showInfo(Feedback.Collect_Success);
-                    this.getList();
+                    this.getList(id);
                 }
             });
     }

@@ -11,13 +11,13 @@ const {urlCfg} = Configs;
 const hybrid = process.env.NATIVE;
 export default class MyOrder extends BaseComponent {
     state = {
-        orderInfo: [],
+        orderInfo: [], //物流信息数组
         ordertatus: '', //订单状态
         expressNo: '', //物流单号
-        text: '',
-        pic: '',
-        area: '',
-        phone: 0
+        text: '', //订单状态描述
+        pic: '', //物流图片
+        area: '', //收货地址
+        phone: 0 //电话
     }
 
     componentDidMount() {
@@ -64,7 +64,6 @@ export default class MyOrder extends BaseComponent {
                             phone: res.data.phone
                         }, () => {
                             this.setOrderStatus(this.state.ordertatus);
-                            console.log(this.state.orderInfo);
                         });
                     }
                 }
@@ -74,48 +73,18 @@ export default class MyOrder extends BaseComponent {
 
     //处理订单状态
     setOrderStatus = (status) => {
-        switch (status) {
-        case '3':
-            this.setState({
-                text: '在途'
-            });
-            break;
-        case '4':
-            this.setState({
-                text: '揽件'
-            });
-            break;
-        case '5':
-            this.setState({
-                text: '疑难'
-            });
-            break;
-        case '6':
-            this.setState({
-                text: '签收'
-            });
-            break;
-        case '7':
-            this.setState({
-                text: '退签'
-            });
-            break;
-        case '8':
-            this.setState({
-                text: '派件'
-            });
-            break;
-        case '9':
-            this.setState({
-                text: '退回'
-            });
-            break;
-        default:
-            this.setState({
-                text: '物流单号暂无结果'
-            });
-            break;
-        }
+        const arr = new Map([
+            ['3', '在途'],
+            ['4', '揽件'],
+            ['5', '疑难'],
+            ['6', '签收'],
+            ['7', '退签'],
+            ['8', '派件'],
+            ['9', '退回']
+        ]);
+        this.setState({
+            text: arr.get(status) || '物流单号暂无结果'
+        });
     }
 
     //拨打电话

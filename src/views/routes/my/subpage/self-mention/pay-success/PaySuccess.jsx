@@ -1,10 +1,10 @@
-
+//核销码，立即使用 页面
 import React from 'react';
 import './PaySuccess.less';
 import {urlCfg} from '../../../../../../configs';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 
-const {getUrlParam, showFail} = Utils;
+const {getUrlParam} = Utils;
 
 export default class PaySuccess extends BaseComponent {
     state = {
@@ -18,14 +18,12 @@ export default class PaySuccess extends BaseComponent {
     //获取数据
     getSufficiency = () => {
         const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
-        this.fetch(urlCfg.sufficiencyCode, {method: 'post', data: {id}})
+        this.fetch(urlCfg.sufficiencyCode, {data: {id}})
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     this.setState({
                         orderDetail: res.data
                     });
-                } else if (res.status === 1) {
-                    showFail(res.message);
                 }
             });
     }

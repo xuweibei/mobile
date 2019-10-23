@@ -28,9 +28,9 @@ class ReDetail extends BaseComponent {
     //获取订单列表信息
     getList = () => {
         const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
-        this.fetch(urlCfg.selfOrderDetail, {method: 'post', data: {id}})
+        this.fetch(urlCfg.selfOrderDetail, {data: {id}})
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     this.setState({
                         selfSufficiency: res.data,
                         shopId: res.data.shop_id,
@@ -46,9 +46,9 @@ class ReDetail extends BaseComponent {
     //判斷是否收藏
     ollectType = () => {
         const {shopId} = this.state;
-        this.fetch(urlCfg.shopCollectType, {method: 'post', data: {shop_id: shopId}})
+        this.fetch(urlCfg.shopCollectType, {data: {shop_id: shopId}})
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     this.setState({
                         collectId: res.id || null
                     });
@@ -61,17 +61,17 @@ class ReDetail extends BaseComponent {
         const {selfSufficiency, collectId} = this.state;
         //添加收藏
         if (value === 'add') {
-            this.fetch(urlCfg.addCollectShop, {method: 'post', data: {shop_name: selfSufficiency.shopName, shop_id: selfSufficiency.shop_id}})
+            this.fetch(urlCfg.addCollectShop, {data: {shop_name: selfSufficiency.shopName, shop_id: selfSufficiency.shop_id}})
                 .subscribe(res => {
-                    if (res.status === 0) {
+                    if (res && res.status === 0) {
                         showSuccess(Feedback.Collect_Success);
                         this.ollectType();
                     }
                 });
         } else { //取消收藏
-            this.fetch(urlCfg.cancelCollect, {method: 'post', data: {ids: [collectId], type: 2}})
+            this.fetch(urlCfg.cancelCollect, {data: {ids: [collectId], type: 2}})
                 .subscribe(res => {
-                    if (res.status === 0) {
+                    if (res && res.status === 0) {
                         showSuccess(Feedback.Cancel_Success);
                         this.ollectType();
                     }
@@ -86,15 +86,11 @@ class ReDetail extends BaseComponent {
         showConfirm({
             title: '是否删除该订单?',
             callbacks: [null, () => {
-                this.fetch(urlCfg.delMallOrder, {method: 'post', data: {deal: 1, id: selfSufficiency.order_id}})
+                this.fetch(urlCfg.delMallOrder, {data: {deal: 1, id: selfSufficiency.order_id}})
                     .subscribe(res => {
-                        if (res.status === 0) {
+                        if (res && res.status === 0) {
                             showInfo('成功删除订单');
-                            setTimeout(() => {
-                                appHistory.goBack();
-                            }, 1500);
-                        } else if (res.status === 1) {
-                            showFail(res.message);
+                            appHistory.goBack();
                         }
                     });
             }]
@@ -244,7 +240,7 @@ class ReDetail extends BaseComponent {
                                 </div>
                                 <span><div className="right" onClick={(e) => this.goToShop(e, selfSufficiency.shop_id)}>进店</div></span>
                             </div>
-                            {selfGoods.map(item => (
+                            {selfGoods && selfGoods.map(item => (
                                 <div className="goods" key={item.pr_id} onClick={() => this.goodsDetaid(item.pr_id)}>
                                     <div className="goods-left">
                                         <div>
@@ -329,7 +325,7 @@ class ReDetail extends BaseComponent {
                 <div className="recommend-box">
                     <div className="recommend common-margin">热门推荐</div>
                     <div className="hot-push-goods">
-                        {recommendGoods.map(item => (
+                        {recommendGoods && recommendGoods.map(item => (
                             <div className="shop-lists" onClick={() => this.goToGoodsDetail(item.pr_id)}>
                                 <div className="common-margin">
                                     <div className="goods">

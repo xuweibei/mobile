@@ -21,8 +21,8 @@ class ListDetails extends BaseComponent {
     }
 
     getList = () => {
-        const orderId = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
-        this.fetch(urlCfg.orderDetailInfo, {data: {id: orderId}})
+        const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
+        this.fetch(urlCfg.orderDetailInfo, {data: {id}})
             .subscribe(res => {
                 if (res && res.status === 0) {
                     this.setState({
@@ -86,10 +86,8 @@ class ListDetails extends BaseComponent {
             callbacks: [null, () => {
                 this.fetch(urlCfg.confirmOrder, {data: {id}})
                     .subscribe((res) => {
-                        if (res) {
-                            if (res.status === 0) {
-                                appHistory.goBack();
-                            }
+                        if (res && res.status === 0) {
+                            appHistory.goBack();
                         }
                     });
             }]
@@ -175,11 +173,9 @@ class ListDetails extends BaseComponent {
         if (state === 'mastSure' && value) {
             this.fetch(urlCfg.delMallOrder, {data: {deal: 0, id, reason: value.label, reason_id: value.value}})
                 .subscribe((res) => {
-                    if (res) {
-                        if (res.status === 0) {
-                            showSuccess(Feedback.Cancel_Success);
-                            appHistory.goBack();
-                        }
+                    if (res && res.status === 0) {
+                        showSuccess(Feedback.Cancel_Success);
+                        appHistory.goBack();
                     }
                 });
         }
@@ -192,17 +188,6 @@ class ListDetails extends BaseComponent {
     goToLocaice = () => {
         const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
         appHistory.push(`/logistics?lgId=${id}`);
-    }
-
-    //前往im
-    goToIm = (ev) => {
-        const {canInfo} = this.state;
-        if (hybird) {
-            native('goToShoper', {shopNo: canInfo.shop_no, id: canInfo.order_id, type: '1', shopNickName: canInfo.nickname, imType: '2', groud: '0'});//groud 为0 单聊，1群聊 imType 1商品2订单3空白  type 1商品 2订单
-        } else {
-            showInfo('联系商家');
-        }
-        ev.stopPropagation();
     }
 
     goBackModal = () => {
@@ -237,7 +222,6 @@ class ListDetails extends BaseComponent {
                                 {/* <div className="wait-bottom" onClick={() => appHistory.push(`/goodsDetail/?id=${canInfo.pr_id}`)}>再下一单</div> */}
                             </div>
                             {
-                                // (canInfo.status !== '0' && canInfo.status !== '1')
                                 canInfo.logistics && (
                                     <div className="message" onClick={this.goToLocaice}>
                                         <div className="message-left icon"/>
@@ -258,7 +242,6 @@ class ListDetails extends BaseComponent {
                                 </div>
                                 <div className="address-bottom">{canInfo.area} {canInfo.address}</div>
                             </div>
-
                             <div>
                                 <div className="shop-lists">
                                     <div className="common-margin">
@@ -270,7 +253,7 @@ class ListDetails extends BaseComponent {
                                             <span><div className="right" onClick={(ev) => this.goShopHome(canInfo.shop_id, ev)}>进店</div></span>
                                         </div>
                                         {
-                                            canInfo.pr_list.map((item, index) => (
+                                            canInfo.pr_list && canInfo.pr_list.map((item, index) => (
                                                 <div key={item.pr_id} className="goods" onClick={() => this.goToShopping(item.pr_id)}>
                                                     <div className="goods-left" >
                                                         <div>
@@ -368,7 +351,7 @@ class ListDetails extends BaseComponent {
                                 <div className="recommend common-margin">热门推荐</div>
                                 <div className="hot-push-goods">
                                     {
-                                        canInfo.recommend.length > 0 ? canInfo.recommend.map(item => (
+                                        (canInfo.recommend && canInfo.recommend.length > 0) ? canInfo.recommend.map(item => (
                                             <div className="shop-lists">
                                                 <div className="common-margin">
                                                     <div className="goods" onClick={() => this.goToShopping(item.pr_id)}>
@@ -386,7 +369,6 @@ class ListDetails extends BaseComponent {
                                                                     {
                                                                         item.property ? item.property.values_name.split(',').map(value => <div className="goods-size">{value}</div>) : ''
                                                                     }
-                                                                    {/* <div className="goods-size">zxc</div> */}
                                                                 </div>
                                                             </div>
                                                             <div className="accounting">
@@ -434,15 +416,7 @@ class ListDetails extends BaseComponent {
     }
 }
 
-
-const mapStateToProps = state => {
-    const base = state.get('base');
-    return {
-        returnStatus: base.get('returnStatus')
-    };
-};
 const mapDidpatchToProps = {
-    showConfirm: actionCreator.showConfirm,
-    setReturn: actionCreator.setReturn
+    showConfirm: actionCreator.showConfirm
 };
-export default connect(mapStateToProps, mapDidpatchToProps)(ListDetails);
+export default connect(null, mapDidpatchToProps)(ListDetails);

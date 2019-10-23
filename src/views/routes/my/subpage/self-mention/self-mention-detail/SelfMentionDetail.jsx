@@ -31,7 +31,8 @@ class ReDetail extends BaseComponent {
         goodsArr: [], //订单商品遍历
         shopdata: [], //店铺
         address: '', //门店地址
-        textarea: '' //获取备注信息
+        textarea: '', //获取备注信息
+        protocolModal: false //协议弹出框
     }
 
     componentDidMount() {
@@ -91,7 +92,7 @@ class ReDetail extends BaseComponent {
             }
         })
             .subscribe((res) => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     this.setState({
                         OrderSelf: res,
                         rdata: res.sufficiency.sufficiency_time,
@@ -132,7 +133,6 @@ class ReDetail extends BaseComponent {
 
     //选择自提时间
     radioChange = (value, valueItem) => {
-        console.log('checkbox', value);
         this.setState({
             value,
             valueItem,
@@ -192,7 +192,7 @@ class ReDetail extends BaseComponent {
     //立即付款
     submitSelf = () => {
         const {value, radioTreaty, alertPhone, currentTab, textarea, shopdata} = this.state;
-        const {setOrderInfo, arr, carId} = this.props;
+        const {setOrderInfo, arr, carId, location: {search}} = this.props;
         const shopArr = [];
         // console.log(shopdata);
         shopArr.push({shop_id: shopdata.shop_id});
@@ -216,7 +216,7 @@ class ReDetail extends BaseComponent {
         } else {
             //后端判断自提从哪里进入 类型
             let sou = 2;
-            const source = decodeURI(getUrlParam('source', encodeURI(this.props.location.search)));
+            const source = decodeURI(getUrlParam('source', encodeURI(search)));
             if (source !== 'null') {
                 sou = source;
             }
@@ -231,26 +231,21 @@ class ReDetail extends BaseComponent {
                     car_id: carId,
                     type: arr[0].if_express === '3' ? '2' : '1'
                 }
-            })
-                .subscribe((res) => {
-                    if (res.status === 0) {
-                        setOrderInfo(res);
-                        appHistory.replace(`/payMoney?source=${sou}&selfOrder=1`);
-                    }
-                    setValue('orderInfo', JSON.stringify(res));
-                });
+            }).subscribe((res) => {
+                if (res && res.status === 0) {
+                    setOrderInfo(res);
+                    appHistory.replace(`/payMoney?source=${sou}&selfOrder=1`);
+                }
+                setValue('orderInfo', JSON.stringify(res));
+            });
         }
     }
 
     //点击弹出到店协议
-    viewShopFile = (ev) => {
-        const {showAlert} = this.props;
-        const {OrderSelf} = this.state;
-        showAlert({
-            title: OrderSelf.agree,
-            btnText: '好'
+    viewShopFile = (protocolModal) => {
+        this.setState({
+            protocolModal
         });
-        ev.stopPropagation();
     }
 
     goBackModal = () => {
@@ -271,7 +266,7 @@ class ReDetail extends BaseComponent {
 
     render() {
         const arr = JSON.parse(getValue('orderArr'));
-        const {OrderSelf, radioTreaty, modal, tabsr, currentTab, value, alertPhone, showPhone, shopdata, goodsArr, address, textarea, onOffDisable} = this.state;
+        const {OrderSelf, protocolModal, radioTreaty, modal, tabsr, currentTab, value, alertPhone, showPhone, shopdata, goodsArr, address, textarea, onOffDisable} = this.state;
         return (
             <div data-component="Self-mentionDetail" data-role="page" className="Self-mentionDetail">
                 <AppNavBar goBackModal={this.goBackModal} rightShow title="确认订单"/>
@@ -311,7 +306,7 @@ class ReDetail extends BaseComponent {
                             }
                         </div>
                     </div>
-                    <div className={`my-radio icon ${radioTreaty === true ? 'endorse' : ''}`} onClick={this.radioTreaty}>同意<span className="agreement" onClick={this.viewShopFile}>《到店自提协议》</span></div>
+                    <div className={`my-radio icon ${radioTreaty === true ? 'endorse' : ''}`} onClick={this.radioTreaty}>同意<span className="agreement" onClick={() => this.viewShopFile(true)}>《到店自提协议》</span></div>
                 </div>
 
                 <div className="shop-lists">
@@ -323,7 +318,7 @@ class ReDetail extends BaseComponent {
                         </div>
                         <div className="shop-name-right">营业时间{shopdata.open_time || '暂无'}</div>
                     </div>
-                    {goodsArr.map(item => (
+                    {goodsArr && goodsArr.map(item => (
                         <div className="goods" key={item.id}>
                             <div className="goods-left">
                                 <div>
@@ -395,6 +390,22 @@ class ReDetail extends BaseComponent {
                         </Tabs>
                     </Modal>
                 )}
+                {/*到店自提协议模态框*/}
+                <Modal
+                    visible={protocolModal}
+                    className="protocol-modal"
+                    title="到店自提协议"
+                    footer={[{text: '确定',
+                        onPress: () => {
+                            const type = decodeURI(getUrlParam('type', encodeURI(this.props.location.search)));
+                            if (type !== 'null') {
+                                native('loginout');
+                            }
+                            this.viewShopFile(false);
+                        }}]}
+                >
+                    <div className="protocol-content">{OrderSelf.agree}</div>
+                </Modal>
             </div>
         );
     }
