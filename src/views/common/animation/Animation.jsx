@@ -29,7 +29,7 @@ class Animation extends React.PureComponent {
         let num = 0;
         img.src = '../../../../src/assets/images/all.png';
         img.onload = () => {
-            const ratio = getPixelRatio(ctx);
+            const ratio = getPixelRatio(ctx) > 2 ? 2 : getPixelRatio(ctx);
             const animate = () => {
                 num++;
                 if (num % 2 === 0) {
