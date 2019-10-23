@@ -44,7 +44,7 @@ class ReDetail extends BaseComponent {
     componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方
         const numNext = this.statusChoose(nextProps.location.pathname.split('/')[2]);
         const numPrev = this.statusChoose(this.props.location.pathname.split('/')[2]);
-        if (hybrid && (numNext !== numPrev)) {
+        if (numNext !== numPrev) {
             this.setState({
                 status: numNext
             }, () => {

@@ -141,6 +141,8 @@ class Withdrawal extends BaseComponent {
                                     }
                                 }
                             }
+                        } else if (res.status === 1) {
+                            showInfo(res.message);
                         }
                     }
                 });
@@ -250,10 +252,6 @@ class Withdrawal extends BaseComponent {
 
     render() {
         const {selectorIndexName, money, pwsPopup, withdrawId, district, bankId, incomeData, bankIndex, bankImg, height} = this.state;
-        console.log(incomeData, bankIndex, '抗裂砂浆考虑对方');
-        console.log(incomeData.banks[bankIndex].bankId, '两节课的方式');
-        console.log(incomeData.banks[bankIndex].bankId, '两节课的方式');
-        console.log(bankImg[incomeData.banks[bankIndex].bankId][0], '是到付款， 接口');
         return (
             <div className={`Withdrawal extract ${withdrawId === 0 ? 'withdrawColor' : ''}`}>
                 <div className="cash-content">

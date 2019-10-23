@@ -477,7 +477,7 @@ class GoodsDetail extends BaseComponent {
                 showInfo('im');
             }
         } else if (opt.key === '5') {
-            appHistory.push('/invitation');//分享页面
+            appHistory.push('/invitation?share=1');//分享页面
         }
     };
 

@@ -18,7 +18,6 @@ export default () => {
     const goTo = () => {
         window.open('www.shop.zzha.vip.com');
     };
-    alert(123);
     return (
         <div className="open-shop">
             <AppNavBar

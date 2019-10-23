@@ -35,14 +35,10 @@ const dataList = [
 }));
 
 class Invitation extends BaseComponent {
-    state = {
-        imgId: 0 //储存生成分享码的图片
-    };
-
     componentDidMount() {
         this.getGeneratingICode();
         const share = decodeURI(getUrlParam('share', encodeURI(this.props.location.search)));
-        if (share !== '1') { //用来判断是否是点击分享按钮过来的，如果是，则就需要直接打开弹窗
+        if (share === '1') { //用来判断是否是点击分享按钮过来的，如果是，则就需要直接打开弹窗
             this.showShareActionSheet();
         }
     }
