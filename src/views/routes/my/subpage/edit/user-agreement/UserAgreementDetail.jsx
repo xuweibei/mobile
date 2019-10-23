@@ -97,7 +97,7 @@ class UserAgreementDetail extends BaseComponent {
                             onPress: () => {
                                 const type = decodeURI(getUrlParam('type', encodeURI(this.props.location.search)));
                                 if (hybrid && type !== 'null') {
-                                    native('loginout');
+                                    native('goBack');
                                 }
                                 this.showModal(false);
                             }}]}
