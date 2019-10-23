@@ -5,7 +5,7 @@ import MyListView from '../../../../../common/my-list-view/MyListView';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './SelfSearch.less';
 
-const {appHistory, getUrlParam, showFail, showInfo, systemApi: {removeValue}} = Utils;
+const {appHistory, getUrlParam, showInfo, systemApi: {removeValue}} = Utils;
 const {urlCfg} = Configs;
 const {MESSAGE: {Feedback}, FIELD, navColorR} = Constants;
 
@@ -19,7 +19,7 @@ class ReDetail extends BaseComponent {
         pageCount: -1, //一共有多少页
         pageList: [], //列表信息
         orderId: 0, //订单id
-        navColor: '@fiery-red' //nav背景颜色
+        height: document.documentElement.clientHeight - (window.isWX ? 0.75 : window.rem * 1.8)
     }
 
     componentDidMount() {
@@ -30,9 +30,9 @@ class ReDetail extends BaseComponent {
     getList = (drawCircle = false) => {
         //drawCircle 是否显示转圈圈动画 false 不显示  true 显示
         const {pageSize, pageCount, page} = this.state;
-        this.fetch(urlCfg.ondownSearch, {method: 'post', data: {page, pagesize: pageSize, pageCount, status: 0, key: decodeURI(getUrlParam('keywords', encodeURI(this.props.location.search)))}}, drawCircle)
+        this.fetch(urlCfg.ondownSearch, {data: {page, pagesize: pageSize, pageCount, status: 0, key: decodeURI(getUrlParam('keywords', encodeURI(this.props.location.search)))}}, drawCircle)
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     if (page === 1) {
                         this.setState({
                             refreshing: false,
@@ -44,8 +44,6 @@ class ReDetail extends BaseComponent {
                             pageList: prevState.pageList.concat(res.list)
                         }));
                     }
-                } else if (res.status === 1) {
-                    showFail(res.message);
                 }
             });
     }
@@ -97,15 +95,11 @@ class ReDetail extends BaseComponent {
         showConfirm({
             title: '是否删除该订单？',
             callbacks: [null, () => {
-                this.fetch(urlCfg.delMallOrder, {method: 'post', data: {deal: 1, id}})
+                this.fetch(urlCfg.delMallOrder, {data: {deal: 1, id}})
                     .subscribe(res => {
-                        if (res.status === 0) {
+                        if (res && res.status === 0) {
                             showInfo(Feedback.Del_Success);
-                            setTimeout(() => {
-                                this.getList();
-                            }, 1500);
-                        } else if (res.status === 1) {
-                            showFail(res.message);
+                            this.getList();
                         }
                     });
             }]
@@ -144,11 +138,7 @@ class ReDetail extends BaseComponent {
     }
 
     render() {
-        const {pageList, refreshing, isLoading, hasMore, navColor} = this.state;
-
-        //滚动容器高度
-        const height = document.documentElement.clientHeight - (window.isWX ? 0.75 : window.rem * 1.8);
-
+        const {pageList, refreshing, isLoading, hasMore, height} = this.state;
         //每行渲染样式
         const row = item => (
             <div className="shop-lists" key={item.id}>
@@ -160,7 +150,7 @@ class ReDetail extends BaseComponent {
                     </div>
                     <div className="right">{item.status_name}</div>
                 </div>
-                {item.pr_list.map(items => (
+                {item.pr_list && item.pr_list.map(items => (
                     <div className="goods" key={items.pr_id} onClick={() => this.skipDetail(item.id)}>
                         <div className="goods-left">
                             <div>
@@ -204,7 +194,6 @@ class ReDetail extends BaseComponent {
                         {/*等待使用*/}
                         {(item.status === '1' && item.return_status === '0') && (
                             <div className="buttons">
-                                {/* <div onClick={() => this.serviceRefund(item.id)}>退款</div> //暂时屏蔽 */}
                                 <div className="evaluate-button" onClick={() => this.skipSelf(item.id)}>立即使用</div>
                             </div>
                         )}
@@ -212,7 +201,6 @@ class ReDetail extends BaseComponent {
                         {item.status === '2' && (
                             <div className="buttons">
                                 <span className="look-button delete" onClick={() => this.deleteOrder(item.id)}>删除</span>
-                                {/* <div className="evaluate-button" onClick={() => this.promptlyAssess(item.id)}>待评价</div> 暂时屏蔽*/}
                             </div>
                         )}
                         {/*订单完成*/}
@@ -222,19 +210,13 @@ class ReDetail extends BaseComponent {
                                 <div className="evaluate-button" onClick={() => this.skipDetail(item.id)}>查看详情</div>
                             </div>
                         )}
-                        {/*1 退款中  3  退款成功 4  退款失败*/}
-                        {(item.return_status === '1' || item.return_status === '3' || item.status === '4') && (
-                            <div className="buttons">
-                                <div className="evaluate-button" onClick={() => this.skipDetail(item.id)}>查看详情</div>
-                            </div>
-                        )}
                     </div>
                 </div>
             </div>
         );
         return (
             <div data-component="Self-mention" data-role="page" className="self-search">
-                <AppNavBar title="线下订单" backgroundColor={navColor} goToSearch={this.goToSearch} rightShow white color={navColorR}/>
+                <AppNavBar title="线下订单" backgroundColor={navColorR} goToSearch={this.goToSearch} rightShow white color={navColorR}/>
                 <React.Fragment>
                     {pageList && pageList.length > 0 ? (
                         <MyListView

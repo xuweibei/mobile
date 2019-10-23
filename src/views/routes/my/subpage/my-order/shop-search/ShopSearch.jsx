@@ -2,14 +2,12 @@
  * @desc 我的订单的搜索页面
  */
 import {InputItem, Button, Icon} from 'antd-mobile';
-import {dropByCacheKey} from 'react-router-cache-route';
-import {connect} from 'react-redux';
 import './ShopSearch.less';
 
 const {urlCfg} = Configs;
 const {appHistory} = Utils;
 
-class Search extends BaseComponent {
+export default class Search extends BaseComponent {
     state = {
         history: null, //历史记录
         textStatus: false, //右边文字状态
@@ -18,10 +16,6 @@ class Search extends BaseComponent {
 
     componentDidMount() {
         this.searchList();
-    }
-
-    componentWillMount() {
-        dropByCacheKey('CategoryListPage');
     }
 
     //搜索框类型跳转 false返回上级 true 进行搜索跳转
@@ -38,12 +32,10 @@ class Search extends BaseComponent {
     searchList = () => {
         this.fetch(urlCfg.orderViewHIstory)
             .subscribe((res) => {
-                if (res) {
-                    if (res.status === 0) {
-                        this.setState({
-                            history: res.history
-                        });
-                    }
+                if (res && res.status === 0) {
+                    this.setState({
+                        history: res.history
+                    });
                 }
             });
     };
@@ -95,7 +87,7 @@ class Search extends BaseComponent {
                                 <Button
                                     className="auxiliary-button gray"
                                     activeStyle={false}
-                                    key={index.toString()}
+                                    key={item.keyword}
                                     onClick={() => this.switchTo(item.keyword)}
                                 >{item.keyword}
                                 </Button>
@@ -107,12 +99,3 @@ class Search extends BaseComponent {
         );
     }
 }
-
-const mapStateToProps = state => {
-    const base = state.get('base');
-    return {
-        shoppingId: base.get('shoppingId')
-    };
-};
-
-export default connect(mapStateToProps, null)(Search);

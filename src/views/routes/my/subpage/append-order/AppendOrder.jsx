@@ -9,7 +9,7 @@ import {baseActionCreator as actionCreator} from '../../../../../redux/baseActio
 import AppNavBar from '../../../../common/navbar/NavBar';
 import './AppendOrder.less';
 
-const {appHistory, showFail, getUrlParam, getShopCartInfo, systemApi: {setValue, removeValue, getValue}, native} = Utils;
+const {appHistory, showFail, getUrlParam, getShopCartInfo, systemApi: {setValue, removeValue, getValue}, goBackModal} = Utils;
 const {urlCfg} = Configs;
 
 const nowTimeStamp = Date.now();
@@ -125,7 +125,7 @@ class appendOrder extends BaseComponent {
         } else {
             invoiceInfo = invoice;
         }
-        if (addressInfo.length === 0) {
+        if (!addressInfo && !address) {
             showFail('请选择您的收货地址');
             return;
         }
@@ -171,6 +171,7 @@ class appendOrder extends BaseComponent {
         });
     };
 
+    // 跳转店铺首页
     goToShop = (id) => {
         appHistory.push({pathname: `/shopHome?id=${id}`});
     };
@@ -307,58 +308,41 @@ class appendOrder extends BaseComponent {
         });
     }
 
-    goBackModal = () => {
-        if (hybrid && appHistory.length() === 0) {
-            native('goBack');
-        } else {
-            appHistory.goBack();
-        }
-    }
-
     //发票信息
     invoiceChange = (e, type) => {
         this.setState({
             [type]: e
+        }, () => {
+            const {invoiceIndex, invoice, currentIndex, invoiceName, invoiceNum, invoiceBank, invoiceAddress, bankCard, invoicePhone} = this.state;
+            const array = invoice;
+            array[invoiceIndex] = {
+                invoice_type: 1,
+                head_type: currentIndex + 1,
+                name: invoiceName,
+                tax_id: invoiceNum,
+                bank: invoiceBank,
+                enterprise_addr: invoiceAddress,
+                bank_card_no: bankCard,
+                enterprise_phone: invoicePhone
+            };
+            this.setState(prevState => {
+                prevState.invoice = array;
+                return {
+                    invoice: prevState.invoice
+                };
+            });
         });
     }
 
     //保存发票
     saveInvoice = () => {
-        const {invoiceIndex, invoice, currentIndex, invoiceName, invoiceNum, invoiceBank, invoiceAddress, bankCard, invoicePhone} = this.state;
-        const array = invoice;
-        array[invoiceIndex] = {
-            invoice_type: 1,
-            head_type: currentIndex + 1,
-            name: invoiceName,
-            tax_id: invoiceNum,
-            bank: invoiceBank,
-            enterprise_addr: invoiceAddress,
-            bank_card_no: bankCard,
-            enterprise_phone: invoicePhone
-        };
-        const {showConfirm} = this.props;
-        showConfirm({
-            title: '提示',
-            message: '是否确定提交该发票申请？',
-            btnTexts: ['取消', '确定'],
-            callbacks: [null, () => {
-                this.setState({
-                    invoice: array,
-                    invoiceStatus: false,
-                    invoiceName: '',
-                    invoiceNum: '',
-                    invoiceBank: '',
-                    invoiceAddress: '',
-                    bankCard: '',
-                    invoicePhone: ''
-                });
-                setValue('invoices', JSON.stringify(this.state.invoice));
-            }]
+        this.setState({
+            invoiceStatus: false
         });
     }
 
     render() {
-        const {shopInfo, addressInfo, total, order, self, currentIndex, textInfo, notAllow, invoiceStatus} = this.state;
+        const {shopInfo, addressInfo, total, order, self, currentIndex, textInfo, notAllow, invoiceStatus, invoice, invoiceIndex} = this.state;
         const {address} = this.props;
         const kind = [
             {title: '企业'},
@@ -366,7 +350,7 @@ class appendOrder extends BaseComponent {
         ];
         return (
             <div data-component="append-order" data-role="page" className="append-order">
-                <AppNavBar goBackModal={this.goBackModal} title="确认订单"/>
+                <AppNavBar goBackModal={goBackModal} title="确认订单"/>
                 <div>
                     <div className="container">
                         {
@@ -537,7 +521,7 @@ class appendOrder extends BaseComponent {
                                             <InputItem
                                                 placeholder={`请填写${textInfo}名称`}
                                                 maxLength={50}
-                                                // defaultValue={invoice && invoice[invoiceIndex].name}
+                                                defaultValue={invoice && invoice[invoiceIndex].name}
                                                 onChange={(e) => { this.invoiceChange(e, 'invoiceName') }}
                                             >
                                                 <span>*</span>{textInfo}
@@ -546,6 +530,7 @@ class appendOrder extends BaseComponent {
                                                 <InputItem
                                                     placeholder="请填写纳税人识别号"
                                                     maxLength={50}
+                                                    defaultValue={invoice && invoice[invoiceIndex].tax_id}
                                                     onChange={(e) => { this.invoiceChange(e, 'invoiceNum') }}
                                                 >
                                                     <span>*</span>纳税人识别号
@@ -558,6 +543,7 @@ class appendOrder extends BaseComponent {
                                                     <InputItem
                                                         placeholder="请填写开户银行"
                                                         maxLength={50}
+                                                        defaultValue={invoice && invoice[invoiceIndex].bank}
                                                         onChange={(e) => { this.invoiceChange(e, 'invoiceBank') }}
                                                     >
                                                         开户银行
@@ -565,6 +551,7 @@ class appendOrder extends BaseComponent {
                                                     <InputItem
                                                         placeholder="请填写企业地址"
                                                         maxLength={50}
+                                                        defaultValue={invoice && invoice[invoiceIndex].enterprise_addr}
                                                         onChange={(e) => { this.invoiceChange(e, 'invoiceAddress') }}
                                                     >
                                                         企业地址
@@ -572,6 +559,7 @@ class appendOrder extends BaseComponent {
                                                     <InputItem
                                                         placeholder="请填写银行卡号"
                                                         maxLength={50}
+                                                        defaultValue={invoice && invoice[invoiceIndex].bank_card_no}
                                                         type="number"
                                                         onChange={(e) => { this.invoiceChange(e, 'bankCard') }}
                                                     >
@@ -580,7 +568,7 @@ class appendOrder extends BaseComponent {
                                                     <InputItem
                                                         placeholder="请填写企业电话"
                                                         type="number"
-                                                        // defaultValue={invoice && invoice[invoiceIndex].enterprise_phone}
+                                                        defaultValue={invoice && invoice[invoiceIndex].enterprise_phone}
                                                         maxLength={11}
                                                         onChange={(e) => { this.invoiceChange(e, 'invoicePhone') }}
                                                     >

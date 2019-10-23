@@ -92,7 +92,7 @@ class ReDetail extends BaseComponent {
             }
         })
             .subscribe((res) => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     this.setState({
                         OrderSelf: res,
                         rdata: res.sufficiency.sufficiency_time,
@@ -133,7 +133,6 @@ class ReDetail extends BaseComponent {
 
     //选择自提时间
     radioChange = (value, valueItem) => {
-        console.log('checkbox', value);
         this.setState({
             value,
             valueItem,
@@ -193,7 +192,7 @@ class ReDetail extends BaseComponent {
     //立即付款
     submitSelf = () => {
         const {value, radioTreaty, alertPhone, currentTab, textarea, shopdata} = this.state;
-        const {setOrderInfo, arr, carId} = this.props;
+        const {setOrderInfo, arr, carId, location: {search}} = this.props;
         const shopArr = [];
         // console.log(shopdata);
         shopArr.push({shop_id: shopdata.shop_id});
@@ -217,7 +216,7 @@ class ReDetail extends BaseComponent {
         } else {
             //后端判断自提从哪里进入 类型
             let sou = 2;
-            const source = decodeURI(getUrlParam('source', encodeURI(this.props.location.search)));
+            const source = decodeURI(getUrlParam('source', encodeURI(search)));
             if (source !== 'null') {
                 sou = source;
             }
@@ -232,14 +231,13 @@ class ReDetail extends BaseComponent {
                     car_id: carId,
                     type: arr[0].if_express === '3' ? '2' : '1'
                 }
-            })
-                .subscribe((res) => {
-                    if (res.status === 0) {
-                        setOrderInfo(res);
-                        appHistory.replace(`/payMoney?source=${sou}&selfOrder=1`);
-                    }
-                    setValue('orderInfo', JSON.stringify(res));
-                });
+            }).subscribe((res) => {
+                if (res && res.status === 0) {
+                    setOrderInfo(res);
+                    appHistory.replace(`/payMoney?source=${sou}&selfOrder=1`);
+                }
+                setValue('orderInfo', JSON.stringify(res));
+            });
         }
     }
 
@@ -320,7 +318,7 @@ class ReDetail extends BaseComponent {
                         </div>
                         <div className="shop-name-right">营业时间{shopdata.open_time || '暂无'}</div>
                     </div>
-                    {goodsArr.map(item => (
+                    {goodsArr && goodsArr.map(item => (
                         <div className="goods" key={item.id}>
                             <div className="goods-left">
                                 <div>
