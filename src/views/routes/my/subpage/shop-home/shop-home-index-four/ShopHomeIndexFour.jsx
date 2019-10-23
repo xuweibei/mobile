@@ -6,6 +6,7 @@ import './ShopHomeIndexFour.less';
 import CarouselComponent from '../components/CarouselComponent';
 import GoodsTitle from '../components/GoodsTitle';
 import Products from '../components/Products';
+import HotProducts from '../components/HotProducts';
 
 
 const {appHistory} = Utils;
@@ -21,6 +22,7 @@ class ShopHomeIndexFour extends React.PureComponent {
 
     render() {
         const {shopModelArr: {picurl, content}} = this.props;
+        const goodsList1 = [content.sort2_pr1_ix];
         const goodsList2 = [
             content.sort2_pr2_ix,
             content.sort2_pr3_ix,
@@ -64,21 +66,14 @@ class ShopHomeIndexFour extends React.PureComponent {
                             title2={content.sort2_title2}
                             modalId={4}
                         />
-                        <div className="sell-commodity-box">
-                            <div className={(picurl && content && picurl[content.sort2_pr1_ix] && content.sort2_pr1_title1 && content.sort2_pr1_title2 && content.sort2_pr1_title3) ? 'sell' : 'sell no-edit-model'}>
-                                <div className="sell-goods">
-                                    <img src={picurl && picurl[content.sort2_pr1_ix]} onClick={() => this.goToGoods(content.sort2_pr1_id)} alt=""/>
-                                </div>
-                                <div className="headline-price">
-                                    <div className="headline">{content && content.sort2_pr1_title1}</div>
-                                    <div className="price">
-                                        <span className="money-ZH">￥</span>
-                                        <span className="money-now">{content && content.sort2_pr1_title2}</span>
-                                        <span className="money-before">{content && content.sort2_pr1_title3}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <HotProducts
+                            content={content}
+                            sort={2}
+                            hotSellList={goodsList1}
+                            picurl={picurl}
+                            mode2={1}
+                            goToGoods={this.goToGoods}
+                        />
                         <Products
                             content={content}
                             sort={2}

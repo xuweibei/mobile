@@ -148,6 +148,7 @@ class ShopHomeIndexTwo extends React.PureComponent {
                                                 <img
                                                     src={item.url}
                                                     alt=""
+                                                    style={{height: '165px'}}
                                                     onClick={() => this.goToGoods(item.id)}
                                                 />
                                                 <div className="introduce">

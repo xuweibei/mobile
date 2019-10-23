@@ -18,6 +18,25 @@ const tabs = [
     {title: '微信零钱'},
     {title: '银行卡'}
 ];
+const bankImg = {
+    1: [0, 0],
+    2: [-75, 0],
+    3: [-150, 0],
+    4: [-225, 0],
+    5: [-300, 0],
+    6: [-375, 0],
+    7: [-450, 0],
+    14: [-525, 0],
+    9: [-600, 0],
+    13: [-625, 0],
+    8: [-700, 0],
+    10: [-825, 0],
+    11: [-900, 0],
+    15: [0, -75], //第二排
+    16: [-75, -75],
+    17: [-150, -75],
+    12: [-225, -75]
+}; //银行图标雪碧图位置
 
 class Withdrawal extends BaseComponent {
     state = {
@@ -31,26 +50,7 @@ class Withdrawal extends BaseComponent {
         checkedWit: false, //是否同意提现
         money: null, //提现金额
         bankId: 0, //银行卡Id
-        pwsPopup: false, //是否弹出支付框
-        bankImg: {
-            18: [0, 0],
-            19: [-75, 0],
-            20: [-150, 0],
-            21: [-225, 0],
-            22: [-300, 0],
-            23: [-375, 0],
-            24: [-450, 0],
-            25: [-750, 0],
-            26: [-600, 0],
-            27: [-825, 0],
-            28: [-900, 0],
-            29: [-225, -75],
-            30: [-675, 0],
-            31: [-525, 0],
-            32: [0, -75],
-            33: [-75, -75],
-            34: [-150, -75]
-        }
+        pwsPopup: false //是否弹出支付框
     };
 
     componentDidMount() {
@@ -251,7 +251,7 @@ class Withdrawal extends BaseComponent {
     }
 
     render() {
-        const {selectorIndexName, money, pwsPopup, withdrawId, district, bankId, incomeData, bankIndex, bankImg, height} = this.state;
+        const {selectorIndexName, money, pwsPopup, withdrawId, district, bankId, incomeData, bankIndex, height} = this.state;
         return (
             <div className={`Withdrawal extract ${withdrawId === 0 ? 'withdrawColor' : ''}`}>
                 <div className="cash-content">
