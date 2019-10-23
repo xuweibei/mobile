@@ -63,9 +63,10 @@ class PaymentCompleted extends BaseComponent {
     }
 
     render() {
-        const allPrice = decodeURI(getUrlParam('allPrice', encodeURI(this.props.location.search)));
-        const deposit = decodeURI(getUrlParam('deposit', encodeURI(this.props.location.search)));
-        const types = decodeURI(getUrlParam('types', encodeURI(this.props.location.search)));
+        const {location: {search}} = this.props;
+        const allPrice = decodeURI(getUrlParam('allPrice', encodeURI(search)));
+        const deposit = decodeURI(getUrlParam('deposit', encodeURI(search)));
+        const types = decodeURI(getUrlParam('types', encodeURI(search)));
         let str = '';
         mode.forEach(item => {
             if (item.value === types) {

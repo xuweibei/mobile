@@ -10,7 +10,7 @@ import CancelOrder from '../../../../common/cancel-order/CancleOrder';
 import MyListView from '../../../../common/my-list-view/MyListView';
 import AppNavBar from '../../../../common/navbar/NavBar';
 
-const {appHistory, showFail, showInfo, native, getUrlParam} = Utils;
+const {appHistory, showInfo, native, getUrlParam} = Utils;
 const {urlCfg} = Configs;
 const {MESSAGE: {Feedback}, FIELD, navColorR} = Constants;
 const hybrid = process.env.NATIVE;
@@ -32,7 +32,8 @@ class ReDetail extends BaseComponent {
         pageList: [], //列表信息
         orderId: 0, //订单id
         canStatus: false, //是否弹出取消框
-        navColor: '@fiery-red' //nav背景颜色
+        navColor: '@fiery-red', //nav背景颜色
+        height: document.documentElement.clientHeight - (window.isWX ? 0.75 : window.rem * 1.8)
     }
 
     componentWillMount() {
@@ -44,12 +45,6 @@ class ReDetail extends BaseComponent {
         const numNext = this.statusChoose(nextProps.location.pathname.split('/')[2]);
         const numPrev = this.statusChoose(this.props.location.pathname.split('/')[2]);
         if (hybrid && (numNext !== numPrev)) {
-            this.setState({
-                status: numNext
-            }, () => {
-                this.init(numNext);
-            });
-        } else if (numNext !== numPrev) {
             this.setState({
                 status: numNext
             }, () => {
@@ -68,30 +63,21 @@ class ReDetail extends BaseComponent {
 
     //进入订单页面，判断为什么状态
     statusChoose = (str) => {
-        let numStr = 0;
-        switch (str) {
-        case 'ww':
-            numStr = 1;
-            break;
-        case 'yw':
-            numStr = 2;
-            break;
-        case 'sh':
-            numStr = 3;
-            break;
-        default:
-            numStr = 0;
-        }
-        return numStr;
+        const arr = new Map([
+            ['ww', 1],
+            ['yw', 2],
+            ['sh', 3]
+        ]);
+        return arr.get(str) || 0;
     }
 
     //获取订单列表信息
     getList = (drawCircle = false) => {
         //drawCircle 是否显示转圈圈动画 false 不显示  true 显示
         const {pageSize, pageCount, page, status} = this.state;
-        this.fetch(urlCfg.mallSelfOrder, {method: 'post', data: {page, pagesize: pageSize, pageCount, status}}, drawCircle)
+        this.fetch(urlCfg.mallSelfOrder, {data: {page, pagesize: pageSize, pageCount, status}}, drawCircle)
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     if (page === 1) {
                         this.setState({
                             refreshing: false,
@@ -103,8 +89,6 @@ class ReDetail extends BaseComponent {
                             pageList: prevState.pageList.concat(res.list)
                         }));
                     }
-                } else if (res.status === 1) {
-                    showFail(res.message);
                 }
             });
     }
@@ -174,9 +158,9 @@ class ReDetail extends BaseComponent {
         const {orderId} = this.state;
         if (state === 'mastSure') {
             if (value) {
-                this.fetch(urlCfg.delMallOrder, {method: 'post', data: {deal: 0, id: orderId, reason: value.label, reason_id: value.value}})
+                this.fetch(urlCfg.delMallOrder, {data: {deal: 0, id: orderId, reason: value.label, reason_id: value.value}})
                     .subscribe(res => {
-                        if (res.status === 0) {
+                        if (res && res.status === 0) {
                             showInfo(Feedback.Cancel_Success);
                             this.setState({
                                 page: 1,
@@ -185,8 +169,6 @@ class ReDetail extends BaseComponent {
                             setTimeout(() => {
                                 this.getList();
                             }, 1500);
-                        } else if (res.status === 1) {
-                            showFail(res.message);
                         }
                     });
                 this.setState({
@@ -208,19 +190,16 @@ class ReDetail extends BaseComponent {
         showConfirm({
             title: '是否删除该订单',
             callbacks: [null, () => {
-                this.fetch(urlCfg.delMallOrder, {method: 'post', data: {deal: 1, id}})
+                this.fetch(urlCfg.delMallOrder, {data: {deal: 1, id}})
                     .subscribe(res => {
-                        if (res.status === 0) {
+                        if (res && res.status === 0) {
                             showInfo(Feedback.Del_Success);
                             this.setState({
                                 page: 1,
                                 pageCount: -1
-                            });
-                            setTimeout(() => {
+                            }, () => {
                                 this.getList();
-                            }, 1500);
-                        } else if (res.status === 1) {
-                            showFail(res.message);
+                            });
                         }
                     });
             }]
@@ -276,6 +255,7 @@ class ReDetail extends BaseComponent {
         e.stopPropagation();
     }
 
+    //前往搜索页面
     goToSearch = () => {
         appHistory.push('/self-search');
     }
@@ -295,9 +275,7 @@ class ReDetail extends BaseComponent {
     }
 
     render() {
-        const {pageList, status, refreshing, isLoading, hasMore, canStatus, navColor} = this.state;
-        //滚动容器高度
-        const height = document.documentElement.clientHeight - (window.isWX ? 0.75 : window.rem * 1.8);
+        const {pageList, status, refreshing, isLoading, hasMore, canStatus, navColor, height} = this.state;
 
         //每行渲染样式
         const row = item => (
@@ -310,7 +288,7 @@ class ReDetail extends BaseComponent {
                     </div>
                     <div className="right">{item.status_name}</div>
                 </div>
-                {item.pr_list.map(items => (
+                {item.pr_list && item.pr_list.map(items => (
                     <div className="goods" key={items.pr_id}>
                         <div className="goods-left">
                             <div>
@@ -430,14 +408,7 @@ class ReDetail extends BaseComponent {
     }
 }
 
-const mapStateToProps = state => {
-    const base = state.get('base');
-    return {
-        orderStatus: base.get('orderStatus')
-    };
-};
 const mapDidpatchToProps = {
-    setOrderStatus: actionCreator.setOrderStatus,
     showConfirm: actionCreator.showConfirm
 };
-export default connect(mapStateToProps, mapDidpatchToProps)(ReDetail);
+export default connect(null, mapDidpatchToProps)(ReDetail);
