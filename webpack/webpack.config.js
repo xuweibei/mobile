@@ -298,7 +298,7 @@ module.exports = (env = {}) => {
                 env: ENV.path()
             }),
             new ExtractTextPlugin({
-                filename: '[name].css',
+                filename: '[name].[hash:8].css',
                 allChunks: true,
                 disable: ENV.isDevEnv()
             }),
