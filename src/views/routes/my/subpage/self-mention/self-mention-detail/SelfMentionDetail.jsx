@@ -31,7 +31,8 @@ class ReDetail extends BaseComponent {
         goodsArr: [], //订单商品遍历
         shopdata: [], //店铺
         address: '', //门店地址
-        textarea: '' //获取备注信息
+        textarea: '', //获取备注信息
+        protocolModal: false //协议弹出框
     }
 
     componentDidMount() {
@@ -241,14 +242,10 @@ class ReDetail extends BaseComponent {
     }
 
     //点击弹出到店协议
-    viewShopFile = (ev) => {
-        const {showAlert} = this.props;
-        const {OrderSelf} = this.state;
-        showAlert({
-            title: OrderSelf.agree,
-            btnText: '好'
+    viewShopFile = (protocolModal) => {
+        this.setState({
+            protocolModal
         });
-        ev.stopPropagation();
     }
 
     goBackModal = () => {
@@ -269,7 +266,7 @@ class ReDetail extends BaseComponent {
 
     render() {
         const arr = JSON.parse(getValue('orderArr'));
-        const {OrderSelf, radioTreaty, modal, tabsr, currentTab, value, alertPhone, showPhone, shopdata, goodsArr, address, textarea, onOffDisable} = this.state;
+        const {OrderSelf, protocolModal, radioTreaty, modal, tabsr, currentTab, value, alertPhone, showPhone, shopdata, goodsArr, address, textarea, onOffDisable} = this.state;
         return (
             <div data-component="Self-mentionDetail" data-role="page" className="Self-mentionDetail">
                 <AppNavBar goBackModal={this.goBackModal} rightShow title="确认订单"/>
@@ -309,7 +306,7 @@ class ReDetail extends BaseComponent {
                             }
                         </div>
                     </div>
-                    <div className={`my-radio icon ${radioTreaty === true ? 'endorse' : ''}`} onClick={this.radioTreaty}>同意<span className="agreement" onClick={this.viewShopFile}>《到店自提协议》</span></div>
+                    <div className={`my-radio icon ${radioTreaty === true ? 'endorse' : ''}`} onClick={this.radioTreaty}>同意<span className="agreement" onClick={() => this.viewShopFile(true)}>《到店自提协议》</span></div>
                 </div>
 
                 <div className="shop-lists">
@@ -393,6 +390,22 @@ class ReDetail extends BaseComponent {
                         </Tabs>
                     </Modal>
                 )}
+                {/*到店自提协议模态框*/}
+                <Modal
+                    visible={protocolModal}
+                    className="protocol-modal"
+                    title="到店自提协议"
+                    footer={[{text: '确定',
+                        onPress: () => {
+                            const type = decodeURI(getUrlParam('type', encodeURI(this.props.location.search)));
+                            if (type !== 'null') {
+                                native('loginout');
+                            }
+                            this.viewShopFile(false);
+                        }}]}
+                >
+                    <div className="protocol-content">{OrderSelf.agree}</div>
+                </Modal>
             </div>
         );
     }
