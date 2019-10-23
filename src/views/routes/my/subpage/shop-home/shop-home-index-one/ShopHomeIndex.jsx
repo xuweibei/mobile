@@ -7,6 +7,7 @@ import './ShopHomeIndex.less';
 import GoodsTitle from '../components/GoodsTitle';
 import CarouselComponent from '../components/CarouselComponent';
 import Products from '../components/Products';
+import HotProducts from '../components/HotProducts';
 
 const {appHistory} = Utils;
 
@@ -22,22 +23,8 @@ class ShopHomeIndex extends React.PureComponent {
     render() {
         const {shopModelArr: {content, picurl}} = this.props;
         const hotSellList = [
-            {
-                id: content.sort1_pr1_id,
-                pic: picurl[1],
-                unit: '￥',
-                title1: content.sort1_pr1_title1,
-                title2: content.sort1_pr1_title2,
-                title3: content.sort1_pr1_title3
-            },
-            {
-                id: content.sort1_pr2_id,
-                pic: picurl[2],
-                unit: '￥',
-                title1: content.sort1_pr2_title1,
-                title2: content.sort1_pr2_title2,
-                title3: content.sort1_pr2_title3
-            }
+            content.sort1_pr1_ix,
+            content.sort1_pr2_ix
         ];
         //新品商品第一部分ix值
         const newSellList1 = [
@@ -61,32 +48,21 @@ class ShopHomeIndex extends React.PureComponent {
                         cHeight={475}
                         goToGoods={this.goToGoods}
                     />
-                    <div className="items" style={{marginTop: '30px'}}>
+                    <div className="items">
                         <GoodsTitle
                             title1={content.sort1_title1}
                             title2={content.sort1_title2}
                             title3={content.sort1_title3}
                             modalId={1}
                         />
-                        <div className="hotImgShow">
-                            {
-                                hotSellList.map(item => (
-                                    <div className="top" key={item}>
-                                        <img onClick={() => this.goToGoods(item.id)} src={item.pic} alt=""/>
-                                        <div className="priceInfo">
-                                            <div className="infoLeft">
-                                                <p className="shopTitleSmall">{item.title1}</p>
-                                                <div className="shopPeiceSmall">
-                                                    <span className="money-ZH">{item.unit}</span>
-                                                    <span className="money-now">{item.title2}</span>
-                                                    <span className="money-before">{item.title3}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))
-                            }
-                        </div>
+                        <HotProducts
+                            content={content}
+                            sort={1}
+                            hotSellList={hotSellList}
+                            picurl={picurl}
+                            mode2={0}
+                            goToGoods={this.goToGoods}
+                        />
                     </div>
                     <div className="items">
                         <GoodsTitle
