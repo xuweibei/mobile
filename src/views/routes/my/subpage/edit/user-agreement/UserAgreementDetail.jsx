@@ -32,31 +32,46 @@ class UserAgreementDetail extends BaseComponent {
 
     //协议弹窗
     getProtocol = (num) => {
-        this.fetch(urlCfg.getAgreement, {data: {type: num}})
-            .subscribe(res => {
-                if (res && res.status === 0) {
-                    if (res.data) {
-                        const proArr = new Map([
-                            [1, res.data.pr_content],
-                            [2, res.data.card_content],
-                            [3, res.data.secret_content],
-                            [4, res.data.member_content]
-                        ]);
-                        const proArrTitle = new Map([
-                            [1, '软件许可使用协议'],
-                            [2, '平台服务协议'],
-                            [3, '特别说明'],
-                            [4, '版本信息隐私权政策']
-                        ]);
-                        this.setState({
-                            protocol: proArr.get(num) || '',
-                            protocolTitle: proArrTitle.get(num) || ''
-                        }, () => {
-                            this.showModal(true);
-                        });
+        if (num > 0) {
+            this.fetch(urlCfg.getAgreement, {data: {type: num}})
+                .subscribe(res => {
+                    if (res && res.status === 0) {
+                        if (res.data) {
+                            const proArr = new Map([
+                                [1, res.data.pr_content],
+                                [2, res.data.card_content],
+                                [3, res.data.secret_content],
+                                [4, res.data.member_content]
+                            ]);
+                            const proArrTitle = new Map([
+                                [1, '软件许可使用协议'],
+                                [2, '平台服务协议'],
+                                [3, '特别说明'],
+                                [4, '版本信息隐私权政策']
+                            ]);
+                            this.setState({
+                                protocol: proArr.get(num) || '',
+                                protocolTitle: proArrTitle.get(num) || ''
+                            }, () => {
+                                this.showModal(true);
+                            });
+                        }
                     }
-                }
+                });
+        } else {
+            this.setState({
+                protocol: (
+                    <div className="version-info">
+                        <p>中华人民共和国<br/>增值电信业务经营许可证
+                        </p>
+                        <p className="allow-number">经营许可证编号：鲁B2-20190240</p>
+                    </div>
+                ),
+                protocolTitle: '版本信息'
+            }, () => {
+                this.showModal(true);
             });
+        }
     }
 
     showModal = (modal) => {
