@@ -578,7 +578,7 @@ class My extends BaseComponent {
                                             autoplayInterval={3000}
                                         >
                                             { picArr.map(val => (
-                                                <img key={val.url} src={val.url} onClick={() => this.jumpRouter(val.urls.split('#')[1])}/>
+                                                <img key={val.url} src={val.url}/>
                                             ))}
                                         </Carousel>
                                     </WingBlank>

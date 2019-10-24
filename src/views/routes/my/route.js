@@ -64,10 +64,10 @@ const ShopHomePage = Loadable({
     loader: () => import(/* webpackChunkName: 'hybird' */ './subpage/shop-home/route'),
     loading: () => null
 });
-// const OpenShopPage = Loadable({
-//     loader: () => import(/* webpackChunkName: 'hybird' */ './subpage/open-shop/route'),
-//     loading: () => null
-// });
+const OpenShopPage = Loadable({
+    loader: () => import(/* webpackChunkName: 'hybird' */ './subpage/open-shop/route'),
+    loading: () => null
+});
 const PeraonalSotes = Loadable({
     loader: () => import(/* webpackChunkName: 'hybird' */ './subpage/personal-stores/route'),
     loading: () => null
@@ -110,7 +110,7 @@ const My = () => {
                 <WithdrawalRouters/>
                 <ShopHomePage/>{/*我的店铺*/}
                 <RecordPage/>
-                {/* <OpenShopPage/>我要开店 */}
+                <OpenShopPage/>
                 <PeraonalSotes/>{/*我的店铺 */}
                 <BrowseHistory/>{/*浏览历史 */}
                 <RollOutModal/>{/*CAM转出*/}
@@ -137,7 +137,7 @@ const My = () => {
             <ShopHomePage/>{/*我的店铺*/}
             <WithdrawalRouters/>
             <RecordPage/>
-            {/* <OpenShopPage/>我要开店 */}
+            <OpenShopPage/>
             <PeraonalSotes/>{/**我的店铺 */}
             <BrowseHistory/>{/**浏览历史 */}
             <RollOutModal/>{/*CAM转出*/}

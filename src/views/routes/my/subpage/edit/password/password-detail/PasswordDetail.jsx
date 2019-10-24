@@ -3,6 +3,7 @@ import React from 'react';
 import {InputItem, Button, NavBar, Icon} from 'antd-mobile';
 import {connect} from 'react-redux';
 import {createForm} from 'rc-form';
+import classnames from 'classnames';
 import VerificationCode from '../../../../../../common/verification-code';
 import GeisInputItem from '../../../../../../common/form/input/GeisInputItem';
 import {baseActionCreator as actionCreator} from '../../../../../../../redux/baseAction';
@@ -276,13 +277,17 @@ class passwordDetail extends BaseComponent {
                 {
                     phoneShow && (
                         <div>
-                            <NavBar
-                                className="nab"
-                                icon={<Icon type="left" size="lg" onClick={this.goBackModal}/>}
-                            >
+                            {
+                                !window.isWX && (
+                                    <NavBar
+                                        className="nab"
+                                        icon={<Icon type="left" size="lg" onClick={this.goBackModal}/>}
+                                    >
                                身份验证
-                            </NavBar>
-                            <div className="input-box">
+                                    </NavBar>
+                                )
+                            }
+                            <div className={classnames('input-box', {'wx-input-box': window.isWX})}>
                                 {
                                     getFieldDecorator('phone', {
                                         initialValue: '',

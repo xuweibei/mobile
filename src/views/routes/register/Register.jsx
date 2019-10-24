@@ -83,8 +83,6 @@ class Register extends BaseComponent {
         ev.stopPropagation();
         this.setState({
             fouceShow: '1'
-        }, () => {
-            console.log(this.state.fouceShow);
         });
     }
 

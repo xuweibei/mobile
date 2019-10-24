@@ -1,5 +1,6 @@
 import {Button, InputItem, NavBar, Icon} from 'antd-mobile';
 import {createForm} from 'rc-form';
+import classnames from 'classnames';
 import VerificationCode from '../../../../../../common/verification-code';
 import {InputGrid} from '../../../../../../common/input-grid/InputGrid';
 import './PasswordPayment.less';
@@ -242,13 +243,17 @@ class passwordPayment extends BaseComponent {
                 {editModal === 'default' && (
                     <div data-component="password-detail" data-role="page" className="password-detail">
                         <div>
-                            <NavBar
-                                className="nab"
-                                icon={<Icon type="left" size="lg" onClick={() => { appHistory.goBack() }}/>}
-                            >
+                            {
+                                !window.isWX && (
+                                    <NavBar
+                                        className="nab"
+                                        icon={<Icon type="left" size="lg" onClick={() => { appHistory.goBack() }}/>}
+                                    >
                             身份验证
-                            </NavBar>
-                            <div className="cipher-box">
+                                    </NavBar>
+                                )
+                            }
+                            <div className={classnames('cipher-box', {wxCipher: window.isWX})}>
                                 {
                                     getFieldDecorator('phone', {
                                         initialValue: '',

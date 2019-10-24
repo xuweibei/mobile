@@ -4,6 +4,7 @@
 
 import {List} from 'antd-mobile';
 import {connect} from 'react-redux';
+import classnames from 'classnames';
 import {baseActionCreator as actionCreator} from '../../../../../redux/baseAction';
 import AppNavBar from '../../../../common/navbar/NavBar';
 import './MyAssets.less';
@@ -137,7 +138,7 @@ class MyAssets extends BaseComponent {
     render() {
         const {editModal} = this.state;
         return (
-            <div className="my-ass">
+            <div className={classnames('my-ass', {'wx-my-ass': window.isWX})}>
                 {!editModal && this.defaultModel()}
             </div>
         );

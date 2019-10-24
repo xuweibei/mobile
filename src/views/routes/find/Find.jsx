@@ -4,7 +4,6 @@
 import {connect} from 'react-redux';
 import classNames from 'classnames';
 import {Button, SearchBar, Icon as ATIcon, Accordion} from 'antd-mobile';
-// import {dropByCacheKey} from 'react-router-cache-route';
 import {baseActionCreator as actionCreator} from '../../../redux/baseAction';
 import {findActionCreator} from './actions/index';
 import {IconFont} from '../../common/icon-font/IconFont';
@@ -15,9 +14,6 @@ import './Find.less';
 
 
 const {MESSAGE: {Form, Feedback}, TD_EVENT_ID, BASE_64: {LOCATION, CURRENT_LOCATION}} = Constants;
-// const marker = require('./../../../assets/images/xxdw.png');
-// const self = require('./../../../assets/images/xxzz.png');
-// const self = LOCATION;
 
 
 const Marker = new window.BMap.Icon(LOCATION, new window.BMap.Size(30, 30), {
@@ -326,11 +322,10 @@ class Find extends BaseComponent {
     //搜索商店
     hidePopup = (type) => {
         const {shopName, address, latitude, longitude} = this.state;
-        // console.log(shopName);
-        this.setState({
-            searchLeft: '店铺列表',
-            searchRight: '取消搜索'
-        });
+        // this.setState({
+        //     searchLeft: '店铺列表',
+        //     searchRight: '取消搜索'
+        // });
         if (type === 'shopName') {
             if (shopName.length === 0) {
                 showInfo(Form.No_StoreName);
@@ -348,14 +343,7 @@ class Find extends BaseComponent {
                                 shopList: res,
                                 shops: res.data
                             }, () => {
-                                //设置中心点
-                                // const point = new window.BMap.Point(this.state.addressLongitude, this.state.addressLatitude);
-                                // console.log(point);
-                                // this.addressGeoc(point);
-                                // this.map.centerAndZoom(point, 16);
-                                // this.getShop(this.state.addressLongitude, this.state.addressLatitude);
                                 this.renderMap();
-                                // this.selfMarker(point);
                             });
                         } else {
                             showInfo(Form.No_Search_Shop);
@@ -368,8 +356,8 @@ class Find extends BaseComponent {
             } else {
                 this.addressGoGeoc(address);
                 this.setState({
-                    showPopup2: false,
-                    toggle: true
+                    showPopup2: false
+                    // toggle: true
                 });
             }
         }

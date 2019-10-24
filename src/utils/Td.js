@@ -12,7 +12,7 @@ const basekv = {
 
 export const TD = {
     log: (eventId, label = '', kv = {}) => {
-        if (hybrid) {
+        if (hybrid || window.isWX) {
             console.log(eventId);
         } else {
             const newKv = Object.assign({}, basekv, kv);

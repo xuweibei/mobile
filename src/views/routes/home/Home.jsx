@@ -76,6 +76,7 @@ class Home extends BaseComponent {
 
     //微信跳转 跳转登陆
     login() {
+        console.log(this.props.code, 'ssssssssssssssssssssssssssss');
         return this.fetch(urlCfg.login, {
             data: {
                 token: appCfg.wxToken,
@@ -85,7 +86,9 @@ class Home extends BaseComponent {
         })
             .subscribe((res) => {
                 if (res) {
+                    console.log('知道啦知道啦失败啦你', res);
                     if (res.status === 0) {
+                        console.log('知道啦知道啦成功啦你');
                         const {setUserToken} = this.props;
                         setUserToken(res.LoginSessionKey);
                     }
@@ -153,11 +156,23 @@ class Home extends BaseComponent {
     //扫一扫
     lookLook = () => {
         const {userToken} = this.state;
-        if (userToken && userToken.length > 0 && !window.isWX) {
-            return;
-        }
-        if (!userToken) {
-            appHistory.push('/login');
+        if (window.isWX) {
+            window.wx.ready(() => {
+                window.wx.scanQRCode({
+                    needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+                    scanType: ['qrCode', 'barCode'], // 可以指定扫二维码还是一维码，默认二者都有
+                    success: function (res) {
+                        console.log(res); // 当needResult 为 1 时，扫码返回的结果
+                    }
+                });
+            });
+        } else {
+            if (userToken && userToken.length > 0 && !window.isWX) {
+                return;
+            }
+            if (!userToken) {
+                appHistory.push('/login');
+            }
         }
     };
 
@@ -205,7 +220,8 @@ class Home extends BaseComponent {
                             {
                                 userToken && userToken.length > 0 ? (
                                     <div className="home-searchBar-icon" onClick={this.lookLook}>
-                                        <div className="icon unInformation"/>
+                                        <span className="icon msg"/>
+                                        <span className="icon qrcode" onClick={this.looklook}/>
                                     </div>
                                 ) : (
                                     <div className="home-searchBar-icon" onClick={this.lookLook}>

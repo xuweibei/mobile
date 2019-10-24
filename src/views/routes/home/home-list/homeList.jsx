@@ -351,6 +351,7 @@ export default class HomeList extends BaseComponent {
             <div ref={ref => { this.tabsList = ref }} className={`tabs-list ${tabStatus ? 'fiexd-tabs' : ''}`}>
                 <Tabs
                     tabs={tabs}
+                    swipeable={false}
                     initialPage={0}
                     onChange={(tab, index) => this.tabClick(tab, index)}
                 >
