@@ -5,12 +5,110 @@
         <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=yes"/>
         <meta name="format-detection" content="telephone=no"/>
         <title>CAM商城</title>
+        <% for (var css in htmlWebpackPlugin.files.css) { %>
+            <link href="<%=htmlWebpackPlugin.files.css[css] %>" rel="stylesheet"/>
+            <% } %>
+            <style>
+                /* .loading-canvas{
+                    width: 100%;
+                    height: 96vh;
+                    background: #ffffff
+                }
+                .canvas-drawing{
+                    width: 100%;
+                    height: 332px;
+                    margin:70px auto;
+                } */
+                body{
+                    margin: 0;
+                }
+                #loading{
+                    position: relative;
+                    height: 100vh;
+                    background-color: #ff5b53;
+                    /* transition: display 1s ease 0; */
+                }
+                .c-box{
+                    /* background: url('../src/assets/images/c-bg.png'); */
+                    padding-top: 200px;
+                    text-align: center;
+                    background-color: #ff5b53;
+                    position: absolute;
+                    top: 0;
+                    width: 100%;
+                }
+                #c-logo{
+                    height: 87px;
+                }
+                .c-logo{
+                    margin: auto;
+                    width: 86px;
+                    height: 0;
+                    border-radius: 20px;
+                    box-sizing: border-box;
+                    background-color: #fff;
+                    /* box-shadow: ; */
+                    transform:rotateY(88deg);
+                    -ms-transform:rotateY(88deg); 	/* IE 9 */
+                    -moz-transform:rotateY(88deg); 	/* Firefox */
+                    -webkit-transform:rotateY(88deg); /* Safari 和 Chrome */
+                    animation:myFirst 2s ease-out 0.2s infinite forwards;
+                    -moz-animation:myFirst 2s ease-out 0.2s infinite forwards; /* Firefox */
+                    -webkit-animation:myFirst 2s ease-out 0.2s infinite forwards; /* Safari and Chrome */
+                    -o-animation:myFirst 2s ease-out 0.2s infinite forwards; /* Opera */
+                }
+                .c-logo img{
+                    width: 46px;
+                    height: 47px;
+                    opacity: 0;
+                    animation:mySecond 2s ease-in 0.2s infinite forwards;
+                    -moz-animation:mySecond 2s ease-in 0.2s infinite forwards; /* Firefox */
+                    -webkit-animation:mySecond 2s ease-in 0.2s infinite forwards; /* Safari and Chrome */
+                    -o-animation:mySecond 2s ease-in 0.2s infinite forwards; /* Opera */
+                }
+                .c-mask{
+                    position: absolute;
+                    height: 50px;
+                    width: 300px;
+                    background-color: #ff5b53;
+                    top: 0;
+                    z-index: 10;
+                    animation:myMask 2s linear 0.2s infinite forwards;
+                    -moz-animation:myMask 2s linear 0.2s infinite forwards; /* Firefox */
+                    -webkit-animation:myMask 2s linear 0.2s infinite forwards; /* Safari and Chrome */
+                    -o-animation:myMask 2s linear 0.2s infinite forwards; /* Opera */
+                }
+                @keyframes myFirst {
+                    0% {height: 0;transform: rotateY(88deg);padding: 0;}
+                    20% {height: 87px;transform: rotateY(88deg);padding: 0;}
+                    50% {height: 87px;transform: rotateY(720deg);padding:15px 20px;}
+                    100% {height: 87px;transform: rotateY(720deg);padding:15px 20px;}
+                }
+                @keyframes mySecond {
+                    0% {transform:scale(0);opacity: 0;}
+                    50% {transform:scale(0);opacity: 0;}
+                    55% {transform: scale(0.5);opacity: 1;}
+                    58% {transform: scale(0.5);opacity: 1;}
+                    59% {transform: scale(0.8);opacity: 1;}
+                    60% {transform:scale(1.1);opacity: 1;}
+                    70% {transform:scale(0.8);opacity: 1;}
+                    80% {transform:scale(0.8);opacity: 1;}
+                    95% {transform: scale(1);opacity: 1;}
+                    100% {transform: scale(1);opacity: 1;}
+                }
+                @keyframes myMask {
+                    0% {left: 0;}
+                    20% {left: 0;}
+                    50% {left: 300px;}
+                    100% {left: 300px;}
+                }
+            </style>
         <script src="http://at.alicdn.com/t/font_1151553_wu287zvy76s.js"></script>
         <script src="http://sdk.talkingdata.com/app/h5/v1?appid=A5A10D902BA54F699A1DE3361C7E7E07&vn=zpyg&vc=0.0.1"></script>
         <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=GFnu2bon0GPM7wuu8rPROimLuqi18eFE"></script>
-        <script type="text/javascript" src="../sdk/json2.js"></script>
+        <!-- <script type="text/javascript" src="../sdk/json2.js"></script> -->
         <!--web im sdk-->
-        <script type="text/javascript" src="../sdk/webim.js"></script>
+        <!-- <script type="text/javascript" src="../sdk/webim.js"></script> -->
         <script>
             function res() {
                 var deviceWidth = document.documentElement.clientWidth;
@@ -46,109 +144,8 @@
                 return false;
             }();
         </script>
-
-        <% for (var css in htmlWebpackPlugin.files.css) { %>
-        <link href="<%=htmlWebpackPlugin.files.css[css] %>" rel="stylesheet"/>
-        <% } %>
-        <style>
-            /* .loading-canvas{
-                width: 100%;
-                height: 96vh;
-                background: #ffffff
-            }
-            .canvas-drawing{
-                width: 100%;
-                height: 332px;
-                margin:70px auto;
-            } */
-            body{
-                margin: 0;
-            }
-            #loading{
-                position: relative;
-                height: 100vh;
-                background-color: #ff5b53;
-                /* transition: display 1s ease 0; */
-            }
-            .c-box{
-                /* background: url('../src/assets/images/c-bg.png'); */
-                padding-top: 200px;
-                text-align: center;
-                background-color: #ff5b53;
-                position: absolute;
-                top: 0;
-                width: 100%;
-            }
-            #c-logo{
-                height: 87px;
-            }
-            .c-logo{
-                margin: auto;
-                width: 86px;
-                height: 0;
-                border-radius: 20px;
-                padding: 10px 20px;
-                box-sizing: border-box;
-                background-color: #fff;
-                /* box-shadow: ; */
-                transform:rotateY(88deg);
-                -ms-transform:rotateY(88deg); 	/* IE 9 */
-                -moz-transform:rotateY(88deg); 	/* Firefox */
-                -webkit-transform:rotateY(88deg); /* Safari 和 Chrome */
-                animation:myFirst 2s ease-out 0.2s infinite forwards;
-                -moz-animation:myFirst 2s ease-out 0.2s infinite forwards; /* Firefox */
-                -webkit-animation:myFirst 2s ease-out 0.2s infinite forwards; /* Safari and Chrome */
-                -o-animation:myFirst 2s ease-out 0.2s infinite forwards; /* Opera */
-            }
-            .c-logo img{
-                width: 46px;
-                height: 47px;
-                opacity: 0;
-                animation:mySecond 2s ease-in 0.2s infinite forwards;
-                -moz-animation:mySecond 2s ease-in 0.2s infinite forwards; /* Firefox */
-                -webkit-animation:mySecond 2s ease-in 0.2s infinite forwards; /* Safari and Chrome */
-                -o-animation:mySecond 2s ease-in 0.2s infinite forwards; /* Opera */
-            }
-            .c-mask{
-                position: absolute;
-                height: 50px;
-                width: 300px;
-                background-color: #ff5b53;
-                top: 0;
-                z-index: 10;
-                animation:myMask 2s linear 0.2s infinite forwards;
-                -moz-animation:myMask 2s linear 0.2s infinite forwards; /* Firefox */
-                -webkit-animation:myMask 2s linear 0.2s infinite forwards; /* Safari and Chrome */
-                -o-animation:myMask 2s linear 0.2s infinite forwards; /* Opera */
-            }
-            @keyframes myFirst {
-                0% {height: 0;transform: rotateY(88deg);}
-                20% {height: 87px;transform: rotateY(88deg);}
-                50% {height: 87px;transform: rotateY(720deg);}
-                100% {height: 87px;transform: rotateY(720deg);}
-            }
-            @keyframes mySecond {
-                0% {transform:scale(0);opacity: 0;}
-                50% {transform:scale(0);opacity: 0;}
-                55% {transform: scale(0.5);opacity: 1;}
-                58% {transform: scale(0.5);opacity: 1;}
-                59% {transform: scale(0.8);opacity: 1;}
-                60% {transform:scale(1.1);opacity: 1;}
-                70% {transform:scale(0.8);opacity: 1;}
-                80% {transform:scale(0.8);opacity: 1;}
-                95% {transform: scale(1);opacity: 1;}
-                100% {transform: scale(1);opacity: 1;}
-            }
-            @keyframes myMask {
-                0% {left: 0;}
-                20% {left: 0;}
-                50% {left: 300px;}
-                100% {left: 300px;}
-            }
-        </style>
     </head>
     <body>
-        <!-- <div id="loading" class="loading-canvas"><canvas id="canvas" class="canvas-drawing" height="450" width="450"></canvas></div> -->
         <div id="root"></div>
         <div id="loading">
             <img width="100%;height: 100%;" src="../src/assets/images/c-bg.png" alt="">
@@ -165,44 +162,16 @@
             </div>
         </div>
         <script>
-            // let myCanvas=document.querySelector('canvas');
-            // let ctx=myCanvas.getContext('2d');
-            // let canvasWidth=myCanvas.width
-            // let canvasHeight=myCanvas.height
-            // let timer=null;
-            // let img=new Image();
-            // let x=0;
-            // let y=0;
-            // img.src='../src/assets/images/all.png';
-            // img.onload=function(){
-            //     timer=setInterval(function(){
-            //         ctx.clearRect(0,0,canvasWidth,canvasHeight);
-            //         ctx.drawImage(img,x*240,y*240,240,240,100,100,240,240);
-            //         x++;
-            //         if(x % 7 === 0){
-            //             y++;
-            //             x=0
-            //         }
-            //         if(y>6){
-            //             x=0;
-            //             y=0
-            //         }
-            //         if (window.loading.style) {
-            //             if (window.loading.style.cssText) {
-            //                 window.clearInterval(timer);
-            //             }
-            //         }
-            //     },50)
-            // }
             var loadingAnimation = document.getElementById("loading");
             if (window.loading.style) {
                 if (window.loading.style.cssText) {
                     loadingAnimation.style.display = "block";
                 }
             }
+            // https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc750bd9a0064d947&redirect_uri=http://csmp.zzha.vip/&response_type=code&scope=snsapi_userinfo#wechat_redirect
         </script>
         <script src="https://cdn.bootcss.com/zepto/1.2.0/zepto.min.js"></script>
-        <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=GFnu2bon0GPM7wuu8rPROimLuqi18eFE"></script>
+        <script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=GFnu2bon0GPM7wuu8rPROimLuqi18eFE"></script>
             <% if (htmlWebpackPlugin.options.env === 'dev') { %>
             <!-- VConsole调试 (mobile 上调试)-->
             <script src="https://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/vconsole/3.0.0/vconsole.min.js"></script>
@@ -211,114 +180,48 @@
         </script>
         <% } %>
         <!-- 微信JSSDK-->
-        <script>
+        <!-- <script>
             if(window.isWX){document.writeln('<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"'+'>'+'<'+'/'+'script>');}
+        </script> -->
+        <script src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+        <script src="https://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/vconsole/3.0.0/vconsole.min.js"></script>
+        <script>
+            new VConsole();                
         </script>
         <script>
             if (window.isWX) {
-                /*$.get('https://cs.zzha.vip/wechat/index?url=http://zpyg.ngrok.xiaomiqiu.cn', function(response){
-                console.log(response)
+                const data=JSON.stringify({
+                        // appID: 'wx24c842b6e4d21e02',
+                        // appsecret: '89ccd23bd4d40767b9522ff02d7dab71',
+                         url: location.href.split('#')[0],
+                        //url: 'http://csmp.zzha.vip/'
+                    });
+                $.post('https://cs.zzha.vip/wechat/index', data,function(response){
                 wx.config({
                     debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
                     appId: response.appId, // 必填，公众号的唯一标识
                     timestamp: response.timestamp, // 必填，生成签名的时间戳
                     nonceStr: response.nonceStr, // 必填，生成签名的随机串
                     signature: response.signature,// 必填，签名
-                    jsApiList: ['chooseImage'] // 必填，需要使用的JS接口列表
+                    jsApiList: ['getLocation','scanQRCode','openLocation','updateAppMessageShareData','updateTimelineShareData','openLocation'] // 必填，需要使用的JS接口列表
                 });
-            })*/
-                $.ajax({
-                    type: 'POST',
-                    url: 'https://cs.zzha.vip/wechat/index',
-                    contentType: 'application/json',
-                    data: JSON.stringify({
-                        appID: 'wx24c842b6e4d21e02',
-                        appsecret: '89ccd23bd4d40767b9522ff02d7dab71',
-                        url: location.href.split('#')[0]
-                    }),
-                    dataType: 'json',
-                    success: function (res) {
-                        wx.config({
-                            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-                            appId: res.appId, // 必填，公众号的唯一标识
-                            timestamp: res.timestamp, // 必填，生成签名的时间戳
-                            nonceStr: res.nonceStr, // 必填，生成签名的随机串
-                            signature: res.signature,// 必填，签名
-                            jsApiList: [
-                                'getLocation', //获取地址
-                                'openLocation', //打开地图
-                                'onMenuShareWeibo',//分享微博
-                                'scanQRCode',//扫一扫
-                                'onMenuShareQQ',//qq分享
-                                'chooseWXPay',//微信支付
-                                'onMenuShareAppMessage',//分享微信
-                                'onMenuShareQZone',//分享空间
-                                'onMenuShareTimeline',
-                                "hideAllNonBaseMenuItem",
-                                "showMenuItems",
-                                "chooseWXPay"
-                            ] // 必填，需要使用的JS接口列表
-                        });
-                    },
-                    error: function (xhr, type) {
-                        console.log('Ajax error!')
-                    }
+            });
+            window.wx.ready(() => {
+                wx.updateAppMessageShareData({ 
+                    title: '公众号', 
+                    desc: '一个很牛逼的公众号哟',
+                    link: 'http://csmp.zzha.vip/',
+                    imgUrl: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1571912013812&di=1349d2e723938b9da4b3e022e7bc0a28&imgtype=0&src=http%3A%2F%2F5b0988e595225.cdn.sohucs.com%2Fimages%2F20181025%2F59711b6806694edd9bd0bbace2bd4709.jpeg', // 分享图标
                 })
-                // wx.ready(() => {
-                    const href = window.location.href;
-                    wx.onMenuShareAppMessage({
-                        title: '这是一个微信分享', // 分享标题
-                        desc: '这是一个微信分享', // 分享描述
-                        link: href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                        imgUrl: 'https://img.zzha.vip/cam/mall/pr/00/00/00/00/72d7eb854a4d0d17_0.jpg?6566', // 分享图标
-                        type: '', // 分享类型,music、video或link，不填默认为link
-                        dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-                        success: function () {
-                        }
-                    });
-                    wx.onMenuShareQZone({
-                        title: 'QQ空间', // 分享标题
-                        desc: '这是一个QQ控件分享', // 分享描述
-                        link: href, // 分享链接
-                        imgUrl: 'https://img.zzha.vip/cam/mall/pr/00/00/00/00/72d7eb854a4d0d17_0.jpg?6566', // 分享图标
-                        success: function () {
-                        },
-                        cancel: function () {
-                        }
-                    });
-                    wx.onMenuShareTimeline({
-                        title: '朋友圈', // 分享标题
-                        link: href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                        imgUrl: 'https://img.zzha.vip/cam/mall/pr/00/00/00/00/72d7eb854a4d0d17_0.jpg?6566', // 分享图标
-                        success: function () {
-                        }
-                    });
-                    wx.onMenuShareWeibo({
-                        title: '微博分享', // 分享标题
-                        desc: '这是微博分享', // 分享描述
-                        link: href, // 分享链接
-                        imgUrl: 'https://img.zzha.vip/cam/mall/pr/00/00/00/00/72d7eb854a4d0d17_0.jpg?6566', // 分享图标
-                        success: function () {
-                        },
-                        cancel: function () {
-                        }
-                    });
-                    // wx.hideAllNonBaseMenuItem({
-                    //     success: function () {
-                    //         // alert('已隐藏所有非基本菜单项');
-                    //     }
-                    // });
-                    // wx.showMenuItems({
-                    //     menuList: [
-                    //         "menuItem:share:appMessage", // 阅读模式
-                    //         'menuItem:share:timeline', // 分享到朋友圈
-                    //         "menuItem:share:weiboApp",
-                    //         "menuItem:favorite",
-                    //         "menuItem:share:qq"
-                    //     ],
-                    // });
-                // })
-            }
+
+                wx.updateTimelineShareData({ 
+                    title: '公众号', // 分享标题
+                    desc: '一个很牛逼的公众号哟',
+                    link: 'http://csmp.zzha.vip/',
+                    imgUrl: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1571912013812&di=1349d2e723938b9da4b3e022e7bc0a28&imgtype=0&src=http%3A%2F%2F5b0988e595225.cdn.sohucs.com%2Fimages%2F20181025%2F59711b6806694edd9bd0bbace2bd4709.jpeg',
+                })
+        });
+    }
         </script>
         <script>
             if(!window.Promise){document.writeln('<script src="https://cdn.bootcss.com/es6-promise/3.2.2/es6-promise.min.js"'+'>'+'<'+'/'+'script>');}

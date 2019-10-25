@@ -671,7 +671,7 @@ class MyOrder extends BaseComponent {
                             <div className="btn-keep">记账量：{items.deposit}</div>
                             <div className="buttons">{items.return_name}</div>
                             <div className="buttons drawback">
-                                {item.is_shoper === 0 && item.status === '5' && <div className="evaluate-button" onClick={(ev) => this.refundDetails(item.id, ev)}>查看详情</div>}
+                                {item.status === '5' && <div className="evaluate-button" onClick={(ev) => this.refundDetails(item.id, ev)}>查看详情</div>}
                             </div>
                         </div>
                     </div>
