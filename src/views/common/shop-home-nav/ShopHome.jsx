@@ -67,11 +67,12 @@ class ShopHome extends BaseComponent {
     //取消收藏
     cancelShopCollextion = () => {
         const {shopInfo} = this.state;
+        const {id} = this.props;
         this.fetch(urlCfg.cancelCollect, {data: {ids: [shopInfo.collection], type: 2}})
             .subscribe(res => {
                 if (res && res.status === 0) {
                     showInfo(Feedback.Cancel_Success);
-                    this.getList();
+                    this.getList(id);
                 }
             });
     }

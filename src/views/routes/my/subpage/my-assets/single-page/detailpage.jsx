@@ -48,17 +48,6 @@ export default class Detailpage extends BaseComponent {
         return str;
     }
 
-    //支付方式
-    payFs = (detailArr) => {
-        let str = '';
-        if (detailArr.pay_status === '1') {
-            str =  '第三方支付';
-        } else if (detailArr.pay_status === '0') {
-            str =  '余额支付';
-        }
-        return str;
-    }
-
     render() {
         const {detailArr} = this.state;
         return (
@@ -73,7 +62,7 @@ export default class Detailpage extends BaseComponent {
                     </div>
 
                     <div className="amount">
-                        <p>{detailArr.types === '1' ? '+' : '-'}{detailArr.scalar || ''}元</p>
+                        <p>{detailArr.types === '1' ? '+' : '-'}{detailArr.scalar}元</p>
                         <span>{this.payMoney(detailArr)}金额</span>
                     </div>
                     <div className="other">
@@ -83,23 +72,23 @@ export default class Detailpage extends BaseComponent {
                         >交易状态：
                         </InputItem>
                         <InputItem
-                            value={detailArr.pay_date || ''}
+                            value={detailArr.pay_date}
                             editable={false}
                         >交易时间：
                         </InputItem>
                         <InputItem
-                            value={this.payFs(detailArr)}
+                            value={detailArr.intro}
                             editable={false}
                         >支付方式:
                         </InputItem>
                         <InputItem
                             editable={false}
-                            value={detailArr.order_no || ''}
+                            value={detailArr.order_no}
                         >交易单号:
                         </InputItem>
                         <InputItem
                             editable={false}
-                            value={detailArr.UID || ''}
+                            value={detailArr.UID}
                         >U I D:
                         </InputItem>
                     </div>

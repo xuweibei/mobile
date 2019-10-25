@@ -110,7 +110,7 @@ const My = () => {
                 <WithdrawalRouters/>
                 <ShopHomePage/>{/*我的店铺*/}
                 <RecordPage/>
-                <OpenShopPage/>
+                <OpenShopPage/>{/* 我要开店 */}
                 <PeraonalSotes/>{/*我的店铺 */}
                 <BrowseHistory/>{/*浏览历史 */}
                 <RollOutModal/>{/*CAM转出*/}
@@ -137,7 +137,7 @@ const My = () => {
             <ShopHomePage/>{/*我的店铺*/}
             <WithdrawalRouters/>
             <RecordPage/>
-            <OpenShopPage/>
+            <OpenShopPage/>{/* 我要开店 */}
             <PeraonalSotes/>{/**我的店铺 */}
             <BrowseHistory/>{/**浏览历史 */}
             <RollOutModal/>{/*CAM转出*/}

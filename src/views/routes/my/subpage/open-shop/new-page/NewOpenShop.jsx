@@ -3,21 +3,34 @@ import './NewOpenShop.less';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 
 const {urlCfg} = Configs;
+const {native, showInfo} = Utils;
 export default () => {
     const [qrCode, setqrCode] = useState('');
     const [banner, setBanner] = useState('');
+    const [url, setUrl] = useState('');
     useEffect(() => {
         XHR.fetch(urlCfg.getQrCode).subscribe(res => {
             if (res && res.status === 0) {
                 setqrCode(res.data.qrcode);
                 setBanner(res.data.shop);
+                setUrl(res.data.url);
             }
         });
     }, []);
 
-    const goTo = () => {
-        window.open('www.shop.zzha.vip.com');
+    // const goTo = () => {
+    //     window.open('www.shop.zzha.vip.com');
+    // };
+
+    //保存图片
+    const saveImg = () => {
+        if (qrCode) {
+            native('savePicCallback', {type: 2, imgUrl: qrCode});
+        } else {
+            showInfo('暂无图片可以保存');
+        }
     };
+
     return (
         <div className="open-shop">
             <AppNavBar
@@ -33,7 +46,7 @@ export default () => {
                 <div className="runtime-img">
                     <div>
                         <img src={qrCode} alt="" className="img-show"/>
-                        <p>点击保存二维码</p>
+                        <p onClick={saveImg}>点击保存二维码</p>
                     </div>
                 </div>
 
@@ -43,7 +56,7 @@ export default () => {
                 </div>
 
                 <div className="client-desc runtime-desc">
-                    进入网址<span onClick={goTo}>www.shop.zzha.vip.com</span> 登陆后即可进行开店申请
+                    进入网址<span>{url}</span> 登陆后即可进行开店申请
                 </div>
             </div>
         </div>

@@ -79,8 +79,8 @@ class ListDetails extends BaseComponent {
 
     //确认收货
     confirmTake = () => {
-        const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
-        const {showConfirm} = this.props;
+        const {showConfirm, location: {search}} = this.props;
+        const id = decodeURI(getUrlParam('id', encodeURI(search)));
         showConfirm({
             title: Form.No_Error_Take,
             callbacks: [null, () => {
@@ -96,12 +96,12 @@ class ListDetails extends BaseComponent {
 
     //删除订单
     deleteOrder = () => {
-        const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
-        const {showConfirm} = this.props;
+        const {showConfirm, location: {search}} = this.props;
+        const id = decodeURI(getUrlParam('id', encodeURI(search)));
         showConfirm({
             title: Form.Whether_delete,
             callbacks: [null, () => {
-                this.fetch(urlCfg.delMallOrder, {method: 'post', data: {id, deal: 1}})
+                this.fetch(urlCfg.delMallOrder, {data: {id, deal: 1}})
                     .subscribe(res => {
                         if (res && res.status === 0) {
                             showSuccess(Feedback.Del_Success);
@@ -343,7 +343,7 @@ class ListDetails extends BaseComponent {
                                 </div>
                                 <div className="collection-center">{canInfo.shopName}</div>
                                 {
-                                    canInfo.is_shoper === 0 && (canInfo.shop_collect === '0' ? <div onClick={() => this.collectDoIt({id: canInfo.shop_id, name: canInfo.shopName}, 'add')} className="collection-right">+收藏</div> : <div onClick={() => this.collectDoIt({id: canInfo.shop_collect, name: canInfo.shopName})} className="removeCollect">已收藏</div>)
+                                    canInfo.shop_collect === '0' ? <div onClick={() => this.collectDoIt({id: canInfo.shop_id, name: canInfo.shopName}, 'add')} className="collection-right">+收藏</div> : <div onClick={() => this.collectDoIt({id: canInfo.shop_collect, name: canInfo.shopName})} className="removeCollect">已收藏</div>
                                 }
                             </div>
 
@@ -402,10 +402,10 @@ class ListDetails extends BaseComponent {
                                     (canInfo.status === '10' || canInfo.status === '6' || canInfo.status === '4' || canInfo.status === '3') &&  <div className="cancel-order" onClick={this.deleteOrder}>删除订单</div>
                                 }
                                 {   //待付款订单状态可操作
-                                    canInfo.is_shoper === 0 && (canInfo.status === '0') &&  <div className="cancel-order new-style-cancel" onClick={() => this.setState({canStatus: true, canCelId: canInfo.pr_id})}>取消订单</div>
+                                    (canInfo.status === '0') &&  <div className="cancel-order new-style-cancel" onClick={() => this.setState({canStatus: true, canCelId: canInfo.pr_id})}>取消订单</div>
                                 }
                                 {
-                                    canInfo.is_shoper === 0 && this.bottomButton(canInfo.status)
+                                    this.bottomButton(canInfo.status)
                                 }
                             </div>
                         </div>

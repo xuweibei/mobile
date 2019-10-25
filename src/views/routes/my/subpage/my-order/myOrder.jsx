@@ -15,7 +15,6 @@ const {appHistory, showSuccess, getUrlParam, showInfo, native, systemApi: {remov
 const {TD_EVENT_ID} = Constants;
 const {MESSAGE: {Form, Feedback}, FIELD, navColorR} = Constants;
 const {urlCfg} = Configs;
-const hybrid = process.env.NATIVE;
 
 const temp = {
     stackData: [],
@@ -57,7 +56,7 @@ class MyOrder extends BaseComponent {
     componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方
         const numNext = this.statusChoose(nextProps.location.pathname.split('/')[2]) || -1;
         const numPrev = this.statusChoose(this.props.location.pathname.split('/')[2]) || -1;
-        if (hybrid && numNext !== numPrev) {
+        if (numNext !== numPrev) {
             const dataSource2 = new ListView.DataSource({
                 rowHasChanged: (row1, row2) => row1 !== row2
             });
@@ -71,12 +70,7 @@ class MyOrder extends BaseComponent {
                 status: numNext
             }, () => {
                 temp.stackData = [];
-                this.init(numNext);
-            });
-        } else if (numNext !== numPrev) {
-            this.setState({
-                status: numNext
-            }, () => {
+                console.log(numNext, '首付款了k');
                 this.init(numNext);
             });
         }
@@ -103,13 +97,13 @@ class MyOrder extends BaseComponent {
     //进入订单页面，判断为什么状态
     statusChoose = (str) => {
         const arr = new Map([
-            ['qb', -1],
-            ['fk', 0],
-            ['fh', 1],
-            ['fhp', 1],
-            ['sh', 2],
-            ['pj', 3],
-            ['ssh', 4]
+            ['qb', '-1'],
+            ['fk', '0'],
+            ['fh', '1'],
+            ['fhp', '1'],
+            ['sh', '2'],
+            ['pj', '3'],
+            ['ssh', '4']
         ]);
         return arr.get(str);
     }
@@ -523,11 +517,13 @@ class MyOrder extends BaseComponent {
             blockModal = (
                 <div className="buttons">
                     <div className="look-button" onClick={(ev) => this.goApplyService(item.id, ev)}>查看物流</div>
+                    <div className="delete-button" onClick={() => this.deleteOrder(item.id)}>删除</div>
                     {/* <div className="evaluate-button" onClick={(ev) => this.promptlyEstimate(item.id, ev)}>立即评价</div> */}
                 </div>
             );
             break;
         // case '12'://售后
+        case '4':
         case '10'://已取消
         case '13'://商家取消
             blockModal = (
@@ -634,6 +630,7 @@ class MyOrder extends BaseComponent {
 
     render() {
         const {dataSource, hasMore, height, status, canStatus, refreshing} = this.state;
+        console.log(status, '的接口是否健康');
         const row = item => (
             <div className="shop-lists" >
                 <div className="shop-name" onClick={() => this.goShopHome(item.shop_id)}>
@@ -674,7 +671,7 @@ class MyOrder extends BaseComponent {
                             <div className="btn-keep">记账量：{items.deposit}</div>
                             <div className="buttons">{items.return_name}</div>
                             <div className="buttons drawback">
-                                {item.is_shoper === 0 && item.status === '5' && <div className="evaluate-button" onClick={(ev) => this.refundDetails(item.id, ev)}>查看详情</div>}
+                                {item.status === '5' && <div className="evaluate-button" onClick={(ev) => this.refundDetails(item.id, ev)}>查看详情</div>}
                             </div>
                         </div>
                     </div>
@@ -718,7 +715,7 @@ class MyOrder extends BaseComponent {
                 <div className="tabs">
                     <Tabs
                         tabs={tabs}
-                        page={status + 1}
+                        page={Number(status) + 1}
                         animated={false}
                         useOnPan
                         swipeable={false}
