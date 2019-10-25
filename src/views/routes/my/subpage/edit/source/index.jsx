@@ -37,6 +37,16 @@ export default class applyService extends BaseComponent {
     serviceList = (value) => {
         if (value === 2) {
             appHistory.push('/sourcehand');
+        } else if (window.isWX) {
+            window.wx.ready(() => {
+                window.wx.scanQRCode({
+                    needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+                    scanType: ['qrCode', 'barCode'], // 可以指定扫二维码还是一维码，默认二者都有
+                    success: function (res) {
+                        console.log(res); // 当needResult 为 1 时，扫码返回的结果
+                    }
+                });
+            });
         } else {
             this.sureSaoCode();
         }
@@ -58,7 +68,7 @@ export default class applyService extends BaseComponent {
                 <div style={{height: height}} className="services">
                     {article.map((item, index) => (
                         <div className="service-list" key={index.toString()} onClick={() => this.serviceList(item.value)}>
-                            <div className="service-left">
+                            <div className="service-left" onClick={() => this.looklook(index)}>
                                 <div className="service-text">{item.text}</div>
                             </div>
                             <div className="service-right"><span className="icon icon-right"/></div>
