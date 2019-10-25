@@ -1,11 +1,10 @@
 /*
-* 下拉刷新动画，canvas绘图
+* 下拉刷新动画
 * */
 
 import './Animation.less';
 
 const {getPixelRatio} = Utils;
-
 class Animation extends React.PureComponent {
     componentDidMount() {
         this.draw();
@@ -27,9 +26,10 @@ class Animation extends React.PureComponent {
         let x = 0;
         let y = 0;
         let num = 0;
-        img.src = '../../../../src/assets/images/all.png';
+        img.src = require('../../../../src/assets/images/all.png');
         img.onload = () => {
             const ratio = getPixelRatio(ctx) > 2 ? 2 : getPixelRatio(ctx);
+            console.log('ratio', ratio, getPixelRatio(ctx));
             const animate = () => {
                 num++;
                 if (num % 2 === 0) {
