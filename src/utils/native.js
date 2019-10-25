@@ -9,78 +9,36 @@ import {appHistory} from './appHistory';
 const hybrid = process.env.NATIVE;
 const {systemApi: {removeValue}, showInfo, showFail} = Utils;
 const {LOCALSTORAGE} = Constants;
-//跳转到首页
-// window.location.href = '?fun=Home';
-
-// 分享接口
-// export const showShare = (type, title, content, url, imgUrl) => {
-//     window.native.showShare(type, title, content, url, imgUrl);
-// };
-// 打开首页
-// export const goHome = () => {
-//     window.native.goHome();
-// };
-// 跳转购物车
-// export const goShop = () => {
-//     window.native.goShop();
-// };
-// 打开相机和相册弹框
-// export const gopicCallbackHome = () => {
-//     window.native.picCallback();
-// };
-// 扫一扫
-// export const qrCodeScanCallback = () => {
-//     window.native.qrCodeScanCallback();
-// };
-// 绑定微信
-// export const bindWxCallback = () => {
-//     window.native.bindWxCallback();
-// };
-// 退出登录
-// export const loginoutCallback = () => {
-//     window.native.loginoutCallback();
-// };
-// //保存图片  参数 type":"标识:  1 Bs64格式  2  网络图片"
-// export const savePicCallback = () => {
-//     window.native.savePicCallback();
-// };
-// 微信支付
-// export const wxPayCallback = () => {
-//     window.native.wxPayCallback();
-// };
 
 //统一封装原生接口请求
 export const native = (str, obj, callBack) => new Promise((resolve, reject) => {
-    hybrid && window.WebViewJavascriptBridge.callHandler(
-        str,
-        JSON.stringify(obj),
-        (responseData) => {
-            const info = JSON.parse(responseData);
-            if (info.status === '0') {
-                resolve(info);
-            } else {
-                reject(info);
-                showInfo(info.message);
+    if (window.WebViewJavascriptBridge && window.WebViewJavascriptBridge.callHandler && hybrid) {
+        window.WebViewJavascriptBridge.callHandler(
+            str,
+            JSON.stringify(obj),
+            (responseData) => {
+                const info = JSON.parse(responseData);
+                if (info && info.status === '0') {
+                    resolve(info);
+                } else {
+                    reject(info);
+                    showInfo(info.message);
+                }
             }
-        }
-    );
+        );
+    }
 });
 
 //设置nav的颜色，回传给原生
 export const setNavColor = (str, obj) =>  new Promise((resolve, reject) => {
-    hybrid && window.WebViewJavascriptBridge.callHandler(
-        str,
-        JSON.stringify(obj),
-        (responseData) => {
-            // const info = JSON.parse(responseData);
-            // if (info.status === '0') {
-            //     resolve(info);
-            // } else {
-            //     reject(info);
-            //     showInfo(info.message);
-            // }
-        }
-    );
+    if (window.WebViewJavascriptBridge && window.WebViewJavascriptBridge.callHandler) {
+        hybrid && window.WebViewJavascriptBridge.callHandler(
+            str,
+            JSON.stringify(obj),
+            (responseData) => {
+            }
+        );
+    }
 });
 
 
@@ -93,7 +51,7 @@ export const getShopCartInfo = (str, obj, callBack) => new Promise((resolve, rej
                 JSON.stringify(obj),
                 (responseData) => {
                     const info = JSON.parse(responseData);
-                    if (info.status === '0') {
+                    if (info && info.status === '0') {
                         resolve(info);
                     } else {
                         showInfo(info.message);
@@ -107,18 +65,20 @@ export const getShopCartInfo = (str, obj, callBack) => new Promise((resolve, rej
 //获取userToken
 export const getAppUserToken = () => new Promise((resolve) => {
     setTimeout(() => {
-        hybrid && window.WebViewJavascriptBridge.callHandler('wxLoginCallback',
-            JSON.stringify({}),
-            (responseData) => {
-                resolve(responseData);
-                if (JSON.parse(responseData).status === '0') {
-                    const str = JSON.parse(responseData).data.usertoken || null;
-                    systemApi.setValue('userToken', str);
-                    store.dispatch(baseActionCreator.setUserToken(str));
-                } else {
-                    showFail('身份验证失败');
-                }
-            });
+        if (window.WebViewJavascriptBridge && window.WebViewJavascriptBridge.callHandler && hybrid) {
+            window.WebViewJavascriptBridge.callHandler('wxLoginCallback',
+                JSON.stringify({}),
+                (responseData) => {
+                    resolve(responseData);
+                    if (responseData && JSON.parse(responseData).status === '0') {
+                        const str = JSON.parse(responseData).data.usertoken || null;
+                        systemApi.setValue('userToken', str);
+                        store.dispatch(baseActionCreator.setUserToken(str));
+                    } else {
+                        showFail('身份验证失败');
+                    }
+                });
+        }
     }, 500);
 });
 

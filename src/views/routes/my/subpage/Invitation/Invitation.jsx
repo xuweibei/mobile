@@ -35,6 +35,10 @@ const dataList = [
 }));
 
 class Invitation extends BaseComponent {
+    state={
+        shareArr: {} //分享内容
+    }
+
     componentDidMount() {
         this.getGeneratingICode();
         const share = decodeURI(getUrlParam('share', encodeURI(this.props.location.search)));

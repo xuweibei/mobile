@@ -206,14 +206,14 @@ class My extends BaseComponent {
             url = new Map([
                 [0, '/inspectOrder'],
                 // [1, `/possessEvaluate?userType=${myInfo.info.iden_type}`],
-                [1, '/invitation?share=1']
+                [1, '/invitation']
             ]);
         } else {
             url = new Map([
                 [0, '/collect'],
                 [1, '/browseHistory'],
                 // [2, `/possessEvaluate?userType=${myInfo.info.iden_type}`],
-                [2, '/invitation?share=1']
+                [2, '/invitation']
             ]);
         }
         appHistory.push(url.get(index));

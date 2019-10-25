@@ -517,11 +517,13 @@ class MyOrder extends BaseComponent {
             blockModal = (
                 <div className="buttons">
                     <div className="look-button" onClick={(ev) => this.goApplyService(item.id, ev)}>查看物流</div>
+                    <div className="delete-button" onClick={() => this.deleteOrder(item.id)}>删除</div>
                     {/* <div className="evaluate-button" onClick={(ev) => this.promptlyEstimate(item.id, ev)}>立即评价</div> */}
                 </div>
             );
             break;
         // case '12'://售后
+        case '4':
         case '10'://已取消
         case '13'://商家取消
             blockModal = (

@@ -106,20 +106,20 @@ class Edit extends BaseComponent {
                     }
                 ]
             },
-            {
-                key: '4',
-                name: 'margin margin-one',
-                child: [
-                    {
-                        key: '5-1',
-                        name: 'not',
-                        arrow: 'horizontal',
-                        param: '/information',
-                        subName: 'news',
-                        value: '消息通知'
-                    }
-                ]
-            },
+            // {
+            //     key: '4',
+            //     name: 'margin margin-one',
+            //     child: [
+            //         {
+            //             key: '5-1',
+            //             name: 'not',
+            //             arrow: 'horizontal',
+            //             param: '/information',
+            //             subName: 'news',
+            //             value: '消息通知'
+            //         }
+            //     ]
+            // },甘泽龙说先隐藏 ，，10.24
             // {
             //     key: '5',
             //     name: 'not',

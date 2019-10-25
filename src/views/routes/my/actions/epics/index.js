@@ -13,7 +13,7 @@ export function getMyInfo(action$) {
         .switchMap(
             (action) => XHR.fetch(urlCfg.personalCenter, {method: 'post', data: action.payload.data})
                 .map(res => {
-                    if (res.status !== 0) {
+                    if (res && res.status !== 0) {
                         return errorType(res);
                     }
                     return ({
@@ -31,7 +31,7 @@ export function getUserInfo(action$) {
         .switchMap(
             (action) => XHR.fetch(urlCfg.settingPageData)
                 .map(res => {
-                    if (res.status !== 0) {
+                    if (res && res.status !== 0) {
                         return errorType(res);
                     }
                     return ({
@@ -49,7 +49,7 @@ export function getAddress(action$) {
         .switchMap(
             (action) => XHR.fetch(urlCfg.addressManagement)
                 .map(res => {
-                    if (res.status !== 0) {
+                    if (res && res.status !== 0) {
                         return errorType(res);
                     }
                     return ({
@@ -68,7 +68,7 @@ export function getNickName(action$) {
         .switchMap(
             (action) => XHR.fetch(urlCfg.personalCenter)
                 .map(res => {
-                    if (res.status !== 0) {
+                    if (res && res.status !== 0) {
                         return errorType(res);
                     }
                     return ({
@@ -87,7 +87,7 @@ export function getArea(action$) {
         .switchMap(
             (action) => XHR.fetch(urlCfg.settingPageData)
                 .map(res => {
-                    if (res.status !== 0) {
+                    if (res && res.status !== 0) {
                         return errorType(res);
                     }
                     return ({
@@ -106,7 +106,7 @@ export function getUid(action$) {
         .switchMap(
             (action) => XHR.fetch(urlCfg.getOriginalID)
                 .map(res => {
-                    if (res.status !== 0) {
+                    if (res && res.status !== 0) {
                         return errorType(res);
                     }
                     return ({
@@ -126,7 +126,7 @@ export function getBankCardList(action$) {
         .switchMap(
             (action) => XHR.fetch(urlCfg.getTheBankCardList)
                 .map(res => {
-                    if (res.status !== 0) {
+                    if (res && res.status !== 0) {
                         return errorType(res);
                     }
                     return ({
@@ -145,7 +145,7 @@ export function switchAccountList(action$) {
         .switchMap(
             (action) => XHR.fetch(urlCfg.getAccountInfo)
                 .map(res => {
-                    if (res.status !== 0) {
+                    if (res && res.status !== 0) {
                         return errorType(res);
                     }
                     return ({
