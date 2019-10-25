@@ -8,7 +8,7 @@ const hrefCfg = {
     },
     // 预生产环境
     preProd: {
-        apiPath: 'https://yapi.zzha.vip/mall',
+        apiPath: 'https://yapp.zzha.vip/mall',
         scan: 'https://yapp.zzha.vip/mall.html#'
     },
     // 生产环境
