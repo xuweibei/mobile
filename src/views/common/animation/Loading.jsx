@@ -31,6 +31,7 @@ class Loading extends React.PureComponent {
         //加载图片
         const img = new Image();
         img.src = require('../../../../src/assets/images/animate-img.png');
+        console.log('img', img);
         img.onload = () => {
             const animate = () => {
                 speed++;

@@ -35,14 +35,14 @@ const dataList = [
 }));
 
 class Invitation extends BaseComponent {
-    state = {
-        imgId: 0 //储存生成分享码的图片
-    };
+    state={
+        shareArr: {} //分享内容
+    }
 
     componentDidMount() {
         this.getGeneratingICode();
         const share = decodeURI(getUrlParam('share', encodeURI(this.props.location.search)));
-        if (share !== '1') { //用来判断是否是点击分享按钮过来的，如果是，则就需要直接打开弹窗
+        if (share === '1') { //用来判断是否是点击分享按钮过来的，如果是，则就需要直接打开弹窗
             this.showShareActionSheet();
         }
     }
@@ -65,17 +65,6 @@ class Invitation extends BaseComponent {
         this.fetch(urlCfg.GeneratingInvitationCode, {method: 'post', data: {id: 1}})
             .subscribe((res) => {
                 if (res && res.status === 0) {
-                    // if (!res.data.child) {  //如果是一个没有绑定下级的消费者，进行二维码分享，则跳出弹窗提示：如果您分享并成功绑定新用户，您将失去开店资格。-取消分享 -确认分享
-                    //     showConfirm({
-                    //         title: '如果您分享并成功绑定新用户，您将失去开店资格',
-                    //         btnTexts: ['取消', '确定'],
-                    //         callbacks: [null, () => {
-                    //             this.showShareActionSheet();//没有下级的消费者，不能开店，确认分享
-                    //         }]
-                    //     });
-                    // } else { //有下级则直接弹出分享按钮
-                    //     this.showShareActionSheet();
-                    // }
                     this.setState({
                         shareArr: res.data.url
                     });
@@ -124,7 +113,7 @@ class Invitation extends BaseComponent {
     render() {
         const {shareArr} = this.state;
         return (
-            <div data-component="invitation" data-role="page" className={`invitation ${window.isWX ? 'WX' : ''}`}>
+            <div data-component="invitation" data-role="page" className={`invitation ${window.isWX ? 'wx-share-content' : ''}`}>
                 {
                     window.isWX ? (
                         <AppNavBar nativeGoBack title="邀请码"/>
@@ -141,16 +130,22 @@ class Invitation extends BaseComponent {
                         <img src={shareArr} alt="" ref={(img) => { this.maskImg = img }}/>
                     </div>
                 </div>
-                <Button
-                    type="warning"
-                    onClick={this.showShareActionSheet}
-                >分享
-                </Button>
-                <Button
-                    className="button"
-                    onClick={this.saveImg}
-                >保存图片
-                </Button>
+                {
+                    window.isWX ? (<div className="wx-share">长按图片分享</div>) : (
+                        <React.Fragment>
+                            <Button
+                                type="warning"
+                                onClick={this.showShareActionSheet}
+                            >分享
+                            </Button>
+                            <Button
+                                className="button"
+                                onClick={this.saveImg}
+                            >保存图片
+                            </Button>
+                        </React.Fragment>
+                    )
+                }
             </div>
         );
     }

@@ -288,6 +288,19 @@ class ShopHome extends BaseComponent {
         }
     }
 
+    //判断底部显示的状态
+    activeFn = (onOff, type) => {
+        let str = '';
+        if (type === 'business') {
+            str = 'find';
+        } else if (onOff) {
+            str = 'shopHome';
+        } else {
+            str = 'category';
+        }
+        return str;
+    }
+
     render() {
         const {currentState, modelShow, shopModelArr, lat, lon} = this.state;
         const shoppingId = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
@@ -311,7 +324,7 @@ class ShopHome extends BaseComponent {
                 <Top/>
                 {blockModel}
                 {
-                    currentState && <ShopFooter onTabChange={(data) => { this.onTabChange(data) }} active="shopHome" haveModalAll={modelShow}/>
+                    currentState && <ShopFooter onTabChange={(data) => { this.onTabChange(data) }} active={this.activeFn(modelShow, currentState)} haveModalAll={modelShow}/>
                 }
             </React.Fragment>
         );

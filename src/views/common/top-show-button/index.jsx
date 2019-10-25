@@ -52,7 +52,7 @@ class showButton extends BaseComponent {
                 showInfo('im');
             }
         } else if (opt.key === '5') {
-            appHistory.push('/invitation');
+            appHistory.push('/invitation?share=1');
         }
     };
 

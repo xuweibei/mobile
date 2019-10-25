@@ -77,32 +77,39 @@ class UserAgreementDetail extends BaseComponent {
     showModal = (modal) => {
         // e.preventDefault(); // 修复 Android 上点击穿透
         this.setState({
-            modal: modal
+            modal
         });
     }
 
     render() {
         const {protocol, modal, protocolTitle} = this.state;
+        const type = decodeURI(getUrlParam('type', encodeURI(this.props.location.search)));
         return (
             <div data-component="UserAgreementDetail" data-role="page" className="UserAgreementDetail">
-                <AppNavBar title="关于"/>
-                <List>
-                    <Item arrow="horizontal" onClick={() => { hybrid && native('evalMe') }}>给我评价</Item>
-                </List>
-                <List>
-                    <div className="about-information">
-                        {
-                            itemLists.map(item => (
-                                <Item arrow="horizontal" key={item.title} onClick={() => this.getProtocol(item.params)}>{item.title}</Item>
-                            ))
-                        }
-                    </div>
-                </List>
-                <List>
-                    <Item extra="有新版" arrow="horizontal" onClick={() => hybrid && native('checkVersion')}>新版本检测</Item>
-                </List>
-                <span className="corporate">中战华安控股集团有限公司</span>
-                <span className="edition">当前版本号：1.0.3</span>
+                {
+                    type === 'null' && (
+                        <React.Fragment>
+                            <AppNavBar title="关于"/>
+                            <List>
+                                {(/iphone|ipad/gi).test(navigator.platform) && <Item arrow="horizontal" onClick={() => { hybrid && native('evalMe') }}>给我评价</Item>}
+                            </List>
+                            <List>
+                                <div className="about-information">
+                                    {
+                                        itemLists.map(item => (
+                                            <Item arrow="horizontal" key={item.title} onClick={() => this.getProtocol(item.params)}>{item.title}</Item>
+                                        ))
+                                    }
+                                </div>
+                            </List>
+                            <List>
+                                <Item extra="有新版" arrow="horizontal" onClick={() => hybrid && native('checkVersion', {'': ''})}>新版本检测</Item>
+                            </List>
+                            <span className="corporate">中战华安控股集团有限公司</span>
+                            <span className="edition">当前版本号：1.0.3</span>
+                        </React.Fragment>
+                    )
+                }
                 <div>
                     <Modal
                         visible={modal}
@@ -110,9 +117,8 @@ class UserAgreementDetail extends BaseComponent {
                         title={protocolTitle}
                         footer={[{text: '确定',
                             onPress: () => {
-                                const type = decodeURI(getUrlParam('type', encodeURI(this.props.location.search)));
                                 if (hybrid && type !== 'null') {
-                                    native('loginout');
+                                    native('goBack');
                                 }
                                 this.showModal(false);
                             }}]}

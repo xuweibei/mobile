@@ -248,8 +248,6 @@ export default class HomeList extends BaseComponent {
             if (shopPage > shopPageCount) {
                 this.setState({
                     shopStatus: true
-                }, () => {
-                    console.log(this.state.shopStatus);
                 });
                 return;
             }

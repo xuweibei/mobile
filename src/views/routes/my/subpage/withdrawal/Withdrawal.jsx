@@ -204,6 +204,10 @@ class Withdrawal extends BaseComponent {
     submit = () => {
         const {selectorIndex, checkedWit, money, statusPay} = this.state;
         const {showConfirm} = this.props;
+        if (money === '0' || money === '0.0' || money === '0.00' || money.slice(0, 1) === '.') {
+            showInfo(Form.No_Money);
+            return;
+        }
         if (selectorIndex === '') {
             showInfo(Form.No_GenRe);
         } else if (!validator.removeCN(money)) {
@@ -241,13 +245,6 @@ class Withdrawal extends BaseComponent {
         } else {
             this.fetch(urlCfg.withdraw, {data: {money, types: selectorIndex, typeIndex: withdrawId, psw, bankId}})
                 .subscribe(res => {
-                    if (res) {
-                        if (res.status === 0) {
-                            console.log('成功');
-                        } else if (res.status === 1) {
-                            showInfo(res.message);
-                        }
-                    }
                 });
         }
     }
@@ -288,7 +285,7 @@ class Withdrawal extends BaseComponent {
                                 <div>
                                     <div className="weChat-inputItem">
                                         <InputItem
-                                            type="text"
+                                            type="digit"
                                             placeholder="请输入提现金额"
                                             clear
                                             value={money}
@@ -336,7 +333,7 @@ class Withdrawal extends BaseComponent {
                                     <div>
                                         <div className="weChat-inputItem">
                                             <InputItem
-                                                type="text"
+                                                type="digit"
                                                 placeholder="请输入提现金额"
                                                 clear
                                                 value={money}

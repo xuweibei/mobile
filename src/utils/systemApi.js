@@ -61,7 +61,7 @@ const systemApi = {
         return pxHeight / ratio;
     },
     isAndroid: (/android/gi).test(navigator.appVersion),
-    isIPhone: (/iphone|ipad/gi).test(navigator.appVersion),
+    isIPhone: (/iphone|ipad/gi).test(navigator.platform),
     fullHeight: null,
     fullRemHeight: null
 };

@@ -126,7 +126,7 @@ class BankCard extends BaseComponent {
     }
 
     render() {
-        const {userTypes, pwsPopup} = this.state;
+        const {pwsPopup} = this.state;
         const {bankInfo} = this.props;
         return (
             <div data-component="bankCard" data-role="page" className="bank-card">
@@ -163,7 +163,7 @@ class BankCard extends BaseComponent {
                             </div>
                         )
                     }
-                    {
+                    {/* {
                         userTypes === '2' && bankInfo && (bankInfo.shoper.length > 0
                             ? (
                                 <div className="card-box">
@@ -193,7 +193,7 @@ class BankCard extends BaseComponent {
                                     </div>
                                 </div>
                             ))
-                    }
+                    } */}
                 </div>
                 {pwsPopup && (
                     <div className="enter-password-box">

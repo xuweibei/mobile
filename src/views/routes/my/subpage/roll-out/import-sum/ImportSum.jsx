@@ -75,6 +75,10 @@ export default class importSum extends BaseComponent {
     //点击确定支付
     sumbit = () => {
         const {money} = this.state;
+        if (money === '0' || money === '0.0' || money === '0.00' || money.slice(0, 1) === '.') {
+            showInfo(Form.No_Money);
+            return;
+        }
         if (!money) {
             showInfo(Form.No_Money);
         } else if (!/^[0-9]+(.[0-9]{1,2})?$/.test(money)) {
