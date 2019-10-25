@@ -5,7 +5,7 @@
 
 import {connect} from 'react-redux';
 import {Alert, Confirm} from '../../../components/modal/index';
-import {Loading} from '../../../components/toast/index';
+import Loading from '../animation/Loading';
 // import {baseActionCreator} from '../../../redux/baseAction';
 import Menu from '../menu/Menu';
 import Top from '../top/Top';
@@ -17,18 +17,9 @@ class BasePage extends BaseComponent {
         super(props, context);
     }
 
-    renderLoading = () => {
-        const {loadingShow} = this.props;
-        return (
-            <Loading
-                visible={loadingShow}
-                type="spinningBubbles"
-                color="red"
-                width="100"
-                height="100"
-            />
-        );
-    };
+    renderLoading = () => (
+        <Loading/>
+    );
 
     renderAlert = () => {
         const {
@@ -65,10 +56,10 @@ class BasePage extends BaseComponent {
     //导航菜单
 
     render() {
-        const {showMenu} = this.props;
+        const {showMenu, loadingShow} = this.props;
         return (
             <div data-component="base" data-role="page">
-                {this.renderLoading()}
+                {loadingShow && this.renderLoading()}
                 {this.renderAlert()}
                 {this.renderConfirm()}
                 {
