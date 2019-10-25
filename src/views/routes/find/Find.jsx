@@ -165,7 +165,7 @@ class Find extends BaseComponent {
         walk.setSearchCompleteCallback(() => {
             const pts = walk.getResults().getPlan(0).getRoute(0).getPath();
             this.polyline = new window.BMap.Polyline(pts, {
-                strokeColor: '@fiery-red',
+                strokeColor: '#ff2d51',
                 strokeWeight: 3,
                 strokeOpacity: 1,
                 strokeStyle: 'solid',
@@ -258,8 +258,8 @@ class Find extends BaseComponent {
             if (window.isWX) {
                 window.wx.ready(() => {
                     window.wx.openLocation({
-                        latitude: nowLongitude, // 纬度，浮点数，范围为90 ~ -90
-                        longitude: nowLatitude, // 经度，浮点数，范围为180 ~ -180。
+                        latitude: parseFloat(nowLongitude), // 纬度，浮点数，范围为90 ~ -90
+                        longitude: parseFloat(nowLatitude), // 经度，浮点数，范围为180 ~ -180。
                         name: addressInfo, // 位置名
                         address: '', // 地址详情说明
                         scale: '' // 地图缩放级别,整形值,范围从1~28。默认为最大
@@ -397,7 +397,7 @@ class Find extends BaseComponent {
         walk.setSearchCompleteCallback(() => {
             const pts = walk.getResults().getPlan(0).getRoute(0).getPath();
             const polylines = new window.BMap.Polyline(pts, {
-                strokeColor: '@fiery-red',
+                strokeColor: '#ff2d51',
                 strokeWeight: 3,
                 strokeOpacity: 1,
                 strokeStyle: 'solid',
@@ -516,7 +516,7 @@ class Find extends BaseComponent {
                     toggle
                         ? (
                             <div className="button-box">
-                                <div className="button1" onClick={() => this.goShop()}>{searchLeft}</div>
+                                <div className="button1" onClick={this.goShop}>{searchLeft}</div>
                                 <div className="button2" onClick={() => this.rightClick()}>{searchRight}</div>
                             </div>
                         )

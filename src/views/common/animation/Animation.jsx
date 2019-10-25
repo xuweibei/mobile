@@ -8,6 +8,7 @@ const {getPixelRatio} = Utils;
 
 class Animation extends React.PureComponent {
     componentDidMount() {
+        console.log('渲染动画');
         this.draw();
     }
 
@@ -18,7 +19,11 @@ class Animation extends React.PureComponent {
 
     // canvas绘制下拉动画
     draw = (canvas = this.canvas) => {
-        if (!canvas) return;
+        console.log('canvas', this.canvas);
+        if (!canvas) {
+            console.log('无canvas');
+            return;
+        }
         //获取canvas上下文
         const ctx = canvas.getContext('2d');
         const canvasWidth = canvas.width;
@@ -27,9 +32,11 @@ class Animation extends React.PureComponent {
         let x = 0;
         let y = 0;
         let num = 0;
-        img.src = '../../../../src/assets/images/all.png';
+        img.src = require('../../../../src/assets/images/all.png');
+        console.log('img', img);
         img.onload = () => {
             const ratio = getPixelRatio(ctx) > 2 ? 2 : getPixelRatio(ctx);
+            console.log('ratio', ratio);
             const animate = () => {
                 num++;
                 if (num % 2 === 0) {
@@ -49,7 +56,7 @@ class Animation extends React.PureComponent {
             };
             animate();
         };
-    };
+    }
 
     // 清除动画缓存
     clear= () => {

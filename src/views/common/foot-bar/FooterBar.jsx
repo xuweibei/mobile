@@ -40,40 +40,40 @@ class FooterBar extends React.PureComponent {
                                     <TabBar.Item
                                         title="首页"
                                         key="home"
-                                        icon={<IconFont iconText="iconbiaoqianlanshouye-"/>}
-                                        selectedIcon={<IconFont iconText="iconbiaoqianlanshouye"/>}
+                                        icon={<img style={{width: '25px', height: '25px'}} src={require('../../../assets/images/homes.svg')}/>}
+                                        selectedIcon={<img style={{width: '25px', height: '25px'}} src={require('../../../assets/images/home.svg')}/>}
                                         selected={this.state.selectedTab === 'home'}
                                         onPress={() => this.gotoPage('home')}
                                     />
                                     <TabBar.Item
                                         title="分类"
                                         key="category"
-                                        icon={<IconFont iconText="iconbiaoqianlanfenlei-"/>}
-                                        selectedIcon={<IconFont iconText="iconbiaoqianlanfenlei"/>}
+                                        icon={<img style={{width: '25px', height: '25px'}} src={require('../../../assets/images/cates.svg')}/>}
+                                        selectedIcon={<img style={{width: '25px', height: '25px'}} src={require('../../../assets/images/cate.svg')}/>}
                                         selected={this.state.selectedTab === 'category'}
                                         onPress={() => this.gotoPage('category')}
                                     />
                                     <TabBar.Item
                                         title="发现"
                                         key="find"
-                                        icon={<IconFont iconText="iconbiaoqianlanfaxian-"/>}
-                                        selectedIcon={<IconFont iconText="iconbiaoqianlanfaxian"/>}
+                                        icon={<img style={{width: '25px', height: '25px'}} src={require('../../../assets/images/searchs.svg')}/>}
+                                        selectedIcon={<img style={{width: '25px', height: '25px'}} src={require('../../../assets/images/search.svg')}/>}
                                         selected={this.state.selectedTab === 'find'}
                                         onPress={() => this.gotoPage('find')}
                                     />
                                     <TabBar.Item
                                         title="购物车"
                                         key="shopCart"
-                                        icon={<IconFont iconText="iconbiaoqianlangouwuche-"/>}
-                                        selectedIcon={<IconFont iconText="iconbiaoqianlangouwuche"/>}
+                                        icon={<img style={{width: '25px', height: '25px'}} src={require('../../../assets/images/carts.svg')}/>}
+                                        selectedIcon={<img style={{width: '25px', height: '25px'}} src={require('../../../assets/images/cart.svg')}/>}
                                         selected={this.state.selectedTab === 'shopCart'}
                                         onPress={() => this.gotoPage('shopCart')}
                                     />
                                     <TabBar.Item
                                         title="我的"
                                         key="my"
-                                        icon={<IconFont iconText="iconbiaoqianlanwode-"/>}
-                                        selectedIcon={<IconFont iconText="iconbiaoqianlanwode"/>}
+                                        icon={<img style={{width: '25px', height: '25px'}} src={require('../../../assets/images/users.svg')}/>}
+                                        selectedIcon={<img style={{width: '25px', height: '25px'}} src={require('../../../assets/images/user.svg')}/>}
                                         selected={this.state.selectedTab === 'my'}
                                         onPress={() => this.gotoPage('my')}
                                     />

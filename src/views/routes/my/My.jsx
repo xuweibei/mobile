@@ -253,7 +253,10 @@ class My extends BaseComponent {
 
     //页面跳转
     jumpRouter = (url) => {
+        console.log('ssssssssssssssssssssssssssssssssssssssssssssss');
         if (url === '/selectType') {
+            console.log('dddddddddddddddddddddddddddddddddddd');
+            console.log(appHistory, 'ddddddddddddddddddsadadasdasdsadsadasd');
             appHistory.push('/openShopPage');
             // showInfo('等等');
             // removeValue('shopStatus');
