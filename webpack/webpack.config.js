@@ -302,7 +302,8 @@ module.exports = (env = {}) => {
                 disable: ENV.isDevEnv()
             }),
             new CleanPlugin(path.join(__dirname, OUTPUTDIR + ENV.path()),{
-                exclude: ['.svn', '.git', 'index.php', '.gitignore']
+                "root": path.resolve(__dirname, '../'),
+                "exclude": ['.svn', '.git', 'index.php', '.gitignore']
             }),
             new webpack.optimize.CommonsChunkPlugin({ // 提取 node_modules 中的文件
                 names: 'vendor',
