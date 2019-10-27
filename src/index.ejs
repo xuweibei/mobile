@@ -40,6 +40,21 @@
                 #c-logo{
                     height: 87px;
                 }
+                .c-bgimg{
+                    width: 100%;
+                    height: 100%;
+                }
+                .c-title{
+                    position: relative;
+                    overflow: hidden;
+                }
+                .c-title-content{
+                    height: 50px;
+                    line-height: 50px;
+                    color: #fff;
+                    font-size: 20px;
+                    letter-spacing: 1px;
+                }
                 .c-logo{
                     margin: auto;
                     width: 86px;
@@ -148,15 +163,15 @@
     <body>
         <div id="root"></div>
         <div id="loading">
-            <img width="100%;height: 100%;" src="../src/assets/images/c-bg.png" alt="">
+            <img class="c-bgimg" src="../src/assets/images/c-bg.png" alt="">
             <div class="c-box">
                 <div id="c-logo">
                     <div class="c-logo">
                         <img src="../src/assets/images/c-logo.png" alt="">
                     </div>
                 </div>
-                <div style="position: relative;overflow: hidden;">
-                    <div style="height: 50px;line-height: 50px;color: #fff;font-size: 20px;letter-spacing: 1px;">优质商品 快乐选购</div>
+                <div class="c-title">
+                    <div class="c-title-content">优质商品 快乐选购</div>
                     <div class="c-mask"></div>
                 </div>
             </div>
