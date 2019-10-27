@@ -280,7 +280,6 @@ module.exports = (env = {}) => {
         plugins: [
             //定义全局变量
             new webpack.ProvidePlugin({
-                $: 'Zepto',
                 React: 'react',
                 Loadable: 'react-loadable',
                 XHR: [path.resolve(__dirname, ENTRYDIR + '/http/rxios'), 'default'],
