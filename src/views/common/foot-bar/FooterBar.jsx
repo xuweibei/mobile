@@ -3,7 +3,6 @@
 * */
 import {TabBar} from 'antd-mobile';
 import PropTypes from 'prop-types';
-import {IconFont} from '../icon-font/IconFont';
 import './FooterBar.less';
 
 const hybird = process.env.NATIVE;
