@@ -20,12 +20,12 @@ const mode = [
         title: '微信支付',
         value: 1,
         imgName: 'we-chat'
+    },
+    {
+        title: '支付宝支付',
+        value: 2,
+        imgName: 'alipay'
     }
-    // {
-    //     title: '支付宝支付',
-    //     value: 2,
-    //     imgName: 'alipay'
-    // }
 ];
 
 class PayMoney extends BaseComponent {
@@ -46,6 +46,7 @@ class PayMoney extends BaseComponent {
 
     componentDidMount() {
         const arrInfo = JSON.parse(getValue('orderInfo'));
+        console.log(arrInfo, '克里斯多夫');
         if (arrInfo) { //如果是有arrInfo代表是直接下单或者从购物车过来的
             const selfOrder = decodeURI(getUrlParam('selfOrder', encodeURI(this.props.location.search)));
             const date = (new Date().getTime() + 86400000) / 1000 - 1;
@@ -79,7 +80,8 @@ class PayMoney extends BaseComponent {
                 res.data.order = (orderNum === 'null' ? '' : arr);
                 if (onOff) { //这里是为了区分首次进来和继续支付
                     this.setState({
-                        listArr: res.data
+                        listArr: res.data,
+                        orderNum: orderNum === 'null' ? '' : arr
                     });
                 }
                 this.setState({
@@ -175,7 +177,7 @@ class PayMoney extends BaseComponent {
                         };
                         native('wxPayCallback', obj).then((data) => {
                             native('goH5', {'': ''});
-                            appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&id=${listArr.order_id}&types=${selectIndex}&deposit=${listArr.deposit}&if_express=${res.data.if_express}`);
+                            appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&id=${res.data.order_id}&types=${selectIndex}&deposit=${listArr.deposit}&if_express=${res.data.if_express}`);
                         }).catch(data => {
                             native('goH5', {'': ''});
                             showFail(data.message);
@@ -190,7 +192,7 @@ class PayMoney extends BaseComponent {
     //支付宝支付
     alipay = (listArr, orderNum, selectIndex) => {
         // alert('支付宝支付');
-        this.fetch(urlCfg.alipayPayment, {data: {type: 1, order_no: orderNum}})
+        this.fetch(urlCfg.alipayPayment, {data: {type: 1, order_no: orderNum[0]}})
             .subscribe(res => {
                 if (res && res.status === 0) {
                     if (hybird) {
@@ -306,15 +308,13 @@ class PayMoney extends BaseComponent {
             title: `您的订单在${supple(hour)}小时${supple(minute)}分钟内未支付将被取消，请尽快完成支付`,
             btnTexts: ['残忍拒绝', '继续支付'],
             callbacks: [() => {
-                const {setOrderStatus} = this.props;
                 const arrInfo = JSON.parse(getValue('orderInfo'));
                 const arr = JSON.parse(getValue('orderArr'));
                 if (arrInfo) {
                     if (arr[0].if_express === '1') {
-                        appHistory.replace(`/myOrder/fk?type=${'car'}`);
+                        appHistory.replace('/myOrder/fk?type=home'); //这里取消的时候，在列表页面点击返回应该回到首页。为h5提供的
                     } else {
-                        setOrderStatus(1);
-                        appHistory.replace(`/selfMention?type=${'car'}`);
+                        appHistory.replace('/selfMention?/ww?type=home');
                     }
                 } else {
                     appHistory.goBack();
@@ -413,7 +413,6 @@ const mapStateToProps = state => {
 };
 
 const mapDidpatchToProps = {
-    setOrderStatus: actionCreator.setOrderStatus,
     showConfirm: actionCreator.showConfirm,
     setReturn: actionCreator.setReturn
 };
