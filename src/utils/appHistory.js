@@ -38,6 +38,7 @@ const appHistory = {
         historyStack.push(url);
         tempStack.push(url);
         store.dispatch(push(location));
+        // console.log(window.history.pushState());
     },
     replace: (location) => {
         const url = getPathname(location);

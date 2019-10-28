@@ -12,10 +12,9 @@ import HomeList from './home-list/homeList';
 import './Home.less';
 
 
-const {TD_EVENT_ID} = Constants;
+const {TD_EVENT_ID, LOCALSTORAGE} = Constants;
 const {urlCfg, appCfg} = Configs;
-const {appHistory, TD} = Utils;
-
+const {appHistory, TD, systemApi: {setValue}} = Utils;
 class Home extends BaseComponent {
     constructor(props, context) {
         super(props, context);
@@ -38,19 +37,19 @@ class Home extends BaseComponent {
     }
 
     componentDidMount() {
-        const {showMenu, setOrder} = this.props;
+        const {showMenu, setOrder, userToken} = this.props;
+        this.setState({
+            userToken: systemApi.getValue('userToken')
+        });
         TD.log(TD_EVENT_ID.HOME.ID, TD_EVENT_ID.HOME.LABEL.LOOK_HOME);
         setOrder(null);
         showMenu(false);
-        if (window.isWX) {
+        if (window.isWX && !userToken) {
             this.login();
         }
         this.getMall();
         this.mallBanner();
         this.goodStuff();
-        this.setState({
-            userToken: systemApi.getValue('userToken')
-        });
     }
 
     componentWillUnmount() {
@@ -58,12 +57,6 @@ class Home extends BaseComponent {
         const {showMenu} = this.props;
         showMenu(true);
     }
-
-    // componentWillReceiveProps() {
-    //     if (hybird) {
-    //         setNavColor('setNavColor', {color: navColorR});
-    //     }
-    // }
 
     // 判断是否是登录状态 如果不是前往登录
     goToLogin = () => {
@@ -88,6 +81,7 @@ class Home extends BaseComponent {
                     if (res.status === 0) {
                         const {setUserToken} = this.props;
                         setUserToken(res.LoginSessionKey);
+                        setValue(LOCALSTORAGE.USER_TOKEN, res.LoginSessionKey);
                     }
                 }
             }, err => {
@@ -158,9 +152,6 @@ class Home extends BaseComponent {
                 window.wx.scanQRCode({
                     needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
                     scanType: ['qrCode', 'barCode'] // 可以指定扫二维码还是一维码，默认二者都有
-                    // success: function (res) {
-                    //     let result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
-                    // }
                 });
             });
         } else {
@@ -298,7 +289,8 @@ class Home extends BaseComponent {
 const mapStateToProps = state => {
     const base = state.get('base');
     return {
-        code: base.get('code')
+        code: base.get('code'),
+        userToken: base.get('userToken')
     };
 };
 
