@@ -24,9 +24,9 @@ class ShopHomeDetail extends BaseComponent {
 
     getList = () => {
         const id = this.props.id;
-        this.fetch(urlCfg.storeDetails, {method: 'post', data: {id: id}})
+        this.fetch(urlCfg.storeDetails, {data: {id}})
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     this.setState({
                         shopInfo: res.data
                     });

@@ -36,7 +36,7 @@ class ShopHome extends BaseComponent {
     getList = (id) => {
         this.fetch(urlCfg.storeDetails, {data: {id}})
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     this.starsShow(res.data.shop_mark);
                     this.setState({
                         shopInfo: res.data

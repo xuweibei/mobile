@@ -60,7 +60,7 @@ class Invitation extends BaseComponent {
     //生成海报点击
     getGeneratingICode = () => {
         // const {showConfirm} = this.props;
-        this.fetch(urlCfg.GeneratingInvitationCode, {method: 'post', data: {id: 1}})
+        this.fetch(urlCfg.GeneratingInvitationCode, {data: {id: 1}})
             .subscribe((res) => {
                 if (res && res.status === 0) {
                     this.setState({

@@ -215,7 +215,6 @@ class ReDetail extends BaseComponent {
                         <div className="wait-bottom" onClick={() => this.skipSelf(selfSufficiency.order_id)}>立即使用</div>
                     )}
                 </div>
-
                 <div className="address">
                     <div className="address-left">
                         <div className="shop-name">
@@ -239,7 +238,7 @@ class ReDetail extends BaseComponent {
                                 </div>
                                 <span><div className="right" onClick={(e) => this.goToShop(e, selfSufficiency.shop_id)}>进店</div></span>
                             </div>
-                            {selfGoods && selfGoods.map(item => (
+                            {(selfGoods && selfGoods.length > 0) ? selfGoods.map(item => (
                                 <div className="goods" key={item.pr_id} onClick={() => this.goodsDetaid(item.pr_id)}>
                                     <div className="goods-left">
                                         <div>
@@ -252,9 +251,9 @@ class ReDetail extends BaseComponent {
                                         </div>
                                         <div className="goods-sku">
                                             <div className="sku-left">
-                                                {item.property_content.map(items => (
+                                                {(item.property_content && item.property_content.length > 0) ? item.property_content.map(items => (
                                                     <div className="goods-size">{items}</div>
-                                                ))}
+                                                )) : ''}
                                             </div>
                                             <div className="local">x{item.num}</div>
                                         </div>
@@ -263,7 +262,7 @@ class ReDetail extends BaseComponent {
                                         </div>
                                     </div>
                                 </div>
-                            ))}
+                            )) : ''}
                         </div>
                     </div>
                     <div className="total-price">
@@ -324,7 +323,7 @@ class ReDetail extends BaseComponent {
                 <div className="recommend-box">
                     <div className="recommend common-margin">热门推荐</div>
                     <div className="hot-push-goods">
-                        {recommendGoods && recommendGoods.map(item => (
+                        {(recommendGoods && recommendGoods.length > 0) ? recommendGoods.map(item => (
                             <div className="shop-lists" onClick={() => this.goToGoodsDetail(item.pr_id)}>
                                 <div className="common-margin">
                                     <div className="goods">
@@ -359,7 +358,7 @@ class ReDetail extends BaseComponent {
                                     </div>
                                 </div>
                             </div>
-                        ))}
+                        )) : ''}
                     </div>
                     {maskStatus && (
                         <div className="picMask" onClick={this.maskClose}>

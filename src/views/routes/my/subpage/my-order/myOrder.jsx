@@ -323,8 +323,6 @@ class MyOrder extends BaseComponent {
 
     //立即支付
     payNow = (id, orderNum) => {
-        //清除一下订单缓存
-        removeValue('orderInfo');
         appHistory.push(`/payMoney?orderId=${id}&orderNum=${orderNum}&source=${4}`);
     }
 

@@ -121,7 +121,6 @@ export default class ReDetail extends BaseComponent {
                         </div>
                     ) : (<div className="piteraTake">暂无最近转出记录</div>)}
                 </div>
-
             </div>
         );
     }

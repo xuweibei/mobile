@@ -88,22 +88,19 @@ class ReDetail extends BaseComponent {
                 pr_arr: arr,
                 type: arr[0].if_express === '3' ? '2' : '1'
             }
-        })
-            .subscribe((res) => {
-                if (res && res.status === 0) {
-                    this.setState({
-                        OrderSelf: res,
-                        rdata: res.sufficiency.sufficiency_time,
-                        tabsr: res.sufficiency.tabs,
-                        alertPhone: res.phone,
-                        goodsArr: res.data.data,
-                        shopdata: res.data,
-                        address: res.sufficiency.sufficiency_address
-                    });
-                } else if (res.status === 1) {
-                    showFail(res.message);
-                }
-            });
+        }).subscribe((res) => {
+            if (res && res.status === 0) {
+                this.setState({
+                    OrderSelf: res,
+                    rdata: res.sufficiency.sufficiency_time,
+                    tabsr: res.sufficiency.tabs,
+                    alertPhone: res.phone,
+                    goodsArr: res.data.data,
+                    shopdata: res.data,
+                    address: res.sufficiency.sufficiency_address
+                });
+            }
+        });
     }
 
     //自提协议radio是否勾选
@@ -219,8 +216,8 @@ class ReDetail extends BaseComponent {
                 if (res && res.status === 0) {
                     setOrderInfo(res);
                     appHistory.replace(`/payMoney?source=${sou}&selfOrder=1`);
+                    setValue('orderInfo', JSON.stringify(res));
                 }
-                setValue('orderInfo', JSON.stringify(res));
             });
         }
     }

@@ -77,9 +77,9 @@ class ShopHome extends BaseComponent {
     //获取模板信息
     getShopModel = (id) => {
         // const {currentState} = this.state;
-        this.fetch(urlCfg.shopModel, {method: 'post', data: {shop_id: id}})
+        this.fetch(urlCfg.shopModel, {data: {shop_id: id}})
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     //判断有无模板
                     if (res.data) {
                         this.setState({
@@ -108,12 +108,7 @@ class ShopHome extends BaseComponent {
         });
         setshoppingId(id);
         this.fetch(urlCfg.allGoodsInTheShop, {
-            method: 'post',
-            data: {
-                id,
-                page: page,
-                pagesize: this.temp.pagesize
-            }}, noShowLoading)
+            data: {id, page, pagesize: this.temp.pagesize}}, noShowLoading)
             .subscribe(res => {
                 this.temp.isLoading = false;
                 if (res && res.status === 0) {

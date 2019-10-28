@@ -299,7 +299,7 @@ class PayMoney extends BaseComponent {
 
     //返回
     goBackModal = () => {
-        const {maturityTme} = this.state;
+        const {maturityTme, listArr} = this.state;
         const {showConfirm, location: {search}} = this.props;
         const down = decodeURI(getUrlParam('down', encodeURI(search)));//线下订单过来标识
         const oDate = new Date();//获取日期对象
@@ -347,7 +347,6 @@ class PayMoney extends BaseComponent {
                 removeValue('orderInfo');
                 removeValue('orderArr');
             }, () => {
-                const {listArr} = this.state;
                 if (listArr.order) {
                     this.getLastTime(maturityTme);
                 } else {
@@ -356,8 +355,6 @@ class PayMoney extends BaseComponent {
             }]
         });
         this.props.setReturn(true);
-        //清除定时器
-        clearInterval(this.state.timer);
     };
 
     render() {

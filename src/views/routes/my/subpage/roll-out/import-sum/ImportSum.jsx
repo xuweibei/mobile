@@ -28,7 +28,6 @@ const seasons = [
 const {urlCfg} = Configs;
 const {MESSAGE: {Form}} = Constants;
 const {appHistory, getUrlParam, showInfo, native} = Utils;
-const hybird = process.env.NATIVE;
 
 export default class importSum extends BaseComponent {
     state = {
@@ -117,7 +116,7 @@ export default class importSum extends BaseComponent {
         this.fetch(urlCfg.userpay, {data: {no: uid, money, flag: 1}})
             .subscribe(res => {
                 if (res && res.status === 0) {
-                    if (hybird) {
+                    if (process.env.NATIVE) {
                         const {arr} = res.data;
                         const obj = {
                             prepayid: arr.prepayid,
@@ -144,7 +143,7 @@ export default class importSum extends BaseComponent {
         this.fetch(urlCfg.userpay, {method: 'post', data: {no: uid, money, flag: 0}})
             .subscribe(res => {
                 if (res && res.status === 0) {
-                    if (hybird) {
+                    if (process.env.NATIVE) {
                         native('authInfo', res.data.response).then((data) => {
                             native('goH5');
                             appHistory.push(`/pay-camsucess?uid=${uid}&money=${money}`);
