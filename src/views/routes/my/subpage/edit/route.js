@@ -20,6 +20,8 @@ import UserAgreementDetailRouters from './user-agreement/UserAgreementDetail';//
 import Source from './source';/*确认源头*/
 import SourceHand from './source/Source';/*确认源头手动输入*/
 import SourceBrowse from './source-browse/SourceBrowse';/*确认源头*/
+import BlankPage from './blank';
+
 
 const EditModal = () => (
     <React.Fragment>
@@ -43,6 +45,7 @@ const EditModal = () => (
         <Route path="/source" component={Source}/> {/*确认源头*/}
         <Route path="/sourcehand" component={SourceHand}/> {/*确认源头手动输入*/}
         <Route path="/sourceBrowse" component={SourceBrowse}/> {/*确认源头-扫码*/}
+        <Route path="/blankPage" component={BlankPage}/> {/*确认源头-扫码*/}
     </React.Fragment>
 );
 

@@ -41,7 +41,7 @@
                             }
                         });
                     })
-                }else if((/iphone|ipad/gi).test(navigator.platform)){
+                }else{
                 // <!-- jsbridge 前端初始化 ios  -->
                     function setupWebViewJavascriptBridge(callback) {
                             if (window.WebViewJavascriptBridge) { return callback(WebViewJavascriptBridge); }
@@ -65,7 +65,7 @@
                             }
 
                             bridge.registerHandler('testJavascriptHandler', function(data, responseCallback) {
-                                                
+
                                 log('ObjC called testJavascriptHandler with', data)
                                 var responseData = { 'Javascript Says':'Right back atcha!' }
                                 log('JS responding with', responseData)
@@ -104,7 +104,6 @@
     </head>
     <body>
         <div id="root"></div>
-        <script src="https://cdn.bootcss.com/zepto/1.2.0/zepto.min.js"></script>
         <% if (htmlWebpackPlugin.options.env === 'test' ||htmlWebpackPlugin.options.env === 'prev') { %>
         <!-- VConsole调试 (mobile 上调试)-->
         <script src="https://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/vconsole/3.0.0/vconsole.min.js"></script>

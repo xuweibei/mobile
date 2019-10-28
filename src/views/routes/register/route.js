@@ -2,12 +2,12 @@ import {Route} from 'react-router-dom';
 // import BindPhone from './BindPhone';
 
 const RegisterPage = Loadable({
-    loader: () => import(/* webpackChunkName: 'wechat' */ './Register'),
+    loader: () => import(/* webpackChunkName: 'register' */ './Register'),
     loading: () => null
 });
 
 const SetPassWordPage = Loadable({
-    loader: () => import(/* webpackChunkName: 'wechat' */ './SetPassword'),
+    loader: () => import(/* webpackChunkName: 'register' */ './SetPassword'),
     loading: () => null
 });
 

@@ -522,7 +522,7 @@ class GoodsDetail extends BaseComponent {
         const {
             topSwithe, popup, paginationNum, ids, maskStatus,
             picPath, goodsDetail, shop, recommend, collect,
-            goodsAttr, stocks, shopAddress, lineStatus, lineText, pickType, selectType, names, status
+            goodsAttr, stocks, shopAddress, lineStatus, lineText, pickType, selectType, names
         } = this.state;
         const renderCount = (
             <List>
@@ -725,7 +725,7 @@ class GoodsDetail extends BaseComponent {
                             </div>
                         </div>
                     </div>
-                    {
+                    {/* {
                         goodsDetail.effective_type === '0' ? (
                             <div className={`${(status === '0' || status === '2') ? 'disble-btn' : 'bottom-btn'}`}>
                                 <Flex>
@@ -746,7 +746,8 @@ class GoodsDetail extends BaseComponent {
                         ) : (
                             <div className="pay-now" onClick={() => this.emption('pay')}>立即购买</div>
                         )
-                    }
+                    } */}
+                    <div className="pay-now" onClick={() => this.emption('pay')}>立即购买</div>
                 </div>
             </div>
         );

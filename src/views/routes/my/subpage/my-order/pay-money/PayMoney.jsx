@@ -46,6 +46,7 @@ class PayMoney extends BaseComponent {
 
     componentDidMount() {
         const arrInfo = JSON.parse(getValue('orderInfo'));
+        console.log(arrInfo, '克里斯多夫');
         if (arrInfo) { //如果是有arrInfo代表是直接下单或者从购物车过来的
             const selfOrder = decodeURI(getUrlParam('selfOrder', encodeURI(this.props.location.search)));
             const date = (new Date().getTime() + 86400000) / 1000 - 1;
@@ -79,7 +80,8 @@ class PayMoney extends BaseComponent {
                 res.data.order = (orderNum === 'null' ? '' : arr);
                 if (onOff) { //这里是为了区分首次进来和继续支付
                     this.setState({
-                        listArr: res.data
+                        listArr: res.data,
+                        orderNum: orderNum === 'null' ? '' : arr
                     });
                 }
                 this.setState({
@@ -146,14 +148,69 @@ class PayMoney extends BaseComponent {
 
     //立即支付
     payRightNow = () => {
-        const {listArr, selectIndex} = this.state;
+        const {listArr, selectIndex, orderNum} = this.state;
         //判断是否第三方支付还是CAM消费
         if (selectIndex === 0) {
             this.verifyPayword();
-        } else {
-            this.batchPayMoney(listArr, selectIndex);
+        } else if (selectIndex === 1) {
+            this.wxPay(listArr, orderNum, selectIndex);
+        } else if (selectIndex === 2) {
+            this.alipay(listArr, orderNum, selectIndex);
         }
     };
+
+    //微信支付
+    wxPay = (listArr, orderNum, selectIndex) => {
+        // alert('微信支付');
+        this.fetch(urlCfg.wechatPayment, {data: {order_no: orderNum[0], type: 1}})
+            .subscribe(res => {
+                if (res && res.status === 0) {
+                    if (hybird) {
+                        const obj = {
+                            prepayid: res.data.arr.prepayid,
+                            appid: res.data.arr.appid,
+                            partnerid: res.data.arr.partnerid,
+                            package: res.data.arr.package,
+                            noncestr: res.data.arr.noncestr,
+                            timestamp: res.data.arr.timestamp,
+                            sign: res.data.arr.sign
+                        };
+                        native('wxPayCallback', obj).then((data) => {
+                            native('goH5', {'': ''});
+                            appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&id=${res.data.order_id}&types=${selectIndex}&deposit=${listArr.deposit}&if_express=${res.data.if_express}`);
+                        }).catch(data => {
+                            native('goH5', {'': ''});
+                            showFail(data.message);
+                        });
+                    } else {
+                        // window.location.href = res.data.mweb_url;
+                    }
+                }
+            });
+    }
+
+    //支付宝支付
+    alipay = (listArr, orderNum, selectIndex) => {
+        // alert('支付宝支付');
+        this.fetch(urlCfg.alipayPayment, {data: {type: 1, order_no: orderNum[0]}})
+            .subscribe(res => {
+                if (res && res.status === 0) {
+                    if (hybird) {
+                        native('authInfo', res.data.response).then((data) => {
+                            native('goH5', {'': ''});
+                            if (data.status === '0') {
+                                appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&id=${listArr.order_id}&types=${selectIndex}&deposit=${listArr.deposit}&if_express=${res.data.if_express}`);
+                            }
+                        }).catch(data => {
+                            native('goH5', {'': ''});
+                            showFail(data.message);
+                        });
+                    } else {
+                        // window.location.href = res.data.mweb_url;
+                    }
+                }
+            });
+    }
 
     //合并付款
     batchPayMoney = (listArr, selectIndex) => {
@@ -233,6 +290,7 @@ class PayMoney extends BaseComponent {
         });
     }
 
+
     //返回
     goBackModal = () => {
         const {maturityTme} = this.state;
@@ -250,15 +308,13 @@ class PayMoney extends BaseComponent {
             title: `您的订单在${supple(hour)}小时${supple(minute)}分钟内未支付将被取消，请尽快完成支付`,
             btnTexts: ['残忍拒绝', '继续支付'],
             callbacks: [() => {
-                const {setOrderStatus} = this.props;
                 const arrInfo = JSON.parse(getValue('orderInfo'));
                 const arr = JSON.parse(getValue('orderArr'));
                 if (arrInfo) {
                     if (arr[0].if_express === '1') {
-                        appHistory.replace(`/myOrder/fk?type=${'car'}`);
+                        appHistory.replace('/myOrder/fk?type=home'); //这里取消的时候，在列表页面点击返回应该回到首页。为h5提供的
                     } else {
-                        setOrderStatus(1);
-                        appHistory.replace(`/selfMention?type=${'car'}`);
+                        appHistory.replace('/selfMention?/ww?type=home');
                     }
                 } else {
                     appHistory.goBack();
@@ -357,7 +413,6 @@ const mapStateToProps = state => {
 };
 
 const mapDidpatchToProps = {
-    setOrderStatus: actionCreator.setOrderStatus,
     showConfirm: actionCreator.showConfirm,
     setReturn: actionCreator.setReturn
 };
