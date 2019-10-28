@@ -10,7 +10,7 @@ import CancelOrder from '../../../../common/cancel-order/CancleOrder';
 import MyListView from '../../../../common/my-list-view/MyListView';
 import AppNavBar from '../../../../common/navbar/NavBar';
 
-const {appHistory, showInfo, native, getUrlParam} = Utils;
+const {appHistory, showInfo, native, getUrlParam, systemApi: {removeValue}} = Utils;
 const {urlCfg} = Configs;
 const {MESSAGE: {Feedback}, FIELD, navColorR} = Constants;
 const hybrid = process.env.NATIVE;
@@ -39,6 +39,8 @@ class ReDetail extends BaseComponent {
     componentWillMount() {
         const num = this.statusChoose(this.props.location.pathname.split('/')[2]);
         this.init(num);
+        removeValue('orderInfo');//清除下单流程留下来的订单信息
+        removeValue('orderArr');
     }
 
     componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方
@@ -49,6 +51,8 @@ class ReDetail extends BaseComponent {
                 status: numNext
             }, () => {
                 this.init(numNext);
+                removeValue('orderInfo');//清除下单流程留下来的订单信息
+                removeValue('orderArr');
             });
         }
     }
@@ -264,7 +268,7 @@ class ReDetail extends BaseComponent {
         const type = decodeURI(getUrlParam('type', encodeURI(this.props.location.search)));
         if (hybrid) {
             native('goBack');
-        } if (type === 'car') {
+        } if (type === 'home') {
             appHistory.replace('/home');
         } else if (appHistory.length() === 0) {
             appHistory.push('/my');
