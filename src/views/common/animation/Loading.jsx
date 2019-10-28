@@ -3,9 +3,10 @@
 * */
 import './Animation.less';
 
-// const {getPixelRatio} = Utils;
+const {getPixelRatio} = Utils;
 class Loading extends React.PureComponent {
     componentDidMount() {
+        console.log('渲染动画');
         this.draw();
     }
 
@@ -33,6 +34,7 @@ class Loading extends React.PureComponent {
         img.src = require('../../../../src/assets/images/animate-img.png');
         console.log('img', img);
         img.onload = () => {
+            const ratio = getPixelRatio(ctx) > 2 ? 2 : getPixelRatio(ctx);
             const animate = () => {
                 speed++;
                 //绘制精灵图片
@@ -47,10 +49,10 @@ class Loading extends React.PureComponent {
                         initH,
                         imgWidth,
                         imgHeight,
-                        width / 2 - imgWidth / 2,
-                        height / 2 - imgHeight / 2,
-                        imgWidth,  //在画布上等比例绘制图片的宽度
-                        imgHeight   //在画布上等比例绘制图片的高度
+                        0,
+                        0,
+                        imgWidth / ratio,  //在画布上等比例绘制图片的宽度
+                        imgHeight / ratio   //在画布上等比例绘制图片的高度
                     );
                     if (x0 < 8) {
                         x0++;
@@ -80,8 +82,8 @@ class Loading extends React.PureComponent {
             <canvas
                 ref={(el) => { this.canvas = el }}
                 className="canvas-load"
-                height="330"
-                width="330"
+                width="80"
+                height="80"
             />
         );
     }
