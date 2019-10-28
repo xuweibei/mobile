@@ -1,24 +1,52 @@
 /**
- * demoAction 模块
+ * homeAction 模块
  */
 
-const demoActionTypes = Utils.keyMirror({
+const homeActionTypes = Utils.keyMirror({
+    GET_BANNER: '',
+    SET_BANNER: '',
+    GET_NAV: '',
+    SET_NAV: ''
 });
 
 
-function _getData(data) {
+function _getBanner() {
     return {
-        type: demoActionTypes.GET_AUTH_CODE,
+        type: homeActionTypes.GET_BANNER
+    };
+}
+
+function _setBanner(banner, logo) {
+    return {
+        type: homeActionTypes.GET_BANNER,
         payload: {
-            data
+            banner,
+            logo
         }
     };
 }
 
+function _getNav() {
+    return {
+        type: homeActionTypes.GET_NAV
+    };
+}
 
-const demoActionCreator = {
-    getData: _getData
+function _setNav(nav) {
+    return {
+        type: homeActionTypes.SET_NAV,
+        payload: {
+            nav
+        }
+    };
+}
+
+const homeActionCreator = {
+    getBanner: _getBanner,
+    setBanner: _setBanner,
+    setNav: _setNav,
+    getNav: _getNav
 };
 
 
-export {demoActionTypes, demoActionCreator};
+export {homeActionTypes, homeActionCreator};

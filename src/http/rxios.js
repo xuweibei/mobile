@@ -91,7 +91,9 @@ class Rxios {
                 if (params.method === 'jsonp') {
                     jsonp(params.url, {name: params.jsonpCb}, (err, data) => {
                         ajaxQueue[num].undo = false;
-                        store.dispatch(actionCreator.hideLoading());
+                        setTimeout(() => {
+                            store.dispatch(actionCreator.hideLoading());
+                        }, 2000);
                         if (err) {
                             console.error(err.message);
                             subject.error(err);
@@ -116,7 +118,9 @@ class Rxios {
                         .catch(err => {
                             console.log(err); // 错误捕获统一处理
                             const code = [500, 501, 502, 503, 504, 505];
-                            store.dispatch(actionCreator.hideLoading());
+                            setTimeout(() => {
+                                store.dispatch(actionCreator.hideLoading());
+                            }, 2000);
                             if (err.message === 'Network Error') {
                                 showFail(MESSAGE.Network_Error);
                                 appHistory.replace('/network-error');
@@ -127,7 +131,9 @@ class Rxios {
                         })
                         .then(() => {
                             ajaxQueue[num].undo = false;
-                            store.dispatch(actionCreator.hideLoading());
+                            setTimeout(() => {
+                                store.dispatch(actionCreator.hideLoading());
+                            }, 2000);
                             subject.complete();
                         });
                 }

@@ -18,7 +18,6 @@ class Loading extends React.PureComponent {
     // canvas绘制动画
     draw = (canvas = this.canvas) => {
         if (!canvas) return;
-        console.log('渲染动画');
         const ctx = canvas.getContext('2d');
         const width = canvas.width;
         const height = canvas.height;
@@ -32,9 +31,8 @@ class Loading extends React.PureComponent {
         //加载图片
         const img = new Image();
         img.src = require('../../../../src/assets/images/animate-img.png');
-        console.log('img', img);
         img.onload = () => {
-            const ratio = getPixelRatio(ctx) > 2 ? 2 : getPixelRatio(ctx);
+            const ratio = getPixelRatio(ctx) > 2 ? 4 : getPixelRatio(ctx) * 2;
             const animate = () => {
                 speed++;
                 //绘制精灵图片
@@ -79,12 +77,14 @@ class Loading extends React.PureComponent {
 
     render() {
         return (
-            <canvas
-                ref={(el) => { this.canvas = el }}
-                className="canvas-load"
-                width="80"
-                height="80"
-            />
+            <div className="canvas-mask">
+                <canvas
+                    ref={(el) => { this.canvas = el }}
+                    className="canvas-load"
+                    width="40"
+                    height="40"
+                />
+            </div>
         );
     }
 }

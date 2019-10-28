@@ -8,7 +8,9 @@ import {systemApi} from '../../../utils/systemApi';
 import {FooterBar} from '../../common/foot-bar/FooterBar';
 import {baseActionCreator as actionCreator} from '../../../redux/baseAction';
 import {myActionCreator as ActionCreator} from '../my/actions/index';
+import {homeActionCreator} from './actions/index';
 import HomeList from './home-list/homeList';
+
 import './Home.less';
 
 
@@ -22,14 +24,11 @@ class Home extends BaseComponent {
 
     state = {
         showPopup: false,
-        category: [],
-        mallBanner: [],
         userToken: '',
         pages: [],
         show: false,
         show1: false,
-        goodStuff: [],
-        navPic: ''
+        goodStuff: []
     };
 
     componentWillMount() {
@@ -37,18 +36,18 @@ class Home extends BaseComponent {
     }
 
     componentDidMount() {
-        const {showMenu, setOrder, userToken} = this.props;
+        const {showMenu, setOrder, userToken, getNav, getBanner} = this.props;
         this.setState({
             userToken: systemApi.getValue('userToken')
         });
         TD.log(TD_EVENT_ID.HOME.ID, TD_EVENT_ID.HOME.LABEL.LOOK_HOME);
         setOrder(null);
         showMenu(false);
+        getBanner();
+        getNav();
         if (window.isWX && !userToken) {
             this.login();
         }
-        this.getMall();
-        this.mallBanner();
         this.goodStuff();
     }
 
@@ -60,7 +59,7 @@ class Home extends BaseComponent {
 
     // 判断是否是登录状态 如果不是前往登录
     goToLogin = () => {
-        const {userToken} = this.state;
+        const {userToken} = this.props;
         if (userToken && userToken.length > 0) {
             return;
         }
@@ -100,35 +99,6 @@ class Home extends BaseComponent {
         }
     };
 
-    //获取商品分类
-    getMall = () => {
-        this.fetch(urlCfg.homeGetCategoryOne)
-            .subscribe((res) => {
-                if (res) {
-                    if (res.status === 0) {
-                        this.setState({
-                            category: res.data
-                        });
-                    }
-                }
-            }, err => {
-                Toast.info(err.message);
-            });
-    };
-
-    //获取商品轮播图
-    mallBanner = () => {
-        this.fetch(urlCfg.homeBanner)
-            .subscribe((res) => {
-                if (res && res.status === 0) {
-                    this.setState({
-                        mallBanner: res.data,
-                        navPic: res.home_pic.pic1
-                    });
-                }
-            });
-    };
-
     //有好货
     goodStuff = () => {
         this.fetch(urlCfg.getHomeGoods)
@@ -146,7 +116,7 @@ class Home extends BaseComponent {
 
     //扫一扫
     lookLook = () => {
-        const {userToken} = this.state;
+        const {userToken} = this.props;
         if (window.isWX) {
             window.wx.ready(() => {
                 window.wx.scanQRCode({
@@ -184,7 +154,8 @@ class Home extends BaseComponent {
     }
 
     render() {
-        const {mallBanner, userToken, category, goodStuff, navPic} = this.state;
+        const {goodStuff} = this.state;
+        const {userToken, logo, banner, nav} = this.props;
         return (
             <div className="home">
                 <div className="home-main">
@@ -208,8 +179,8 @@ class Home extends BaseComponent {
                             {
                                 userToken && userToken.length > 0 ? (
                                     <div className="home-searchBar-icon">
-                                        <span className="icon msg"/>
-                                        <span className="icon qrcode" onClick={this.looklook}/>
+                                        {!window.isWX && (<div className="icon msg"/>)}
+                                        <div className="icon qrcode" onClick={this.lookLook}/>
                                     </div>
                                 ) : (
                                     <div className="home-searchBar-icon" onClick={this.lookLook}>
@@ -220,35 +191,47 @@ class Home extends BaseComponent {
                         </div>
                         <WhiteSpace/>
 
-                        <div className="home-banner">
-                            <Carousel
-                                infinite
-                            >
-                                {mallBanner.map((item, index) => (
-                                    <div key={item}>
-                                        <img
-                                            src={item}
-                                            className="banner-img"
-                                        />
-                                    </div>
-                                ))}
-                            </Carousel>
-                        </div>
+                        {
+                            banner && (
+                                <div className="home-banner">
+                                    <Carousel
+                                        infinite
+                                    >
+                                        {banner.map((item, index) => (
+                                            <div key={item}>
+                                                <img
+                                                    src={item}
+                                                    className="banner-img"
+                                                />
+                                            </div>
+                                        ))}
+                                    </Carousel>
+                                </div>
+                            )
+                        }
                         <WhiteSpace size="xl"/>
-                        <div className="home-nav">
-                            <Grid
-                                data={category && category.map((item, index) => ({icon: item.img_url, text: item.cate_name, id: item.id1}))}
-                                activeStyle
-                                columnNum={5}
-                                square
-                                hasLine={false}
-                                onClick={(el, idx) => this.goToCategory(el, idx)}
-                            />
-                        </div>
+                        {
+                            nav && (
+                                <div className="home-nav">
+                                    <Grid
+                                        data={nav.map((item, index) => ({icon: item.img_url, text: item.cate_name, id: item.id1}))}
+                                        activeStyle
+                                        columnNum={5}
+                                        square
+                                        hasLine={false}
+                                        onClick={(el, idx) => this.goToCategory(el, idx)}
+                                    />
+                                </div>
+                            )
+                        }
                         <WhiteSpace/>
-                        <div className="home-logo">
-                            <img src={navPic} alt=""/>
-                        </div>
+                        {
+                            logo && (
+                                <div className="home-logo">
+                                    <img src={logo} alt=""/>
+                                </div>
+                            )
+                        }
                         <WhiteSpace/>
                         <WhiteSpace/>
                         <div className="recommend">
@@ -288,16 +271,22 @@ class Home extends BaseComponent {
 
 const mapStateToProps = state => {
     const base = state.get('base');
+    const home = state.get('home');
     return {
         code: base.get('code'),
-        userToken: base.get('userToken')
+        userToken: base.get('userToken'),
+        banner: home.get('banner'),
+        logo: home.get('logo'),
+        nav: home.get('nav')
     };
 };
 
 const mapDispatchToProps = {
     setUserToken: actionCreator.setUserToken,
     showMenu: actionCreator.showMenu,
-    setOrder: ActionCreator.setOrderInformation
+    setOrder: ActionCreator.setOrderInformation,
+    getBanner: homeActionCreator.getBanner,
+    getNav: homeActionCreator.getNav
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

@@ -6,21 +6,10 @@
 import {connect} from 'react-redux';
 import {Alert, Confirm} from '../../../components/modal/index';
 import Loading from '../animation/Loading';
-// import {baseActionCreator} from '../../../redux/baseAction';
 import Menu from '../menu/Menu';
 import Top from '../top/Top';
 
-// const {systemApi} = Utils;
-
 class BasePage extends BaseComponent {
-    constructor(props, context) {
-        super(props, context);
-    }
-
-    renderLoading = () => (
-        <Loading/>
-    );
-
     renderAlert = () => {
         const {
             alertShow, alertTitle, alertMsg, alertCallback,
@@ -59,7 +48,7 @@ class BasePage extends BaseComponent {
         const {showMenu, loadingShow} = this.props;
         return (
             <div data-component="base" data-role="page">
-                {loadingShow && this.renderLoading()}
+                {loadingShow && <Loading/>}
                 {this.renderAlert()}
                 {this.renderConfirm()}
                 {
