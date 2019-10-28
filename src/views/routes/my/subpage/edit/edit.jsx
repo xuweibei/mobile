@@ -12,8 +12,6 @@ const Item = List.Item;
 const {appHistory, systemApi: {removeValue}, native, showInfo, getUrlParam} = Utils;
 const {urlCfg} = Configs;
 const {LOCALSTORAGE, MESSAGE: {Feedback}} = Constants;
-const hybird = process.env.NATIVE;
-
 class Edit extends BaseComponent {
     componentDidMount() {
         const {userInfo, getUserInfo} = this.props;
@@ -80,7 +78,7 @@ class Edit extends BaseComponent {
                 key: '2',
                 name: 'wec',
                 extra: '去绑定',
-                hybird: hybird,
+                hybird: process.env.NATIVE,
                 subName: 'binding',
                 value: '微信绑定'
             },
@@ -213,7 +211,7 @@ class Edit extends BaseComponent {
     //登出账号
     signOut = () => {
         const {removeUserInfo, setUserToken, setUseType, delMyInfo, removebankInfo, removeNickNameInfo, removeAressInfo, removeRegionInfo} = this.props;
-        if (hybird) {
+        if (process.env.NATIVE) {
             //重定向到原生登录页
             native('loginoutCallback');
         } else {
@@ -236,7 +234,7 @@ class Edit extends BaseComponent {
 
     //改变头像
     changeTheAvatar = () => {
-        if (hybird) {
+        if (process.env.NATIVE) {
             const arr = [];
             native('picCallback', {num: 1}).then(res => {
                 res.data.img.forEach(item => {

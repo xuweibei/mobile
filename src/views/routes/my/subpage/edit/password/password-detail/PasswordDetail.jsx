@@ -11,7 +11,6 @@ import './PasswordDetail.less';
 
 const {appHistory, validator, showInfo, showSuccess, getUrlParam, native, setNavColor} = Utils;
 const {urlCfg} = Configs;
-const hybrid = process.env.NATIVE;
 const {MESSAGE: {Form, Feedback}, navColorR} = Constants;
 const getPass = { //获取验证码按钮的样式
     float: 'right',
@@ -40,13 +39,13 @@ class passwordDetail extends BaseComponent {
     };
 
     componentWillMount() {
-        if (hybrid) { //设置tab颜色
+        if (process.env.NATIVE) { //设置tab颜色
             setNavColor('setNavColor', {color: navColorR});
         }
     }
 
     componentWillReceiveProps() {
-        if (hybrid) {
+        if (process.env.NATIVE) {
             setNavColor('setNavColor', {color: navColorR});
         }
     }
@@ -144,7 +143,7 @@ class passwordDetail extends BaseComponent {
                     .subscribe(res => {
                         if (res && res.status === 0) {
                             if (isLoagin === '1') { //忘记密码状态下设置成功
-                                if (hybrid) {
+                                if (process.env.NATIVE) {
                                     native('loginoutCallback');
                                 } else {
                                     appHistory.replace('/login');
@@ -261,7 +260,7 @@ class passwordDetail extends BaseComponent {
     };
 
     goBackModal = () => {
-        if (hybrid && appHistory.length() === 0) {
+        if (process.env.NATIVE && appHistory.length() === 0) {
             native('goBack');
         } else {
             appHistory.goBack();

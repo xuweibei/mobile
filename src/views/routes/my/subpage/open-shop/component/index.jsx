@@ -11,7 +11,7 @@ import {urlCfg} from '../../../../../../configs/urlCfg';
 
 const {appHistory, getUrlParam, native, systemApi: {getValue}, setNavColor} = Utils;
 const {navColorF} = Constants;
-const hybrid = process.env.NATIVE;
+
 
 class ShopIndex extends BaseComponent {
     state={
@@ -21,13 +21,13 @@ class ShopIndex extends BaseComponent {
     };
 
     componentWillMount() {
-        if (hybrid) { //设置tab颜色
+        if (process.env.NATIVE) { //设置tab颜色
             setNavColor('setNavColor', {color: navColorF});
         }
     }
 
     componentWillReceiveProps() {
-        if (hybrid) {
+        if (process.env.NATIVE) {
             setNavColor('setNavColor', {color: navColorF});
         }
     }
@@ -53,7 +53,7 @@ class ShopIndex extends BaseComponent {
                 btnTexts: ['取消', '确定'],
                 callbacks: [
                     () => {
-                        if (hybrid) {
+                        if (process.env.NATIVE) {
                             native('goBack');
                         } else {
                             appHistory.push('/my');
@@ -83,7 +83,7 @@ class ShopIndex extends BaseComponent {
         const status = decodeURI(getUrlParam('status', encodeURI(data.location.search)));
         const cerType = decodeURI(getUrlParam('cerType', encodeURI(data.location.search)));
         const localStatus = JSON.parse(getValue('shopStatus'));
-        if (hybrid && (timerOld !== timerNow)) {
+        if (process.env.NATIVE && (timerOld !== timerNow)) {
             this.setState({
                 status: 'index',
                 intro: {}
@@ -102,7 +102,7 @@ class ShopIndex extends BaseComponent {
                         btnTexts: ['取消', '确定'],
                         callbacks: [
                             () => {
-                                if (hybrid) {
+                                if (process.env.NATIVE) {
                                     native('goBack');
                                 } else {
                                     appHistory.push('/my');

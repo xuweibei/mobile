@@ -9,7 +9,6 @@ import Nothing from '../nothing/Nothing';
 
 const {appHistory, setNavColor} = Utils;
 const {FIELD, navColorF} = Constants;
-const hybird = process.env.NATIVE;
 class ScrollToTop extends React.PureComponent {
     static propTypes = {
         children: PropTypes.object,
@@ -26,13 +25,13 @@ class ScrollToTop extends React.PureComponent {
     }
 
     componentWillMount() {
-        if (hybird) { //设置tab颜色
+        if (process.env.NATIVE) { //设置tab颜色
             setNavColor('setNavColor', {color: navColorF});
         }
     }
 
     componentWillReceiveProps() {
-        if (hybird) {
+        if (process.env.NATIVE) {
             setNavColor('setNavColor', {color: navColorF});
         }
     }

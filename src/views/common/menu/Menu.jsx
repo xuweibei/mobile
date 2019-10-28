@@ -59,8 +59,7 @@ class Menu extends React.PureComponent {
             text: '快速导航',
             rightNum: -2
         });
-        const hybrid = process.env.NATIVE;
-        if (hybrid && type === '/home') {
+        if (process.env.NATIVE && type === '/home') {
             native('goHome');
         } else {
             appHistory.push(type);

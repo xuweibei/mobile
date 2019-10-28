@@ -11,7 +11,7 @@ import EditAddress from './edit-address';
 import bankCardPage from './bank-card/BankCard';
 import bankCardDetailPage from './bank-card/BankCardDetail';
 import Area from './location-area';//所在区域管理
-import InformationPage from './information/Information';
+// import InformationPage from './information/Information';
 // import FeedbackRouters from './user-agreement/Feedback';
 import UserAgreementRouters from './user-agreement/UserAgreement';//关于中品优购-安卓
 import UserAgreementDetailRouters from './user-agreement/UserAgreementDetail';//关于中品优购-苹果
@@ -36,7 +36,7 @@ const EditModal = () => (
         <Route path="/bankCard" component={bankCardPage}/> {/*我的银行卡*/}
         <Route path="/bankCardDetail" component={bankCardDetailPage}/> {/*我的银行卡-填写列表*/}
         <Route path="/locationarea" component={Area}/>
-        <Route path="/information" component={InformationPage}/> {/*消息通知*/}
+        {/* <Route path="/information" component={InformationPage}/> 消息通知 */}
         {/* <Route path="/feedback" component={FeedbackRouters}/> 问题反馈 */}
         <Route path="/userAgreement" component={UserAgreementRouters}/> {/* 关于中品优购-安卓*/}
         <Route path="/userAgreementDetail" component={UserAgreementDetailRouters}/> {/* 关于中品优购-苹果*/}

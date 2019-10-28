@@ -9,7 +9,6 @@ import './ShopHomeDetail.less';
 
 const {native, goBackModal} = Utils;
 const {urlCfg} = Configs;
-const hybird = process.env.NATIVE;
 
 class ShopHomeDetail extends BaseComponent {
     state = {
@@ -77,7 +76,7 @@ class ShopHomeDetail extends BaseComponent {
 
     //拨打电话
     callPhone = (tel) => {
-        if (hybird) {
+        if (process.env.NATIVE) {
             native('callTel', {phoneNum: tel});
         }
     }

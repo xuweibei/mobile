@@ -9,8 +9,6 @@ import './Invitation.less';
 const {urlCfg} = Configs;
 const {native, getUrlParam, TD, showInfo} = Utils;
 const {TD_EVENT_ID} = Constants;
-const hybird = process.env.NATIVE;
-
 //分享列表
 const dataList = [
     {
@@ -50,7 +48,7 @@ class Invitation extends BaseComponent {
     //保存图片
     saveImg = () => {
         const {shareArr} = this.state;
-        if (hybird) {
+        if (process.env.NATIVE) {
             if (shareArr) {
                 native('savePicCallback', {type: 2, imgUrl: shareArr});
             } else {
@@ -90,7 +88,7 @@ class Invitation extends BaseComponent {
     shareTrue = (value) => {
         const {shareArr} = this.state;
         TD.log(TD_EVENT_ID.MY.ID, TD_EVENT_ID.MY.LABEL.SHARE);
-        if (hybird) {
+        if (process.env.NATIVE) {
             const obj = {
                 type: value + 1,
                 title: '分享',

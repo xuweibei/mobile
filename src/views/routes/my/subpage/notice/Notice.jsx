@@ -8,7 +8,6 @@ import './Notice.less';
 
 const {appHistory, showInfo, showSuccess, native, setNavColor} = Utils;
 const {MESSAGE: {Form, Feedback}, FIELD, navColorF} = Constants;
-const hybrid = process.env.NATIVE;
 const {urlCfg} = Configs;
 
 const CheckboxItem = Checkbox.CheckboxItem;
@@ -50,13 +49,13 @@ export default class Notice extends BaseComponent {
     }
 
     componentWillMount() {
-        if (hybrid) { //设置tab颜色
+        if (process.env.NATIVE) { //设置tab颜色
             setNavColor('setNavColor', {color: navColorF});
         }
     }
 
     componentWillReceiveProps() {
-        if (hybrid) {
+        if (process.env.NATIVE) {
             setNavColor('setNavColor', {color: navColorF});
         }
     }
@@ -396,7 +395,7 @@ export default class Notice extends BaseComponent {
     }
 
     goBack = () => {
-        if (hybrid) {
+        if (process.env.NATIVE) {
             native('goBack');
         } else {
             appHistory.goBack();

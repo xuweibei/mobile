@@ -6,7 +6,6 @@ import './ApplyDrawback.less';
 const {dealImage, appHistory, getUrlParam, showSuccess, native, setNavColor} = Utils;
 const  {urlCfg} = Configs;
 const {MESSAGE: {Feedback}, navColorF} = Constants;
-const hybrid = process.env.NATIVE;
 
 //退款类型
 const refundType = [
@@ -60,13 +59,13 @@ export default class applyDrawback extends BaseComponent {
     }
 
     componentWillMount() {
-        if (hybrid) { //设置tab颜色
+        if (process.env.NATIVE) { //设置tab颜色
             setNavColor('setNavColor', {color: navColorF});
         }
     }
 
     componentWillReceiveProps() {
-        if (hybrid) {
+        if (process.env.NATIVE) {
             setNavColor('setNavColor', {color: navColorF});
         }
     }
@@ -334,7 +333,7 @@ export default class applyDrawback extends BaseComponent {
                             <div className="upload-text">上传图片</div>
                             <div className="img-list">
                                 {
-                                    hybrid ? (
+                                    process.env.NATIVE ? (
                                         <div className="picture-area">
                                             <ul>
                                                 {

@@ -22,7 +22,6 @@ import './ShopHome.less';
 const {FIELD} = Constants;
 const {urlCfg} = Configs;
 const {appHistory, getUrlParam, showInfo, native} = Utils;
-const hybrid = process.env.NATIVE;
 class ShopHome extends BaseComponent {
     constructor(props) {
         super(props);
@@ -65,7 +64,7 @@ class ShopHome extends BaseComponent {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (hybrid) {
+        if (process.env.NATIVE) {
             const shoppingId = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
             const nextId = decodeURI(getUrlParam('id', encodeURI(nextProps.location.search)));
             if (shoppingId !== nextId) {
@@ -274,7 +273,7 @@ class ShopHome extends BaseComponent {
             info = 'homePage';
             break;
         default:
-            if (hybrid) {
+            if (process.env.NATIVE) {
                 native('goToShoper', {shopNo: shopOnsInfo.no, id: '', type: '', shopNickName: shopOnsInfo.nickname, imType: '1', groud: '0'});//groud 为0 单聊，1群聊 imType 1商品2订单3空白  type 1商品 2订单
             } else {
                 showInfo('联系商家');

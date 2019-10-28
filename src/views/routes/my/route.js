@@ -88,13 +88,11 @@ const InspectModal = Loadable({
 //     loader: () => import(/* webpackChunkName: 'hybird' */ './subpage/im/route'),
 //     loading: () => null
 // });
-
-const hybird = process.env.NATIVE;
-
 const My = () => {
-    if (hybird) {
+    if (!process.env.NATIVE) {
         return (
             <React.Fragment>
+                <Route path="/my" component={MyPage}/>
                 <Edit/>{/* 编辑 */}
                 <OrderPage/>{/* 我的订单 */}
                 <SelfMention/>{/* 自提 */}
@@ -107,12 +105,12 @@ const My = () => {
                 {/* <RecommendDetail/>我的 推荐详情 */}
                 <AppendOrder/>
                 <MyAssetsRouters/>{/* 我的资产*/}
-                <WithdrawalRouters/>
                 <ShopHomePage/>{/*我的店铺*/}
+                <WithdrawalRouters/>
                 <RecordPage/>
                 <OpenShopPage/>{/* 我要开店 */}
-                <PeraonalSotes/>{/*我的店铺 */}
-                <BrowseHistory/>{/*浏览历史 */}
+                <PeraonalSotes/>{/**我的店铺 */}
+                <BrowseHistory/>{/**浏览历史 */}
                 <RollOutModal/>{/*CAM转出*/}
                 <InspectModal/>{/*核销订单*/}
                 {/* <ImModel/>im */}
@@ -121,7 +119,6 @@ const My = () => {
     }
     return (
         <React.Fragment>
-            <Route path="/my" component={MyPage}/>
             <Edit/>{/* 编辑 */}
             <OrderPage/>{/* 我的订单 */}
             <SelfMention/>{/* 自提 */}
@@ -134,12 +131,12 @@ const My = () => {
             {/* <RecommendDetail/>我的 推荐详情 */}
             <AppendOrder/>
             <MyAssetsRouters/>{/* 我的资产*/}
-            <ShopHomePage/>{/*我的店铺*/}
             <WithdrawalRouters/>
+            <ShopHomePage/>{/*我的店铺*/}
             <RecordPage/>
             <OpenShopPage/>{/* 我要开店 */}
-            <PeraonalSotes/>{/**我的店铺 */}
-            <BrowseHistory/>{/**浏览历史 */}
+            <PeraonalSotes/>{/*我的店铺 */}
+            <BrowseHistory/>{/*浏览历史 */}
             <RollOutModal/>{/*CAM转出*/}
             <InspectModal/>{/*核销订单*/}
             {/* <ImModel/>im */}

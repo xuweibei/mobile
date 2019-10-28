@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import './NavBar.less';
 
 const {appHistory, native, showInfo, setNavColor} = Utils;
-const hybird = process.env.NATIVE;
 const {navColorF} = Constants;
 // const hashs = window.location.hash;
 // const str = hashs.substring(hashs.length - 8);
@@ -55,14 +54,14 @@ class NavBar extends React.PureComponent {
     };
 
     componentWillMount() {
-        if (hybird) { //设置tab颜色
+        if (process.env.NATIVE) { //设置tab颜色
             const {color} = this.props;
             setNavColor('setNavColor', {color: color || navColorF});
         }
     }
 
     componentWillReceiveProps() {
-        if (hybird) {
+        if (process.env.NATIVE) {
             const {color} = this.props;
             setNavColor('setNavColor', {color: color || navColorF});
         }
@@ -71,7 +70,7 @@ class NavBar extends React.PureComponent {
     //左边按钮图标点击样式
     backAway = () => {
         const {nativeGoBack, goBackModal} = this.props;
-        if (hybird) { //app状态下
+        if (process.env.NATIVE) { //app状态下
             if (goBackModal) { //如果是有返回处理函数，则执行这个函数
                 goBackModal();
             } else if (nativeGoBack) { //如果没又返回处理函数，而是有 nativeGoBack 这个原生直接下级页面的标识，则返回时走原生方法
@@ -98,7 +97,7 @@ class NavBar extends React.PureComponent {
     }
 
     goToIm = () => {
-        if (hybird) {
+        if (process.env.NATIVE) {
             native('goToIm',  {'': ''});
         } else {
             showInfo('im');

@@ -5,9 +5,6 @@ import PropTypes from 'prop-types';
 import {TabBar} from 'antd-mobile';
 import './ShopFooter.less';
 
-const hybrid = process.env.NATIVE;
-
-
 class ShopFooter extends React.PureComponent {
     static propTypes = {
         active: PropTypes.string.isRequired,
@@ -21,7 +18,7 @@ class ShopFooter extends React.PureComponent {
     };
 
     componentWillReceiveProps(nextProps) {
-        if (hybrid) {
+        if (process.env.NATIVE) {
             const haveNext = nextProps.haveModalAll;
             const have = this.props.haveModalAll;
             if (haveNext !== have) {

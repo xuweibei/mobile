@@ -10,7 +10,6 @@ import './ListDetails.less';
 const {appHistory, getUrlParam, showSuccess, native, showInfo} = Utils;
 const {MESSAGE: {Form, Feedback}} = Constants;
 const {urlCfg} = Configs;
-const hybird = process.env.NATIVE;
 class ListDetails extends BaseComponent {
     state = {
         canInfo: {} //数据容器
@@ -119,7 +118,7 @@ class ListDetails extends BaseComponent {
         showConfirm({
             title: `拨打商家电话：${tel}`,
             callbacks: [null, () => {
-                if (hybird) {
+                if (process.env.NATIVE) {
                     native('callTel', {phoneNum: tel});
                 }
             }]
@@ -201,7 +200,7 @@ class ListDetails extends BaseComponent {
     //联系商家
     goToShoper = () => {
         const {canInfo} = this.state;
-        if (hybird) {
+        if (process.env.NATIVE) {
             native('goToShoper', {shopNo: canInfo.shop_no, id: canInfo.order_id, type: '2', shopNickName: canInfo.nickname, imType: '2', groud: '0'});//groud 为0 单聊，1群聊 imType 1商品2订单3空白  type 1商品 2订单
         } else {
             showInfo('联系商家');

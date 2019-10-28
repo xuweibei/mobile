@@ -6,8 +6,6 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 import './MyIncome.less';
 
 const {appHistory, native} = Utils;
-const hybrid = process.env.NATIVE;
-
 export default class MyAssets extends BaseComponent {
     //去往我的收入页面
     goToIcome = (value) => {
@@ -15,7 +13,7 @@ export default class MyAssets extends BaseComponent {
     }
 
     goBackModal = () => {
-        if (hybrid && appHistory.length() === 0) {
+        if (process.env.NATIVE && appHistory.length() === 0) {
             native('goBack');
         } else {
             appHistory.goBack();

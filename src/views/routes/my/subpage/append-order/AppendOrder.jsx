@@ -14,9 +14,6 @@ const {urlCfg} = Configs;
 
 const nowTimeStamp = Date.now();
 const now = new Date(nowTimeStamp);
-const hybrid = process.env.NATIVE;
-
-
 class appendOrder extends BaseComponent {
     state = {
         shopInfo: [],
@@ -50,7 +47,7 @@ class appendOrder extends BaseComponent {
         const timer = decodeURI(getUrlParam('time', encodeURI(this.props.location.search)));
         const that = this;
         const obj = {'': ''};
-        if (hybrid) {
+        if (process.env.NATIVE) {
             if (timer === 'null') { //非购物车进入的时候
                 this.getOrderState();
             } else {
@@ -69,7 +66,7 @@ class appendOrder extends BaseComponent {
         const {setOrder, setIds, location} = this.props;
         const timerNext = decodeURI(getUrlParam('time', encodeURI(next.location.search)));
         const timer = decodeURI(getUrlParam('time', encodeURI(location.search)));
-        if (hybrid && timer && timerNext !== timer) {
+        if (process.env.NATIVE && timer && timerNext !== timer) {
             this.setState({
                 shopInfo: [],
                 addressInfo: {},
@@ -346,7 +343,7 @@ class appendOrder extends BaseComponent {
     }
 
     goBackModal = () => {
-        if (hybrid && appHistory.length() === 0) {
+        if (process.env.NATIVE && appHistory.length() === 0) {
             native('goBack');
             removeValue('invoices');
             removeValue('order');

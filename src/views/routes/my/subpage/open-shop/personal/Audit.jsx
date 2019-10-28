@@ -5,10 +5,9 @@ import {native} from '../../../../../../utils/native';
 
 const {appHistory} = Utils;
 const {FIELD} = Constants;
-const hybrid = process.env.NATIVE;
 export default class Audit extends BaseComponent {
     emptyGoTo = () => {
-        if (hybrid) {
+        if (process.env.NATIVE) {
             native('goBack');
         } else {
             appHistory.replace('/my');

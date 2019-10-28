@@ -4,8 +4,6 @@ import './SuccessFile.less';
 
 const {appHistory, native} = Utils;
 const timer = null;
-
-const hybrid = process.env.NATIVE;
 class SuccessFile extends BaseComponent {
     state = {
         info: {},
@@ -26,18 +24,14 @@ class SuccessFile extends BaseComponent {
             }, () => {
                 if (this.state.time === 0) {
                     clearInterval(timer);
-                    if (hybrid) {
-                        native('goHome');
-                    } else {
-                        appHistory.replace('/home');
-                    }
+                    this.goHome();
                 }
             });
         }, 10000);
     }
 
     goHome = () => {
-        if (hybrid) {
+        if (process.env.NATIVE) {
             native('goHome');
         } else {
             appHistory.replace('/home');

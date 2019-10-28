@@ -10,7 +10,6 @@ import './Evaluate.less';
 const {urlCfg} = Configs;
 const {appHistory, getUrlParam, showInfo, showSuccess, setNavColor} = Utils;
 const {MESSAGE: {Form, Feedback}, FIELD, navColorF} = Constants;
-const hybird = process.env.NATIVE;
 
 export default class Evaluate extends BaseComponent {
     state = {
@@ -32,13 +31,13 @@ export default class Evaluate extends BaseComponent {
     }
 
     componentWillMount() {
-        if (hybird) { //设置tab颜色
+        if (process.env.NATIVE) { //设置tab颜色
             setNavColor('setNavColor', {color: navColorF});
         }
     }
 
     componentWillReceiveProps() {
-        if (hybird) {
+        if (process.env.NATIVE) {
             setNavColor('setNavColor', {color: navColorF});
         }
     }

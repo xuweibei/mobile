@@ -6,7 +6,6 @@ import './MyComplain.less';
 const {dealImage, showInfo, appHistory, showSuccess, getUrlParam, native, setNavColor} = Utils;
 const {urlCfg} = Configs;
 const {MESSAGE: {Form, Feedback}, navColorF} = Constants;
-const hybrid = process.env.NATIVE;
 export default class MyComplain extends BaseComponent {
     state = {
         files: [],
@@ -14,13 +13,13 @@ export default class MyComplain extends BaseComponent {
     };
 
     componentWillMount() {
-        if (hybrid) { //设置tab颜色
+        if (process.env.NATIVE) { //设置tab颜色
             setNavColor('setNavColor', {color: navColorF});
         }
     }
 
     componentWillReceiveProps() {
-        if (hybrid) {
+        if (process.env.NATIVE) {
             setNavColor('setNavColor', {color: navColorF});
         }
     }
@@ -89,7 +88,7 @@ export default class MyComplain extends BaseComponent {
                             }).subscribe(value => {
                                 if (value.status === 0) {
                                     showSuccess(Feedback.submit_Success);
-                                    if (hybrid) {
+                                    if (process.env.NATIVE) {
                                         native('goHome');
                                     } else {
                                         appHistory.push('/home');
@@ -99,7 +98,7 @@ export default class MyComplain extends BaseComponent {
                         });
                     } else {
                         showSuccess(Feedback.submit_Success);
-                        if (hybrid) {
+                        if (process.env.NATIVE) {
                             native('goHome');
                         } else {
                             appHistory.push('/home');
@@ -112,7 +111,7 @@ export default class MyComplain extends BaseComponent {
 
     //原生图片选择
     addPictrue = () => {
-        if (hybrid) {
+        if (process.env.NATIVE) {
             native('picCallback', {num: 9}).then(res => {
                 const arr = [];
                 res.data.img.forEach(item => {
@@ -151,7 +150,7 @@ export default class MyComplain extends BaseComponent {
                         <div className="complain-img">
                             <div className="img-text">添加图片（选填）</div>
                             {
-                                hybrid ? (
+                                process.env.NATIVE ? (
                                     <div className="picture-area">
                                         <ul>
                                             {

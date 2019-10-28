@@ -7,7 +7,6 @@ import './RefundDetails.less';
 
 const {getUrlParam, appHistory, showInfo, native} = Utils;
 const {urlCfg} = Configs;
-const hybrid = process.env.NATIVE;
 
 const {MESSAGE: {Form, Feedback}} = Constants;
 class refundDetails extends BaseComponent {
@@ -209,7 +208,7 @@ class refundDetails extends BaseComponent {
     //联系商家
     goToShoper = () => {
         const {refundArr} = this.state;
-        if (hybrid) {
+        if (process.env.NATIVE) {
             native('goToShoper', {shopNo: refundArr.shop_no, id: refundArr.order_id, type: '1', shopNickName: refundArr.nickname, imType: '2', groud: '0'});//groud 为0 单聊，1群聊 imType 1商品2订单3空白  type 1商品 2订单
         } else {
             showInfo('联系商家');

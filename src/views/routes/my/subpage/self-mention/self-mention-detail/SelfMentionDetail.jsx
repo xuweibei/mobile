@@ -10,7 +10,6 @@ import BaseComponent from '../../../../../../components/base/BaseComponent';
 
 const {urlCfg} = Configs;
 const {validator, showFail, showInfo, appHistory, getUrlParam, systemApi: {setValue, getValue, removeValue}, getShopCartInfo, native} = Utils;
-const hybrid = process.env.NATIVE;
 
 class ReDetail extends BaseComponent {
     constructor(props, context) {
@@ -38,7 +37,7 @@ class ReDetail extends BaseComponent {
     componentDidMount() {
         const {setOrder, location} = this.props;
         const timer = decodeURI(getUrlParam('time', encodeURI(location.search)));
-        if (hybrid) {
+        if (process.env.NATIVE) {
             if (timer === 'null') { //非购物车进入时
                 this.getOrderSelf();
             } else { //这里的情况是，原生那边跳转的时候，需要处理一些问题，所以就购物车过来的时候，存数据，这边取数据
@@ -56,7 +55,7 @@ class ReDetail extends BaseComponent {
         const {setOrder, location} = this.props;
         const timerNext = decodeURI(getUrlParam('time', encodeURI(next.location.search)));
         const timer = decodeURI(getUrlParam('time', encodeURI(location.search)));
-        if ((timerNext !== timer) && hybrid) {
+        if ((timerNext !== timer) && process.env.NATIVE) {
             this.setState({
                 modal: false, //自提弹窗是否弹出
                 currentTab: 0, //当前自提日期的key

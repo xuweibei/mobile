@@ -1,4 +1,4 @@
-/**支付页面 */
+/**安卓需要一个空白的页面  用来过度 */
 import React from 'react';
 
 export default class BlankPage extends BaseComponent {

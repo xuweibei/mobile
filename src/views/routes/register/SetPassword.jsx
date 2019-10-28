@@ -7,7 +7,6 @@ import AppNavBar from '../../common/navbar/NavBar';
 import './SetPassword.less';
 
 const {urlCfg} = Configs;
-const hybrid = process.env.NATIVE;
 const {getUrlParam, appHistory, showInfo, showSuccess, native, setNavColor} = Utils;
 const {MESSAGE: {Form, Feedback}, navColorF} = Constants;
 
@@ -21,13 +20,13 @@ export default class SetPassWord extends BaseComponent {
     };
 
     componentWillMount() {
-        if (hybrid) { //设置tab颜色
+        if (process.env.NATIVE) { //设置tab颜色
             setNavColor('setNavColor', {color: navColorF});
         }
     }
 
     componentWillReceiveProps() {
-        if (hybrid) {
+        if (process.env.NATIVE) {
             setNavColor('setNavColor', {color: navColorF});
         }
     }
@@ -77,7 +76,7 @@ export default class SetPassWord extends BaseComponent {
                 }).subscribe((res) => {
                     if (res && res.status === 0) {
                         showSuccess(Feedback.Set_Success);
-                        if (hybrid) {
+                        if (process.env.NATIVE) {
                             native('goHome');
                         } else {
                             appHistory.replace('/home');
@@ -106,7 +105,7 @@ export default class SetPassWord extends BaseComponent {
     //暂不设置返回首页
     notSet = () => {
         // appHistory.go(-2);
-        if (hybrid) {
+        if (process.env.NATIVE) {
             native('goHome');
         } else {
             appHistory.replace('/home');
@@ -122,7 +121,7 @@ export default class SetPassWord extends BaseComponent {
     }
 
     goBackModal = () => {
-        if (hybrid) {
+        if (process.env.NATIVE) {
             native('goHome');
         } else {
             appHistory.replace('/home');

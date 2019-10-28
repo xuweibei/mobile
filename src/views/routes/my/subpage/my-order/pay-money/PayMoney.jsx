@@ -9,7 +9,6 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 
 const {appHistory, getUrlParam, native, systemApi: {getValue, removeValue}, supple, showFail, showInfo} = Utils;
 const {urlCfg} = Configs;
-const hybird = process.env.NATIVE;
 const mode = [
     {
         title: 'CAM余额',
@@ -46,7 +45,6 @@ class PayMoney extends BaseComponent {
 
     componentDidMount() {
         const arrInfo = JSON.parse(getValue('orderInfo'));
-        console.log(arrInfo, '克里斯多夫');
         if (arrInfo) { //如果是有arrInfo代表是直接下单或者从购物车过来的
             const selfOrder = decodeURI(getUrlParam('selfOrder', encodeURI(this.props.location.search)));
             const date = (new Date().getTime() + 86400000) / 1000 - 1;
@@ -87,6 +85,8 @@ class PayMoney extends BaseComponent {
                 this.setState({
                     maturityTme: res.data.enddate //到期时间
                 }, () => this.getLastTime(res.data.enddate));
+            } else {
+                appHistory.goBack();
             }
         });
     };
@@ -114,18 +114,22 @@ class PayMoney extends BaseComponent {
             if ((supple(hour) === '00' && supple(minute) === '00' && supple(second) === '00') || hour.toString().indexOf('-') !== -1) {
                 clearInterval(timer);
                 if (arrInfo) { //下单页过来的订单取消
-                    that.fetch(urlCfg.dealMallorderbyno, {data: {deal: 0, id: orderId === 'null' ? '' : orderId, order_no: arrInfo && arrInfo.order, reason: '订单超时', reason_id: 5, type: orderId === 'null' ? 2 : 1}})
+                    that.fetch(urlCfg.dealMallorderbyno, {data: {order_no: arrInfo.order}})
                         .subscribe((res) => {
                             if (res && res.status === 0) {
                                 showInfo('订单取消');
                                 appHistory.goBack();
+                            } else {
+                                appHistory.goBack();
                             }
                         });
                 } else if (orderId !== 'null') { //订单列表过来的取消
-                    that.fetch(urlCfg.delMallOrder, {data: {deal: 0, id: orderId, reason: '订单超时', reason_id: 5, type: orderId === 'null' ? 2 : 1}})
+                    that.fetch(urlCfg.delMallOrder, {data: {deal: 0, id: orderId, reason: '订单超时', reason_id: 5}})
                         .subscribe((res) => {
                             if (res && res.status === 0) {
                                 showInfo('订单取消');
+                                appHistory.goBack();
+                            } else {
                                 appHistory.goBack();
                             }
                         });
@@ -165,7 +169,7 @@ class PayMoney extends BaseComponent {
         this.fetch(urlCfg.wechatPayment, {data: {order_no: orderNum[0], type: 1}})
             .subscribe(res => {
                 if (res && res.status === 0) {
-                    if (hybird) {
+                    if (process.env.NATIVE) {
                         const obj = {
                             prepayid: res.data.arr.prepayid,
                             appid: res.data.arr.appid,
@@ -195,10 +199,10 @@ class PayMoney extends BaseComponent {
         this.fetch(urlCfg.alipayPayment, {data: {type: 1, order_no: orderNum[0]}})
             .subscribe(res => {
                 if (res && res.status === 0) {
-                    if (hybird) {
+                    if (process.env.NATIVE) {
                         native('authInfo', res.data.response).then((data) => {
                             native('goH5', {'': ''});
-                            if (data.status === '0') {
+                            if (data && data.status === '0') {
                                 appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&id=${listArr.order_id}&types=${selectIndex}&deposit=${listArr.deposit}&if_express=${res.data.if_express}`);
                             }
                         }).catch(data => {
@@ -219,7 +223,7 @@ class PayMoney extends BaseComponent {
             .subscribe(res => {
                 if (res && res.status === 0) {
                     //selectIndex === 1为微信支付
-                    native(selectIndex === 1 ? 'payWX' : 'payAliPay', {qrCode: res.data.appPayRequest.qrCode, order_no: listArr.order[0], type: hybird ? 1 : 2, payType: selectIndex === 1 ? 2 : 1}).then((data) => {
+                    native(selectIndex === 1 ? 'payWX' : 'payAliPay', {qrCode: res.data.appPayRequest.qrCode, order_no: listArr.order[0], type: process.env.NATIVE ? 1 : 2, payType: selectIndex === 1 ? 2 : 1}).then((data) => {
                         native('goH5', {'': ''});
                         appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&types=${selectIndex}&deposit=${listArr.all_deposit}&if_express=${res.if_express}&batch=1`);
                     }).catch(data => {
@@ -284,17 +288,20 @@ class PayMoney extends BaseComponent {
 
     //页面卸载
     componentWillUnmount() {
+        const {setReturn, hideConfirm} = this.props;
         //返回弹框的回调是否显示
         setTimeout(() => {
-            this.props.setReturn(false);
+            setReturn(false);
         });
+        hideConfirm();//关闭弹窗
     }
 
 
     //返回
     goBackModal = () => {
         const {maturityTme} = this.state;
-        const {showConfirm} = this.props;
+        const {showConfirm, location: {search}} = this.props;
+        const down = decodeURI(getUrlParam('down', encodeURI(search)));//线下订单过来标识
         const oDate = new Date();//获取日期对象
         const oldTime = oDate.getTime();//现在距离1970年的毫秒数
         let second = Math.floor((maturityTme * 1000 - oldTime) / 1000);//未来时间距离现在的秒数
@@ -303,6 +310,7 @@ class PayMoney extends BaseComponent {
         second %= 3600; //余数代表 剩下的秒数；
         const minute = Math.floor(second / 60);
         second %= 60;
+        const appLength = appHistory.length();
 
         showConfirm({
             title: `您的订单在${supple(hour)}小时${supple(minute)}分钟内未支付将被取消，请尽快完成支付`,
@@ -312,10 +320,25 @@ class PayMoney extends BaseComponent {
                 const arr = JSON.parse(getValue('orderArr'));
                 if (arrInfo) {
                     if (arr[0].if_express === '1') {
-                        appHistory.replace('/myOrder/fk?type=home'); //这里取消的时候，在列表页面点击返回应该回到首页。为h5提供的
+                        if (appLength === 0) { //线上订单，用户取消支付的时候，路由都没了，就走这里
+                            appHistory.push('/myOrder/fk');
+                            appHistory.reduction();
+                        } else {
+                            appHistory.replace('/myOrder/fk?type=home'); //type这里取消的时候，在列表页面点击返回应该回到首页。为h5提供的
+                        }
+                    } else if (appLength === 0) { //用户取消支付的时候，路由都没了，就走这里
+                        appHistory.push('/selfMention/ww');
+                        appHistory.reduction();
                     } else {
-                        appHistory.replace('/selfMention?/ww?type=home');
+                        appHistory.replace('/selfMention/ww?type=home');
                     }
+                } else if (appLength === 0) { //用户取消支付的时候，路由都没了，就走这里
+                    if (down === '1') {
+                        appHistory.push('/selfMention/ww');
+                    } else {
+                        appHistory.push('/myOrder/fk');
+                    }
+                    appHistory.reduction();
                 } else {
                     appHistory.goBack();
                 }
@@ -414,7 +437,8 @@ const mapStateToProps = state => {
 
 const mapDidpatchToProps = {
     showConfirm: actionCreator.showConfirm,
-    setReturn: actionCreator.setReturn
+    setReturn: actionCreator.setReturn,
+    hideConfirm: actionCreator.hideConfirm
 };
 
 export default connect(mapStateToProps, mapDidpatchToProps)(PayMoney);

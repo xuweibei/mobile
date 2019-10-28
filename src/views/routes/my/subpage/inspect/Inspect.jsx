@@ -7,8 +7,6 @@ import AppNavBar from '../../../../common/navbar/NavBar';
 const {urlCfg} = Configs;
 
 const {appHistory, showInfo, native, getUrlParam} = Utils;
-const hybrid = process.env.NATIVE;
-
 export default class Inspect extends BaseComponent {
     state = {
         value: '',  //核销码
@@ -48,7 +46,7 @@ export default class Inspect extends BaseComponent {
 
   //点击扫一扫
   sureSaoCode = () => {
-      if (hybrid) {
+      if (process.env.NATIVE) {
           const obj = {
               pay: urlCfg.importSum,
               write: urlCfg.consumer,

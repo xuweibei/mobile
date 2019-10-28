@@ -35,6 +35,7 @@ export default () => {
         <div className="open-shop">
             <AppNavBar
                 title="我要开店"
+                nativeGoBack
             />
             <img src={banner} alt="" className="shop-banner"/>
             <div className="shop-content">

@@ -10,7 +10,6 @@ const {urlCfg} = Configs;
 
 const {appHistory, showInfo, native, systemApi: {setValue}, setNavColor} = Utils;
 const {navColorF} = Constants;
-const hybrid = process.env.NATIVE;
 
 export default class Recommender extends BaseComponent {
     constructor(props, context) {
@@ -25,13 +24,13 @@ export default class Recommender extends BaseComponent {
     }
 
     componentWillMount() {
-        if (hybrid) { //设置tab颜色
+        if (process.env.NATIVE) { //设置tab颜色
             setNavColor('setNavColor', {color: navColorF});
         }
     }
 
     componentWillReceiveProps() {
-        if (hybrid) {
+        if (process.env.NATIVE) {
             setNavColor('setNavColor', {color: navColorF});
         }
     }
@@ -94,7 +93,7 @@ export default class Recommender extends BaseComponent {
 
     //点击扫一扫
     nativeSaoMa = () => {
-        if (hybrid) {
+        if (process.env.NATIVE) {
             const obj = {
                 pay: urlCfg.importSum,
                 write: urlCfg.consumer,

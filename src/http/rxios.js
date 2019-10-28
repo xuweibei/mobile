@@ -16,7 +16,6 @@ import {native} from '../utils/native';
 const {CancelToken} = axios;
 const {systemApi: {getValue, removeValue}, appHistory, showFail} = Utils;
 const {MESSAGE, LOCALSTORAGE} = Constants;
-const hybrid = process.env.NATIVE;
 
 // http request 拦截器
 axios.interceptors.request.use(
@@ -36,7 +35,7 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
     response => {
         if (response.data.status === 100 || response.data.status === 101) {
-            if (hybrid) {
+            if (process.env.NATIVE) {
                 removeValue(LOCALSTORAGE.USER_TOKEN); // 清除token,localstorage
                 store.dispatch(actionCreator.setUserToken('')); // 清除redux的userToken
                 //重定向到原生登录页
@@ -44,9 +43,6 @@ axios.interceptors.response.use(
             } else {
                 appHistory.push('/login');
             }
-        }
-        if (response.data.status === 1) {
-            showFail(response.data.message);
         }
         return response;
     }
@@ -113,6 +109,7 @@ class Rxios {
                                     subject.next(res.data);
                                 } else if (res.data.status === 1) {
                                     showFail(res.data.message);
+                                    subject.next(res.data);
                                 }
                             }
                         })

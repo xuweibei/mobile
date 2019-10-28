@@ -8,7 +8,6 @@ import './SelfOrderingDetails.less';
 const {showSuccess, appHistory, getUrlParam, native, showFail, showInfo} = Utils;
 const {MESSAGE: {Feedback}} = Constants;
 const {urlCfg} = Configs;
-const hybrid = process.env.NATIVE;
 //right:0未付款;1已付款（待使用）;3已使用（未评价）;4交易成功（已评价）;10取消订单 ;11删除订单;12申请退款成功关闭订单;13商家关闭订单14商家删除订单
 
 
@@ -103,7 +102,7 @@ class ReDetail extends BaseComponent {
         showConfirm({
             title: `拨打商家电话：${tel}`,
             callbacks: [null, () => {
-                if (hybrid) {
+                if (process.env.NATIVE) {
                     native('callTel', {phoneNum: tel});
                 }
             }]
@@ -174,7 +173,7 @@ class ReDetail extends BaseComponent {
     //调起地图
     openMap = () => {
         const {selfSufficiency} = this.state;
-        if (hybrid) {
+        if (process.env.NATIVE) {
             native('goFindMap', {longitude: selfSufficiency.sufficiency_longitude, latitude: selfSufficiency.sufficiency_latitude});
         } else {
             appHistory.push(`/find?longitude=${selfSufficiency.sufficiency_longitude}&latitude=${selfSufficiency.sufficiency_latitude}`);
@@ -197,7 +196,7 @@ class ReDetail extends BaseComponent {
     //联系商家
     goToShoper = () => {
         const {selfSufficiency} = this.state;
-        if (hybrid) {
+        if (process.env.NATIVE) {
             native('goToShoper', {shopNo: selfSufficiency.shop_no, id: selfSufficiency.order_id, type: '2', shopNickName: selfSufficiency.nickname, imType: '1', groud: '0'});//groud 为0 单聊，1群聊 imType 1商品2订单3空白  type 1商品 2订单
         } else {
             showInfo('联系商家');

@@ -15,8 +15,6 @@ const {appHistory, showSuccess, getUrlParam, showInfo, native, systemApi: {remov
 const {TD_EVENT_ID} = Constants;
 const {MESSAGE: {Form, Feedback}, FIELD, navColorR} = Constants;
 const {urlCfg} = Configs;
-const hybird = process.env.NATIVE;
-
 const temp = {
     stackData: [],
     isLoading: true,
@@ -620,7 +618,7 @@ class MyOrder extends BaseComponent {
     //返回到我的页面
     goToBack = () => {
         const type = decodeURI(getUrlParam('type', encodeURI(this.props.location.search)));
-        if (hybird) {
+        if (process.env.NATIVE) {
             native('goBack');
         } else if (type === 'home') {
             appHistory.replace('/home');

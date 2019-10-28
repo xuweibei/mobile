@@ -7,7 +7,6 @@ import AppNavBar from '../../../../common/navbar/NavBar';
 const {urlCfg} = Configs;
 const {showInfo, validator, appHistory, native} = Utils;
 const {MESSAGE: {Form}} = Constants;
-const hybrid = process.env.NATIVE;
 
 export default class ReDetail extends BaseComponent {
     state = {
@@ -65,7 +64,7 @@ export default class ReDetail extends BaseComponent {
 
     //点击扫一扫
     sweepCode = () => {
-        if (hybrid) {
+        if (process.env.NATIVE) {
             const obj = {
                 pay: urlCfg.importSum,
                 write: urlCfg.consumer,

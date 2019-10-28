@@ -16,8 +16,6 @@ const tabs = [
 const {appHistory, native, showInfo} = Utils;
 const {urlCfg} = Configs;
 const {MESSAGE: {Form, Feedback}, FIELD} = Constants;
-const hybird = process.env.NATIVE;
-
 class Collect extends BaseComponent {
     constructor(props) {
         super(props);
@@ -431,7 +429,7 @@ class Collect extends BaseComponent {
     }
 
     goBackModal = () => {
-        if (hybird) {
+        if (process.env.NATIVE) {
             native('goBack');
         } else {
             appHistory.goBack();

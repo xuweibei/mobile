@@ -8,7 +8,6 @@ import './PasswordPayment.less';
 const {appHistory, validator, showInfo, showSuccess, getUrlParam, setNavColor} = Utils;
 const {urlCfg} = Configs;
 const {MESSAGE: {Form, Feedback}, navColorR} = Constants;
-const hybrid = process.env.NATIVE;
 const getPass = { //获取验证码按钮的样式
     float: 'right',
     marginRight: '18px',
@@ -47,13 +46,13 @@ class passwordPayment extends BaseComponent {
 
 
     componentWillMount() {
-        if (hybrid) { //设置tab颜色
+        if (process.env.NATIVE) { //设置tab颜色
             setNavColor('setNavColor', {color: navColorR});
         }
     }
 
     componentWillReceiveProps() {
-        if (hybrid) {
+        if (process.env.NATIVE) {
             setNavColor('setNavColor', {color: navColorR});
         }
     }
@@ -202,13 +201,9 @@ class passwordPayment extends BaseComponent {
     //单击时清除对应value值
     clearPropsInput = (num) => {
         if (num === 1) {
-            this.setState({
-                num: ''
-            });
+            this.setState({num: ''});
         } else {
-            this.setState({
-                againNum: ''
-            });
+            this.setState({againNum: ''});
         }
     }
 

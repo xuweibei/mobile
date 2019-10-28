@@ -3,7 +3,6 @@ import './ImportSum.less';
 import {Button, NavBar} from 'antd-mobile';
 
 const {native, appHistory, getUrlParam} = Utils;
-const hybrid = process.env.NATIVE;
 
 export default class importSum extends BaseComponent {
     state = {
@@ -19,7 +18,7 @@ export default class importSum extends BaseComponent {
 
     //确认按钮
     camSucessFn = () => {
-        if (hybrid) {
+        if (process.env.NATIVE) {
             native('goHome');
         } else {
             appHistory.push('home');

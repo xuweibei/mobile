@@ -9,8 +9,6 @@ const {native, showInfo, getUrlParam, appHistory} = Utils;
 const {urlCfg} = Configs;
 const {MESSAGE: {Feedback}} = Constants;
 
-const hybrid = process.env.NATIVE;
-
 class SourceBrowse extends BaseComponent {
     state={
         nickname: decodeURI(getUrlParam('nickname', encodeURI(this.props.location.search))),
@@ -22,7 +20,7 @@ class SourceBrowse extends BaseComponent {
     componentWillReceiveProps(next) {
         const timerNext = decodeURI(getUrlParam('time', encodeURI(next.location.search)));
         const timer = decodeURI(getUrlParam('time', encodeURI(this.props.location.search)));
-        if (hybrid && timer && timerNext !== timer) {
+        if (process.env.NATIVE && timer && timerNext !== timer) {
             this.setState({
                 nickname: decodeURI(getUrlParam('nickname', encodeURI(next.location.search))),
                 phone: decodeURI(getUrlParam('phone', encodeURI(next.location.search))),
@@ -35,7 +33,7 @@ class SourceBrowse extends BaseComponent {
 
     //重新扫码
     sureSaoAgain = () => {
-        if (hybrid) {
+        if (process.env.NATIVE) {
             const obj = {
                 pay: urlCfg.importSum,
                 write: urlCfg.consumer,
@@ -53,7 +51,7 @@ class SourceBrowse extends BaseComponent {
             .subscribe(res => {
                 if (res && res.status === 0) {
                     showInfo(Feedback.Bind_Success);
-                    if (hybrid && appHistory.length() === 0) {
+                    if (process.env.NATIVE && appHistory.length() === 0) {
                         native('goBack');
                     } else {
                         appHistory.go(-3);
@@ -65,7 +63,7 @@ class SourceBrowse extends BaseComponent {
 
     //返回
     goBackModal = () => {
-        if (hybrid && appHistory.length() === 0) {
+        if (process.env.NATIVE && appHistory.length() === 0) {
             native('goBack');
         } else {
             appHistory.goBack();
