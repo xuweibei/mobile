@@ -253,11 +253,14 @@ class My extends BaseComponent {
 
     //页面跳转
     jumpRouter = (url) => {
-        console.log('ssssssssssssssssssssssssssssssssssssssssssssss');
         if (url === '/selectType') {
-            console.log('dddddddddddddddddddddddddddddddddddd');
-            console.log(appHistory, 'ddddddddddddddddddsadadasdasdsadsadasd');
             appHistory.push('/openShopPage');
+            // if (window.isWX) {
+            //     this.props.history.push('/openShopPage');
+            //     console.log(this.props.history, 'props');
+            // } else {
+            //     appHistory.push('/openShopPage');
+            // }
             // showInfo('等等');
             // removeValue('shopStatus');
             // this.fetch(urlCfg.applyForRight).subscribe(res => {
