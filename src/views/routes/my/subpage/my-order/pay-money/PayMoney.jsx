@@ -20,12 +20,12 @@ const mode = [
         title: '微信支付',
         value: 1,
         imgName: 'we-chat'
-    },
-    {
-        title: '支付宝支付',
-        value: 2,
-        imgName: 'alipay'
     }
+    // {
+    //     title: '支付宝支付',
+    //     value: 2,
+    //     imgName: 'alipay'
+    // }
 ];
 
 class PayMoney extends BaseComponent {
@@ -146,14 +146,69 @@ class PayMoney extends BaseComponent {
 
     //立即支付
     payRightNow = () => {
-        const {listArr, selectIndex} = this.state;
+        const {listArr, selectIndex, orderNum} = this.state;
         //判断是否第三方支付还是CAM消费
         if (selectIndex === 0) {
             this.verifyPayword();
-        } else {
-            this.batchPayMoney(listArr, selectIndex);
+        } else if (selectIndex === 1) {
+            this.wxPay(listArr, orderNum, selectIndex);
+        } else if (selectIndex === 2) {
+            this.alipay(listArr, orderNum, selectIndex);
         }
     };
+
+    //微信支付
+    wxPay = (listArr, orderNum, selectIndex) => {
+        // alert('微信支付');
+        this.fetch(urlCfg.wechatPayment, {data: {order_no: orderNum[0], type: 1}})
+            .subscribe(res => {
+                if (res && res.status === 0) {
+                    if (hybird) {
+                        const obj = {
+                            prepayid: res.data.arr.prepayid,
+                            appid: res.data.arr.appid,
+                            partnerid: res.data.arr.partnerid,
+                            package: res.data.arr.package,
+                            noncestr: res.data.arr.noncestr,
+                            timestamp: res.data.arr.timestamp,
+                            sign: res.data.arr.sign
+                        };
+                        native('wxPayCallback', obj).then((data) => {
+                            native('goH5', {'': ''});
+                            appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&id=${listArr.order_id}&types=${selectIndex}&deposit=${listArr.deposit}&if_express=${res.data.if_express}`);
+                        }).catch(data => {
+                            native('goH5', {'': ''});
+                            showFail(data.message);
+                        });
+                    } else {
+                        // window.location.href = res.data.mweb_url;
+                    }
+                }
+            });
+    }
+
+    //支付宝支付
+    alipay = (listArr, orderNum, selectIndex) => {
+        // alert('支付宝支付');
+        this.fetch(urlCfg.alipayPayment, {data: {type: 1, order_no: orderNum}})
+            .subscribe(res => {
+                if (res && res.status === 0) {
+                    if (hybird) {
+                        native('authInfo', res.data.response).then((data) => {
+                            native('goH5', {'': ''});
+                            if (data.status === '0') {
+                                appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&id=${listArr.order_id}&types=${selectIndex}&deposit=${listArr.deposit}&if_express=${res.data.if_express}`);
+                            }
+                        }).catch(data => {
+                            native('goH5', {'': ''});
+                            showFail(data.message);
+                        });
+                    } else {
+                        // window.location.href = res.data.mweb_url;
+                    }
+                }
+            });
+    }
 
     //合并付款
     batchPayMoney = (listArr, selectIndex) => {
@@ -232,6 +287,7 @@ class PayMoney extends BaseComponent {
             this.props.setReturn(false);
         });
     }
+
 
     //返回
     goBackModal = () => {
