@@ -3,26 +3,33 @@
  */
 
 import Immutable from 'immutable';
-import {demoActionTypes as ActionsTypes} from '../actions/index';
+import {homeActionTypes as ActionsTypes} from '../actions/index';
 
 const {createReducer} = Utils;
-const homeState = {
-    indexData: null,
-    indexDataMd5: null
+const initState = {
+    banner: null,
+    logo: null,
+    nav: null
 };
 
 /**
  * baseState 初始化
  * @type {state}
  */
-const demoState =  Immutable.fromJS({
-    ...homeState
+const homeState =  Immutable.fromJS({
+    ...initState
 });
 export default {
-    home: createReducer(demoState, {
-        [ActionsTypes.GET_AUTH_CODE](state, action) {
-            const {currentIndex} = action.playload;
-            return state.set('currentIndex', currentIndex);
+    home: createReducer(homeState, {
+        [ActionsTypes.SET_BANNER](state, action) {
+            const {banner, logo} = action.payload;
+            return state.set('banner', banner)
+                .set('logo', logo);
+        },
+        [ActionsTypes.SET_NAV](state, action) {
+            const {nav} = action.payload;
+            console.log(nav, 'sadaihNKas');
+            return state.set('nav', nav);
         }
     })
 };

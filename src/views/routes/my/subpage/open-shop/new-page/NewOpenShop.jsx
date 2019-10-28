@@ -46,17 +46,23 @@ export default () => {
                 <div className="runtime-img">
                     <div>
                         <img src={qrCode} alt="" className="img-show"/>
-                        <p onClick={saveImg}>点击保存二维码</p>
+                        {
+                            window.isWX ? (
+                                <p onClick={saveImg}>长按保存二维码</p>
+                            ) : (
+                                <p onClick={saveImg}>点击保存二维码</p>
+                            )
+                        }
                     </div>
                 </div>
 
                 <div className="client-title runtime-title">
-                    <div>1</div>
+                    <div>2</div>
                     <div>电脑端申请</div>
                 </div>
 
                 <div className="client-desc runtime-desc">
-                    进入网址<span>{url}</span> 登陆后即可进行开店申请
+                    进入网址<span> <a href={url}>{url}</a> </span> 登陆后即可进行开店申请
                 </div>
             </div>
         </div>
