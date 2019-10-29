@@ -246,7 +246,7 @@
             overflow: hidden;
             -webkit-box-orient: vertical;
             -webkit-line-clamp: 2;
-            display: -webkit-box;
+            display: -webkit-box; 
             word-break: break-all;
         }
     }
@@ -276,6 +276,10 @@
             font-size: @font-size-20;
             padding: 0 17px 0 18px;
             line-height: 36px;
+            height: 36px;
+            display: inline-block;
+            width: 40%;
+            text-align: center;
             .directionalGradation(150deg, @fiery-red, @garnet-red );
             border-radius: 20px;
         }
@@ -283,6 +287,9 @@
             color: @gray;
             font-size: @font-size-20;
             line-height: 35px;
+            display: inline-block;
+            max-width: 50%;
+            .TextareaOverflow(@num:2);
         }
         a{
             color: @gray;

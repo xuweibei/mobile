@@ -50,7 +50,8 @@
             display: flex;
             padding: 39px 0 40px;
             .time-number {
-                border-right:1px solid @to-light-gray;
+                // border-right:1px solid @to-light-gray;
+                .hairline('right', @to-light-gray);
                 font-size: @font-size-24;
                 flex: 1;
                 .time-top {
@@ -317,13 +318,14 @@
         }
     }
     .my-radio:before {
-        content: '\e612';
+        content: '\e611';
         font-size: @font-size-44;
         margin-right: 20px;
         vertical-align: sub;
-        color: @gray;
+        color: #ddd;
     }
     .endorse:before {
+        content: '\e612';
         color: @fiery-red;
     }
 
@@ -332,10 +334,10 @@
     }
 
     .render-content-wrap{
-        alignItems: center;
-        justifyContent: center;
+        align-items: center;
+        justify-content: center;
         height: 100%;
-        backgroundColor: @white;
+        background-color: @white;
         .render-content{
             display: flex;
             align-items: center;

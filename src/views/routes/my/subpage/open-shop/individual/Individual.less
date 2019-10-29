@@ -70,7 +70,8 @@
             .line {
                 width: 110px;
                 height: 1px ;
-                border: 1px dashed @gray;
+                // border: 1px dashed @gray;
+                .hairline('all', @gray);
                 position: absolute;
                 top: 20px;
                 left: 116px;
@@ -173,7 +174,8 @@
         .am-list-item {
             height: 100px;
             padding-left: 0;
-            border-bottom: 1px solid @to-light-gray;
+            // border-bottom: 1px solid @to-light-gray;
+            .hairline('bottom', @to-light-gray);
             .am-list-line {
                 padding-left: 30px;
                 .am-list-extra {
@@ -211,7 +213,8 @@
                         .am-radio-inner {
                             left: 16px;
                             top: 36px;
-                            border: 1px solid @gray;
+                            // border: 1px solid @gray;
+                            .hairline('all', @gray);
                             border-radius: 50%;
                         }
                         .am-radio-inner:after {

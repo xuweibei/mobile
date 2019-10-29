@@ -20,7 +20,8 @@
             .every-one{
                 position: relative;
                 height:160px;
-                border-bottom:1px solid @light-gray;
+                // border-bottom:1px solid @light-gray;
+                .hairline('bottom', @light-gray);
                 img{
                     width:100px;
                     height:100px;
@@ -159,14 +160,16 @@
         z-index: 9999;
         .login-second{
             background:@white;
-            border:1px solid @light-gray;
+            // border:1px solid @light-gray;
+            .hairline('all', @light-gray);
             border-radius: 20px;
             position: fixed !important;
             top: 30%;
             left:20%;
             .must-sure{
                 width:100%;
-                border-top:1px solid @light-gray;
+                // border-top:1px solid @light-gray;
+                .hairline('top', @light-gray);
                 span{
                     display: inline-block;
                     width:240px;
@@ -176,7 +179,8 @@
                 }
             }
             .must-sure span:first-child{
-                border-right:1px solid @light-gray;
+                // border-right:1px solid @light-gray;
+                .hairline('right', @light-gray);
             }
         }
         .login-second p:first-child{
@@ -188,7 +192,8 @@
         .login-second p:nth-child(2){
             margin:20px;
             input{
-                border:1px solid @light-gray;
+                // border:1px solid @light-gray;
+                .hairline('all', @light-gray);
             }
         }
     }

@@ -525,7 +525,8 @@
                 margin-bottom: 40px;
                 .am-list-item {
                     width: 660px;
-                    border: 1px solid #E5E5E5;
+                    // border: 1px solid #E5E5E5;
+                    .hairline('all', #e5e5e5);
                     height: 100px;
                     margin: auto;
                     border-radius: 100px;
@@ -579,8 +580,8 @@
     .am-tabs-default-bar-tab {
         height: 100px;
         line-height: 30px;
-        border-right: 1px solid #ddd;
-        //.hairline('right',#ddd)!important;
+        // border-right: 1px solid #ddd;
+        .hairline('right',#ddd)!important;
         border-bottom: 0 !important;
     }
 
@@ -606,7 +607,8 @@
     div{
         width:500px;
         height:230px;
-        border:1px solid @light-gray;
+        // border:1px solid @light-gray;
+        .hairline('all', @light-gray);
         border-radius:20px;
         background:@white;
         position: absolute;
@@ -627,7 +629,8 @@
         text-align: center;
         position: absolute;
         bottom:20px;
-        border-top:1px solid @light-gray;
+        // border-top:1px solid @light-gray;
+        .hairline('all', @light-gray);
         padding-top:30px;
     }
 }
