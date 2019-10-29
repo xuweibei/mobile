@@ -62,9 +62,7 @@ class UserAgreementDetail extends BaseComponent {
             this.setState({
                 protocol: (
                     <div className="version-info">
-                        <p>中华人民共和国<br/>增值电信业务经营许可证
-                        </p>
-                        <p className="allow-number">经营许可证编号：鲁B2-20190240</p>
+                        <p className="allow-number">中华人民共和国增值电信业务经营许可证编号：鲁B2-20190240</p>
                     </div>
                 ),
                 protocolTitle: '证照信息'

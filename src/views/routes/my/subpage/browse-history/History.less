@@ -45,7 +45,8 @@
                     margin-bottom: 20px;
                     span {
                         padding: 0 20px;
-                        border-right: 1px solid @gray;
+                        // border-right: 1px solid @gray;
+                        .hairline('right', @gray)
                     }
                     span:nth-child(1) {
                         padding-left: 0;
@@ -64,7 +65,8 @@
                     span:nth-child(1) {
                         padding: 3px 15px;
                         color: @white;
-                        border:1px solid @fiery-red;
+                        // border:1px solid @fiery-red;
+                        .hairline('all', @fiery-red);
                         background:linear-gradient(0deg,@fiery-red 0%,@garnet-red 100%);
                         border-radius:15px;
                         margin-right: 20px;
@@ -346,7 +348,8 @@
         margin-bottom: 20px;
         .am-tabs-default-bar-content {
             .am-tabs-default-bar-tab {
-                border-right: 1px solid @to-light-gray;
+                // border-right: 1px solid @to-light-gray;
+                .hairline('right', @to-light-gray);
                 height: 67px;
                 line-height: 67px;
                 margin-bottom: 20px;

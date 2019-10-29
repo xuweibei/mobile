@@ -25,18 +25,18 @@ class Loading extends React.PureComponent {
         let y0 = 0;  //y轴的计数
         let initW = 0;  //截取原始图片的 x坐标
         let initH = 0;  //截取原始图片的 y坐标
-        const imgWidth = 160; //截取原始图片的 宽度
-        const imgHeight = 160;  //截取原始图片的 高度
+        const imgWidth = 80; //截取原始图片的 宽度
+        const imgHeight = 80;  //截取原始图片的 高度
         let speed = 0;
         //加载图片
         const img = new Image();
         img.src = require('../../../../src/assets/images/animate-img.png');
         img.onload = () => {
-            const ratio = getPixelRatio(ctx) > 2 ? 4 : getPixelRatio(ctx) * 2;
+            const ratio = getPixelRatio(ctx) > 2 ? 2 : getPixelRatio(ctx);
             const animate = () => {
                 speed++;
                 //绘制精灵图片
-                if (speed % 2 === 0) {
+                if (speed % 1 === 0) {
                     //清除 之前的 图片墨迹
                     ctx.clearRect(0, 0, width, height);
                     initW = imgWidth * x0;
