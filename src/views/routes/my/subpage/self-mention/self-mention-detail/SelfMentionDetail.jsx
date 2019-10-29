@@ -9,7 +9,7 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 import BaseComponent from '../../../../../../components/base/BaseComponent';
 
 const {urlCfg} = Configs;
-const {validator, showFail, showInfo, appHistory, getUrlParam, systemApi: {setValue, getValue, removeValue}, getShopCartInfo, native} = Utils;
+const {validator, showInfo, appHistory, getUrlParam, systemApi: {setValue, getValue, removeValue}, getShopCartInfo, native} = Utils;
 
 class ReDetail extends BaseComponent {
     constructor(props, context) {
