@@ -36,7 +36,7 @@ class Loading extends React.PureComponent {
             const animate = () => {
                 speed++;
                 //绘制精灵图片
-                if (speed % 2 === 0) {
+                if (speed % 1 === 0) {
                     //清除 之前的 图片墨迹
                     ctx.clearRect(0, 0, width, height);
                     initW = imgWidth * x0;

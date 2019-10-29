@@ -8,7 +8,7 @@ const {native, getUrlParam} = Utils;
 const {urlCfg} = Configs;
 
 const itemLists = [
-    {title: '版本信息', params: null},
+    {title: '版权信息', params: null},
     {title: '软件许可使用协议', params: 1},
     {title: '特别说明', params: 3},
     {title: '平台服务协议', params: 2},
@@ -62,10 +62,10 @@ class UserAgreementDetail extends BaseComponent {
             this.setState({
                 protocol: (
                     <div className="version-info">
-                        <p className="allow-number">中华人民共和国增值电信业务经营许可证编号：鲁B2-20190240</p>
+                        <p className="allow-number">增值电信业务经营许可证编号：鲁B2-20190240</p>
                     </div>
                 ),
-                protocolTitle: '版本信息'
+                protocolTitle: '证照信息'
             }, () => {
                 this.showModal(true);
             });
@@ -88,9 +88,13 @@ class UserAgreementDetail extends BaseComponent {
                     type === 'null' && (
                         <React.Fragment>
                             <AppNavBar title="关于"/>
-                            <List>
-                                {(/iphone|ipad/gi).test(navigator.platform) && <Item arrow="horizontal" onClick={() => { process.env.NATIVE && native('evalMe') }}>给我评价</Item>}
-                            </List>
+                            {
+                                !window.isWX && (
+                                    <List>
+                                        {(/iphone|ipad/gi).test(navigator.platform) && <Item arrow="horizontal" onClick={() => { process.env.NATIVE && native('evalMe') }}>给我评价</Item>}
+                                    </List>
+                                )
+                            }
                             <List>
                                 <div className="about-information">
                                     {

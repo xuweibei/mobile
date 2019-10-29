@@ -332,7 +332,16 @@ class ListDetails extends BaseComponent {
                             <div className="business-box">
                                 <div className="business">
                                     <div className="business-left icon" onClick={this.goToShoper}><span>联系商家</span></div>
-                                    <span className="business-right icon" onClick={() => this.shopPhone(canInfo.shop_tel)}>商家电话</span>
+                                    {
+                                        window.isWX ? (
+                                            <div className="business-right icon">
+                                                <a href={`tel:${canInfo.shop_tel}`}>商家电话</a>
+                                            </div>
+
+                                        ) : (
+                                            <span className="business-right icon" onClick={() => this.shopPhone(canInfo.shop_tel)}>商家电话</span>
+                                        )
+                                    }
                                 </div>
                             </div>
 
