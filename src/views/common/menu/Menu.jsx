@@ -74,7 +74,7 @@ class Menu extends React.PureComponent {
             right: rightNum + 'rem'
         };
         if (!process.env.NATIVE) {
-            return (
+            return window.isWX && (
                 <div className="menu-list" style={rights}>
                     <div className="menu" onClick={() => this.show(rightNum)}>
                         <div className={`icon ${text === '收起导航' ? 'icon-right' : 'icon-left'}`}/>
