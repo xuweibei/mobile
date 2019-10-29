@@ -33,7 +33,12 @@ const appHistory = {
         const len = historyStack.length;
         if (len > 0) {
             const topUrl = historyStack[len - 1];
-            if (topUrl === url) return;
+            if (window.isWX) {
+                historyStack.pop();
+            } else {
+                console.log('topUrl === url', topUrl === url);
+                if (topUrl === url) return;
+            }
         }
         historyStack.push(url);
         tempStack.push(url);
