@@ -12,17 +12,16 @@ const shopListPage = Loadable({
 });
 
 const Find = () => {
-    const hybird = process.env.NATIVE;
-    if (hybird) {
+    if (!process.env.NATIVE) {
         return (
             <React.Fragment>
+                <Route path="/find" component={FindPage}/>
                 <Route path="/shop-list" component={shopListPage}/>
             </React.Fragment>
         );
     }
     return (
         <React.Fragment>
-            <Route path="/find" component={FindPage}/>
             <Route path="/shop-list" component={shopListPage}/>
         </React.Fragment>
     );

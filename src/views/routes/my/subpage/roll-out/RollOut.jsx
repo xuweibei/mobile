@@ -111,7 +111,11 @@ export default class ReDetail extends BaseComponent {
                         <div>
                             {uidList.slice(0, 10).map(item => (
                                 <div className="message" onClick={() => this.skipSum(item.UID, item.shopName)}>
-                                    <img src={item.picpath} alt=""/>
+                                    <img
+                                        src={item.picpath}
+                                        alt=""
+                                        onError={(e) => { e.target.src = item.df_logo }}
+                                    />
                                     <div className="message-bottom">
                                         <div>{item.shopName}</div>
                                         <div>UID：{item.UID}</div>

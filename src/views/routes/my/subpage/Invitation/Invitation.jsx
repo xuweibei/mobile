@@ -22,11 +22,11 @@ const dataList = [
     {
         name: 'PYQ',
         title: '朋友圈'
-    },
-    {
-        name: 'WB',
-        title: '微博'
     }
+    // {//暂时屏蔽
+    //     name: 'WB',
+    //     title: '微博'
+    // }
 ].map(obj => ({
     icon: <div className={obj.name}/>,
     title: obj.title

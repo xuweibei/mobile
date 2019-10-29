@@ -61,6 +61,7 @@ class Rxios {
     constructor() {
         this.ajaxNum = 0;    // ajax请求队列数
         this.ajaxQueue = []; // ajax请求队列
+        this.delay = 500; // 延迟关闭loading
     }
 
     /**
@@ -93,7 +94,7 @@ class Rxios {
                         ajaxQueue[num].undo = false;
                         setTimeout(() => {
                             store.dispatch(actionCreator.hideLoading());
-                        }, 2000);
+                        }, this.delay);
                         if (err) {
                             console.error(err.message);
                             subject.error(err);
@@ -120,7 +121,7 @@ class Rxios {
                             const code = [500, 501, 502, 503, 504, 505];
                             setTimeout(() => {
                                 store.dispatch(actionCreator.hideLoading());
-                            }, 2000);
+                            }, this.delay);
                             if (err.message === 'Network Error') {
                                 showFail(MESSAGE.Network_Error);
                                 appHistory.replace('/network-error');
@@ -133,7 +134,7 @@ class Rxios {
                             ajaxQueue[num].undo = false;
                             setTimeout(() => {
                                 store.dispatch(actionCreator.hideLoading());
-                            }, 2000);
+                            }, this.delay);
                             subject.complete();
                         });
                 }

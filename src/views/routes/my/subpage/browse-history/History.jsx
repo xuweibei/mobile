@@ -194,6 +194,7 @@ class History extends BaseComponent {
                                 <div className="shop-row-left">
                                     <img
                                         src={item.picpath}
+                                        onError={(e) => { e.target.src = item.df_logo }}
                                     />
                                     {/* <span>休息中</span> */}
                                 </div>

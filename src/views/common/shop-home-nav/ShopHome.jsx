@@ -155,7 +155,11 @@ class ShopHome extends BaseComponent {
                         </div>
                         <div className="home-bar-bottom">
                             <div className="home-logo">
-                                <img src={shopInfo && shopInfo.picpath} alt=""/>
+                                <img
+                                    src={shopInfo && shopInfo.picpath}
+                                    onError={(e) => { e.target.src = shopInfo.df_logo }}
+                                    alt=""
+                                />
                             </div>
                             <div className="home-title">
                                 <div className="home-icons">
