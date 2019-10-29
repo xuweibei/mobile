@@ -312,7 +312,7 @@ class ReDetail extends BaseComponent {
 
                 <div className="collection common-margin">
                     <div className="collection-left">
-                        <img src={selfSufficiency.shoper_pic} alt=""/>
+                        <img src={selfSufficiency.shoper_pic} onError={(e) => { e.target.src = selfSufficiency.df_logo }} alt=""/>
                     </div>
                     <div className="collection-center">{selfSufficiency.shopName}</div>
                     {
