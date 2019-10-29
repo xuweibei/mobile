@@ -59,13 +59,16 @@ class CancelOrder extends React.Component {
                     <div className="choose-info">
                         {
                             this.canCelInfoArr.map((item, index) => (
-                                <RadioItem
+                                <div
                                     key={item.value}
-                                    checked={value === item.value}
-                                    onChange={() => this.checkedChange(item.value)}
+                                    onClick={() => this.checkedChange(item.value)}
                                 >
-                                    {item.label}
-                                </RadioItem>
+                                    <RadioItem
+                                        checked={value === item.value}
+                                    >
+                                        {item.label}
+                                    </RadioItem>
+                                </div>
                             ))
                         }
                     </div>
