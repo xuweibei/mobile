@@ -127,7 +127,13 @@ class ShopHomeDetail extends BaseComponent {
                                 <span className="telephone-sl">电话</span>
                                 <span className="telephone-number">{shopInfo.phone}</span>
                             </span>
-                            <span className="telephone-sr" onClick={() => this.callPhone(shopInfo.phone)}>立即拨打</span>
+                            {
+                                window.isWX ? (
+                                    <div className="telephone-sr">
+                                        <a href={`tel:${shopInfo.phone}`}>立即拨打</a>
+                                    </div>
+                                ) : (<span className="telephone-sr" onClick={() => this.callPhone(shopInfo.phone)}>立即拨打</span>)
+                            }
                         </div>
                         {/*图册*/}
                         <div className="Atlas">
