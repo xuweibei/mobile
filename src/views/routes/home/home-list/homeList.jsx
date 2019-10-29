@@ -87,7 +87,6 @@ export default class HomeList extends BaseComponent {
     //获取位置
     getLocation = () => {
         if (window.isWX) {
-            console.log('微信环境');
             window.wx.getLocation({
                 type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
                 success: (res) => {

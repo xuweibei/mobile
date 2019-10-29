@@ -22,7 +22,6 @@ const Marker = new window.BMap.Icon(LOCATION, new window.BMap.Size(30, 30), {
 
 const {appHistory, showInfo, getUrlParam, TD, systemApi: {setValue, getValue}} = Utils;
 const {urlCfg} = Configs;
-
 class Find extends BaseComponent {
     state = {
         showPopup1: false,
@@ -189,8 +188,6 @@ class Find extends BaseComponent {
         });
         const markers = new window.BMap.Marker(point, {icon: selfMarker});
         this.map.addOverlay(markers);
-        // const label = new window.BMap.Label('我是文字标注哦', {offset: new window.BMap.Size(20, -10)});
-        // markers.setLabel(label);
     };
 
     //获取定位当前位置周围的商店
@@ -254,12 +251,15 @@ class Find extends BaseComponent {
     //导航到店
     goShop = () => {
         const {searchLeft, nowLongitude, nowLatitude, addressInfo, latitude, longitude, shopName} = this.state;
+        console.log(nowLongitude, nowLatitude);
+        const lat = Number(nowLatitude);
+        const lon = Number(nowLongitude);
         if (searchLeft === '导航到店') {
             if (window.isWX) {
                 window.wx.ready(() => {
                     window.wx.openLocation({
-                        latitude: parseFloat(nowLongitude), // 纬度，浮点数，范围为90 ~ -90
-                        longitude: parseFloat(nowLatitude), // 经度，浮点数，范围为180 ~ -180。
+                        latitude: lat, // 纬度，浮点数，范围为90 ~ -90
+                        longitude: lon, // 经度，浮点数，范围为180 ~ -180。
                         name: addressInfo, // 位置名
                         address: '', // 地址详情说明
                         scale: '' // 地图缩放级别,整形值,范围从1~28。默认为最大
@@ -311,21 +311,21 @@ class Find extends BaseComponent {
         const myGeo = new window.BMap.Geocoder();
         // 将地址解析结果显示在地图上，并调整地图视野
         myGeo.getPoint(address, (point) => {
+            // console.log(point);
             if (point) {
-                this.map.centerAndZoom(point, 16);
-                this.map.addOverlay(new window.BMap.Marker(point));
+                this.setState({
+                    latitude: point.lat,
+                    longitude: point.lng
+                });
+                this.map.clearOverlays();
                 this.getShop(point.lat.toString(), point.lng.toString());
             }
-        });
+        }, address);
     }
 
     //搜索商店
     hidePopup = (type) => {
         const {shopName, address, latitude, longitude} = this.state;
-        // this.setState({
-        //     searchLeft: '店铺列表',
-        //     searchRight: '取消搜索'
-        // });
         if (type === 'shopName') {
             if (shopName.length === 0) {
                 showInfo(Form.No_StoreName);

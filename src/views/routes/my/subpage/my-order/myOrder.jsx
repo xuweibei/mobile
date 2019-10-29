@@ -641,7 +641,7 @@ class MyOrder extends BaseComponent {
                                 />
                             )
                         } */}
-                        <LazyLoadIndex lazyInfo={{offset: -30, imgUrl: item.picpath, overflow: true}}/>
+                        <LazyLoadIndex lazyInfo={{offset: -30, imgUrl: item.picpath, overflow: true, dfImg: item.df_logo}}/>
                         <p>{item.shopName}</p>
                         <div className="icon enter"/>
                     </div>

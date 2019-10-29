@@ -29,24 +29,23 @@ const GoodsDetailPage = Loadable({
 
 
 const Classify = () => {
-    const hybird = process.env.NATIVE;
-    if (hybird) {
+    if (!process.env.NATIVE) {
         return (
             <React.Fragment>
+                <Route path="/category" component={CategoryPage}/>
                 <CacheRoute path="/categoryList" cacheKey="CategoryListPage" component={CategoryListPage} when="back"/>
                 <CacheRoute path="/goodsDetail" cacheKey="GoodsDetailPage" component={GoodsDetailPage}/>
                 {/* <CacheRoute path="/evaluate" component={EvaluatePage}/>
-                <Route path="/evaluateDetail" component={EvaluateDetailPage}/> */}
+            <Route path="/evaluateDetail" component={EvaluateDetailPage}/> */}
             </React.Fragment>
         );
     }
     return (
         <React.Fragment>
-            <Route path="/category" component={CategoryPage}/>
             <CacheRoute path="/categoryList" cacheKey="CategoryListPage" component={CategoryListPage} when="back"/>
             <CacheRoute path="/goodsDetail" cacheKey="GoodsDetailPage" component={GoodsDetailPage}/>
             {/* <CacheRoute path="/evaluate" component={EvaluatePage}/>
-            <Route path="/evaluateDetail" component={EvaluateDetailPage}/> */}
+                <Route path="/evaluateDetail" component={EvaluateDetailPage}/> */}
         </React.Fragment>
     );
 };

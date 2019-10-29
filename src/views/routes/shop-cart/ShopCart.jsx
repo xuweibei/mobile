@@ -692,7 +692,12 @@ class ShopCart extends BaseComponent {
                                         />
                                         <div className="shop-avatar">
                                             <div className="avatar">
-                                                <img src={shop.shop_logo} alt="" className="image"/>
+                                                <img
+                                                    src={shop.shop_logo}
+                                                    onError={(e) => { e.target.src = shop.df_logo }}
+                                                    alt=""
+                                                    className="image"
+                                                />
                                             </div>
                                             <span className="avatar-name">{shop.shop_name}</span>
                                         </div>

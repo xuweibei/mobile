@@ -396,7 +396,11 @@ class My extends BaseComponent {
                             <div className="my-info-icon">
                                 <WhiteSpace size="xl"/>
                                 <div className="icon icon-notice" onClick={() => this.routeTo('set')}/>
-                                <div className="icon icon-notice-l" onClick={() => this.routeTo('notice')}/>
+                                {
+                                    !window.isWX && (
+                                        <div className="icon icon-notice-l" onClick={() => this.routeTo('notice')}/>
+                                    )
+                                }
                             </div>
                             <div className="my-info-basic">
                                 <div className="info-basic-portrait">

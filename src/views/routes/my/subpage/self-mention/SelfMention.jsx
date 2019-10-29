@@ -283,7 +283,11 @@ class ReDetail extends BaseComponent {
         const row = item => (
             <div className="shop-lists" key={item.id} onClick={(e) => this.skipDetail(e, item.id, item.return_id)}>
                 <div className="shop-name">
-                    <div className="shop-title" onClick={(e) => this.goShopHome(e, item.shop_id)}>
+                    <div
+                        className="shop-title"
+                        onClick={(e) => this.goShopHome(e, item.shop_id)}
+                        onError={(e) => { e.target.src = item.df_logo }}
+                    >
                         <img src={item.picpath} alt=""/>
                         <p>{item.shopName}</p>
                         <div className="icon enter"/>

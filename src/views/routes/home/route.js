@@ -10,20 +10,18 @@ const searchPage = Loadable({
     loading: () => null
 });
 
-const hybird = process.env.NATIVE;
-
 const Home = () => {
-    if (hybird) {
+    if (!process.env.NATIVE) {
         return (
-            <Route path="/search" component={searchPage}/>
+            <React.Fragment>
+                <Route exact path="/" render={() => <Redirect to="/home"/>}/>
+                <Route path="/home" component={HomePage}/>
+                <Route path="/search" component={searchPage}/>
+            </React.Fragment>
         );
     }
     return (
-        <React.Fragment>
-            <Route exact path="/" render={() => <Redirect to="/home"/>}/>
-            <Route path="/home" component={HomePage}/>
-            <Route path="/search" component={searchPage}/>
-        </React.Fragment>
+        <Route path="/search" component={searchPage}/>
     );
 };
 
