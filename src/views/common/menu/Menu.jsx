@@ -73,41 +73,12 @@ class Menu extends React.PureComponent {
         const rights = {
             right: rightNum + 'rem'
         };
-        // <<<<<<< HEAD
-        //         return (
-        //             window.isWX
-        //                 ? (
-        //                     <div className="menu-list" style={rights}>
-        //                         <div className="menu" onClick={() => this.show(rightNum)}>
-        //                             <div className={`icon ${text === '收起导航' ? 'icon-right' : 'icon-left'}`}/>
-        //                             <div>{text}</div>
-        //                         </div>
-        //                         <ul className="menu-right">
-        //                             <li onClick={() => this.switchTo('/home')}>
-        //                                 <div className="icon icon-home"/>
-        //                                 <div className="text">首页</div>
-        //                             </li>
-        //                             <li onClick={() => this.switchTo('/collect')}>
-        //                                 <div className="icon icon-collect"/>
-        //                                 <div className="text">收藏</div>
-        //                             </li>
-        //                             {/* <li onClick={() => this.switchTo('/shopCart')}>
-        //                                 <div className="icon icon-cart"/>
-        //                                 <div className="text">购物车</div>
-        //                             </li>
-        //                             <li>
-        //                                 <div className="icon icon-notice"/>
-        //                                 <div className="text">消息</div>
-        //                             </li> */}
-        //                         </ul>
-        // =======
         if (!process.env.NATIVE) {
             return window.isWX && (
                 <div className="menu-list" style={rights}>
                     <div className="menu" onClick={() => this.show(rightNum)}>
                         <div className={`icon ${text === '收起导航' ? 'icon-right' : 'icon-left'}`}/>
                         <div>{text}</div>
-                        {/* >>>>>>> 9cb25a0f2843cd38fddb2dbdb4d54f1b31f041bb */}
                     </div>
                     <ul className="menu-right">
                         <li onClick={() => this.switchTo('/home')}>
