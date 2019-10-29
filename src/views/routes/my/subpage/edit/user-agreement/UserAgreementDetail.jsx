@@ -67,7 +67,7 @@ class UserAgreementDetail extends BaseComponent {
                         <p className="allow-number">经营许可证编号：鲁B2-20190240</p>
                     </div>
                 ),
-                protocolTitle: '版本信息'
+                protocolTitle: '证照信息'
             }, () => {
                 this.showModal(true);
             });
@@ -90,9 +90,13 @@ class UserAgreementDetail extends BaseComponent {
                     type === 'null' && (
                         <React.Fragment>
                             <AppNavBar title="关于"/>
-                            <List>
-                                {(/iphone|ipad/gi).test(navigator.platform) && <Item arrow="horizontal" onClick={() => { process.env.NATIVE && native('evalMe') }}>给我评价</Item>}
-                            </List>
+                            {
+                                !window.isWX && (
+                                    <List>
+                                        {(/iphone|ipad/gi).test(navigator.platform) && <Item arrow="horizontal" onClick={() => { process.env.NATIVE && native('evalMe') }}>给我评价</Item>}
+                                    </List>
+                                )
+                            }
                             <List>
                                 <div className="about-information">
                                     {

@@ -461,30 +461,24 @@ class Collect extends BaseComponent {
         );
         return (
             <div data-component="collect" data-role="page" className={`collect ${window.isWX ? 'WX-CL' : ''}`}>
-                {
-                    window.isWX ? (
-                        <AppNavBar title="我的收藏"/>
-                    ) : (
-                        <AppNavBar
-                            title="我的收藏"
-                            {
-                            ...tabKey === 0 && goodsSource.getRowCount() > 0 ? {
-                                isEdit,
-                                rightEdit: true,
-                                changeNavRight: this.changeNavRight
-                            } : null
-                            }
-                            {
-                            ...tabKey !== 0 && shopSource.getRowCount() > 0 ? {
-                                isEdit,
-                                rightEdit: true,
-                                changeNavRight: this.changeNavRight
-                            } : null
-                            }
-                            goBackModal={this.goBackModal}
-                        />
-                    )
-                }
+                <AppNavBar
+                    title="我的收藏"
+                    {
+                    ...tabKey === 0 && goodsSource.getRowCount() > 0 ? {
+                        isEdit,
+                        rightEdit: true,
+                        changeNavRight: this.changeNavRight
+                    } : null
+                    }
+                    {
+                    ...tabKey !== 0 && shopSource.getRowCount() > 0 ? {
+                        isEdit,
+                        rightEdit: true,
+                        changeNavRight: this.changeNavRight
+                    } : null
+                    }
+                    goBackModal={this.goBackModal}
+                />
                 <Tabs
                     tabs={tabs}
                     swipeable={false}
