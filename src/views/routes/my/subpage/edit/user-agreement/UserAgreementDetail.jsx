@@ -102,9 +102,13 @@ class UserAgreementDetail extends BaseComponent {
                                     }
                                 </div>
                             </List>
-                            <List>
-                                <Item extra="有新版" arrow="horizontal" onClick={() => process.env.NATIVE && native('checkVersion', {'': ''})}>新版本检测</Item>
-                            </List>
+                            {
+                                !window.isWX && (
+                                    <List>
+                                        <Item extra="有新版" arrow="horizontal" onClick={() => process.env.NATIVE && native('checkVersion', {'': ''})}>新版本检测</Item>
+                                    </List>
+                                )
+                            }
                             <span className="corporate">中战华安控股集团有限公司</span>
                             <span className="edition">当前版本号：1.0.3</span>
                         </React.Fragment>
