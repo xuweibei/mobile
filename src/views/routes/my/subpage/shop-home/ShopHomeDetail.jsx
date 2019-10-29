@@ -95,7 +95,11 @@ class ShopHomeDetail extends BaseComponent {
                     <div className="datyBox">
                         {/*店名位置*/}
                         <div className="address">
-                            <img src={shopInfo.picpath} alt=""/>
+                            <img
+                                src={shopInfo.picpath}
+                                onError={(e) => { e.target.src = shopInfo.df_logo }}
+                                alt=""
+                            />
                             <div className="address-l">
                                 <div className="store-name-t">{shopInfo.shopName}</div>
                                 {

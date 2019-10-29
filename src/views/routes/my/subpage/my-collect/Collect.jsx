@@ -401,7 +401,10 @@ class Collect extends BaseComponent {
                 <div className="shop-content" key={item.id}>
                     <div className="shop-name" onClick={(event) => this.shopHome(event, item.shop_id)}>
                         {/* <LazyLoad lazyInfo={{imgUrl: item.picpath, offset: -30, overflow: true}}/> */}
-                        <img src={item.picpath}/>
+                        <img
+                            src={item.picpath}
+                            onError={(e) => { e.target.src = item.df_logo }}
+                        />
                         <div className="shop-space ">
                             <p>{item.shop_name}</p>
                             <span className="Shop-Nr">人均消费</span>
