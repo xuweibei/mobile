@@ -279,6 +279,7 @@ class ReDetail extends BaseComponent {
                                             placeholder="请输入手机号"
                                             onChange={this.getPhone}
                                             onBlur={this.alertPhone}
+                                            maxLength={11}
                                         />
                                     </div>
                                 )
@@ -291,7 +292,11 @@ class ReDetail extends BaseComponent {
                 <div className="shop-lists">
                     <div className="shop-name">
                         <div className="shop-title">
-                            <img src={shopdata.picpath} alt=""/>
+                            <img
+                                src={shopdata.picpath}
+                                onError={(e) => { e.target.src = shopdata.df_logo }}
+                                alt=""
+                            />
                             <p>{shopdata.shopName}</p>
                             <div className="icon enter"/>
                         </div>

@@ -54,9 +54,8 @@ export default class MyAssets extends BaseComponent {
                     <p className="tips">根据自己的消费水平，在600-5000之间，以100为单位自由确定（只能确定一次），确定后会获得10倍预备收益</p>
                     <List renderHeader={() => `可用记账：${infoArr.length > 0 ? infoArr[0].capital : ''}`} >
                         <InputItem
-                            moneyKeyboardAlign="left"
                             placeholder="请输入100的整倍数"
-                            type="money"
+                            type="digit"
                             clear
                             style={{borderRadius: '100px'}}
                             onChange={(value) => this.setState({originNum: value})}
