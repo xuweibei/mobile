@@ -223,10 +223,11 @@ class ReDetail extends BaseComponent {
     }
 
     //点击弹出到店协议
-    viewShopFile = (protocolModal) => {
+    viewShopFile = (protocolModal, ev) => {
         this.setState({
             protocolModal
         });
+        ev.stopPropagation();
     }
 
     goBackModal = () => {
@@ -254,7 +255,7 @@ class ReDetail extends BaseComponent {
                         <div className="address-center">{address || '暂无'}</div>
                     </div>
                     <div className="appointment">
-                        {arr && arr[0].if_express === '3' ? (
+                        {(arr && arr[0].if_express === '3') ? (
                             <div className="time-number">
                                 <div className="time-top">有效时间</div>
                                 {OrderSelf.effective && (
@@ -269,7 +270,7 @@ class ReDetail extends BaseComponent {
                         )}
                         <div className="time-number number">
                             <div className="time-top">预留手机</div>
-                            {(showPhone) ? (<div className="icon time-alter" onClick={this.alertPhone}><p className="time-alter-text">{alertPhone}</p></div>)
+                            {showPhone ? (<div className="icon time-alter" onClick={this.alertPhone}><p className="time-alter-text">{alertPhone}</p></div>)
                                 : (
                                     <div>
                                         <InputItem
@@ -284,7 +285,7 @@ class ReDetail extends BaseComponent {
                             }
                         </div>
                     </div>
-                    <div className={`my-radio icon ${radioTreaty === true ? 'endorse' : ''}`} onClick={this.radioTreaty}>同意<span className="agreement" onClick={() => this.viewShopFile(true)}>《到店自提协议》</span></div>
+                    <div className={`my-radio icon ${radioTreaty === true ? 'endorse' : ''}`} onClick={this.radioTreaty}>同意<span className="agreement" onClick={(e) => this.viewShopFile(true, e)}>《到店自提协议》</span></div>
                 </div>
 
                 <div className="shop-lists">

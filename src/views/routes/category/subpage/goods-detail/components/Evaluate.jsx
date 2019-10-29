@@ -65,6 +65,7 @@ export default class Evaluate extends React.PureComponent {
                             <img
                                 className="logo-img"
                                 src={shop.picpath}
+                                onError={(e) => { e.target.src = shop.df_logo }}
                                 alt=""
                             />
                         </div>
