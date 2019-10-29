@@ -253,11 +253,14 @@ class My extends BaseComponent {
 
     //页面跳转
     jumpRouter = (url) => {
-        console.log('ssssssssssssssssssssssssssssssssssssssssssssss');
         if (url === '/selectType') {
-            console.log('dddddddddddddddddddddddddddddddddddd');
-            console.log(appHistory, 'ddddddddddddddddddsadadasdasdsadsadasd');
             appHistory.push('/openShopPage');
+            // if (window.isWX) {
+            //     this.props.history.push('/openShopPage');
+            //     console.log(this.props.history, 'props');
+            // } else {
+            //     appHistory.push('/openShopPage');
+            // }
             // showInfo('等等');
             // removeValue('shopStatus');
             // this.fetch(urlCfg.applyForRight).subscribe(res => {
@@ -393,7 +396,11 @@ class My extends BaseComponent {
                             <div className="my-info-icon">
                                 <WhiteSpace size="xl"/>
                                 <div className="icon icon-notice" onClick={() => this.routeTo('set')}/>
-                                <div className="icon icon-notice-l" onClick={() => this.routeTo('notice')}/>
+                                {
+                                    !window.isWX && (
+                                        <div className="icon icon-notice-l" onClick={() => this.routeTo('notice')}/>
+                                    )
+                                }
                             </div>
                             <div className="my-info-basic">
                                 <div className="info-basic-portrait">

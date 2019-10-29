@@ -22,7 +22,6 @@ import './ShopHome.less';
 const {FIELD} = Constants;
 const {urlCfg} = Configs;
 const {appHistory, getUrlParam, showInfo, native} = Utils;
-const hybrid = process.env.NATIVE;
 class ShopHome extends BaseComponent {
     constructor(props) {
         super(props);
@@ -65,7 +64,7 @@ class ShopHome extends BaseComponent {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (hybrid) {
+        if (process.env.NATIVE) {
             const shoppingId = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
             const nextId = decodeURI(getUrlParam('id', encodeURI(nextProps.location.search)));
             if (shoppingId !== nextId) {
@@ -78,9 +77,9 @@ class ShopHome extends BaseComponent {
     //获取模板信息
     getShopModel = (id) => {
         // const {currentState} = this.state;
-        this.fetch(urlCfg.shopModel, {method: 'post', data: {shop_id: id}})
+        this.fetch(urlCfg.shopModel, {data: {shop_id: id}})
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     //判断有无模板
                     if (res.data) {
                         this.setState({
@@ -109,12 +108,7 @@ class ShopHome extends BaseComponent {
         });
         setshoppingId(id);
         this.fetch(urlCfg.allGoodsInTheShop, {
-            method: 'post',
-            data: {
-                id,
-                page: page,
-                pagesize: this.temp.pagesize
-            }}, noShowLoading)
+            data: {id, page, pagesize: this.temp.pagesize}}, noShowLoading)
             .subscribe(res => {
                 this.temp.isLoading = false;
                 if (res && res.status === 0) {
@@ -274,7 +268,7 @@ class ShopHome extends BaseComponent {
             info = 'homePage';
             break;
         default:
-            if (hybrid) {
+            if (process.env.NATIVE) {
                 native('goToShoper', {shopNo: shopOnsInfo.no, id: '', type: '', shopNickName: shopOnsInfo.nickname, imType: '1', groud: '0'});//groud 为0 单聊，1群聊 imType 1商品2订单3空白  type 1商品 2订单
             } else {
                 showInfo('联系商家');

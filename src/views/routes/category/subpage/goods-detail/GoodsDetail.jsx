@@ -15,7 +15,6 @@ import './GoodsDetail.less';
 const {urlCfg} = Configs;
 const {appHistory, getUrlParam, showFail, showInfo, native, TD, systemApi: {setValue, removeValue}} = Utils;
 const {MESSAGE: {Form, Feedback}, TD_EVENT_ID} = Constants;
-const hybrid = process.env.NATIVE;
 
 const myImg = src => (
     <img src={require(`../../../../../assets/images/${src}`)} className="am-icon am-icon-xs"/>
@@ -86,7 +85,7 @@ class GoodsDetail extends BaseComponent {
     }
 
     componentWillReceiveProps(nextProps, value) { //路由跳转时的判断，id有变化就请求
-        if (hybrid) {
+        if (process.env.NATIVE) {
             const id = decodeURI(getUrlParam('id', encodeURI(nextProps.location.search)));
             const {goodId} = this.state;
             if (id !== goodId) {
@@ -371,7 +370,7 @@ class GoodsDetail extends BaseComponent {
         this.props.setshoppingId('');
         //清除收藏状态
         this.props.setTab('');
-        if (hybrid) {
+        if (process.env.NATIVE) {
             native('goShop');
             appHistory.reduction();//重置路由
         } else {
@@ -381,7 +380,7 @@ class GoodsDetail extends BaseComponent {
 
     // 跳转回首页
     goHome = (val, key) => {
-        if (hybrid && key === 0) {
+        if (process.env.NATIVE && key === 0) {
             native('goHome');
         }
         if (key === 0) {
@@ -424,7 +423,7 @@ class GoodsDetail extends BaseComponent {
 
     // 返回上一级
     goBackModal = () => {
-        if (hybrid && appHistory.length() === 0) {
+        if (process.env.NATIVE && appHistory.length() === 0) {
             native('goBack');
         } else {
             appHistory.goBack();
@@ -456,21 +455,21 @@ class GoodsDetail extends BaseComponent {
         if (opt.key === '2') {
             appHistory.push('/collect');//收藏页面
         } else if (opt.key === '1') {
-            if (hybrid) {
+            if (process.env.NATIVE) {
                 native('goHome');
                 appHistory.reduction();//重置路由
             } else {
                 appHistory.push('/home');
             }
         } else if (opt.key === '3') {
-            if (hybrid) {
+            if (process.env.NATIVE) {
                 native('goShop');
                 appHistory.reduction();//重置路由
             } else {
                 appHistory.push('/shopCart');
             }
         } else if (opt.key === '4') {
-            if (hybrid) {
+            if (process.env.NATIVE) {
                 const obj = {'': ''};
                 native('goToIm', obj);
             } else {
@@ -483,9 +482,10 @@ class GoodsDetail extends BaseComponent {
 
     //联系商家
     goToShoper = () => {
-        const {shop, recommend} = this.state;
-        if (hybrid) {
-            native('goToShoper', {shopNo: shop.no, id: recommend[0].id, type: '1', shopNickName: shop.nickname, imType: '1', groud: '0'});//groud 为0 单聊，1群聊 imType 1商品2订单3空白  type 1商品 2订单
+        const {shop} = this.state;
+        const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
+        if (process.env.NATIVE) {
+            native('goToShoper', {shopNo: shop.no, id, type: '1', shopNickName: shop.nickname, imType: '1', groud: '0'});//groud 为0 单聊，1群聊 imType 1商品2订单3空白  type 1商品 2订单
         } else {
             showInfo('联系商家');
         }
@@ -500,8 +500,8 @@ class GoodsDetail extends BaseComponent {
             overlay={[
                 (<Item style={{float: 'left'}} key="1" icon={myImg('family.svg')}><p>首页</p></Item>),
                 (<Item style={{float: 'left'}} key="2" icon={myImg('star.svg')}>收藏</Item>),
-                (<Item style={{float: 'left'}} key="3" icon={myImg('shop-cart.svg')}>购物车</Item>),
-                (<Item style={{float: 'left'}} key="4" icon={myImg('info.svg')}><p>消息</p></Item>),
+                (!window.isWX && (<Item style={{float: 'left'}} key="3" icon={myImg('shop-cart.svg')}>购物车</Item>)),
+                (!window.isWX && (<Item style={{float: 'left'}} key="4" icon={myImg('info.svg')}><p>消息</p></Item>)),
                 (<Item style={{float: 'left'}} key="5" icon={myImg('share.svg')}>分享</Item>)
             ]}
         >
@@ -522,7 +522,7 @@ class GoodsDetail extends BaseComponent {
         const {
             topSwithe, popup, paginationNum, ids, maskStatus,
             picPath, goodsDetail, shop, recommend, collect,
-            goodsAttr, stocks, shopAddress, lineStatus, lineText, pickType, selectType, names, status
+            goodsAttr, stocks, shopAddress, lineStatus, lineText, pickType, selectType, names
         } = this.state;
         const renderCount = (
             <List>
@@ -725,7 +725,7 @@ class GoodsDetail extends BaseComponent {
                             </div>
                         </div>
                     </div>
-                    {
+                    {/* {
                         goodsDetail.effective_type === '0' ? (
                             <div className={`${(status === '0' || status === '2') ? 'disble-btn' : 'bottom-btn'}`}>
                                 <Flex>
@@ -746,7 +746,8 @@ class GoodsDetail extends BaseComponent {
                         ) : (
                             <div className="pay-now" onClick={() => this.emption('pay')}>立即购买</div>
                         )
-                    }
+                    } */}
+                    <div className="pay-now" onClick={() => this.emption('pay')}>立即购买</div>
                 </div>
             </div>
         );

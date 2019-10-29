@@ -66,18 +66,17 @@ export default class ReDetail extends BaseComponent {
 
     //右侧按钮点击
     onSelect = (opt) => {
-        const hybrid = process.env.NATIVE;
         if (opt.key === '2') {
             appHistory.push('/collect');
         } else if (opt.key === '1') {
-            if (hybrid) {
+            if (process.env.NATIVE) {
                 native('goHome');
                 appHistory.reduction();//重置路由
             } else {
                 appHistory.push('/home');
             }
         } else if (opt.key === '3') {
-            if (hybrid) {
+            if (process.env.NATIVE) {
                 native('goShop');
                 appHistory.reduction();//重置路由
             } else {

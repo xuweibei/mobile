@@ -7,7 +7,6 @@ const {urlCfg} = Configs;
 
 const {appHistory, native, getUrlParam} = Utils;
 const {navColorR} = Constants;
-const hybrid = process.env.NATIVE;
 
 export default class InspectOrder extends BaseComponent {
     state = {
@@ -57,7 +56,7 @@ export default class InspectOrder extends BaseComponent {
 
     //点击扫一扫
     sureSaoCode = () => {
-        if (hybrid) {
+        if (process.env.NATIVE) {
             const obj = {
                 pay: urlCfg.importSum,
                 write: urlCfg.consumer,

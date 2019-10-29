@@ -7,7 +7,6 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 
 const {urlCfg} = Configs;
 const {appHistory, getUrlParam, native} = Utils;
-const hybrid = process.env.NATIVE;
 class Consumer extends BaseComponent {
     state = {
         list: {},
@@ -58,7 +57,7 @@ class Consumer extends BaseComponent {
     }
 
     goBackModal = () => {
-        if (hybrid && appHistory.length() === 0) {
+        if (process.env.NATIVE && appHistory.length() === 0) {
             native('goBack');
         } else {
             appHistory.goBack();

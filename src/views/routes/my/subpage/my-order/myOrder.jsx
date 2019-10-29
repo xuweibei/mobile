@@ -15,7 +15,6 @@ const {appHistory, showSuccess, getUrlParam, showInfo, native, systemApi: {remov
 const {TD_EVENT_ID} = Constants;
 const {MESSAGE: {Form, Feedback}, FIELD, navColorR} = Constants;
 const {urlCfg} = Configs;
-
 const temp = {
     stackData: [],
     isLoading: true,
@@ -51,6 +50,8 @@ class MyOrder extends BaseComponent {
     componentWillMount() {
         const num = this.statusChoose(this.props.location.pathname.split('/')[2]) || -1;
         this.init(num);
+        removeValue('orderInfo');//清除下单流程留下来的订单信息
+        removeValue('orderArr');
     }
 
     componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方
@@ -70,8 +71,9 @@ class MyOrder extends BaseComponent {
                 status: numNext
             }, () => {
                 temp.stackData = [];
-                console.log(numNext, '首付款了k');
                 this.init(numNext);
+                removeValue('orderInfo');//清除下单流程留下来的订单信息
+                removeValue('orderArr');
             });
         }
     }
@@ -321,8 +323,6 @@ class MyOrder extends BaseComponent {
 
     //立即支付
     payNow = (id, orderNum) => {
-        //清除一下订单缓存
-        removeValue('orderInfo');
         appHistory.push(`/payMoney?orderId=${id}&orderNum=${orderNum}&source=${4}`);
     }
 
@@ -615,14 +615,13 @@ class MyOrder extends BaseComponent {
 
     //返回到我的页面
     goToBack = () => {
-        const hybird = process.env.NATIVE;
         const type = decodeURI(getUrlParam('type', encodeURI(this.props.location.search)));
-        if (hybird) {
+        if (process.env.NATIVE) {
             native('goBack');
+        } else if (type === 'home') {
+            appHistory.replace('/home');
         } else if (appHistory.length() === 0) {
             appHistory.push('/my');
-        } else if (type === 'car') {
-            appHistory.replace('/home');
         } else {
             appHistory.goBack();
         }
@@ -630,7 +629,6 @@ class MyOrder extends BaseComponent {
 
     render() {
         const {dataSource, hasMore, height, status, canStatus, refreshing} = this.state;
-        console.log(status, '的接口是否健康');
         const row = item => (
             <div className="shop-lists" >
                 <div className="shop-name" onClick={() => this.goShopHome(item.shop_id)}>
@@ -757,16 +755,9 @@ class MyOrder extends BaseComponent {
     }
 }
 
-const mapStateToProps = state => {
-    const base = state.get('base');
-    return {
-        orderStatus: base.get('orderStatus')
-    };
-};
-
 const mapDispatchToProps = {
     setOrderStatus: actionCreator.setOrderStatus,
     showConfirm: actionCreator.showConfirm
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(MyOrder);
+export default connect(null, mapDispatchToProps)(MyOrder);

@@ -6,13 +6,12 @@ import {systemApi} from './systemApi';
 import {baseActionCreator} from '../redux/baseAction';
 import {appHistory} from './appHistory';
 
-const hybrid = process.env.NATIVE;
 const {systemApi: {removeValue}, showInfo, showFail} = Utils;
 const {LOCALSTORAGE} = Constants;
 
 //统一封装原生接口请求
 export const native = (str, obj, callBack) => new Promise((resolve, reject) => {
-    if (window.WebViewJavascriptBridge && window.WebViewJavascriptBridge.callHandler && hybrid) {
+    if (window.WebViewJavascriptBridge && window.WebViewJavascriptBridge.callHandler && process.env.NATIVE) {
         window.WebViewJavascriptBridge.callHandler(
             str,
             JSON.stringify(obj),
@@ -32,7 +31,7 @@ export const native = (str, obj, callBack) => new Promise((resolve, reject) => {
 //设置nav的颜色，回传给原生
 export const setNavColor = (str, obj) =>  new Promise((resolve, reject) => {
     if (window.WebViewJavascriptBridge && window.WebViewJavascriptBridge.callHandler) {
-        hybrid && window.WebViewJavascriptBridge.callHandler(
+        process.env.NATIVE && window.WebViewJavascriptBridge.callHandler(
             str,
             JSON.stringify(obj),
             (responseData) => {
@@ -45,7 +44,7 @@ export const setNavColor = (str, obj) =>  new Promise((resolve, reject) => {
 //获取购物车点击结算的时候的跳转数据
 export const getShopCartInfo = (str, obj, callBack) => new Promise((resolve, reject) => {
     setTimeout(() => {
-        if (window.WebViewJavascriptBridge && window.WebViewJavascriptBridge.callHandler && hybrid) {
+        if (window.WebViewJavascriptBridge && window.WebViewJavascriptBridge.callHandler && process.env.NATIVE) {
             window.WebViewJavascriptBridge.callHandler(
                 str,
                 JSON.stringify(obj),
@@ -65,7 +64,7 @@ export const getShopCartInfo = (str, obj, callBack) => new Promise((resolve, rej
 //获取userToken
 export const getAppUserToken = () => new Promise((resolve) => {
     setTimeout(() => {
-        if (window.WebViewJavascriptBridge && window.WebViewJavascriptBridge.callHandler && hybrid) {
+        if (window.WebViewJavascriptBridge && window.WebViewJavascriptBridge.callHandler && process.env.NATIVE) {
             window.WebViewJavascriptBridge.callHandler('wxLoginCallback',
                 JSON.stringify({}),
                 (responseData) => {
@@ -88,7 +87,7 @@ global.goBack = function () {
     if (!onOff) {
         if (appHistory.length() === 0) {
             setTimeout(() => {
-                hybrid && window.WebViewJavascriptBridge.callHandler('goBack');
+                process.env.NATIVE && window.WebViewJavascriptBridge.callHandler('goBack');
             }, 500);
         } else {
             appHistory.goBack();
@@ -112,7 +111,7 @@ global.restHistory = function () {
 };
 
 export function goBackModal() {
-    if (hybrid && appHistory.length() === 0) {
+    if (process.env.NATIVE && appHistory.length() === 0) {
         native('goBack');
     } else {
         appHistory.goBack();

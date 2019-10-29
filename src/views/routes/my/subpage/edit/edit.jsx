@@ -12,8 +12,6 @@ const Item = List.Item;
 const {appHistory, systemApi: {removeValue}, native, showInfo, getUrlParam} = Utils;
 const {urlCfg} = Configs;
 const {LOCALSTORAGE, MESSAGE: {Feedback}} = Constants;
-const hybird = process.env.NATIVE;
-
 class Edit extends BaseComponent {
     componentDidMount() {
         const {userInfo, getUserInfo} = this.props;
@@ -76,14 +74,14 @@ class Edit extends BaseComponent {
                     }
                 ]
             },
-            {
+            !window.isWX ? {
                 key: '2',
                 name: 'wec',
                 extra: '去绑定',
-                hybird: hybird,
+                hybird: process.env.NATIVE,
                 subName: 'binding',
                 value: '微信绑定'
-            },
+            } : null,
             {
                 key: '3',
                 name: 'margin',
@@ -147,32 +145,34 @@ class Edit extends BaseComponent {
     renderListItem = list => {
         const listItem = [];
         list.forEach(item => {
-            if (item.child) {
-                listItem.push(
-                    <div key={item.key} className={item.name}>
-                        {this.renderListItem(item.child)}
-                    </div>
-                );
-            } else {
-                listItem.push(
-                    <Item
-                        key={item.key}
-                        className={item.name || ''}
-                        extra={item.extra || ''}
-                        arrow={item.arrow || ''}
-                        onClick={() => {
-                            this.selectFun(item);
-                        }}
-                    >
-                        <div className={`${item.subName}-box`}>
-                            <span className={`icon ${item.subName}`}/>
+            if (item) {
+                if (item.child) {
+                    listItem.push(
+                        <div key={item.key} className={item.name}>
+                            {this.renderListItem(item.child)}
                         </div>
-                        {item.value}
-                        {
-                            item.moredes && <span className="moredes">{item.moredes}</span>
-                        }
-                    </Item>
-                );
+                    );
+                } else {
+                    listItem.push(
+                        <Item
+                            key={item.key}
+                            className={item.name || ''}
+                            extra={item.extra || ''}
+                            arrow={item.arrow || ''}
+                            onClick={() => {
+                                this.selectFun(item);
+                            }}
+                        >
+                            <div className={`${item.subName}-box`}>
+                                <span className={`icon ${item.subName}`}/>
+                            </div>
+                            {item.value}
+                            {
+                                item.moredes && <span className="moredes">{item.moredes}</span>
+                            }
+                        </Item>
+                    );
+                }
             }
         });
         return listItem;
@@ -213,7 +213,7 @@ class Edit extends BaseComponent {
     //登出账号
     signOut = () => {
         const {removeUserInfo, setUserToken, setUseType, delMyInfo, removebankInfo, removeNickNameInfo, removeAressInfo, removeRegionInfo} = this.props;
-        if (hybird) {
+        if (process.env.NATIVE) {
             //重定向到原生登录页
             native('loginoutCallback');
         } else {
@@ -236,7 +236,7 @@ class Edit extends BaseComponent {
 
     //改变头像
     changeTheAvatar = () => {
-        if (hybird) {
+        if (process.env.NATIVE) {
             const arr = [];
             native('picCallback', {num: 1}).then(res => {
                 res.data.img.forEach(item => {

@@ -30,8 +30,6 @@ const seasons = [
         value: '12'
     }
 ];
-const hybrid = process.env.NATIVE;
-
 class PersonalThree extends BaseComponent {
     state = {
         files: [],
@@ -251,7 +249,7 @@ class PersonalThree extends BaseComponent {
     //原生点击添加图片
     addPictrue = (type) => {
         const arrInfo = [];
-        if (hybrid) {
+        if (process.env.NATIVE) {
             if (type === 'prove') {
                 const {sValue} = this.state;
                 const result = seasons.some(item => item.value === sValue[0]);
@@ -387,7 +385,7 @@ class PersonalThree extends BaseComponent {
                             <div>
                                 <WingBlank>
                                     {
-                                        hybrid ? (
+                                        process.env.NATIVE ? (
                                             <div className="picture-area">
                                                 <ul>
                                                     {
@@ -436,28 +434,27 @@ class PersonalThree extends BaseComponent {
                             <div>
                                 <WingBlank>
                                     {
-                                        hybrid
-                                            ? (
-                                                <div className="picture-area">
-                                                    <ul>
-                                                        {
-                                                            file2 && file2.map(item => (
-                                                                <li id={item.id}>
-                                                                    {/* <span className="delete-icon" onClick={() => this.deleteImg('shop', item.id)}>×</span> */}
-                                                                    <img onClick={() => this.addPictrue('shop')} src={item.imgS || item.url}/>
-                                                                </li>
-                                                            ))
-                                                        }
-                                                        {
-                                                            file2.length === 0 && (
-                                                                <li className="imgAdd-button" onClick={() => this.addPictrue('shop')}>
-                                                                    <span className="imgAdd-icon">+</span>
-                                                                </li>
-                                                            )
-                                                        }
-                                                    </ul>
-                                                </div>
-                                            )
+                                        process.env.NATIVE ? (
+                                            <div className="picture-area">
+                                                <ul>
+                                                    {
+                                                        file2 && file2.map(item => (
+                                                            <li id={item.id}>
+                                                                {/* <span className="delete-icon" onClick={() => this.deleteImg('shop', item.id)}>×</span> */}
+                                                                <img onClick={() => this.addPictrue('shop')} src={item.imgS || item.url}/>
+                                                            </li>
+                                                        ))
+                                                    }
+                                                    {
+                                                        file2.length === 0 && (
+                                                            <li className="imgAdd-button" onClick={() => this.addPictrue('shop')}>
+                                                                <span className="imgAdd-icon">+</span>
+                                                            </li>
+                                                        )
+                                                    }
+                                                </ul>
+                                            </div>
+                                        )
                                             : getFieldDecorator('shop', {
                                                 rules: [
                                                     {validator: this.checkShop}
@@ -484,28 +481,27 @@ class PersonalThree extends BaseComponent {
                             <div>
                                 <WingBlank>
                                     {
-                                        hybrid
-                                            ? (
-                                                <div className="picture-area">
-                                                    <ul>
-                                                        {
-                                                            file3 && file3.map(item => (
-                                                                <li id={item.id}>
-                                                                    {/* <span className="delete-icon" onClick={() => this.deleteImg('environment', item.id)}>×</span> */}
-                                                                    <img onClick={() => this.addPictrue('environment')} src={item.imgS || item.url}/>
-                                                                </li>
-                                                            ))
-                                                        }
-                                                        {
-                                                            file3.length === 0 && (
-                                                                <li className="imgAdd-button" onClick={() => this.addPictrue('environment')}>
-                                                                    <span className="imgAdd-icon">+</span>
-                                                                </li>
-                                                            )
-                                                        }
-                                                    </ul>
-                                                </div>
-                                            )
+                                        process.env.NATIVE ? (
+                                            <div className="picture-area">
+                                                <ul>
+                                                    {
+                                                        file3 && file3.map(item => (
+                                                            <li id={item.id}>
+                                                                {/* <span className="delete-icon" onClick={() => this.deleteImg('environment', item.id)}>×</span> */}
+                                                                <img onClick={() => this.addPictrue('environment')} src={item.imgS || item.url}/>
+                                                            </li>
+                                                        ))
+                                                    }
+                                                    {
+                                                        file3.length === 0 && (
+                                                            <li className="imgAdd-button" onClick={() => this.addPictrue('environment')}>
+                                                                <span className="imgAdd-icon">+</span>
+                                                            </li>
+                                                        )
+                                                    }
+                                                </ul>
+                                            </div>
+                                        )
                                             : getFieldDecorator('environment', {
                                                 rules: [
                                                     {validator: this.checkEnvironment}
@@ -534,28 +530,27 @@ class PersonalThree extends BaseComponent {
                             <div>
                                 <WingBlank>
                                     {
-                                        hybrid
-                                            ? (
-                                                <div className="picture-area">
-                                                    <ul>
-                                                        {
-                                                            file4 && file4.map(item => (
-                                                                <li id={item.id}>
-                                                                    {/* <span className="delete-icon" onClick={() => this.deleteImg('product', item.id)}>×</span> */}
-                                                                    <img onClick={() => this.addPictrue('product')} src={item.imgS || item.url}/>
-                                                                </li>
-                                                            ))
-                                                        }
-                                                        {
-                                                            file4.length === 0 && (
-                                                                <li className="imgAdd-button" onClick={() => this.addPictrue('product')}>
-                                                                    <span className="imgAdd-icon">+</span>
-                                                                </li>
-                                                            )
-                                                        }
-                                                    </ul>
-                                                </div>
-                                            )
+                                        process.env.NATIVE ? (
+                                            <div className="picture-area">
+                                                <ul>
+                                                    {
+                                                        file4 && file4.map(item => (
+                                                            <li id={item.id}>
+                                                                {/* <span className="delete-icon" onClick={() => this.deleteImg('product', item.id)}>×</span> */}
+                                                                <img onClick={() => this.addPictrue('product')} src={item.imgS || item.url}/>
+                                                            </li>
+                                                        ))
+                                                    }
+                                                    {
+                                                        file4.length === 0 && (
+                                                            <li className="imgAdd-button" onClick={() => this.addPictrue('product')}>
+                                                                <span className="imgAdd-icon">+</span>
+                                                            </li>
+                                                        )
+                                                    }
+                                                </ul>
+                                            </div>
+                                        )
                                             : getFieldDecorator('product', {
                                                 rules: [
                                                     {validator: this.checkProduct}

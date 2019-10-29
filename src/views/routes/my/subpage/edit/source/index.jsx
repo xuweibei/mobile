@@ -14,8 +14,6 @@ const article = [
 ];
 const {urlCfg} = Configs;
 
-const hybrid = process.env.NATIVE;
-
 export default class applyService extends BaseComponent {
     state = {
         height: document.documentElement.clientHeight - (window.isWX ? window.rem * null : window.rem * 1.08)
@@ -23,7 +21,7 @@ export default class applyService extends BaseComponent {
 
     //点击扫一扫
     sureSaoCode = () => {
-        if (hybrid) {
+        if (process.env.NATIVE) {
             const obj = {
                 pay: urlCfg.importSum,
                 write: urlCfg.consumer,

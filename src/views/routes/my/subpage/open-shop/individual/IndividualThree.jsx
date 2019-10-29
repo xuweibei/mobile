@@ -13,7 +13,6 @@ const {urlCfg} = Configs;
 const {dealImage, showInfo, native, validator} = Utils;
 const {MESSAGE: {Form, Feedback}} = Constants;
 // const RadioItem = Radio.RadioItem;
-const hybrid = process.env.NATIVE;
 // const data = [
 //     {value: 1, label: '是'},
 //     {value: 0, label: '否'}
@@ -196,7 +195,7 @@ class IndividualThree extends BaseComponent {
     //原生点击添加图片
     addPictrue = (type) => {
         const arrInfo = [];
-        if (hybrid) {
+        if (process.env.NATIVE) {
             if (type === 'license') {
                 native('picCallback', {num: 1}).then(res => {
                     res.data.img.forEach(item => {
@@ -344,7 +343,7 @@ class IndividualThree extends BaseComponent {
                                     <div>
                                         <WingBlank>
                                             {
-                                                hybrid ? (
+                                                process.env.NATIVE ? (
                                                     <div className="picture-area">
                                                         <ul>
                                                             {
@@ -448,7 +447,7 @@ class IndividualThree extends BaseComponent {
                                 <div>
                                     <WingBlank>
                                         {
-                                            hybrid ? (
+                                            process.env.NATIVE ? (
                                                 <div className="picture-area">
                                                     <ul>
                                                         {
@@ -494,7 +493,7 @@ class IndividualThree extends BaseComponent {
                             <div>
                                 <WingBlank>
                                     {
-                                        hybrid ? (
+                                        process.env.NATIVE ? (
                                             <div className="picture-area">
                                                 <ul>
                                                     {

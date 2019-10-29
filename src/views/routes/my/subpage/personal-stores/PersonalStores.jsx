@@ -10,7 +10,7 @@ import CheckBank from './check/check';
 
 const {urlCfg} = Configs;
 const {appHistory, native} = Utils;
-const hybrid = process.env.NATIVE;
+
 
 class PersonalStores extends BaseComponent {
     state = {
@@ -36,7 +36,7 @@ class PersonalStores extends BaseComponent {
                         title: '审核通过',
                         message: '审核通过请前去验证银行卡和签约。',
                         btnText: ['取消', '验证'],
-                        callbacks: [() => { hybrid ? native('goBack') : appHistory.goBack() }, () => { this.checkBank() }]
+                        callbacks: [() => { process.env.NATIVE ? native('goBack') : appHistory.goBack() }, () => { this.checkBank() }]
                     });
                 } else {
                     this.setState({

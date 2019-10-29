@@ -106,43 +106,39 @@ class Withdrawal extends BaseComponent {
         if (withdrawId === 1) {
             this.fetch(urlCfg.memberStatus, {data: {types: 7}})
                 .subscribe(res => {
-                    if (res) {
-                        if (res.status === 0) {
-                            if (res.data) {
-                                if (res.data.status === 7) {
-                                    showConfirm({
-                                        title: '您还没绑定银行卡，是否去绑定？',
-                                        callbacks: [() => {
+                    if (res && res.status === 0) {
+                        if (res.data) {
+                            if (res.data.status === 7) {
+                                showConfirm({
+                                    title: '您还没绑定银行卡，是否去绑定？',
+                                    callbacks: [() => {
+                                        this.setState({
+                                            selectorIndexName: [], //提现类别名字
+                                            selectorIndex: '' //提现类别Id
+                                        });
+                                    }, () => {
+                                        appHistory.push('/bankCardDetail');
+                                    }]
+                                });
+                            } else {
+                                for (let i = 0; i < incomeData.banks.length; i++) {
+                                    if (selectorIndex === '0') {
+                                        if (incomeData.banks[i].userType !== '2') {
                                             this.setState({
-                                                selectorIndexName: [], //提现类别名字
-                                                selectorIndex: '' //提现类别Id
+                                                bankId: incomeData.banks[i].id,
+                                                bankIndex: i
                                             });
-                                        }, () => {
-                                            appHistory.push('/bankCardDetail');
-                                        }]
-                                    });
-                                } else {
-                                    for (let i = 0; i < incomeData.banks.length; i++) {
-                                        if (selectorIndex === '0') {
-                                            if (incomeData.banks[i].userType !== '2') {
-                                                this.setState({
-                                                    bankId: incomeData.banks[i].id,
-                                                    bankIndex: i
-                                                });
-                                            }
-                                        } else if (selectorIndex === '1') {
-                                            if (incomeData.banks[i].userType === '2') {
-                                                this.setState({
-                                                    bankId: incomeData.banks[i].id,
-                                                    bankIndex: i
-                                                });
-                                            }
+                                        }
+                                    } else if (selectorIndex === '1') {
+                                        if (incomeData.banks[i].userType === '2') {
+                                            this.setState({
+                                                bankId: incomeData.banks[i].id,
+                                                bankIndex: i
+                                            });
                                         }
                                     }
                                 }
                             }
-                        } else if (res.status === 1) {
-                            showInfo(res.message);
                         }
                     }
                 });

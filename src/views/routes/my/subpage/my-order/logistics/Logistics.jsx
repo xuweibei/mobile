@@ -8,7 +8,6 @@ import './Logistics.less';
 
 const {getUrlParam, native, appHistory} = Utils;
 const {urlCfg} = Configs;
-const hybrid = process.env.NATIVE;
 export default class MyOrder extends BaseComponent {
     state = {
         orderInfo: [], //物流信息数组
@@ -89,13 +88,13 @@ export default class MyOrder extends BaseComponent {
 
     //拨打电话
     callPhone = () => {
-        if (hybrid) {
+        if (process.env.NATIVE) {
             native('callTel', {phoneNum: this.state.phone});
         }
     }
 
     goBackModal = () => {
-        if (hybrid) {
+        if (process.env.NATIVE) {
             native('goBack');
         } else {
             appHistory.goBack();

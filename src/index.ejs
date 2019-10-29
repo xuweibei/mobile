@@ -193,52 +193,81 @@
             }
             // https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc750bd9a0064d947&redirect_uri=http://csmp.zzha.vip/&response_type=code&scope=snsapi_userinfo#wechat_redirect
         </script>
-        <script src="https://cdn.bootcss.com/zepto/1.2.0/zepto.min.js"></script>
         <script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=GFnu2bon0GPM7wuu8rPROimLuqi18eFE"></script>
-            <% if (htmlWebpackPlugin.options.env === 'dev') { %>
-            <!-- VConsole调试 (mobile 上调试)-->
-            <script src="https://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/vconsole/3.0.0/vconsole.min.js"></script>
-        <script>
-            new VConsole();
-        </script>
-        <% } %>
-        <!-- 微信JSSDK-->
+            <!-- <% if (htmlWebpackPlugin.options.env === 'dev' || htmlWebpackPlugin.options.env === 'prev') { %> -->
+            <!-- VConsole调试 (mobile 上调试) -->
+            <!-- <script src="https://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/vconsole/3.0.0/vconsole.min.js"></script> -->
         <!-- <script>
-            if(window.isWX){document.writeln('<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"'+'>'+'<'+'/'+'script>');}
+            new VConsole();
         </script> -->
-        <script src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+        <!-- <% } %> -->
+        <!-- 微信JSSDK-->
+        <script>
+            if(window.isWX){document.writeln('<script src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"'+'>'+'<'+'/'+'script>')}
+        </script>
+        <script src='https://res2.wx.qq.com/open/js/jweixin-1.4.0.js'></script>
         <script src="https://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/vconsole/3.0.0/vconsole.min.js"></script>
         <script>
-            new VConsole();                
+            new VConsole()
         </script>
         <script>
             if (window.isWX) {
-                // window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc750bd9a0064d947&redirect_uri=http://csmp.zzha.vip/&response_type=code&scope=snsapi_userinfo#wechat_redirect';
-                const data=JSON.stringify({
-                        // appID: 'wx24c842b6e4d21e02',
-                        // appsecret: '89ccd23bd4d40767b9522ff02d7dab71',
+                    const data=JSON.stringify({
                          url: location.href.split('#')[0],
-                        //url: 'http://csmp.zzha.vip/'
                     });
-                $.post('https://cs.zzha.vip/wechat/index', data,function(response){
+            if (window.fetch) {
+                fetch('https://cs.zzha.vip/wechat/index', {
+                method: 'POST',
+                body: data,
+                headers: new Headers({
+                            'Content-Type': 'application/json'
+                        })
+            }).then(res => res.json()).then(response => 
                 wx.config({
                     debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
                     appId: response.appId, // 必填，公众号的唯一标识
                     timestamp: response.timestamp, // 必填，生成签名的时间戳
                     nonceStr: response.nonceStr, // 必填，生成签名的随机串
                     signature: response.signature,// 必填，签名
-                    jsApiList: ['getLocation','scanQRCode','openLocation','updateAppMessageShareData','updateTimelineShareData','openLocation'] // 必填，需要使用的JS接口列表
-                });
-            });
+                    jsApiList: ['getLocation','scanQRCode','openLocation','updateAppMessageShareData','updateTimelineShareData'] // 必填，需要使用的JS接口列表
+                    })
+                )
+            } else  {
+                let xmlhttp;
+            if (window.XMLHttpRequest) {
+                xmlhttp = new XMLHttpRequest();
+            } else {
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.open("POST", 'https://cs.zzha.vip/wechat/index', true);
+            xmlhttp.setRequestHeader("Content-type","application/json");
+            xmlhttp.send(data);
+            xmlhttp.onreadystatechange = function(){
+                if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+                    if (xmlhttp.responseText) {
+                        const json = JSON.parse(xmlhttp.responseText);
+                        wx.config({
+                            debug: true,
+                            appId: json.appId, // 必填，公众号的唯一标识
+                            timestamp: json.timestamp, // 必填，生成签名的时间戳
+                            nonceStr: json.nonceStr, // 必填，生成签名的随机串
+                            signature: json.signature,// 必填，签名
+                            jsApiList: ['getLocation','scanQRCode','openLocation','updateAppMessageShareData','updateTimelineShareData'] // 必填，需要使用的JS接口列表
+                        })
+                    } 
+                }
+            }
+            }
+            
             window.wx.ready(() => {
-                wx.updateAppMessageShareData({ 
-                    title: '公众号', 
+                wx.updateAppMessageShareData({
+                    title: '公众号',
                     desc: '一个很牛逼的公众号哟',
                     link: 'http://csmp.zzha.vip/',
                     imgUrl: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1571912013812&di=1349d2e723938b9da4b3e022e7bc0a28&imgtype=0&src=http%3A%2F%2F5b0988e595225.cdn.sohucs.com%2Fimages%2F20181025%2F59711b6806694edd9bd0bbace2bd4709.jpeg', // 分享图标
                 })
 
-                wx.updateTimelineShareData({ 
+                wx.updateTimelineShareData({
                     title: '公众号', // 分享标题
                     desc: '一个很牛逼的公众号哟',
                     link: 'http://csmp.zzha.vip/',

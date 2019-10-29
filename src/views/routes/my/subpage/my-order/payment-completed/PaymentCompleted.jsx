@@ -8,7 +8,6 @@ import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAc
 import './PaymentCompleted.less';
 
 const {appHistory, getUrlParam, native, systemApi: {getValue, removeValue}} = Utils;
-const hybrid = process.env.NATIVE;
 const mode = [
     {
         title: 'CAM余额',
@@ -36,7 +35,7 @@ class PaymentCompleted extends BaseComponent {
     }
 
     goToHome = () => {
-        if (hybrid) {
+        if (process.env.NATIVE) {
             native('goHome');
         } else {
             appHistory.replace('/home');
@@ -55,7 +54,7 @@ class PaymentCompleted extends BaseComponent {
                 appHistory.replace(`/listDetails?id=${id}`);
             }
         } else if (batch === '1') { //线下付款或线下批量付款
-            appHistory.replace(`/selfMention?type=${'car'}`);
+            appHistory.replace('/selfMention?type=home');
         } else {
             appHistory.replace(`/selfOrderingDetails?id=${id}`);
         }

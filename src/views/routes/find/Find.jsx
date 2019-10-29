@@ -308,13 +308,15 @@ class Find extends BaseComponent {
 
     addressGoGeoc = (address) => {
         // 创建地址解析器实例
+        console.log(address, '客户三开出今年刹车');
         const myGeo = new window.BMap.Geocoder();
         // 将地址解析结果显示在地图上，并调整地图视野
         myGeo.getPoint(address, (point) => {
             if (point) {
-                this.map.centerAndZoom(point, 16);
+                console.log('框架是你的卡就是你大开杀戒拉伸膜你是卡洛模拟擦上来看美女擦', point);
+                this.map.centerAndZoom(point, 19);
                 this.map.addOverlay(new window.BMap.Marker(point));
-                this.getShop(point.lat.toString(), point.lng.toString());
+                // this.getShop(point.lat.toString(), point.lng.toString());
             }
         });
     }
@@ -322,10 +324,6 @@ class Find extends BaseComponent {
     //搜索商店
     hidePopup = (type) => {
         const {shopName, address, latitude, longitude} = this.state;
-        // this.setState({
-        //     searchLeft: '店铺列表',
-        //     searchRight: '取消搜索'
-        // });
         if (type === 'shopName') {
             if (shopName.length === 0) {
                 showInfo(Form.No_StoreName);

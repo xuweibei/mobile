@@ -4,7 +4,6 @@ import {Drawer, List, Carousel} from 'antd-mobile';
 const {showInfo, native, appHistory} = Utils;
 const {MESSAGE: {Form}} = Constants;
 
-const hybrid = process.env.NATIVE;
 export default class MyLogistics extends BaseComponent {
     state = {
         open: false,
@@ -41,7 +40,7 @@ export default class MyLogistics extends BaseComponent {
 
     //拨打电话
     callPhone = (tel) => {
-        if (hybrid) {
+        if (process.env.NATIVE) {
             native('callTel', {phoneNum: tel});
         }
         this.setState({

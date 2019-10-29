@@ -9,7 +9,6 @@ import './PublishReview.less';
 const {getUrlParam, dealImage, showInfo, showSuccess, appHistory, native, setNavColor} = Utils;
 const {MESSAGE: {Form, Feedback}, IMGSIZE, navColorF} = Constants;
 const {urlCfg} = Configs;
-const hybrid = process.env.NATIVE;
 export default class PublishReview extends BaseComponent {
     state = {
         files: [], //展示图片集合
@@ -23,13 +22,13 @@ export default class PublishReview extends BaseComponent {
     }
 
     componentWillMount() {
-        if (hybrid) { //设置tab颜色
+        if (process.env.NATIVE) { //设置tab颜色
             setNavColor('setNavColor', {color: navColorF});
         }
     }
 
     componentWillReceiveProps() {
-        if (hybrid) {
+        if (process.env.NATIVE) {
             setNavColor('setNavColor', {color: navColorF});
         }
     }
@@ -78,7 +77,7 @@ export default class PublishReview extends BaseComponent {
     //原生图片选择
     addPictrue = () => {
         const {nativePicNum} = this.state;
-        if (hybrid) {
+        if (process.env.NATIVE) {
             native('picCallback', {num: nativePicNum}).then(res => {
                 const {fileArr} = this.state;
                 const arr = fileArr;
@@ -174,7 +173,7 @@ export default class PublishReview extends BaseComponent {
                         </List>
                         <WingBlank>
                             {
-                                hybrid ? (
+                                process.env.NATIVE ? (
                                     <div className="picture-area">
                                         <ul>
                                             {

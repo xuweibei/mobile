@@ -13,7 +13,6 @@ const myImg = src => (
 );
 
 const {appHistory, native, showInfo} = Utils;
-const hybird = process.env.NATIVE;
 
 class showButton extends BaseComponent {
     static propTypes = {
@@ -25,7 +24,7 @@ class showButton extends BaseComponent {
         if (opt.key === '2') {
             appHistory.push('/collect');//我的收藏
         } else if (opt.key === '1') {
-            if (hybird) {
+            if (process.env.NATIVE) {
                 native('goHome');
             } else {
                 appHistory.push('/home');
@@ -38,14 +37,14 @@ class showButton extends BaseComponent {
             this.props.setTab('');
             appHistory.reduction();
         } if (opt.key === '3') {
-            if (hybird) {
+            if (process.env.NATIVE) {
                 native('goShop');
                 appHistory.reduction();//重置路由
             } else {
                 appHistory.push('/shopCart');
             }
         } else if (opt.key === '4') {
-            if (hybird) {
+            if (process.env.NATIVE) {
                 const obj  = {'': ''};
                 native('goToIm', obj);
             } else {

@@ -6,7 +6,7 @@ import './UserAgreementDetail.less';
 const Item = List.Item;
 const {native, getUrlParam} = Utils;
 const {urlCfg} = Configs;
-const hybrid = process.env.NATIVE;
+
 const itemLists = [
     {title: '版本信息', params: null},
     {title: '软件许可使用协议', params: 1},
@@ -91,7 +91,7 @@ class UserAgreementDetail extends BaseComponent {
                         <React.Fragment>
                             <AppNavBar title="关于"/>
                             <List>
-                                {(/iphone|ipad/gi).test(navigator.platform) && <Item arrow="horizontal" onClick={() => { hybrid && native('evalMe') }}>给我评价</Item>}
+                                {(/iphone|ipad/gi).test(navigator.platform) && <Item arrow="horizontal" onClick={() => { process.env.NATIVE && native('evalMe') }}>给我评价</Item>}
                             </List>
                             <List>
                                 <div className="about-information">
@@ -102,9 +102,13 @@ class UserAgreementDetail extends BaseComponent {
                                     }
                                 </div>
                             </List>
-                            <List>
-                                <Item extra="有新版" arrow="horizontal" onClick={() => hybrid && native('checkVersion', {'': ''})}>新版本检测</Item>
-                            </List>
+                            {
+                                !window.isWX && (
+                                    <List>
+                                        <Item extra="有新版" arrow="horizontal" onClick={() => process.env.NATIVE && native('checkVersion', {'': ''})}>新版本检测</Item>
+                                    </List>
+                                )
+                            }
                             <span className="corporate">中战华安控股集团有限公司</span>
                             <span className="edition">当前版本号：1.0.3</span>
                         </React.Fragment>
@@ -117,7 +121,7 @@ class UserAgreementDetail extends BaseComponent {
                         title={protocolTitle}
                         footer={[{text: '确定',
                             onPress: () => {
-                                if (hybrid && type !== 'null') {
+                                if (process.env.NATIVE && type !== 'null') {
                                     native('goBack');
                                 }
                                 this.showModal(false);

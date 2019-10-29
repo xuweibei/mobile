@@ -10,7 +10,7 @@ import './IndividualTwo.less';
 const {dealImage, showInfo, validator, native} = Utils;
 const {MESSAGE: {Form, Feedback}} = Constants;
 const {urlCfg} = Configs;
-const hybrid = process.env.NATIVE;
+
 
 const data = [
     {
@@ -296,7 +296,7 @@ class IndividualTwo extends BaseComponent {
     //点击添加图片
     addPictrue = (type) => {
         const arrInfo = [];
-        if (hybrid) {
+        if (process.env.NATIVE) {
             if (type === 'forward') {
                 native('picCallback', {num: 1}).then(res => {
                     res.data.img.forEach(item => {
@@ -385,7 +385,7 @@ class IndividualTwo extends BaseComponent {
                             <div>
                                 <WingBlank>
                                     {
-                                        hybrid ? (
+                                        process.env.NATIVE ? (
                                             <div className="picture-area">
                                                 <ul>
                                                     {
@@ -428,7 +428,7 @@ class IndividualTwo extends BaseComponent {
                             <div>
                                 <WingBlank>
                                     {
-                                        hybrid ? (
+                                        process.env.NATIVE ? (
                                             <div className="picture-area">
                                                 <ul>
                                                     {
@@ -475,7 +475,7 @@ class IndividualTwo extends BaseComponent {
                                 <div>
                                     <WingBlank>
                                         {
-                                            hybrid ? (
+                                            process.env.NATIVE ? (
                                                 <div className="picture-area">
                                                     <ul>
                                                         {

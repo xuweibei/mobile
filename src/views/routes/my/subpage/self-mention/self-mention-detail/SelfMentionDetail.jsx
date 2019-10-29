@@ -10,7 +10,6 @@ import BaseComponent from '../../../../../../components/base/BaseComponent';
 
 const {urlCfg} = Configs;
 const {validator, showFail, showInfo, appHistory, getUrlParam, systemApi: {setValue, getValue, removeValue}, getShopCartInfo, native} = Utils;
-const hybrid = process.env.NATIVE;
 
 class ReDetail extends BaseComponent {
     constructor(props, context) {
@@ -38,12 +37,11 @@ class ReDetail extends BaseComponent {
     componentDidMount() {
         const {setOrder, location} = this.props;
         const timer = decodeURI(getUrlParam('time', encodeURI(location.search)));
-        const obj = {'': ''};
-        if (hybrid) {
+        if (process.env.NATIVE) {
             if (timer === 'null') { //非购物车进入时
                 this.getOrderSelf();
             } else { //这里的情况是，原生那边跳转的时候，需要处理一些问题，所以就购物车过来的时候，存数据，这边取数据
-                getShopCartInfo('getSelfMentio', obj).then(res => {
+                getShopCartInfo('getSelfMentio', {'': ''}).then(res => {
                     setOrder(res.data.arr);
                     this.getOrderSelf();
                 });
@@ -57,7 +55,7 @@ class ReDetail extends BaseComponent {
         const {setOrder, location} = this.props;
         const timerNext = decodeURI(getUrlParam('time', encodeURI(next.location.search)));
         const timer = decodeURI(getUrlParam('time', encodeURI(location.search)));
-        if ((timerNext !== timer) && hybrid) {
+        if ((timerNext !== timer) && process.env.NATIVE) {
             this.setState({
                 modal: false, //自提弹窗是否弹出
                 currentTab: 0, //当前自提日期的key
@@ -90,23 +88,19 @@ class ReDetail extends BaseComponent {
                 pr_arr: arr,
                 type: arr[0].if_express === '3' ? '2' : '1'
             }
-        })
-            .subscribe((res) => {
-                if (res && res.status === 0) {
-                    this.setState({
-                        OrderSelf: res,
-                        rdata: res.sufficiency.sufficiency_time,
-                        tabsr: res.sufficiency.tabs,
-                        alertPhone: res.phone,
-                        goodsArr: res.data.data,
-                        shopdata: res.data,
-                        address: res.sufficiency.sufficiency_address,
-                        onOffDisable: !res.sufficiency.sufficiency_address
-                    });
-                } else if (res.status === 1) {
-                    showFail(res.message);
-                }
-            });
+        }).subscribe((res) => {
+            if (res && res.status === 0) {
+                this.setState({
+                    OrderSelf: res,
+                    rdata: res.sufficiency.sufficiency_time,
+                    tabsr: res.sufficiency.tabs,
+                    alertPhone: res.phone,
+                    goodsArr: res.data.data,
+                    shopdata: res.data,
+                    address: res.sufficiency.sufficiency_address
+                });
+            }
+        });
     }
 
     //自提协议radio是否勾选
@@ -114,21 +108,6 @@ class ReDetail extends BaseComponent {
         this.setState(prveState => ({
             radioTreaty: !prveState.radioTreaty
         }));
-    }
-
-    //点击选择自提时间
-    showModal = (e) => {
-        e.preventDefault(); // 修复 Android 上点击穿透
-        this.setState({
-            modal: true
-        });
-    }
-
-    //关闭自提时间弹窗
-    onClose = () => {
-        this.setState({
-            modal: false
-        });
     }
 
     //选择自提时间
@@ -172,11 +151,11 @@ class ReDetail extends BaseComponent {
     renderContent = (key) => {
         key = Number(key);
         return (
-            <div className="renderContent-wrap">
+            <div className="render-content-wrap">
                 {this.state.OrderSelf.sufficiency && (
                     <List>
                         {this.state.rdata[key].list && this.state.rdata[key].list.map(item => (
-                            <div className="renderContent" key={item.value} onClick={() => this.radioChange(item.label, item.value)}>
+                            <div className="render-content" key={item.value} onClick={() => this.radioChange(item.label, item.value)}>
                                 {item.label}
                                 <Radio
                                     checked={this.state.valueItem === item.value}
@@ -191,7 +170,7 @@ class ReDetail extends BaseComponent {
 
     //立即付款
     submitSelf = () => {
-        const {value, radioTreaty, alertPhone, currentTab, textarea, shopdata} = this.state;
+        const {value, radioTreaty, alertPhone, currentTab, textarea, shopdata, address} = this.state;
         const {setOrderInfo, arr, carId, location: {search}} = this.props;
         const shopArr = [];
         // console.log(shopdata);
@@ -207,7 +186,9 @@ class ReDetail extends BaseComponent {
                 });
             });
         }
-        if ((value === '请选择' && arr[0].if_express !== '3')) {
+        if (!address) {
+            showInfo('店家没有自提的门店地址');
+        } else if ((value === '请选择' && arr[0].if_express !== '3')) {
             showInfo('请选择使用时间');
         } else if (!validator.checkPhone(alertPhone)) {
             showInfo('请输入正确的手机号');
@@ -235,8 +216,8 @@ class ReDetail extends BaseComponent {
                 if (res && res.status === 0) {
                     setOrderInfo(res);
                     appHistory.replace(`/payMoney?source=${sou}&selfOrder=1`);
+                    setValue('orderInfo', JSON.stringify(res));
                 }
-                setValue('orderInfo', JSON.stringify(res));
             });
         }
     }
@@ -257,16 +238,13 @@ class ReDetail extends BaseComponent {
         } else {
             appHistory.goBack();
         }
-        const arr = JSON.parse(getValue('orderArr'));
-        if (arr) {
-            //清除缓存
-            removeValue('orderArr');
-        }
+        //清除缓存
+        removeValue('orderArr');
     }
 
     render() {
         const arr = JSON.parse(getValue('orderArr'));
-        const {OrderSelf, protocolModal, radioTreaty, modal, tabsr, currentTab, value, alertPhone, showPhone, shopdata, goodsArr, address, textarea, onOffDisable} = this.state;
+        const {OrderSelf, protocolModal, radioTreaty, modal, tabsr, currentTab, value, alertPhone, showPhone, shopdata, goodsArr, address, textarea} = this.state;
         return (
             <div data-component="Self-mentionDetail" data-role="page" className="Self-mentionDetail">
                 <AppNavBar goBackModal={this.goBackModal} rightShow title="确认订单"/>
@@ -286,7 +264,7 @@ class ReDetail extends BaseComponent {
                         ) : (
                             <div className="time-number">
                                 <div className="time-top">使用时间</div>
-                                <div className="icon time-bottom" onClick={this.showModal}>{value}</div>
+                                <div className="icon time-bottom" onClick={() => this.setState({modal: true})}>{value}</div>
                             </div>
                         )}
                         <div className="time-number number">
@@ -332,7 +310,7 @@ class ReDetail extends BaseComponent {
                                 </div>
                                 <div className="goods-sku">
                                     <div className="sku-left">
-                                        {item.values_name.split(',').map(vaName => <div className="goods-size">{vaName}</div>)}
+                                        {item.values_name.split(',').map(vaName => <div key={vaName} className="goods-size">{vaName}</div>)}
                                     </div>
                                     <div className="sku-right">x{item.num}</div>
                                 </div>
@@ -368,13 +346,13 @@ class ReDetail extends BaseComponent {
                         <span className="total-left">合计：</span>
                         <span className="total-right">￥{OrderSelf.all_price}</span>
                     </div>
-                    <div className="altogether-right" onClick={this.submitSelf} disable={onOffDisable}>立即付款</div>
+                    <div className="altogether-right" onClick={this.submitSelf}>立即付款</div>
                 </div>
                 {arr && arr[0].if_express !== '3' && (
                     <Modal
                         popup
                         visible={modal}
-                        onClose={this.onClose}
+                        onClose={() => this.setState({modal: false})}
                         animationType="slide-up"
                         title="选择自提时间"
                         className="selection-time"

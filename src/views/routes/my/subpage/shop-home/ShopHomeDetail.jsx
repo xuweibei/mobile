@@ -9,7 +9,6 @@ import './ShopHomeDetail.less';
 
 const {native, goBackModal} = Utils;
 const {urlCfg} = Configs;
-const hybird = process.env.NATIVE;
 
 class ShopHomeDetail extends BaseComponent {
     state = {
@@ -25,9 +24,9 @@ class ShopHomeDetail extends BaseComponent {
 
     getList = () => {
         const id = this.props.id;
-        this.fetch(urlCfg.storeDetails, {method: 'post', data: {id: id}})
+        this.fetch(urlCfg.storeDetails, {data: {id}})
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     this.setState({
                         shopInfo: res.data
                     });
@@ -77,7 +76,7 @@ class ShopHomeDetail extends BaseComponent {
 
     //拨打电话
     callPhone = (tel) => {
-        if (hybird) {
+        if (process.env.NATIVE) {
             native('callTel', {phoneNum: tel});
         }
     }

@@ -11,7 +11,6 @@ const {urlCfg} = Configs;
 const {appHistory, showInfo, TD, goBackModal} = Utils;
 const {TD_EVENT_ID} = Constants;
 const {MESSAGE: {Feedback}} = Constants;
-const hybird = process.env.NATIVE;
 
 class ShopHome extends BaseComponent {
     state = {
@@ -20,7 +19,7 @@ class ShopHome extends BaseComponent {
     };
 
     componentWillReceiveProps(nextProps) {
-        if (hybird) {
+        if (process.env.NATIVE) {
             const {id} = nextProps;
             if (id !== this.props.id) {
                 this.getList(id);
@@ -37,7 +36,7 @@ class ShopHome extends BaseComponent {
     getList = (id) => {
         this.fetch(urlCfg.storeDetails, {data: {id}})
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     this.starsShow(res.data.shop_mark);
                     this.setState({
                         shopInfo: res.data

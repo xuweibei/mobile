@@ -3,7 +3,6 @@
  */
 import {systemApi} from './systemApi';
 
-const hybrid = process.env.NATIVE;
 const basekv = {
     xuid: systemApi.getValue('xuid') || '',
     tel: systemApi.getValue('activiedMobile') || '',
@@ -12,7 +11,7 @@ const basekv = {
 
 export const TD = {
     log: (eventId, label = '', kv = {}) => {
-        if (hybrid || window.isWX) {
+        if (process.env.NATIVE || window.isWX) {
             console.log(eventId);
         } else {
             const newKv = Object.assign({}, basekv, kv);

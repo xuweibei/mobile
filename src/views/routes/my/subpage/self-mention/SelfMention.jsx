@@ -10,10 +10,9 @@ import CancelOrder from '../../../../common/cancel-order/CancleOrder';
 import MyListView from '../../../../common/my-list-view/MyListView';
 import AppNavBar from '../../../../common/navbar/NavBar';
 
-const {appHistory, showInfo, native, getUrlParam} = Utils;
+const {appHistory, showInfo, native, getUrlParam, systemApi: {removeValue}} = Utils;
 const {urlCfg} = Configs;
 const {MESSAGE: {Feedback}, FIELD, navColorR} = Constants;
-const hybrid = process.env.NATIVE;
 const tabs = [
     {title: '全部'},
     {title: '未完成'},
@@ -39,6 +38,8 @@ class ReDetail extends BaseComponent {
     componentWillMount() {
         const num = this.statusChoose(this.props.location.pathname.split('/')[2]);
         this.init(num);
+        removeValue('orderInfo');//清除下单流程留下来的订单信息
+        removeValue('orderArr');
     }
 
     componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方
@@ -49,6 +50,8 @@ class ReDetail extends BaseComponent {
                 status: numNext
             }, () => {
                 this.init(numNext);
+                removeValue('orderInfo');//清除下单流程留下来的订单信息
+                removeValue('orderArr');
             });
         }
     }
@@ -262,9 +265,9 @@ class ReDetail extends BaseComponent {
     //左上角返回上一级
     goBackModal = () => {
         const type = decodeURI(getUrlParam('type', encodeURI(this.props.location.search)));
-        if (hybrid) {
+        if (process.env.NATIVE) {
             native('goBack');
-        } if (type === 'car') {
+        } else if (type === 'home') {
             appHistory.replace('/home');
         } else if (appHistory.length() === 0) {
             appHistory.push('/my');
@@ -287,7 +290,7 @@ class ReDetail extends BaseComponent {
                     </div>
                     <div className="right">{item.status_name}</div>
                 </div>
-                {item.pr_list && item.pr_list.map(items => (
+                {(item.pr_list && item.pr_list.length > 0) ? item.pr_list.map(items => (
                     <div className="goods" key={items.pr_id}>
                         <div className="goods-left">
                             <div>
@@ -301,9 +304,9 @@ class ReDetail extends BaseComponent {
                             </div>
                             <div className="goods-sku">
                                 <div className="sku-left">
-                                    {items.property_content.map(data => (
-                                        <div className="goods-size">{data}</div>
-                                    ))}
+                                    {(items.property_content && items.property_content > 0) ? items.property_content.map(data => (
+                                        <div key={data} className="goods-size">{data}</div>
+                                    )) : ''}
                                     {/*<div>规格</div>*/}
                                 </div>
                                 <div className="sku-right">x{items.num}</div>
@@ -311,7 +314,7 @@ class ReDetail extends BaseComponent {
                             <div className="btn-keep">记账量：{items.deposit}</div>
                         </div>
                     </div>
-                ))}
+                )) : ''}
                 <div className="shop-bottom">
                     <div className="right-bottom">
                         <div className="total-count">

@@ -16,7 +16,6 @@ import {native} from '../utils/native';
 const {CancelToken} = axios;
 const {systemApi: {getValue, removeValue}, appHistory, showFail} = Utils;
 const {MESSAGE, LOCALSTORAGE} = Constants;
-const hybrid = process.env.NATIVE;
 
 // http request 拦截器
 axios.interceptors.request.use(
@@ -36,7 +35,7 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
     response => {
         if (response.data.status === 100 || response.data.status === 101) {
-            if (hybrid) {
+            if (process.env.NATIVE) {
                 removeValue(LOCALSTORAGE.USER_TOKEN); // 清除token,localstorage
                 store.dispatch(actionCreator.setUserToken('')); // 清除redux的userToken
                 //重定向到原生登录页
@@ -44,9 +43,6 @@ axios.interceptors.response.use(
             } else {
                 appHistory.push('/login');
             }
-        }
-        if (response.data.status === 1) {
-            showFail(response.data.message);
         }
         return response;
     }
@@ -95,7 +91,9 @@ class Rxios {
                 if (params.method === 'jsonp') {
                     jsonp(params.url, {name: params.jsonpCb}, (err, data) => {
                         ajaxQueue[num].undo = false;
-                        store.dispatch(actionCreator.hideLoading());
+                        setTimeout(() => {
+                            store.dispatch(actionCreator.hideLoading());
+                        }, 2000);
                         if (err) {
                             console.error(err.message);
                             subject.error(err);
@@ -113,13 +111,16 @@ class Rxios {
                                     subject.next(res.data);
                                 } else if (res.data.status === 1) {
                                     showFail(res.data.message);
+                                    subject.next(res.data);
                                 }
                             }
                         })
                         .catch(err => {
                             console.log(err); // 错误捕获统一处理
                             const code = [500, 501, 502, 503, 504, 505];
-                            store.dispatch(actionCreator.hideLoading());
+                            setTimeout(() => {
+                                store.dispatch(actionCreator.hideLoading());
+                            }, 2000);
                             if (err.message === 'Network Error') {
                                 showFail(MESSAGE.Network_Error);
                                 appHistory.replace('/network-error');
@@ -130,7 +131,9 @@ class Rxios {
                         })
                         .then(() => {
                             ajaxQueue[num].undo = false;
-                            store.dispatch(actionCreator.hideLoading());
+                            setTimeout(() => {
+                                store.dispatch(actionCreator.hideLoading());
+                            }, 2000);
                             subject.complete();
                         });
                 }

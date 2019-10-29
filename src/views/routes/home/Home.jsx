@@ -8,14 +8,15 @@ import {systemApi} from '../../../utils/systemApi';
 import {FooterBar} from '../../common/foot-bar/FooterBar';
 import {baseActionCreator as actionCreator} from '../../../redux/baseAction';
 import {myActionCreator as ActionCreator} from '../my/actions/index';
+import {homeActionCreator} from './actions/index';
 import HomeList from './home-list/homeList';
+
 import './Home.less';
 
 
-const {TD_EVENT_ID} = Constants;
+const {TD_EVENT_ID, LOCALSTORAGE} = Constants;
 const {urlCfg, appCfg} = Configs;
-const {appHistory, TD} = Utils;
-
+const {appHistory, TD, systemApi: {setValue}} = Utils;
 class Home extends BaseComponent {
     constructor(props, context) {
         super(props, context);
@@ -23,14 +24,11 @@ class Home extends BaseComponent {
 
     state = {
         showPopup: false,
-        category: [],
-        mallBanner: [],
         userToken: '',
         pages: [],
         show: false,
         show1: false,
-        goodStuff: [],
-        navPic: ''
+        goodStuff: []
     };
 
     componentWillMount() {
@@ -38,19 +36,19 @@ class Home extends BaseComponent {
     }
 
     componentDidMount() {
-        const {showMenu, setOrder} = this.props;
-        TD.log(TD_EVENT_ID.HOME.ID, TD_EVENT_ID.HOME.LABEL.LOOK_HOME);
-        setOrder(null);
-        showMenu(false);
-        if (window.isWX) {
-            this.login();
-        }
-        this.getMall();
-        this.mallBanner();
-        this.goodStuff();
+        const {showMenu, setOrder, userToken, getNav, getBanner} = this.props;
         this.setState({
             userToken: systemApi.getValue('userToken')
         });
+        TD.log(TD_EVENT_ID.HOME.ID, TD_EVENT_ID.HOME.LABEL.LOOK_HOME);
+        setOrder(null);
+        showMenu(false);
+        getBanner();
+        getNav();
+        if (window.isWX && !userToken) {
+            this.login();
+        }
+        this.goodStuff();
     }
 
     componentWillUnmount() {
@@ -59,15 +57,9 @@ class Home extends BaseComponent {
         showMenu(true);
     }
 
-    // componentWillReceiveProps() {
-    //     if (hybird) {
-    //         setNavColor('setNavColor', {color: navColorR});
-    //     }
-    // }
-
     // 判断是否是登录状态 如果不是前往登录
     goToLogin = () => {
-        const {userToken} = this.state;
+        const {userToken} = this.props;
         if (userToken && userToken.length > 0) {
             return;
         }
@@ -88,6 +80,7 @@ class Home extends BaseComponent {
                     if (res.status === 0) {
                         const {setUserToken} = this.props;
                         setUserToken(res.LoginSessionKey);
+                        setValue(LOCALSTORAGE.USER_TOKEN, res.LoginSessionKey);
                     }
                 }
             }, err => {
@@ -104,35 +97,6 @@ class Home extends BaseComponent {
         } else {
             appHistory.push({pathname: `/categoryList?id=${el.id}&title=${el.text}&keywords=${''}&flag=${false}`});
         }
-    };
-
-    //获取商品分类
-    getMall = () => {
-        this.fetch(urlCfg.homeGetCategoryOne)
-            .subscribe((res) => {
-                if (res) {
-                    if (res.status === 0) {
-                        this.setState({
-                            category: res.data
-                        });
-                    }
-                }
-            }, err => {
-                Toast.info(err.message);
-            });
-    };
-
-    //获取商品轮播图
-    mallBanner = () => {
-        this.fetch(urlCfg.homeBanner)
-            .subscribe((res) => {
-                if (res && res.status === 0) {
-                    this.setState({
-                        mallBanner: res.data,
-                        navPic: res.home_pic.pic1
-                    });
-                }
-            });
     };
 
     //有好货
@@ -152,15 +116,12 @@ class Home extends BaseComponent {
 
     //扫一扫
     lookLook = () => {
-        const {userToken} = this.state;
+        const {userToken} = this.props;
         if (window.isWX) {
             window.wx.ready(() => {
                 window.wx.scanQRCode({
                     needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
                     scanType: ['qrCode', 'barCode'] // 可以指定扫二维码还是一维码，默认二者都有
-                    // success: function (res) {
-                    //     let result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
-                    // }
                 });
             });
         } else {
@@ -193,7 +154,8 @@ class Home extends BaseComponent {
     }
 
     render() {
-        const {mallBanner, userToken, category, goodStuff, navPic} = this.state;
+        const {goodStuff} = this.state;
+        const {userToken, logo, banner, nav} = this.props;
         return (
             <div className="home">
                 <div className="home-main">
@@ -217,8 +179,8 @@ class Home extends BaseComponent {
                             {
                                 userToken && userToken.length > 0 ? (
                                     <div className="home-searchBar-icon">
-                                        <span className="icon msg"/>
-                                        <span className="icon qrcode" onClick={this.looklook}/>
+                                        {!window.isWX && (<div className="icon msg"/>)}
+                                        <div className="icon qrcode" onClick={this.lookLook}/>
                                     </div>
                                 ) : (
                                     <div className="home-searchBar-icon" onClick={this.lookLook}>
@@ -229,35 +191,47 @@ class Home extends BaseComponent {
                         </div>
                         <WhiteSpace/>
 
-                        <div className="home-banner">
-                            <Carousel
-                                infinite
-                            >
-                                {mallBanner.map((item, index) => (
-                                    <div key={item}>
-                                        <img
-                                            src={item}
-                                            className="banner-img"
-                                        />
-                                    </div>
-                                ))}
-                            </Carousel>
-                        </div>
+                        {
+                            banner && (
+                                <div className="home-banner">
+                                    <Carousel
+                                        infinite
+                                    >
+                                        {banner.map((item, index) => (
+                                            <div key={item}>
+                                                <img
+                                                    src={item}
+                                                    className="banner-img"
+                                                />
+                                            </div>
+                                        ))}
+                                    </Carousel>
+                                </div>
+                            )
+                        }
                         <WhiteSpace size="xl"/>
-                        <div className="home-nav">
-                            <Grid
-                                data={category && category.map((item, index) => ({icon: item.img_url, text: item.cate_name, id: item.id1}))}
-                                activeStyle
-                                columnNum={5}
-                                square
-                                hasLine={false}
-                                onClick={(el, idx) => this.goToCategory(el, idx)}
-                            />
-                        </div>
+                        {
+                            nav && (
+                                <div className="home-nav">
+                                    <Grid
+                                        data={nav.map((item, index) => ({icon: item.img_url, text: item.cate_name, id: item.id1}))}
+                                        activeStyle
+                                        columnNum={5}
+                                        square
+                                        hasLine={false}
+                                        onClick={(el, idx) => this.goToCategory(el, idx)}
+                                    />
+                                </div>
+                            )
+                        }
                         <WhiteSpace/>
-                        <div className="home-logo">
-                            <img src={navPic} alt=""/>
-                        </div>
+                        {
+                            logo && (
+                                <div className="home-logo">
+                                    <img src={logo} alt=""/>
+                                </div>
+                            )
+                        }
                         <WhiteSpace/>
                         <WhiteSpace/>
                         <div className="recommend">
@@ -297,15 +271,22 @@ class Home extends BaseComponent {
 
 const mapStateToProps = state => {
     const base = state.get('base');
+    const home = state.get('home');
     return {
-        code: base.get('code')
+        code: base.get('code'),
+        userToken: base.get('userToken'),
+        banner: home.get('banner'),
+        logo: home.get('logo'),
+        nav: home.get('nav')
     };
 };
 
 const mapDispatchToProps = {
     setUserToken: actionCreator.setUserToken,
     showMenu: actionCreator.showMenu,
-    setOrder: ActionCreator.setOrderInformation
+    setOrder: ActionCreator.setOrderInformation,
+    getBanner: homeActionCreator.getBanner,
+    getNav: homeActionCreator.getNav
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

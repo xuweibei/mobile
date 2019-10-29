@@ -16,7 +16,6 @@ const {urlCfg} = Configs;
 const {appHistory, showInfo, showSuccess, native, systemApi: {setValue}, getUrlParam, setNavColor} = Utils;
 const {MESSAGE: {Form, Feedback}, FIELD, navColorR} = Constants;
 
-const hybird = process.env.NATIVE;
 let payInNum = 0;
 class ShopCart extends BaseComponent {
     state = {
@@ -43,7 +42,7 @@ class ShopCart extends BaseComponent {
     };
 
     componentWillMount() {
-        if (hybird) { //设置tab颜色
+        if (process.env.NATIVE) { //设置tab颜色
             setNavColor('setNavColor', {color: navColorR});
         }
         this.getCart();
@@ -55,7 +54,7 @@ class ShopCart extends BaseComponent {
     }
 
     componentWillReceiveProps(next) {
-        if (hybird) {
+        if (process.env.NATIVE) {
             setNavColor('setNavColor', {color: navColorR});
             const timerNext = decodeURI(getUrlParam('time', encodeURI(next.location.search)));
             const timer = decodeURI(getUrlParam('time', encodeURI(this.props.location.search)));
@@ -73,7 +72,7 @@ class ShopCart extends BaseComponent {
 
     //空页面跳转
     emptyGoTo = () => {
-        if (hybird) {
+        if (process.env.NATIVE) {
             native('goHome');
         } else {
             appHistory.replace('/home');
@@ -292,7 +291,7 @@ class ShopCart extends BaseComponent {
             setValue('orderArr', JSON.stringify(arr));
             setOrderInfo(arr);
             setIds(cartArr);
-            if (hybird) { ////这里的情况是，原生那边跳转的时候，需要处理一些问题，所以就购物车过来的时候，存数据，这边取数据
+            if (process.env.NATIVE) { ////这里的情况是，原生那边跳转的时候，需要处理一些问题，所以就购物车过来的时候，存数据，这边取数据
                 const obj = {arr, cartArr};//储存redux
                 native('settlement', obj);//app点击结算的时候
             } else {
@@ -441,7 +440,7 @@ class ShopCart extends BaseComponent {
 
     //跳转到商品详情
     goToGoodsDetail = id => {
-        if (hybird) {
+        if (process.env.NATIVE) {
             native('goodsDetail', {id});
         } else {
             appHistory.push(`/goodsDetail?id=${id}`);
@@ -451,8 +450,8 @@ class ShopCart extends BaseComponent {
     //进入店铺
     goToShopHome = (shop) => {
         const id = shop.data ? shop.data[0].shop_id : shop.shop_id;
-        if (hybird) {
-            native('shopHome', {id: id});
+        if (process.env.NATIVE) {
+            native('shopHome', {id});
         } else {
             appHistory.push(`/shopHome?id=${id}`);
         }
@@ -619,7 +618,7 @@ class ShopCart extends BaseComponent {
         setOrderInfo(arr);
         setIds(cartArr);
         setValue('orderArr', JSON.stringify(arr));
-        if (hybird) { //这里的情况是，原生那边跳转的时候，需要处理一些问题，所以就购物车过来的时候，存数据，这边取数据
+        if (process.env.NATIVE) { //这里的情况是，原生那边跳转的时候，需要处理一些问题，所以就购物车过来的时候，存数据，这边取数据
             const obj = {arr, cartArr};//储存redux
             native('setSelfMention', obj);//app点击结算的时候
         } else {
@@ -658,7 +657,7 @@ class ShopCart extends BaseComponent {
             <div
                 data-component="shop-cart"
                 data-role="page"
-                className={classNames('shop-cart', {hybird: hybird})}
+                className={classNames('shop-cart', {hybird: process.env.NATIVE})}
             >
                 <div className="shop-cart-top">
                     <div className="shop-title">
@@ -869,7 +868,7 @@ class ShopCart extends BaseComponent {
                         </div>
                         {
                             hide && (
-                                <div className="shop-bottom" style={hybird && {bottom: '0px'}}>
+                                <div className="shop-bottom" style={process.env.NATIVE && {bottom: '0px'}}>
                                     <div className="bottom-left">
                                         <div
                                             className={`icon ${totalSelect ? 'icon-select-z' : 'icon-unselect-z'}`}
@@ -923,7 +922,7 @@ class ShopCart extends BaseComponent {
                         title="咱们购物去"
                     />
                 )}
-                {hybird ? '' : <FooterBar active="shopCart"/>}
+                {!process.env.NATIVE ? <FooterBar active="shopCart"/> : '' }
 
                 {popup && (
                     <Sku

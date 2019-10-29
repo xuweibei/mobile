@@ -7,7 +7,6 @@ import AppNavBar from '../../../../common/navbar/NavBar';
 const {urlCfg} = Configs;
 const {showInfo, validator, appHistory, native} = Utils;
 const {MESSAGE: {Form}} = Constants;
-const hybrid = process.env.NATIVE;
 
 export default class ReDetail extends BaseComponent {
     state = {
@@ -65,7 +64,7 @@ export default class ReDetail extends BaseComponent {
 
     //点击扫一扫
     sweepCode = () => {
-        if (hybrid) {
+        if (process.env.NATIVE) {
             const obj = {
                 pay: urlCfg.importSum,
                 write: urlCfg.consumer,
@@ -76,10 +75,7 @@ export default class ReDetail extends BaseComponent {
             window.wx.ready(() => {
                 window.wx.scanQRCode({
                     needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
-                    scanType: ['qrCode', 'barCode'], // 可以指定扫二维码还是一维码，默认二者都有
-                    success: function (res) {
-                        console.log(res); // 当needResult 为 1 时，扫码返回的结果
-                    }
+                    scanType: ['qrCode', 'barCode'] // 可以指定扫二维码还是一维码，默认二者都有
                 });
             });
         }
@@ -125,7 +121,6 @@ export default class ReDetail extends BaseComponent {
                         </div>
                     ) : (<div className="piteraTake">暂无最近转出记录</div>)}
                 </div>
-
             </div>
         );
     }

@@ -11,7 +11,6 @@ import './CategoryList.less';
 
 const {getUrlParam, TD, setNavColor, goBackModal} = Utils;
 const {TD_EVENT_ID} = Constants;
-const hybird = process.env.NATIVE;
 const {navColorF} = Constants;
 
 class CategoryList extends BaseComponent {
@@ -32,7 +31,7 @@ class CategoryList extends BaseComponent {
 
     componentWillMount() {
         this.init();
-        if (hybird) { //设置tab颜色
+        if (process.env.NATIVE) { //设置tab颜色
             setNavColor('setNavColor', {color: navColorF});
         }
     }
@@ -45,7 +44,7 @@ class CategoryList extends BaseComponent {
                 this.init();
             });
         }
-        if (hybird) {
+        if (process.env.NATIVE) {
             setNavColor('setNavColor', {color: navColorF});
         }
     }

@@ -11,7 +11,7 @@ import {showFail} from '../../../../../../utils/mixin';
 const {urlCfg} = Configs;
 const {MESSAGE: {Form, Feedback}} = Constants;
 const {dealImage, showInfo, native, validator} = Utils;
-const hybrid = process.env.NATIVE;
+
 // const AgreeItem = Checkbox.AgreeItem;
 
 
@@ -229,7 +229,7 @@ class PersonalTwo extends BaseComponent {
     //点击添加图片
     addPictrue = (type) => {
         const arrInfo = [];
-        if (hybrid) {
+        if (process.env.NATIVE) {
             if (type === 'forward') {
                 native('picCallback', {num: 1}).then(res => {
                     res.data.img.forEach(item => {
@@ -386,7 +386,7 @@ class PersonalTwo extends BaseComponent {
                              <div>
                                  <WingBlank>
                                      {
-                                         hybrid ? (
+                                         process.env.NATIVE ? (
                                              <div className="picture-area">
                                                  <ul>
                                                      {
@@ -431,7 +431,7 @@ class PersonalTwo extends BaseComponent {
                              <div>
                                  <WingBlank>
                                      {
-                                         hybrid ? (
+                                         process.env.NATIVE ? (
                                              <div className="picture-area">
                                                  <ul>
                                                      {
@@ -476,7 +476,7 @@ class PersonalTwo extends BaseComponent {
                              <div>
                                  <WingBlank>
                                      {
-                                         hybrid ? (
+                                         process.env.NATIVE ? (
                                              <div className="picture-area">
                                                  <ul>
                                                      {

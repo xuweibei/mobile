@@ -142,8 +142,7 @@ class CategoryListView extends BaseComponent {
 
     //emptyGoTo 空白页跳转
     emptyGoTo = () => {
-        const hybrid = process.env.NATIVE;
-        if (hybrid) {
+        if (process.env.NATIVE) {
             native('goHome');
             appHistory.reduction();
         } else {

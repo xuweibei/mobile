@@ -5,8 +5,8 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 import {myActionCreator as actionCreator} from '../../../actions/index';
 import './Username.less';
 
-const {appHistory, showSuccess} = Utils;
-const {MESSAGE: {Feedback}} = Constants;
+const {appHistory, showSuccess, showInfo} = Utils;
+const {MESSAGE: {Feedback}, MESSAGE: {Form}} = Constants;
 const {urlCfg} = Configs;
 
 class ExtName extends BaseComponent {
@@ -23,6 +23,11 @@ class ExtName extends BaseComponent {
 
     //更改昵称
     lockingName = (rule, value, callback) => {
+        if (!value) {
+            callback('\u0020');
+            showInfo(Form.No_NickName);
+            return;
+        }
         // const re = /^[\u4E00-\u9FA5A-Za-z]{2,10}$/;
         // if (!value || !re.test(value)) {
         //     callback('\u0020');
