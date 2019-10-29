@@ -40,7 +40,8 @@
             background: @white;
             .describes{
                 margin-bottom: 40px;
-                border-top:1px solid @light-gray;
+                // border-top:1px solid @light-gray;
+                .hairline('top', @light-gray);
                 .describe-text{
                     margin-bottom: 26px;
                 }
@@ -108,10 +109,12 @@
     }
     .am-radio-inner {
         border-radius: 50%;
-        border: 1px solid @gray;
+        // border: 1px solid @gray;
+        .hairline('all', @gray);
     }
     .am-radio.am-radio-checked .am-radio-inner {
-        border: 1px solid @gray;
+        // border: 1px solid @gray;
+        .hairline('all', @gray);
     }
     .choice {
         display: flex;
@@ -176,7 +179,8 @@
                 width: 140px;
                 height: 140px;
                 background: @white;
-                border: 1px solid #e5e5e5;
+                // border: 1px solid #e5e5e5;
+                .hairline('all', #e5e5e5);
                 border-radius: 10px;
                 position: relative;
                 span {

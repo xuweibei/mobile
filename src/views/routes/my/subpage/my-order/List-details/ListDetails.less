@@ -328,7 +328,8 @@
                 flex: 1;
             }
             .business-right {
-                border-left: 1px solid @to-light-gray;
+                // border-left: 1px solid @to-light-gray;
+                .hairline('left', @to-light-gray);
             }
             .business-left:before {
                 content:'\e679';
@@ -381,11 +382,13 @@
             height: 51px;
             text-align: center;
             line-height: 49px;
-            border-radius: 100px;
+            
             margin: auto;
             padding-top: 1px;
             color: @light-gray;
-            border:1px solid @light-gray;
+            // border:1px solid @light-gray;
+            border-radius: 100px;
+            .hairline('all', @light-gray);
             font-size:24px;
         }
     }
@@ -470,7 +473,8 @@
             height: 50px;
             font-size: @font-size-24;
             color: @dark-gray;
-            border: 1px solid @dark-gray;
+            // border: 1px solid @dark-gray;
+            .hairline('all', @dark-gray);
             border-radius: 100px;
             margin-left: auto;
             text-align: center;

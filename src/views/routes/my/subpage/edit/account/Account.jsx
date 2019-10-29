@@ -145,7 +145,7 @@ class Account extends BaseComponent {
                                 right={[
                                     {
                                         text: '删除',
-                                        style: {backgroundColor: '#E21E13', color: '@white', borderBottom: '1px solid @light-gray'},
+                                        style: {backgroundColor: '#E21E13', color: '@white', borderBottom: '1px solid #ccc'},
                                         onPress: () => this.deleteList(item.no, item.id, item.if_owner)
                                     }
                                 ]}
