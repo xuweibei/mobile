@@ -107,7 +107,7 @@ export default class MyOrder extends BaseComponent {
             <div data-component="logistics" data-role="page" className="logistics">
                 <AppNavBar title="物流跟踪" clannName="navbar" goBackModal={this.goBackModal}/>
                 <div className="container">
-                    <div id="home" style={{height: '93vh'}}/>
+                    <div id="home" style={{height: '100vh'}}/>
                     <div className="status">
                         <div className="avatar"><img src={pic} alt=""/></div>
                         <div className="info">

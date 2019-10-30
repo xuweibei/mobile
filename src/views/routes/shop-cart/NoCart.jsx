@@ -7,6 +7,6 @@ export default () => (
         <Nothing
             text={FIELD.No_Goods}
         />
-        <FooterBar/>
+        <FooterBar active="shopCart"/>
     </div>
 );
