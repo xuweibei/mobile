@@ -13,3 +13,4 @@ export const IMGSIZE = 2048000;//图片上传限制大小
 export const  VERIFY_FAILED = '\u0020';  // 空格
 export const navColorF = '#ffffff';
 export const navColorR = '#ff2d51';
+export const WEB_NAME = '中卖网'; //名称

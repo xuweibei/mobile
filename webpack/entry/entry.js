@@ -1,7 +1,7 @@
 const entry = [
     {
         name: 'mall',
-        title: '中品优购',
+        title: '中卖网',
         component: 'routes/index',
         less: 'App.less'
     }
