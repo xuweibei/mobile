@@ -428,7 +428,7 @@ class Find extends BaseComponent {
                         <ATIcon type="cross-circle" onClick={() => this.close('showPopup1')}/>
                     </div>
                     <div className="find-popup1-fence">
-                        <SearchBar placeholder="请输入您要搜索的商家" onChange={(val) => this.getShopName(val)}/>
+                        <SearchBar placeholder="请输入您要搜索的商家" onChange={(val) => this.getShopName(val)} onBlur={this.bure}/>
                     </div>
                     <div className="find-popup1-nearby">
                         <p>附近商家</p>
@@ -451,13 +451,17 @@ class Find extends BaseComponent {
         );
     };
 
+    // ios页面回弹
+    bure = () => {
+        window.scroll(0, 0);
+    }
+
     renderPopup2 = () => {
         const {showPopup2, className} = this.state;
         const pop = {
             visible: showPopup2,
             className: className
         };
-        console.log(showPopup2, '拉手孔第三大框架说的那');
         return (
             <FindPopup {...pop}>
                 <div className="find-popup1">
@@ -465,7 +469,7 @@ class Find extends BaseComponent {
                         <ATIcon type="cross-circle" onClick={() => { this.close('showPopup2') }}/>
                     </div>
                     <div className="find-popup1-fence">
-                        <SearchBar placeholder="请输入您想搜索的地址" onChange={(val) => this.getAddress(val)}/>
+                        <SearchBar placeholder="请输入您想搜索的地址" onChange={(val) => this.getAddress(val)} onBlur={this.bure}/>
                     </div>
                     <div className="find-popup1-button">
                         <Button
