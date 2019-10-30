@@ -59,6 +59,9 @@ class Collect extends BaseComponent {
             .subscribe((res) => {
                 this.temp.isLoading = false;
                 if (res && res.status === 0) {
+                    this.setState({
+                        isEdit: window.isWX && (res.data && res.data.length > 0)
+                    });
                     if (tabKey === 0) {
                         if (page === 1) {
                             this.temp.stackData = res.data;
