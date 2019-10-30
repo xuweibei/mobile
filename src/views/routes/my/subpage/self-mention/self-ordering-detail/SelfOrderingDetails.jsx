@@ -225,7 +225,7 @@ class ReDetail extends BaseComponent {
                         <div className="icon place" onClick={this.openMap}><span>{selfSufficiency.sufficiency_address}</span></div>
                     </div>
                     <div className="address-right" onClick={e => this.openMask(e)}>
-                        <img src={selfSufficiency.shoper_pic} alt=""/>
+                        <img src={selfSufficiency.shoper_pic} onError={(e) => { e.target.src = selfSufficiency.df_logo }} alt=""/>
                     </div>
                 </div>
                 <div>
@@ -233,7 +233,7 @@ class ReDetail extends BaseComponent {
                         <div className="common-margin">
                             <div className="shop-name">
                                 <div className="shop-title">
-                                    <img src={selfSufficiency.shoper_pic} alt=""/>
+                                    <img src={selfSufficiency.shoper_pic} onError={(e) => { e.target.src = selfSufficiency.df_logo }} alt=""/>
                                     <p>{selfSufficiency.shopName}</p>
                                 </div>
                                 <span><div className="right" onClick={(e) => this.goToShop(e, selfSufficiency.shop_id)}>进店</div></span>
@@ -312,7 +312,7 @@ class ReDetail extends BaseComponent {
 
                 <div className="collection common-margin">
                     <div className="collection-left">
-                        <img src={selfSufficiency.shoper_pic} alt=""/>
+                        <img src={selfSufficiency.shoper_pic} onError={(e) => { e.target.src = selfSufficiency.df_logo }} alt=""/>
                     </div>
                     <div className="collection-center">{selfSufficiency.shopName}</div>
                     {

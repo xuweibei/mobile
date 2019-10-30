@@ -14,6 +14,10 @@ const {urlCfg} = Configs;
 
 const nowTimeStamp = Date.now();
 const now = new Date(nowTimeStamp);
+const kind = [
+    {title: '企业'},
+    {title: '个人'}
+];
 class appendOrder extends BaseComponent {
     state = {
         shopInfo: [],
@@ -359,10 +363,6 @@ class appendOrder extends BaseComponent {
         const {address} = this.props;
         const invoices = JSON.parse(getValue('invoices'));
         const orders = JSON.parse(getValue('order'));
-        const kind = [
-            {title: '企业'},
-            {title: '个人'}
-        ];
         return (
             <div data-component="append-order" data-role="page" className="append-order">
                 <AppNavBar goBackModal={this.goBackModal} title="确认订单"/>
@@ -399,6 +399,7 @@ class appendOrder extends BaseComponent {
                                         <div className="shop-avatar">
                                             <div className="avatar"><img
                                                 src={shop.picpath}
+                                                onError={(e) => { e.target.src = shop.df_logo }}
                                                 alt=""
                                                 className="image"
                                             />

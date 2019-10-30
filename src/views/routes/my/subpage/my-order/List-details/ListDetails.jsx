@@ -246,7 +246,7 @@ class ListDetails extends BaseComponent {
                                     <div className="common-margin">
                                         <div className="shop-name">
                                             <div className="shop-title">
-                                                <img src={canInfo.shoper_pic} alt=""/>
+                                                <img src={canInfo.shoper_pic} onError={(e) => { e.target.src = canInfo.df_logo }} alt=""/>
                                                 <p>{canInfo.shopName}</p>
                                             </div>
                                             <span><div className="right" onClick={(ev) => this.goShopHome(canInfo.shop_id, ev)}>进店</div></span>
@@ -256,11 +256,7 @@ class ListDetails extends BaseComponent {
                                                 <div key={item.pr_id} className="goods" onClick={() => this.goToShopping(item.pr_id)}>
                                                     <div className="goods-left" >
                                                         <div>
-                                                            <img
-                                                                src={item.pr_picpath}
-                                                                onError={(e) => { e.target.src = item.df_logo }}
-                                                                alt=""
-                                                            />
+                                                            <img src={item.pr_picpath} alt=""/>
                                                         </div>
                                                     </div>
                                                     <div className="goods-right">
