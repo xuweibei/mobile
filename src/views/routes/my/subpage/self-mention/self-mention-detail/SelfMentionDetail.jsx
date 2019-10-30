@@ -270,7 +270,7 @@ class ReDetail extends BaseComponent {
                         ) : (
                             <div className="time-number">
                                 <div className="time-top">使用时间</div>
-                                <div className="icon time-bottom" onClick={(e) => this.timeClick(e)}>{value}</div>
+                                <div className="icon time-bottom" onClick={() => { this.setState({modal: true}) }}>{value}</div>
                             </div>
                         )}
                         <div className="time-number number">
