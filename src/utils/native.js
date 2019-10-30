@@ -6,7 +6,7 @@ import {systemApi} from './systemApi';
 import {baseActionCreator} from '../redux/baseAction';
 import {appHistory} from './appHistory';
 
-const {systemApi: {removeValue}, showInfo, showFail} = Utils;
+const {systemApi: {removeValue, getValue}, showInfo, showFail} = Utils;
 const {LOCALSTORAGE} = Constants;
 
 //统一封装原生接口请求

@@ -95,8 +95,8 @@ class Edit extends BaseComponent {
                     },
                     {
                         key: '3-2',
-                        extra: '修改',
-                        param: '/locationarea',
+                        extra: (userInfo && userInfo.userType === '3') ? '' : '修改', //推广员身份不让操作
+                        param: (userInfo && userInfo.userType === '3') ? '' : '/locationarea', //推广员身份不让操作
                         subName: 'locationarea',
                         name: 'area',
                         value: '当前区域',
@@ -257,10 +257,6 @@ class Edit extends BaseComponent {
                     getMyInfo();//我的页面
                 }
             });
-    }
-
-    dingwei = () => {
-        native('sendLocation');
     }
 
     //切换账号

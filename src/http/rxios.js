@@ -10,11 +10,10 @@ import 'rxjs/add/operator/do';
 import {store} from '../redux/store';
 
 import {baseActionCreator as actionCreator} from '../redux/baseAction';
-import {native} from '../utils/native';
 
 
 const {CancelToken} = axios;
-const {systemApi: {getValue, removeValue}, appHistory, showFail} = Utils;
+const {systemApi: {getValue, removeValue}, appHistory, showFail, native} = Utils;
 const {MESSAGE, LOCALSTORAGE} = Constants;
 
 // http request 拦截器
