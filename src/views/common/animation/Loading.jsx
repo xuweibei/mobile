@@ -19,26 +19,30 @@ class Loading extends React.PureComponent {
     draw = (canvas = this.canvas) => {
         if (!canvas) return;
         const ctx = canvas.getContext('2d');
-        const width = canvas.width;
-        const height = canvas.height;
+        const width = canvas.width,
+            height = canvas.height,
+            ratio = getPixelRatio(ctx);
+        canvas.style.width = width + 'px';
+        canvas.style.height = height + 'px';
+        canvas.height = height * ratio;
+        canvas.width = width * ratio;
         let x0 = 0;   //x轴的计数
         let y0 = 0;  //y轴的计数
         let initW = 0;  //截取原始图片的 x坐标
         let initH = 0;  //截取原始图片的 y坐标
-        const imgWidth = 80; //截取原始图片的 宽度
-        const imgHeight = 80;  //截取原始图片的 高度
+        const imgWidth = 160; //截取原始图片的 宽度
+        const imgHeight = 160;  //截取原始图片的 高度
         let speed = 0;
         //加载图片
         const img = new Image();
         img.src = require('../../../../src/assets/images/animate-img.png');
         img.onload = () => {
-            const ratio = getPixelRatio(ctx) > 2 ? 2 : getPixelRatio(ctx);
             const animate = () => {
                 speed++;
                 //绘制精灵图片
-                if (speed % 1 === 0) {
+                if (speed % 2 === 0) {
                     //清除 之前的 图片墨迹
-                    ctx.clearRect(0, 0, width, height);
+                    ctx.clearRect(0, 0, width * ratio, height * ratio);
                     initW = imgWidth * x0;
                     initH = imgHeight * y0;
                     ctx.drawImage(
@@ -49,10 +53,10 @@ class Loading extends React.PureComponent {
                         imgHeight,
                         0,
                         0,
-                        imgWidth / ratio,  //在画布上等比例绘制图片的宽度
-                        imgHeight / ratio   //在画布上等比例绘制图片的高度
+                        width * ratio,  //在画布上等比例绘制图片的宽度
+                        height * ratio   //在画布上等比例绘制图片的高度
                     );
-                    if (x0 < 8) {
+                    if (x0 < 7) {
                         x0++;
                     } else {
                         x0 = 0;
@@ -81,8 +85,8 @@ class Loading extends React.PureComponent {
                 <canvas
                     ref={(el) => { this.canvas = el }}
                     className="canvas-load"
-                    width="40"
-                    height="40"
+                    width="80"
+                    height="80"
                 />
             </div>
         );
