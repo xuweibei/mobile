@@ -4,7 +4,7 @@ import BaseComponent from '../../../../../../components/base/BaseComponent';
 import './Feedback.less';
 
 const {appHistory, showInfo, showSuccess, dealImage, native, setNavColor} = Utils;
-const {MESSAGE: {Form, Feedback}, navColorF} = Constants;
+const {MESSAGE: {Form, Feedback}, navColorF, WEB_NAME} = Constants;
 const {urlCfg} = Configs;
 
 const seasons = [
@@ -218,7 +218,7 @@ export default class Feedbacks extends BaseComponent {
                         <TextareaItem
                             rows={3}
                             onChange={data => this.setState({question: data})}
-                            placeholder="请描述您使用中品优购时遇到的问题和意见，若功能异常，上传页面截图反馈更加准确噢！（亲，商品评价不在这提交哦）"
+                            placeholder={`请描述您使用${WEB_NAME}时遇到的问题和意见，若功能异常，上传页面截图反馈更加准确噢！（亲，商品评价不在这提交哦）`}
                         />
                     </List>
                     <div className="feedback-type">添加图片（选填，提供问题截图）</div>

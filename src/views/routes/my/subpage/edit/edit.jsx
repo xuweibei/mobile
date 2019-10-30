@@ -11,7 +11,7 @@ import './edit.less';
 const Item = List.Item;
 const {appHistory, systemApi: {removeValue}, native, showInfo, getUrlParam} = Utils;
 const {urlCfg} = Configs;
-const {LOCALSTORAGE, MESSAGE: {Feedback}} = Constants;
+const {LOCALSTORAGE, MESSAGE: {Feedback}, WEB_NAME} = Constants;
 class Edit extends BaseComponent {
     componentDidMount() {
         const {userInfo, getUserInfo} = this.props;
@@ -132,7 +132,7 @@ class Edit extends BaseComponent {
                 arrow: 'horizontal',
                 param: '/userAgreementDetail',
                 subName: 'about',
-                value: '关于中品优购'
+                value: '关于' + WEB_NAME
             }
         ];
         if (userInfo && userInfo.wxid !== 0) {

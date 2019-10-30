@@ -7,7 +7,7 @@ import {baseActionCreator as actionCreator} from '../../../redux/baseAction';
 // import VerBtn from '../../common/verification-code/index';
 import './Register.less';
 
-const {MESSAGE: {LOGIN, Form}, COUNTERNUM, LOCALSTORAGE, TD_EVENT_ID, navColorF} = Constants;
+const {MESSAGE: {LOGIN, Form}, COUNTERNUM, LOCALSTORAGE, TD_EVENT_ID, navColorF, WEB_NAME} = Constants;
 const {appHistory, validator, showInfo, systemApi: {setValue}, TD, setNavColor} = Utils;
 const {urlCfg, appCfg} = Configs;
 const hybird = process.env.NATIVE;
@@ -494,7 +494,7 @@ class Register extends BaseComponent {
                         <div>
                             <div className="register-icon">
                                 <div className="logo-icon"/>
-                                <p className="reg-title">中中品优购中中品优购中中品优购</p>
+                                <p className="reg-title">优质商品 快乐选购</p>
                             </div>
                             <div className="register-btn">
                                 <div className="weChat-button">
@@ -527,7 +527,7 @@ class Register extends BaseComponent {
                     )}
                     {!convert && (
                         <div className="enter-box">
-                            <div className="login-title">欢迎登录中品优购</div>
+                            <div className="login-title">欢迎登录{WEB_NAME}</div>
                             <div className="login-inp">
                                 <div className={`inp-item ${fouceShow === '1' ? 'border-color' : ''}`}>
                                     <div className="icon inp-icon-t"/>

@@ -12,7 +12,6 @@ import {FindPopup} from '../../../components/modal';
 import '../../../redux/reducers/baseReducer';
 import './Find.less';
 
-
 const {MESSAGE: {Form, Feedback}, TD_EVENT_ID, BASE_64: {LOCATION, CURRENT_LOCATION}} = Constants;
 
 
@@ -279,7 +278,8 @@ class Find extends BaseComponent {
         });
     };
 
-    showPopup = (showPopup) => {
+    showPopup = (showPopup, e) => {
+        e.stopPropagation(); //阻止冒泡
         this.setState({
             [showPopup]: true
         });
@@ -333,6 +333,7 @@ class Find extends BaseComponent {
                 this.fetch(urlCfg.findForShopName, {data: {title: this.state.shopName, latitude: latitude, longitude: longitude}})
                     .subscribe((res) => {
                         if (res.status === 0 && res.data.length > 0) {
+                            console.log('卧槽 ，太无情');
                             showInfo(Feedback.Search_Success);
                             const {setShopList} = this.props;
                             setShopList(res.data);
@@ -354,20 +355,20 @@ class Find extends BaseComponent {
             if (address.length === 0) {
                 showInfo(Form.No_Search_Address);
             } else {
+                console.log('卧槽，无情');
                 this.addressGoGeoc(address);
                 this.setState({
                     showPopup2: false
-                    // toggle: true
                 });
             }
         }
     };
 
     //关闭弹窗
-    close = () => {
+    close = (prop) => {
+        console.log('卧槽，真吉尔无情');
         this.setState({
-            showPopup1: false,
-            showPopup2: false
+            [prop]: false
         });
     };
 
@@ -424,7 +425,7 @@ class Find extends BaseComponent {
             <FindPopup {...pop}>
                 <div className="find-popup1">
                     <div className="find-popup1-icon">
-                        <ATIcon type="cross-circle" onClick={this.close}/>
+                        <ATIcon type="cross-circle" onClick={() => this.close('showPopup1')}/>
                     </div>
                     <div className="find-popup1-fence">
                         <SearchBar placeholder="请输入您要搜索的商家" onChange={(val) => this.getShopName(val)}/>
@@ -456,11 +457,12 @@ class Find extends BaseComponent {
             visible: showPopup2,
             className: className
         };
+        console.log(showPopup2, '拉手孔第三大框架说的那');
         return (
             <FindPopup {...pop}>
                 <div className="find-popup1">
                     <div className="find-popup1-icon">
-                        <ATIcon type="cross-circle" onClick={this.close}/>
+                        <ATIcon type="cross-circle" onClick={() => { this.close('showPopup2') }}/>
                     </div>
                     <div className="find-popup1-fence">
                         <SearchBar placeholder="请输入您想搜索的地址" onChange={(val) => this.getAddress(val)}/>
@@ -495,7 +497,7 @@ class Find extends BaseComponent {
                     window.isWX ? (<div style={{height: '92vh'}} id="map"/>) : (<div style={{height: '86vh'}} id="map"/>)
                 }
                 <div className="icon-container">
-                    <div className="public edging" onClick={this.showPopup.bind(this, 'showPopup2')}>
+                    <div className="public edging" onClick={(e) => this.showPopup('showPopup2', e)}>
                         <IconFont iconText="iconzhu-weizhi"/>
                         <div className="public-img">切换位置</div>
                     </div>
@@ -524,7 +526,7 @@ class Find extends BaseComponent {
                 }
                 <Button
                     type="warning"
-                    onClick={this.showPopup.bind(this, 'showPopup1')}
+                    onClick={(e) => { this.showPopup('showPopup1', e) }}
                     className="large-button general"
                 ><span className="icon icon-search"/>
                 </Button>

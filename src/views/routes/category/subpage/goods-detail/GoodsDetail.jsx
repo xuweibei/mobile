@@ -264,13 +264,13 @@ class GoodsDetail extends BaseComponent {
 
     //立即购买
     emption = () => {
-        const {shop, status} = this.state;
+        const {shop, status, goodsDetail} = this.state;
         if (shop.shoper_open_status === '0' || status === '0' || status === '2') {
             return;
         }
-        const id = decodeURI(
-            getUrlParam('id', encodeURI(this.props.location.search))
-        );
+        // const id = decodeURI(
+        //     getUrlParam('id', encodeURI(this.props.location.search))
+        // );
         const {paginationNum, ids, selectType} = this.state;
         const str = ids.toString();
         if (str.length === 0) {
@@ -283,7 +283,7 @@ class GoodsDetail extends BaseComponent {
         const arr = [];
         arr.push({
             if_express: selectType,
-            pr_id: parseInt(id, 10),
+            pr_id: parseInt(goodsDetail.id, 10),
             property: str,
             num: paginationNum
         });
