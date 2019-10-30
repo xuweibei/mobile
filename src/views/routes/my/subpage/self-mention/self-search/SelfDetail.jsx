@@ -1,5 +1,6 @@
 import {connect} from 'react-redux';
 import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAction';
+import LazyLoadIndex  from '../../../../../common/lazy-load/LazyLoad';
 import Nothing from '../../../../../common/nothing/Nothing';
 import MyListView from '../../../../../common/my-list-view/MyListView';
 import AppNavBar from '../../../../../common/navbar/NavBar';
@@ -144,7 +145,7 @@ class ReDetail extends BaseComponent {
             <div className="shop-lists" key={item.id}>
                 <div className="shop-name">
                     <div className="shop-title">
-                        <img src={item.picpath} alt=""/>
+                        <img src={item.picpath} onError={(e) => { e.target.src = item.df_logo }} alt=""/>
                         <p>{item.shopName}</p>
                         <div className="icon enter"/>
                     </div>
@@ -154,7 +155,7 @@ class ReDetail extends BaseComponent {
                     <div className="goods" key={items.pr_id} onClick={() => this.skipDetail(item.id)}>
                         <div className="goods-left">
                             <div>
-                                <img src={items.pr_picpath}/>
+                                <LazyLoadIndex lazyInfo={{offset: -30, imgUrl: items.pr_picpath, overflow: true}}/>
                             </div>
                         </div>
                         <div className="goods-right">

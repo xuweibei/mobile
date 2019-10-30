@@ -379,7 +379,10 @@ class MyOrderSearch extends BaseComponent {
             <div className="shop-lists" >
                 <div className="shop-name" onClick={() => this.goShopHome(item.shop_id)}>
                     <div className="shop-title">
-                        <LazyLoadIndex lazyInfo={{offset: -30, imgUrl: item.picpath, overflow: true}}/>
+                        <img
+                            src={item.picpath}
+                            onError={(e) => { e.target.src = item.df_logo }}
+                        />
                         <p>{item.shopName}</p>
                         <div className="icon enter"/>
                     </div>

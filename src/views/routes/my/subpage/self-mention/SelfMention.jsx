@@ -5,6 +5,7 @@ import './SelfMention.less';
 import {Tabs} from 'antd-mobile';
 import {connect} from 'react-redux';
 import {baseActionCreator as actionCreator} from '../../../../../redux/baseAction';
+import LazyLoadIndex  from '../../../../common/lazy-load/LazyLoad';
 import Nothing from '../../../../common/nothing/Nothing';
 import CancelOrder from '../../../../common/cancel-order/CancleOrder';
 import MyListView from '../../../../common/my-list-view/MyListView';
@@ -286,9 +287,8 @@ class ReDetail extends BaseComponent {
                     <div
                         className="shop-title"
                         onClick={(e) => this.goShopHome(e, item.shop_id)}
-                        onError={(e) => { e.target.src = item.df_logo }}
                     >
-                        <img src={item.picpath} alt=""/>
+                        <img src={item.picpath} onError={(e) => { e.target.src = item.df_logo }} alt=""/>
                         <p>{item.shopName}</p>
                         <div className="icon enter"/>
                     </div>
@@ -298,7 +298,7 @@ class ReDetail extends BaseComponent {
                     <div className="goods" key={items.pr_id}>
                         <div className="goods-left">
                             <div>
-                                <img src={items.pr_picpath}/>
+                                <LazyLoadIndex lazyInfo={{offset: -30, imgUrl: items.pr_picpath, overflow: true}}/>
                             </div>
                         </div>
                         <div className="goods-right">

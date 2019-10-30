@@ -4,7 +4,7 @@ import {Tabs, ListView, PullToRefresh} from 'antd-mobile';
 import {baseActionCreator as actionCreator} from '../../../../../redux/baseAction';
 import AppNavBar from '../../../../common/navbar/NavBar';
 import Nothing from '../../../../common/nothing/Nothing';
-// import LazyLoad from '../../../../common/lazy-load/LazyLoad';
+import LazyLoad from '../../../../common/lazy-load/LazyLoad';
 import Animation from '../../../../common/animation/Animation';
 import {ListFooter} from '../../../../common/list-footer';
 import './Collect.less';
@@ -360,8 +360,7 @@ class Collect extends BaseComponent {
                 <div className="goods" key={item.id} onClick={() => this.shopGoods(item.pr_id)}>
                     <div className="goods-box">
                         <div>
-                            {/* <LazyLoad lazyInfo={{imgUrl: item.picpath, offset: -50, overflow: true}}/> */}
-                            <img src={item.picpath}/>
+                            <LazyLoad lazyInfo={{imgUrl: item.picpath, offset: -20, overflow: true}}/>
                         </div>
                         <div className="desc">
                             <div className="desc-title">{item.title}</div>
@@ -400,7 +399,6 @@ class Collect extends BaseComponent {
             ) : (
                 <div className="shop-content" key={item.id}>
                     <div className="shop-name" onClick={(event) => this.shopHome(event, item.shop_id)}>
-                        {/* <LazyLoad lazyInfo={{imgUrl: item.picpath, offset: -30, overflow: true}}/> */}
                         <img
                             src={item.picpath}
                             onError={(e) => { e.target.src = item.df_logo }}
@@ -417,7 +415,7 @@ class Collect extends BaseComponent {
                             item.pr && item.pr.length ? item.pr.map(data => (
                                 <div className="item" key={data.title}>
                                     <div className="image" onClick={() => this.shopGoods(data.id)}>
-                                        {/* <LazyLoad lazyInfo={{imgUrl: data.picpath, offset: -50, overflow: true}}/> */}
+                                        <LazyLoad lazyInfo={{imgUrl: data.picpath, offset: -50, overflow: true}}/>
                                         <img src={data.picpath}/>
                                         <span>{data.price}</span>
                                     </div>
