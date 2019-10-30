@@ -91,7 +91,8 @@ class History extends BaseComponent {
         this.setState((prevState) => ({
             data: prevState.data.cloneWithRowsAndSections(this.dataBlobs, this.sectionIDs, this.rowIDs),
             pageCount: res.page_count,
-            isLoading: false
+            isLoading: false,
+            isEdit: window.isWX
         }), () => {
             console.log(this.state.data);
             if (page < this.state.pageCount) {

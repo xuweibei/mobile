@@ -59,6 +59,9 @@ class Collect extends BaseComponent {
             .subscribe((res) => {
                 this.temp.isLoading = false;
                 if (res && res.status === 0) {
+                    this.setState({
+                        isEdit: window.isWX && (res.data && res.data.length > 0)
+                    });
                     if (tabKey === 0) {
                         if (page === 1) {
                             this.temp.stackData = res.data;
@@ -416,7 +419,6 @@ class Collect extends BaseComponent {
                                 <div className="item" key={data.title}>
                                     <div className="image" onClick={() => this.shopGoods(data.id)}>
                                         <LazyLoad lazyInfo={{imgUrl: data.picpath, offset: -50, overflow: true}}/>
-                                        <img src={data.picpath}/>
                                         <span>{data.price}</span>
                                     </div>
                                     <p onClick={() => this.shopGoods(data.id)}>{data.title}</p>

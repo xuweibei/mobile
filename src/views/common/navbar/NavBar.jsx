@@ -112,7 +112,9 @@ class NavBar extends React.PureComponent {
     render() {
         const {title, rightShow, redBackground, rightSearch, show, rightExplain, rightEdit, search, isEdit, backgroundColor} = this.props;
         if (window.isWX) {
-            document.title = title;
+            if (title) {
+                document.title = title;
+            }
             return null;
         }
         return (

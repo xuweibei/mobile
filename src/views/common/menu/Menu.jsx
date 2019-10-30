@@ -89,14 +89,14 @@ class Menu extends React.PureComponent {
                             <div className="icon icon-collect"/>
                             <div className="text">收藏</div>
                         </li>
-                        <li onClick={() => this.switchTo('/shopCart')}>
+                        {/* <li onClick={() => this.switchTo('/shopCart')}>
                             <div className="icon icon-cart"/>
                             <div className="text">购物车</div>
                         </li>
                         <li>
                             <div className="icon icon-notice"/>
                             <div className="text">消息</div>
-                        </li>
+                        </li> */}
                     </ul>
                 </div>
             );
