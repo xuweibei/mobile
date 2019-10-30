@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=yes"/>
-        <meta name="format-detection" content="telephone=no"/>
+        <meta name="format-detection" content="telephone=no,date=no,address=no,email=no,url=no"/>
         <title>CAM商城</title>
         <% for (var css in htmlWebpackPlugin.files.css) { %>
             <link href="<%=htmlWebpackPlugin.files.css[css] %>" rel="stylesheet"/>
@@ -39,6 +39,7 @@
                 }
                 #c-logo{
                     height: 87px;
+                    width: auto;
                 }
                 .c-bgimg{
                     width: 100%;
@@ -60,9 +61,10 @@
                 .c-logo{
                     margin: auto;
                     width: 86px;
+                    position: relative;
                     height: 0;
                     border-radius: 20px;
-                    padding-top: 10px;
+                    /* padding-top: 10px; */
                     box-sizing: border-box;
                     background-color: #fff;
                     /* box-shadow: ; */
@@ -78,6 +80,9 @@
                 .c-logo img{
                     width: 46px;
                     height: 47px;
+                    position: absolute;
+                    top: 20px;
+                    left: 20px;
                     opacity: 0;
                     animation:mySecond 2s ease-in 0.2s infinite forwards;
                     -moz-animation:mySecond 2s ease-in 0.2s infinite forwards; /* Firefox */
