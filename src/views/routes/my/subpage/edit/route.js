@@ -13,15 +13,14 @@ import bankCardDetailPage from './bank-card/BankCardDetail';
 import Area from './location-area';//所在区域管理
 // import InformationPage from './information/Information';
 // import FeedbackRouters from './user-agreement/Feedback';
-import UserAgreementRouters from './user-agreement/UserAgreement';//关于中品优购-安卓
-import UserAgreementDetailRouters from './user-agreement/UserAgreementDetail';//关于中品优购-苹果
+import UserAgreementRouters from './user-agreement/UserAgreement';//关于中卖网-安卓
+import UserAgreementDetailRouters from './user-agreement/UserAgreementDetail';//关于中卖网-苹果
 // import Account from './account/Account';//切换账号
 // import AddAccount from './account/AddAccount';//添加账号
 import Source from './source';/*确认源头*/
 import SourceHand from './source/Source';/*确认源头手动输入*/
 import SourceBrowse from './source-browse/SourceBrowse';/*确认源头*/
 import BlankPage from './blank';
-
 
 const EditModal = () => (
     <React.Fragment>
@@ -38,8 +37,8 @@ const EditModal = () => (
         <Route path="/locationarea" component={Area}/>
         {/* <Route path="/information" component={InformationPage}/> 消息通知 */}
         {/* <Route path="/feedback" component={FeedbackRouters}/> 问题反馈 */}
-        <Route path="/userAgreement" component={UserAgreementRouters}/> {/* 关于中品优购-安卓*/}
-        <Route path="/userAgreementDetail" component={UserAgreementDetailRouters}/> {/* 关于中品优购-苹果*/}
+        <Route path="/userAgreement" component={UserAgreementRouters}/> {/* 关于卖网-安卓*/}
+        <Route path="/userAgreementDetail" component={UserAgreementDetailRouters}/> {/* 关于中卖网-苹果*/}
         {/* <Route path="/account" component={Account}/> 切换账户 */}
         {/* <Route path="/addAccount" component={AddAccount}/> 添加账户 */}
         <Route path="/source" component={Source}/> {/*确认源头*/}
