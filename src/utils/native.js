@@ -19,7 +19,7 @@ export const native = (str, obj, callBack) => new Promise((resolve, reject) => {
                 const info = JSON.parse(responseData);
                 if (info && info.status === '0') {
                     resolve(info);
-                } else {
+                } else if (info) {
                     reject(info);
                     showInfo(info.message);
                 }
@@ -52,8 +52,6 @@ export const getShopCartInfo = (str, obj, callBack) => new Promise((resolve, rej
                     const info = JSON.parse(responseData);
                     if (info && info.status === '0') {
                         resolve(info);
-                    } else {
-                        showInfo(info.message);
                     }
                 }
             );
@@ -73,7 +71,7 @@ export const getAppUserToken = () => new Promise((resolve) => {
                         const str = JSON.parse(responseData).data.usertoken || null;
                         systemApi.setValue('userToken', str);
                         store.dispatch(baseActionCreator.setUserToken(str));
-                    } else {
+                    } else if (responseData) {
                         showFail('身份验证失败');
                     }
                 });

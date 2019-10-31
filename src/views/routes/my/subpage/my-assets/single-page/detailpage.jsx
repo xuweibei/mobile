@@ -56,7 +56,7 @@ export default class Detailpage extends BaseComponent {
                     <div className="cash-content-navbar">
                         <AppNavBar
                             goBackModal={() => this.props.getBackChange('detail')}
-                            title="收入详情"
+                            title="收支详情"
                             rightShow
                         />
                     </div>
@@ -79,7 +79,7 @@ export default class Detailpage extends BaseComponent {
                         <InputItem
                             value={detailArr.intro}
                             editable={false}
-                        >支付方式:
+                        >收支类型:
                         </InputItem>
                         <InputItem
                             editable={false}

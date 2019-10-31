@@ -144,7 +144,7 @@ class passwordDetail extends BaseComponent {
                         if (res && res.status === 0) {
                             if (isLoagin === '1') { //忘记密码状态下设置成功
                                 if (process.env.NATIVE) {
-                                    native('loginoutCallback');
+                                    native('loginout');
                                 } else {
                                     appHistory.replace('/login');
                                 }

@@ -95,8 +95,8 @@ class Edit extends BaseComponent {
                     },
                     {
                         key: '3-2',
-                        extra: (userInfo && userInfo.userType === '3') ? '' : '修改', //推广员身份不让操作
-                        param: (userInfo && userInfo.userType === '3') ? '' : '/locationarea', //推广员身份不让操作
+                        extra: (userInfo && userInfo.address.length > 0) ? '' : '修改', //只允许修改一次
+                        param: (userInfo && userInfo.address.length > 0) ? '' : '/locationarea', //只允许修改一次
                         subName: 'locationarea',
                         name: 'area',
                         value: '当前区域',

@@ -269,7 +269,7 @@ class ShopHome extends BaseComponent {
             break;
         default:
             if (process.env.NATIVE) {
-                native('goToShoper', {shopNo: shopOnsInfo.no, id: '', type: '', shopNickName: shopOnsInfo.nickname, imType: '1', groud: '0'});//groud 为0 单聊，1群聊 imType 1商品2订单3空白  type 1商品 2订单
+                native('goToShoper', {shopNo: shopOnsInfo.no, id: '', type: '1', shopNickName: shopOnsInfo.nickname, imType: '3', groud: '0'});//groud 为0 单聊，1群聊 imType 1商品2订单3空白  type 1商品 2订单
             } else {
                 showInfo('联系商家');
             }
