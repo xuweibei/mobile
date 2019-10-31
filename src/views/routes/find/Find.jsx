@@ -278,11 +278,12 @@ class Find extends BaseComponent {
         });
     };
 
-    showPopup = (showPopup, e) => {
-        e.stopPropagation(); //阻止冒泡
-        this.setState({
-            [showPopup]: true
-        });
+    showPopup = (showPopup) => {
+        setTimeout(() => {
+            this.setState({
+                [showPopup]: true
+            });
+        }, 500);
     };
 
     //地址逆解析

@@ -63,7 +63,7 @@ export default () => {
                 </div>
 
                 <div className="client-desc runtime-desc">
-                    进入网址<span> {process.env.NATIVE ? url : <a href={url}>{url}</a>} </span> 登陆后即可进行开店申请
+                    进入网址{process.env.NATIVE ? url : <span>{url}</span>} 登陆后即可进行开店申请
                 </div>
             </div>
         </div>
