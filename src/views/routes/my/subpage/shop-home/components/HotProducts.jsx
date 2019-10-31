@@ -7,21 +7,23 @@ export default class HotProducts extends BaseComponent {
         return (
             <div className="hotImgShow">
                 {
-                    hotSellList.map(item => (
-                        <div className="top" key={item}>
-                            <img onClick={() => goToGoods(content[`sort${sort}_pr${item - mode2}_id`])} src={picurl[item]} alt=""/>
-                            <div className="priceInfo">
-                                <div className="infoLeft">
-                                    <p className="shopTitleSmall">{content[`sort${sort}_pr${item - mode2}_title1`]}</p>
-                                    <div className="shopPeiceSmall">
-                                        <span className="money-ZH">￥</span>
-                                        <span className="money-now">{content[`sort${sort}_pr${item - mode2}_title2`]}</span>
-                                        <span className="money-before">{content[`sort${sort}_pr${item - mode2}_title3`]}</span>
+                    (content && picurl && hotSellList && hotSellList.leng > 0) ? (
+                        hotSellList.map(item => (
+                            <div className="top" key={item}>
+                                <img onClick={() => goToGoods(content[`sort${sort}_pr${item - mode2}_id`])} src={picurl[item]} alt=""/>
+                                <div className="priceInfo">
+                                    <div className="infoLeft">
+                                        <p className="shopTitleSmall">{content[`sort${sort}_pr${item - mode2}_title1`]}</p>
+                                        <div className="shopPeiceSmall">
+                                            <span className="money-ZH">￥</span>
+                                            <span className="money-now">{content[`sort${sort}_pr${item - mode2}_title2`]}</span>
+                                            <span className="money-before">{content[`sort${sort}_pr${item - mode2}_title3`]}</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    ))
+                        ))
+                    ) : null
                 }
             </div>
         );
