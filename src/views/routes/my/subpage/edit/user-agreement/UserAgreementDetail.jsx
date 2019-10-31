@@ -88,13 +88,13 @@ class UserAgreementDetail extends BaseComponent {
                     type === 'null' && (
                         <React.Fragment>
                             <AppNavBar title="关于"/>
-                            {
+                            {/* {
                                 !window.isWX && (
                                     <List>
                                         {(/iphone|ipad/gi).test(navigator.platform) && <Item arrow="horizontal" onClick={() => { process.env.NATIVE && native('evalMe') }}>给我评价</Item>}
                                     </List>
                                 )
-                            }
+                            } */}
                             <List>
                                 <div className="about-information">
                                     {

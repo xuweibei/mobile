@@ -492,15 +492,16 @@ class GoodsDetail extends BaseComponent {
     //分享按钮
     popover = () => (
         <Popover
+            className="fsdfsdsd"
             onSelect={this.onSelect}
             visible={this.state.visible}
             onVisibleChange={this.handleVisibleChange}
             overlay={[
-                (<Item style={{float: 'left'}} key="1" icon={myImg('family.svg')}><p>首页</p></Item>),
-                (<Item style={{float: 'left'}} key="2" icon={myImg('star.svg')}>收藏</Item>),
-                (!window.isWX && (<Item style={{float: 'left'}} key="3" icon={myImg('shop-cart.svg')}>购物车</Item>)),
-                (!window.isWX && (<Item style={{float: 'left'}} key="4" icon={myImg('info.svg')}><p>消息</p></Item>)),
-                (<Item style={{float: 'left'}} key="5" icon={myImg('share.svg')}>分享</Item>)
+                (<Item key="1" icon={myImg('family.svg')}><p>首页</p></Item>),
+                (<Item key="2" icon={myImg('star.svg')}>收藏</Item>),
+                (!window.isWX && (<Item key="3" icon={myImg('shop-cart.svg')}>购物车</Item>)),
+                (!window.isWX && (<Item key="4" icon={myImg('info.svg')}><p>消息</p></Item>)),
+                (<Item key="5" icon={myImg('share.svg')}>分享</Item>)
             ]}
         >
             <Icon type="ellipsis"/>
