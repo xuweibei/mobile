@@ -12,7 +12,7 @@ const {appHistory} = Utils;
 
 class ShopHomeIndexFive extends React.PureComponent {
     static propTypes = {
-        shopModelArr: PropTypes.array.isRequired
+        shopModelArr: PropTypes.object.isRequired
     };
 
     goToGoods = (num) => {
@@ -73,7 +73,7 @@ class ShopHomeIndexFive extends React.PureComponent {
                         />
                         <div className="popular-one">
                             <div className="popular-one-top">
-                                <img onClick={() => this.goToGoods(content.sort2_pr1_id)} src={picurl[5]} alt=""/>
+                                <img onClick={() => this.goToGoods(content.sort2_pr1_id)} src={picurl[content.sort2_pr1_ix]} alt=""/>
                             </div>
                             <div className="popular-one-bottom">
                                 <div className="introduce-left">{content.sort2_pr1_title1}</div>
@@ -87,7 +87,7 @@ class ShopHomeIndexFive extends React.PureComponent {
                         <div className="popular-three">
                             <div style={{background: '#a52f15'}} className="popular-three-left"/>
                             <div className="popular-three-right">
-                                <img onClick={() => this.goToGoods(content.sort2_pr2_id)} src={picurl[6]} alt=""/>
+                                <img onClick={() => this.goToGoods(content.sort2_pr2_id)} src={picurl[content.sort2_pr2_ix]} alt=""/>
                                 <div className="introduce">
                                     <div className="introduce-left">{content.sort2_pr2_title1}</div>
                                     <div className="price">
@@ -101,13 +101,13 @@ class ShopHomeIndexFive extends React.PureComponent {
                         <div className="popular-two-copy">
                             <div className="popular-two-left">
                                 <div className="popular-two-left-top">
-                                    <div>
+                                    {/* <div>
                                         <div className="inner">
                                             <span>The Winter</span>
                                             <span>冬季热销</span>
                                         </div>
-                                    </div>
-                                    <img onClick={() => this.goToGoods(content.sort2_pr3_id)} src={picurl[7]} alt=""/>
+                                    </div> */}
+                                    <img onClick={() => this.goToGoods(content.sort2_pr3_id)} src={picurl[content.sort2_pr3_ix]} alt=""/>
                                 </div>
                                 <div className="popular-two-left-bot">
                                     <div className="introduce-left">{content.sort2_pr3_title1}</div>
@@ -122,7 +122,7 @@ class ShopHomeIndexFive extends React.PureComponent {
                         <div className="popular-four">
                             <div className="winter">
                                 <div className="popular-four-right">
-                                    <img onClick={() => this.goToGoods(content.sort2_pr4_id)} src={picurl[8]} alt=""/>
+                                    <img onClick={() => this.goToGoods(content.sort2_pr4_id)} src={picurl[content.sort2_pr4_ix]} alt=""/>
                                 </div>
                                 <div className="introduce">
                                     <div className="introduce-left">{content.sort2_pr4_title1}</div>

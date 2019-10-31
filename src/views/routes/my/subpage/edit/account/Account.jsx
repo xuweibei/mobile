@@ -37,7 +37,7 @@ class Account extends BaseComponent {
     //切换账号
     switchingAccounts = (id, password = '') => {
         const {showConfirm, switchAccountList, removeUserInfo, removebankInfo, removeNickNameInfo, removeAressInfo, removeRegionInfo, removeUserIdInfo} = this.props;
-        this.fetch(urlCfg.switchAccountInfo, {method: 'post', data: {id: id, password}})
+        this.fetch(urlCfg.switchAccountInfo, {data: {id, password}})
             .subscribe(res => {
                 if (res && res.status === 0) {
                     if (res.data.status === 1) {

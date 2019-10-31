@@ -396,7 +396,7 @@ class passwordDetail extends BaseComponent {
                                             <li className={item.check ? 'check' : ''} onClick={() => this.checkOne(idnex)}>
                                                 <img src={item.avatarUrl}/>
                                                 <span className="check-second">
-                                                    <img className="check-bd" src={item.logo} alt=""/>
+                                                    {/* <img className="check-bd" src={item.logo} alt=""/> */}
                                                     <span>uid：{item.no}</span>
                                                 </span>
                                                 <span className="icon check-last"/>

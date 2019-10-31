@@ -102,7 +102,7 @@ export default class MyOrder extends BaseComponent {
     }
 
     render() {
-        const {text, expressNo, orderInfo, pic} = this.state;
+        const {text, expressNo, orderInfo, pic, ordertatus} = this.state;
         return (
             <div data-component="logistics" data-role="page" className="logistics">
                 <AppNavBar title="物流跟踪" clannName="navbar" goBackModal={this.goBackModal}/>
@@ -122,7 +122,7 @@ export default class MyOrder extends BaseComponent {
                     <Accordion className="address">
                         <Accordion.Panel header={this.header()}>
                             {
-                                orderInfo.map(item => (
+                                orderInfo.map((item, index) => (
                                     <List>
                                         <div className="logistics-box">
                                             <div className="logistics-left">
@@ -131,7 +131,7 @@ export default class MyOrder extends BaseComponent {
                                             </div>
                                             <div className="dot"/>
                                             <div className="logistics-right">
-                                                <div className="collect">已签收</div>
+                                                <div className="collect">{index  === 0 && ordertatus === '6' ? '已签收' : ''}</div>
                                                 <div className="news">{item.context}</div>
                                             </div>
                                         </div>

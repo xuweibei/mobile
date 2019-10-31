@@ -10,10 +10,10 @@ import './ImportSum.less';
 //消费支付方式
 const seasons = [
     [
-        {
-            label: '微信支付',
-            value: '1'
-        },
+        // {
+        //     label: '微信支付',
+        //     value: '1'
+        // },
         {
             label: 'CAM消费',
             value: '0'
@@ -34,10 +34,10 @@ export default class importSum extends BaseComponent {
         newsPopup: false, //支付信息是否弹窗
         pwsPopup: false, //支付密码是否弹窗
         money: null, //转出金额
-        sValueName: ['1'], //转出方式名字 默认cam转出
+        sValueName: ['0'], //转出方式名字 默认cam转出
         uid: '', //获取uid
         shopName: '', //获取名称
-        sValue: '1' //转出方式id
+        sValue: '0' //转出方式id
     };
 
     componentDidMount() {
