@@ -301,9 +301,7 @@ class GoodsDetail extends BaseComponent {
     //收藏商品
     collect = () => {
         const {shop, goodsDetail, collect} = this.state;
-        const id = decodeURI(
-            getUrlParam('id', encodeURI(this.props.location.search))
-        );
+        const id = goodsDetail.id;
         if (collect.length > 0) {
             this.delCollect();
         } else {

@@ -93,6 +93,13 @@ export default class HomeList extends BaseComponent {
                     this.setState({
                         latitude: res.latitude,
                         longitude: res.longitude
+                    }, () => {
+                        const {latitude, longitude} = this.state;
+                        if (latitude && longitude) {
+                            this.getHotShops();
+                        } else {
+                            showInfo(Form.Feedback.Address_Err);
+                        }
                     });
                     setValue('local', JSON.stringify({lon: res.longitude, lat: res.latitude}));
                 }
