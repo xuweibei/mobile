@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=yes"/>
-        <meta name="format-detection" content="telephone=no"/>
+        <meta name="format-detection" content="telephone=no,email=no,adress=no,date=no"/>
         <title>CAM商城</title>
         <script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=GFnu2bon0GPM7wuu8rPROimLuqi18eFE&s=1"></script>
         <!-- jsbridge 前端初始化 安卓  -->
@@ -104,7 +104,7 @@
     </head>
     <body>
         <div id="root"></div>
-        <% if (htmlWebpackPlugin.options.env === 'test'||htmlWebpackPlugin.options.env === 'prev') { %>
+        <% if (htmlWebpackPlugin.options.env === 'test') { %>
         <!-- VConsole调试 (mobile 上调试)-->
         <script src="https://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/vconsole/3.0.0/vconsole.min.js"></script>
         <script>

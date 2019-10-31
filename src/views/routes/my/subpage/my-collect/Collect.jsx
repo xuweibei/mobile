@@ -419,7 +419,6 @@ class Collect extends BaseComponent {
                                 <div className="item" key={data.title}>
                                     <div className="image" onClick={() => this.shopGoods(data.id)}>
                                         <LazyLoad lazyInfo={{imgUrl: data.picpath, offset: -50, overflow: true}}/>
-                                        <img src={data.picpath}/>
                                         <span>{data.price}</span>
                                     </div>
                                     <p onClick={() => this.shopGoods(data.id)}>{data.title}</p>
