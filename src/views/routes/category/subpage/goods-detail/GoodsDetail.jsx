@@ -635,7 +635,9 @@ class GoodsDetail extends BaseComponent {
                                 <Flex.Item>
                                     <div className="bot-left">
                                     邮费：
-                                        {'￥' + goodsDetail.express_money || '免邮'}
+                                        {
+                                            goodsDetail.express_money && (<span>{'￥' +  goodsDetail.express_money || '免邮'}</span>)
+                                        }
                                     </div>
                                 </Flex.Item>
                                 <Flex.Item>
