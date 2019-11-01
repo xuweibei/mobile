@@ -440,20 +440,19 @@ class MyOrder extends BaseComponent {
             title: Form.Whether_Revocation_Apply,
             btnTexts: ['我再想想', '确认撤销'],
             callbacks: [null, () => {
-                this.fetch(urlCfg.revokeOrder, {data: {id}})
-                    .subscribe(res => {
-                        if (res && res.status === 0) {
-                            showInfo(Feedback.Rovke_Success);
-                            this.setState({
-                                showModal: false,
-                                modalTitle: '',
-                                status: 2,
-                                page: 1
-                            });
-                            //确定撤销后，跳转到待收货那列
-                            this.gotoMyOrder(3);
-                        }
-                    });
+                this.fetch(urlCfg.revokeOrder, {data: {id}}).subscribe(res => {
+                    if (res && res.status === 0) {
+                        showInfo(Feedback.Rovke_Success);
+                        this.setState({
+                            showModal: false,
+                            modalTitle: '',
+                            status: 2,
+                            page: 1
+                        });
+                        //确定撤销后，跳转到待收货那列
+                        this.gotoMyOrder(3);
+                    }
+                });
             }]
         });
         ev.stopPropagation();
@@ -651,7 +650,7 @@ class MyOrder extends BaseComponent {
                     <div className="right">{item.return_name || this.tabTopName(item.status)}</div>
                     {/* <div className="right">{item.return_status !== '0' ? item.return_name : this.tabTopName(item.status)}</div> */}
                 </div>
-                {item.pr_list && item.pr_list.map(items => (
+                {(item.pr_list && item.pr_list.length > 0) ? item.pr_list.map(items => (
                     <div className="goods" key={item.id} onClick={(ev) => this.goToOrderDetail(item.id, item.return_status, item.return_id, items.return_types, ev)}>
                         <div className="goods-left">
                             <div>
@@ -676,7 +675,7 @@ class MyOrder extends BaseComponent {
                             </div>
                         </div>
                     </div>
-                ))}
+                )) : ''}
                 <div className="shop-bottom">
                     <div className="right-bottom">
                         <div className="total-count">

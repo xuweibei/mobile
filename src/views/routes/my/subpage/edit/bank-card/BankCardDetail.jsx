@@ -61,20 +61,19 @@ class BankCardDetail extends BaseComponent {
 
     //获取银行卡
     getBank = () => {
-        this.fetch(urlCfg.getBank, {method: 'post', data: {}})
-            .subscribe(res => {
-                if (res.status === 0) {
-                    if (res.data.length) {
-                        res.data.forEach(item => {
-                            item.label = item.name;
-                            item.value = item.id;
-                        });
-                    }
-                    this.setState({
-                        bankArr: res.data
+        this.fetch(urlCfg.getBank).subscribe(res => {
+            if (res && res.status === 0) {
+                if (res.data.length) {
+                    res.data.forEach(item => {
+                        item.label = item.name;
+                        item.value = item.id;
                     });
                 }
-            });
+                this.setState({
+                    bankArr: res.data
+                });
+            }
+        });
     }
 
     //保存
@@ -90,7 +89,6 @@ class BankCardDetail extends BaseComponent {
                  const phone = getFieldValue('phone');
                  const authCode = getFieldValue('authCode');
                  this.fetch(urlCfg.addBankCard, {
-                     method: 'post',
                      data: {
                          id: location.query ? location.query.id : 0,
                          bank_id: bank[0],
@@ -104,7 +102,7 @@ class BankCardDetail extends BaseComponent {
                          re_commit: 0,
                          vcode: authCode
                      }}).subscribe(res => {
-                     if (res.status === 0) {
+                     if (res && res.status === 0) {
                          showSuccess(Feedback.Bind_Success);
                          getBankCardList();
                          appHistory.goBack();

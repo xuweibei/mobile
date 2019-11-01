@@ -125,7 +125,7 @@ class passwordDetail extends BaseComponent {
         !passShow && validateFields({first: true}, (error, value) => {
             const phoneCode = getFieldValue('authCode');
             if (!error) {
-                this.fetch(urlCfg.verificationVerificationCode, {method: 'post', data: {phone: validator.wipeOut(phoneNum), uid, vcode: validator.wipeOut(phoneCode), chk_pass: isLoagin || 0}})
+                this.fetch(urlCfg.verificationVerificationCode, {data: {phone: validator.wipeOut(phoneNum), uid, vcode: validator.wipeOut(phoneCode), chk_pass: isLoagin || 0}})
                     .subscribe(res => {
                         if (res && res.status === 0) {
                             this.setState({

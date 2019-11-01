@@ -212,26 +212,31 @@ class Edit extends BaseComponent {
 
     //登出账号
     signOut = () => {
-        const {removeUserInfo, setUserToken, setUseType, delMyInfo, removebankInfo, removeNickNameInfo, removeAressInfo, removeRegionInfo} = this.props;
-        if (process.env.NATIVE) {
-            //重定向到原生登录页
-            native('loginoutCallback');
-        } else {
-            appHistory.push('/login');
-        }
-        //清除用户的身份类型
-        setUseType('');
-        //清除token，让其跳转到登陆页
-        removeValue(LOCALSTORAGE.USER_TOKEN);
-        setUserToken('');
-        //清除当前页面redux
-        removeUserInfo('');
-        removebankInfo();
-        removeNickNameInfo('');
-        removeAressInfo();
-        removeRegionInfo('');
-        //清除我的页面redux
-        delMyInfo();
+        const {removeUserInfo, setUserToken, setUseType, delMyInfo, removebankInfo, removeNickNameInfo, removeAressInfo, removeRegionInfo, showConfirm} = this.props;
+        showConfirm({
+            title: '确定退出吗？',
+            callbacks: [null, () => {
+                if (process.env.NATIVE) {
+                    //重定向到原生登录页
+                    native('loginoutCallback');
+                } else {
+                    appHistory.push('/login');
+                }
+                //清除用户的身份类型
+                setUseType('');
+                //清除token，让其跳转到登陆页
+                removeValue(LOCALSTORAGE.USER_TOKEN);
+                setUserToken('');
+                //清除当前页面redux
+                removeUserInfo('');
+                removebankInfo();
+                removeNickNameInfo('');
+                removeAressInfo();
+                removeRegionInfo('');
+                //清除我的页面redux
+                delMyInfo();
+            }]
+        });
     };
 
     //改变头像
@@ -250,9 +255,9 @@ class Edit extends BaseComponent {
     //更换头像
     updataImg = (data) => {
         const {getUserInfo, getMyInfo} = this.props;
-        this.fetch(urlCfg.changeAheAvatar, {method: 'post', data: {file: encodeURIComponent(data[0].imgB), filex: encodeURIComponent(data[0].imgS)}})
+        this.fetch(urlCfg.changeAheAvatar, {data: {file: encodeURIComponent(data[0].imgB), filex: encodeURIComponent(data[0].imgS)}})
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     getUserInfo();//设置页面
                     getMyInfo();//我的页面
                 }
@@ -318,6 +323,7 @@ const mapDispatchToProps = {
     removeRegionInfo: actionCreator.removeRegionInfo,
     delMyInfo: actionCreator.delMyInfo,
     getMyInfo: actionCreator.getMyInfo,
+    showConfirm: baseActionCreator.showConfirm,
     setUserToken: baseActionCreator.setUserToken,
     setUseType: baseActionCreator.setUseType
 };

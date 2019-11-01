@@ -76,24 +76,15 @@ class ShopHome extends BaseComponent {
 
     //获取模板信息
     getShopModel = (id) => {
-        // const {currentState} = this.state;
         this.fetch(urlCfg.shopModel, {data: {shop_id: id}})
             .subscribe(res => {
                 if (res && res.status === 0) {
                     //判断有无模板
-                    if (res.data) {
-                        this.setState({
-                            currentState: 'homePage',
-                            shopModelArr: res.data,
-                            modelShow: true
-                        });
-                    } else {
-                        this.setState({
-                            currentState: 'modal',
-                            shopModelArr: res.data,
-                            modelShow: false
-                        });
-                    }
+                    this.setState({
+                        currentState: res.data ? 'homePage' : 'modal',
+                        shopModelArr: res.data,
+                        modelShow: !!res.data
+                    });
                 }
             });
     }
@@ -107,34 +98,32 @@ class ShopHome extends BaseComponent {
             hasMore: true
         });
         setshoppingId(id);
-        this.fetch(urlCfg.allGoodsInTheShop, {
-            data: {id, page, pagesize: this.temp.pagesize}}, noShowLoading)
-            .subscribe(res => {
-                this.temp.isLoading = false;
-                if (res && res.status === 0) {
-                    this.setState({
-                        refreshing: false
-                    });
-                    res.data.page = page;
-                    if (page === 1) {
-                        this.temp.stackData = res.data.data;
-                    } else {
-                        this.temp.stackData = this.temp.stackData.concat(res.data.data);
-                    }
-                    if (page >= res.data.page_count) {
-                        this.setState({
-                            hasMore: false
-                        });
-                    }
-                    this.setState((prevState) => (
-                        {
-                            dataSource: prevState.dataSource.cloneWithRows(this.temp.stackData),
-                            pageCount: res.data.page_count,
-                            shopOnsInfo: res.data.shop_info
-                        }
-                    ));
+        this.fetch(urlCfg.allGoodsInTheShop, {data: {id, page, pagesize: this.temp.pagesize}}, noShowLoading).subscribe(res => {
+            this.temp.isLoading = false;
+            if (res && res.status === 0) {
+                this.setState({
+                    refreshing: false
+                });
+                res.data.page = page;
+                if (page === 1) {
+                    this.temp.stackData = res.data.data;
+                } else {
+                    this.temp.stackData = this.temp.stackData.concat(res.data.data);
                 }
-            });
+                if (page >= res.data.page_count) {
+                    this.setState({
+                        hasMore: false
+                    });
+                }
+                this.setState((prevState) => (
+                    {
+                        dataSource: prevState.dataSource.cloneWithRows(this.temp.stackData),
+                        pageCount: res.data.page_count,
+                        shopOnsInfo: res.data.shop_info
+                    }
+                ));
+            }
+        });
     }
 
     //商品详情
