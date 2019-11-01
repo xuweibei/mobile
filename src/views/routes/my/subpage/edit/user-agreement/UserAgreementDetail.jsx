@@ -8,7 +8,7 @@ const {native, getUrlParam} = Utils;
 const {urlCfg} = Configs;
 
 const itemLists = [
-    {title: '版权信息', params: null},
+    {title: '版权信息', params: 'none'},
     {title: '软件许可使用协议', params: 1},
     {title: '特别说明', params: 3},
     {title: '平台服务协议', params: 2},
@@ -58,7 +58,7 @@ class UserAgreementDetail extends BaseComponent {
                         }
                     }
                 });
-        } else {
+        } else if (num !== 'none') {
             this.setState({
                 protocol: (
                     <div className="version-info">

@@ -20,14 +20,13 @@ export default class ReDetail extends BaseComponent {
 
     //获取最近转出记录列表
     rollOutList = () => {
-        this.fetch(urlCfg.getRollout)
-            .subscribe(res => {
-                if (res && res.status === 0) {
-                    this.setState({
-                        uidList: res.data
-                    });
-                }
-            });
+        this.fetch(urlCfg.getRollout).subscribe(res => {
+            if (res && res.status === 0) {
+                this.setState({
+                    uidList: res.data
+                });
+            }
+        });
     }
 
     //获取UID
@@ -43,12 +42,11 @@ export default class ReDetail extends BaseComponent {
         if ((!validator.floatType(uid) || !uid)) {
             showInfo(Form.No_Uid);
         } else {
-            this.fetch(urlCfg.dfinfo, {data: {no: uid}})
-                .subscribe(res => {
-                    if (res && res.status === 0) {
-                        this.skipSum(uid, res.data.shopName);
-                    }
-                });
+            this.fetch(urlCfg.dfinfo, {data: {no: uid}}).subscribe(res => {
+                if (res && res.status === 0) {
+                    this.skipSum(uid, res.data.shopName);
+                }
+            });
         }
     }
 
@@ -110,11 +108,10 @@ export default class ReDetail extends BaseComponent {
                     {(uidList && uidList.length > 0) ? (
                         <div>
                             {uidList.slice(0, 10).map(item => (
-                                <div className="message" onClick={() => this.skipSum(item.UID, item.shopName)}>
+                                <div className="message" key={item.UID} onClick={() => this.skipSum(item.UID, item.shopName)}>
                                     <img
                                         src={item.picpath}
                                         alt=""
-                                        onError={(e) => { e.target.src = item.df_logo }}
                                     />
                                     <div className="message-bottom">
                                         <div>{item.shopName}</div>
