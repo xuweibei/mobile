@@ -492,7 +492,6 @@ class GoodsDetail extends BaseComponent {
     //分享按钮
     popover = () => (
         <Popover
-            className="fsdfsdsd"
             onSelect={this.onSelect}
             visible={this.state.visible}
             onVisibleChange={this.handleVisibleChange}
