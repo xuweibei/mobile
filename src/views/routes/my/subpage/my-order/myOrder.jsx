@@ -627,6 +627,7 @@ class MyOrder extends BaseComponent {
     }
 
     render() {
+        console.log(1);
         const {dataSource, hasMore, height, status, canStatus, refreshing} = this.state;
         const row = item => (
             <div className="shop-lists" >
