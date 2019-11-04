@@ -83,12 +83,12 @@ class ListDetails extends BaseComponent {
         showConfirm({
             title: Form.No_Error_Take,
             callbacks: [null, () => {
-                this.fetch(urlCfg.confirmOrder, {data: {id}})
-                    .subscribe((res) => {
-                        if (res && res.status === 0) {
-                            appHistory.goBack();
-                        }
-                    });
+                this.fetch(urlCfg.confirmOrder, {data: {id}}).subscribe((res) => {
+                    if (res && res.status === 0) {
+                        appHistory.goBack();
+                        dropByCacheKey('OrderPage');//清除我的订单的缓存
+                    }
+                });
             }]
         });
     }
@@ -174,13 +174,12 @@ class ListDetails extends BaseComponent {
                 .subscribe((res) => {
                     if (res && res.status === 0) {
                         showSuccess(Feedback.Cancel_Success);
+                        dropByCacheKey('OrderPage');//清除我的订单的缓存
                         appHistory.goBack();
                     }
                 });
         }
-        this.setState({
-            canStatus: false
-        });
+        this.setState({canStatus: false});
     }
 
     //查看物流信息

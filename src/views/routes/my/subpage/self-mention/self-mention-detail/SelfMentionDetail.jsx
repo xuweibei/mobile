@@ -35,8 +35,8 @@ class ReDetail extends BaseComponent {
     }
 
     componentDidMount() {
-        const {setOrder, location} = this.props;
-        const timer = decodeURI(getUrlParam('time', encodeURI(location.search)));
+        const {setOrder, location: {search}} = this.props;
+        const timer = decodeURI(getUrlParam('time', encodeURI(search)));
         if (process.env.NATIVE) {
             if (timer === 'null') { //非购物车进入时
                 this.getOrderSelf();
@@ -52,9 +52,9 @@ class ReDetail extends BaseComponent {
     }
 
     componentWillReceiveProps(next) {
-        const {setOrder, location} = this.props;
+        const {setOrder, location: {search}} = this.props;
         const timerNext = decodeURI(getUrlParam('time', encodeURI(next.location.search)));
-        const timer = decodeURI(getUrlParam('time', encodeURI(location.search)));
+        const timer = decodeURI(getUrlParam('time', encodeURI(search)));
         if ((timerNext !== timer) && process.env.NATIVE) {
             this.setState({
                 modal: false, //自提弹窗是否弹出

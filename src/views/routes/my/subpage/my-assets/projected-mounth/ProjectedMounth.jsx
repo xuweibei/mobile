@@ -29,7 +29,7 @@ export default class MyAssets extends BaseComponent {
         this.state = {
             dataSource,
             height: document.documentElement.clientHeight - (window.isWX ? window.rem * 6.18 : window.rem * 6.36),
-            statusNum: decodeURI(getUrlParam('status', encodeURI(this.props.location.search))),
+            statusNum: decodeURI(getUrlParam('status', encodeURI(props.location.search))),
             editModal: '', //当前状态
             todayArr: [], //我的收入的数据
             userInfo: {},
@@ -49,10 +49,10 @@ export default class MyAssets extends BaseComponent {
     getDaril = () => {
         temp.isLoading = true;
         const {page} = this.state;
-        this.fetch(urlCfg.budgetaryRevenue, {data: {page: page, page_count: 100000}})
+        this.fetch(urlCfg.budgetaryRevenue, {data: {page: page, page_count: 10000000}})
             .subscribe(res => {
                 temp.isLoading = false;
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     this.setState({
                         userInfo: res.data,
                         todayArr: res.data.today_data

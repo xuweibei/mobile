@@ -45,15 +45,14 @@ class BankCard extends BaseComponent {
 
     //获取列表数据
     getList = () => {
-        this.fetch(urlCfg.getTheBankCardList, {method: 'post', data: {}})
-            .subscribe(res => {
-                if (res && res.status === 0) {
-                    this.setState({
-                        userBankArr: res.data.user,
-                        shopBankArr: res.data.shoper
-                    });
-                }
-            });
+        this.fetch(urlCfg.getTheBankCardList).subscribe(res => {
+            if (res && res.status === 0) {
+                this.setState({
+                    userBankArr: res.data.user,
+                    shopBankArr: res.data.shoper
+                });
+            }
+        });
     }
 
     //添加或者编辑银行卡

@@ -124,7 +124,7 @@ class Address extends BaseComponent {
     bottomModal = (adreeArr) => adreeArr.map((item, index) => (
         <SwipeAction
             autoClose
-            key={index.toString()}
+            key={item.id}
             right={[
                 {
                     text: '删除',
@@ -136,7 +136,7 @@ class Address extends BaseComponent {
             onClose={() => this.setState({editShow: false})}
         >
             <div className="location-box" onClick={() => { this.saveAddress(item) }}>
-                <div className="list-detail" key={index.toString()}>
+                <div className="list-detail">
                     <div className="item-desc">
                         <div className="address-name">{item.area.join('') + item.address}</div>
                         <div className="user-name">

@@ -125,7 +125,7 @@ class passwordDetail extends BaseComponent {
         !passShow && validateFields({first: true}, (error, value) => {
             const phoneCode = getFieldValue('authCode');
             if (!error) {
-                this.fetch(urlCfg.verificationVerificationCode, {method: 'post', data: {phone: validator.wipeOut(phoneNum), uid, vcode: validator.wipeOut(phoneCode), chk_pass: isLoagin || 0}})
+                this.fetch(urlCfg.verificationVerificationCode, {data: {phone: validator.wipeOut(phoneNum), uid, vcode: validator.wipeOut(phoneCode), chk_pass: isLoagin || 0}})
                     .subscribe(res => {
                         if (res && res.status === 0) {
                             this.setState({
@@ -144,7 +144,7 @@ class passwordDetail extends BaseComponent {
                         if (res && res.status === 0) {
                             if (isLoagin === '1') { //忘记密码状态下设置成功
                                 if (process.env.NATIVE) {
-                                    native('loginoutCallback');
+                                    native('loginout');
                                 } else {
                                     appHistory.replace('/login');
                                 }
@@ -396,7 +396,7 @@ class passwordDetail extends BaseComponent {
                                             <li className={item.check ? 'check' : ''} onClick={() => this.checkOne(idnex)}>
                                                 <img src={item.avatarUrl}/>
                                                 <span className="check-second">
-                                                    <img className="check-bd" src={item.logo} alt=""/>
+                                                    {/* <img className="check-bd" src={item.logo} alt=""/> */}
                                                     <span>uid：{item.no}</span>
                                                 </span>
                                                 <span className="icon check-last"/>

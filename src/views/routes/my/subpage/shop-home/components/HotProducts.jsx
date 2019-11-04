@@ -7,7 +7,7 @@ export default class HotProducts extends BaseComponent {
         return (
             <div className="hotImgShow">
                 {
-                    hotSellList.map(item => (
+                    content && picurl && hotSellList &&  hotSellList.map(item => item && (
                         <div className="top" key={item}>
                             <img onClick={() => goToGoods(content[`sort${sort}_pr${item - mode2}_id`])} src={picurl[item]} alt=""/>
                             <div className="priceInfo">
@@ -21,8 +21,7 @@ export default class HotProducts extends BaseComponent {
                                 </div>
                             </div>
                         </div>
-                    ))
-                }
+                    ))}
             </div>
         );
     }

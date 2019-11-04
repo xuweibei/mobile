@@ -13,7 +13,6 @@ const {MESSAGE: {Form, Feedback}} = Constants;
 const {appHistory, getUrlParam, validator, showInfo, showSuccess} = Utils;
 const {urlCfg} = Configs;
 
-// FIXME: 页面需要优化
 class BasicInput extends BaseComponent {
     state = {
         defaultState: false, //设置为默认地址
@@ -33,7 +32,7 @@ class BasicInput extends BaseComponent {
     getList = () => {
         const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
         if (id) {
-            this.fetch(urlCfg.editAddressOne, {method: 'post', data: {id: id}})
+            this.fetch(urlCfg.editAddressOne, {data: {id}})
                 .subscribe(res => {
                     if (res && res.status === 0) {
                         this.setState({
@@ -50,19 +49,18 @@ class BasicInput extends BaseComponent {
 
     //设置是否默认地址
     onChangeDefault = () => {
-        const {defaultState} = this.state;
-        this.setState({
-            defaultState: !defaultState
-        });
+        this.setState((prevState) => ({
+            defaultState: !prevState.defaultState
+        }));
     };
 
     //点击保存
     saveData = () => {
         const {province, urban, county, defaultState} = this.state;
-        const {form: {getFieldsValue}} = this.props;
+        const {form: {getFieldsValue}, location: {search}} = this.props;
         const account = getFieldsValue().account;
         const addressAll = getFieldsValue().addressAll;
-        const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
+        const id = decodeURI(getUrlParam('id', encodeURI(search)));
         const phone = getFieldsValue().phone;
         const district = [];
         if (province) {
@@ -99,7 +97,7 @@ class BasicInput extends BaseComponent {
             showInfo(Form.Error_Address_Length);
             return;
         }
-        this.fetch(urlCfg.addedOrEditedAddress, {method: 'post', data: {id: id, linkname: account, linktel: validator.wipeOut(phone), pca: district, address: addressAll, if_default: defaultState ? '1' : '0'}})
+        this.fetch(urlCfg.addedOrEditedAddress, {data: {id, linkname: account, linktel: validator.wipeOut(phone), pca: district, address: addressAll, if_default: defaultState ? '1' : '0'}})
             .subscribe(res => {
                 if (res && res.status === 0) {
                     const {getAddress} = this.props;
@@ -143,13 +141,13 @@ class BasicInput extends BaseComponent {
 
     //地址删除
     deleteData = () => {
-        const {showConfirm, getAddress} = this.props;
+        const {showConfirm, getAddress, location: {search}} = this.props;
         showConfirm({
             title: '确定删除吗?',
             btnTexts: ['取消', '确定'],
             callbacks: [null, () => {
-                const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
-                this.fetch(urlCfg.deleteAddress, {method: 'post', data: {id: id}})
+                const id = decodeURI(getUrlParam('id', encodeURI(search)));
+                this.fetch(urlCfg.deleteAddress, {data: {id}})
                     .subscribe(res => {
                         if (res && res.status === 0) {
                             showSuccess(Feedback.Del_Success);

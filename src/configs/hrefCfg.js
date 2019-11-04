@@ -13,7 +13,7 @@ const hrefCfg = {
     },
     // 生产环境
     production: {
-        apiPath: 'https://api.zzha.vip/mall',
+        apiPath: 'https://app.zzha.vip/mall',
         scan: 'https://www.zzha.vip/mall.html#'
     },
     // 本地环境

@@ -8,12 +8,13 @@ import {defer} from 'rxjs/Observable/defer';
 import {Subject} from 'rxjs/Subject';
 import 'rxjs/add/operator/do';
 import {store} from '../redux/store';
+import {native} from '../utils/native';
 
 import {baseActionCreator as actionCreator} from '../redux/baseAction';
 
 
 const {CancelToken} = axios;
-const {systemApi: {getValue, removeValue}, appHistory, showFail, native} = Utils;
+const {systemApi: {getValue, removeValue}, appHistory, showFail} = Utils;
 const {MESSAGE, LOCALSTORAGE} = Constants;
 
 // http request 拦截器

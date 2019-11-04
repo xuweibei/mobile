@@ -7,7 +7,7 @@ export default class Products extends BaseComponent {
         return (
             <div className="newImgShow">
                 {
-                    newSellList.map(item => (
+                    content && picurl && newSellList && newSellList.map(item => item && (
                         <div className="bottomImgLeft" key={item}>
                             <div className="marginBot">
                                 <img onClick={() => goToGoods(content[`sort${sort}_pr${item - mode2}_id`])} src={picurl[item]} alt=""/>
@@ -22,6 +22,7 @@ export default class Products extends BaseComponent {
                             </div>
                         </div>
                     ))
+
                 }
             </div>
         );

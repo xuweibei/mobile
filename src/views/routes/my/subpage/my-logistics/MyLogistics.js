@@ -92,7 +92,7 @@ export default class MyLogistics extends BaseComponent {
                     <div className="status-icon-box"><div className="status-icon"/></div>
                 </div>
                 {
-                    logInfo.express_content.data.map((item, num) => (
+                    logInfo.express_content.data && logInfo.express_content.data.length > 0 ? logInfo.express_content.data.map((item, num) => (
                         <div key={item.time} className={`${num === 0 ? 'logistics-vehicle' : ''}${num === logInfo.express_content.data.length - 1 ? 'framing' : ''} ${num === 0 ? 'transport-details logisticsActive' : 'transport-details'}`}>
                             <div className="datetime">
                                 <div className="date">{item.time.split(' ')[0].slice(5)}</div>
@@ -108,7 +108,7 @@ export default class MyLogistics extends BaseComponent {
                             </div>
                             <div className="status-icon-box"><div className="icon status-icon"/></div>
                         </div>
-                    ))
+                    )) : ''
                 }
                 <div className="contact-box">
                     <span className="icon contact" onClick={() => this.openPhone(open, index)}>联系物流</span>
