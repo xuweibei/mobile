@@ -14,17 +14,17 @@ const mode = [
         title: 'CAM余额',
         value: 0,
         imgName: 'balance-cam'
+    },
+    {
+        title: '微信支付',
+        value: 1,
+        imgName: 'we-chat'
+    },
+    {
+        title: '支付宝支付',
+        value: 2,
+        imgName: 'alipay'
     }
-    // {
-    //     title: '微信支付',
-    //     value: 1,
-    //     imgName: 'we-chat'
-    // },
-    // {
-    //     title: '支付宝支付',
-    //     value: 2,
-    //     imgName: 'alipay'
-    // }
 ];
 
 class PayMoney extends BaseComponent {

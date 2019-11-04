@@ -21,23 +21,20 @@ export default class Information extends BaseComponent {
     }
 
     getMessage = () => {
-        this.fetch(urlCfg.messageSetupStatus)
-            .subscribe(res => {
-                if (res && res.status === 0) {
-                    //判断初始是否有值
-                    if (res.data.length !== 0) {
-                        this.setState({
-                            data: res.data
-                        });
-                    }
+        this.fetch(urlCfg.messageSetupStatus).subscribe(res => {
+            if (res && res.status === 0) {
+                //判断初始是否有值
+                if (res.data.length !== 0) {
+                    this.setState({
+                        data: res.data
+                    });
                 }
-            });
+            }
+        });
     }
 
     //消息设置
     message = () => {
-        // FIXME: 代码需要优化
-        //已优化
         const {data} = this.state;
         data.message = !data.message ? 1 : 0;
         this.setState({

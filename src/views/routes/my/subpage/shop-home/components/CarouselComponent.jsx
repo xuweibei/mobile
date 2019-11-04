@@ -19,7 +19,7 @@ export default class CarouselComponent extends BaseComponent {
                                 {
                                     content.banner.map(item => (
                                         <div key={item}>
-                                            <img style={{height: cHeight + 'px'}} src={item.url} onClick={() => goToGoods(item.id)} title="693"/>
+                                            <img style={{height: cHeight + 'px'}} src={item.url} onClick={() => goToGoods(item.id)}/>
                                         </div>
                                     ))
                                 }

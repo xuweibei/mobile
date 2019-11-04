@@ -480,8 +480,8 @@ class GoodsDetail extends BaseComponent {
 
     //联系商家
     goToShoper = () => {
-        const {shop} = this.state;
-        const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
+        const {shop, goodsDetail} = this.state;
+        const id = goodsDetail.id;
         if (process.env.NATIVE) {
             native('goToShoper', {shopNo: shop.no, id, type: '1', shopNickName: shop.nickname, imType: '1', groud: '0'});//groud 为0 单聊，1群聊 imType 1商品2订单3空白  type 1商品 2订单
         } else {

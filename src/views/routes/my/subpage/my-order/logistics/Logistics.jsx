@@ -102,7 +102,7 @@ export default class MyOrder extends BaseComponent {
     }
 
     render() {
-        const {text, expressNo, orderInfo, pic} = this.state;
+        const {text, expressNo, orderInfo, pic, ordertatus, phone} = this.state;
         return (
             <div data-component="logistics" data-role="page" className="logistics">
                 <AppNavBar title="物流跟踪" clannName="navbar" goBackModal={this.goBackModal}/>
@@ -114,15 +114,17 @@ export default class MyOrder extends BaseComponent {
                             <div className="info-status">订单状态: {text}</div>
                             <div className="info-num">订单号：{expressNo}</div>
                         </div>
-                        <div className="phone">
-                            <div className="icon icon-phone"/>
-                            <div className="phone-num" onClick={this.callPhone}>联系物流</div>
-                        </div>
+                        {phone && (
+                            <div className="phone">
+                                <div className="icon icon-phone"/>
+                                <div className="phone-num" onClick={this.callPhone}>联系物流</div>
+                            </div>
+                        )}
                     </div>
                     <Accordion className="address">
                         <Accordion.Panel header={this.header()}>
                             {
-                                orderInfo.map(item => (
+                                orderInfo.length > 0 ? orderInfo.map((item, index) => (
                                     <List>
                                         <div className="logistics-box">
                                             <div className="logistics-left">
@@ -131,12 +133,12 @@ export default class MyOrder extends BaseComponent {
                                             </div>
                                             <div className="dot"/>
                                             <div className="logistics-right">
-                                                <div className="collect">已签收</div>
+                                                <div className="collect">{index  === 0 && ordertatus === '6' ? '已签收' : ''}</div>
                                                 <div className="news">{item.context}</div>
                                             </div>
                                         </div>
                                     </List>
-                                ))
+                                )) : ''
                             }
                         </Accordion.Panel>
                     </Accordion>

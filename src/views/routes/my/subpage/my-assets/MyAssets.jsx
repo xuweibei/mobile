@@ -72,26 +72,23 @@ class MyAssets extends BaseComponent {
     //点击我的收入的各种弹框提示
     goToMyIcome = () => {
         const {showConfirm, showAlert, userTypes} = this.props;
-        let str = '';
+        const comeArr = new Map([
+            ['1', Form.No_Merchant],
+            ['3', Form.You_Extension_Agent],
+            ['4', Form.Switching_Businessmen]
+        ]);
         if (userTypes === '2') {
             appHistory.push('/icome?status=6');
         } else if (userTypes === '1') {
-            str = Form.No_Merchant;
             showConfirm({
-                title: str,
+                title: comeArr.get(userTypes),
                 callbacks: [null, () => {
                     appHistory.push('/openShopPage');//前往开店页面
                 }]
             });
-        } else if (userTypes === '3') {
-            str = Form.You_Extension_Agent;
+        } else {
             showAlert({
-                title: str
-            });
-        } else if (userTypes === '4') {
-            str = Form.Switching_Businessmen;
-            showAlert({
-                title: str
+                title: comeArr.get(userTypes)
             });
         }
     }

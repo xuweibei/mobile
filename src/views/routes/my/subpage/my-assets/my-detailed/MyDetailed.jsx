@@ -26,10 +26,9 @@ export default class MyDetailed extends BaseComponent {
 
     //获取列表信息
     gainList = (date) => {
-        console.log(date);
         this.fetch(urlCfg.assetsDetail, {data: {date}})
             .subscribe((res) => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     this.setState(prevState => ({
                         year: prevState.year || res.now.year,
                         month: prevState.month || res.now.month,
@@ -38,8 +37,6 @@ export default class MyDetailed extends BaseComponent {
                         seasons: res.year,
                         definiteList: res.data
                     }));
-                } else if (res.status === 1) {
-                    showInfo(res.message);
                 }
             });
     }
