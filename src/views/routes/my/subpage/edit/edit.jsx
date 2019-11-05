@@ -9,7 +9,7 @@ import {baseActionCreator} from '../../../../../redux/baseAction';
 import './edit.less';
 
 const Item = List.Item;
-const {appHistory, systemApi: {removeValue}, native, showInfo, getUrlParam} = Utils;
+const {appHistory, systemApi: {removeValue}, native, showInfo} = Utils;
 const {urlCfg} = Configs;
 const {LOCALSTORAGE, MESSAGE: {Feedback}, WEB_NAME} = Constants;
 class Edit extends BaseComponent {
@@ -18,9 +18,6 @@ class Edit extends BaseComponent {
         if (!userInfo) {
             getUserInfo();
         }
-        const userType = decodeURI(getUrlParam('userType', encodeURI(this.props.location.search)));
-        //全局储存用户身份
-        this.props.setUseType(userType);
     }
 
     //初始化列表数据
@@ -306,10 +303,8 @@ class Edit extends BaseComponent {
 }
 
 const mapStateToProps = state => {
-    const base = state.get('base');
     const EditInfo = state.get('my');
     return {
-        userTypes: base.get('userTypes'),
         userInfo: EditInfo.get('userInfo')
     };
 };
