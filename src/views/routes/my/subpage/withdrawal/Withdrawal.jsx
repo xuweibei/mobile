@@ -370,11 +370,11 @@ class Withdrawal extends BaseComponent {
                         <div className="popup-wrap">
                             <div className="popup-top">
                                 <div onClick={this.closePopup}>
-                                    <IconFont iconText="iconfuzhu-jiantou-copy"/>
+                                    <span className="icon command-left" onClick={() => this.closePopup()}/>
                                 </div>
                                 <div className="popup-title">请输入支付密码</div>
                                 <div onClick={this.closePopup}>
-                                    <IconFont iconText="iconfuzhu-guanbi_"/>
+                                    <span className="icon command-right" onClick={() => this.closePopup()}/>
                                 </div>
                             </div>
                             <div className="popup-bottom">

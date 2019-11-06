@@ -359,7 +359,7 @@ class ListDetails extends BaseComponent {
                             </div>
 
                             <div className="recommend-box">
-                                <div className="recommend common-margin">热门推荐</div>
+                                {/* <div className="recommend common-margin">热门推荐</div>
                                 <div className="hot-push-goods">
                                     {
                                         (canInfo.recommend && canInfo.recommend.length > 0) ? canInfo.recommend.map(item => (
@@ -401,7 +401,7 @@ class ListDetails extends BaseComponent {
                                             </div>
                                         )) : ''
                                     }
-                                </div>
+                                </div> */}
                                 {canStatus && (
                                     <CancelOrder
                                         canStateChange={this.canStateChange}

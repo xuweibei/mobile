@@ -404,7 +404,7 @@ class MyOrderSearch extends BaseComponent {
                                 <div className="sku-left">
                                     {items.property_content && items.property_content.map(pro => <div className="goods-size">{pro}</div>)}
                                 </div>
-                                <div className="sku-right">x{items.pr_num}</div>
+                                <div className="sku-right">x{items.num}</div>
                             </div>
                             <div className="btn-keep">记账量：{items.deposit}</div>
                         </div>

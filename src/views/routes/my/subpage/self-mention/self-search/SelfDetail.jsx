@@ -170,7 +170,7 @@ class ReDetail extends BaseComponent {
                                     ))}
                                     <div>规格</div>
                                 </div>
-                                <div className="sku-right">x{items.pr_num}</div>
+                                <div className="sku-right">x{items.num}</div>
                             </div>
                             <div className="btn-keep">记账量：{items.deposit}</div>
                         </div>
