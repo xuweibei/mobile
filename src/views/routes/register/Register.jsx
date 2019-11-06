@@ -125,7 +125,6 @@ class Register extends BaseComponent {
         });
     }
 
-    // FIXME: 倒计时用统一封装的 verification-code
     setTime = (countdown) => {
         if (countdown === 0) {
             this.setState({

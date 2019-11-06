@@ -61,7 +61,8 @@ class GoodsDetail extends BaseComponent {
         selectType: '', //选中配送方式 1快递 2自提
         clickType: 0, //打开sku的方式 0箭头 1购物车 2立即购买
         totalNUm: 0, //商品库存,
-        goodId: decodeURI(getUrlParam('id', encodeURI(this.props.location.search)))
+        goodId: decodeURI(getUrlParam('id', encodeURI(this.props.location.search))),
+        hasType: false
     };
 
     componentDidMount() {
@@ -151,7 +152,8 @@ class GoodsDetail extends BaseComponent {
                         goodsAttr: res.data.attr_arr, //商品属性
                         stocks: stocks,
                         pickType: res.data.distribution_mode,
-                        totalNUm: res.data.num_stock
+                        totalNUm: res.data.num_stock,
+                        hasType: res.data.distribution_mode.data.some(item => item.value === '到店自提')
                     },
                     () => {
                         this.getGoodsStatus();
@@ -498,7 +500,7 @@ class GoodsDetail extends BaseComponent {
         const {
             topSwithe, popup, paginationNum, ids, maskStatus,
             picPath, goodsDetail, shop, recommend, collect,
-            goodsAttr, stocks, lineStatus, lineText, pickType, selectType, names
+            goodsAttr, stocks, lineStatus, lineText, pickType, selectType, names, hasType
         } = this.state;
         const renderCount = (
             <List>
@@ -635,6 +637,7 @@ class GoodsDetail extends BaseComponent {
                     {/*店铺、商品规格*/}
                     <Evaluate
                         names={names}
+                        hasType={hasType}
                         goodsDetail={goodsDetail}
                         Element={Element}
                         shop={shop}
