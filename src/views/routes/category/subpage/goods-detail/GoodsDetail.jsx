@@ -55,7 +55,7 @@ class GoodsDetail extends BaseComponent {
         lineStatus: false, //底部商品状态栏
         ids: [], //选中属性id
         goodsSku: [], //商品的结果集
-        shopAddress: '', // 店铺位置
+        // shopAddress: '', // 店铺位置
         lineText: '', //商品状态栏文字
         pickType: {}, //配送方式
         selectType: '', //选中配送方式 1快递 2自提
@@ -108,7 +108,7 @@ class GoodsDetail extends BaseComponent {
                     lineStatus: false, //底部商品状态栏
                     ids: [], //选中属性id
                     goodsSku: [], //商品的结果集
-                    shopAddress: '', // 店铺位置
+                    // shopAddress: '', // 店铺位置
                     lineText: '', //商品状态栏文字
                     pickType: {}, //配送方式
                     selectType: '', //选中配送方式 1快递 2自提
@@ -154,7 +154,7 @@ class GoodsDetail extends BaseComponent {
                         totalNUm: res.data.num_stock
                     },
                     () => {
-                        this.getAddress();
+                        // this.getAddress();
                         this.getGoodsStatus();
                     }
                 );
@@ -162,23 +162,23 @@ class GoodsDetail extends BaseComponent {
         });
     };
 
-    //地址逆解析
-    getAddress = () => {
-        const myGeo = new window.BMap.Geocoder();
-        const {shop} = this.state;
-        const lat = shop.latitude;
-        const lon = shop.longitude;
-        myGeo.getLocation(new window.BMap.Point(lon, lat), result => {
-            if (result) {
-                const city = result.addressComponents.city;
-                const province = result.addressComponents.province;
-                const shopAddress = province + city;
-                this.setState({
-                    shopAddress: shopAddress
-                });
-            }
-        });
-    };
+    // //地址逆解析
+    // getAddress = () => {
+    //     const myGeo = new window.BMap.Geocoder();
+    //     const {shop} = this.state;
+    //     const lat = shop.latitude;
+    //     const lon = shop.longitude;
+    //     myGeo.getLocation(new window.BMap.Point(lon, lat), result => {
+    //         if (result) {
+    //             const city = result.addressComponents.city;
+    //             const province = result.addressComponents.province;
+    //             const shopAddress = province + city;
+    //             this.setState({
+    //                 shopAddress: shopAddress
+    //             });
+    //         }
+    //     });
+    // };
 
     //开启sku
     openSku = () => {
@@ -520,7 +520,7 @@ class GoodsDetail extends BaseComponent {
         const {
             topSwithe, popup, paginationNum, ids, maskStatus,
             picPath, goodsDetail, shop, recommend, collect,
-            goodsAttr, stocks, shopAddress, lineStatus, lineText, pickType, selectType, names
+            goodsAttr, stocks, lineStatus, lineText, pickType, selectType, names
         } = this.state;
         const renderCount = (
             <List>
@@ -647,7 +647,8 @@ class GoodsDetail extends BaseComponent {
                                 </Flex.Item>
                                 <Flex.Item>
                                     <div className="bot-right">
-                                        {shopAddress}
+                                        {/* {shopAddress} */}
+                                        {shop.area}
                                     </div>
                                 </Flex.Item>
                             </Flex>
