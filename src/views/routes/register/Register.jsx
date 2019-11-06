@@ -392,8 +392,6 @@ class Register extends BaseComponent {
     onCodeChange = (value) => {
         this.setState({
             zhj: '1'
-        }, () => {
-            console.log(this.zhj);
         });
         this.setState({
             code: value
@@ -416,7 +414,6 @@ class Register extends BaseComponent {
     //微信登录
     wxLogin = () => {
         TD.log(TD_EVENT_ID.LOGIN.ID, TD_EVENT_ID.LOGIN.LABEL.WX_LOGIN);
-        console.log('微信登录');
     };
 
     //忘记密码或者验证码获取失败

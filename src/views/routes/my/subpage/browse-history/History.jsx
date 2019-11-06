@@ -92,8 +92,8 @@ class History extends BaseComponent {
         this.setState((prevState) => ({
             data: prevState.data.cloneWithRowsAndSections(this.dataBlobs, this.sectionIDs, this.rowIDs),
             pageCount: res.page_count,
-            isLoading: false,
-            isEdit: window.isWX
+            isLoading: false
+            // isEdit: window.isWX
         }), () => {
             console.log(this.state.data);
             if (page < this.state.pageCount) {
@@ -399,19 +399,19 @@ class History extends BaseComponent {
         );
         return (
             <div className="browsing-history">
-                {window.isWX ? null : (
-                    <AppNavBar
-                        title="浏览历史"
-                        goBackModal={this.goBackModal}
-                        {...(data && data.getRowCount() > 0)
-                            ? {
-                                rightEdit: true,
-                                isEdit,
-                                changeNavRight: this.changeNavRight
-                            } : null
-                        }
-                    />
-                )}
+                <AppNavBar
+                    status="2"
+                    title={window.isWX ? '' : '浏览历史'}
+                    show={!window.isWX}
+                    goBackModal={this.goBackModal}
+                    {...(data && data.getRowCount() > 0)
+                        ? {
+                            rightEdit: true,
+                            isEdit,
+                            changeNavRight: this.changeNavRight
+                        } : null
+                    }
+                />
                 <div className={tabKey === 0 ? `history-list-goods ${isEdit ? 'base' : ''}` : `history-list-shop ${isEdit ? 'base' : ''}`}>
                     <Tabs
                         tabs={tabs}

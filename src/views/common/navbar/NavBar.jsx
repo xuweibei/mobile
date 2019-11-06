@@ -30,7 +30,8 @@ class NavBar extends React.PureComponent {
         backgroundColor: PropTypes.string,
         rightExplainClick: PropTypes.func,
         show: PropTypes.bool,
-        color: PropTypes.string
+        color: PropTypes.string,
+        status: PropTypes.string
     }
 
     static defaultProps = {
@@ -50,7 +51,8 @@ class NavBar extends React.PureComponent {
         show: true,
         backgroundColor: '',
         rightExplainClick: () => {},
-        color: ''
+        color: '',
+        status: '1'
     };
 
     componentWillMount() {
@@ -110,15 +112,16 @@ class NavBar extends React.PureComponent {
     }
 
     render() {
-        const {title, rightShow, redBackground, rightSearch, show, rightExplain, rightEdit, search, isEdit, backgroundColor} = this.props;
+        const {title, rightShow, redBackground, rightSearch, show, rightExplain, rightEdit, search, isEdit, backgroundColor, status} = this.props;
         if (window.isWX) {
             if (title) {
                 document.title = title;
             }
-            return null;
+            // return null;
         }
+
         return (
-            window.isWX ? null : (
+            (window.isWX && status === '1') ? null : (
                 <div className="wrapTabNav">
                     <div className="navbar" style={{backgroundColor: backgroundColor || '@white'}}>
                         { redBackground //红底
