@@ -43,8 +43,6 @@ class ScrollToTop extends React.PureComponent {
     }
 
     static getDerivedStateFromError(a, v) {
-        console.log(a, 'sssssssssssssssssssssss');
-        console.log(v, 'dddddddddddddddddddddddd');
         return {hasError: true};
     }
 

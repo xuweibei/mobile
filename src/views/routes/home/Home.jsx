@@ -197,7 +197,7 @@ class Home extends BaseComponent {
                                     <Carousel
                                         infinite
                                     >
-                                        {banner.map((item, index) => (
+                                        {banner.map((item) => (
                                             <div key={item}>
                                                 <img
                                                     src={item}
@@ -214,7 +214,7 @@ class Home extends BaseComponent {
                             nav && (
                                 <div className="home-nav">
                                     <Grid
-                                        data={nav.map((item, index) => ({icon: item.img_url, text: item.cate_name, id: item.id1}))}
+                                        data={nav.map((item) => ({icon: item.img_url, text: item.cate_name, id: item.id1}))}
                                         activeStyle
                                         columnNum={5}
                                         square

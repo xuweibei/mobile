@@ -59,9 +59,9 @@ class Collect extends BaseComponent {
             .subscribe((res) => {
                 this.temp.isLoading = false;
                 if (res && res.status === 0) {
-                    this.setState({
-                        isEdit: window.isWX && (res.data && res.data.length > 0)
-                    });
+                    // this.setState({
+                    //     isEdit: window.isWX && (res.data && res.data.length > 0)
+                    // });
                     if (tabKey === 0) {
                         if (page === 1) {
                             this.temp.stackData = res.data;
@@ -462,7 +462,9 @@ class Collect extends BaseComponent {
         return (
             <div data-component="collect" data-role="page" className={`collect ${window.isWX ? 'WX-CL' : ''}`}>
                 <AppNavBar
-                    title="我的收藏"
+                    status="2"
+                    title={window.isWX ? '' : '我的收藏'}
+                    show={!window.isWX}
                     {
                     ...tabKey === 0 && goodsSource.getRowCount() > 0 ? {
                         isEdit,

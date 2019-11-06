@@ -278,6 +278,7 @@ class Find extends BaseComponent {
         });
     };
 
+    // 弹出搜索框
     showPopup = (showPopup) => {
         setTimeout(() => {
             this.setState({
@@ -307,6 +308,7 @@ class Find extends BaseComponent {
         }
     }
 
+    // 根据搜索框输入地址定位
     addressGoGeoc = (address) => {
         // 创建地址解析器实例
         const myGeo = new window.BMap.Geocoder();
@@ -334,7 +336,6 @@ class Find extends BaseComponent {
                 this.fetch(urlCfg.findForShopName, {data: {title: this.state.shopName, latitude: latitude, longitude: longitude}})
                     .subscribe((res) => {
                         if (res.status === 0 && res.data.length > 0) {
-                            console.log('卧槽 ，太无情');
                             showInfo(Feedback.Search_Success);
                             const {setShopList} = this.props;
                             setShopList(res.data);
@@ -356,7 +357,6 @@ class Find extends BaseComponent {
             if (address.length === 0) {
                 showInfo(Form.No_Search_Address);
             } else {
-                console.log('卧槽，无情');
                 this.addressGoGeoc(address);
                 this.setState({
                     showPopup2: false
@@ -367,7 +367,6 @@ class Find extends BaseComponent {
 
     //关闭弹窗
     close = (prop) => {
-        console.log('卧槽，真吉尔无情');
         this.setState({
             [prop]: false
         });
