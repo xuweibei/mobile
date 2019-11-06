@@ -8,7 +8,8 @@ export default class Evaluate extends React.PureComponent {
         goodsDetail: PropTypes.object.isRequired,
         shop: PropTypes.object.isRequired,
         shopH: PropTypes.func.isRequired,
-        openSku: PropTypes.func.isRequired
+        openSku: PropTypes.func.isRequired,
+        hasType: PropTypes.bool.isRequired
     }
 
     static defaultProps = {
@@ -16,7 +17,7 @@ export default class Evaluate extends React.PureComponent {
     }
 
     render() {
-        const {Element, names, goodsDetail, shop, shopH, openSku} = this.props;
+        const {Element, names, goodsDetail, shop, shopH, openSku, hasType} = this.props;
         return (
             <Element name="evaluate" className="goods-shop">
                 <div className="framing">
@@ -43,7 +44,9 @@ export default class Evaluate extends React.PureComponent {
                         <div className="serve">
                             <div className="waiter">服务</div>
                             <div className="their">
-                                <span>门店可自提</span>
+                                {
+                                    hasType && (<span>门店可自提</span>)
+                                }
                                 <span className="dolt"/>
                             </div>
                         </div>
