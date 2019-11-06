@@ -137,7 +137,7 @@ class ListDetails extends BaseComponent {
         this.fetch(urlCfg.remindOrder, {data: {id: canInfo.order_id}})
             .subscribe((res) => {
                 if (res && res.status === 0) {
-                    showSuccess(Feedback.Deliver_Success);
+                    showSuccess(res.message);
                 }
             });
     }
@@ -359,7 +359,7 @@ class ListDetails extends BaseComponent {
                             </div>
 
                             <div className="recommend-box">
-                                <div className="recommend common-margin">热门推荐</div>
+                                {/* <div className="recommend common-margin">热门推荐</div>
                                 <div className="hot-push-goods">
                                     {
                                         (canInfo.recommend && canInfo.recommend.length > 0) ? canInfo.recommend.map(item => (
@@ -401,7 +401,7 @@ class ListDetails extends BaseComponent {
                                             </div>
                                         )) : ''
                                     }
-                                </div>
+                                </div> */}
                                 {canStatus && (
                                     <CancelOrder
                                         canStateChange={this.canStateChange}

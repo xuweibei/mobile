@@ -31,7 +31,7 @@ class Edit extends BaseComponent {
                     {
                         key: '1-1',
                         extra: '修改',
-                        param: '/extname',
+                        param: '/extname?router=extname',
                         subName: 'pig',
                         value: '昵称',
                         moredes: userInfo && userInfo.nickname
@@ -56,7 +56,7 @@ class Edit extends BaseComponent {
                         key: '1-4',
                         name: 'see',
                         arrow: 'horizontal',
-                        param: '/enid',
+                        param: '/enid?router=enid',
                         subName: 'before',
                         more: true,
                         value: '源头UID'
@@ -93,7 +93,7 @@ class Edit extends BaseComponent {
                     {
                         key: '3-2',
                         extra: (userInfo && userInfo.address.length > 0) ? '' : '修改', //只允许修改一次
-                        param: (userInfo && userInfo.address.length > 0) ? '' : '/locationarea', //只允许修改一次
+                        param: (userInfo && userInfo.address.length > 0) ? '' : '/locationarea?router=locationarea', //只允许修改一次
                         subName: 'locationarea',
                         name: 'area',
                         value: '当前区域',
@@ -127,7 +127,7 @@ class Edit extends BaseComponent {
                 key: '5',
                 name: 'not',
                 arrow: 'horizontal',
-                param: '/userAgreementDetail',
+                param: '/userAgreementDetail?router=userAgreementDetail',
                 subName: 'about',
                 value: '关于' + WEB_NAME
             }
@@ -183,7 +183,7 @@ class Edit extends BaseComponent {
         } else if (item.param) {
             //判断是否有源头uid，locker_id状态为0则没有；需跳转到确认页面
             if (item.more && userInfo.locker_id === 0) {
-                this.switchTo('/source');
+                this.switchTo('/source?router=source');
             } else {
                 this.switchTo(item.param);
             }

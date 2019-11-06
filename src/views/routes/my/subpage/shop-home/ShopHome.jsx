@@ -198,9 +198,9 @@ class ShopHome extends BaseComponent {
                     </div>
                     <div className="goods-information">
                         <div className="goods-explain">{item.title}</div>
-                        <span className="btn-keep">记账量：{item.deposit}</span>
+                        <span className="btn-keep">记账量{item.deposit}</span>
                         <div className="payment">
-                            <span>{item.num_sold}人付款</span>
+                            <span>销量：{item.num_sold}</span>
                             <span className="payment-r">￥{item.original_price}</span>
                         </div>
                         <div className="price">￥{item.price}</div>

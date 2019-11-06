@@ -204,7 +204,7 @@ class ReDetail extends BaseComponent {
     }
 
     render() {
-        const {selfSufficiency, selfGoods, recommendGoods, maskStatus, collectId} = this.state;
+        const {selfSufficiency, selfGoods, maskStatus, collectId} = this.state;
         return (
             <div data-component="Self-orderingDetails" data-role="page" className="Self-orderingDetails">
                 <AppNavBar goBackModal={this.goBackModal} title="订单详情"/>
@@ -321,7 +321,7 @@ class ReDetail extends BaseComponent {
                 </div>
 
                 <div className="recommend-box">
-                    <div className="recommend common-margin">热门推荐</div>
+                    {/* <div className="recommend common-margin">热门推荐</div>
                     <div className="hot-push-goods">
                         {(recommendGoods && recommendGoods.length > 0) ? recommendGoods.map(item => (
                             <div className="shop-lists" onClick={() => this.goToGoodsDetail(item.pr_id)}>
@@ -359,7 +359,7 @@ class ReDetail extends BaseComponent {
                                 </div>
                             </div>
                         )) : ''}
-                    </div>
+                    </div> */}
                     {maskStatus && (
                         <div className="picMask" onClick={this.maskClose}>
                             <div className="address-right" onClick={e => this.openMask(e)}>
