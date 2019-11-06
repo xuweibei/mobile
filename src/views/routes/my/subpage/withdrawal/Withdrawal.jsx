@@ -5,7 +5,6 @@ import {Tabs, Picker, List, InputItem, Flex, Checkbox, Button} from 'antd-mobile
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import './Withdrawal.less';
-import {IconFont} from '../../../../common/icon-font/IconFont';
 import {baseActionCreator as actionCreator} from '../../../../../redux/baseAction';
 import {InputGrid} from '../../../../common/input-grid/InputGrid';
 import AppNavBar from '../../../../common/navbar/NavBar';
