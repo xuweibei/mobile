@@ -7,7 +7,7 @@ import {withRouter} from 'react-router-dom';
 import AppNavBar from '../navbar/NavBar';
 import Nothing from '../nothing/Nothing';
 
-const {appHistory, setNavColor} = Utils;
+const {appHistory, setNavColor, native} = Utils;
 const {FIELD, navColorF} = Constants;
 class ScrollToTop extends React.PureComponent {
     static propTypes = {
@@ -55,7 +55,7 @@ class ScrollToTop extends React.PureComponent {
                     <Nothing
                         text={FIELD.Page_Crash}
                         title="返回"
-                        onClick={() => appHistory.goBack()}
+                        onClick={() => ((process.env.NATIVE && appHistory.length() === 0) ? native('goBack') : appHistory.goBack())}
                     />
                 </React.Fragment>
             );

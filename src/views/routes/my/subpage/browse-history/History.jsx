@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import {Tabs, ListView} from 'antd-mobile';
 import {baseActionCreator as actionCreator} from '../../../../../redux/baseAction';
 import Nothing from '../../../../common/nothing/Nothing';
+import LazyLoad from '../../../../common/lazy-load/LazyLoad';
 import AppNavBar from '../../../../common/navbar/NavBar';
 import './History.less';
 
@@ -150,9 +151,7 @@ class History extends BaseComponent {
                         onClick={() => this.goToGoodsDetail(item.pr_id)}
                     >
                         <div className="goods-row-left">
-                            <img
-                                src={item.picpath}
-                            />
+                            <LazyLoad lazyInfo={{imgUrl: item.picpath, offset: -20, overflow: true}}/>
                         </div>
                         <div className="goods-row-right">
                             <div className="goods-row-right-zeroth">

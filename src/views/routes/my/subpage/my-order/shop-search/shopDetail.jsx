@@ -404,7 +404,7 @@ class MyOrderSearch extends BaseComponent {
                                 <div className="sku-left">
                                     {items.property_content && items.property_content.map(pro => <div className="goods-size">{pro}</div>)}
                                 </div>
-                                <div className="sku-right">x{items.pr_num}</div>
+                                <div className="sku-right">x{items.num}</div>
                             </div>
                             <div className="btn-keep">记账量：{items.deposit}</div>
                         </div>
@@ -413,7 +413,7 @@ class MyOrderSearch extends BaseComponent {
                 <div className="shop-bottom">
                     <div className="right-bottom">
                         <div className="total-count">
-                            总记账量：<span>{item.all_price}</span>
+                            总记账量：<span>{item.all_deposit}</span>
                         </div>
                         <div className="total-price">
                             <div className="total-price-left">共{item.pr_count}件商品</div>

@@ -15,7 +15,7 @@
         position: absolute;
         bottom: 0;
         height: 1000px;
-        //overflow-y: auto;
+        overflow-y: auto;
         .am-modal-close {
             //position: fixed;
             right: 22px;
@@ -24,28 +24,41 @@
         }
         .am-modal-body {
             .panel {
+                position: absolute;
                 text-align: left;
-                overflow-y: auto;
+                overflow-y: hidden;
+                top: 0;
                 //height: 100vh;
-                //padding-top: 180px;
                 .panel-top {
-                    margin-bottom: 50px;
+                    // margin-bottom: 50px;
+                    background-color: #fff;
+                    // position: fixed;
+                    z-index: 2;
                     .panel-right {
+                        position: relative;
                         .close {
                             width: 100px;
                             height: 100px;
                             position: absolute;
-                            right: 30px;
-                            top: 20px;
+                            right: -40px;
+                            top: 0;
                         }
                         .close:before {
-                            display: block;
+                            // display: block;
                             //margin-top: 40px;
-                            margin-left: 40px;
+                            // margin-left: 40px;
                             content: '\E618';
                         }
                     }
                 }
+                .panel-bot{
+                    height: 600px;
+                    overflow-y: scroll;
+                    margin-top: 50px;
+                    padding-bottom: 40px;
+                }
+                //隐藏滚动条
+                .panel-bot::-webkit-scrollbar { width: 0 !important };
                 .panel-content-box {
                     padding-bottom: 0;
                     //height: auto;

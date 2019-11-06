@@ -31,7 +31,7 @@ class Collect extends BaseComponent {
             isLoading: true,
             pagesize: 5
         };
-        const value = this.props.tabValue;
+        const {tabValue} = this.props;
         this.state = {
             goodsSource, //商品列表
             shopSource, //店铺列表
@@ -40,8 +40,8 @@ class Collect extends BaseComponent {
             pageCount: -1, //商品总页码初始
             pageCountShopping: -1, //店铺总页码初始
             refreshing: false, //刷新状态是否可见
-            statusNum: value || 1, //返回时tab状态
-            tabKey: value ? value - 1 : 0, //tab状态
+            statusNum: tabValue || 1, //返回时tab状态
+            tabKey: tabValue ? tabValue - 1 : 0, //tab状态
             hasMore: true, // 是否有更多数据
             height: document.documentElement.clientHeight - (window.isWX ? window.rem * 1.08 : window.rem * 1.98)
         };

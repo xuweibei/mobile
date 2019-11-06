@@ -9,7 +9,7 @@ import {baseActionCreator} from '../../../../../redux/baseAction';
 import './edit.less';
 
 const Item = List.Item;
-const {appHistory, systemApi: {removeValue}, native, showInfo, getUrlParam} = Utils;
+const {appHistory, systemApi: {removeValue}, native, showInfo} = Utils;
 const {urlCfg} = Configs;
 const {LOCALSTORAGE, MESSAGE: {Feedback}, WEB_NAME} = Constants;
 class Edit extends BaseComponent {
@@ -18,9 +18,6 @@ class Edit extends BaseComponent {
         if (!userInfo) {
             getUserInfo();
         }
-        const userType = decodeURI(getUrlParam('userType', encodeURI(this.props.location.search)));
-        //全局储存用户身份
-        this.props.setUseType(userType);
     }
 
     //初始化列表数据
@@ -34,7 +31,7 @@ class Edit extends BaseComponent {
                     {
                         key: '1-1',
                         extra: '修改',
-                        param: '/extname',
+                        param: '/extname?router=extname',
                         subName: 'pig',
                         value: '昵称',
                         moredes: userInfo && userInfo.nickname
@@ -59,7 +56,7 @@ class Edit extends BaseComponent {
                         key: '1-4',
                         name: 'see',
                         arrow: 'horizontal',
-                        param: '/enid',
+                        param: '/enid?router=enid',
                         subName: 'before',
                         more: true,
                         value: '源头UID'
@@ -96,7 +93,7 @@ class Edit extends BaseComponent {
                     {
                         key: '3-2',
                         extra: (userInfo && userInfo.address.length > 0) ? '' : '修改', //只允许修改一次
-                        param: (userInfo && userInfo.address.length > 0) ? '' : '/locationarea', //只允许修改一次
+                        param: (userInfo && userInfo.address.length > 0) ? '' : '/locationarea?router=locationarea', //只允许修改一次
                         subName: 'locationarea',
                         name: 'area',
                         value: '当前区域',
@@ -130,7 +127,7 @@ class Edit extends BaseComponent {
                 key: '5',
                 name: 'not',
                 arrow: 'horizontal',
-                param: '/userAgreementDetail',
+                param: '/userAgreementDetail?router=userAgreementDetail',
                 subName: 'about',
                 value: '关于' + WEB_NAME
             }
@@ -186,7 +183,7 @@ class Edit extends BaseComponent {
         } else if (item.param) {
             //判断是否有源头uid，locker_id状态为0则没有；需跳转到确认页面
             if (item.more && userInfo.locker_id === 0) {
-                this.switchTo('/source');
+                this.switchTo('/source?router=source');
             } else {
                 this.switchTo(item.param);
             }
@@ -306,10 +303,8 @@ class Edit extends BaseComponent {
 }
 
 const mapStateToProps = state => {
-    const base = state.get('base');
     const EditInfo = state.get('my');
     return {
-        userTypes: base.get('userTypes'),
         userInfo: EditInfo.get('userInfo')
     };
 };

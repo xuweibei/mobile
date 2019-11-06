@@ -346,54 +346,58 @@ class Sku extends React.PureComponent {
                             <div className="close icon" onClick={onClose}/>
                         </div>
                     </div>
-                    <div className="panel-content-box">
-                        <div className="panel-content">
-                            <div className="methods" key={type.name}>
-                                <div className="heading">{type.name}</div>
-                                <div className="select">
-                                    {type.data.map(item => (
-                                        <Button
-                                            className={item.id.toString() === selectType ? 'active-att' : 'select-att'}
-                                            key={item.id}
-                                            onClick={() => this.clickPickType(item.id.toString())}
-                                        >
-                                            {item.value}
-                                        </Button>
-                                    ))}
-                                </div>
-                            </div>
-                            {attributes.map((attribute, index) => (
-                                <div className="methods" key={attribute.name}>
-                                    <div className="heading">{attribute.name}</div>
+                    <div className="panel-bot">
+                        <div className="panel-content-box">
+                            <div className="panel-content">
+                                <div className="methods" key={type.name}>
+                                    <div className="heading">{type.name}</div>
                                     <div className="select">
-                                        {attribute.data.map(item => {
-                                            const styleName = item.selected
-                                                ? 'active-att'//选中
-                                                : 'select-att'; //未选中
-                                            return (
-                                                <Button
-                                                    className={styleName}
-                                                    key={item.id}
-                                                    disabled={!!item.unselectable}
-                                                    onClick={() => this.clickHandler(item.id, index)}
-                                                >
-                                                    {item.value}
-                                                </Button>
-                                            );
-                                        })}
+                                        {type.data.map(item => (
+                                            <Button
+                                                className={item.id.toString() === selectType ? 'active-att' : 'select-att'}
+                                                key={item.id}
+                                                onClick={() => this.clickPickType(item.id.toString())}
+                                            >
+                                                {item.value}
+                                            </Button>
+                                        ))}
                                     </div>
                                 </div>
-                            ))}
+                                {attributes.map((attribute, index) => (
+                                    <div className="methods" key={attribute.name}>
+                                        <div className="heading">{attribute.name}</div>
+                                        <div className="select">
+                                            {attribute.data.map(item => {
+                                                const styleName = item.selected
+                                                    ? 'active-att'//选中
+                                                    : 'select-att'; //未选中
+                                                return (
+                                                    <Button
+                                                        className={styleName}
+                                                        key={item.id}
+                                                        disabled={!!item.unselectable}
+                                                        onClick={() => this.clickHandler(item.id, index)}
+                                                    >
+                                                        {item.value}
+                                                    </Button>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                            {this.getExtraElement()}
                         </div>
-                        {this.getExtraElement()}
+                        <Button
+                            style={{width: '93%', margin: 'auto'}}
+                            onClick={submitalbe
+                                ? this.onSubmit
+                                : () => this.showToast(selectedTemp)
+                            }
+                        >确定
+                        </Button>
                     </div>
-                    <Button
-                        onClick={submitalbe
-                            ? this.onSubmit
-                            : () => this.showToast(selectedTemp)
-                        }
-                    >确定
-                    </Button>
+
                 </div>
             </Modal>
         );
