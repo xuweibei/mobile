@@ -50,8 +50,8 @@ class Agreement extends BaseComponent {
     }
 
     componentDidMount() {
-        const {uidInfo, getUid, areaInfo, getArea, nickname, getNickName} = this.props;
-        const type = decodeURI(getUrlParam('type', encodeURI(this.props.location.search)));
+        const {uidInfo, getUid, areaInfo, getArea, nickname, getNickName, location: {search}} = this.props;
+        const type = decodeURI(getUrlParam('type', encodeURI(search)));
         if (type === 'null') { //非登录页跳转过来查看的时候
             if (!uidInfo) {
                 getUid();
@@ -286,24 +286,22 @@ class Agreement extends BaseComponent {
                     </React.Fragment>
                 )
             }
-            <div>
-                <Modal
-                    visible={modal}
-                    className="protocol-modal"
-                    title={protocolTitle}
-                    footer={[{text: '确定',
-                        onPress: () => {
-                            if (process.env.NATIVE && type !== 'null') {
-                                native('goBack');
-                            }
-                            this.showModal(false);
-                        }}]}
-                >
-                    <div className="protocol-content">
-                        {protocol}
-                    </div>
-                </Modal>
-            </div>
+            <Modal
+                visible={modal}
+                className="protocol-modal"
+                title={protocolTitle}
+                footer={[{text: '确定',
+                    onPress: () => {
+                        if (process.env.NATIVE && type !== 'null') {
+                            native('goBack');
+                        }
+                        this.showModal(false);
+                    }}]}
+            >
+                <div className="protocol-content">
+                    {protocol}
+                </div>
+            </Modal>
         </div>
     )
 
