@@ -9,7 +9,8 @@ const {createReducer} = Utils;
 const initState = {
     banner: null,
     logo: null,
-    nav: null
+    nav: null,
+    count: 0
 };
 
 /**
