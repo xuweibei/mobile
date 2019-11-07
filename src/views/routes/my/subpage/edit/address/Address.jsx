@@ -2,6 +2,7 @@
 * 收货地址页面
 * */
 import {Button, SwipeAction, List, InputItem, TextareaItem} from 'antd-mobile';
+import {createForm} from 'rc-form';
 import {connect} from 'react-redux';
 import {baseActionCreator} from '../../../../../../redux/baseAction';
 import {myActionCreator} from '../../../actions/index';
@@ -30,15 +31,14 @@ class Address extends BaseComponent {
     componentDidMount() {
         const {addressList, getAddress, location: {search}} = this.props;
         const router = decodeURI(getUrlParam('router', encodeURI(search)));
-        if (!addressList) {
-            getAddress();
-        }
         if (router === 'edit') {
             this.setState({
                 edit: router
             }, () => {
                 this.getList();
             });
+        } else if (!addressList) {
+            getAddress();
         }
     }
 
@@ -81,7 +81,7 @@ class Address extends BaseComponent {
 
     //编辑地址
     editAdree = (ev, data) => {
-        appHistory.push(`/editAddress?id=${data ? data.id : ''}&status=${data ? '1' : '2'}`);//2是添加，1是编辑
+        appHistory.push(`/editAddress?id=${data ? data.id : ''}&status=${data ? '1' : '2'}&router=edit`);//2是添加，1是编辑
         ev.stopPropagation();
     }
 
@@ -439,4 +439,4 @@ const mapDispatchToProps = {
     saveAddress: myActionCreator.saveAddress
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Address);
+export default connect(mapStateToProps, mapDispatchToProps)(createForm()(Address));

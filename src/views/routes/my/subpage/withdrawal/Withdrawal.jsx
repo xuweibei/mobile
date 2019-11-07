@@ -5,7 +5,6 @@ import {Tabs, Picker, List, InputItem, Flex, Checkbox, Button} from 'antd-mobile
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import './Withdrawal.less';
-import {IconFont} from '../../../../common/icon-font/IconFont';
 import {baseActionCreator as actionCreator} from '../../../../../redux/baseAction';
 import {InputGrid} from '../../../../common/input-grid/InputGrid';
 import AppNavBar from '../../../../common/navbar/NavBar';
@@ -370,11 +369,11 @@ class Withdrawal extends BaseComponent {
                         <div className="popup-wrap">
                             <div className="popup-top">
                                 <div onClick={this.closePopup}>
-                                    <IconFont iconText="iconfuzhu-jiantou-copy"/>
+                                    <span className="icon command-left" onClick={this.closePopup}/>
                                 </div>
                                 <div className="popup-title">请输入支付密码</div>
                                 <div onClick={this.closePopup}>
-                                    <IconFont iconText="iconfuzhu-guanbi_"/>
+                                    <span className="icon command-right" onClick={this.closePopup}/>
                                 </div>
                             </div>
                             <div className="popup-bottom">

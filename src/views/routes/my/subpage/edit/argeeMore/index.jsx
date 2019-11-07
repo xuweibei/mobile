@@ -38,7 +38,7 @@ class Agreement extends BaseComponent {
     componentWillMount() {
         const type = decodeURI(getUrlParam('type', encodeURI(this.props.location.search)));
         const router = decodeURI(getUrlParam('router', encodeURI(this.props.location.search)));
-        if (type !== 'null') {
+        if (type !== 'null') { //登录页跳过来的时候
             this.setState({
                 edit: 'userAgreementDetail'
             }, () => {
@@ -50,24 +50,35 @@ class Agreement extends BaseComponent {
     }
 
     componentDidMount() {
-        const {uidInfo, getUid, areaInfo, getArea, nickname, getNickName} = this.props;
-        if (!uidInfo) {
-            getUid();
-        }
-        if (!nickname) {
-            getNickName();
-        }
-        if (!areaInfo) {
-            getArea();
+        const {uidInfo, getUid, areaInfo, getArea, nickname, getNickName, location: {search}} = this.props;
+        const type = decodeURI(getUrlParam('type', encodeURI(search)));
+        if (type === 'null') { //非登录页跳转过来查看的时候
+            if (!uidInfo) {
+                getUid();
+            }
+            if (!nickname) {
+                getNickName();
+            }
+            if (!areaInfo) {
+                getArea();
+            }
         }
     }
 
     componentWillReaciveProps(nextProps) {
         const router = decodeURI(getUrlParam('router', encodeURI(this.props.location.search)));
         const nextRouter = decodeURI(getUrlParam('router', encodeURI(nextProps.location.search)));
+        const type = decodeURI(getUrlParam('type', encodeURI(nextProps.location.search)));
         if (process.env.NATIVE && router !== nextRouter) {
             this.setState({
                 edit: nextRouter
+            });
+        }
+        if (type !== 'null') {
+            this.setState({
+                edit: 'userAgreementDetail'
+            }, () => {
+                this.getProtocol(Number(type));
             });
         }
     }
@@ -275,24 +286,22 @@ class Agreement extends BaseComponent {
                     </React.Fragment>
                 )
             }
-            <div>
-                <Modal
-                    visible={modal}
-                    className="protocol-modal"
-                    title={protocolTitle}
-                    footer={[{text: '确定',
-                        onPress: () => {
-                            if (process.env.NATIVE && type !== 'null') {
-                                native('goBack');
-                            }
-                            this.showModal(false);
-                        }}]}
-                >
-                    <div className="protocol-content">
-                        {protocol}
-                    </div>
-                </Modal>
-            </div>
+            <Modal
+                visible={modal}
+                className="protocol-modal"
+                title={protocolTitle}
+                footer={[{text: '确定',
+                    onPress: () => {
+                        if (process.env.NATIVE && type !== 'null') {
+                            native('goBack');
+                        }
+                        this.showModal(false);
+                    }}]}
+            >
+                <div className="protocol-content">
+                    {protocol}
+                </div>
+            </Modal>
         </div>
     )
 
