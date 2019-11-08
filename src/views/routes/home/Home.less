@@ -2,22 +2,10 @@
 .home {
     position: relative;
     background: @white;
-    .active-list{
-        color:@fiery-red;
-    }
     .search-login{
         .am-search{
             width: 100%;
         }
-    }
-    .nav-right-login{
-        width: auto !important;
-        //.home-searchBar-icon{
-        //    margin-left: 10px !important;
-        //    .information-IM:before {
-        //        content: '\E675';
-        //    }
-        //}
     }
     .home-content{
         .aroundBlank();
@@ -33,9 +21,6 @@
         border-bottom-left-radius:50%;
         .directionalGradation(150deg, @garnet-red, @fiery-red);
     }
-    .active-list{
-        color:@fiery-red !important;
-    }
     .home-searchBar{
         display: flex;
         align-items:center ;
@@ -45,11 +30,7 @@
             width: 50px;
             height: 50px;
             z-index: 999;
-            .icon-right:before{
-                font-size: @font-size-42;
-                color:@white;
-                content: '\e63d';
-            }
+            
         }
         &-icon{
             flex-grow:1;
@@ -60,11 +41,6 @@
                 content: '\E634';
                 font-size: 44px;
             }
-            // .information:before {
-            //     content: '\E675';
-            //     margin: 0 16px;
-            //     font-size: @font-size-44;
-            // }
             .information:after {
                 content: '\E678';
                 font-size: @font-size-44;
@@ -118,9 +94,6 @@
             height: 308px;
             vertical-align: top;
             border-radius: 8px;
-        }
-        .slider-frame{
-            height:308px !important;
         }
         .am-carousel{
             z-index: 3;
@@ -183,11 +156,6 @@
                 }
             }
         }
-    }
-
-    .home-main-banner{
-        height:174px;
-        .spriteFigureTow();
     }
     .home-logo{
         width: 100%;
@@ -293,11 +261,5 @@
                 color:#FF3333;
             }
         }
-    }
-    .hotShops{
-        display: flex;
-        padding: 0 15px;
-        flex-wrap: wrap;
-        justify-content: space-between;
     }
 }

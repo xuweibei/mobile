@@ -217,10 +217,10 @@ export default class ReDetail extends BaseComponent {
             visible={this.state.visible}
             overlay={[
                 (<Item style={{float: 'left'}} key="1" icon={myImg('family.svg')}><p>首页</p></Item>),
-                (<Item style={{float: 'left'}} key="2" icon={myImg('star.svg')}>收藏</Item>),
-                (<Item style={{float: 'left'}} key="3" icon={myImg('shop-cart.svg')}>购物车</Item>),
-                (<Item style={{float: 'left'}} key="4" icon={myImg('info.svg')}><p>消息</p></Item>),
-                (<Item style={{float: 'left'}} key="5" icon={myImg('share.svg')}>分享</Item>)
+                // (<Item style={{float: 'left'}} key="2" icon={myImg('star.svg')}>收藏</Item>),
+                // (<Item style={{float: 'left'}} key="3" icon={myImg('shop-cart.svg')}>购物车</Item>),
+                (<Item style={{float: 'left'}} key="4" icon={myImg('info.svg')}><p>消息</p></Item>)
+                // (<Item style={{float: 'left'}} key="5" icon={myImg('share.svg')}>分享</Item>)
             ]}
             align={{
                 overflow: {

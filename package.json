@@ -106,6 +106,7 @@
     "svgo-loader": "^1.2.1",
     "url-loader": "^0.5.8",
     "webpack": "^3.6.0",
+    "webpack-bundle-analyzer": "^3.6.0",
     "webpack-dev-server": "^2.8.2"
   }
 }

@@ -477,10 +477,10 @@ class GoodsDetail extends BaseComponent {
             onVisibleChange={this.handleVisibleChange}
             overlay={[
                 (<Item key="1" icon={myImg('family.svg')}><p>首页</p></Item>),
-                (<Item key="2" icon={myImg('star.svg')}>收藏</Item>),
-                (!window.isWX && (<Item key="3" icon={myImg('shop-cart.svg')}>购物车</Item>)),
-                (!window.isWX && (<Item key="4" icon={myImg('info.svg')}><p>消息</p></Item>)),
-                (<Item key="5" icon={myImg('share.svg')}>分享</Item>)
+                // (<Item key="2" icon={myImg('star.svg')}>收藏</Item>),
+                // (!window.isWX && (<Item key="3" icon={myImg('shop-cart.svg')}>购物车</Item>)),
+                (!window.isWX && (<Item key="4" icon={myImg('info.svg')}><p>消息</p></Item>))
+                // (<Item key="5" icon={myImg('share.svg')}>分享</Item>)
             ]}
         >
             <Icon type="ellipsis"/>
