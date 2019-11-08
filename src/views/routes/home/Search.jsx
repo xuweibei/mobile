@@ -67,7 +67,7 @@ class Search extends BaseComponent {
                         textStatus: false
                     });
                 } else {
-                    appHistory.push(`/categoryList?flag=${true}&keywords=${encodeURI(keywords)}&id=${''}`);
+                    appHistory.push(`/categoryList?flag=${true}&keywords=${encodeURIComponent(keywords)}&id=${''}`);
                 }
             } else {
                 goBackModal();
@@ -92,7 +92,7 @@ class Search extends BaseComponent {
 
     //热门搜索和历史搜索跳转
     switchTo = (val) => {
-        appHistory.push(`/categoryList?flag=${true}&keywords=${encodeURI(val)}&id=${''}`);
+        appHistory.push(`/categoryList?flag=${true}&keywords=${encodeURIComponent(val)}&id=${''}`);
     };
 
     //获取输入框文字
