@@ -55,7 +55,7 @@ class CategoryList extends BaseComponent {
         const keywords = decodeURI(getUrlParam('keywords', encodeURI(this.props.location.search)));
         TD.log(TD_EVENT_ID.GOODS_CLASSIFY.ID, TD_EVENT_ID.GOODS_CLASSIFY.LABEL.LOOK_GOODS_DETAILS);
         this.setState({
-            keywords: decodeURI(keywords),
+            keywords: decodeURIComponent(keywords),
             changeNav: flag,
             text: decodeURI(title)
         });

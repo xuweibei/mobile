@@ -6,7 +6,6 @@ import PasswordDetailPage from './password/password-detail/PasswordDetail';
 import PasswordPayment from './password/password-detail-payment/PasswordPayment';
 // import UserId from './userId/UserId';
 import Addr from './address/Address';
-import EditAddress from './edit-address';
 import bankCardPage from './bank-card/BankCard';
 import bankCardDetailPage from './bank-card/BankCardDetail';
 // import InformationPage from './information/Information';
@@ -30,7 +29,8 @@ const EditModal = () => (
         <Route path="/userAgreementDetail" component={Agreement}/> {/*关于中卖网*/}
 
         <Route path="/address" component={Addr}/> {/*地址管理*/}
-        <Route path="/editAddress" component={EditAddress}/> {/*地址管理-编辑或新建*/}
+        <Route path="/editAddress" component={Addr}/> {/*地址管理-编辑或新建*/}
+
         <Route path="/bankCard" component={bankCardPage}/> {/*我的银行卡*/}
         <Route path="/bankCardDetail" component={bankCardDetailPage}/> {/*我的银行卡-填写列表*/}
         {/* <Route path="/account" component={Account}/> 切换账户 */}

@@ -6,7 +6,8 @@ const homeActionTypes = Utils.keyMirror({
     GET_BANNER: '',
     SET_BANNER: '',
     GET_NAV: '',
-    SET_NAV: ''
+    SET_NAV: '',
+    ADD_COUNT: ''
 });
 
 

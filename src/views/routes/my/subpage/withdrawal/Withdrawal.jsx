@@ -5,7 +5,6 @@ import {Tabs, Picker, List, InputItem, Flex, Checkbox, Button} from 'antd-mobile
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import './Withdrawal.less';
-import {IconFont} from '../../../../common/icon-font/IconFont';
 import {baseActionCreator as actionCreator} from '../../../../../redux/baseAction';
 import {InputGrid} from '../../../../common/input-grid/InputGrid';
 import AppNavBar from '../../../../common/navbar/NavBar';
@@ -62,26 +61,22 @@ class Withdrawal extends BaseComponent {
     income = () => {
         this.fetch(urlCfg.income)
             .subscribe(res => {
-                if (res) {
-                    if (res.status === 0) {
-                        const ary = res.data.items;
-                        const aryTemp = ary.map((item) => {
-                            const temp = {};
-                            temp.label = item.name;
-                            temp.value = `${item.value}`;
-                            temp.desc = '最低提现金额' + item.min + '元';
-                            temp.min = item.min;
-                            temp.max = item.max;
-                            return temp;
-                        });
-                        this.setState({
-                            incomeData: res.data,
-                            district: aryTemp,
-                            isWx: res.data.is_wx
-                        });
-                    } else if (res.status === 1) {
-                        showInfo(res.message);
-                    }
+                if (res && res.status === 0) {
+                    const ary = res.data.items;
+                    const aryTemp = ary.map((item) => {
+                        const temp = {};
+                        temp.label = item.name;
+                        temp.value = `${item.value}`;
+                        temp.desc = '最低提现金额' + item.min + '元';
+                        temp.min = item.min;
+                        temp.max = item.max;
+                        return temp;
+                    });
+                    this.setState({
+                        incomeData: res.data,
+                        district: aryTemp,
+                        isWx: res.data.is_wx
+                    });
                 }
             });
     }
@@ -89,7 +84,7 @@ class Withdrawal extends BaseComponent {
     payPassWord = () => {
         this.fetch(urlCfg.memberStatus)
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     if (res.data.status !== 0) { //status为0为已设置，其他都是未设置
                         this.setState({
                             statusPay: 1
@@ -165,7 +160,7 @@ class Withdrawal extends BaseComponent {
         }, () => {
             if (this.state.withdrawId === 1) {
                 this.bindingBank();
-            } else  if (!this.state.isWx) {
+            } else if (!this.state.isWx) {
                 showAlert({
                     title: '您还没有绑定微信，请先绑定微信',
                     btnText: '好'
@@ -370,11 +365,11 @@ class Withdrawal extends BaseComponent {
                         <div className="popup-wrap">
                             <div className="popup-top">
                                 <div onClick={this.closePopup}>
-                                    <IconFont iconText="iconfuzhu-jiantou-copy"/>
+                                    <span className="icon command-left" onClick={this.closePopup}/>
                                 </div>
                                 <div className="popup-title">请输入支付密码</div>
                                 <div onClick={this.closePopup}>
-                                    <IconFont iconText="iconfuzhu-guanbi_"/>
+                                    <span className="icon command-right" onClick={this.closePopup}/>
                                 </div>
                             </div>
                             <div className="popup-bottom">
