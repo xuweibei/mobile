@@ -109,7 +109,7 @@ class CategoryListView extends BaseComponent {
                     page,
                     pagesize: this.temp.pagesize,
                     id: shopId,
-                    key: '' || keywords
+                    key: keywords
                 }
             }).subscribe((res) => {
                 this.temp.isLoading = false;

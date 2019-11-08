@@ -61,26 +61,22 @@ class Withdrawal extends BaseComponent {
     income = () => {
         this.fetch(urlCfg.income)
             .subscribe(res => {
-                if (res) {
-                    if (res.status === 0) {
-                        const ary = res.data.items;
-                        const aryTemp = ary.map((item) => {
-                            const temp = {};
-                            temp.label = item.name;
-                            temp.value = `${item.value}`;
-                            temp.desc = '最低提现金额' + item.min + '元';
-                            temp.min = item.min;
-                            temp.max = item.max;
-                            return temp;
-                        });
-                        this.setState({
-                            incomeData: res.data,
-                            district: aryTemp,
-                            isWx: res.data.is_wx
-                        });
-                    } else if (res.status === 1) {
-                        showInfo(res.message);
-                    }
+                if (res && res.status === 0) {
+                    const ary = res.data.items;
+                    const aryTemp = ary.map((item) => {
+                        const temp = {};
+                        temp.label = item.name;
+                        temp.value = `${item.value}`;
+                        temp.desc = '最低提现金额' + item.min + '元';
+                        temp.min = item.min;
+                        temp.max = item.max;
+                        return temp;
+                    });
+                    this.setState({
+                        incomeData: res.data,
+                        district: aryTemp,
+                        isWx: res.data.is_wx
+                    });
                 }
             });
     }
@@ -88,7 +84,7 @@ class Withdrawal extends BaseComponent {
     payPassWord = () => {
         this.fetch(urlCfg.memberStatus)
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     if (res.data.status !== 0) { //status为0为已设置，其他都是未设置
                         this.setState({
                             statusPay: 1
@@ -164,7 +160,7 @@ class Withdrawal extends BaseComponent {
         }, () => {
             if (this.state.withdrawId === 1) {
                 this.bindingBank();
-            } else  if (!this.state.isWx) {
+            } else if (!this.state.isWx) {
                 showAlert({
                     title: '您还没有绑定微信，请先绑定微信',
                     btnText: '好'

@@ -49,7 +49,7 @@ class Search extends BaseComponent {
                     textStatus: false
                 });
             } else {
-                appHistory.push(`/categoryList?flag=${true}&keywords=${encodeURI(keywords)}&id=${''}`);
+                appHistory.push(`/categoryList?flag=${true}&keywords=${encodeURIComponent(keywords)}&id=${''}`);
             }
         } else {
             goBackModal();
