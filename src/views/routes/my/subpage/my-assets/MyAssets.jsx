@@ -127,7 +127,7 @@ class MyAssets extends BaseComponent {
                         <Item extra="" onClick={() => appHistory.push('/withdrawal')}>CAM提现<span className="icon arrows-icon"/></Item>
                     </List>
                 </div>
-                <div className="cash-bg"/>
+                {/* <div className="cash-bg"/> */}
             </div>
         );
     }
