@@ -75,7 +75,6 @@ class Find extends BaseComponent {
     }
 
     componentWillUnmount() {
-        // dropByCacheKey('FindPage');
         super.componentWillUnmount();
         const {showMenu} = this.props;
         showMenu(true);
@@ -151,8 +150,6 @@ class Find extends BaseComponent {
                         showInfo(Feedback.Search_Success);
                         this.setState({
                             shops: res.data
-                        }, () => {
-                            this.renderMap();
                         });
                     }
                 });
@@ -250,7 +247,6 @@ class Find extends BaseComponent {
     //导航到店
     goShop = () => {
         const {searchLeft, nowLongitude, nowLatitude, addressInfo, latitude, longitude, shopName} = this.state;
-        console.log(nowLongitude, nowLatitude);
         const lat = Number(nowLatitude);
         const lon = Number(nowLongitude);
         if (searchLeft === '导航到店') {

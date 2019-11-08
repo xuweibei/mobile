@@ -16,7 +16,7 @@ class Menu extends React.PureComponent {
        if (!process.env.NATIVE) {
            const {text} = this.state;
            clearInterval(timer);
-           const speed = 0.2;
+           const speed = 0.5;
            if (text === '快速导航') {
                timer = setInterval(() => {
                    num += speed;

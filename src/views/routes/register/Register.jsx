@@ -204,7 +204,8 @@ class Register extends BaseComponent {
     }
 
     //短信验证码登陆
-    login = () => {
+    login = (e) => {
+        e.stopPropagation();
         const phone = validator.wipeOut(this.state.phone);
         const code = this.state.code;
         if (!phone) {
@@ -478,7 +479,6 @@ class Register extends BaseComponent {
     render() {
         const {convert, agreementStatus, phone, maxLength, code, text, lineText, forgotText, verification, textType, shadow, eyes, fouceShow, agreeType} = this.state;
         const {agreement} = this.props;
-        console.log(agreement.get('pr_content'));
         return (
             <div className="login-register">
                 {this.loginModal()}

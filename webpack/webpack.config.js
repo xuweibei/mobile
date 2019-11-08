@@ -11,7 +11,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CleanPlugin = require('clean-webpack-plugin');
 const IP = require('ip').address();
-
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 /**
  * 引入配置文件
@@ -311,6 +311,7 @@ module.exports = (env = {}) => {
                     return /node_modules.*\.(js|jsx)$/.test(module.resource)
                 }
             }),
+            new BundleAnalyzerPlugin(),
             /*new webpack.optimize.CommonsChunkPlugin({  // 将webpack引导程序逻辑提取到单独的文件中
                 name: "manifest",
                 minChunks: Infinity
