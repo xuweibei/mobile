@@ -2,7 +2,7 @@
 * 首页
 * */
 import {connect} from 'react-redux';
-import {Carousel, Grid, SearchBar, Toast, WhiteSpace} from 'antd-mobile';
+import {Carousel, Grid, SearchBar, Toast} from 'antd-mobile';
 import {dropByCacheKey} from 'react-router-cache-route';
 import {systemApi} from '../../../utils/systemApi';
 import {FooterBar} from '../../common/foot-bar/FooterBar';
@@ -189,7 +189,7 @@ class Home extends BaseComponent {
                                 )
                             }
                         </div>
-                        <WhiteSpace/>
+                        {/* <WhiteSpace/> */}
 
                         {
                             banner && (
@@ -209,7 +209,7 @@ class Home extends BaseComponent {
                                 </div>
                             )
                         }
-                        <WhiteSpace size="xl"/>
+                        {/* <WhiteSpace size="xl"/> */}
                         {
                             nav && (
                                 <div className="home-nav">
@@ -224,7 +224,7 @@ class Home extends BaseComponent {
                                 </div>
                             )
                         }
-                        <WhiteSpace/>
+                        {/* <WhiteSpace/> */}
                         {
                             logo && (
                                 <div className="home-logo">
@@ -232,8 +232,8 @@ class Home extends BaseComponent {
                                 </div>
                             )
                         }
-                        <WhiteSpace/>
-                        <WhiteSpace/>
+                        {/* <WhiteSpace/> */}
+                        {/* <WhiteSpace/> */}
                         <div className="recommend">
                             <div className="edge-style"/>
                             <ul>

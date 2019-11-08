@@ -32,8 +32,7 @@ class Menu extends React.PureComponent {
                        });
                    }
                }, 30);
-           }
-           if (text === '收起导航') {
+           } else {
                timer = setInterval(() => {
                    num -= speed;
                    if (this.state.rightNum <= -2) {
@@ -44,7 +43,6 @@ class Menu extends React.PureComponent {
                        });
                    } else {
                        this.setState({
-                           // rightNum: this.state.rightNum + speed
                            rightNum: num
                        });
                    }
@@ -55,8 +53,7 @@ class Menu extends React.PureComponent {
 
     //按钮跳转
     switchTo = (type) => {
-        const menu = document.querySelector('.menu-list');
-        menu.style.right = 38 + 'px';
+        this.menu.style.right = 38 + 'px';
         this.setState({
             text: '快速导航',
             rightNum: -2
@@ -75,7 +72,7 @@ class Menu extends React.PureComponent {
         };
         if (!process.env.NATIVE) {
             return window.isWX && (
-                <div className="menu-list" style={rights}>
+                <div className="menu-list" style={rights} ref={ref => { this.menu = ref }}>
                     <div className="menu" onClick={() => this.show(rightNum)}>
                         <div className={`icon ${text === '收起导航' ? 'icon-right' : 'icon-left'}`}/>
                         <div>{text}</div>
