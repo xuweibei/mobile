@@ -477,10 +477,10 @@ class GoodsDetail extends BaseComponent {
             onVisibleChange={this.handleVisibleChange}
             overlay={[
                 (<Item key="1" icon={myImg('family.svg')}><p>首页</p></Item>),
-                // (<Item key="2" icon={myImg('star.svg')}>收藏</Item>),
-                // (!window.isWX && (<Item key="3" icon={myImg('shop-cart.svg')}>购物车</Item>)),
-                (!window.isWX && (<Item key="4" icon={myImg('info.svg')}><p>消息</p></Item>))
-                // (<Item key="5" icon={myImg('share.svg')}>分享</Item>)
+                (<Item key="2" icon={myImg('star.svg')}>收藏</Item>),
+                (!window.isWX && (<Item key="3" icon={myImg('shop-cart.svg')}>购物车</Item>)),
+                (!window.isWX && (<Item key="4" icon={myImg('info.svg')}><p>消息</p></Item>)),
+                (<Item key="5" icon={myImg('share.svg')}>分享</Item>)
             ]}
         >
             <Icon type="ellipsis"/>
@@ -499,7 +499,7 @@ class GoodsDetail extends BaseComponent {
     render() {
         const {
             topSwithe, popup, paginationNum, ids, maskStatus,
-            picPath, goodsDetail, shop, recommend, collect,
+            picPath, goodsDetail, shop, recommend, collect, status,
             goodsAttr, stocks, lineStatus, lineText, pickType, selectType, names, hasType
         } = this.state;
         const renderCount = (
@@ -707,7 +707,7 @@ class GoodsDetail extends BaseComponent {
                             </div>
                         </div>
                     </div>
-                    {/* {
+                    {
                         goodsDetail.effective_type === '0' ? (
                             <div className={`${(status === '0' || status === '2') ? 'disble-btn' : 'bottom-btn'}`}>
                                 <Flex>
@@ -728,8 +728,8 @@ class GoodsDetail extends BaseComponent {
                         ) : (
                             <div className="pay-now" onClick={() => this.emption('pay')}>立即购买</div>
                         )
-                    } */}
-                    <div className="pay-now" onClick={() => this.emption('pay')}>立即购买</div>
+                    }
+                    {/* <div className="pay-now" onClick={() => this.emption('pay')}>立即购买</div> */}
                 </div>
             </div>
         );
