@@ -277,6 +277,7 @@ class Edit extends BaseComponent {
                             src={userInfo && userInfo.avatarUrl}
                             alt=""
                             onClick={this.changeTheAvatar}
+                            onError={(e) => { e.target.src = userInfo.defaultUrl }}
                         />
                         {/* <div className="my-name">{nickname}</div> ff说是将昵称去掉，自己先留着 */}
                         <div>UID:{userInfo && userInfo.no}</div>

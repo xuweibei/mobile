@@ -16,9 +16,7 @@ import {FooterBar} from '../../common/foot-bar/FooterBar';
 import MyLogistics from './subpage/my-logistics/MyLogistics';
 import './My.less';
 
-const {appHistory, rollStatus: {offRoll, openRoll, getScrollTop}, setNavColor} = Utils;
-const hybird = process.env.NATIVE;
-const {navColorR} = Constants;
+const {appHistory, rollStatus: {offRoll, openRoll, getScrollTop}} = Utils;
 
 //线上订单模块
 const myOrderIconData = [
@@ -115,9 +113,6 @@ class My extends BaseComponent {
         dropByCacheKey('OrderPage');//清除我的订单的缓存
         dropByCacheKey('PossessEvaluate');//清除我的评价的缓存
         dropByCacheKey('History');//清除浏览历史的缓存
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorR});
-        }
     }
 
     componentDidMount() {
@@ -132,12 +127,6 @@ class My extends BaseComponent {
         super.componentWillUnmount();
         const {showMenu} = this.props;
         showMenu(true);
-    }
-
-    componentWillReceiveProps() {
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorR});
-        }
     }
 
     //商家cam信息
