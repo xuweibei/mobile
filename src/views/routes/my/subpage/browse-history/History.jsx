@@ -11,7 +11,7 @@ import './History.less';
 
 const {urlCfg} = Configs;
 const {appHistory, showInfo, confirmDate, native} = Utils;
-const {MESSAGE: {Feedback}, FIELD} = Constants;
+const {MESSAGE: {Feedback, Form}, FIELD} = Constants;
 //tab配置信息
 const tabs = [
     {title: '商品历史', type: 1},
@@ -318,6 +318,10 @@ class History extends BaseComponent {
     //点击加入收藏夹回调
     addCollect = () => {
         const {type, checkedIds} = this.state;
+        if (checkedIds && checkedIds.length === 0) {
+            showInfo(Form.No_Select_Select);
+            return;
+        }
         this.fetch(urlCfg.addCollect, {
             data: {
                 type,
@@ -336,7 +340,10 @@ class History extends BaseComponent {
         const {showConfirm} = this.props;
         let arr = [];
         if (!clear) {
-            if (checkedIds.length === 0) return;
+            if (checkedIds && checkedIds.length === 0) {
+                showInfo(Form.No_Select_Select);
+                return;
+            }
             arr = checkedIds;
         }
         showConfirm({

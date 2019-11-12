@@ -59,7 +59,7 @@ export const MESSAGE = {
         Switching_Businessmen: '请切换成商家的身份，再进行查看',
         // No_Payment_Code: '您还未设置支付密码，暂不能使用CAM余额消费。',
         // No_Chance: '您的密码输入错误机会已上限！今天无法再进行支付！请明天再试试！',
-        No_Select_Select: '您还没有选择商品',
+        No_Select_Select: '请选择要操作的对象',
         // No_Check: '您还没有勾选线下消费协议',
         // No_Less: '该商品不能再少了',
         // No_Mode_Specification: '请选择配送方式或商品规格',

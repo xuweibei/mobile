@@ -35,6 +35,8 @@ class passwordDetail extends BaseComponent {
         getOff: false, //点击获取验证码是否可以获取，默认不可以，除非输入的电话号码符合要求
         moreAccount: false, // 展示更多账号供其选择，忘记密码的时候
         accountList: [], //更多账号的列表
+        passType: true, //第一个密码框的状态
+        passAType: true, //第二个密码框的状态
         isLoagin: decodeURI(getUrlParam('login', encodeURI(this.props.location.search))) !== 'null' ? decodeURI(getUrlParam('login', encodeURI(this.props.location.search))) : 0
     };
 
@@ -138,7 +140,12 @@ class passwordDetail extends BaseComponent {
         });
         passShow && validateFields({first: true}, (error, value) => {
             const firstPass = getFieldValue('firstPass');
+            const nextPass = getFieldValue('nextPass');
             if (!error) {
+                if (firstPass !== nextPass) {
+                    showInfo(Form.Error_Password_Confirm);
+                    return;
+                }
                 this.fetch(urlCfg.modifyLoginPassword, {data: {pwd: firstPass, no: uid, phone: validator.wipeOut(phoneNum), chk_pass: isLoagin || 0}})
                     .subscribe(res => {
                         if (res && res.status === 0) {
@@ -267,8 +274,21 @@ class passwordDetail extends BaseComponent {
         }
     }
 
+    //控制眼睛
+    changeEyes = (onOff) => {
+        if (onOff === '1') {
+            this.setState((prevState) => ({
+                passAType: !prevState.passAType
+            }));
+        } else {
+            this.setState((prevState) => ({
+                passType: !prevState.passType
+            }));
+        }
+    }
+
     render() {
-        const {reEdit, passShow, phoneShow, getOff, moreAccount, accountList} = this.state;
+        const {reEdit, passShow, phoneShow, getOff, moreAccount, accountList, passType, passAType} = this.state;
         const {getFieldDecorator} = this.props.form;//getFieldDecorator用于和表单进行双向绑定
 
         return (
@@ -345,40 +365,52 @@ class passwordDetail extends BaseComponent {
                                 设置登录密码
                             </NavBar>
                             <div className="cipher-box">
-                                {
-                                    getFieldDecorator('firstPass', {
-                                        initialValue: '',
-                                        rules: [
-                                            {validator: this.checkfirstPass}
-                                        ],
-                                        validateTrigger: 'onSubmit'//校验值的时机
-                                    })(
-                                        <GeisInputItem
-                                            type="nonSpace"
-                                            itemTitle="输入密码"
-                                            clear
-                                            placeholder="请输入6-18位密码"
-                                            maxLength={18}
-                                        />
-                                    )
-                                }
-                                {
-                                    getFieldDecorator('nextPass', {
-                                        initialValue: '',
-                                        rules: [
-                                            {validator: this.checkNextPass}
-                                        ],
-                                        validateTrigger: 'onSubmit'//校验值的时机
-                                    })(
-                                        <GeisInputItem
-                                            type="nonSpace"
-                                            showPass
-                                            placeholder="******"
-                                            editable={reEdit}
-                                            itemTitle="确认密码"
-                                        />
-                                    )
-                                }
+                                <div>
+                                    <div className="icon-box" onClick={this.changeEyes}>
+                                        <div className={`icon ${passType ? 'icon-close' : 'icon-open'} `}/>
+                                    </div>
+                                    {
+                                        getFieldDecorator('firstPass', {
+                                            initialValue: '',
+                                            rules: [
+                                                {validator: this.checkfirstPass}
+                                            ],
+                                            validateTrigger: 'onSubmit'//校验值的时机
+                                        })(
+                                            <GeisInputItem
+                                                type="nonSpace"
+                                                itemTitle="输入密码"
+                                                clear
+                                                showPass={passType}
+                                                placeholder="******"
+                                                maxLength={18}
+                                            />
+                                        )
+                                    }
+                                </div>
+                                <div>
+                                    <div className="icon-box" onClick={() => this.changeEyes('1')}>
+                                        <div className={`icon ${passAType ? 'icon-close' : 'icon-open'} `}/>
+                                    </div>
+                                    {
+                                        getFieldDecorator('nextPass', {
+                                            initialValue: '',
+                                            rules: [
+                                                {validator: this.checkANextPass}
+                                            ],
+                                            validateTrigger: 'onSubmit'//校验值的时机
+                                        })(
+                                            <GeisInputItem
+                                                type="nonSpace"
+                                                showPass={passAType}
+                                                clear
+                                                placeholder="******"
+                                                editable={reEdit}
+                                                itemTitle="确认密码"
+                                            />
+                                        )
+                                    }
+                                </div>
 
                                 <Button className="next-button" onClick={this.nextPage}>确定</Button>
                             </div>
