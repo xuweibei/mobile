@@ -617,8 +617,10 @@ class ShopCart extends BaseComponent {
         setOrderInfo(arr);
         setIds(cartArr);
         setValue('orderArr', JSON.stringify(arr));
-        if (process.env.NATIVE) { //这里的情况是，原生那边跳转的时候，需要处理一些问题，所以就购物车过来的时候，存数据，这边取数据
-            const obj = {arr, cartArr};//储存redux
+        const obj = {arr, cartArr};//储存redux
+        if (process.env.NATIVE && currentIndex === 0) {
+            native('settlement', obj);//app点击结算的时候
+        } else if (process.env.NATIVE && currentIndex === 1) { //这里的情况是，原生那边跳转的时候，需要处理一些问题，所以就购物车过来的时候，存数据，这边取数据
             native('setSelfMention', obj);//app点击结算的时候
         } else if (currentIndex === 0) {
             appHistory.push(`/appendorder?source=${1}`);

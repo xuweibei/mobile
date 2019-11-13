@@ -1,7 +1,7 @@
 /*
 * 收货地址页面
 * */
-import {Button, SwipeAction, List, InputItem, TextareaItem} from 'antd-mobile';
+import {Button, List, InputItem, TextareaItem} from 'antd-mobile';
 import {createForm} from 'rc-form';
 import {connect} from 'react-redux';
 import {baseActionCreator} from '../../../../../../redux/baseAction';
@@ -16,7 +16,6 @@ const {MESSAGE: {Feedback, Form}} = Constants;
 
 class Address extends BaseComponent {
     state={
-        editShow: false,
         edit: '', //路由状态
         defaultState: false, //设置为默认地址
         province: '', //省的名字
@@ -154,39 +153,21 @@ class Address extends BaseComponent {
 
     //底部结构
     bottomModal = (adreeArr) => adreeArr.map((item, index) => (
-        <SwipeAction
-            autoClose
-            key={item.id}
-            right={[
-                {
-                    text: '删除',
-                    style: {backgroundColor: '#E21E13', color: 'white'},
-                    onPress: () => this.deleteGoods(item.id)
-                }
-            ]}
-            onOpen={() => this.setState({editShow: true})}
-            onClose={() => this.setState({editShow: false})}
-        >
-            <div className="location-box" onClick={() => { this.saveAddress(item) }}>
-                <div className="list-detail">
-                    <div className="item-desc">
-                        <div className="address-name">{item.area.join('') + item.address}</div>
-                        <div className="user-name">
-                            {item.if_default === '1' ? <span className="default-address">默认</span> : ''}
-                            <span>{item.linkname}</span>
-                            <span>{item.linktel}</span>
-                        </div>
+        <div className="location-box" key={item.id} onClick={() => { this.saveAddress(item) }}>
+            <div className="list-detail">
+                <div className="item-desc">
+                    <div className="address-name">{item.area.join('') + item.address}</div>
+                    <div className="user-name">
+                        {item.if_default === '1' ? <span className="default-address">默认</span> : ''}
+                        <span>{item.linkname}</span>
+                        <span>{item.linktel}</span>
                     </div>
-                    {
-                        !this.state.editShow && (
-                            <div className="item-button">
-                                <div className="button-inner" onClick={(ev) => this.editAdree(ev, item)}>编辑</div>
-                            </div>
-                        )
-                    }
+                </div>
+                <div className="item-button">
+                    <div className="button-inner" onClick={(ev) => this.editAdree(ev, item)}>编辑</div>
                 </div>
             </div>
-        </SwipeAction>
+        </div>
     ))
 
     //默认列表结构
