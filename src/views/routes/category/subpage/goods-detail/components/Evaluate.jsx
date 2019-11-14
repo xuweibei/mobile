@@ -9,7 +9,7 @@ export default class Evaluate extends React.PureComponent {
         shop: PropTypes.object.isRequired,
         shopH: PropTypes.func.isRequired,
         openSku: PropTypes.func.isRequired,
-        hasType: PropTypes.func.isRequired
+        hasType: PropTypes.bool.isRequired
     }
 
     static defaultProps = {

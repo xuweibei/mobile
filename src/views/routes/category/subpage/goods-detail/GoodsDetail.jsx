@@ -248,11 +248,11 @@ class GoodsDetail extends BaseComponent {
 
     //立即购买
     emption = () => {
-        const {shop, status, goodsDetail} = this.state;
+        const {shop, status, goodsDetail, paginationNum, ids, selectType} = this.state;
         if (shop.shoper_open_status === '0' || status === '0' || status === '2') {
             return;
         }
-        const {paginationNum, ids, selectType} = this.state;
+        // console.log(paginationNum, '会计师课件等哈萨克简单');
         const str = ids.toString();
         if (str.length === 0) {
             this.setState({
@@ -413,7 +413,12 @@ class GoodsDetail extends BaseComponent {
 
     //改变购买数量
     onChangeCount = value => {
+        if (!value) {
+            showFail('请输入购买商品数量!');
+            return;
+        }
         if (value > 100) {
+            // alert('三大类科技阿萨德');
             showFail(Form.No_Stocks);
         } else {
             this.setState({
@@ -662,6 +667,7 @@ class GoodsDetail extends BaseComponent {
                     {popup && (
                         <Sku
                             detail={goodsDetail}
+                            paginationNum={paginationNum}
                             attributes={goodsAttr}
                             stocks={stocks}
                             cover={picPath[0]}

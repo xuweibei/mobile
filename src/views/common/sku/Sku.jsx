@@ -76,7 +76,7 @@ class Sku extends React.PureComponent {
     //生成字典
     initSKU= () => {
         const {stocks} = this.props;
-        console.log(stocks, '手机卡和第三届');
+        // console.log(stocks, '手机卡和第三届');
         // console.log('库存信息stocks:', stocks);
         const data = stocks.reduce((obj, item) => {
             const object = Object.assign({}, obj);
