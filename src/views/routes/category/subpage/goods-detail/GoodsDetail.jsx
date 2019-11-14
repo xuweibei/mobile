@@ -131,9 +131,10 @@ class GoodsDetail extends BaseComponent {
                 animateScroll.scrollToTop();
                 const stocks = [];
                 res.sku.forEach(item => {
+                    // console.log(item, '看时间ad看见爱上达克赛德');
                     stocks.push({
                         attribute: item.attribute,
-                        original_price: item.original_price,
+                        original_price: item.price_original,
                         price: item.price,
                         stock: item.stock,
                         deposit: item.deposit

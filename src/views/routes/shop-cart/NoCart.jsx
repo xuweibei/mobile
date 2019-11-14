@@ -629,7 +629,7 @@ class ShopCart extends BaseComponent {
 
     render() {
         const {
-            toggle,
+            // toggle,
             valid,
             invalid,
             // invalidSelect,
@@ -663,11 +663,11 @@ class ShopCart extends BaseComponent {
                         <p>购物车</p>
                         <p>共{this.totalShop()}件商品</p>
                     </div>
-                    {currentIndex === 0 && (valid.length > 0 || invalid.length > 0) ? (
+                    {/* {currentIndex === 0 && (valid.length > 0 || invalid.length > 0) ? (
                         <div className="shop-edit" onClick={this.toggle}>
                             {toggle ? '编辑' : '完成'}
                         </div>
-                    ) : null}
+                    ) : null} */}
                 </div>
                 <div className="shop-tabs">
                     {
