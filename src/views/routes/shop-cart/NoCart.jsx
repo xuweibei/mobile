@@ -476,7 +476,7 @@ class ShopCart extends BaseComponent {
                 res.sku.forEach(item => {
                     stocks.push({
                         attribute: item.attribute,
-                        original_price: item.original_price,
+                        original_price: item.price_original,
                         price: item.price,
                         stock: item.stock,
                         deposit: item.deposit
