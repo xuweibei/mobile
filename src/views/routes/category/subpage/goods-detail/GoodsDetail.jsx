@@ -586,21 +586,21 @@ class GoodsDetail extends BaseComponent {
                     </div>
                 )}
                 {/* <div className="goods-detail-wrapper"> */}
-                <Element name="goods" className="goods-banner">
-                    <Carousel autoplay={false} infinite>
-                        {picPath.map((item) => (
-                            <div
-                                key={item}
-                                onClick={e => this.openMask(e)}
-                            >
-                                <img
-                                    src={item}
-                                    className="banner-img"
-                                />
-                            </div>
-                        ))}
-                    </Carousel>
-                </Element>
+                {/* <Element name="goods" className="goods-banner"> */}
+                <Carousel autoplay={false} infinite>
+                    {picPath.map((item) => (
+                        <div
+                            key={item}
+                            onClick={e => this.openMask(e)}
+                        >
+                            <img
+                                src={item}
+                                className="banner-img"
+                            />
+                        </div>
+                    ))}
+                </Carousel>
+                {/* </Element> */}
                 {/*商品详情规格*/}
                 <div className="goods-norms">
                     <div className="norms-money">
