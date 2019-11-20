@@ -695,7 +695,7 @@ class ShopCart extends BaseComponent {
                                             <div className="avatar">
                                                 <img
                                                     src={shop && shop.shop_logo}
-                                                    // onError={(e) => { e.target.src = shop.df_logo }}
+                                                    onError={(e) => { e.target.src = shop.df_logo }}
                                                     alt=""
                                                     className="image"
                                                 />
