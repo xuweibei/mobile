@@ -94,7 +94,7 @@ class ShopHomeDetail extends BaseComponent {
                 <div className="daty-box">
                     <div className="datyBox">
                         {/*店名位置*/}
-                        <div className="address">
+                        <div className="address" style={{border: '1px solid #e5e5e5'}}>
                             <img
                                 src={shopInfo.picpath}
                                 onError={(e) => { e.target.src = shopInfo.df_logo }}
@@ -109,7 +109,7 @@ class ShopHomeDetail extends BaseComponent {
                             </div>
                         </div>
                         {/*滑动查看电话*/}
-                        <div className="telephone-hide" >
+                        <div className="telephone-hide" style={{border: '1px solid #e5e5e5'}}>
                             <span className="telephone-hl">滑动查看商家电话</span>
                             {/* <div className="scroll" onTouchStart={this.start} onTouchMove={this.move} onTouchEnd={this.end}> */}
                             <div className="wrapScroll">
@@ -122,7 +122,7 @@ class ShopHomeDetail extends BaseComponent {
                                 </div>
                             </div>
                         </div>
-                        <div className="telephone-show">
+                        <div className="telephone-show" style={{border: '1px solid #e5e5e5'}}>
                             <span className="number">
                                 <span className="telephone-sl">电话</span>
                                 <span className="telephone-number">{shopInfo.phone}</span>

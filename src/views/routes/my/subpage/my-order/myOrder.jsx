@@ -465,8 +465,8 @@ class MyOrder extends BaseComponent {
         case '0'://待付款
             blockModal = (
                 <div className="buttons">
-                    <div onClick={() => this.setState({canStatus: true, canCelId: item.id})} className="look-button">取消订单</div>
-                    <div onClick={() => this.payNow(item.id, item.order_no)} className="evaluate-button">立即付款</div>
+                    <div onClick={() => this.setState({canStatus: true, canCelId: item.id})} className="look-button" style={{border: '1px solid #666'}}>取消订单</div>
+                    <div onClick={() => this.payNow(item.id, item.order_no)} className="evaluate-button" style={{border: '1px solid #ff2d51'}}>立即付款</div>
                 </div>
             );
             break;
