@@ -108,7 +108,7 @@ class MyAssets extends BaseComponent {
                         )
                     }
                     <div className="money-show">
-                        <div onClick={this.newMyIcom}>
+                        <div onClick={this.newMyIcom} style={{borderRight: '1px solid #ededed'}}>
                             <span>{Detailed.all_taking || '0'}</span>
                             <p>业务收入</p>
                         </div>

@@ -93,6 +93,7 @@ export default class MyAssets extends BaseComponent {
                                     className="line"
                                     type="money"
                                     moneyKeyboardAlign="right"
+                                    style={{borderBottom: '1px solid #CCC'}}
                                 >预备收益
                                 </InputItem>
                             </div>
@@ -104,6 +105,7 @@ export default class MyAssets extends BaseComponent {
                                     className="line"
                                     type="money"
                                     moneyKeyboardAlign="right"
+                                    style={{borderBottom: '1px solid #CCC'}}
                                 >追加总量
                                 </InputItem>
                             </div>
