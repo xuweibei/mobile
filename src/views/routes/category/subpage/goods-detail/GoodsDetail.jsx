@@ -55,14 +55,14 @@ class GoodsDetail extends BaseComponent {
         lineStatus: false, //底部商品状态栏
         ids: [], //选中属性id
         goodsSku: [], //商品的结果集
-        // shopAddress: '', // 店铺位置
         lineText: '', //商品状态栏文字
         pickType: {}, //配送方式
         selectType: '', //选中配送方式 1快递 2自提
         clickType: 0, //打开sku的方式 0箭头 1购物车 2立即购买
         totalNUm: 0, //商品库存,
         goodId: decodeURI(getUrlParam('id', encodeURI(this.props.location.search))),
-        hasType: false
+        hasType: false,
+        evalute: {}
     };
 
     componentDidMount() {
@@ -140,13 +140,14 @@ class GoodsDetail extends BaseComponent {
                         deposit: item.deposit
                     });
                 });
+                const evalute = res.pingjia ? res.pingjia : {};
+                evalute.count = res.pingjia_count;
                 this.setState(
                     {
                         goodsDetail: res.data,
                         picPath: res.data.picpath,
                         shop: res.shop, // 店铺信息,
                         recommend: res.recommend_pr, // 商品推荐
-                        allState: res,
                         collect: res.had_coll,
                         status: res.data.status,
                         goodsSku: res.sku,
@@ -154,6 +155,7 @@ class GoodsDetail extends BaseComponent {
                         stocks: stocks,
                         pickType: res.data.distribution_mode,
                         totalNUm: res.data.num_stock,
+                        evalute: evalute,
                         hasType: res.data.distribution_mode.data.some(item => item.value === '到店自提')
                     },
                     () => {
@@ -502,10 +504,15 @@ class GoodsDetail extends BaseComponent {
         });
     }
 
+    // 跳转评价
+    routeToEvalute = () => {
+        appHistory.push('/evaluate');
+    }
+
     render() {
         const {
             topSwithe, popup, paginationNum, ids, maskStatus,
-            picPath, goodsDetail, shop, recommend, collect, status,
+            picPath, goodsDetail, shop, recommend, collect, status, evalute,
             goodsAttr, stocks, lineStatus, lineText, pickType, selectType, names, hasType
         } = this.state;
         const renderCount = (
@@ -643,6 +650,8 @@ class GoodsDetail extends BaseComponent {
                     {/*店铺、商品规格*/}
                     <Evaluate
                         names={names}
+                        routeToEvalute={this.routeToEvalute}
+                        evalute={evalute}
                         hasType={hasType}
                         goodsDetail={goodsDetail}
                         Element={Element}

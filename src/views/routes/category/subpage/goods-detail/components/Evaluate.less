@@ -13,8 +13,6 @@
           line-height: 74px;
           display: flex;
           justify-content: space-between;
-          //border-bottom: @list-border;
-          //.hairline('bottom',@to-light-gray);
           .select-left{
               float: left;
               //margin-top: 30px;
@@ -156,20 +154,6 @@
                   overflow: hidden;
                   margin-bottom: 14px;
               }
-              /*.shop-star{
-                  float: left;
-                  margin-right: 4px;
-                  .icon-star:before{
-                      content: '\e637';
-                      color: @duckling-yellow;
-                      font-size: 30px;
-                  }
-                  .icon-stars:before{
-                      content: '\e638';
-                      color: @duckling-yellow;
-                      font-size: 30px;
-                  }
-              }*/
               .Shop-Nl {
                   font-size: @font-size-30;
                   font-weight: bold;
@@ -190,13 +174,6 @@
                   font-size: @font-size-24;
                   margin-right: 15px;
                   display: flex;
-                  /*.Shop-Nl {
-                      font-size: @font-size-30;
-                      font-weight: bold;
-                      color: @darker-black;
-                      margin-right: 20px;
-
-                  }*/
                   .Shop-Nr {
                       margin-left: 20px;
                       max-width: 400px;
@@ -280,5 +257,46 @@
           padding-bottom: 4px;
           margin-bottom: 20px;
           color: @dark-gray;
+      }
+      .evaluate {
+          margin-top: 30px;
+          .eva-top{
+              display: flex;
+              justify-content: space-between;
+              div:first-child {
+                  color: #333;
+                  font-size: @font-size-30;
+                  font-weight: bolder;
+              }
+              div:last-child {
+                  color: #666;
+                  font-size: @font-size-28;
+              }
+              div:last-child:after {
+                font-family: "iconfont";
+                content: '\e643';
+                color: #666;
+                margin-left: 10px;
+              }
+          }
+          .eva-content {
+              margin-top: 40px;
+              .desc {
+                  display: flex;
+                  justify-content: left;
+                  margin-bottom: 17px;
+                .eva-pic {
+                    width: 44px;
+                    height: 44px;
+                    border-radius: 50%;
+                    margin-right: 25px;
+                }
+              }
+              p {
+                  font-size: @font-size-28;
+                  color: #666;
+                  .TextareaOverflow();
+              }
+          }
       }
   }
