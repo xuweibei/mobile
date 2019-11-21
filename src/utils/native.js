@@ -93,6 +93,7 @@ global.goBack = function () {
     } else {
         store.dispatch(baseActionCreator.setReturn(false));
     }
+    return 1;
 };
 
 

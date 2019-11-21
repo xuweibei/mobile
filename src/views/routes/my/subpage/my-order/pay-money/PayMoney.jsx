@@ -319,7 +319,7 @@ class PayMoney extends BaseComponent {
                 const arrInfo = JSON.parse(getValue('orderInfo'));
                 const arr = JSON.parse(getValue('orderArr'));
                 if (arrInfo) {
-                    if (arr[0].if_express === '1') {
+                    if (arr[0] && arr[0].if_express === '1') {
                         if (appLength === 0) { //线上订单，用户取消支付的时候，路由都没了，就走这里
                             appHistory.push('/myOrder/fk');
                             appHistory.reduction();

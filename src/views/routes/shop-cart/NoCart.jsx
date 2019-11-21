@@ -13,7 +13,7 @@ import Sku from '../../common/sku/Sku';
 import './shopCart.less';
 
 const {urlCfg} = Configs;
-const {appHistory, showInfo, showSuccess, native, systemApi: {setValue}, getUrlParam, setNavColor} = Utils;
+const {appHistory, showInfo, showSuccess, native, systemApi: {setValue, removeValue}, getUrlParam, setNavColor} = Utils;
 const {MESSAGE: {Form, Feedback}, FIELD, navColorR} = Constants;
 
 // let payInNum = 0;
@@ -607,7 +607,8 @@ class ShopCart extends BaseComponent {
                 arr.push({
                     pr_id: parseInt(item.pr_id, 10),
                     property: item.property_content,
-                    num: item.num
+                    num: item.num,
+                    if_express: currentIndex ? '0' : '1'
                 });
                 cartArr.push(item.id);
             }
@@ -616,7 +617,9 @@ class ShopCart extends BaseComponent {
         const {setOrderInfo, setIds} = this.props;
         setOrderInfo(arr);
         setIds(cartArr);
-        setValue('orderArr', JSON.stringify(arr));
+        removeValue('zpyg_orderArr');
+        window.localStorage.setItem('zpyg_orderArr', JSON.stringify(arr));
+        // setValue('orderArr', JSON.stringify(arr));
         const obj = {arr, cartArr};//储存redux
         if (process.env.NATIVE && currentIndex === 0) {
             native('settlement', obj);//app点击结算的时候
