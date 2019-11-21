@@ -49,7 +49,7 @@ export default class MyAssets extends BaseComponent {
     getDaril = () => {
         temp.isLoading = true;
         const {page} = this.state;
-        this.fetch(urlCfg.budgetaryRevenue, {data: {page: page, page_count: 10000000}})
+        this.fetch(urlCfg.budgetaryRevenue, {data: {page, page_count: 10000000}})
             .subscribe(res => {
                 temp.isLoading = false;
                 if (res && res.status === 0) {

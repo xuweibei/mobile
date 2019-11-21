@@ -32,9 +32,6 @@ class MyAssets extends BaseComponent {
                 if (res && res.status === 0) {
                     this.setState({
                         userType: res.data.info.iden_type
-                    }, () => {
-                        //全局储存用户身份
-                        this.props.setUseType(res.data.info.iden_type);
                     });
                 }
             });

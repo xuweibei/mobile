@@ -15,8 +15,8 @@ export default class Detailpage extends BaseComponent {
         this.getAmount(this.props.currentData.id);
     }
 
-    getAmount = (num) => {
-        this.fetch(urlCfg.detailsOfAmount, {data: {id: num}})
+    getAmount = (id) => {
+        this.fetch(urlCfg.detailsOfAmount, {data: {id}})
             .subscribe(res => {
                 if (res && res.status === 0) {
                     this.setState({

@@ -16,10 +16,6 @@ class Search extends BaseComponent {
         keywords: '' //搜索框搜索内容
     }
 
-    componentDidMount() {
-        // this.searchList();
-    }
-
     componentWillMount() {
         dropByCacheKey('CategoryListPage');
     }
@@ -38,12 +34,10 @@ class Search extends BaseComponent {
     searchList = () => {
         this.fetch(urlCfg.orderViewHIstory)
             .subscribe((res) => {
-                if (res) {
-                    if (res.status === 0) {
-                        this.setState({
-                            history: res.history
-                        });
-                    }
+                if (res && res.status === 0) {
+                    this.setState({
+                        history: res.history
+                    });
                 }
             });
     };

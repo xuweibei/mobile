@@ -46,10 +46,9 @@ export default class MyAssets extends BaseComponent {
 
     //当天收入
     getDaril = () => {
-        const {statusNum} = this.state;
+        const {statusNum, page} = this.state;
         temp.isLoading = true;
-        const {page} = this.state;
-        this.fetch(urlCfg.dailyIncome, {data: {page: page, pagesize: 10000000, types: statusNum}})
+        this.fetch(urlCfg.dailyIncome, {data: {page, pagesize: 10000000, types: statusNum}})
             .subscribe(res => {
                 temp.isLoading = false;
                 if (res && res.status === 0) {
@@ -68,7 +67,7 @@ export default class MyAssets extends BaseComponent {
         this.setState({
             hasMore: true
         });
-        this.fetch(urlCfg.dailyIncomeAll, {data: {page: page, pagesize: temp.pagesize, types: statusNum}})
+        this.fetch(urlCfg.dailyIncomeAll, {data: {page, pagesize: temp.pagesize, types: statusNum}})
             .subscribe(res => {
                 temp.isLoading = false;
                 if (res && res.status === 0) {

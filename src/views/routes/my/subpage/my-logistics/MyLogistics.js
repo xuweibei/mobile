@@ -14,8 +14,7 @@ export default class MyLogistics extends BaseComponent {
     componentWillMount() {
         const {logInfo} = this.props;
         const arr = [];
-        const slArr = logInfo;
-        slArr.forEach(item => {
+        logInfo.forEach(item => {
             arr.push(item.express_content.phone);
         });
         this.setState({
