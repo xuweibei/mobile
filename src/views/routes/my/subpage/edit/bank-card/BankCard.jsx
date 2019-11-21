@@ -140,7 +140,7 @@ class BankCard extends BaseComponent {
                         )) : (
                             <div>
                                 <p className="explain">CAM余额提现卡</p>
-                                <div className="no-card" onClick={this.editBankCode}>
+                                <div className="no-card" style={{border: '1px solid #e5e5e5'}} onClick={this.editBankCode}>
                                     <div className="icon noCard-t"/>
                                     <span className="noCard-b">添加银行卡</span>
                                 </div>

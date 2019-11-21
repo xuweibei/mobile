@@ -32,9 +32,6 @@ class MyAssets extends BaseComponent {
                 if (res && res.status === 0) {
                     this.setState({
                         userType: res.data.info.iden_type
-                    }, () => {
-                        //全局储存用户身份
-                        this.props.setUseType(res.data.info.iden_type);
                     });
                 }
             });
@@ -111,7 +108,7 @@ class MyAssets extends BaseComponent {
                         )
                     }
                     <div className="money-show">
-                        <div onClick={this.newMyIcom}>
+                        <div onClick={this.newMyIcom} style={{borderRight: '1px solid #ededed'}}>
                             <span>{Detailed.all_taking || '0'}</span>
                             <p>业务收入</p>
                         </div>

@@ -283,7 +283,7 @@ class Withdrawal extends BaseComponent {
                                         value={selectorIndexName}
                                         onChange={(res) => this.getCategory(res)}
                                     >
-                                        <List.Item arrow="horizontal">提现类别</List.Item>
+                                        <List.Item style={{border: '1px solid #e5e5e5'}} arrow="horizontal">提现类别</List.Item>
                                     </Picker>
                                 </div>
                                 <div>
@@ -331,7 +331,7 @@ class Withdrawal extends BaseComponent {
                                             value={selectorIndexName}
                                             onChange={(res) => this.getCategory(res)}
                                         >
-                                            <List.Item arrow="horizontal">提现类别</List.Item>
+                                            <List.Item style={{border: '1px solid #e5e5e5'}} arrow="horizontal">提现类别</List.Item>
                                         </Picker>
                                     </div>
                                     <div>

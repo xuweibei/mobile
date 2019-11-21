@@ -11,14 +11,7 @@ class Consumer extends BaseComponent {
     state = {
         list: {},
         order: [],
-        val: ''
-    }
-
-    componentWillMount() {
-        const val = decodeURI(getUrlParam('val', encodeURI(this.props.location.search)));
-        this.setState({
-            val
-        });
+        val: decodeURI(getUrlParam('val', encodeURI(this.props.location.search)))
     }
 
     componentDidMount() {

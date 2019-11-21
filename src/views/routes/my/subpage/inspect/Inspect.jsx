@@ -10,20 +10,12 @@ const {appHistory, showInfo, native, getUrlParam} = Utils;
 export default class Inspect extends BaseComponent {
     state = {
         value: '',  //核销码
-        id: -1
-    }
-
-    componentDidMount() {
-        const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
-        this.setState({
-            id
-        });
+        id: decodeURI(getUrlParam('id', encodeURI(this.props.location.search))) || -1
     }
 
     // //核销订单
     sureOrder = () => {
-        const value = this.state.value;
-        const id = this.state.id;
+        const {value, id} = this.state;
         if (value.length === 0) {
             showInfo('请输入核销码');
             return;
