@@ -45,8 +45,10 @@ export default class applyDrawback extends BaseComponent {
         files: [],
         filesArr: [], //图片请求成功
         typeSelectIndexs: '', //退款类型的index
+        typeSelectIndexsTime: '', //临时退款类型的index
         selectIndexs: '', //退款原因的index
         typeSelectText: '', //退款类型内容
+        typeSelectTextTime: '', //临时退款类型内容
         selectText: '', //退款原因的内容
         swith1: true,
         swith2: true,
@@ -78,17 +80,15 @@ export default class applyDrawback extends BaseComponent {
     //退款原因取消以及箭头切换
     blockedOut = () => {
         this.setState(prevState => ({
-            swith1: !prevState.swith1,
-            selectIndexs: '',
-            selectText: ''
+            swith1: !prevState.swith1
         }));
     };
 
     //退款原因选择
     resonChoose = (title, index) => {
         this.setState(() => ({
-            selectIndexs: index,
-            selectText: title
+            selectIndexsTime: index,
+            selectTextTime: title
         }));
     };
 
@@ -96,8 +96,8 @@ export default class applyDrawback extends BaseComponent {
     clickSelect = () => {
         this.setState(prevState => ({
             swith1: !prevState.swith1,
-            selectText: prevState.selectText,
-            selectIndexs: prevState.selectIndexs
+            selectText: prevState.selectTextTime,
+            selectIndexs: prevState.selectIndexsTime
         }));
     };
 
@@ -191,22 +191,32 @@ export default class applyDrawback extends BaseComponent {
                         item.imgS = encodeURIComponent(item.imgS);
                     });
                     if (filesArr.length > 0) {
+                        const fileArrPro = [];
                         filesArr.forEach((item, index) => {
-                            this.fetch(urlCfg.pictureUploadBase, {
-                                data: {
-                                    id,
-                                    type: 3,
-                                    ix: index,
-                                    num: filesArr.length,
-                                    file: item.imgB,
-                                    filex: item.imgS
-                                }
-                            }).subscribe(value => {
-                                if (value && value.status === 0) {
-                                    showSuccess(Feedback.Edit_Success);
-                                    appHistory.goBack();
-                                }
-                            });
+                            if (item) {
+                                fileArrPro.push(new Promise((resolve, reject) => {
+                                    this.fetch(urlCfg.pictureUploadBase, {
+                                        data: {
+                                            id,
+                                            type: 3,
+                                            ix: index,
+                                            num: filesArr.length,
+                                            file: item.imgB,
+                                            filex: item.imgS
+                                        }
+                                    }).subscribe(value => {
+                                        if (value && value.status === 0) {
+                                            resolve(value);
+                                        }
+                                    });
+                                }));
+                            }
+                        });
+                        Promise.all(fileArrPro).then(ooo => {
+                            appHistory.goBack();
+                            showSuccess(Feedback.Edit_Success);
+                        }).catch(err => {
+                            console.log(err);
                         });
                     } else {
                         showSuccess(Feedback.Edit_Success);
@@ -217,7 +227,7 @@ export default class applyDrawback extends BaseComponent {
     }
 
     render() {
-        const {files, filesArr, swith1, selectText, typeSelectText, selectIndexs, swith2, typeSelectIndexsTime, dataList, questionInfo} = this.state;
+        const {files, filesArr, swith1, selectText, typeSelectText, selectIndexsTime, swith2, typeSelectIndexsTime, dataList, questionInfo} = this.state;
         const type = decodeURI(getUrlParam('type', encodeURI(this.props.location.search)));
         const refurn = decodeURI(getUrlParam('refurn', encodeURI(this.props.location.search)));//为1表示仅退款
         return (
@@ -295,7 +305,7 @@ export default class applyDrawback extends BaseComponent {
                                             {molds.map((item, index) => (
                                                 <div className="list-item" key={index.toString()} onClick={() => this.resonChoose(item.title, index)}>
                                                     <div className="item-text">{item.title}</div>
-                                                    <div className={`icon ${index === selectIndexs ? 'icon-celetes' : 'icon-hollow'}`}/>
+                                                    <div className={`icon ${index === selectIndexsTime ? 'icon-celetes' : 'icon-hollow'}`}/>
                                                 </div>
                                             ))}
                                         </div>

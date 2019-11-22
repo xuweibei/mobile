@@ -160,8 +160,8 @@ class ListDetails extends BaseComponent {
         const blockMadel = new Map([
             ['0', <div className="immediate-evaluation new-style-paynow" onClick={this.payNow}>立即付款</div>],
             ['1', <div className="immediate-evaluation deliver" onClick={this.remindDelivery}>提醒发货</div>],
-            ['2', <div className="immediate-evaluation" onClick={this.confirmTake}>确认收货</div>]
-            // ['3', <div className="immediate-evaluation" onClick={this.promptlyEstimate}>立即评价</div>]//暂时屏蔽
+            ['2', <div className="immediate-evaluation" onClick={this.confirmTake}>确认收货</div>],
+            ['3', <div className="immediate-evaluation" onClick={this.promptlyEstimate}>立即评价</div>]
         ]);
         return blockMadel.get(num);
     }
@@ -336,7 +336,6 @@ class ListDetails extends BaseComponent {
                                             <div className="business-right icon">
                                                 <a href={`tel:${canInfo.shop_tel}`}>商家电话</a>
                                             </div>
-
                                         ) : (
                                             <span className="business-right icon" onClick={() => this.shopPhone(canInfo.shop_tel)}>商家电话</span>
                                         )

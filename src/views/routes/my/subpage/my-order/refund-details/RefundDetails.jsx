@@ -77,7 +77,7 @@ class refundDetails extends BaseComponent {
                             });
                             if (res.data.if_express === '1') {
                                 dropByCacheKey('OrderPage');//清除我的订单的缓存
-                                appHistory.go(-2);
+                                appHistory.go(-1);
                             } else {
                                 appHistory.replace('/selfMention');
                             }
@@ -142,15 +142,15 @@ class refundDetails extends BaseComponent {
         case '1'://退款申请中
             blockModal = (
                 <div className="buttons">
-                    <div onClick={() => this.revoke()} className="look-button">撤销申请</div>
-                    <div onClick={() => this.application()} className="evaluate-button">修改申请</div>
+                    <div onClick={this.revoke} className="look-button">撤销申请</div>
+                    <div onClick={this.application} className="evaluate-button">修改申请</div>
                 </div>
             );
             break;
         case '2'://退款退货才有这个状态   退货中
             blockModal = (
                 <div className="buttons">
-                    <div className="look-button" onClick={() => this.revoke()}>撤销申请</div>
+                    <div className="look-button" onClick={this.revoke}>撤销申请</div>
                     {
                         refundArr.types !== '0' && !refundArr.express_no && <div className="evaluate-button" onClick={this.fillInLogistics}>填写物流</div>
                     }

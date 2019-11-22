@@ -24,9 +24,9 @@ const tabs = [
     {title: '全部'},
     {title: '待付款'},
     {title: '待发货'},
-    {title: '待收货'}
-    // {title: '待评价'}
-    // {title: '售后'} //暂时屏蔽
+    {title: '待收货'},
+    {title: '待评价'},
+    {title: '售后'} //暂时屏蔽
 ];
 
 
@@ -117,8 +117,7 @@ class MyOrder extends BaseComponent {
         this.setState({
             hasMore: true
         });
-        this.fetch(urlCfg.mallOrder,
-            {data: {status, page,  pagesize: temp.pagesize, pageCount}}, noLoading)
+        this.fetch(urlCfg.mallOrder, {data: {status, page,  pagesize: temp.pagesize, pageCount}}, noLoading)
             .subscribe((res) => {
                 temp.isLoading = false;
                 if (res && res.status === 0) {
@@ -194,14 +193,19 @@ class MyOrder extends BaseComponent {
         });
         this.setState({
             page: 1,
-            // status,
+            status: index - 1,
             pageCount: -1,
             dataSource: dataSource2,
             retainArr: [],
             hasMore: false
         }, () => {
+            const {status, page} = this.state;
             temp.stackData = [];
-            this.gotoMyOrder(index);
+            if (status === 4) {
+                this.refundMllOder(page);
+            } else {
+                this.gotoMyOrder(index);
+            }
         });
     };
 
@@ -480,13 +484,11 @@ class MyOrder extends BaseComponent {
                                     item.showButton && <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev, 1)}>申请退款</span>
                                 }
                             </div>
-
                         )
                     }
                     {
                         !item.all_refund && <div className="evaluate-button" onClick={() => this.remindDelivery([item.id, item.can_tip])}>提醒发货</div>
                     }
-
                 </div>
             );
             break;
@@ -508,7 +510,6 @@ class MyOrder extends BaseComponent {
                     {
                         item.all_refund === 1 ? <div className="evaluate-button" onClick={(ev) => this.revoke(item.pr_list[0].return_id, ev)}>撤销申请</div> : <div className="evaluate-button" onClick={(ev) => this.confirmTake(item.id, ev)}>确认收货</div>
                     }
-
                 </div>
             );
             break;

@@ -14,7 +14,7 @@ const {urlCfg} = Configs;
 const {LOCALSTORAGE, MESSAGE: {Feedback}, WEB_NAME} = Constants;
 class Edit extends BaseComponent {
     componentDidMount() {
-        alert(1);
+        alert(2);
         const {userInfo, getUserInfo} = this.props;
         if (!userInfo) {
             getUserInfo();
@@ -206,7 +206,6 @@ class Edit extends BaseComponent {
     //页面跳转
     switchTo = arg => {
         appHistory.push(arg);
-        alert(3);
     };
 
     //登出账号

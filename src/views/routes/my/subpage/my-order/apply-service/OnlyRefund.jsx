@@ -119,71 +119,42 @@ class applyService extends BaseComponent {
                         property_content: arrInfo === 'null' ? null : arrInfo,
                         pr_id: prId !== 'null' ? prId : null
                     }
-                })
-                .subscribe((res) => {
-                    if (res && res.status === 0) {
-                        if (fileInfo.length > 0) {
-                            const pasArr = [];
-                            fileInfo.forEach((item, index) => {
-                                pasArr.push(new Promise((resolve, reject) => {
-                                    this.fetch(urlCfg.pictureUploadBase, {data: {
-                                        type: 2,
-                                        id: res.id,
-                                        ix: index,
-                                        num: item.length,
-                                        filex: encodeURIComponent(item.url),
-                                        file: encodeURIComponent(item.urlB)
-                                    }}).subscribe((value) => {
-                                        if (value && value.status === 0) {
-                                            resolve(value);
-                                        } else {
-                                            reject(value);
-                                        }
-                                    });
-                                }));
-                            });
-                            Promise.all(pasArr).then(ooo => {
-                                showInfo(Feedback.Apply_Success);
-                                if (down === '1') { //线下订单申请
-                                    if (returnType === '1') {
-                                        appHistory.go(-2);
+                }).subscribe((res) => {
+                if (res && res.status === 0) {
+                    if (fileInfo.length > 0) {
+                        const pasArr = [];
+                        fileInfo.forEach((item, index) => {
+                            pasArr.push(new Promise((resolve, reject) => {
+                                this.fetch(urlCfg.pictureUploadBase, {data: {
+                                    type: 2,
+                                    id: res.id,
+                                    ix: index,
+                                    num: item.length,
+                                    filex: encodeURIComponent(item.url),
+                                    file: encodeURIComponent(item.urlB)
+                                }}).subscribe((value) => {
+                                    if (value && value.status === 0) {
+                                        resolve(value);
                                     } else {
-                                        appHistory.go(-3);
+                                        reject(value);
                                     }
-                                    setTimeout(() => {
-                                        appHistory.push(`/selfOrderingDetails?id=${orderId}`);
-                                    });
-                                    setOrderStatus(3);
-                                } else {
-                                    //将我的订单的tab状态设置为售后
-                                    if (returnType === '1') { //整条订单退款
-                                        appHistory.go(-2);
-                                    } else { //非整条订单退款
-                                        appHistory.go(-3);
-                                    }
-                                    //清除我的订单的缓存
-                                    dropByCacheKey('OrderPage');
-                                    setTimeout(() => {
-                                        appHistory.push(`/refundDetails?id=${res.id}`);
-                                    });
-                                    setOrderStatus(0);
-                                }
-                            }, err => {
-                                console.log(err);
-                            });
-                        } else {
+                                });
+                            }));
+                        });
+                        Promise.all(pasArr).then(ooo => {
                             showInfo(Feedback.Apply_Success);
                             if (down === '1') { //线下订单申请
                                 if (returnType === '1') {
-                                    appHistory.go(-1);
-                                } else {
                                     appHistory.go(-2);
+                                } else {
+                                    appHistory.go(-3);
                                 }
                                 setTimeout(() => {
                                     appHistory.push(`/selfOrderingDetails?id=${orderId}`);
                                 });
                                 setOrderStatus(3);
                             } else {
+                                //将我的订单的tab状态设置为售后
                                 if (returnType === '1') { //整条订单退款
                                     appHistory.go(-2);
                                 } else { //非整条订单退款
@@ -191,12 +162,42 @@ class applyService extends BaseComponent {
                                 }
                                 //清除我的订单的缓存
                                 dropByCacheKey('OrderPage');
-                                appHistory.push(`/refundDetails?id=${res.id}`);
+                                setTimeout(() => {
+                                    appHistory.push(`/refundDetails?id=${res.id}`);
+                                });
                                 setOrderStatus(0);
                             }
+                        }, err => {
+                            console.log(err);
+                        });
+                    } else {
+                        showInfo(Feedback.Apply_Success);
+                        if (down === '1') { //线下订单申请
+                            if (returnType === '1') {
+                                appHistory.go(-1);
+                            } else {
+                                appHistory.go(-2);
+                            }
+                            setTimeout(() => {
+                                appHistory.push(`/selfOrderingDetails?id=${orderId}`);
+                            });
+                            setOrderStatus(3);
+                        } else {
+                            if (returnType === '1') { //整条订单退款
+                                appHistory.go(-2);
+                            } else { //非整条订单退款
+                                appHistory.go(-3);
+                            }
+                            //清除我的订单的缓存
+                            dropByCacheKey('OrderPage');
+                            setTimeout(() => {
+                                appHistory.push(`/refundDetails?id=${res.id}`);
+                            });
+                            setOrderStatus(0);
                         }
                     }
-                });
+                }
+            });
         }
     }
 

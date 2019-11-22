@@ -1,6 +1,4 @@
 /**发表评论 */
-// FIXME: 需要优化
-//已优化
 import React from 'react';
 import './MyEvaluate.less';
 import {dropByCacheKey} from 'react-router-cache-route';
@@ -8,8 +6,8 @@ import {Radio, Flex, TextareaItem, ImagePicker} from 'antd-mobile';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 
 const {urlCfg} = Configs;
-const {appHistory, getUrlParam, dealImage, showInfo, showSuccess, native, setNavColor} = Utils;
-const {MESSAGE: {Form, Feedback}, IMGSIZE, navColorF} = Constants;
+const {appHistory, getUrlParam, dealImage, showInfo, showSuccess, native} = Utils;
+const {MESSAGE: {Form, Feedback}, IMGSIZE} = Constants;
 //评价 好评 中评 差评
 const evaluates = [
     {value: 1, title: '好评'},
@@ -45,7 +43,7 @@ export default class MyEvaluate extends BaseComponent {
         const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
         const assess = decodeURI(getUrlParam('assess', encodeURI(this.props.location.search)));
         this.fetch(urlCfg.orderAppraise, {data: {id}}).subscribe((res) => {
-            if (res.status === 0) {
+            if (res && res.status === 0) {
                 const arrly = [];
                 const array = [];
                 const pic = [];
@@ -66,18 +64,6 @@ export default class MyEvaluate extends BaseComponent {
                 });
             }
         });
-    }
-
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
     }
 
     //获取商品评价状态、好评、中评、差评
@@ -235,7 +221,7 @@ export default class MyEvaluate extends BaseComponent {
                 property_content: evaluate[i].property_content,
                 have_pic: files[i].length > 0 ? 1 : ''
             }}).subscribe((res) => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     if (!files[i] || files[i].length === 0) {
                         showSuccess(Feedback.Evaluate_Success);
                         dropByCacheKey('OrderPage');
@@ -252,7 +238,7 @@ export default class MyEvaluate extends BaseComponent {
                             id: res.id,
                             file: files[i]
                         }}).subscribe((resr) => {
-                            if (resr.status === 0) {
+                            if (resr && resr.status === 0) {
                                 showSuccess(Feedback.Evaluate_Success);
                                 dropByCacheKey('OrderPage');
                                 setTimeout(() => { appHistory.replace('/evaluationSuccess') }, 1000);
@@ -299,7 +285,7 @@ export default class MyEvaluate extends BaseComponent {
                                     <div className="upload-img">
                                         <div className="img-list">
                                             {
-                                                hybird ? (
+                                                process.env.NATIVE ? (
                                                     <div className="picture-area">
                                                         <ul>
                                                             {
