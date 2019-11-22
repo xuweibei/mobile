@@ -139,7 +139,7 @@ class ShopHomeDetail extends BaseComponent {
                         <div className="Atlas">
                             <div className="Atlas-n">商家图册</div>
                             <div className="shop-img-more">
-                                <Carousel >
+                                <Carousel>
                                     {
                                         shopInfo.album_pic && shopInfo.album_pic.length > 0 ? shopInfo.album_pic.map(item => <img src={item} alt=""/>) : <div className="period"/>
                                     }

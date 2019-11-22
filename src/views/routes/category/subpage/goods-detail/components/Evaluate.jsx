@@ -7,8 +7,10 @@ export default class Evaluate extends React.PureComponent {
         names: PropTypes.array,
         goodsDetail: PropTypes.object.isRequired,
         shop: PropTypes.object.isRequired,
+        evalute: PropTypes.object.isRequired,
         shopH: PropTypes.func.isRequired,
         openSku: PropTypes.func.isRequired,
+        routeToEvalute: PropTypes.func.isRequired,
         hasType: PropTypes.bool.isRequired
     }
 
@@ -17,7 +19,8 @@ export default class Evaluate extends React.PureComponent {
     }
 
     render() {
-        const {Element, names, goodsDetail, shop, shopH, openSku, hasType} = this.props;
+        const {Element, names, goodsDetail, shop, shopH, openSku, hasType, evalute, routeToEvalute} = this.props;
+        console.log(evalute);
         return (
             <Element name="evaluate" className="goods-shop">
                 <div className="framing">
@@ -97,6 +100,25 @@ export default class Evaluate extends React.PureComponent {
                             </div>
                         </div>
                     </div>
+                </div>
+                <div className="evaluate">
+                    <div className="eva-top">
+                        <div>商品评价({(evalute && evalute.count) || 0})</div>
+                        <div onClick={routeToEvalute}>查看全部</div>
+                    </div>
+                    {
+                        evalute && (
+                            <div className="eva-content">
+                                <div className="desc">
+                                    {evalute.avatarUrl && (
+                                        <img className="eva-pic" src={evalute.avatarUrl}/>
+                                    )}
+                                    <div className="eva-username">{evalute.nickname}</div>
+                                </div>
+                                <p>{evalute.content}</p>
+                            </div>
+                        )
+                    }
                 </div>
             </Element>
         );
