@@ -13,7 +13,7 @@ import Sku from '../../common/sku/Sku';
 import './shopCart.less';
 
 const {urlCfg} = Configs;
-const {appHistory, showInfo, showSuccess, native, systemApi: {setValue, removeValue}, getUrlParam, setNavColor} = Utils;
+const {appHistory, showInfo, showSuccess, native, systemApi: {removeValue}, getUrlParam, setNavColor} = Utils;
 const {MESSAGE: {Form, Feedback}, FIELD, navColorR} = Constants;
 
 // let payInNum = 0;

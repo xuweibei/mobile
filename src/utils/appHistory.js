@@ -71,7 +71,6 @@ const appHistory = {
         const hl = historyStack.length;
         if (hl <= 0) return;
         historyStack.pop();
-        console.log(historyStack.pop(), '离开水电费进口量');
         store.dispatch(goBack());
     },
     goForward: () => {

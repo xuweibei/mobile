@@ -1,3 +1,5 @@
+//退款详情
+
 import {connect} from 'react-redux';
 import {dropByCacheKey} from 'react-router-cache-route';
 import AppNavBar from '../../../../../common/navbar/NavBar';
@@ -11,7 +13,7 @@ const {urlCfg} = Configs;
 const {MESSAGE: {Form, Feedback}} = Constants;
 class refundDetails extends BaseComponent {
     state = {
-        refundArr: []
+        refundArr: [] //退款详情数据
     };
 
     componentDidMount() {
@@ -23,7 +25,7 @@ class refundDetails extends BaseComponent {
         this.fetch(urlCfg.refundDetail, {
             data: {id}
         }).subscribe(res => {
-            if (res.status === 0) {
+            if (res && res.status === 0) {
                 this.setState({
                     refundArr: res.data
                 });
@@ -33,51 +35,25 @@ class refundDetails extends BaseComponent {
 
     //退货状态
     refundState = num => {
-        let str = '';
-        switch (num) {
-        case '0':
-            str = '未审核';
-            break;
-        case '1':
-            str = '未审核';
-            break;
-        case '2':
-            str = '未审核';
-            break;
-        case '3':
-            str = '未审核';
-            break;
-        default:
-            str = '';
-            break;
-        }
-        return str;
+        const arr = new Map([
+            ['0', '未审核'],
+            ['1', '未审核'],
+            ['2', '未审核'],
+            ['3', '未审核']
+        ]);
+        return arr.get(num);
     };
 
     //售后状态
     afterSalesType = num => {
-        let str = '';
-        switch (num) {
-        case '0':
-            str = '仅退款（退运费）';
-            break;
-        case '1':
-            str = '退货';
-            break;
-        case '2':
-            str = '退款退货';
-            break;
-        case '3':
-            str = '换货';
-            break;
-        case '4':
-            str = '维修';
-            break;
-        default:
-            str = '';
-            break;
-        }
-        return str;
+        const arr = new Map([
+            ['0', '仅退款（退运费）'],
+            ['1', '退货'],
+            ['2', '退款退货'],
+            ['3', '换货'],
+            ['4', '维修']
+        ]);
+        return arr.get(num);
     };
 
     //点击撤销订单
@@ -88,13 +64,13 @@ class refundDetails extends BaseComponent {
             btnTexts: ['我再想想', '确认撤销'],
             callbacks: [null, () => {
                 const {refundArr} = this.state;
-                this.fetch(urlCfg.revokeOrder, {method: 'post', data: {id: refundArr.id}})
+                this.fetch(urlCfg.revokeOrder, {data: {id: refundArr.id}})
                     .subscribe(res => {
                         this.setState({
                             showModal: false,
                             modalTitle: ''
                         });
-                        if (res.status === 0) {
+                        if (res && res.status === 0) {
                             showInfo(Feedback.Rovke_Success);
                             this.setState({
                                 revoke: false
@@ -117,12 +93,11 @@ class refundDetails extends BaseComponent {
         showConfirm({
             title: '是否拨打电话',
             callbacks: [null, () => {
-                const hybird = process.env.NATIVE;
                 const {refundArr} = this.state;
-                this.fetch(urlCfg.getShopMain, {method: 'post', data: {shop_mid: refundArr.shop_mid}})
+                this.fetch(urlCfg.getShopMain, {data: {shop_mid: refundArr.shop_mid}})
                     .subscribe(res => {
-                        if (res.status === 0) {
-                            if (hybird) {
+                        if (res && res.status === 0) {
+                            if (process.env.NATIVE) {
                                 native('callTel', {phoneNum: res.data.phone});
                             }
                         }

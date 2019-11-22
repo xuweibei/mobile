@@ -473,7 +473,7 @@ class MyOrder extends BaseComponent {
         case '1': //待发货
             blockModal = (
                 <div className="buttons">
-                    {/* {
+                    {
                         (item.refund_button === 1) && (
                             <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
                                 {
@@ -482,7 +482,7 @@ class MyOrder extends BaseComponent {
                             </div>
 
                         )
-                    } */}
+                    }
                     {
                         !item.all_refund && <div className="evaluate-button" onClick={() => this.remindDelivery([item.id, item.can_tip])}>提醒发货</div>
                     }
@@ -493,7 +493,7 @@ class MyOrder extends BaseComponent {
         case '2'://待收货
             blockModal = (
                 <div className="buttons">
-                    {/* {
+                    {
                         item.refund_button === 1 && (
                             <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
                                 {
@@ -501,13 +501,13 @@ class MyOrder extends BaseComponent {
                                 }
                             </div>
                         )
-                    } */}
+                    }
                     <div className="look-button" onClick={(ev) => this.extendedReceipt(item.id, ev)}>延长收货</div>
                     <div className="look-button" onClick={(ev) => this.goApplyService(item.id, ev)}>查看物流</div>
                     <div className="evaluate-button" onClick={(ev) => this.confirmTake(item.id, ev, item.all_refund)}>确认收货</div>
-                    {/* {
+                    {
                         item.all_refund === 1 ? <div className="evaluate-button" onClick={(ev) => this.revoke(item.pr_list[0].return_id, ev)}>撤销申请</div> : <div className="evaluate-button" onClick={(ev) => this.confirmTake(item.id, ev)}>确认收货</div>
-                    } */}
+                    }
 
                 </div>
             );
@@ -517,7 +517,7 @@ class MyOrder extends BaseComponent {
                 <div className="buttons">
                     <div className="look-button" onClick={(ev) => this.goApplyService(item.id, ev)}>查看物流</div>
                     <div className="delete-button" onClick={() => this.deleteOrder(item.id)}>删除</div>
-                    {/* <div className="evaluate-button" onClick={(ev) => this.promptlyEstimate(item.id, ev)}>立即评价</div> */}
+                    <div className="evaluate-button" onClick={(ev) => this.promptlyEstimate(item.id, ev)}>立即评价</div>
                 </div>
             );
             break;

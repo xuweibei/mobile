@@ -279,7 +279,6 @@ class ReDetail extends BaseComponent {
 
     render() {
         const {pageList, status, refreshing, isLoading, hasMore, canStatus, navColor, height} = this.state;
-
         //每行渲染样式
         const row = item => (
             <div className="shop-lists" key={item.id} onClick={(e) => this.skipDetail(e, item.id, item.return_id)}>
