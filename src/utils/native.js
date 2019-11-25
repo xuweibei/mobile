@@ -97,7 +97,7 @@ global.goBack = function () {
 };
 
 
-//h5跳登录页时，清除缓存
+//h5跳原生登录页时，清除缓存
 global.clearCache = function () {
     removeValue(LOCALSTORAGE.USER_TOKEN); // 清除token,localstorage
     store.dispatch(baseActionCreator.setUserToken('')); // 清除redux的userToken
@@ -105,10 +105,10 @@ global.clearCache = function () {
 
 
 //原生跳h5重置历史
-global.restHistory = function () {
-    appHistory.reduction();
-};
-
+// global.restHistory = function () {
+// appHistory.reduction();
+// };
+//返回封装
 export function goBackModal() {
     if (process.env.NATIVE && appHistory.length() === 0) {
         native('goBack');
@@ -116,3 +116,7 @@ export function goBackModal() {
         appHistory.goBack();
     }
 }
+
+// global.goBackApp = function () { 跳回app时调用
+
+// };

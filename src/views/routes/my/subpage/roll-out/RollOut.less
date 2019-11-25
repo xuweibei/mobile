@@ -14,11 +14,24 @@
                 margin-right: 36px;
                 .am-list-body {
                     width: 529px;
+                    position: relative;
+                    height: 100px;
                     .am-list-item {
                         height: 100px;
-                        border: 0.0665vw solid #E5E5E5;
-                        // .hairline('all', #e5e5e5);
+                        // border: 0.133vw solid #E5E5E5;
                         border-radius: 100px;
+                    }
+                    .am-list-item::before{
+                        content: "";
+                        position: absolute;
+                        border: 4PX solid red;
+                        width: 400%;
+                        height: 400%;
+                        transform: 0 0;
+                        transform: scale(0.25,0.25);
+                        box-sizing: border-box;
+                        left: -840px;
+                        border-radius: 400px;
                     }
                     .am-list-item .am-input-control input{
                         padding: 5px 0;

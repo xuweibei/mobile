@@ -208,7 +208,7 @@ class passwordPayment extends BaseComponent {
     }
 
     render() {
-        const {editModal, getOff} = this.state;
+        const {editModal, getOff, phoneNum} = this.state;
         const {getFieldDecorator} = this.props.form;//getFieldDecorator用于和表单进行双向绑定
         return (
             <React.Fragment>
@@ -262,7 +262,7 @@ class passwordPayment extends BaseComponent {
                                             type="phone"
                                             placeholder="请输手机号码"
                                             onChange={this.phoneChange}
-                                            value={this.state.phoneNum}
+                                            value={phoneNum}
                                             clear
                                         >输入手机号
                                         </InputItem>
@@ -282,7 +282,7 @@ class passwordPayment extends BaseComponent {
                                                 placeholder=""
                                                 className="sure-pass"
                                                 ref={ref => { this.yzm = ref }}
-                                                maxLength={6}
+                                                maxLength={4}
                                             >验证码
                                             </InputItem>
                                         )

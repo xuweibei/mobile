@@ -339,7 +339,7 @@ class passwordDetail extends BaseComponent {
                                                 clear
                                                 className="sure-pass"
                                                 ref={ref => { this.yzm = ref }}
-                                                maxLength={6}
+                                                maxLength={4}
                                             >验证码
                                             </InputItem>
                                         )
