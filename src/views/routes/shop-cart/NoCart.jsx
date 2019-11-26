@@ -5,6 +5,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {SwipeAction} from 'antd-mobile';
 import classNames from 'classnames';
+import {store} from '../../../redux/store';
 import {baseActionCreator as actionCreator} from '../../../redux/baseAction';
 import {shopCartActionCreator} from './actions/index';
 import {FooterBar} from '../../common/foot-bar/FooterBar';
@@ -13,7 +14,7 @@ import Sku from '../../common/sku/Sku';
 import './shopCart.less';
 
 const {urlCfg} = Configs;
-const {appHistory, showInfo, showSuccess, native, systemApi: {removeValue}, getUrlParam, setNavColor} = Utils;
+const {appHistory, showInfo, showSuccess, native, systemApi: {removeValue}, getUrlParam, setNavColor, systemApi: {setValue}} = Utils;
 const {MESSAGE: {Form, Feedback}, FIELD, navColorR} = Constants;
 
 // let payInNum = 0;
@@ -44,8 +45,17 @@ class ShopCart extends BaseComponent {
     componentWillMount() {
         if (process.env.NATIVE) { //设置tab颜色
             setNavColor('setNavColor', {color: navColorR});
+            this.getNativeUserToken();
         }
         this.getCart();
+    }
+
+    getNativeUserToken = () => {
+        const token = decodeURI(getUrlParam('token', encodeURI(this.props.location.search)));
+        if (token !== 'null') {
+            setValue('userToken', token);
+            store.dispatch(actionCreator.setUserToken(token));
+        }
     }
 
     componentDidMount() {
@@ -58,8 +68,11 @@ class ShopCart extends BaseComponent {
             setNavColor('setNavColor', {color: navColorR});
             const timerNext = decodeURI(getUrlParam('time', encodeURI(next.location.search)));
             const timer = decodeURI(getUrlParam('time', encodeURI(this.props.location.search)));
+            const token = decodeURI(getUrlParam('token', encodeURI(next.location.search)));
             if (timer !== timerNext) {
                 this.changeCart(this.state.currentIndex);
+                setValue('userToken', token);
+                store.dispatch(actionCreator.setUserToken(token));
             }
         }
     }
