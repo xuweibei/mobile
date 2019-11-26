@@ -114,7 +114,6 @@ class BankCard extends BaseComponent {
     render() {
         const {pwsPopup} = this.state;
         const {bankInfo} = this.props;
-        console.log(window.localStorage.getItem('urlArr'), '克里斯多夫');
         return (
             <div data-component="bankCard" data-role="page" className="bank-card">
                 <AppNavBar title="我的银行卡"/>

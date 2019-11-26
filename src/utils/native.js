@@ -105,9 +105,9 @@ global.clearCache = function () {
 
 
 //原生跳h5重置历史
-// global.restHistory = function () {
+global.restHistory = function () {
 // appHistory.reduction();
-// };
+};
 //返回封装
 export function goBackModal() {
     if (process.env.NATIVE && appHistory.length() === 0) {
@@ -117,6 +117,6 @@ export function goBackModal() {
     }
 }
 
-// global.goBackApp = function () { 跳回app时调用
-
-// };
+global.goBackApp = function () {
+    // 跳回app时调用;
+};

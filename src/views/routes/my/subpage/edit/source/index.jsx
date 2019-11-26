@@ -179,7 +179,7 @@ class SourceBrowse extends BaseComponent {
     //请求
     submit = (type) => {
         const {uid, phone} = this.state;
-        this.fetch(urlCfg.confirmationReferees, {method: 'post', data: {no: uid, type, phone: validator.wipeOut(phone)}})
+        this.fetch(urlCfg.confirmationReferees, {data: {no: uid, type, phone: validator.wipeOut(phone)}})
             .subscribe(res => {
                 if (res && res.status === 0) {
                     this.setState({
@@ -189,7 +189,7 @@ class SourceBrowse extends BaseComponent {
                         this.fetch(urlCfg.getDfinfor, {data: {no: uid}})
                             .subscribe(data => {
                                 if (data && data.status === 0) {
-                                    appHistory.push(`/bindSource?nickname=${encodeURI(data.data.nickname)}&phone=${validator.wipeOut(phone)}&uid=${uid}&avatarUrl=${data.data.avatarUrl}&router=bindSource`);
+                                    appHistory.push(`/sourceBrowse?nickname=${encodeURI(data.data.nickname)}&phone=${validator.wipeOut(phone)}&uid=${uid}&avatarUrl=${data.data.avatarUrl}&router=sourceBrowse`);
                                 }
                             });
                     });
@@ -207,7 +207,7 @@ class SourceBrowse extends BaseComponent {
 
 
     //绑定
-    bindSource = (avatarUrl, nickname, uid, phone) => (
+    sourceBrowse = (avatarUrl, nickname, uid, phone) => (
         <div data-component="source-browse" data-role="page" className="source-browse">
             <AppNavBar goBackModal={this.goBackModalBind} title="确认源头UID"/>
             <div className="recommend-content">
@@ -280,8 +280,8 @@ class SourceBrowse extends BaseComponent {
         case 'virSource':
             blockModal = this.virSource(height);
             break;
-        case 'bindSource':
-            blockModal = this.bindSource(avatarUrl, nickname, uid, phone);
+        case 'sourceBrowse':
+            blockModal = this.sourceBrowse(avatarUrl, nickname, uid, phone);
             break;
         default:
             blockModal = '';
