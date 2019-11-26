@@ -160,8 +160,8 @@ class ListDetails extends BaseComponent {
         const blockMadel = new Map([
             ['0', <div className="immediate-evaluation new-style-paynow" onClick={this.payNow}>立即付款</div>],
             ['1', <div className="immediate-evaluation deliver" onClick={this.remindDelivery}>提醒发货</div>],
-            ['2', <div className="immediate-evaluation" onClick={this.confirmTake}>确认收货</div>]
-            // ['3', <div className="immediate-evaluation" onClick={this.promptlyEstimate}>立即评价</div>]//暂时屏蔽
+            ['2', <div className="immediate-evaluation" onClick={this.confirmTake}>确认收货</div>],
+            ['3', <div className="immediate-evaluation" onClick={this.promptlyEstimate}>立即评价</div>]
         ]);
         return blockMadel.get(num);
     }
@@ -248,7 +248,7 @@ class ListDetails extends BaseComponent {
                                                 <img src={canInfo.shoper_pic} onError={(e) => { e.target.src = canInfo.df_logo }} alt=""/>
                                                 <p>{canInfo.shopName}</p>
                                             </div>
-                                            <span><div className="right" style={{border: '2px solid @fiery-red'}} onClick={(ev) => this.goShopHome(canInfo.shop_id, ev)}>进店</div></span>
+                                            <span><div className="right" style={{border: '1px solid #ff2d51'}} onClick={(ev) => this.goShopHome(canInfo.shop_id, ev)}>进店</div></span>
                                         </div>
                                         {
                                             canInfo.pr_list && canInfo.pr_list.map((item, index) => (
@@ -336,7 +336,6 @@ class ListDetails extends BaseComponent {
                                             <div className="business-right icon">
                                                 <a href={`tel:${canInfo.shop_tel}`}>商家电话</a>
                                             </div>
-
                                         ) : (
                                             <span className="business-right icon" onClick={() => this.shopPhone(canInfo.shop_tel)}>商家电话</span>
                                         )

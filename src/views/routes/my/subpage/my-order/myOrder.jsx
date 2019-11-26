@@ -24,9 +24,9 @@ const tabs = [
     {title: '全部'},
     {title: '待付款'},
     {title: '待发货'},
-    {title: '待收货'}
-    // {title: '待评价'}
-    // {title: '售后'} //暂时屏蔽
+    {title: '待收货'},
+    {title: '待评价'},
+    {title: '售后'} //暂时屏蔽
 ];
 
 
@@ -117,8 +117,7 @@ class MyOrder extends BaseComponent {
         this.setState({
             hasMore: true
         });
-        this.fetch(urlCfg.mallOrder,
-            {data: {status, page,  pagesize: temp.pagesize, pageCount}}, noLoading)
+        this.fetch(urlCfg.mallOrder, {data: {status, page,  pagesize: temp.pagesize, pageCount}}, noLoading)
             .subscribe((res) => {
                 temp.isLoading = false;
                 if (res && res.status === 0) {
@@ -194,14 +193,19 @@ class MyOrder extends BaseComponent {
         });
         this.setState({
             page: 1,
-            // status,
+            status: index - 1,
             pageCount: -1,
             dataSource: dataSource2,
             retainArr: [],
             hasMore: false
         }, () => {
+            const {status, page} = this.state;
             temp.stackData = [];
-            this.gotoMyOrder(index);
+            if (status === 4) {
+                this.refundMllOder(page);
+            } else {
+                this.gotoMyOrder(index);
+            }
         });
     };
 
@@ -473,27 +477,25 @@ class MyOrder extends BaseComponent {
         case '1': //待发货
             blockModal = (
                 <div className="buttons">
-                    {/* {
+                    {
                         (item.refund_button === 1) && (
                             <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
                                 {
                                     item.showButton && <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev, 1)}>申请退款</span>
                                 }
                             </div>
-
                         )
-                    } */}
+                    }
                     {
                         !item.all_refund && <div className="evaluate-button" onClick={() => this.remindDelivery([item.id, item.can_tip])}>提醒发货</div>
                     }
-
                 </div>
             );
             break;
         case '2'://待收货
             blockModal = (
                 <div className="buttons">
-                    {/* {
+                    {
                         item.refund_button === 1 && (
                             <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
                                 {
@@ -501,14 +503,12 @@ class MyOrder extends BaseComponent {
                                 }
                             </div>
                         )
-                    } */}
+                    }
                     <div className="look-button" onClick={(ev) => this.extendedReceipt(item.id, ev)}>延长收货</div>
                     <div className="look-button" onClick={(ev) => this.goApplyService(item.id, ev)}>查看物流</div>
-                    <div className="evaluate-button" onClick={(ev) => this.confirmTake(item.id, ev, item.all_refund)}>确认收货</div>
-                    {/* {
+                    {
                         item.all_refund === 1 ? <div className="evaluate-button" onClick={(ev) => this.revoke(item.pr_list[0].return_id, ev)}>撤销申请</div> : <div className="evaluate-button" onClick={(ev) => this.confirmTake(item.id, ev)}>确认收货</div>
-                    } */}
-
+                    }
                 </div>
             );
             break;
@@ -517,7 +517,7 @@ class MyOrder extends BaseComponent {
                 <div className="buttons">
                     <div className="look-button" onClick={(ev) => this.goApplyService(item.id, ev)}>查看物流</div>
                     <div className="delete-button" onClick={() => this.deleteOrder(item.id)}>删除</div>
-                    {/* <div className="evaluate-button" onClick={(ev) => this.promptlyEstimate(item.id, ev)}>立即评价</div> */}
+                    <div className="evaluate-button" onClick={(ev) => this.promptlyEstimate(item.id, ev)}>立即评价</div>
                 </div>
             );
             break;

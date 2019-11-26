@@ -1,3 +1,4 @@
+//申请退款 仅退款
 import {connect} from 'react-redux';
 import {dropByCacheKey} from 'react-router-cache-route';
 import {TextareaItem, Button, ImagePicker} from 'antd-mobile';
@@ -5,8 +6,8 @@ import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAc
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './ApplyService.less';
 
-const {appHistory, showInfo, dealImage, getUrlParam, native, TD, setNavColor} = Utils;
-const {MESSAGE: {Form, Feedback}, TD_EVENT_ID, navColorF} = Constants;
+const {appHistory, showInfo, dealImage, getUrlParam, native, TD} = Utils;
+const {MESSAGE: {Form, Feedback}, TD_EVENT_ID} = Constants;
 const {urlCfg} = Configs;
 //退货退款类型
 const molds = [
@@ -35,18 +36,6 @@ class applyService extends BaseComponent {
         selectIndexs: null, //退款数组赋值
         nativePicNum: 9 //动态计算原生图片数量
     };
-
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
 
     //开启退款原因选择
     blockedOut = () => {
@@ -109,11 +98,12 @@ class applyService extends BaseComponent {
     //提交申请
     editApply = () => {
         const {selectText, Service, question, fileInfo} = this.state;
-        const orderId = decodeURI(getUrlParam('orderId', encodeURI(this.props.location.search)));
-        const prId = decodeURI(getUrlParam('prId', encodeURI(this.props.location.search)));
-        const returnType = decodeURI(getUrlParam('returnType', encodeURI(this.props.location.search)));
-        const arrInfo = decodeURI(getUrlParam('arrInfo', encodeURI(this.props.location.search)));
-        const down = decodeURI(getUrlParam('down', encodeURI(this.props.location.search)));
+        const {location: {search}, setOrderStatus} = this.props;
+        const orderId = decodeURI(getUrlParam('orderId', encodeURI(search)));
+        const prId = decodeURI(getUrlParam('prId', encodeURI(search)));
+        const returnType = decodeURI(getUrlParam('returnType', encodeURI(search)));
+        const arrInfo = decodeURI(getUrlParam('arrInfo', encodeURI(search)));
+        const down = decodeURI(getUrlParam('down', encodeURI(search)));
         TD.log(TD_EVENT_ID.AFTER_SALE.ID, TD_EVENT_ID.AFTER_SALE.LABEL.APPLY_REFUND);
         if (!selectText) {
             showInfo(Form.Error_Reason_Required);
@@ -129,71 +119,42 @@ class applyService extends BaseComponent {
                         property_content: arrInfo === 'null' ? null : arrInfo,
                         pr_id: prId !== 'null' ? prId : null
                     }
-                })
-                .subscribe((res) => {
-                    if (res.status === 0) {
-                        if (fileInfo.length > 0) {
-                            const pasArr = [];
-                            fileInfo.forEach((item, index) => {
-                                pasArr.push(new Promise((resolve, reject) => {
-                                    this.fetch(urlCfg.pictureUploadBase, {data: {
-                                        type: 2,
-                                        id: res.id,
-                                        ix: index,
-                                        num: item.length,
-                                        filex: encodeURIComponent(item.url),
-                                        file: encodeURIComponent(item.urlB)
-                                    }}).subscribe((value) => {
-                                        if (value.status === 0) {
-                                            resolve(value);
-                                        } else {
-                                            reject(value);
-                                        }
-                                    });
-                                }));
-                            });
-                            Promise.all(pasArr).then(ooo => {
-                                showInfo(Feedback.Apply_Success);
-                                if (down === '1') { //线下订单申请
-                                    if (returnType === '1') {
-                                        appHistory.go(-2);
+                }).subscribe((res) => {
+                if (res && res.status === 0) {
+                    if (fileInfo.length > 0) {
+                        const pasArr = [];
+                        fileInfo.forEach((item, index) => {
+                            pasArr.push(new Promise((resolve, reject) => {
+                                this.fetch(urlCfg.pictureUploadBase, {data: {
+                                    type: 2,
+                                    id: res.id,
+                                    ix: index,
+                                    num: item.length,
+                                    filex: encodeURIComponent(item.url),
+                                    file: encodeURIComponent(item.urlB)
+                                }}).subscribe((value) => {
+                                    if (value && value.status === 0) {
+                                        resolve(value);
                                     } else {
-                                        appHistory.go(-3);
+                                        reject(value);
                                     }
-                                    setTimeout(() => {
-                                        appHistory.push(`/selfOrderingDetails?id=${orderId}`);
-                                    });
-                                    this.props.setOrderStatus(3);
-                                } else {
-                                    //将我的订单的tab状态设置为售后
-                                    if (returnType === '1') { //整条订单退款
-                                        appHistory.go(-2);
-                                    } else { //非整条订单退款
-                                        appHistory.go(-3);
-                                    }
-                                    //清除我的订单的缓存
-                                    dropByCacheKey('OrderPage');
-                                    setTimeout(() => {
-                                        appHistory.push(`/refundDetails?id=${res.id}`);
-                                    });
-                                    this.props.setOrderStatus(0);
-                                }
-                            }, err => {
-                                console.log(err);
-                            });
-                        } else {
+                                });
+                            }));
+                        });
+                        Promise.all(pasArr).then(ooo => {
                             showInfo(Feedback.Apply_Success);
                             if (down === '1') { //线下订单申请
                                 if (returnType === '1') {
-                                    appHistory.go(-1);
-                                } else {
                                     appHistory.go(-2);
+                                } else {
+                                    appHistory.go(-3);
                                 }
                                 setTimeout(() => {
                                     appHistory.push(`/selfOrderingDetails?id=${orderId}`);
                                 });
-                                this.props.setOrderStatus(3);
+                                setOrderStatus(3);
                             } else {
+                                //将我的订单的tab状态设置为售后
                                 if (returnType === '1') { //整条订单退款
                                     appHistory.go(-2);
                                 } else { //非整条订单退款
@@ -201,21 +162,50 @@ class applyService extends BaseComponent {
                                 }
                                 //清除我的订单的缓存
                                 dropByCacheKey('OrderPage');
-                                appHistory.push(`/refundDetails?id=${res.id}`);
-                                this.props.setOrderStatus(0);
+                                setTimeout(() => {
+                                    appHistory.push(`/refundDetails?id=${res.id}`);
+                                });
+                                setOrderStatus(0);
                             }
+                        }, err => {
+                            console.log(err);
+                        });
+                    } else {
+                        showInfo(Feedback.Apply_Success);
+                        if (down === '1') { //线下订单申请
+                            if (returnType === '1') {
+                                appHistory.go(-1);
+                            } else {
+                                appHistory.go(-2);
+                            }
+                            setTimeout(() => {
+                                appHistory.push(`/selfOrderingDetails?id=${orderId}`);
+                            });
+                            setOrderStatus(3);
+                        } else {
+                            if (returnType === '1') { //整条订单退款
+                                appHistory.go(-2);
+                            } else { //非整条订单退款
+                                appHistory.go(-3);
+                            }
+                            //清除我的订单的缓存
+                            dropByCacheKey('OrderPage');
+                            setTimeout(() => {
+                                appHistory.push(`/refundDetails?id=${res.id}`);
+                            });
+                            setOrderStatus(0);
                         }
                     }
-                });
+                }
+            });
         }
     }
 
     //点击添加图片
     addPictrue = () => {
-        const {nativePicNum} = this.state;
+        const {nativePicNum, fileInfo} = this.state;
         if (hybird) {
             native('picCallback', {num: nativePicNum}).then(res => {
-                const {fileInfo} = this.state;
                 const arr = fileInfo;
                 res.data.img.forEach(item => {
                     arr.push({urlB: item[0], url: item[1], id: new Date()});
@@ -288,12 +278,12 @@ class applyService extends BaseComponent {
                             <div className="upload-text">上传图片</div>
                             <div className="img-list">
                                 {
-                                    hybird ? (
+                                    process.env.NATIVE ? (
                                         <div className="picture-area">
                                             <ul>
                                                 {
                                                     fileInfo && fileInfo.map((item, index) => index < 9 && (
-                                                        <li id={item.id}>
+                                                        <li key={item.id} id={item.id}>
                                                             <span onClick={() => this.deleteImg(item.id)}>×</span>
                                                             <img src={item.url}/>
                                                         </li>

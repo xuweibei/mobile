@@ -55,6 +55,7 @@ class ScrollToTop extends React.PureComponent {
                     <Nothing
                         text={FIELD.Page_Crash}
                         title="返回"
+                        // onClick={() => ((process.env.NATIVE && appHistory.length() === 0) ? native('goBack') : appHistory.goBack())}
                         onClick={() => ((process.env.NATIVE && appHistory.length() === 0) ? native('goBack') : appHistory.goBack())}
                     />
                 </React.Fragment>

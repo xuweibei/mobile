@@ -6,8 +6,8 @@ import {dropByCacheKey} from 'react-router-cache-route';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './PublishReview.less';
 
-const {getUrlParam, dealImage, showInfo, showSuccess, appHistory, native, setNavColor} = Utils;
-const {MESSAGE: {Form, Feedback}, IMGSIZE, navColorF} = Constants;
+const {getUrlParam, dealImage, showInfo, showSuccess, appHistory, native} = Utils;
+const {MESSAGE: {Form, Feedback}, IMGSIZE} = Constants;
 const {urlCfg} = Configs;
 export default class PublishReview extends BaseComponent {
     state = {
@@ -21,23 +21,11 @@ export default class PublishReview extends BaseComponent {
         this.getList();
     }
 
-    componentWillMount() {
-        if (process.env.NATIVE) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (process.env.NATIVE) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
     getList = () => {
         const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
-        this.fetch(urlCfg.rublishReview, {method: 'post', data: {id}})
+        this.fetch(urlCfg.rublishReview, {data: {id}})
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     this.setState({
                         publishInfo: res.data
                     });
@@ -76,10 +64,9 @@ export default class PublishReview extends BaseComponent {
 
     //原生图片选择
     addPictrue = () => {
-        const {nativePicNum} = this.state;
+        const {nativePicNum, fileArr} = this.state;
         if (process.env.NATIVE) {
             native('picCallback', {num: nativePicNum}).then(res => {
-                const {fileArr} = this.state;
                 const arr = fileArr;
                 res.data.img.forEach((item, index) => {
                     arr.push({imgB: item[0], imgS: item[1], id: new Date()});
@@ -110,9 +97,9 @@ export default class PublishReview extends BaseComponent {
             return;
         }
         const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
-        this.fetch(urlCfg.publishAReview, {method: 'post', data: {pingjia_id: id, content: textValue, have_pic: fileArr.length > 0 ? 1 : ''}})
+        this.fetch(urlCfg.publishAReview, {data: {pingjia_id: id, content: textValue, have_pic: fileArr.length > 0 ? 1 : ''}})
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     if (fileArr.length > 0) {
                         fileArr.forEach(itemImg => {
                             itemImg.urlB = encodeURIComponent(itemImg.imgB);
@@ -124,7 +111,7 @@ export default class PublishReview extends BaseComponent {
                             id: res.id,
                             file: fileArr
                         }}).subscribe((resr) => {
-                            if (resr.status === 0) {
+                            if (res && resr.status === 0) {
                                 showSuccess(Feedback.Evaluate_Success);
                                 dropByCacheKey('PossessEvaluate');
                                 appHistory.replace('/evaluationSuccess');
@@ -137,8 +124,6 @@ export default class PublishReview extends BaseComponent {
                     }
                 }
             });
-        // FIXME: 这个跟不返回是一样的效果
-        //已优化
     }
 
     goToGoods = () => {

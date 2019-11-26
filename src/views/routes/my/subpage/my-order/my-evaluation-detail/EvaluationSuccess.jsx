@@ -6,10 +6,8 @@ import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAc
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './EvaluationSuccess.less';
 
-const {appHistory, setNavColor} = Utils;
+const {appHistory} = Utils;
 const {urlCfg} = Configs;
-const {navColorF} = Constants;
-const hybird = process.env.NATIVE;
 class EvaluationSuccess extends BaseComponent {
     state = {
         recommend: [], //获取评价列表
@@ -21,58 +19,28 @@ class EvaluationSuccess extends BaseComponent {
         this.greatDemand();
     }
 
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
     //获取订单列表
     recommend = () => {
         this.fetch(urlCfg.mallOrder,
-            {data:
-                {
-                    status: 3,
-                    page: 1,
-                    pagesize: 5
-                }
-            })
-            .subscribe((res) => {
-                if (res) {
-                    if (res.status === 0) {
-                        this.setState({
-                            recommend: res.list
-                        });
-                    }
-                }
-            });
+            {data: {status: 3, page: 1, pagesize: 5}}).subscribe((res) => {
+            if (res && res.status === 0) {
+                this.setState({
+                    recommend: res.list
+                });
+            }
+        });
     }
 
     //热门推荐
     greatDemand = () => {
         this.fetch(urlCfg.homeRecommendPr,
-            {data:
-                {
-                    status: 3,
-                    page: 1,
-                    pagesize: 3
-                }
-            })
-            .subscribe((res) => {
-                if (res) {
-                    if (res.status === 0) {
-                        this.setState({
-                            greatDemand: res.data
-                        });
-                    }
-                }
-            });
+            {data: {status: 3, page: 1, pagesize: 3}}).subscribe((res) => {
+            if (res && res.status === 0) {
+                this.setState({
+                    greatDemand: res.data
+                });
+            }
+        });
     }
 
     //跳转全部商品
@@ -115,7 +83,7 @@ class EvaluationSuccess extends BaseComponent {
                     <div className="Evaluation">
                         <div className="Evaluation-t" onClick={this.myEvaluate}>继续评论</div>
                     </div>
-                    {recommend.map(item => (
+                    {(recommend && recommend.length > 0) ? recommend.map(item => (
                         <div className="goods">
                             <div className="goods-name">
                                 <div className="goods-picture">
@@ -129,7 +97,7 @@ class EvaluationSuccess extends BaseComponent {
                                             <div className="money-appraise" onClick={() => this.goToGooods(data.pr_id)}>￥{data.price}</div>
                                             <ul className="goods-label" onClick={() => this.goToGooods(data.pr_id)}>
                                                 {data.property_content.map(items => (
-                                                    <li>{items}</li>
+                                                    <li key={items}>{items}</li>
                                                 ))}
                                             </ul>
                                             <div className="num-appraise" onClick={() => this.goToGooods(data.pr_id)}>x{data.pr_num}</div>
@@ -152,11 +120,11 @@ class EvaluationSuccess extends BaseComponent {
                                 }
                             </div>
                         </div>
-                    ))}
+                    )) : ''}
                 </div>
                 <div className="recommend">
                     <div className="recommend-text">热门推荐</div>
-                    {greatDemand.map(item => (
+                    {(greatDemand && greatDemand.length > 0) ? greatDemand.map(item => (
                         <div className="goods">
                             <div className="goods-name">
                                 <div className="goods-picture" onClick={() => this.goToGooods(item.pr_id)}>
@@ -182,7 +150,7 @@ class EvaluationSuccess extends BaseComponent {
                                 </div>
                             </div>
                         </div>
-                    ))}
+                    )) : ''}
                 </div>
             </div>
         );
