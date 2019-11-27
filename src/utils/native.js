@@ -123,6 +123,7 @@ export function goBackModal() {
     }
 }
 
+//判断部分机型边框样式不兼容
 export function nativeCssDiff() {
     const str = navigator.userAgent;
     const phoneModal =  ['OPPO R7sm', 'm1 note', 'Letv X501'];
