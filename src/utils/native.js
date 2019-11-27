@@ -108,6 +108,12 @@ global.clearCache = function () {
 global.restHistory = function () {
 // appHistory.reduction();
 };
+
+global.goBackApp = function () {
+    // 跳回app时调用;
+};
+
+
 //返回封装
 export function goBackModal() {
     if (process.env.NATIVE && appHistory.length() === 0) {
@@ -117,6 +123,14 @@ export function goBackModal() {
     }
 }
 
-global.goBackApp = function () {
-    // 跳回app时调用;
-};
+export function nativeCssDiff() {
+    const str = navigator.userAgent;
+    const phoneModal =  ['OPPO R7sm', 'm1 note', 'Letv X501'];
+    let onOff = false;
+    phoneModal.forEach(item => {
+        if (str.indexOf(item) > -1) {
+            onOff = true;
+        }
+    });
+    return onOff;
+}

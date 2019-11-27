@@ -7,7 +7,7 @@ import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAc
 import {InputGrid} from '../../../../../common/input-grid/InputGrid';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 
-const {appHistory, getUrlParam, native, systemApi: {getValue, removeValue}, supple, showFail, showInfo} = Utils;
+const {appHistory, getUrlParam, native, systemApi: {getValue, removeValue}, supple, showFail, showInfo, nativeCssDiff} = Utils;
 const {urlCfg} = Configs;
 const mode = [
     {
@@ -296,6 +296,7 @@ class PayMoney extends BaseComponent {
         hideConfirm();//关闭弹窗
     }
 
+    radiusCssShow = () => (nativeCssDiff() ? '1PX solid #999' : '0.01rem solid #999')
 
     //返回
     goBackModal = () => {
@@ -390,6 +391,7 @@ class PayMoney extends BaseComponent {
                                 <div className="pm-center">{item.title}</div>
                                 <div
                                     className={`icon ${index === selectIndex ? 'icon-Selection' : 'icon-Unselected'}`}
+                                    style={{border: index !== selectIndex ? this.radiusCssShow() : ''}}
                                 />
                             </div>
                         </div>
