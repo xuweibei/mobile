@@ -151,7 +151,7 @@ class History extends BaseComponent {
                         onClick={() => this.goToGoodsDetail(item.pr_id)}
                     >
                         <div className="goods-row-left">
-                            <LazyLoad lazyInfo={{imgUrl: item.picpath, offset: -20, overflow: true}}/>
+                            <LazyLoad lazyInfo={{imgUrl: item.picpath, offset: 80, overflow: true}}/>
                         </div>
                         <div className="goods-row-right">
                             <div className="goods-row-right-zeroth">
