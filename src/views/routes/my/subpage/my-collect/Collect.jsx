@@ -13,7 +13,7 @@ const tabs = [
     {title: '商品'},
     {title: '店铺'}
 ];
-const {appHistory, native, showInfo} = Utils;
+const {appHistory, native, showInfo, nativeCssDiff} = Utils;
 const {urlCfg} = Configs;
 const {MESSAGE: {Form, Feedback}, FIELD} = Constants;
 class Collect extends BaseComponent {
@@ -363,7 +363,7 @@ class Collect extends BaseComponent {
                 <div className="goods" key={item.id} onClick={() => this.shopGoods(item.pr_id)}>
                     <div className="goods-box">
                         <div>
-                            <LazyLoad lazyInfo={{imgUrl: item.picpath, offset: -20, overflow: true}}/>
+                            <LazyLoad lazyInfo={{imgUrl: item.picpath, offset: 80, overflow: true}}/>
                         </div>
                         <div className="desc">
                             <div className="desc-title">{item.title}</div>
@@ -411,14 +411,18 @@ class Collect extends BaseComponent {
                             <span className="Shop-Nr">人均消费</span>
                             <span className="Shop-Nr wide">￥{item.consume_per}</span>
                         </div>
-                        <div className="button">进店</div>
+                        <div
+                            className="button"
+                            style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}
+                        >进店
+                        </div>
                     </div>
                     <div className="shop-goods">
                         {
                             item.pr && item.pr.length ? item.pr.map(data => (
                                 <div className="item" key={data.title}>
                                     <div className="image" onClick={() => this.shopGoods(data.id)}>
-                                        <LazyLoad lazyInfo={{imgUrl: data.picpath, offset: -50, overflow: true}}/>
+                                        <LazyLoad lazyInfo={{imgUrl: data.picpath, offset: 100, overflow: true}}/>
                                         <span>{data.price}</span>
                                     </div>
                                     <p onClick={() => this.shopGoods(data.id)}>{data.title}</p>

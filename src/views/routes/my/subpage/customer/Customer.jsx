@@ -13,7 +13,7 @@ const {FIELD} = Constants;
 const Item = List.Item;
 const Brief = Item.Brief;
 const {urlCfg} = Configs;
-const {appHistory, native} = Utils;
+const {appHistory, native, nativeCssDiff} = Utils;
 const hybirid = process.env.NATIVE;
 //tab配置信息
 const tabs = [
@@ -200,7 +200,7 @@ class Customer extends BaseComponent {
                     <p> {totalNum}人</p>
                     <span>总人数</span>
                 </div>
-                <div className="customer-list">
+                <div className={`customer-list ${nativeCssDiff() ? 'general-other' : 'general'}`}>
                     <Tabs
                         tabs={tabs}
                         initialPage={tabKey}

@@ -37,7 +37,7 @@ export default class LazyLoadIndex extends React.PureComponent {
                 <img
                     data-original={lazyInfo.imgUrl}
                     onClick={bigPicture}
-                    key={new Date()}
+                    key={lazyInfo.imgUrl}
                     onLoad={(e) => { e.target.src = lazyInfo.imgUrl || require('../../../assets/images/Lazy-loading.png') }}
                     src={lazyInfo.imgUrl || require('../../../assets/images/Lazy-loading.png')}
                 />

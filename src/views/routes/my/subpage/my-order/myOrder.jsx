@@ -481,7 +481,7 @@ class MyOrder extends BaseComponent {
                         (item.refund_button === 1) && (
                             <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
                                 {
-                                    item.showButton && <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev, 1)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #666'}}>申请退款</span>
+                                    item.showButton && <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev, 1)} style={{border: nativeCssDiff() ? '1PX solid #666' : '0.02rem solid #666'}}>申请退款</span>
                                 }
                             </div>
                         )
@@ -499,13 +499,13 @@ class MyOrder extends BaseComponent {
                         item.refund_button === 1 && (
                             <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
                                 {
-                                    item.showButton && <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #666'}}>申请退款</span>
+                                    item.showButton && <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev)} style={{border: nativeCssDiff() ? '1PX solid #6' : '0.02rem solid #666'}}>申请退款</span>
                                 }
                             </div>
                         )
                     }
-                    <div className="look-button" onClick={(ev) => this.extendedReceipt(item.id, ev)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #666'}}>延长收货</div>
-                    <div className="look-button" onClick={(ev) => this.goApplyService(item.id, ev)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #666'}}>查看物流</div>
+                    <div className="look-button" onClick={(ev) => this.extendedReceipt(item.id, ev)} style={{border: nativeCssDiff() ? '1PX solid #666' : '0.02rem solid #666'}}>延长收货</div>
+                    <div className="look-button" onClick={(ev) => this.goApplyService(item.id, ev)} style={{border: nativeCssDiff() ? '1PX solid #666' : '0.02rem solid #666'}}>查看物流</div>
                     {
                         item.all_refund === 1 ? <div className="evaluate-button" onClick={(ev) => this.revoke(item.pr_list[0].return_id, ev)}>撤销申请</div> : <div className="evaluate-button" onClick={(ev) => this.confirmTake(item.id, ev)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>确认收货</div>
                     }
@@ -515,8 +515,8 @@ class MyOrder extends BaseComponent {
         case '3'://待评价
             blockModal = (
                 <div className="buttons">
-                    <div className="look-button" onClick={(ev) => this.goApplyService(item.id, ev)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #666'}}>查看物流</div>
-                    <div className="delete-button" onClick={() => this.deleteOrder(item.id)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #666'}}>删除</div>
+                    <div className="look-button" onClick={(ev) => this.goApplyService(item.id, ev)} style={{border: nativeCssDiff() ? '1PX solid #666' : '0.02rem solid #666'}}>查看物流</div>
+                    <div className="delete-button" onClick={() => this.deleteOrder(item.id)} style={{border: nativeCssDiff() ? '1PX solid #666' : '0.02rem solid #666'}}>删除</div>
                     <div className="evaluate-button" onClick={(ev) => this.promptlyEstimate(item.id, ev)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>立即评价</div>
                 </div>
             );
@@ -527,7 +527,7 @@ class MyOrder extends BaseComponent {
         case '13'://商家取消
             blockModal = (
                 <div className="buttons">
-                    <div className="delete-button" onClick={() => this.deleteOrder(item.id)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #666'}}>删除</div>
+                    <div className="delete-button" onClick={() => this.deleteOrder(item.id)} style={{border: nativeCssDiff() ? '1PX solid #666' : '0.02rem solid #666'}}>删除</div>
                 </div>
             );
             break;
@@ -712,7 +712,7 @@ class MyOrder extends BaseComponent {
                 {   //弹出取消弹框
                     canStatus &&  (<CancelOrder canStateChange={this.canStateChange}/>)
                 }
-                <div className="tabs">
+                <div className={`tabs ${nativeCssDiff() ? 'general-other' : 'general'}`}>
                     <Tabs
                         tabs={tabs}
                         page={Number(status) + 1}

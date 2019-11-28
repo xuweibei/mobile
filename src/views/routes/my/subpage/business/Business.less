@@ -33,7 +33,7 @@
                 .am-tabs-default-bar-content {
                     height: 90px;
                     .am-tabs-default-bar-tab {
-                        border-right: 2.1px solid @to-light-gray;
+                        border-right: 1px solid @to-light-gray;
                         // .hairline('right', @to-light-gray);
                         height: 60px;
                         margin-top: 14px;
@@ -83,6 +83,19 @@
         }
     }
 }   
+.general-other{
+    .am-tabs {
+        .am-tabs-tab-bar-wrap {
+            .am-tabs-default-bar {
+                .am-tabs-default-bar-content {
+                    .am-tabs-default-bar-tab {
+                        border-right: 1PX solid @to-light-gray;
+                    }
+                }
+            }
+        }
+    }
+}
 .info-title {
     display: flex;
     justify-content: space-between;

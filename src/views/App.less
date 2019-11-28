@@ -213,9 +213,19 @@ body, .page{
     box-shadow: 0 4px 35px 0 @button-shadow-red !important;
 }
 //辅助按钮
-.auxiliary-button {
+.auxiliary-button{
     .auxiliaryButton();
-
+}
+.auxiliary-button.general {
+    .auxiliaryButton();
+}
+.auxiliary-button.general-other{
+    &.red{
+        border: 1PX solid @fiery-red !important;
+    }
+    &.gray{
+        border: 1PX solid @gray !important;
+    }
 }
 //禁用按钮颜色
 .disable-button {
