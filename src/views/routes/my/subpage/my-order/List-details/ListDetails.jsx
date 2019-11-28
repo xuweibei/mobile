@@ -7,7 +7,7 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 import CancelOrder from '../../../../../common/cancel-order/CancleOrder';
 import './ListDetails.less';
 
-const {appHistory, getUrlParam, showSuccess, native, showInfo} = Utils;
+const {appHistory, getUrlParam, showSuccess, native, showInfo, nativeCssDiff} = Utils;
 const {MESSAGE: {Form, Feedback}} = Constants;
 const {urlCfg} = Configs;
 class ListDetails extends BaseComponent {
@@ -353,7 +353,7 @@ class ListDetails extends BaseComponent {
                                 </div>
                                 <div className="collection-center">{canInfo.shopName}</div>
                                 {
-                                    canInfo.shop_collect === '0' ? <div onClick={() => this.collectDoIt({id: canInfo.shop_id, name: canInfo.shopName}, 'add')} className="collection-right">+收藏</div> : <div onClick={() => this.collectDoIt({id: canInfo.shop_collect, name: canInfo.shopName})} className="removeCollect">已收藏</div>
+                                    canInfo.shop_collect === '0' ? <div onClick={() => this.collectDoIt({id: canInfo.shop_id, name: canInfo.shopName}, 'add')} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} className="collection-right">+收藏</div> : <div onClick={() => this.collectDoIt({id: canInfo.shop_collect, name: canInfo.shopName})} className="removeCollect" style={{border: nativeCssDiff() ? '1PX solid #ccc' : '0.02rem solid #ccc'}}>已收藏</div>
                                 }
                             </div>
 

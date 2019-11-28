@@ -270,9 +270,12 @@ class History extends BaseComponent {
 
     //点击顶部导航右侧按钮
     changeNavRight = (isEdit) => {
-        this.setState({
-            isEdit
-        });
+        this.setState((prevState) => ({
+            data: prevState.data.cloneWithRowsAndSections(this.dataBlobs, this.sectionIDs, this.rowIDs),
+            isEdit,
+            isLoading: false
+            // isEdit: window.isWX
+        }));
     };
 
     //点击每行复选框

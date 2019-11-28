@@ -296,6 +296,7 @@ class PayMoney extends BaseComponent {
         hideConfirm();//关闭弹窗
     }
 
+    //兼容部分机型样式判断
     radiusCssShow = () => (nativeCssDiff() ? '1PX solid #999' : '0.01rem solid #999')
 
     //返回

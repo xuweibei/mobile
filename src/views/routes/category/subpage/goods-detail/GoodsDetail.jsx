@@ -13,7 +13,7 @@ import Sku from '../../../../common/sku/Sku';
 import './GoodsDetail.less';
 
 const {urlCfg} = Configs;
-const {appHistory, getUrlParam, showFail, showInfo, native, TD, systemApi: {setValue, removeValue}} = Utils;
+const {appHistory, getUrlParam, showFail, showInfo, native, TD, systemApi: {setValue, removeValue}, nativeCssDiff} = Utils;
 const {MESSAGE: {Form, Feedback}, TD_EVENT_ID} = Constants;
 
 const myImg = src => (
@@ -705,7 +705,7 @@ class GoodsDetail extends BaseComponent {
                     )}
                 </div>
                 <div className="goodsDetail-bottom">
-                    <div className="icons-warp">
+                    <div className="icons-warp" style={{width: nativeCssDiff() ? '2.6rem' : '3rem'}}>
                         <div className="icons">
                             <div className="phone-cart" onClick={this.goToShoper}>
                                 <div className="icon icon-phone"/>

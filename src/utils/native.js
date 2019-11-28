@@ -126,7 +126,8 @@ export function goBackModal() {
 //判断部分机型边框样式不兼容
 export function nativeCssDiff() {
     const str = navigator.userAgent;
-    const phoneModal =  ['OPPO R7sm', 'm1 note', 'Letv X501'];
+    console.log(str, '看了第三方估计快了');
+    const phoneModal =  ['OPPO R7sm', 'm1 note', 'Letv X501', 'Redmi Note 4X'];
     let onOff = false;
     phoneModal.forEach(item => {
         if (str.indexOf(item) > -1) {
