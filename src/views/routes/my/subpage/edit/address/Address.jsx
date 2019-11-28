@@ -159,7 +159,7 @@ class Address extends BaseComponent {
                     <div className="address-name">{item.area.join('') + item.address}</div>
                     <div className="user-name">
                         {item.if_default === '1' ? <span className="default-address">默认</span> : ''}
-                        <span>{item.linkname}</span>
+                        <span className="user-name-tel">{item.linkname}</span>
                         <span>{item.linktel}</span>
                     </div>
                 </div>

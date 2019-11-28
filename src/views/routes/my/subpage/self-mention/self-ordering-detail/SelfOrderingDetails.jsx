@@ -5,7 +5,7 @@ import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAc
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './SelfOrderingDetails.less';
 
-const {showSuccess, appHistory, getUrlParam, native, showFail, showInfo} = Utils;
+const {showSuccess, appHistory, getUrlParam, native, showFail, showInfo, nativeCssDiff} = Utils;
 const {MESSAGE: {Feedback}} = Constants;
 const {urlCfg} = Configs;
 //right:0未付款;1已付款（待使用）;3已使用（未评价）;4交易成功（已评价）;10取消订单 ;11删除订单;12申请退款成功关闭订单;13商家关闭订单14商家删除订单
@@ -316,7 +316,7 @@ class ReDetail extends BaseComponent {
                     </div>
                     <div className="collection-center">{selfSufficiency.shopName}</div>
                     {
-                        (!collectId ? <div className="collection-right" onClick={() => this.collectDoIts('add')}>+收藏</div> : <div className="collection-right" onClick={() => this.collectDoIts('off')}>取消收藏</div>)
+                        (!collectId ? <div className="collection-right" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} onClick={() => this.collectDoIts('add')}>+收藏</div> : <div className="removeCollect" style={{border: nativeCssDiff() ? '1PX solid #ccc' : '0.01rem solid #ccc'}} onClick={() => this.collectDoIts('off')}>已收藏</div>)
                     }
                 </div>
 

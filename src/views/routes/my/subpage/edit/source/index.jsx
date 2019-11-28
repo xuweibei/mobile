@@ -15,7 +15,7 @@ const article = [
         value: 2
     }
 ];
-const {showInfo, validator, getUrlParam, appHistory, native} = Utils;
+const {showInfo, validator, getUrlParam, appHistory, native, nativeCssDiff} = Utils;
 const {urlCfg} = Configs;
 const {MESSAGE: {Form, Feedback}} = Constants;
 
@@ -224,7 +224,7 @@ class SourceBrowse extends BaseComponent {
                 </div>
                 <div className="button">
                     {/* <Button className="normal-button general" onClick={this.sureSaoAgain}>重新扫码</Button> */}
-                    <Button className="normal-button general" onClick={this.goBackModal}>取消</Button>
+                    <Button className={`normal-button ${nativeCssDiff() ? 'general-other' : 'general'}`} onClick={this.goBackModal}>取消</Button>
                     <Button className="normal-button important" onClick={this.sureBind}>确认绑定</Button>
                 </div>
             </div>
