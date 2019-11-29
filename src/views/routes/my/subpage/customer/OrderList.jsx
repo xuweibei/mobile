@@ -8,7 +8,7 @@ import './Customer.less';
 
 const Item = List.Item;
 const {urlCfg} = Configs;
-const {appHistory, getUrlParam, setNavColor} = Utils;
+const {getUrlParam, setNavColor, goBackModal} = Utils;
 const {navColorF} = Constants;
 const hybird = process.env.NATIVE;
 export default class OrderList extends BaseComponent {
@@ -96,16 +96,6 @@ export default class OrderList extends BaseComponent {
         });
     };
 
-    //返回键回调
-    goBackModal = () => {
-        const hybirid = process.env.NATIVE;
-        if (hybirid) {
-            window.location.href = '?fun=Back';
-        } else {
-            appHistory.goBack();
-        }
-    };
-
     render() {
         const {
             data,
@@ -124,7 +114,7 @@ export default class OrderList extends BaseComponent {
                 {window.isWX ? null : (
                     <AppNavBar
                         title="我的客户"
-                        goBackModal={this.goBackModal}
+                        goBackModal={goBackModal}
                     />
                 )}
 

@@ -55,7 +55,7 @@ export default class MyAssets extends BaseComponent {
                     <List renderHeader={() => `可用记账：${infoArr.length > 0 ? infoArr[0].capital : ''}`} >
                         <InputItem
                             placeholder="请输入100的整倍数"
-                            type="digit"
+                            type="number"
                             clear
                             style={{borderRadius: '100px'}}
                             onChange={(value) => this.setState({originNum: value})}

@@ -3,10 +3,6 @@ import './index.less';
 
 let defaultValue = '';
 export default class NativeInput extends BaseComponent {
-    componentDidMount() {
-        alert(1);
-    }
-
     state={
         closeOpen: false //是否开启清空按钮
     }
@@ -34,13 +30,12 @@ export default class NativeInput extends BaseComponent {
         });
     }
 
-    componentWillReceiveProps(next, prev) {
-        console.log(next, prev, this.props, '克里斯丁');
-        if (next.typeNumber !== this.props.typeNumber) {
-            defaultValue = '';
-            this.inputName.value = '';
-            next.nativeChange(this.inputName.value);
-        }
+    //清除缓存数据
+    clearDeafult = () => {
+        const {nativeChange} = this.props;
+        this.inputName.value = '';
+        nativeChange('');
+        defaultValue = '';
     }
 
     //点击清除输入内容

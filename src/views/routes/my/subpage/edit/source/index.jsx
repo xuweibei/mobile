@@ -117,6 +117,7 @@ class SourceBrowse extends BaseComponent {
                         type="number"
                         placeholder="请输入推荐人UID"
                         onChange={this.setUid}
+                        maxLength={6}
                     >推荐人UID
                     </InputItem>
                     <InputItem

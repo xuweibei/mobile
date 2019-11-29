@@ -1,7 +1,7 @@
 /**
  * CAM提现--微信
  */
-import {Tabs, Picker, List, InputItem, Flex, Checkbox, Button} from 'antd-mobile';
+import {Tabs, Picker, List, Flex, Checkbox, Button} from 'antd-mobile';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import NativeInput from '../../../../common/native-input';
@@ -11,7 +11,7 @@ import {InputGrid} from '../../../../common/input-grid/InputGrid';
 import AppNavBar from '../../../../common/navbar/NavBar';
 
 const {urlCfg} = Configs;
-const {showInfo, validator, appHistory, setNavColor, nativeCssDiff} = Utils;
+const {showInfo, validator, appHistory, setNavColor} = Utils;
 const {MESSAGE: {Form, Feedback}, navColorR} = Constants;
 const hybird = process.env.NATIVE;
 
@@ -163,6 +163,12 @@ class Withdrawal extends BaseComponent {
             checkedWit: false,
             money: null
         });
+        //清除金额输入框中的值
+        if (value) {
+            this.nativeinput.clearDeafult();
+        } else {
+            this.nativeinputTwo.clearDeafult();
+        }
     }
 
     //获取提现类别
@@ -293,7 +299,7 @@ class Withdrawal extends BaseComponent {
                                             nativeType="text"
                                             nativeValue={money}
                                             nativePla="请输入提现金额"
-                                            typeNumber="1"
+                                            ref={(res) => { this.nativeinput = res }}
                                             nativeChange={this.getInput}
                                         />
                                     </div>
@@ -341,7 +347,7 @@ class Withdrawal extends BaseComponent {
                                                 nativeValue={money}
                                                 nativePla="请输入提现金额"
                                                 nativeChange={this.getInput}
-                                                typeNumber="2"
+                                                ref={(res) => { this.nativeinputTwo = res }}
                                             />
                                         </div>
 
