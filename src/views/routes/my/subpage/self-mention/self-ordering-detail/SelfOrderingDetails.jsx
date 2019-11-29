@@ -316,7 +316,7 @@ class ReDetail extends BaseComponent {
                     </div>
                     <div className="collection-center">{selfSufficiency.shopName}</div>
                     {
-                        (!collectId ? <div className="collection-right" style={{border: nativeCssDiff() ? '1PX solid #ccc' : '0.02rem solid #ccc'}} onClick={() => this.collectDoIts('add')}>+收藏</div> : <div className="removeCollect" style={{border: nativeCssDiff() ? '1PX solid #ccc' : '0.02rem solid #ccc'}} onClick={() => this.collectDoIts('off')}>已收藏</div>)
+                        (!collectId ? <div className="collection-right" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} onClick={() => this.collectDoIts('add')}>+收藏</div> : <div className="removeCollect" style={{border: nativeCssDiff() ? '1PX solid #ccc' : '0.02rem solid #ccc'}} onClick={() => this.collectDoIts('off')}>已收藏</div>)
                     }
                 </div>
 
