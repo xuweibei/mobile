@@ -409,10 +409,10 @@ class ListDetails extends BaseComponent {
                             </div>
                             <div className="cancel-order-box">
                                 {   //退款订单
-                                    (canInfo.status === '10' || canInfo.status === '6' || canInfo.status === '4' || canInfo.status === '3') &&  <div className="cancel-order" onClick={this.deleteOrder}>删除订单</div>
+                                    (canInfo.status === '10' || canInfo.status === '6' || canInfo.status === '4' || canInfo.status === '3') &&  <div className="cancel-order" style={{borderRight: nativeCssDiff() ? '1PX solid #666' : '0.02rem solid #666'}} onClick={this.deleteOrder}>删除订单</div>
                                 }
                                 {   //待付款订单状态可操作
-                                    (canInfo.status === '0') &&  <div className="cancel-order new-style-cancel" onClick={() => this.setState({canStatus: true, canCelId: canInfo.pr_id})}>取消订单</div>
+                                    (canInfo.status === '0') &&  <div className="cancel-order new-style-cancel" style={{borderRight: nativeCssDiff() ? '1PX solid #666' : '0.02rem solid #666'}} onClick={() => this.setState({canStatus: true, canCelId: canInfo.pr_id})}>取消订单</div>
                                 }
                                 {
                                     this.bottomButton(canInfo.status)
