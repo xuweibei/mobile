@@ -725,7 +725,7 @@ class GoodsDetail extends BaseComponent {
                     </div>
                     {
                         goodsDetail.effective_type === '0' ? (
-                            <div className={`${(status === '0' || status === '2') ? 'disble-btn' : 'bottom-btn'}`}>
+                            <div className={`${(status === '0' || status === '2') ? 'disble-btn' : 'bottom-btn'}`} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>
                                 <Flex>
                                     <Flex.Item
                                         className={`${(status === '0' || status === '2') ? 'disable-cart' : 'cart'}`}

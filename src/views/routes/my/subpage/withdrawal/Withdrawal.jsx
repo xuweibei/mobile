@@ -11,7 +11,7 @@ import {InputGrid} from '../../../../common/input-grid/InputGrid';
 import AppNavBar from '../../../../common/navbar/NavBar';
 
 const {urlCfg} = Configs;
-const {showInfo, validator, appHistory, setNavColor} = Utils;
+const {showInfo, validator, appHistory, setNavColor, nativeCssDiff} = Utils;
 const {MESSAGE: {Form, Feedback}, navColorR} = Constants;
 const hybird = process.env.NATIVE;
 
@@ -290,7 +290,7 @@ class Withdrawal extends BaseComponent {
                                 <div>
                                     <div className="weChat-inputItem">
                                         <NativeInput
-                                            nativeType="number"
+                                            nativeType="text"
                                             nativeValue={money}
                                             nativePla="请输入提现金额"
                                             nativeChange={this.getInput}

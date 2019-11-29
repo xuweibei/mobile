@@ -248,7 +248,7 @@ class ListDetails extends BaseComponent {
                                                 <img src={canInfo.shoper_pic} onError={(e) => { e.target.src = canInfo.df_logo }} alt=""/>
                                                 <p>{canInfo.shopName}</p>
                                             </div>
-                                            <span><div className="right" style={{border: '1px solid #ff2d51'}} onClick={(ev) => this.goShopHome(canInfo.shop_id, ev)}>进店</div></span>
+                                            <span><div className="right" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} onClick={(ev) => this.goShopHome(canInfo.shop_id, ev)}>进店</div></span>
                                         </div>
                                         {
                                             canInfo.pr_list && canInfo.pr_list.map((item, index) => (

@@ -13,7 +13,7 @@ const tabs = [
     {title: '商品'},
     {title: '店铺'}
 ];
-const {appHistory, native, showInfo} = Utils;
+const {appHistory, native, showInfo, nativeCssDiff} = Utils;
 const {urlCfg} = Configs;
 const {MESSAGE: {Form, Feedback}, FIELD} = Constants;
 class Collect extends BaseComponent {
@@ -411,7 +411,11 @@ class Collect extends BaseComponent {
                             <span className="Shop-Nr">人均消费</span>
                             <span className="Shop-Nr wide">￥{item.consume_per}</span>
                         </div>
-                        <div className="button">进店</div>
+                        <div
+                            className="button"
+                            style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}
+                        >进店
+                        </div>
                     </div>
                     <div className="shop-goods">
                         {

@@ -251,6 +251,10 @@
         line-height: 38px;
         width: 100%;
         background: @white;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        word-break: break-all;
         .ql-indent-1{
             word-break: break-word;
             img{
@@ -316,7 +320,7 @@
             float: right;
             width: 360px;
             height: 80px;
-            border: 2.1px solid @fiery-red;
+            border: 2px solid @fiery-red;
             border-radius: 40px;
             margin-top: 6px;
             overflow: hidden;

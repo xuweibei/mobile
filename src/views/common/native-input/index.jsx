@@ -1,7 +1,7 @@
 import React from 'react';
 import './index.less';
 
-let defaultValue = '';
+const defaultValue = '';
 export default class NativeInput extends BaseComponent {
     state={
         closeOpen: false //是否开启清空按钮
@@ -42,6 +42,7 @@ export default class NativeInput extends BaseComponent {
     render() {
         const {nativeType, nativePla} = this.props;
         const {closeOpen} = this.state;
+        const str = /^[+-]?(0|([1-9]\d*))(\.\d+)?$/g;
         return (
             <div className="native-input-css">
                 <input
@@ -51,16 +52,16 @@ export default class NativeInput extends BaseComponent {
                     placeholder={nativePla}
                     onFocus={this.nativeOnfcus}
                     onBlur={this.nativeOblur}
-                    onInput={() => {
-                        const str = /^\d+(\.\d+)?$/;
-                        console.log(this.inputName.value, '克里斯多夫');
-                        console.log(!str.test(this.inputName.value), '考虑对方估计快了');
-                        if (!str.test(this.inputName.value)) {
-                            this.inputName.value = defaultValue;
-                            return;
-                        }
-                        defaultValue = this.inputName.value;
-                    }}
+                    // onInput={() => {
+                    //     console.log(this.inputName.value, '克里斯多夫');
+                    //     console.log(!str.test(this.inputName.value), '考虑对方估计快了');
+                    //     if (!str.test(this.inputName.value)) {
+                    //         console.log('进来了');
+                    //         this.inputName.value = defaultValue;
+                    //         return;
+                    //     }
+                    //     defaultValue = this.inputName.value;
+                    // }}
                 />
                 {closeOpen && <span onClick={this.nativeInputClose}>x</span>}
             </div>

@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import './CancleOrder.less';
 
 const RadioItem = Radio.RadioItem;
-
+const {nativeCssDiff} = Utils;
 class CancelOrder extends React.Component {
     state = {
         value: ''
@@ -56,7 +56,7 @@ class CancelOrder extends React.Component {
                         <span onClick={this.canCelMark}>取消</span>
                         <span onClick={this.mastSure}>确定</span>
                     </div>
-                    <div className="choose-info">
+                    <div className={`choose-info ${nativeCssDiff() ? 'general-other' : 'general'}`}>
                         {
                             this.canCelInfoArr.map((item, index) => (
                                 <div
