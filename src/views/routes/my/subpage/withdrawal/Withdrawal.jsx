@@ -4,6 +4,7 @@
 import {Tabs, Picker, List, InputItem, Flex, Checkbox, Button} from 'antd-mobile';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
+import NativeInput from '../../../../common/native-input';
 import './Withdrawal.less';
 import {baseActionCreator as actionCreator} from '../../../../../redux/baseAction';
 import {InputGrid} from '../../../../common/input-grid/InputGrid';
@@ -288,13 +289,11 @@ class Withdrawal extends BaseComponent {
                                 </div>
                                 <div>
                                     <div className="weChat-inputItem">
-                                        <InputItem
-                                            type="digit"
-                                            placeholder="请输入提现金额"
-                                            clear
-                                            value={money}
-                                            onChange={(res) => this.getInput(res)}
-                                            moneyKeyboardAlign="left"
+                                        <NativeInput
+                                            nativeType="number"
+                                            nativeValue={money}
+                                            nativePla="请输入提现金额"
+                                            nativeChange={this.getInput}
                                         />
                                     </div>
 
@@ -309,7 +308,7 @@ class Withdrawal extends BaseComponent {
                                     </div>
 
                                     <div className="weChat-button">
-                                        <Button type="primary" className="large-button important" onClick={() => this.submit()}>确定</Button>
+                                        <Button type="primary" className="large-button important" onClick={this.submit}>确定</Button>
                                     </div>
                                 </div>
                             </div>
@@ -336,13 +335,11 @@ class Withdrawal extends BaseComponent {
                                     </div>
                                     <div>
                                         <div className="weChat-inputItem">
-                                            <InputItem
-                                                type="digit"
-                                                placeholder="请输入提现金额"
-                                                clear
-                                                value={money}
-                                                onChange={(res) => this.getInput(res)}
-                                                moneyKeyboardAlign="left"
+                                            <NativeInput
+                                                nativeType="number"
+                                                nativeValue={money}
+                                                nativePla="请输入提现金额"
+                                                nativeChange={this.getInput}
                                             />
                                         </div>
 
