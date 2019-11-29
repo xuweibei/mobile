@@ -7,7 +7,7 @@ import AppNavBar from '../../../../common/navbar/NavBar';
 import './Invitation.less';
 
 const {urlCfg} = Configs;
-const {native, getUrlParam, TD, showInfo} = Utils;
+const {native, getUrlParam, TD, showInfo, nativeCssDiff} = Utils;
 const {TD_EVENT_ID} = Constants;
 //分享列表
 const dataList = [
@@ -137,7 +137,7 @@ class Invitation extends BaseComponent {
                             >分享
                             </Button>
                             <Button
-                                className="button"
+                                className={`button ${nativeCssDiff() ? 'general-other' : 'general'}`}
                                 onClick={this.saveImg}
                             >保存图片
                             </Button>
