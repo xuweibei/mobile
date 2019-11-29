@@ -1,8 +1,12 @@
 import React from 'react';
 import './index.less';
 
-const defaultValue = '';
+let defaultValue = '';
 export default class NativeInput extends BaseComponent {
+    componentDidMount() {
+        alert(1);
+    }
+
     state={
         closeOpen: false //是否开启清空按钮
     }
@@ -30,19 +34,27 @@ export default class NativeInput extends BaseComponent {
         });
     }
 
+    componentWillReceiveProps(next, prev) {
+        console.log(next, prev, this.props, '克里斯丁');
+        if (next.typeNumber !== this.props.typeNumber) {
+            defaultValue = '';
+            this.inputName.value = '';
+            next.nativeChange(this.inputName.value);
+        }
+    }
+
     //点击清除输入内容
-    nativeInputClose = (ev) => {
-        alert(1);
+    nativeInputClose = () => {
         const {nativeChange} = this.props;
         this.inputName.value = '';
         nativeChange('');
-        ev.stopPropagation();
+        defaultValue = '';
+        this.inputName.focus();
     }
 
     render() {
         const {nativeType, nativePla} = this.props;
         const {closeOpen} = this.state;
-        const str = /^[+-]?(0|([1-9]\d*))(\.\d+)?$/g;
         return (
             <div className="native-input-css">
                 <input
@@ -51,17 +63,19 @@ export default class NativeInput extends BaseComponent {
                     onChange={this.nativeChange}
                     placeholder={nativePla}
                     onFocus={this.nativeOnfcus}
-                    onBlur={this.nativeOblur}
-                    // onInput={() => {
-                    //     console.log(this.inputName.value, '克里斯多夫');
-                    //     console.log(!str.test(this.inputName.value), '考虑对方估计快了');
-                    //     if (!str.test(this.inputName.value)) {
-                    //         console.log('进来了');
-                    //         this.inputName.value = defaultValue;
-                    //         return;
-                    //     }
-                    //     defaultValue = this.inputName.value;
-                    // }}
+                    onBlur={() => {
+                        setTimeout(() => {
+                            this.nativeOblur();
+                        });
+                    }}
+                    onInput={() => {
+                        const str = /^\d+(\.\d+)?$/;
+                        if (!str.test(Number(this.inputName.value))) {
+                            this.inputName.value = defaultValue;
+                            return;
+                        }
+                        defaultValue = this.inputName.value;
+                    }}
                 />
                 {closeOpen && <span onClick={this.nativeInputClose}>x</span>}
             </div>

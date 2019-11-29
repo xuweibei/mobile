@@ -293,6 +293,7 @@ class Withdrawal extends BaseComponent {
                                             nativeType="text"
                                             nativeValue={money}
                                             nativePla="请输入提现金额"
+                                            typeNumber="1"
                                             nativeChange={this.getInput}
                                         />
                                     </div>
@@ -336,10 +337,11 @@ class Withdrawal extends BaseComponent {
                                     <div>
                                         <div className="weChat-inputItem">
                                             <NativeInput
-                                                nativeType="number"
+                                                nativeType="text"
                                                 nativeValue={money}
                                                 nativePla="请输入提现金额"
                                                 nativeChange={this.getInput}
+                                                typeNumber="2"
                                             />
                                         </div>
 
