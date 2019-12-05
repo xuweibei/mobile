@@ -11,7 +11,7 @@ import Animation from '../../../../common/animation/Animation';
 import {ListFooter} from '../../../../common/list-footer';
 import './myOrder.less';
 
-const {appHistory, showSuccess, getUrlParam, showInfo, native, systemApi: {removeValue}, TD} = Utils;
+const {appHistory, showSuccess, getUrlParam, showInfo, native, systemApi: {removeValue}, TD, nativeCssDiff} = Utils;
 const {TD_EVENT_ID} = Constants;
 const {MESSAGE: {Form, Feedback}, FIELD, navColorR} = Constants;
 const {urlCfg} = Configs;
@@ -24,9 +24,9 @@ const tabs = [
     {title: '全部'},
     {title: '待付款'},
     {title: '待发货'},
-    {title: '待收货'}
-    // {title: '待评价'}
-    // {title: '售后'} //暂时屏蔽
+    {title: '待收货'},
+    {title: '待评价'},
+    {title: '售后'} //暂时屏蔽
 ];
 
 
@@ -117,8 +117,7 @@ class MyOrder extends BaseComponent {
         this.setState({
             hasMore: true
         });
-        this.fetch(urlCfg.mallOrder,
-            {data: {status, page,  pagesize: temp.pagesize, pageCount}}, noLoading)
+        this.fetch(urlCfg.mallOrder, {data: {status, page,  pagesize: temp.pagesize, pageCount}}, noLoading)
             .subscribe((res) => {
                 temp.isLoading = false;
                 if (res && res.status === 0) {
@@ -194,14 +193,19 @@ class MyOrder extends BaseComponent {
         });
         this.setState({
             page: 1,
-            // status,
+            status: index - 1,
             pageCount: -1,
             dataSource: dataSource2,
             retainArr: [],
             hasMore: false
         }, () => {
+            const {status, page} = this.state;
             temp.stackData = [];
-            this.gotoMyOrder(index);
+            if (status === 4) {
+                this.refundMllOder(page);
+            } else {
+                this.gotoMyOrder(index);
+            }
         });
     };
 
@@ -465,59 +469,55 @@ class MyOrder extends BaseComponent {
         case '0'://待付款
             blockModal = (
                 <div className="buttons">
-                    <div onClick={() => this.setState({canStatus: true, canCelId: item.id})} className="look-button" style={{border: '1px solid #666'}}>取消订单</div>
-                    <div onClick={() => this.payNow(item.id, item.order_no)} className="evaluate-button" style={{border: '1px solid #ff2d51'}}>立即付款</div>
+                    <div onClick={() => this.setState({canStatus: true, canCelId: item.id})} className="look-button" style={{border: nativeCssDiff() ? '1PX solid #666' : '0.02rem solid #666'}}>取消订单</div>
+                    <div onClick={() => this.payNow(item.id, item.order_no)} className="evaluate-button" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>立即付款</div>
                 </div>
             );
             break;
         case '1': //待发货
             blockModal = (
                 <div className="buttons">
-                    {/* {
+                    {
                         (item.refund_button === 1) && (
                             <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
                                 {
-                                    item.showButton && <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev, 1)}>申请退款</span>
+                                    item.showButton && <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev, 1)} style={{border: nativeCssDiff() ? '1PX solid #666' : '0.02rem solid #666'}}>申请退款</span>
                                 }
                             </div>
-
                         )
-                    } */}
+                    }
                     {
                         !item.all_refund && <div className="evaluate-button" onClick={() => this.remindDelivery([item.id, item.can_tip])}>提醒发货</div>
                     }
-
                 </div>
             );
             break;
         case '2'://待收货
             blockModal = (
                 <div className="buttons">
-                    {/* {
+                    {
                         item.refund_button === 1 && (
                             <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
                                 {
-                                    item.showButton && <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev)}>申请退款</span>
+                                    item.showButton && <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev)} style={{border: nativeCssDiff() ? '1PX solid #6' : '0.02rem solid #666'}}>申请退款</span>
                                 }
                             </div>
                         )
-                    } */}
-                    <div className="look-button" onClick={(ev) => this.extendedReceipt(item.id, ev)}>延长收货</div>
-                    <div className="look-button" onClick={(ev) => this.goApplyService(item.id, ev)}>查看物流</div>
-                    <div className="evaluate-button" onClick={(ev) => this.confirmTake(item.id, ev, item.all_refund)}>确认收货</div>
-                    {/* {
-                        item.all_refund === 1 ? <div className="evaluate-button" onClick={(ev) => this.revoke(item.pr_list[0].return_id, ev)}>撤销申请</div> : <div className="evaluate-button" onClick={(ev) => this.confirmTake(item.id, ev)}>确认收货</div>
-                    } */}
-
+                    }
+                    <div className="look-button" onClick={(ev) => this.extendedReceipt(item.id, ev)} style={{border: nativeCssDiff() ? '1PX solid #666' : '0.02rem solid #666'}}>延长收货</div>
+                    <div className="look-button" onClick={(ev) => this.goApplyService(item.id, ev)} style={{border: nativeCssDiff() ? '1PX solid #666' : '0.02rem solid #666'}}>查看物流</div>
+                    {
+                        item.all_refund === 1 ? <div className="evaluate-button" onClick={(ev) => this.revoke(item.pr_list[0].return_id, ev)}>撤销申请</div> : <div className="evaluate-button" onClick={(ev) => this.confirmTake(item.id, ev)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>确认收货</div>
+                    }
                 </div>
             );
             break;
         case '3'://待评价
             blockModal = (
                 <div className="buttons">
-                    <div className="look-button" onClick={(ev) => this.goApplyService(item.id, ev)}>查看物流</div>
-                    <div className="delete-button" onClick={() => this.deleteOrder(item.id)}>删除</div>
-                    {/* <div className="evaluate-button" onClick={(ev) => this.promptlyEstimate(item.id, ev)}>立即评价</div> */}
+                    <div className="look-button" onClick={(ev) => this.goApplyService(item.id, ev)} style={{border: nativeCssDiff() ? '1PX solid #666' : '0.02rem solid #666'}}>查看物流</div>
+                    <div className="delete-button" onClick={() => this.deleteOrder(item.id)} style={{border: nativeCssDiff() ? '1PX solid #666' : '0.02rem solid #666'}}>删除</div>
+                    <div className="evaluate-button" onClick={(ev) => this.promptlyEstimate(item.id, ev)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>立即评价</div>
                 </div>
             );
             break;
@@ -527,7 +527,7 @@ class MyOrder extends BaseComponent {
         case '13'://商家取消
             blockModal = (
                 <div className="buttons">
-                    <div className="delete-button" onClick={() => this.deleteOrder(item.id)}>删除</div>
+                    <div className="delete-button" onClick={() => this.deleteOrder(item.id)} style={{border: nativeCssDiff() ? '1PX solid #666' : '0.02rem solid #666'}}>删除</div>
                 </div>
             );
             break;
@@ -671,7 +671,7 @@ class MyOrder extends BaseComponent {
                             <div className="btn-keep">记账量：{items.deposit}</div>
                             <div className="buttons">{items.return_name}</div>
                             <div className="buttons drawback">
-                                {item.status === '5' && <div className="evaluate-button" onClick={(ev) => this.refundDetails(item.id, ev)}>查看详情</div>}
+                                {item.status === '5' && <div style={{border: '1px solid #666'}} className="evaluate-button" onClick={(ev) => this.refundDetails(item.id, ev)}>查看详情</div>}
                             </div>
                         </div>
                     </div>
@@ -712,7 +712,7 @@ class MyOrder extends BaseComponent {
                 {   //弹出取消弹框
                     canStatus &&  (<CancelOrder canStateChange={this.canStateChange}/>)
                 }
-                <div className="tabs">
+                <div className={`tabs ${nativeCssDiff() ? 'general-other' : 'general'}`}>
                     <Tabs
                         tabs={tabs}
                         page={Number(status) + 1}

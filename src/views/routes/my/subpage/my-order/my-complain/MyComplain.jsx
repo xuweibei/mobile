@@ -3,26 +3,14 @@ import {TextareaItem, ImagePicker} from 'antd-mobile';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './MyComplain.less';
 
-const {dealImage, showInfo, appHistory, showSuccess, getUrlParam, native, setNavColor} = Utils;
+const {dealImage, showInfo, appHistory, showSuccess, getUrlParam, native} = Utils;
 const {urlCfg} = Configs;
-const {MESSAGE: {Form, Feedback}, navColorF} = Constants;
+const {MESSAGE: {Form, Feedback}} = Constants;
 export default class MyComplain extends BaseComponent {
     state = {
         files: [],
         fileMain: []
     };
-
-    componentWillMount() {
-        if (process.env.NATIVE) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (process.env.NATIVE) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
 
     //问题反馈内容
     questionMain = (value) => {
@@ -54,7 +42,7 @@ export default class MyComplain extends BaseComponent {
                 }, 100);
             });
             this.setState({
-                fileMain: fileMain
+                fileMain
             }, () => {
                 console.log(fileMain);
             });
@@ -66,9 +54,9 @@ export default class MyComplain extends BaseComponent {
         const {questionInfo, fileMain} = this.state;
         const orderId = decodeURI(getUrlParam('orderId', encodeURI(this.props.location.search)));
         if (!questionInfo) return showInfo(Form.No_Complain);
-        this.fetch(urlCfg.doComplain, {method: 'post', data: {reason: questionInfo, orderid: orderId}})
+        this.fetch(urlCfg.doComplain, {data: {reason: questionInfo, orderid: orderId}})
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     fileMain.forEach(item => {
                         item.imgB = encodeURIComponent(item.imgB);
                         item.imgS = encodeURIComponent(item.imgS);
@@ -76,7 +64,6 @@ export default class MyComplain extends BaseComponent {
                     if (fileMain.length > 0) {
                         fileMain.forEach((item, index) => {
                             this.fetch(urlCfg.pictureUploadBase, {
-                                method: 'post',
                                 data: {
                                     id: res.data.id,
                                     type: 4,
@@ -86,7 +73,7 @@ export default class MyComplain extends BaseComponent {
                                     filex: item.imgS
                                 }
                             }).subscribe(value => {
-                                if (value.status === 0) {
+                                if (value && value.status === 0) {
                                     showSuccess(Feedback.submit_Success);
                                     if (process.env.NATIVE) {
                                         native('goHome');

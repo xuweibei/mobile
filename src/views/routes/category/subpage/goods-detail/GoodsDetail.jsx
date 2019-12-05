@@ -13,7 +13,7 @@ import Sku from '../../../../common/sku/Sku';
 import './GoodsDetail.less';
 
 const {urlCfg} = Configs;
-const {appHistory, getUrlParam, showFail, showInfo, native, TD, systemApi: {setValue, removeValue}} = Utils;
+const {appHistory, getUrlParam, showFail, showInfo, native, TD, systemApi: {setValue, removeValue}, nativeCssDiff} = Utils;
 const {MESSAGE: {Form, Feedback}, TD_EVENT_ID} = Constants;
 
 const myImg = src => (
@@ -705,7 +705,7 @@ class GoodsDetail extends BaseComponent {
                     )}
                 </div>
                 <div className="goodsDetail-bottom">
-                    <div className="icons-warp">
+                    <div className="icons-warp" style={{width: nativeCssDiff() ? '2.6rem' : '3rem'}}>
                         <div className="icons">
                             <div className="phone-cart" onClick={this.goToShoper}>
                                 <div className="icon icon-phone"/>
@@ -725,7 +725,7 @@ class GoodsDetail extends BaseComponent {
                     </div>
                     {
                         goodsDetail.effective_type === '0' ? (
-                            <div className={`${(status === '0' || status === '2') ? 'disble-btn' : 'bottom-btn'}`}>
+                            <div className={`${(status === '0' || status === '2') ? 'disble-btn' : 'bottom-btn'}`} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>
                                 <Flex>
                                     <Flex.Item
                                         className={`${(status === '0' || status === '2') ? 'disable-cart' : 'cart'}`}

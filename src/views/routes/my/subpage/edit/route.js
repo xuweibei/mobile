@@ -37,7 +37,7 @@ const EditModal = () => (
         {/* <Route path="/addAccount" component={AddAccount}/> 添加账户 */}
         <Route path="/source" component={Source}/> {/*确认源头*/}
         <Route path="/virSource" component={Source}/> {/*确认源头手动输入*/}
-        <Route path="/bindSource" component={Source}/> {/*确认源头-扫码*/}
+        <Route path="/sourceBrowse" component={Source}/> {/*确认源头-扫码*/}
         <Route path="/blankPage" component={BlankPage}/> {/*确认源头-扫码*/}
     </React.Fragment>
 );

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import {Modal, Button} from 'antd-mobile';
 import './Sku.less';
 
-const {showInfo} = Utils;
+const {showInfo, nativeCssDiff} = Utils;
 const {MESSAGE: {Feedback}} = Constants;
 class Sku extends React.PureComponent {
     //组件API类型
@@ -355,7 +355,7 @@ class Sku extends React.PureComponent {
                     <div className="panel-bot">
                         <div className="panel-content-box">
                             <div className="panel-content">
-                                <div className="methods" key={type.name}>
+                                <div className={`methods ${nativeCssDiff() ? 'general-other' : 'general'}`} key={type.name}>
                                     <div className="heading">{type.name}</div>
                                     <div className="select">
                                         {type.data.map(item => (
@@ -370,7 +370,7 @@ class Sku extends React.PureComponent {
                                     </div>
                                 </div>
                                 {attributes.map((attribute, index) => (
-                                    <div className="methods" key={attribute.name}>
+                                    <div className={`methods ${nativeCssDiff() ? 'general-other' : 'general'}`} key={attribute.name}>
                                         <div className="heading">{attribute.name}</div>
                                         <div className="select">
                                             {attribute.data.map(item => {

@@ -205,7 +205,12 @@
     }
     .am-list-item {
         padding-left: 0;
-        cursor:pointer;
+        cursor: pointer; 
+        -webkit-appearance: none;
+        .am-list-line{
+            cursor: pointer; 
+            -webkit-appearance: none;
+        }
     }
 
     .information {
@@ -226,7 +231,9 @@
         }
     }
     .problem {
+        transform: perspective(500);
         .am-list-item:last-child {
+            transform: perspective(500);
             //border-bottom: 1px solid #E6E6E6;
             .hairline('bottom',#e6e6e6);
         }

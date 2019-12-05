@@ -7,7 +7,7 @@ import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAc
 import {InputGrid} from '../../../../../common/input-grid/InputGrid';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 
-const {appHistory, getUrlParam, native, systemApi: {getValue, removeValue}, supple, showFail, showInfo} = Utils;
+const {appHistory, getUrlParam, native, systemApi: {getValue, removeValue}, supple, showFail, showInfo, nativeCssDiff} = Utils;
 const {urlCfg} = Configs;
 const mode = [
     {
@@ -296,6 +296,8 @@ class PayMoney extends BaseComponent {
         hideConfirm();//关闭弹窗
     }
 
+    //兼容部分机型样式判断
+    radiusCssShow = () => (nativeCssDiff() ? '1PX solid #999' : '0.01rem solid #999')
 
     //返回
     goBackModal = () => {
@@ -319,7 +321,7 @@ class PayMoney extends BaseComponent {
                 const arrInfo = JSON.parse(getValue('orderInfo'));
                 const arr = JSON.parse(getValue('orderArr'));
                 if (arrInfo) {
-                    if (arr[0].if_express === '1') {
+                    if (arr[0] && arr[0].if_express === '1') {
                         if (appLength === 0) { //线上订单，用户取消支付的时候，路由都没了，就走这里
                             appHistory.push('/myOrder/fk');
                             appHistory.reduction();
@@ -390,6 +392,7 @@ class PayMoney extends BaseComponent {
                                 <div className="pm-center">{item.title}</div>
                                 <div
                                     className={`icon ${index === selectIndex ? 'icon-Selection' : 'icon-Unselected'}`}
+                                    style={{border: index !== selectIndex ? this.radiusCssShow() : ''}}
                                 />
                             </div>
                         </div>

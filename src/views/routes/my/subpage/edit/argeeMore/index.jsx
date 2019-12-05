@@ -8,7 +8,7 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 import './index.less';
 
 const Item = List.Item;
-const {appHistory, showSuccess, showInfo, validator, getUrlParam, native} = Utils;
+const {appHistory, showSuccess, showInfo, validator, getUrlParam, native, nativeCssDiff} = Utils;
 const {urlCfg} = Configs;
 const {MESSAGE: {Feedback}, MESSAGE: {Form}} = Constants;
 
@@ -118,7 +118,7 @@ class Agreement extends BaseComponent {
                         validateTrigger: 'onSubmit'//校验值的时机
                     })(
                         <InputItem
-                            className="inpt"
+                            className={`inpt ${nativeCssDiff() ? 'general-other' : 'general'}`}
                             style={{textAlign: 'left'}}
                             maxLength={10}
                         />

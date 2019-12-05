@@ -5,6 +5,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {SwipeAction} from 'antd-mobile';
 import classNames from 'classnames';
+import {store} from '../../../redux/store';
 import {baseActionCreator as actionCreator} from '../../../redux/baseAction';
 import {shopCartActionCreator} from './actions/index';
 import {FooterBar} from '../../common/foot-bar/FooterBar';
@@ -13,7 +14,7 @@ import Sku from '../../common/sku/Sku';
 import './shopCart.less';
 
 const {urlCfg} = Configs;
-const {appHistory, showInfo, showSuccess, native, systemApi: {setValue}, getUrlParam, setNavColor} = Utils;
+const {appHistory, showInfo, showSuccess, native, systemApi: {removeValue}, getUrlParam, setNavColor, systemApi: {setValue}, nativeCssDiff} = Utils;
 const {MESSAGE: {Form, Feedback}, FIELD, navColorR} = Constants;
 
 // let payInNum = 0;
@@ -44,8 +45,17 @@ class ShopCart extends BaseComponent {
     componentWillMount() {
         if (process.env.NATIVE) { //设置tab颜色
             setNavColor('setNavColor', {color: navColorR});
+            this.getNativeUserToken();
         }
         this.getCart();
+    }
+
+    getNativeUserToken = () => {
+        const token = decodeURI(getUrlParam('token', encodeURI(this.props.location.search)));
+        if (token !== 'null') {
+            setValue('userToken', token);
+            store.dispatch(actionCreator.setUserToken(token));
+        }
     }
 
     componentDidMount() {
@@ -58,8 +68,11 @@ class ShopCart extends BaseComponent {
             setNavColor('setNavColor', {color: navColorR});
             const timerNext = decodeURI(getUrlParam('time', encodeURI(next.location.search)));
             const timer = decodeURI(getUrlParam('time', encodeURI(this.props.location.search)));
+            const token = decodeURI(getUrlParam('token', encodeURI(next.location.search)));
             if (timer !== timerNext) {
                 this.changeCart(this.state.currentIndex);
+                setValue('userToken', token);
+                store.dispatch(actionCreator.setUserToken(token));
             }
         }
     }
@@ -607,7 +620,8 @@ class ShopCart extends BaseComponent {
                 arr.push({
                     pr_id: parseInt(item.pr_id, 10),
                     property: item.property_content,
-                    num: item.num
+                    num: item.num,
+                    if_express: currentIndex ? '0' : '1'
                 });
                 cartArr.push(item.id);
             }
@@ -616,7 +630,9 @@ class ShopCart extends BaseComponent {
         const {setOrderInfo, setIds} = this.props;
         setOrderInfo(arr);
         setIds(cartArr);
-        setValue('orderArr', JSON.stringify(arr));
+        removeValue('zpyg_orderArr');
+        window.localStorage.setItem('zpyg_orderArr', JSON.stringify(arr));
+        // setValue('orderArr', JSON.stringify(arr));
         const obj = {arr, cartArr};//储存redux
         if (process.env.NATIVE && currentIndex === 0) {
             native('settlement', obj);//app点击结算的时候
@@ -674,7 +690,7 @@ class ShopCart extends BaseComponent {
                 <div className="shop-tabs">
                     {
                         textStyle.map((item, index) => (
-                            <div className={`top ${index === currentIndex ? 'active-text' : ''}`} onClick={() => this.changeCart(index)} key={item.title}>{item.title}</div>
+                            <div className={`top ${index === currentIndex ? 'active-text' : ''}`} style={{borderRight: nativeCssDiff() ? '1PX solid #e5e5e5' : '0.01rem solid #e5e5e5'}} onClick={() => this.changeCart(index)} key={item.title}>{item.title}</div>
                         ))
                     }
                 </div>
@@ -703,7 +719,7 @@ class ShopCart extends BaseComponent {
                                             <span className="avatar-name">{shop.shop_name}</span>
                                         </div>
                                         <div className="top-enter">
-                                            <span onClick={() => this.goToShopHome(shop)}>进店</span>
+                                            <span onClick={() => this.goToShopHome(shop)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>进店</span>
                                         </div>
                                     </div>
                                     {shop.data.map((goods, i) => (
@@ -784,7 +800,7 @@ class ShopCart extends BaseComponent {
                                             <div>合计：<span>￥{this.selfPrice(index)}</span></div>
                                         </div>
                                         <div className="join">
-                                            <span onClick={() => this.selfOrder(index)}>结算</span>
+                                            <span onClick={() => this.selfOrder(index)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>结算</span>
                                         </div>
                                     </div>
                                 </div>
@@ -804,12 +820,14 @@ class ShopCart extends BaseComponent {
                                         <span
                                             className="public"
                                             onClick={() => this.addCollect('invalid')}
+                                            style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}
                                         >
                                             移入收藏
                                         </span>
                                         <span
                                             className="public"
                                             onClick={this.empty}
+                                            style={{border: nativeCssDiff() ? '1PX solid #666' : '0.02rem solid #666'}}
                                         >
                                             清空
                                         </span>

@@ -4,7 +4,7 @@
         margin-bottom: 20px;
     }
     .import-box {
-        padding: 80px 45px 66px;
+        padding: 80px 45px 66px 45px;
         background: @white;
         .import-UID {
             display: flex;
@@ -14,10 +14,11 @@
                 margin-right: 36px;
                 .am-list-body {
                     width: 529px;
+                    position: relative;
+                    height: 100px;
                     .am-list-item {
                         height: 100px;
-                        border: 2.1px solid #E5E5E5;
-                        // .hairline('all', #e5e5e5);
+                        border: 1px solid #E5E5E5;
                         border-radius: 100px;
                     }
                     .am-list-item .am-input-control input{
@@ -43,6 +44,15 @@
                 color: @fiery-red;
             }
         }
+        .general-other{
+            .am-list {
+                .am-list-body {
+                    .am-list-item {
+                        border: 1PX solid #E5E5E5;
+                    }
+                }
+            }
+        }
         span {
             font-size: @font-size-24;
             color: @gray;
@@ -53,6 +63,7 @@
             color: @white;
             font-size: @font-size-36;
             margin-top: 60px;
+            box-shadow: none;
         }
     }
     .transfer {

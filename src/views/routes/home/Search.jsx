@@ -9,7 +9,7 @@ import './Search.less';
 import {getUrlParam} from '../../../utils/mixin';
 
 const {urlCfg} = Configs;
-const {appHistory, TD, goBackModal} = Utils;
+const {appHistory, TD, goBackModal, nativeCssDiff} = Utils;
 const {TD_EVENT_ID} = Constants;
 
 class Search extends BaseComponent {
@@ -135,7 +135,7 @@ class Search extends BaseComponent {
                         {
                             hot && hot.map((item, index) => (
                                 <Button
-                                    className="auxiliary-button red"
+                                    className={`auxiliary-button red ${nativeCssDiff() ? 'general-other' : 'general'}`}
                                     activeStyle={false}
                                     onClick={() => this.switchTo(item.keyword)}
                                     key={index.toString()}
@@ -151,7 +151,7 @@ class Search extends BaseComponent {
                         {
                             history && history.map((item, index) => (
                                 <Button
-                                    className="auxiliary-button gray"
+                                    className={`auxiliary-button gray ${nativeCssDiff() ? 'general-other' : 'general'}`}
                                     activeStyle={false}
                                     key={index.toString()}
                                     onClick={() => this.switchTo(item.keyword)}

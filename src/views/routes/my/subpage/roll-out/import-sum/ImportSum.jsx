@@ -27,7 +27,7 @@ const seasons = [
 
 const {urlCfg} = Configs;
 const {MESSAGE: {Form}} = Constants;
-const {appHistory, getUrlParam, showInfo, native} = Utils;
+const {appHistory, getUrlParam, showInfo, native, nativeCssDiff} = Utils;
 
 export default class importSum extends BaseComponent {
     state = {
@@ -205,7 +205,7 @@ export default class importSum extends BaseComponent {
                         <p>{decodeURI(shopName)}</p>
                         <p>UID:{uid}</p>
                     </div>
-                    <div className="money">
+                    <div className={`money ${nativeCssDiff() ? 'general-other' : 'general'}`}>
                         <List>
                             <GeisInputItem
                                 type="float"

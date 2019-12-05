@@ -93,7 +93,7 @@ class ApplyServiceDetail extends BaseComponent {
         if (logistMain.length < 8) return showInfo('请输入正确的物流单号');
         this.fetch(urlCfg.setLogisticsList, {method: 'post', data: {id: id, exp_id: applyId, exp_no: logistMain, type: 2}})
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     showInfo(res.message);
                     //将我的订单的tab状态设置为售后
                     this.props.setOrderStatus(4);

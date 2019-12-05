@@ -23,7 +23,7 @@ class Address extends BaseComponent {
         county: '', //城市的名字
         addressArr: [], //初始地址
         editStatus: true, //地址选择显示与否
-        addressStatus: decodeURI(getUrlParam('status', encodeURI(this.props.location.search))), //编辑还是删除 1编辑2添加
+        addressStatus: decodeURI(getUrlParam('status', encodeURI(this.props.location.search))), //编辑还是添加 1编辑2添加
         height: document.documentElement.clientHeight - (window.isWX ? window.rem * null : window.rem * 1.08) //扣除微信头部高度
     }
 
@@ -159,7 +159,7 @@ class Address extends BaseComponent {
                     <div className="address-name">{item.area.join('') + item.address}</div>
                     <div className="user-name">
                         {item.if_default === '1' ? <span className="default-address">默认</span> : ''}
-                        <span>{item.linkname}</span>
+                        <span className="user-name-tel">{item.linkname}</span>
                         <span>{item.linktel}</span>
                     </div>
                 </div>
@@ -294,8 +294,8 @@ class Address extends BaseComponent {
 
     //点击保存
     saveData = () => {
-        const {province, urban, county, defaultState} = this.state;
-        const {form: {getFieldsValue}, location: {search}} = this.props;
+        const {province, urban, county, defaultState, addressStatus} = this.state;
+        const {form: {getFieldsValue}, location: {search}, getAddress} = this.props;
         const account = getFieldsValue().account;
         const addressAll = getFieldsValue().addressAll;
         const id = decodeURI(getUrlParam('id', encodeURI(search)));
@@ -338,9 +338,8 @@ class Address extends BaseComponent {
         this.fetch(urlCfg.addedOrEditedAddress, {data: {id, linkname: account, linktel: validator.wipeOut(phone), pca: district, address: addressAll, if_default: defaultState ? '1' : '0'}})
             .subscribe(res => {
                 if (res && res.status === 0) {
-                    const {getAddress} = this.props;
                     getAddress();
-                    showSuccess(Feedback.Edit_Success);
+                    showSuccess(addressStatus === '1' ? Feedback.Edit_Success : Feedback.EditAdd_Success);
                     appHistory.goBack();
                 }
             });

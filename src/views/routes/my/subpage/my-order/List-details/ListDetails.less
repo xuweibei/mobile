@@ -98,7 +98,10 @@
             }
         }
         .address-bottom{
-
+            overflow : hidden;
+            text-overflow: ellipsis;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
         }
     }
     //公共内边距
@@ -378,7 +381,7 @@
             border-radius: 100px;
             margin: auto;
             color: @fiery-red;
-            border:2.1px solid @fiery-red;
+            // border:2px solid @fiery-red;
             font-size:24px;
         }
         .removeCollect{
@@ -473,6 +476,8 @@
         align-items: center;
         background-color: @white;
         box-shadow:@box-shadow-0271;
+        padding-left: 20px;
+        padding-right: 20px;
         .cancel-order {
             width: 140px;
             height: 50px;
@@ -484,7 +489,7 @@
             margin-left: auto;
             text-align: center;
             line-height: 48px;
-            margin-top:26px;
+            margin-right: 10px;
         }
         .new-style-cancel{
             width:50%;

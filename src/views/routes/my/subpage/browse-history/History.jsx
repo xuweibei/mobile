@@ -12,6 +12,7 @@ import './History.less';
 const {urlCfg} = Configs;
 const {appHistory, showInfo, confirmDate, native} = Utils;
 const {MESSAGE: {Feedback, Form}, FIELD} = Constants;
+const hybirid = process.env.NATIVE;
 //tab配置信息
 const tabs = [
     {title: '商品历史', type: 1},
@@ -151,7 +152,7 @@ class History extends BaseComponent {
                         onClick={() => this.goToGoodsDetail(item.pr_id)}
                     >
                         <div className="goods-row-left">
-                            <LazyLoad lazyInfo={{imgUrl: item.picpath, offset: -20, overflow: true}}/>
+                            <LazyLoad lazyInfo={{imgUrl: item.picpath, offset: 80, overflow: true}}/>
                         </div>
                         <div className="goods-row-right">
                             <div className="goods-row-right-zeroth">
@@ -259,7 +260,6 @@ class History extends BaseComponent {
 
     //返回键回调
     goBackModal = () => {
-        const hybirid = process.env.NATIVE;
         if (hybirid) {
             native('goBack');
         } else {
@@ -270,9 +270,12 @@ class History extends BaseComponent {
 
     //点击顶部导航右侧按钮
     changeNavRight = (isEdit) => {
-        this.setState({
-            isEdit
-        });
+        this.setState((prevState) => ({
+            data: prevState.data.cloneWithRowsAndSections(this.dataBlobs, this.sectionIDs, this.rowIDs),
+            isEdit,
+            isLoading: false
+            // isEdit: window.isWX
+        }));
     };
 
     //点击每行复选框
@@ -303,15 +306,8 @@ class History extends BaseComponent {
                 console.log('添加选中id', this.state.checkedIds);
             });
         }
-
-        const dataSource2 = new ListView.DataSource({
-            getRowData,
-            getSectionHeaderData: getSectionData,
-            rowHasChanged: (row1, row2) => row1 !== row2,
-            sectionHeaderHasChanged: (s1, s2) => s1 !== s2
-        });
         this.setState((prevState) => ({
-            data: dataSource2.cloneWithRowsAndSections(this.dataBlobs, this.sectionIDs, this.rowIDs)
+            data: prevState.data.cloneWithRowsAndSections(this.dataBlobs, this.sectionIDs, this.rowIDs)
         }));
     };
 

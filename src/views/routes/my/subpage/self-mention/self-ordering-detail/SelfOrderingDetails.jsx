@@ -5,7 +5,7 @@ import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAc
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './SelfOrderingDetails.less';
 
-const {showSuccess, appHistory, getUrlParam, native, showFail, showInfo} = Utils;
+const {showSuccess, appHistory, getUrlParam, native, showFail, showInfo, nativeCssDiff} = Utils;
 const {MESSAGE: {Feedback}} = Constants;
 const {urlCfg} = Configs;
 //right:0未付款;1已付款（待使用）;3已使用（未评价）;4交易成功（已评价）;10取消订单 ;11删除订单;12申请退款成功关闭订单;13商家关闭订单14商家删除订单
@@ -236,7 +236,7 @@ class ReDetail extends BaseComponent {
                                     <img src={selfSufficiency.shoper_pic} onError={(e) => { e.target.src = selfSufficiency.df_logo }} alt=""/>
                                     <p>{selfSufficiency.shopName}</p>
                                 </div>
-                                <span><div className="right" onClick={(e) => this.goToShop(e, selfSufficiency.shop_id)}>进店</div></span>
+                                <span><div className="right" onClick={(e) => this.goToShop(e, selfSufficiency.shop_id)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>进店</div></span>
                             </div>
                             {(selfGoods && selfGoods.length > 0) ? selfGoods.map(item => (
                                 <div className="goods" key={item.pr_id} onClick={() => this.goodsDetaid(item.pr_id)}>
@@ -316,7 +316,7 @@ class ReDetail extends BaseComponent {
                     </div>
                     <div className="collection-center">{selfSufficiency.shopName}</div>
                     {
-                        (!collectId ? <div className="collection-right" onClick={() => this.collectDoIts('add')}>+收藏</div> : <div className="collection-right" onClick={() => this.collectDoIts('off')}>取消收藏</div>)
+                        (!collectId ? <div className="collection-right" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} onClick={() => this.collectDoIts('add')}>+收藏</div> : <div className="removeCollect" style={{border: nativeCssDiff() ? '1PX solid #ccc' : '0.02rem solid #ccc'}} onClick={() => this.collectDoIts('off')}>已收藏</div>)
                     }
                 </div>
 
@@ -371,7 +371,7 @@ class ReDetail extends BaseComponent {
                 <div className="cancel-order-box" >
                     {(selfSufficiency.status === '3' || selfSufficiency.status === '4' || selfSufficiency.status === '10') && (
                         <div className="assessment">
-                            <div className="cancel-order" onClick={() => this.deleteOrder()}>刪除订单</div>
+                            <div className="cancel-order" onClick={() => this.deleteOrder()} style={{border: nativeCssDiff() ? '1PX solid #666' : '0.02rem solid #666'}}>刪除订单</div>
                             {/* {selfSufficiency.status === '3' && (
                                     <div className="immediate-evaluation" onClick={() => this.promptlyAssess(selfSufficiency.order_id)}>立即评价</div>
                                 )} 暂时屏蔽 */}

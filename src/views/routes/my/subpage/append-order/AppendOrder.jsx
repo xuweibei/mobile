@@ -9,7 +9,7 @@ import {baseActionCreator as actionCreator} from '../../../../../redux/baseActio
 import AppNavBar from '../../../../common/navbar/NavBar';
 import './AppendOrder.less';
 
-const {appHistory, showFail, getUrlParam, getShopCartInfo, systemApi: {setValue, removeValue, getValue}, native} = Utils;
+const {appHistory, showFail, getUrlParam, getShopCartInfo, systemApi: {setValue, removeValue, getValue}, native, nativeCssDiff} = Utils;
 const {urlCfg} = Configs;
 
 const nowTimeStamp = Date.now();
@@ -396,7 +396,7 @@ class appendOrder extends BaseComponent {
                                             <span>{shop.shopName}</span>
                                         </div>
                                         <div className="top-enter">
-                                            <span onClick={() => this.goToShop(shop.shop_id)}>进店</span>
+                                            <span onClick={() => this.goToShop(shop.shop_id)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>进店</span>
                                         </div>
                                     </div>
                                     {

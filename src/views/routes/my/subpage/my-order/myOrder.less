@@ -18,7 +18,7 @@
         width:100%;
         z-index:3;
         .am-tabs-default-bar-tab{
-            border-right: 2.1px solid @to-light-gray!important;
+            border-right: 1px solid @to-light-gray;
             // .hairline('right', @to-light-gray);
             height: 60px;
             margin-top: 12px;
@@ -39,7 +39,7 @@
             width: 36px !important;
             height: 8px;
             background: @fiery-red;
-            margin-left: 76px;
+            margin-left: 60px;
             margin-bottom: 10px;
             border-radius: 50px;
         }
@@ -65,6 +65,11 @@
 
         .am-tabs-default-bar-content > .am-tabs-default-bar-tab:last-child {
 
+        }
+    }
+    .general-other{
+        .am-tabs-default-bar-tab{
+            border-right: 1PX solid @to-light-gray;
         }
     }
     .price {
@@ -306,6 +311,7 @@
         }
         .delete-button{
             border: none;
+            margin-right: 10px;
         }
         .evaluate-button{
             border-color: @fiery-red;

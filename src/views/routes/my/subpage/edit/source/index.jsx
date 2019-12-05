@@ -15,7 +15,7 @@ const article = [
         value: 2
     }
 ];
-const {showInfo, validator, getUrlParam, appHistory, native} = Utils;
+const {showInfo, validator, getUrlParam, appHistory, native, nativeCssDiff} = Utils;
 const {urlCfg} = Configs;
 const {MESSAGE: {Form, Feedback}} = Constants;
 
@@ -117,6 +117,7 @@ class SourceBrowse extends BaseComponent {
                         type="number"
                         placeholder="请输入推荐人UID"
                         onChange={this.setUid}
+                        maxLength={6}
                     >推荐人UID
                     </InputItem>
                     <InputItem
@@ -179,7 +180,7 @@ class SourceBrowse extends BaseComponent {
     //请求
     submit = (type) => {
         const {uid, phone} = this.state;
-        this.fetch(urlCfg.confirmationReferees, {method: 'post', data: {no: uid, type, phone: validator.wipeOut(phone)}})
+        this.fetch(urlCfg.confirmationReferees, {data: {no: uid, type, phone: validator.wipeOut(phone)}})
             .subscribe(res => {
                 if (res && res.status === 0) {
                     this.setState({
@@ -189,7 +190,7 @@ class SourceBrowse extends BaseComponent {
                         this.fetch(urlCfg.getDfinfor, {data: {no: uid}})
                             .subscribe(data => {
                                 if (data && data.status === 0) {
-                                    appHistory.push(`/bindSource?nickname=${encodeURI(data.data.nickname)}&phone=${validator.wipeOut(phone)}&uid=${uid}&avatarUrl=${data.data.avatarUrl}&router=bindSource`);
+                                    appHistory.push(`/sourceBrowse?nickname=${encodeURI(data.data.nickname)}&phone=${validator.wipeOut(phone)}&uid=${uid}&avatarUrl=${data.data.avatarUrl}&router=sourceBrowse`);
                                 }
                             });
                     });
@@ -207,7 +208,7 @@ class SourceBrowse extends BaseComponent {
 
 
     //绑定
-    bindSource = (avatarUrl, nickname, uid, phone) => (
+    sourceBrowse = (avatarUrl, nickname, uid, phone) => (
         <div data-component="source-browse" data-role="page" className="source-browse">
             <AppNavBar goBackModal={this.goBackModalBind} title="确认源头UID"/>
             <div className="recommend-content">
@@ -224,7 +225,7 @@ class SourceBrowse extends BaseComponent {
                 </div>
                 <div className="button">
                     {/* <Button className="normal-button general" onClick={this.sureSaoAgain}>重新扫码</Button> */}
-                    <Button className="normal-button general" onClick={this.goBackModal}>取消</Button>
+                    <Button className={`normal-button ${nativeCssDiff() ? 'general-other' : 'general'}`} onClick={this.goBackModal}>取消</Button>
                     <Button className="normal-button important" onClick={this.sureBind}>确认绑定</Button>
                 </div>
             </div>
@@ -280,8 +281,8 @@ class SourceBrowse extends BaseComponent {
         case 'virSource':
             blockModal = this.virSource(height);
             break;
-        case 'bindSource':
-            blockModal = this.bindSource(avatarUrl, nickname, uid, phone);
+        case 'sourceBrowse':
+            blockModal = this.sourceBrowse(avatarUrl, nickname, uid, phone);
             break;
         default:
             blockModal = '';

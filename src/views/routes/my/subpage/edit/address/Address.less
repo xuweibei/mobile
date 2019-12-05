@@ -45,7 +45,10 @@
                     .address-name{
                         font-size: @font-size-30;
                         color: @darker-black;
-                        //.TextareaOverflow(1);
+                        overflow : hidden;
+                        text-overflow: ellipsis;
+                        -webkit-line-clamp: 2;
+                        -webkit-box-orient: vertical;
                         span{
                             color:red;
                         }
@@ -64,7 +67,7 @@
                         margin-top: 20px;
                         font-size: @font-size-28;
                         color: @dark-gray;
-                        span:nth-child(2){
+                        .user-name-tel{
                             margin-right: 100px;
                         }
                     }

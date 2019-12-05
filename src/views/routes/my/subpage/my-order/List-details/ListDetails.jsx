@@ -7,7 +7,7 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 import CancelOrder from '../../../../../common/cancel-order/CancleOrder';
 import './ListDetails.less';
 
-const {appHistory, getUrlParam, showSuccess, native, showInfo} = Utils;
+const {appHistory, getUrlParam, showSuccess, native, showInfo, nativeCssDiff} = Utils;
 const {MESSAGE: {Form, Feedback}} = Constants;
 const {urlCfg} = Configs;
 class ListDetails extends BaseComponent {
@@ -158,10 +158,10 @@ class ListDetails extends BaseComponent {
     //底部按钮内容
     bottomButton = (num) => {
         const blockMadel = new Map([
-            ['0', <div className="immediate-evaluation new-style-paynow" onClick={this.payNow}>立即付款</div>],
-            ['1', <div className="immediate-evaluation deliver" onClick={this.remindDelivery}>提醒发货</div>],
-            ['2', <div className="immediate-evaluation" onClick={this.confirmTake}>确认收货</div>]
-            // ['3', <div className="immediate-evaluation" onClick={this.promptlyEstimate}>立即评价</div>]//暂时屏蔽
+            ['0', <div className="immediate-evaluation new-style-paynow" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} onClick={this.payNow}>立即付款</div>],
+            ['1', <div className="immediate-evaluation deliver" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} onClick={this.remindDelivery}>提醒发货</div>],
+            ['2', <div className="immediate-evaluation" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} onClick={this.confirmTake}>确认收货</div>],
+            ['3', <div className="immediate-evaluation" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} onClick={this.promptlyEstimate}>立即评价</div>]
         ]);
         return blockMadel.get(num);
     }
@@ -248,7 +248,7 @@ class ListDetails extends BaseComponent {
                                                 <img src={canInfo.shoper_pic} onError={(e) => { e.target.src = canInfo.df_logo }} alt=""/>
                                                 <p>{canInfo.shopName}</p>
                                             </div>
-                                            <span><div className="right" style={{border: '2px solid @fiery-red'}} onClick={(ev) => this.goShopHome(canInfo.shop_id, ev)}>进店</div></span>
+                                            <span><div className="right" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} onClick={(ev) => this.goShopHome(canInfo.shop_id, ev)}>进店</div></span>
                                         </div>
                                         {
                                             canInfo.pr_list && canInfo.pr_list.map((item, index) => (
@@ -336,9 +336,8 @@ class ListDetails extends BaseComponent {
                                             <div className="business-right icon">
                                                 <a href={`tel:${canInfo.shop_tel}`}>商家电话</a>
                                             </div>
-
                                         ) : (
-                                            <span className="business-right icon" onClick={() => this.shopPhone(canInfo.shop_tel)}>商家电话</span>
+                                            <span className="business-right icon" style={{borderRight: nativeCssDiff() ? '1PX solid #eee' : '0.02rem solid #eee'}} onClick={() => this.shopPhone(canInfo.shop_tel)}>商家电话</span>
                                         )
                                     }
                                 </div>
@@ -354,7 +353,7 @@ class ListDetails extends BaseComponent {
                                 </div>
                                 <div className="collection-center">{canInfo.shopName}</div>
                                 {
-                                    canInfo.shop_collect === '0' ? <div onClick={() => this.collectDoIt({id: canInfo.shop_id, name: canInfo.shopName}, 'add')} className="collection-right">+收藏</div> : <div onClick={() => this.collectDoIt({id: canInfo.shop_collect, name: canInfo.shopName})} className="removeCollect">已收藏</div>
+                                    canInfo.shop_collect === '0' ? <div onClick={() => this.collectDoIt({id: canInfo.shop_id, name: canInfo.shopName}, 'add')} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} className="collection-right">+收藏</div> : <div onClick={() => this.collectDoIt({id: canInfo.shop_collect, name: canInfo.shopName})} className="removeCollect" style={{border: nativeCssDiff() ? '1PX solid #ccc' : '0.02rem solid #ccc'}}>已收藏</div>
                                 }
                             </div>
 
@@ -410,10 +409,10 @@ class ListDetails extends BaseComponent {
                             </div>
                             <div className="cancel-order-box">
                                 {   //退款订单
-                                    (canInfo.status === '10' || canInfo.status === '6' || canInfo.status === '4' || canInfo.status === '3') &&  <div className="cancel-order" onClick={this.deleteOrder}>删除订单</div>
+                                    (canInfo.status === '10' || canInfo.status === '6' || canInfo.status === '4' || canInfo.status === '3') &&  <div className="cancel-order" style={{borderRight: nativeCssDiff() ? '1PX solid #666' : '0.02rem solid #666'}} onClick={this.deleteOrder}>删除订单</div>
                                 }
                                 {   //待付款订单状态可操作
-                                    (canInfo.status === '0') &&  <div className="cancel-order new-style-cancel" onClick={() => this.setState({canStatus: true, canCelId: canInfo.pr_id})}>取消订单</div>
+                                    (canInfo.status === '0') &&  <div className="cancel-order new-style-cancel" style={{borderRight: nativeCssDiff() ? '1PX solid #666' : '0.02rem solid #666'}} onClick={() => this.setState({canStatus: true, canCelId: canInfo.pr_id})}>取消订单</div>
                                 }
                                 {
                                     this.bottomButton(canInfo.status)

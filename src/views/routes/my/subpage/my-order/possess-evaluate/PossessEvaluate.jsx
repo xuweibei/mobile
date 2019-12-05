@@ -29,7 +29,6 @@ const {urlCfg} = Configs;
 const {appHistory, native, getUrlParam, setNavColor} = Utils;
 const hybird = process.env.NATIVE;
 const arr = [{
-
     title: '全部',
     value: 0,
     checked: false
@@ -142,9 +141,9 @@ class PossessEvaluate extends BaseComponent {
         const {pageToBe, pageCount, userType} = this.state;
         temp.isLoading = true;
         this.setState({hasMore: true});
-        this.fetch(userType === '2' ? urlCfg.busiMallOrder : urlCfg.mallOrder, {method: 'post', data: {status: 3, all: userType === '2' ? '' : 1,  page: pageToBe, pagesize: temp.pagesize, pageCount}}, noLoading)
+        this.fetch(userType === '2' ? urlCfg.busiMallOrder : urlCfg.mallOrder, {data: {status: 3, all: userType === '2' ? '' : 1,  page: pageToBe, pagesize: temp.pagesize, pageCount}}, noLoading)
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     temp.isLoading = false;
                     if (pageToBe === 1) {
                         temp.stackData = res.list;
@@ -172,9 +171,9 @@ class PossessEvaluate extends BaseComponent {
         const {page, types, arrChecked, userType} = this.state;
         temp.isLoading = true;
         this.setState({hasMore: true});
-        this.fetch(userType === '2' ? urlCfg.busiAppraiselist : urlCfg.myAppraiseList, {method: 'post', data: {page, pagesize: temp.pagesize, types}}, noLoading)
+        this.fetch(userType === '2' ? urlCfg.busiAppraiselist : urlCfg.myAppraiseList, {data: {page, pagesize: temp.pagesize, types}}, noLoading)
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     temp.isLoading = false;
                     if (page === 1) {
                         temp.stackDataAlready = res.data;
@@ -318,45 +317,25 @@ class PossessEvaluate extends BaseComponent {
 
     //评价类型
     evalute = (num) => {
-        let str = '';
-        switch (num) {
-        case '1':
-            str = '好评';
-            break;
-        case '2':
-            str = '中评';
-            break;
-        case '3':
-            str = '差评';
-            break;
-        default: str = '';
-        }
-        return str;
+        const arrList = new Map([
+            ['1', '好评'],
+            ['2', '中评'],
+            ['3', '差评']
+        ]);
+        return arrList.get(num);
     }
 
     //状态判断
-    tabTopName = (name) => {
+    tabTopName = (index) => {
         // "0待付款;1待发货;2待收货;3待评价"
-        switch (name) {
-        case '0':
-            name = '等待付款';
-            break;
-        case '1':
-            name = '等待发货';
-            break;
-        case '2':
-            name = '卖家已发货';
-            break;
-        case '3':
-            name = '待评价';
-            break;
-        case '4':
-            name = '交易完成';
-            break;
-        default:
-            name = '';
-        }
-        return name;
+        const arrStatus = new Map([
+            ['0', '等待付款'],
+            ['1', '等待发货'],
+            ['2', '卖家已发货'],
+            ['3', '待评价'],
+            ['4', '交易完成']
+        ]);
+        return arrStatus.get(index);
     }
 
     //底部结构

@@ -46,16 +46,24 @@ class ScrollToTop extends React.PureComponent {
         return {hasError: true};
     }
 
+    goBackModal = () => {
+        if (process.env.NATIVE && appHistory.length() === 0) {
+            native('goFinish');
+        } else {
+            appHistory.goBack();
+        }
+    }
+
     render() {
         const {hasError} = this.state;
         if (hasError) {
             return (
                 <React.Fragment>
-                    <AppNavBar title="页面崩溃"/>
+                    <AppNavBar title="页面崩溃" goBackModal={this.goBackModal}/>
                     <Nothing
                         text={FIELD.Page_Crash}
                         title="返回"
-                        onClick={() => ((process.env.NATIVE && appHistory.length() === 0) ? native('goBack') : appHistory.goBack())}
+                        onClick={this.goBackModal}
                     />
                 </React.Fragment>
             );
