@@ -481,7 +481,7 @@ class MyOrder extends BaseComponent {
                         (item.refund_button === 1) && (
                             <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
                                 {
-                                    item.showButton && <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev, 1)} style={{border: nativeCssDiff() ? '1PX solid #666' : '0.02rem solid #666'}}>申请退款</span>
+                                    item.showButton && <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev, 1)}>申请退款</span>
                                 }
                             </div>
                         )
@@ -499,7 +499,7 @@ class MyOrder extends BaseComponent {
                         item.refund_button === 1 && (
                             <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
                                 {
-                                    item.showButton && <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev)} style={{border: nativeCssDiff() ? '1PX solid #6' : '0.02rem solid #666'}}>申请退款</span>
+                                    item.showButton && <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev)}>申请退款</span>
                                 }
                             </div>
                         )
