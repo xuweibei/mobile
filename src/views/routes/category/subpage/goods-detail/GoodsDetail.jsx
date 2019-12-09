@@ -505,8 +505,8 @@ class GoodsDetail extends BaseComponent {
     }
 
     // 跳转评价
-    routeToEvalute = () => {
-        appHistory.push('/evaluate');
+    routeToEvalute = (id) => {
+        appHistory.push(`/evaluate?id=${id}`);
     }
 
     render() {
@@ -650,7 +650,7 @@ class GoodsDetail extends BaseComponent {
                     {/*店铺、商品规格*/}
                     <Evaluate
                         names={names}
-                        routeToEvalute={this.routeToEvalute}
+                        routeToEvalute={() => this.routeToEvalute(evalute.id)}
                         evalute={evalute}
                         hasType={hasType}
                         goodsDetail={goodsDetail}
