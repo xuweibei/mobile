@@ -39,6 +39,11 @@ export default class MyEvaluate extends BaseComponent {
     };
 
     componentDidMount() {
+        this.getMoreList();
+    }
+
+    //获取信息
+    getMoreList = () => {
         //获取订单ID
         const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
         const assess = decodeURI(getUrlParam('assess', encodeURI(this.props.location.search)));
@@ -95,7 +100,7 @@ export default class MyEvaluate extends BaseComponent {
             }
             return showInfo(Feedback.DOT_TWOM);
         });
-        const {filerAll} = this.state;
+        const {filerAll,files} = this.state;
         const wxUrl = filer.map((imgB) => {
             const objTemp = {
                 url: '',
@@ -109,7 +114,6 @@ export default class MyEvaluate extends BaseComponent {
             });
             return objTemp;
         });
-        const {files} = this.state;
         //将原数组重新赋值给array 数组赋值问题
         const array = files.concat([]);
         //将对应的商品图片 替换到array相对应的位置

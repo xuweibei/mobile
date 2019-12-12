@@ -78,20 +78,19 @@ class EvaluationSuccess extends BaseComponent {
                     <div className="Evaluation-c">您的言论将会帮助更多人！</div>
                     <div className="Evaluation-b" onClick={this.myEvaluate}>查看评价</div>
                 </div>
-
                 <div className="reEvaluation">
                     <div className="Evaluation">
                         <div className="Evaluation-t" onClick={this.myEvaluate}>继续评论</div>
                     </div>
                     {(recommend && recommend.length > 0) ? recommend.map(item => (
                         <div className="goods">
-                            <div className="goods-name">
-                                <div className="goods-picture">
-                                    {/* <img src={data.pr_picpath} alt=""/> */}
-                                    <LazyLoadIndex lazyInfo={{offset: -10, imgUrl: item.picpath, overflow: false}}/>
-                                </div>
-                                {
-                                    item.pr_list && item.pr_list.map(data => (
+                            {
+                                item.pr_list && item.pr_list.map(data => (
+                                    <div className="goods-name">
+                                        <div className="goods-picture">
+                                            {/* <img src={data.pr_picpath} alt=""/> */}
+                                            <LazyLoadIndex lazyInfo={{offset: -10, imgUrl: item.picpath, overflow: false}}/>
+                                        </div>
                                         <div className="goods-information">
                                             <div className="goods-explain explain-appraise" onClick={() => this.goToGooods(data.pr_id)}>{data.pr_title}</div>
                                             <div className="money-appraise" onClick={() => this.goToGooods(data.pr_id)}>￥{data.price}</div>
@@ -116,9 +115,9 @@ class EvaluationSuccess extends BaseComponent {
                                                 </div>
                                             </div>
                                         </div>
-                                    ))
-                                }
-                            </div>
+                                    </div>
+                                ))
+                            }
                         </div>
                     )) : ''}
                 </div>

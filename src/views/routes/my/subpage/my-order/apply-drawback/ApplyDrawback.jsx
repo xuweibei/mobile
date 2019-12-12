@@ -11,7 +11,7 @@ const {MESSAGE: {Feedback}} = Constants;
 const refundType = [
     {
         title: '仅退款',
-        index: '0'
+        index: '1'
     },
     {
         title: '退货退款',
@@ -23,7 +23,7 @@ const refundType = [
 const offlineType = [
     {
         title: '仅退款',
-        index: '0'
+        index: '1'
     }
 ];
 
@@ -60,6 +60,7 @@ export default class applyDrawback extends BaseComponent {
         this.getList();
     }
 
+    //获取数据
     getList = () => {
         const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
         this.fetch(urlCfg.returnOrderInfo, {data: {id}})
@@ -133,7 +134,7 @@ export default class applyDrawback extends BaseComponent {
     }
 
     //点击添加、删除图片
-    onChange = (files) => {
+    onChangeImg = (files) => {
         const filesArr = files.map((imgB) => {
             const objTemp = {
                 url: '',
@@ -155,11 +156,10 @@ export default class applyDrawback extends BaseComponent {
 
     //原生图片选择
     addPictrue = () => {
-        const {nativePicNum} = this.state;
+        const {nativePicNum, filesArr} = this.state;
         native('picCallback', {num: nativePicNum}).then(res => {
-            const {filesArr} = this.state;
             const arr = filesArr;
-            res.data.img.forEach((item, index) => {
+            res.data.img.forEach(item => {
                 arr.push({imgB: item[0], imgS: item[1], id: new Date()});
             });
             this.setState({
@@ -264,8 +264,8 @@ export default class applyDrawback extends BaseComponent {
                                         {/*type == 2  线下*/}
                                         {(type === '2' || refurn === '1') ? (
                                             <div className="closedAngle-list">
-                                                {offlineType.map((item, index) => (
-                                                    <div className="list-item" key={index.toString()} onClick={() => this.typeChoose(item.title, index)}>
+                                                {offlineType.map(item => (
+                                                    <div className="list-item" key={item.index} onClick={() => this.typeChoose(item.title, item.index)}>
                                                         <div className="item-text">{item.title}</div>
                                                         <div className={`icon ${item.index === typeSelectIndexsTime ? 'icon-celetes' : 'icon-hollow'}`}/>
                                                     </div>
@@ -273,8 +273,8 @@ export default class applyDrawback extends BaseComponent {
                                             </div>
                                         ) : (
                                             <div className="closedAngle-list">
-                                                {refundType.map((item, index) => (
-                                                    <div className="list-item" key={index.toString()} onClick={() => this.typeChoose(item.title, index)}>
+                                                {refundType.map(item => (
+                                                    <div className="list-item" key={item.index} onClick={() => this.typeChoose(item.title, item.index)}>
                                                         <div className="item-text">{item.title}</div>
                                                         <div className={`icon ${item.index === typeSelectIndexsTime ? 'icon-celetes' : 'icon-hollow'}`}/>
                                                     </div>
@@ -353,7 +353,7 @@ export default class applyDrawback extends BaseComponent {
                                         : (
                                             <ImagePicker
                                                 files={files}
-                                                onChange={this.onChange}
+                                                onChange={this.onChangeImg}
                                                 selectable={files.length < 9}
                                                 multiple
                                             />

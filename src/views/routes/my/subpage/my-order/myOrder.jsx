@@ -285,18 +285,17 @@ class MyOrder extends BaseComponent {
         if (state === 'mastSure' && value) {
             this.fetch(urlCfg.delMallOrder, {
                 data: {deal: 0, id: canCelId, reason: value.label, reason_id: value.value}
-            })
-                .subscribe(res => {
-                    if (res && res.status === 0) {
-                        showSuccess(Feedback.Cancel_Success);
-                        //操作数据，将已经选中取消的id进行去除，
-                        const arr = retainArr.filter(item => item.id !== canCelId);
-                        this.setState((prevState) => ({
-                            dataSource: prevState.dataSource.cloneWithRows(arr),
-                            retainArr: arr
-                        }));
-                    }
-                });
+            }).subscribe(res => {
+                if (res && res.status === 0) {
+                    showSuccess(Feedback.Cancel_Success);
+                    //操作数据，将已经选中取消的id进行去除，
+                    const arr = retainArr.filter(item => item.id !== canCelId);
+                    this.setState((prevState) => ({
+                        dataSource: prevState.dataSource.cloneWithRows(arr),
+                        retainArr: arr
+                    }));
+                }
+            });
         }
         this.setState({
             canStatus: false
@@ -400,6 +399,8 @@ class MyOrder extends BaseComponent {
         retainArr.forEach(value => {
             if (item.id === value.id) {
                 value.showButton = !value.showButton;
+            } else {
+                value.showButton = false;
             }
             //赋址改变，为重新渲染
             arr.push(Object.assign({}, value));
@@ -447,6 +448,10 @@ class MyOrder extends BaseComponent {
                             modalTitle: '',
                             status: 2,
                             page: 1
+                        }, () => {
+                            if (this.statusChoose(this.props.location.pathname.split('/')[2]) === '2') { //这里是为了判断撤销完后回退的还是收货页面时不请求，手动请求
+                                this.getMallOrder(2, 1);
+                            }
                         });
                         //确定撤销后，跳转到待收货那列
                         this.gotoMyOrder(3);
@@ -479,13 +484,13 @@ class MyOrder extends BaseComponent {
                         (item.refund_button === 1) && (
                             <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
                                 {
-                                    item.showButton && <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev, 1)} style={{border: this.styleCompatible()}}>申请退款</span>
+                                    item.showButton && <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev, 1)}>申请退款</span>
                                 }
                             </div>
                         )
                     }
                     {
-                        !item.all_refund && <div className="evaluate-button" onClick={() => this.remindDelivery([item.id, item.can_tip])}>提醒发货</div>
+                        !item.all_refund && <div className="evaluate-button" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} onClick={() => this.remindDelivery([item.id, item.can_tip])}>提醒发货</div>
                     }
                 </div>
             );
@@ -497,7 +502,7 @@ class MyOrder extends BaseComponent {
                         item.refund_button === 1 && (
                             <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
                                 {
-                                    item.showButton && <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev)} style={{border: nativeCssDiff() ? '1PX solid #6' : '0.02rem solid #666'}}>申请退款</span>
+                                    item.showButton && <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev)}>申请退款</span>
                                 }
                             </div>
                         )
@@ -627,7 +632,7 @@ class MyOrder extends BaseComponent {
     render() {
         const {dataSource, hasMore, height, status, canStatus, refreshing} = this.state;
         const row = item => (
-            <div className="shop-lists" >
+            <div className="shop-lists" onClick={this.closeButton}>
                 <div className="shop-name" onClick={() => this.goShopHome(item.shop_id)}>
                     <div className="shop-title">
                         {/* { 是否多条订单一起付款
