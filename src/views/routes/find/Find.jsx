@@ -340,7 +340,9 @@ class Find extends BaseComponent {
                                 showPopup2: false,
                                 toggle: true,
                                 shopList: res,
-                                shops: res.data
+                                shops: res.data,
+                                searchLeft: '店铺列表',
+                                searchRight: '取消搜索'
                             }, () => {
                                 this.renderMap();
                             });
@@ -370,6 +372,7 @@ class Find extends BaseComponent {
 
     //返回地图渲染markers
     returnMapRender = () => {
+        this.map.removeOverlay(this.polyline);
         this.setState({
             close: false,
             toggle: false
@@ -380,13 +383,19 @@ class Find extends BaseComponent {
 
     //店铺名称点击
     shopNameClick = (item) => {
+        console.log(item);
         const {longitude, latitude} = this.state;
         this.map.removeOverlay(this.polyline);
         const pt = new window.BMap.Point(item.longitude, item.latitude);
         this.map.centerAndZoom(pt, 13);
         this.setState({
             showPopup1: false,
-            oldId: item.id
+            oldId: item.id,
+            close: true,
+            searchLeft: '导航到店',
+            searchRight: '店铺信息',
+            toggle: true,
+            shopId: item.id
         });
         const walk = new window.BMap.WalkingRoute(this.map, {});
         const {oldId} = this.state;

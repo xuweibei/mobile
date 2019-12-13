@@ -615,9 +615,11 @@ class ShopCart extends BaseComponent {
         }
         const arr = [];
         const cartArr = [];
+        console.log(valid[index], '傻大个撒还记得噶三季度');
         valid[index].data.map(item => {
             if (item.select === true) {
                 arr.push({
+                    car_id: item.id,
                     pr_id: parseInt(item.pr_id, 10),
                     property: item.property_content,
                     num: item.num,
@@ -632,7 +634,6 @@ class ShopCart extends BaseComponent {
         setIds(cartArr);
         removeValue('zpyg_orderArr');
         window.localStorage.setItem('zpyg_orderArr', JSON.stringify(arr));
-        // setValue('orderArr', JSON.stringify(arr));
         const obj = {arr, cartArr};//储存redux
         if (process.env.NATIVE && currentIndex === 0) {
             native('settlement', obj);//app点击结算的时候
