@@ -239,7 +239,7 @@ class applyService extends BaseComponent {
                         <div className="drawback">
                             <div className="drawback-text"><span>*</span> 退款原因</div>
                             <div className="select-frame" onClick={this.blockedOut}>
-                                <span className="select-text">{selectText}</span>
+                                <span className="select-text">{selectText || '请选择退款原因'}</span>
                                 <span className={swith ? 'select-icon' : 'select-icon-max'}>
                                     <span className="icon select-icon-right"/>
                                 </span>

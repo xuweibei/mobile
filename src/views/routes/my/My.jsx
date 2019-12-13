@@ -34,17 +34,17 @@ const myOrderIconData = [
         text: '待收货',
         className: 'icon issue',
         num: 0
-    }
-    /*{
+    },
+    {
         text: '待评价',
         className: 'icon evaluate',
         num: 0
-    },*/
-    /* {
+    },
+    {
         text: '售后',
         className: 'icon sale',
         num: 0
-    }*/
+    }
 ];
 //线下订单模块
 const myOrderSelfData = [
@@ -57,12 +57,12 @@ const myOrderSelfData = [
         text: '已完成',
         className: 'icon accomplish',
         num: 0
-    }/*,
+    },
     {
         text: '售后',
         className: 'icon marketing',
         num: 0
-    }*/
+    }
 ];
 //商家顶部导航模块
 const shopOrder = [
@@ -461,7 +461,7 @@ class My extends BaseComponent {
                         <div className="my-order-icon">
                             <Grid
                                 data={arrOrder}
-                                columnNum={3}
+                                columnNum={5}
                                 hasLine={false}
                                 activeStyle={false}
                                 renderItem={dataItem => (
@@ -524,7 +524,7 @@ class My extends BaseComponent {
                         <div className="my-selfOrder-icon">
                             <Grid
                                 data={myOrderSelfData}
-                                columnNum={2}
+                                columnNum={3}
                                 hasLine={false}
                                 activeStyle={false}
                                 renderItem={dataItem => (

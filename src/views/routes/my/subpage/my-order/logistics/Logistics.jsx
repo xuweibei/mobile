@@ -53,7 +53,7 @@ export default class MyOrder extends BaseComponent {
                 if (res && res.status === 0) {
                     if (res.data) {
                         this.setState({
-                            orderInfo: JSON.parse(res.data.express_content).data,
+                            orderInfo: res.data.express_content ? JSON.parse(res.data.express_content).data : [],
                             ordertatus: res.data.status,
                             expressNo: res.data.express_no,
                             pic: res.data.picpath,

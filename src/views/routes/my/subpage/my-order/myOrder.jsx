@@ -89,7 +89,7 @@ class MyOrder extends BaseComponent {
     //请求数据
     getInfo = () => {
         const {status, page} = this.state;
-        if (status === 4) { //退款申请成功后，返回售后列表
+        if (status === '4') { //退款申请成功后，返回售后列表
             this.refundMllOder(page);
         } else {
             this.getMallOrder(status, page);
@@ -199,13 +199,8 @@ class MyOrder extends BaseComponent {
             retainArr: [],
             hasMore: false
         }, () => {
-            const {status, page} = this.state;
             temp.stackData = [];
-            if (status === 4) {
-                this.refundMllOder(page);
-            } else {
-                this.gotoMyOrder(index);
-            }
+            this.gotoMyOrder(index);
         });
     };
 
@@ -290,18 +285,17 @@ class MyOrder extends BaseComponent {
         if (state === 'mastSure' && value) {
             this.fetch(urlCfg.delMallOrder, {
                 data: {deal: 0, id: canCelId, reason: value.label, reason_id: value.value}
-            })
-                .subscribe(res => {
-                    if (res && res.status === 0) {
-                        showSuccess(Feedback.Cancel_Success);
-                        //操作数据，将已经选中取消的id进行去除，
-                        const arr = retainArr.filter(item => item.id !== canCelId);
-                        this.setState((prevState) => ({
-                            dataSource: prevState.dataSource.cloneWithRows(arr),
-                            retainArr: arr
-                        }));
-                    }
-                });
+            }).subscribe(res => {
+                if (res && res.status === 0) {
+                    showSuccess(Feedback.Cancel_Success);
+                    //操作数据，将已经选中取消的id进行去除，
+                    const arr = retainArr.filter(item => item.id !== canCelId);
+                    this.setState((prevState) => ({
+                        dataSource: prevState.dataSource.cloneWithRows(arr),
+                        retainArr: arr
+                    }));
+                }
+            });
         }
         this.setState({
             canStatus: false
@@ -405,6 +399,8 @@ class MyOrder extends BaseComponent {
         retainArr.forEach(value => {
             if (item.id === value.id) {
                 value.showButton = !value.showButton;
+            } else {
+                value.showButton = false;
             }
             //赋址改变，为重新渲染
             arr.push(Object.assign({}, value));
@@ -452,6 +448,10 @@ class MyOrder extends BaseComponent {
                             modalTitle: '',
                             status: 2,
                             page: 1
+                        }, () => {
+                            if (this.statusChoose(this.props.location.pathname.split('/')[2]) === '2') { //这里是为了判断撤销完后回退的还是收货页面时不请求，手动请求
+                                this.getMallOrder(2, 1);
+                            }
                         });
                         //确定撤销后，跳转到待收货那列
                         this.gotoMyOrder(3);
@@ -462,6 +462,9 @@ class MyOrder extends BaseComponent {
         ev.stopPropagation();
     }
 
+    //样式兼容统一封装
+    styleCompatible = () => (nativeCssDiff() ? '1PX solid #666' : '0.02rem solid #666')
+
     //底部按钮
     bottomModal = (item) => {
         let blockModal = <div/>;
@@ -469,7 +472,7 @@ class MyOrder extends BaseComponent {
         case '0'://待付款
             blockModal = (
                 <div className="buttons">
-                    <div onClick={() => this.setState({canStatus: true, canCelId: item.id})} className="look-button" style={{border: nativeCssDiff() ? '1PX solid #666' : '0.02rem solid #666'}}>取消订单</div>
+                    <div onClick={() => this.setState({canStatus: true, canCelId: item.id})} className="look-button" style={{border: this.styleCompatible()}}>取消订单</div>
                     <div onClick={() => this.payNow(item.id, item.order_no)} className="evaluate-button" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>立即付款</div>
                 </div>
             );
@@ -481,13 +484,13 @@ class MyOrder extends BaseComponent {
                         (item.refund_button === 1) && (
                             <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
                                 {
-                                    item.showButton && <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev, 1)} style={{border: nativeCssDiff() ? '1PX solid #666' : '0.02rem solid #666'}}>申请退款</span>
+                                    item.showButton && <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev, 1)}>申请退款</span>
                                 }
                             </div>
                         )
                     }
                     {
-                        !item.all_refund && <div className="evaluate-button" onClick={() => this.remindDelivery([item.id, item.can_tip])}>提醒发货</div>
+                        !item.all_refund && <div className="evaluate-button" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} onClick={() => this.remindDelivery([item.id, item.can_tip])}>提醒发货</div>
                     }
                 </div>
             );
@@ -499,13 +502,13 @@ class MyOrder extends BaseComponent {
                         item.refund_button === 1 && (
                             <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
                                 {
-                                    item.showButton && <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev)} style={{border: nativeCssDiff() ? '1PX solid #6' : '0.02rem solid #666'}}>申请退款</span>
+                                    item.showButton && <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev)}>申请退款</span>
                                 }
                             </div>
                         )
                     }
-                    <div className="look-button" onClick={(ev) => this.extendedReceipt(item.id, ev)} style={{border: nativeCssDiff() ? '1PX solid #666' : '0.02rem solid #666'}}>延长收货</div>
-                    <div className="look-button" onClick={(ev) => this.goApplyService(item.id, ev)} style={{border: nativeCssDiff() ? '1PX solid #666' : '0.02rem solid #666'}}>查看物流</div>
+                    <div className="look-button" onClick={(ev) => this.extendedReceipt(item.id, ev)} style={{border: this.styleCompatible()}}>延长收货</div>
+                    <div className="look-button" onClick={(ev) => this.goApplyService(item.id, ev)} style={{border: this.styleCompatible()}}>查看物流</div>
                     {
                         item.all_refund === 1 ? <div className="evaluate-button" onClick={(ev) => this.revoke(item.pr_list[0].return_id, ev)}>撤销申请</div> : <div className="evaluate-button" onClick={(ev) => this.confirmTake(item.id, ev)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>确认收货</div>
                     }
@@ -515,8 +518,8 @@ class MyOrder extends BaseComponent {
         case '3'://待评价
             blockModal = (
                 <div className="buttons">
-                    <div className="look-button" onClick={(ev) => this.goApplyService(item.id, ev)} style={{border: nativeCssDiff() ? '1PX solid #666' : '0.02rem solid #666'}}>查看物流</div>
-                    <div className="delete-button" onClick={() => this.deleteOrder(item.id)} style={{border: nativeCssDiff() ? '1PX solid #666' : '0.02rem solid #666'}}>删除</div>
+                    <div className="look-button" onClick={(ev) => this.goApplyService(item.id, ev)} style={{border: this.styleCompatible()}}>查看物流</div>
+                    <div className="delete-button" onClick={() => this.deleteOrder(item.id)} style={{border: this.styleCompatible()}}>删除</div>
                     <div className="evaluate-button" onClick={(ev) => this.promptlyEstimate(item.id, ev)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>立即评价</div>
                 </div>
             );
@@ -527,7 +530,7 @@ class MyOrder extends BaseComponent {
         case '13'://商家取消
             blockModal = (
                 <div className="buttons">
-                    <div className="delete-button" onClick={() => this.deleteOrder(item.id)} style={{border: nativeCssDiff() ? '1PX solid #666' : '0.02rem solid #666'}}>删除</div>
+                    <div className="delete-button" onClick={() => this.deleteOrder(item.id)} style={{border: this.styleCompatible()}}>删除</div>
                 </div>
             );
             break;
@@ -582,7 +585,7 @@ class MyOrder extends BaseComponent {
             retainArr: []
         }, () => {
             temp.stackData = [];
-            if (status === 4) {
+            if (status === '4') {
                 this.refundMllOder(this.state.page, true);
             } else {
                 this.getMallOrder(status, this.state.page, true);
@@ -599,7 +602,7 @@ class MyOrder extends BaseComponent {
                 page: pervState.page + 1,
                 hasMore: true
             }), () => {
-                if (status === 4) {
+                if (status === '4') {
                     this.refundMllOder(this.state.page);
                 } else {
                     this.getMallOrder(status, this.state.page);
@@ -629,7 +632,7 @@ class MyOrder extends BaseComponent {
     render() {
         const {dataSource, hasMore, height, status, canStatus, refreshing} = this.state;
         const row = item => (
-            <div className="shop-lists" >
+            <div className="shop-lists" onClick={this.closeButton}>
                 <div className="shop-name" onClick={() => this.goShopHome(item.shop_id)}>
                     <div className="shop-title">
                         {/* { 是否多条订单一起付款
