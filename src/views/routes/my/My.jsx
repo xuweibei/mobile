@@ -89,10 +89,10 @@ const consumerOrder = [
         text: '浏览历史',
         className: 'icon history'
     },
-    /* {
+    {
         text: '评价中心',
         className: 'icon assessment-center'
-    },*/
+    },
     {
         text: '二维码',
         className: 'icon qr-code'
@@ -422,7 +422,8 @@ class My extends BaseComponent {
                         <div className="my-top-icon">
                             <Grid
                                 data={(myInfo && myInfo.info.iden_type === '2') ? shopOrder : consumerOrder}
-                                columnNum={(myInfo && myInfo.info.iden_type === '2') ? 3 : 3}
+                                // columnNum={(myInfo && myInfo.info.iden_type === '2') ? 3 : 3}
+                                columnNum={4}
                                 hasLine={false}
                                 activeStyle={false}
                                 renderItem={dataItem => (

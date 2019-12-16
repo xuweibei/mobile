@@ -7,7 +7,7 @@ import {Radio, Flex, TextareaItem, ImagePicker} from 'antd-mobile';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 
 const {urlCfg} = Configs;
-const {appHistory, getUrlParam, dealImage, showInfo, showSuccess, native} = Utils;
+const {appHistory, getUrlParam, showInfo, showSuccess, native} = Utils;
 const {MESSAGE: {Form, Feedback}, IMGSIZE} = Constants;
 //评价 好评 中评 差评
 const evaluates = [
@@ -65,7 +65,6 @@ export default class MyEvaluate extends BaseComponent {
                     evaluate: prevState.evaluate.merge(res.list), //获取订单商品
                     estimate: arrly, //获取订单的 商品数量 不同商品评价状态先默认为1
                     discuss: array, //获取商品的评价内容数量 先以空字符串push进去相对应的数量
-                    // files: pic, //获取订单的商品数量，先以空数组push进去相对应的数量
                     selfHelp: assess //等于2 为是从自提过来的评价
                 }));
             }
@@ -102,27 +101,7 @@ export default class MyEvaluate extends BaseComponent {
             return showInfo(Feedback.DOT_TWOM);
         });
         const {files} = this.state;
-        // const wxUrl = filer.map((imgB) => {
-        //     const objTemp = {
-        //         url: '',
-        //         urlB: ''
-        //     };
-        //     dealImage(imgB, 100, (imgSX) => { //小图片压缩 图片信息 图片大下 返回压缩图片路径
-        //         objTemp.url = imgSX;
-        //     });
-        //     dealImage(imgB, 800, (imgD) => { //大图片压缩 图片信息 图片大下 返回压缩图片路径
-        //         objTemp.urlB = imgD;
-        //     });
-        //     return objTemp;
-        // });
-        //将原数组重新赋值给array 数组赋值问题
-        // const array = files.concat([]);
-        //将对应的商品图片 替换到array相对应的位置
-        // array[index] = wxUrl;
-        // files[index] = filer;
-        console.log(files, index, '水电费看了');
         const newFiles = files.set(index, filer);
-        // console.log(newFiles.toJS(), newFiles.get(0), '克里斯多夫');
         this.setState({
             files: newFiles
         });
@@ -131,45 +110,36 @@ export default class MyEvaluate extends BaseComponent {
     //点击添加图片
     addPictrue = (data, index) => {
         if (hybird) {
-            native('picCallback', {num: data.nativePicNum}).then(res => {
+            native('picCallback', {num: data.get('nativePicNum') || 9}).then(res => {
                 const {files, evaluate} = this.state;
                 const arr = [];
                 res.data.img.forEach(item => {
                     arr.push({urlB: item[0], url: item[1], id: new Date(), nativePicNum: 9});
                 });
-                console.log(files, files.toJS(), '我哦廖海军');
-                let aaa = files;
-                let bbb = evaluate;
-                console.log(files.get(index), '图一集团与');
-                if (files.get(index)) {
-                    files.map((item, num) => {
-                        console.log(item, '贫困楼盘离开了');
-                        if (num === index) {
-                            // item.update(index, val => val.concat(...arr));
-                            evaluate.map((value, i) => {
-                                if (i === index) {
-                                    // item.update(index,val=>val.concat(...arr))
-                                    value.setIn([index, 'nativePicNum'], 9 - item.size);
-                                    // value.nativePicNum = 9 - item.length;//动态计算原生可选择图片的数量
-                                }
-                            });
-                            return item.push(...arr);
+                let oldData = files;//设置初始值
+                let oldDataEv = evaluate;//设置初始值
+                if (files.get(index)) { //超过一张图片的时候走这里
+                    oldData = files.map((item, num) => {
+                        oldDataEv = evaluate.map((value, i) => { //遍历最初数据，让其可选图片数量做出改变
+                            if (i === index) {
+                                const newData = value.set('nativePicNum', 9 - item.length);
+                                return newData;
+                            }
+                            return value;
+                        });
+                        if (num === index) { //超过一张时候的处理
+                            item = item.concat(...arr);
+                            return item;
                         }
                         return item;
                     });
-                    aaa = Immutable.List(files);
-                    bbb = evaluate;
-                    console.log(aaa.toJS(), bbb.toJS(), '了柔荑花');
                 } else {
-                    aaa = files.set(index, arr);
-                    console.log(aaa, aaa.toJS(), '东方钽业久旱逢甘雨待会就');
-                    bbb = evaluate.setIn([index, 'nativePicNum'], 8);//动态计算原生可选择图片的数量
+                    oldData = files.set(index, arr);//某条数据第一次添加的时候
+                    oldDataEv = evaluate.setIn([index, 'nativePicNum'], 8);//动态计算原生可选择图片的数量
                 }
-                console.log(aaa.toJS(), bbb, bbb.toJS(), evaluate, '已咯UI哦我看图库');
-                console.log(aaa.toJS(), files.toJS(), '了柔荑花');
                 this.setState({
-                    files: aaa,
-                    evaluate: bbb
+                    files: oldData,
+                    evaluate: oldDataEv
                 });
             });
         }
@@ -178,41 +148,20 @@ export default class MyEvaluate extends BaseComponent {
     //点击删除图片
     deleteImg = (id, index) => {
         const {files, evaluate} = this.state;
-        const arr = [];
-        // const aaa = files.deleteIn([index, id]);
-        // files.forEach((item, num) => {
-        //     item = item.filter(data => data.id !== id);
-        //     item.forEach(data => {
-        //         if (data.id !== id) {
-        //             evaluate[num].nativePicNum = 9 - item.length;//动态计算原生可选择图片的数量
-        //         }
-        //     });
-        //     arr.push(item);
-        // });
-        let ppp = evaluate;
-        const nnn = files.map(item => {
-            item = item.filter(data => data.id !== id);
-            item.forEach((lalala, num) => {
-                if (lalala.id !== id) {
-                    ppp = evaluate.setIn([num, 'nativePicNum'], 9 - item.length);
-                    console.log(ppp, ppp.toJS(), '了东方故事');
-                    // evaluate[num].nativePicNum = 9 - item.length;//动态计算原生可选择图片的数量
+        const nnn = files.map((item, num) => {
+            item.forEach((lalala, numData) => {
+                if (lalala.id === id) {
+                    evaluate.setIn([numData, 'nativePicNum'], 9 - item.length);
                 }
             });
+            if (num === index) {
+                return item.filter(data => data.id !== id);
+            }
+            return item;
         });
-        console.log(nnn, nnn.toJS(), '；两人同行业同', ppp);
-        // const aaa = files.get(index).forEach((item, num) => {
-        //     console.log(item,'；了柔荑花')
-        //     item = item.filter(data => data.id !== id);
-        //     if (item.id !== id) {
-        //         ppp = evaluate.setIn([num, 'nativePicNum'], 9 - item.length);
-        //         // evaluate[num].nativePicNum = 9 - item.length;//动态计算原生可选择图片的数量
-        //     }
-        // });
-        // console.log(aaa, aaa.toJS(), ppp, ppp.toJS(), '尔特热帖预热图也让他有');
         this.setState({
             files: nnn,
-            evaluate: ppp
+            evaluate
         });
     };
 
@@ -241,57 +190,15 @@ export default class MyEvaluate extends BaseComponent {
     evaluationSuccess = () => {
         const {evaluate, estimate, discuss, anonymous, shop, logistics, files, selfHelp} = this.state;
         const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
-        console.log(files, '接口螺丝刀讲课费');
         //判断店铺 物流是否评分
-        // if (!shop) {
-        //     showInfo(Form.No_EvaluateShop);
-        //     return;
-        // }
-        // if ((!logistics && selfHelp !== '2')) {
-        //     showInfo(Form.No_EvaluateLogistics);
-        //     return;
-        // }
-        // for (let i = 0; i < evaluate.length; i++) {
-        //     this.fetch(urlCfg.publishAssess, {data: {
-        //         pr_id: evaluate[i].pr_id,
-        //         order_id: id,
-        //         mark_type: estimate[i],
-        //         types: 0,
-        //         content: discuss[i],
-        //         pr_title: evaluate[i].pr_title,
-        //         anonymous: anonymous ? '1' : '0',
-        //         shop_mark: shop,
-        //         logistics_mark: selfHelp === '2' ? '' : logistics,
-        //         property_content: evaluate[i].property_content,
-        //         have_pic: files[i].length > 0 ? 1 : ''
-        //     }}).subscribe((res) => {
-        //         if (res && res.status === 0) {
-        //             if (!files[i] || files[i].length === 0) {
-        //                 showSuccess(Feedback.Evaluate_Success);
-        //                 dropByCacheKey('OrderPage');
-        //                 setTimeout(() => { appHistory.replace('/evaluationSuccess') }, 1000);
-        //             } else {
-        //                 files.forEach(data => {
-        //                     data.forEach(value => {
-        //                         value.urlB = encodeURIComponent(value.urlB);
-        //                         delete value.url;
-        //                     });
-        //                 });
-        //                 this.fetch(urlCfg.picSave, {data: {
-        //                     type: 1,
-        //                     id: res.id,
-        //                     file: files[i]
-        //                 }}).subscribe((resr) => {
-        //                     if (resr && resr.status === 0) {
-        //                         showSuccess(Feedback.Evaluate_Success);
-        //                         dropByCacheKey('OrderPage');
-        //                         setTimeout(() => { appHistory.replace('/evaluationSuccess') }, 1000);
-        //                     }
-        //                 });
-        //             }
-        //         }
-        //     });
-        // }
+        if (!shop) {
+            showInfo(Form.No_EvaluateShop);
+            return;
+        }
+        if ((!logistics && selfHelp !== '2')) {
+            showInfo(Form.No_EvaluateLogistics);
+            return;
+        }
         const pasArr = [];//文字请求集合
         const ids = [];//文字保存成功后的id集合
         evaluate.map((item, index) => {
@@ -346,12 +253,11 @@ export default class MyEvaluate extends BaseComponent {
     };
 
     render() {
-        const {estimate, filerAll, files, evaluate, anonymous, shop, logistics, selfHelp} = this.state;
+        const {estimate, files, evaluate, anonymous, shop, logistics, selfHelp} = this.state;
         console.log(evaluate, '水电费看了');
         console.log(evaluate.toJS(), '二位热');
-        console.log(files, '扣篮大赛');
         console.log(files.toJS(), '傲世轻物');
-        alert(files.toJS());
+        console.log(files, '扣篮大赛');
         return (
             <div data-component="MyEvaluate" data-role="page" className="MyEvaluate">
                 {/*评论头部*/}
