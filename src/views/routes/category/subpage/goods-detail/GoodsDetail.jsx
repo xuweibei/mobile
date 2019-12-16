@@ -62,7 +62,8 @@ class GoodsDetail extends BaseComponent {
         totalNUm: 0, //商品库存,
         goodId: decodeURI(getUrlParam('id', encodeURI(this.props.location.search))),
         hasType: false,
-        evalute: {}
+        evalute: {},
+        max: 0 //商品库存
     };
 
     componentDidMount() {
@@ -201,7 +202,7 @@ class GoodsDetail extends BaseComponent {
 
     //添加商品到购物车
     addCart = () => {
-        const {shop, goodsDetail, paginationNum, ids, selectType, status} = this.state;
+        const {shop, goodsDetail, paginationNum, ids, selectType, status, max} = this.state;
         if (shop.shoper_open_status === '0' || status === '0' || status === '2') {
             return;
         }
@@ -214,6 +215,10 @@ class GoodsDetail extends BaseComponent {
         }
         if (selectType === '3') {
             showInfo(Feedback.Select_Consume);
+            return;
+        }
+        if (paginationNum > max) {
+            showFail('商品库存不足');
             return;
         }
         this.fetch(urlCfg.addShopCart, {
@@ -515,25 +520,34 @@ class GoodsDetail extends BaseComponent {
             picPath, goodsDetail, shop, recommend, collect, status, evalute,
             goodsAttr, stocks, lineStatus, lineText, pickType, selectType, names, hasType
         } = this.state;
-        const renderCount = (max) => (
-            <List>
-                <List.Item
-                    wrap
-                    extra={(
-                        <Stepper
-                            style={{width: '100%', minWidth: '100px'}}
-                            showNumber
-                            max={max}
-                            min={1}
-                            value={paginationNum}
-                            onChange={this.onChangeCount}
-                        />
-                    )}
-                >
+        const renderCount = (max) => {
+            if (paginationNum > max) {
+                showFail('商品库存不足');
+                this.setState(() => ({
+                    paginationNum: max,
+                    max
+                }));
+            }
+            return (
+                <List>
+                    <List.Item
+                        wrap
+                        extra={(
+                            <Stepper
+                                style={{width: '100%', minWidth: '100px'}}
+                                showNumber
+                                max={max}
+                                min={1}
+                                value={paginationNum}
+                                onChange={this.onChangeCount}
+                            />
+                        )}
+                    >
                     数量
-                </List.Item>
-            </List>
-        );
+                    </List.Item>
+                </List>
+            );
+        };
         return (
             <div
                 data-component="goodsDetail"

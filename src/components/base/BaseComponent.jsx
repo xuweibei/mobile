@@ -23,6 +23,7 @@ class BaseComponent extends React.Component {
         super(props, context);
     }
 
+
     shouldComponentUpdate(nextProps, nextState) {
         const thisProps = this.props || {},
             thisState = this.state || {},
