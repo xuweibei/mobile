@@ -515,7 +515,7 @@ class GoodsDetail extends BaseComponent {
             picPath, goodsDetail, shop, recommend, collect, status, evalute,
             goodsAttr, stocks, lineStatus, lineText, pickType, selectType, names, hasType
         } = this.state;
-        const renderCount = (
+        const renderCount = (max) => (
             <List>
                 <List.Item
                     wrap
@@ -523,7 +523,7 @@ class GoodsDetail extends BaseComponent {
                         <Stepper
                             style={{width: '100%', minWidth: '100px'}}
                             showNumber
-                            max={100}
+                            max={max}
                             min={1}
                             value={paginationNum}
                             onChange={this.onChangeCount}
