@@ -310,11 +310,11 @@ class Sku extends React.PureComponent {
     };
 
     //渲染额外内容
-    getExtraElement=() => {
+    getExtraElement=(a) => {
         const {extra} = this.props;
         let extraElement;
         if (typeof extra === 'function') {
-            extraElement = extra();
+            extraElement = extra(a);
         } else {
             extraElement = extra;
         }
@@ -324,7 +324,7 @@ class Sku extends React.PureComponent {
     render() {
         const {selectedTemp, selectType, submitalbe, price, originalPrice, deposit, stock} = this.state;
         const {type, attributes, cover, visible, onClose} = this.props;
-        // console.log(originalPrice, '啥都卡死的框架按收到货');
+        console.log(stock, '啥都卡死的框架按收到货');
         return (
             <Modal
                 className="panel-mask"
@@ -392,7 +392,7 @@ class Sku extends React.PureComponent {
                                     </div>
                                 ))}
                             </div>
-                            {this.getExtraElement()}
+                            {this.getExtraElement(stock)}
                         </div>
                         <Button
                             style={{width: '93%', margin: 'auto'}}
