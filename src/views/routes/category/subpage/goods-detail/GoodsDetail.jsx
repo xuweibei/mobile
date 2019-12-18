@@ -218,6 +218,7 @@ class GoodsDetail extends BaseComponent {
             return;
         }
         if (paginationNum > max) {
+            console.log(max, paginationNum);
             showFail('商品库存不足');
             return;
         }
@@ -424,9 +425,13 @@ class GoodsDetail extends BaseComponent {
 
     //改变购买数量
     onChangeCount = value => {
-        if (value > 100) {
+        const {max} = this.state;
+        if (value > max) {
             // alert('三大类科技阿萨德');
             showFail(Form.No_Stocks);
+            this.setState({
+                paginationNum: max
+            });
         } else {
             this.setState({
                 paginationNum: value
@@ -521,13 +526,9 @@ class GoodsDetail extends BaseComponent {
             goodsAttr, stocks, lineStatus, lineText, pickType, selectType, names, hasType
         } = this.state;
         const renderCount = (max) => {
-            if (paginationNum > max) {
-                showFail('商品库存不足');
-                this.setState(() => ({
-                    paginationNum: max,
-                    max
-                }));
-            }
+            this.setState(() => ({
+                max
+            }));
             return (
                 <List>
                     <List.Item
