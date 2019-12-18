@@ -564,7 +564,7 @@ class PossessEvaluate extends BaseComponent {
             tabkey: index,
             refreshing: true,
             requestOne: true,
-            hasMore: true
+            pageCount:-1
         });
         //储存tab选中状态，以便子级返回本页面时，选中
         this.props.setTab(index);

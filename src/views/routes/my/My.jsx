@@ -7,7 +7,7 @@
  * 只有商家有两种身份,可以进行切换，商家和消费者；
  * iden_type 为 1 普通消费者；为2 商家， 为3 推广员，为4，双重身份中的消费者
  */
-import {WhiteSpace, Badge, Grid, Carousel, WingBlank} from 'antd-mobile';
+import {WhiteSpace, Badge, Grid, Carousel, WingBlank,List} from 'antd-mobile';
 import {connect} from 'react-redux';
 import {dropByCacheKey} from 'react-router-cache-route';
 import {baseActionCreator} from '../../../redux/baseAction';
@@ -165,23 +165,23 @@ class My extends BaseComponent {
 
     //消费者或推广员cam信息
     consumer = [
+        // {
+        //     title: 'CAM转出',
+        //     icon: 'tOut',
+        //     event: '/rollOut'
+        // },
+        // {
+        //     title: '资产管理',
+        //     icon: 'asset',
+        //     event: `/myAssets?userToken=${this.props.myInfo && this.props.myInfo.info.iden_type}`
+        // },
         {
-            title: 'CAM转出',
-            icon: 'tOut',
-            event: '/rollOut'
-        },
-        {
-            title: '资产管理',
-            icon: 'asset',
-            event: `/myAssets?userToken=${this.props.myInfo && this.props.myInfo.info.iden_type}`
-        },
-        {
-            title: '我的客户',
+            title: '区域总量',
             icon: 'custer',
             event: '/customer'
         },
         {
-            title: '我的业务',
+            title: '我的客户',
             icon: 'busin',
             event: '/business'
         }
@@ -202,7 +202,8 @@ class My extends BaseComponent {
                 [0, '/collect'],
                 [1, '/browseHistory'],
                 // [2, `/possessEvaluate?userType=${myInfo.info.iden_type}`],
-                [2, '/invitation']
+                [2, '/possessEvaluate'],
+                [3, '/invitation']
             ]);
         }
         appHistory.push(url.get(index));
@@ -454,6 +455,30 @@ class My extends BaseComponent {
                             </div>
                         )
                     }
+
+                    <div className="my-order-form">
+                        <div className="my-order-box">
+                            <div className="order-box-name">线下订单</div>
+                            <div onClick={() => this.jumpRouter('/selfMention')} className="order-box-see">查看全部<span className="icon Arrow"/></div>
+                        </div>
+                        <div className="my-selfOrder-icon">
+                            <Grid
+                                data={myOrderSelfData}
+                                columnNum={3}
+                                hasLine={false}
+                                activeStyle={false}
+                                renderItem={dataItem => (
+                                    <div className="orderInfo">
+                                        <div className={dataItem.className + ' orderLogo selfOrder'}/>
+                                        <Badge text={dataItem.num !== '0' ? dataItem.num : ''}/>
+                                        <div>{dataItem.text}</div>
+                                    </div>
+                                )}
+                                onClick={(ev, index) => this.gotoSelfMyOrder(index)}
+                            />
+                        </div>
+                    </div>
+                    
                     <div className="my-order-form">
                         <div className="my-order-box">
                             <div className="order-box-name">线上订单</div>
@@ -516,32 +541,9 @@ class My extends BaseComponent {
                             }
                         </div>
                     </div>
-
                     <div className="my-order-form">
                         <div className="my-order-box">
-                            <div className="order-box-name">线下订单</div>
-                            <div onClick={() => this.jumpRouter('/selfMention')} className="order-box-see">查看全部<span className="icon Arrow"/></div>
-                        </div>
-                        <div className="my-selfOrder-icon">
-                            <Grid
-                                data={myOrderSelfData}
-                                columnNum={3}
-                                hasLine={false}
-                                activeStyle={false}
-                                renderItem={dataItem => (
-                                    <div className="orderInfo">
-                                        <div className={dataItem.className + ' orderLogo selfOrder'}/>
-                                        <Badge text={dataItem.num !== '0' ? dataItem.num : ''}/>
-                                        <div>{dataItem.text}</div>
-                                    </div>
-                                )}
-                                onClick={(ev, index) => this.gotoSelfMyOrder(index)}
-                            />
-                        </div>
-                    </div>
-                    <div className="my-order-form">
-                        <div className="my-order-box">
-                            <div className="order-box-name">CAM系统</div>
+                            {/* <div className="order-box-name">CAM系统</div> */}
                         </div>
                         {   //用户身份为商家的判断
                             (myInfo && myInfo.info.iden_type === '2') ? (
@@ -556,16 +558,28 @@ class My extends BaseComponent {
                                     </ul>
                                 </div>
                             ) : (
+                            <div>
                                 <div className="conumer-info">
-                                    <ul>
-                                        {this.consumer.map(item => (
-                                            <li key={item.title} onClick={() => this.jumpRouter(item.event)}>
+                                    <List>
+                                        {this.consumer.map((item,index) => (
+                                            index === 0 && <List.Item arrow={'horizontal'} key={item.title} onClick={() => this.jumpRouter(item.event)}>
                                                 <span className={'icon ' + item.icon}/>
                                                 <p>{item.title}</p>
-                                            </li>
+                                            </List.Item>
                                         ))}
-                                    </ul>
+                                    </List>
                                 </div>
+                                <div className="conumer-info">
+                                    <List>
+                                        {this.consumer.map((item,index) => (
+                                            index === 1 && <List.Item arrow={'horizontal'} key={item.title} onClick={() => this.jumpRouter(item.event)}>
+                                                <span className={'icon ' + item.icon}/>
+                                                <p>{item.title}</p>
+                                            </List.Item>
+                                        ))}
+                                    </List>
+                                </div>
+                            </div>
                             )
                         }
                         {   //用户身份为消费者时展示

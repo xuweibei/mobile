@@ -188,6 +188,7 @@ export default class MyEvaluate extends BaseComponent {
 
     //发布评价
     evaluationSuccess = () => {
+        
         const {evaluate, estimate, discuss, anonymous, shop, logistics, files, selfHelp} = this.state;
         const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
         //判断店铺 物流是否评分
@@ -231,6 +232,13 @@ export default class MyEvaluate extends BaseComponent {
         });
         Promise.all(pasArr).then(res => {
             if (ids.length > 0) { //有图片就再保存图片
+                files.forEach((item,index)=>{
+                    item.forEach(data=>{
+                        if(data.url){
+                            data.url = encodeURIComponent(data.url);
+                        }
+                    })
+                })
                 ids.forEach((item, index) => {
                     this.fetch(urlCfg.picSave, {data: {
                         type: 1,

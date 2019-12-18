@@ -1,5 +1,5 @@
 /**
- * 我的业务
+ * 我的客户
  */
 import {connect} from 'react-redux';
 import {Tabs, List} from 'antd-mobile';
@@ -192,7 +192,7 @@ class Customer extends BaseComponent {
             <React.Fragment>
                 {window.isWX ? null : (
                     <AppNavBar
-                        title="我的业务"
+                        title="我的客户"
                         goBackModal={this.goBackModal}
                     />
                 )}
