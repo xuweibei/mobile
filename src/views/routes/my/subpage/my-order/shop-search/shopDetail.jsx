@@ -11,7 +11,7 @@ import CancelOrder from '../../../../../common/cancel-order/CancleOrder';
 import Animation from '../../../../../common/animation/Animation';
 import './ShopDetail.less';
 
-const {appHistory, showSuccess, showInfo, getUrlParam} = Utils;
+const {appHistory, showSuccess, showInfo, getUrlParam,nativeCssDiff} = Utils;
 const {MESSAGE: {Form, Feedback}, FIELD, navColorR} = Constants;
 const {urlCfg} = Configs;
 
@@ -296,7 +296,18 @@ class MyOrderSearch extends BaseComponent {
         case '1': //待发货
             blockModal = (
                 <div className="buttons">
-                    <div className="evaluate-button" onClick={() => this.remindDelivery([item.id, item.can_tip])}>提醒发货</div>
+                    {
+                        (item.refund_button === 1) && (
+                            <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
+                                {
+                                    item.showButton && <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev, 1)}>申请退款</span>
+                                }
+                            </div>
+                        )
+                    }
+                    {
+                        !item.all_refund && <div className="evaluate-button" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} onClick={() => this.remindDelivery([item.id, item.can_tip])}>提醒发货</div>
+                    }
                 </div>
             );
             break;
@@ -307,7 +318,9 @@ class MyOrderSearch extends BaseComponent {
                         item.delayed_receiving === '0' && <div className="look-button" onClick={(ev) => this.extendedReceipt(item.id, ev)}>延长收货</div>
                     }
                     <div className="look-button" onClick={(ev) => this.goApplyService(item.id, ev)}>查看物流</div>
-                    <div className="evaluate-button" onClick={(ev) => this.confirmTake(item.id, ev)}>确认收货</div>
+                    {
+                        item.all_refund === 1 ? <div className="evaluate-button" onClick={(ev) => this.revoke(item.pr_list[0].return_id, ev)}>撤销申请</div> : <div className="evaluate-button" onClick={(ev) => this.confirmTake(item.id, ev)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>确认收货</div>
+                    }
                 </div>
             );
             break;
@@ -315,6 +328,9 @@ class MyOrderSearch extends BaseComponent {
             blockModal = (
                 <div className="buttons">
                     <div className="look-button" onClick={(ev) => this.goApplyService(item.id, ev)}>查看物流</div>
+                    <div className="delete-button" onClick={() => this.deleteOrder(item.id)} style={{border: this.styleCompatible()}}>删除</div>
+                    {item.have_add && <div className="delete-button" onClick={() => this.publishReview(item.id)} style={{border: this.styleCompatible()}}>追加评论</div>}
+                    <div className="evaluate-button" onClick={(ev) => this.promptlyEstimate(item.id, ev)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>立即评价</div>
                 </div>
             );
             break;
@@ -329,11 +345,6 @@ class MyOrderSearch extends BaseComponent {
             blockModal = <div/>;
         }
         return blockModal;
-    }
-
-    //搜索点击
-    goToSearch = () => {
-        appHistory.push('/shop-search');
     }
 
     //下拉刷新

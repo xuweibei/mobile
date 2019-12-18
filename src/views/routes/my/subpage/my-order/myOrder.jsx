@@ -520,6 +520,7 @@ class MyOrder extends BaseComponent {
                 <div className="buttons">
                     <div className="look-button" onClick={(ev) => this.goApplyService(item.id, ev)} style={{border: this.styleCompatible()}}>查看物流</div>
                     <div className="delete-button" onClick={() => this.deleteOrder(item.id)} style={{border: this.styleCompatible()}}>删除</div>
+                    {item.have_add && <div className="delete-button" onClick={() => this.publishReview(item.id)} style={{border: this.styleCompatible()}}>追加评论</div>}
                     <div className="evaluate-button" onClick={(ev) => this.promptlyEstimate(item.id, ev)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>立即评价</div>
                 </div>
             );
@@ -688,20 +689,20 @@ class MyOrder extends BaseComponent {
                             <div className="total-price-left">共{item.pr_count}件商品</div>
                             <div className="total-price-right">合计：<span className="zxa">￥{item.all_price}(含运费：{item.express_money})</span></div>
                         </div>
-                        {/* {//售后状态下 退款申请中
+                        {//售后状态下 退款申请中
                             item.return_status === '1' && (
                                 <div className="buttons">
                                     <div className="look-button" onClick={(ev) => this.revoke(item.return_id, ev)}>撤销申请</div>
                                     <div onClick={(ev) => this.application(ev, item.return_id)} className="evaluate-button">修改申请</div>
                                 </div>
                             )
-                        } */}
-                        {/* {item.return_status === '2'
+                        }
+                        {item.return_status === '2'
                         && (
                             <div className="buttons">
                                 <div className="evaluate-button" onClick={(ev) => this.revoke(item.return_id, ev)}>撤销申请</div>
                             </div>
-                        )} */}
+                        )}
                         {this.bottomModal(item)}
                     </div>
                 </div>
