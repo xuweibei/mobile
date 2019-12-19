@@ -69,7 +69,7 @@ export default class PublishReview extends BaseComponent {
             native('picCallback', {num: nativePicNum}).then(res => {
                 const arr = fileArr;
                 res.data.img.forEach((item, index) => {
-                    arr.push({imgB: item[0], imgS: item[1], id: new Date()});
+                    arr.push({url: item[0], urlB: item[1], id: new Date()});
                 });
                 this.setState({
                     fileArr: arr,
@@ -105,6 +105,7 @@ export default class PublishReview extends BaseComponent {
                             itemImg.url = encodeURIComponent(itemImg.urlB);
                             delete itemImg.urlB;
                         });
+                        console.log(fileArr,'待付款里考虑')
                         this.fetch(urlCfg.picSave, {data: {
                             type: 1,
                             id: res.id,
@@ -164,7 +165,7 @@ export default class PublishReview extends BaseComponent {
                                                 fileArr && fileArr.map((value, index) => index < 9 && (
                                                     <li id={value.id}>
                                                         <span onClick={() => this.deleteImg(value.id)}>×</span>
-                                                        <img src={value.imgS}/>
+                                                        <img src={value.url}/>
                                                     </li>
                                                 ))
                                             }

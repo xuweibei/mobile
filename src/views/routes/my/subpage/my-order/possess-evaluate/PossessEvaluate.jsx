@@ -454,7 +454,7 @@ class PossessEvaluate extends BaseComponent {
                                 {
                                     userType === '2' ? '' : (
                                         <div className="buttons">
-                                            <div className="evaluate-button" onClick={() => this.promptlyEstimate(item.id, item.all_deposit)}>立即评价</div>
+                                            <div className="evaluate-button" onClick={() => this.promptlyEstimate(item.id, item.if_express)}>立即评价</div>
                                         </div>
                                     )
                                 }
