@@ -1,3 +1,5 @@
+//退款详情
+
 import {connect} from 'react-redux';
 import {dropByCacheKey} from 'react-router-cache-route';
 import AppNavBar from '../../../../../common/navbar/NavBar';
@@ -11,7 +13,7 @@ const {urlCfg} = Configs;
 const {MESSAGE: {Form, Feedback}} = Constants;
 class refundDetails extends BaseComponent {
     state = {
-        refundArr: []
+        refundArr: [] //退款详情数据
     };
 
     componentDidMount() {
@@ -23,7 +25,7 @@ class refundDetails extends BaseComponent {
         this.fetch(urlCfg.refundDetail, {
             data: {id}
         }).subscribe(res => {
-            if (res.status === 0) {
+            if (res && res.status === 0) {
                 this.setState({
                     refundArr: res.data
                 });
@@ -33,51 +35,22 @@ class refundDetails extends BaseComponent {
 
     //退货状态
     refundState = num => {
-        let str = '';
-        switch (num) {
-        case '0':
-            str = '未审核';
-            break;
-        case '1':
-            str = '未审核';
-            break;
-        case '2':
-            str = '未审核';
-            break;
-        case '3':
-            str = '未审核';
-            break;
-        default:
-            str = '';
-            break;
-        }
-        return str;
+        const arr = new Map([
+            ['0', '未审核'],
+            ['1', '未审核'],
+            ['2', '未审核'],
+            ['3', '未审核']
+        ]);
+        return arr.get(num);
     };
 
     //售后状态
     afterSalesType = num => {
-        let str = '';
-        switch (num) {
-        case '0':
-            str = '仅退款（退运费）';
-            break;
-        case '1':
-            str = '退货';
-            break;
-        case '2':
-            str = '退款退货';
-            break;
-        case '3':
-            str = '换货';
-            break;
-        case '4':
-            str = '维修';
-            break;
-        default:
-            str = '';
-            break;
-        }
-        return str;
+        const arr = new Map([
+            ['1', '退款'],
+            ['2', '退货']
+        ]);
+        return arr.get(num);
     };
 
     //点击撤销订单
@@ -88,20 +61,20 @@ class refundDetails extends BaseComponent {
             btnTexts: ['我再想想', '确认撤销'],
             callbacks: [null, () => {
                 const {refundArr} = this.state;
-                this.fetch(urlCfg.revokeOrder, {method: 'post', data: {id: refundArr.id}})
+                this.fetch(urlCfg.revokeOrder, {data: {id: refundArr.id}})
                     .subscribe(res => {
                         this.setState({
                             showModal: false,
                             modalTitle: ''
                         });
-                        if (res.status === 0) {
+                        if (res && res.status === 0) {
                             showInfo(Feedback.Rovke_Success);
                             this.setState({
                                 revoke: false
                             });
                             if (res.data.if_express === '1') {
                                 dropByCacheKey('OrderPage');//清除我的订单的缓存
-                                appHistory.go(-2);
+                                appHistory.go(-1);
                             } else {
                                 appHistory.replace('/selfMention');
                             }
@@ -117,12 +90,11 @@ class refundDetails extends BaseComponent {
         showConfirm({
             title: '是否拨打电话',
             callbacks: [null, () => {
-                const hybird = process.env.NATIVE;
                 const {refundArr} = this.state;
-                this.fetch(urlCfg.getShopMain, {method: 'post', data: {shop_mid: refundArr.shop_mid}})
+                this.fetch(urlCfg.getShopMain, {data: {shop_mid: refundArr.shop_mid}})
                     .subscribe(res => {
-                        if (res.status === 0) {
-                            if (hybird) {
+                        if (res && res.status === 0) {
+                            if (process.env.NATIVE) {
                                 native('callTel', {phoneNum: res.data.phone});
                             }
                         }
@@ -132,19 +104,16 @@ class refundDetails extends BaseComponent {
     }
 
     //修改申请
-    application = () => {
+    application = (data) => {
         const {refundArr} = this.state;
         const type = decodeURI(getUrlParam('type', encodeURI(this.props.location.search)));
-        const refurn = decodeURI(getUrlParam('refurn', encodeURI(this.props.location.search)));//为1表示仅退款
         //type等于 2 时为线下订单修改申请
-        appHistory.push(`/applyDrawback?id=${refundArr.id}&type=${type}&refurn=${refurn}`);
+        appHistory.push(`/applyDrawback?id=${refundArr.id}&type=${type}&refurn=${data.order_status}`);
     }
 
     //投诉
     complaint = () => {
-        const id = decodeURI(
-            getUrlParam('id', encodeURI(this.props.location.search))
-        );
+        const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
         appHistory.push(`/myComplain?orderId=${id}`);
     }
 
@@ -167,15 +136,15 @@ class refundDetails extends BaseComponent {
         case '1'://退款申请中
             blockModal = (
                 <div className="buttons">
-                    <div onClick={() => this.revoke()} className="look-button">撤销申请</div>
-                    <div onClick={() => this.application()} className="evaluate-button">修改申请</div>
+                    <div onClick={this.revoke} className="look-button">撤销申请</div>
+                    <div onClick={() => this.application(item)} className="evaluate-button">修改申请</div>
                 </div>
             );
             break;
         case '2'://退款退货才有这个状态   退货中
             blockModal = (
                 <div className="buttons">
-                    <div className="look-button" onClick={() => this.revoke()}>撤销申请</div>
+                    <div className="look-button" onClick={this.revoke}>撤销申请</div>
                     {
                         refundArr.types !== '0' && !refundArr.express_no && <div className="evaluate-button" onClick={this.fillInLogistics}>填写物流</div>
                     }
@@ -279,8 +248,20 @@ class refundDetails extends BaseComponent {
                 {/*退货问题*/}
                 <div className="refund-details">
                     <div className="detail-list">
+                        <span className="list-left">退款编号：</span>
+                        <span>
+                            {refundArr.return_no}
+                        </span>
+                    </div>
+                    <div className="detail-list">
                         <span className="list-left">退款金额：</span>
                         <span>{refundArr.return_price}</span>
+                    </div>
+                    <div className="detail-list">
+                        <span className="list-left">申请时间：</span>
+                        <span>
+                            {refundArr.crtdate}
+                        </span>
                     </div>
                     <div className="detail-list">
                         <span className="list-left">退款原因：</span>
@@ -290,18 +271,24 @@ class refundDetails extends BaseComponent {
                         <span className="list-left">申请数量：</span>
                         <span>{refundArr.num}件</span>
                     </div>
-                    <div className="detail-list">
-                        <span className="list-left">申请时间：</span>
-                        <span>
-                            {refundArr.crtdate}
-                        </span>
-                    </div>
-                    <div className="detail-list">
-                        <span className="list-left">退款编号：</span>
-                        <span>
-                            {refundArr.return_no}
-                        </span>
-                    </div>
+                    {
+                        refundArr.status === '3' && (
+                            <div>
+                                <div calassName="refund-details">
+                                    <div className="detail-list">
+                                        <span className="list-left">问题描述</span>
+                                        <span>{refundArr.describe}</span>
+                                    </div>
+                                </div>
+                                <div calassName="refund-details">
+                                    <div className="detail-list">
+                                        <span className="list-left">实退金额：</span>
+                                        <span>{refundArr.return_money}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        )
+                    }
                     {
                         refundArr.express_no && (
                             <div className="detail-list">
@@ -318,38 +305,13 @@ class refundDetails extends BaseComponent {
                             <span className="business-right icon" onClick={() => this.shopPhone()}>商家电话</span>
                         </div>
                     </div>
-                    {/* <div className="detail-list">
-                        <span className="list-left">物流订单号：</span>
-                        <span>12313131321313</span>
-                    </div> */}
-                    {
-                        refundArr.status === '3' && (
-                            <div className="refund-sucess">
-                                <div className="detail-list">
-                                    <span className="list-left">售后类型：</span>
-                                    <span>{this.afterSalesType(refundArr.types)}</span>
-                                </div>
-                                <div calassName="refund-details">
-                                    <div className="detail-list">
-                                        <span className="list-left">退款金额：</span>
-                                        <span>{refundArr.price}</span>
-                                    </div>
-                                </div>
-                                <div calassName="refund-details">
-                                    <div className="detail-list">
-                                        <span className="list-left">问题描述</span>
-                                    </div>
-                                </div>
-                            </div>
-                        )
-                    }
                 </div>
                 <div/>
                 {
-                    type === '2' && (
+                    type === '2' && (//type为2表示线下订单过来的
                         <div className="cancel-order-box">
                             {refundArr && refundArr.status === '1' && <div onClick={this.revoke} className="immediate-evaluation-c">撤销申请</div>}
-                            {refundArr && refundArr.status === '1' && <div onClick={this.application} className="immediate-evaluation">修改申请</div>}
+                            {refundArr && refundArr.status === '1' && <div onClick={() => this.application(refundArr)} className="immediate-evaluation">修改申请</div>}
                             {refundArr && refundArr.status === '2' && <div onClick={this.revoke} className="immediate-evaluation-c">撤销申请</div>}
                             {refundArr && refundArr.status === '2' && <div onClick={this.complaint} className="immediate-evaluation">投诉</div>}
                         </div>

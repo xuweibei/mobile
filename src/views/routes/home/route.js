@@ -14,7 +14,7 @@ const Home = () => {
     if (!process.env.NATIVE) {
         return (
             <React.Fragment>
-                <Route exact path="/" render={() => <Redirect to="/home"/>}/>
+                <Route exact path="/" component={() => <Redirect to="/home"/>}/>
                 <Route path="/home" component={HomePage}/>
                 <Route path="/search" component={searchPage}/>
             </React.Fragment>

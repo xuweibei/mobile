@@ -55,7 +55,7 @@ class CategoryList extends BaseComponent {
         const keywords = decodeURI(getUrlParam('keywords', encodeURI(this.props.location.search)));
         TD.log(TD_EVENT_ID.GOODS_CLASSIFY.ID, TD_EVENT_ID.GOODS_CLASSIFY.LABEL.LOOK_GOODS_DETAILS);
         this.setState({
-            keywords: decodeURI(keywords),
+            keywords: decodeURIComponent(keywords),
             changeNav: flag,
             text: decodeURI(title)
         });
@@ -126,28 +126,30 @@ class CategoryList extends BaseComponent {
                     {WX: window.isWX})}
             >
                 {
-                    changeNav === 'true' ? (
-                        <div className="seek">
-                            <div className="seek-left">
-                                <InputItem
-                                    type="search"
-                                    clear
-                                    maxLength={20}
-                                    placeholder="搜索商品"
-                                    onKeyDown={this.keyDown}
-                                    onChange={(val) => this.getThisKeyWords(val)}
-                                >
-                                    <div className="icon icon-lookup"/>
-                                </InputItem>
+                    !window.isWX && (
+                        changeNav === 'true' ? (
+                            <div className="seek">
+                                <div className="seek-left">
+                                    <InputItem
+                                        type="search"
+                                        clear
+                                        maxLength={20}
+                                        placeholder="搜索商品"
+                                        onKeyDown={this.keyDown}
+                                        onChange={(val) => this.getThisKeyWords(val)}
+                                    >
+                                        <div className="icon icon-lookup"/>
+                                    </InputItem>
+                                </div>
+                                <div className="seek-right" onClick={this.textClick}>{textStatus ? '搜索' : '取消'}</div>
                             </div>
-                            <div className="seek-right" onClick={this.textClick}>{textStatus ? '搜索' : '取消'}</div>
-                        </div>
-                    ) : (
-                        <AppNavBar
-                            title={text}
-                            goBackModal={goBackModal}
-                            status="123"
-                        />
+                        ) : (
+                            <AppNavBar
+                                title={text}
+                                goBackModal={goBackModal}
+                                status="123"
+                            />
+                        )
                     )
                 }
                 <CategoryListView

@@ -27,7 +27,7 @@ const seasons = [
 
 const {urlCfg} = Configs;
 const {MESSAGE: {Form}} = Constants;
-const {appHistory, getUrlParam, showInfo, native} = Utils;
+const {appHistory, getUrlParam, showInfo, native, nativeCssDiff} = Utils;
 
 export default class importSum extends BaseComponent {
     state = {
@@ -57,7 +57,6 @@ export default class importSum extends BaseComponent {
 
     //选择转出方式
     seleteKer = (res) => {
-        // FIXME: 'CAM消费' 改成变量
         this.setState({
             sValue: res[0],
             sValueName: res
@@ -206,7 +205,7 @@ export default class importSum extends BaseComponent {
                         <p>{decodeURI(shopName)}</p>
                         <p>UID:{uid}</p>
                     </div>
-                    <div className="money">
+                    <div className={`money ${nativeCssDiff() ? 'general-other' : 'general'}`}>
                         <List>
                             <GeisInputItem
                                 type="float"
@@ -216,7 +215,7 @@ export default class importSum extends BaseComponent {
                                 onChange={(res) => this.getInput(res)}
                             />
                         </List>
-                        <div className="large-button important" onClick={() => this.sumbit()}>确定</div>
+                        <div className="large-button important" onClick={this.sumbit}>确定</div>
                     </div>
                     {newsPopup && (
                         <div className="confirm-pay-box">
@@ -224,7 +223,7 @@ export default class importSum extends BaseComponent {
                                 <div className="affirm">
                                     <span/>
                                     <span className="affirm-center">确认付款</span>
-                                    <span className="icon affirm-right" onClick={() => this.closePopup()}/>
+                                    <span className="icon affirm-right" onClick={this.closePopup}/>
                                 </div>
                                 <div className="sum">￥<span>{money}</span></div>
                                 <div>
@@ -244,7 +243,7 @@ export default class importSum extends BaseComponent {
                                         </Picker>
                                     </div>
                                 </div>
-                                <div className="large-button important" onClick={() => this.pwsSubmit()}>立即支付</div>
+                                <div className="large-button important" onClick={this.pwsSubmit}>立即支付</div>
                             </div>
                         </div>
                     )}
@@ -252,12 +251,12 @@ export default class importSum extends BaseComponent {
                         <div className="enter-password-box">
                             <div className="enter-password">
                                 <div className="command">
-                                    <span className="icon command-left" onClick={() => this.closePopupUp()}/>
+                                    <span className="icon command-left" onClick={this.closePopupUp}/>
                                     <span className="icon command-center">请输入支付密码</span>
-                                    <span className="icon command-right" onClick={() => this.closePopup()}/>
+                                    <span className="icon command-right" onClick={this.closePopup}/>
                                 </div>
                                 <InputGrid onInputGrid={this.inputGrid}/>
-                                <p onClick={() => this.forgetPws()}>忘记密码</p>
+                                <p onClick={this.forgetPws}>忘记密码</p>
                             </div>
                         </div>
                     )}

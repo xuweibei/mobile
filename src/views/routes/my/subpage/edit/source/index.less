@@ -317,3 +317,160 @@
       margin-bottom: 0;
   }
 }
+
+
+.source {
+    .wrapTabNav {
+        margin-bottom: 20px;
+    }
+    .source-box {
+        //position: absolute;
+        //width: 100%;
+        //top: 108px;
+        //bottom: 0;
+        background: @white;
+        .scan-affirm {
+            display: flex;
+            justify-content: space-between;
+            padding: 25px 30px;
+            line-height: 50px;
+            .hairline('bottom',@to-light-gray);
+            span:nth-child(1) {
+                font-size: @font-size-32;
+                color: @darker-black;
+            }
+            .scan-icon:before {
+                content: '\E656';
+                color: @fiery-red;
+            }
+        }
+        .am-list {
+            margin-bottom: 40px;
+            .scan-affirm {
+                border-bottom: 0;
+            }
+            .am-list-body {
+                .am-list-item {
+                    padding-left: 0;
+                    height: 100px;
+                    .am-list-line {
+                        padding-left: 30px;
+                        .hairline('bottom',@to-light-gray);
+                    }
+                    .am-list-line:after {
+                        height: 0;
+                    }
+                }
+            }
+            .am-list-body::before, .am-list-body::after {
+                height: 0!important;
+            }
+            .am-list-item .am-input-control input{
+                text-align: right;
+            }
+            .am-list-item .am-input-control input::placeholder{
+                text-align: right;
+            }
+        }
+        .cozy {
+            color: @dark-gray;
+            font-size: @font-size-30;
+            text-align: center;
+            margin-bottom: 100px;
+            p {
+                margin-bottom: 20px;
+            }
+        }
+        .testing {
+            margin-bottom: 52px;
+            .large-button {
+                text-align: center;
+                color: @fiery-red;
+                letter-spacing:8px;
+            }
+        }
+        .next {
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            padding: 1px 0;
+            .general {
+                color: @dark-gray;
+                border: 1px solid @dark-gray!important;
+                // .hairline('all', @dark-gray);
+                line-height: 76px;
+                span {
+                    color: @dark-gray;
+                }
+            }
+            .normal-button{
+                width:600px;
+                background:@white;
+                border:2px solid @fiery-red;
+                color:@fiery-red;
+            }
+            .am-button::before {
+                border: none !important;
+            }
+        }
+    }
+}
+
+
+.source-browse {
+    .wrapTabNav {
+        margin-bottom: 20px;
+    }
+    .recommend-content {
+        position: absolute;
+        top: 104px;
+        bottom: 0;
+        background: @white;
+        width: 100%;
+        .picture {
+            text-align: center;
+            padding: 80px 45px;
+            img {
+                width: 160px;
+                height: 160px;
+                border-radius: 50%;
+            }
+        }
+
+        .information {
+            text-align: center;
+            font-size: @font-size-30;
+            color: @darker-black;
+            margin-bottom: 105px;
+            p {
+                margin-bottom: 30px;
+            }
+        }
+
+        .button {
+            display: flex;
+            justify-content: space-between;
+            text-align: center;
+            .general {
+                border: 1px solid @dark-gray !important;
+                // .hairline('all', @dark-gray);
+                color: @dark-gray;
+                span{
+                    color:#666;
+                }
+            }
+            .general-other {
+                border: 1PX solid @dark-gray !important;
+                // .hairline('all', @dark-gray);
+                color: @dark-gray;
+                span{
+                    color:#666;
+                }
+            }
+            .important {
+                color: @white !important;
+            }
+        }
+    }
+}
+

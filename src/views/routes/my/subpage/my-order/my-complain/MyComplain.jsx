@@ -3,26 +3,14 @@ import {TextareaItem, ImagePicker} from 'antd-mobile';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './MyComplain.less';
 
-const {dealImage, showInfo, appHistory, showSuccess, getUrlParam, native, setNavColor} = Utils;
+const {dealImage, showInfo, appHistory, showSuccess, getUrlParam, native} = Utils;
 const {urlCfg} = Configs;
-const {MESSAGE: {Form, Feedback}, navColorF} = Constants;
+const {MESSAGE: {Form, Feedback}} = Constants;
 export default class MyComplain extends BaseComponent {
     state = {
         files: [],
         fileMain: []
     };
-
-    componentWillMount() {
-        if (process.env.NATIVE) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (process.env.NATIVE) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
 
     //问题反馈内容
     questionMain = (value) => {
@@ -54,7 +42,7 @@ export default class MyComplain extends BaseComponent {
                 }, 100);
             });
             this.setState({
-                fileMain: fileMain
+                fileMain
             }, () => {
                 console.log(fileMain);
             });
@@ -66,35 +54,42 @@ export default class MyComplain extends BaseComponent {
         const {questionInfo, fileMain} = this.state;
         const orderId = decodeURI(getUrlParam('orderId', encodeURI(this.props.location.search)));
         if (!questionInfo) return showInfo(Form.No_Complain);
-        this.fetch(urlCfg.doComplain, {method: 'post', data: {reason: questionInfo, orderid: orderId}})
+        this.fetch(urlCfg.doComplain, {data: {reason: questionInfo, orderid: orderId}})
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     fileMain.forEach(item => {
-                        item.imgB = encodeURIComponent(item.imgB);
-                        item.imgS = encodeURIComponent(item.imgS);
+                        item.url = encodeURIComponent(item.imgB);
                     });
                     if (fileMain.length > 0) {
+                        const fileArrPro = [];
                         fileMain.forEach((item, index) => {
-                            this.fetch(urlCfg.pictureUploadBase, {
-                                method: 'post',
-                                data: {
-                                    id: res.data.id,
-                                    type: 4,
-                                    ix: index,
-                                    num: fileMain.length,
-                                    file: item.imgB,
-                                    filex: item.imgS
-                                }
-                            }).subscribe(value => {
-                                if (value.status === 0) {
-                                    showSuccess(Feedback.submit_Success);
-                                    if (process.env.NATIVE) {
-                                        native('goHome');
-                                    } else {
-                                        appHistory.push('/home');
-                                    }
-                                }
-                            });
+                            if (item) {
+                                fileArrPro.push(new Promise((resolve, reject) => {
+                                    this.fetch(urlCfg.pictureUploadBase, {
+                                        data: {
+                                            id: res.data.id,
+                                            type: 4,
+                                            ix: index,
+                                            num: fileMain.length,
+                                            file: item.url
+                                        }
+                                    }).subscribe(value => {
+                                        if (value && value.status === 0) {
+                                            resolve(value);
+                                        }
+                                    });
+                                }));
+                            }
+                        });
+                        Promise.all(fileArrPro).then(ooo => {
+                            showSuccess(Feedback.submit_Success);
+                            if (process.env.NATIVE) {
+                                native('goHome');
+                            } else {
+                                appHistory.push('/home');
+                            }
+                        }).catch(err => {
+                            console.log(err);
                         });
                     } else {
                         showSuccess(Feedback.submit_Success);
@@ -111,8 +106,9 @@ export default class MyComplain extends BaseComponent {
 
     //原生图片选择
     addPictrue = () => {
+        const {fileMain} = this.state;
         if (process.env.NATIVE) {
-            native('picCallback', {num: 9}).then(res => {
+            native('picCallback', {num: 9 - fileMain.length}).then(res => {
                 const arr = [];
                 res.data.img.forEach(item => {
                     arr.push({imgB: item[0], imgS: item[1], id: new Date()});
@@ -162,7 +158,7 @@ export default class MyComplain extends BaseComponent {
                                                 ))
                                             }
                                             {
-                                                fileMain && fileMain.length <= 9 && (
+                                                fileMain && fileMain.length < 9 && (
                                                     <li className="imgAdd-button" onClick={() => this.addPictrue()}>
                                                         <span>+</span>
                                                     </li>

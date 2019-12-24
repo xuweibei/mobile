@@ -1,17 +1,19 @@
 /**
  * CAM提现--微信
  */
-import {Tabs, Picker, List, InputItem, Flex, Checkbox, Button} from 'antd-mobile';
+import {Tabs, Picker, List, Flex, Checkbox, Button} from 'antd-mobile';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
+import NativeInput from '../../../../common/native-input';
 import './Withdrawal.less';
 import {baseActionCreator as actionCreator} from '../../../../../redux/baseAction';
 import {InputGrid} from '../../../../common/input-grid/InputGrid';
 import AppNavBar from '../../../../common/navbar/NavBar';
 
 const {urlCfg} = Configs;
-const {showInfo, validator, appHistory} = Utils;
+const {showInfo, validator, appHistory, setNavColor} = Utils;
 const {MESSAGE: {Form, Feedback}, navColorR} = Constants;
+const hybird = process.env.NATIVE;
 
 const tabs = [
     {title: '微信零钱'},
@@ -57,30 +59,38 @@ class Withdrawal extends BaseComponent {
         this.payPassWord();
     }
 
+    componentWillMount() {
+        if (hybird) { //设置tab颜色
+            setNavColor('setNavColor', {color: navColorR});
+        }
+    }
+
+    componentWillReceiveProps() {
+        if (hybird) {
+            setNavColor('setNavColor', {color: navColorR});
+        }
+    }
+
     //获取初始值信息
     income = () => {
         this.fetch(urlCfg.income)
             .subscribe(res => {
-                if (res) {
-                    if (res.status === 0) {
-                        const ary = res.data.items;
-                        const aryTemp = ary.map((item) => {
-                            const temp = {};
-                            temp.label = item.name;
-                            temp.value = `${item.value}`;
-                            temp.desc = '最低提现金额' + item.min + '元';
-                            temp.min = item.min;
-                            temp.max = item.max;
-                            return temp;
-                        });
-                        this.setState({
-                            incomeData: res.data,
-                            district: aryTemp,
-                            isWx: res.data.is_wx
-                        });
-                    } else if (res.status === 1) {
-                        showInfo(res.message);
-                    }
+                if (res && res.status === 0) {
+                    const ary = res.data.items;
+                    const aryTemp = ary.map((item) => {
+                        const temp = {};
+                        temp.label = item.name;
+                        temp.value = `${item.value}`;
+                        temp.desc = '最低提现金额' + item.min + '元';
+                        temp.min = item.min;
+                        temp.max = item.max;
+                        return temp;
+                    });
+                    this.setState({
+                        incomeData: res.data,
+                        district: aryTemp,
+                        isWx: res.data.is_wx
+                    });
                 }
             });
     }
@@ -88,7 +98,7 @@ class Withdrawal extends BaseComponent {
     payPassWord = () => {
         this.fetch(urlCfg.memberStatus)
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     if (res.data.status !== 0) { //status为0为已设置，其他都是未设置
                         this.setState({
                             statusPay: 1
@@ -153,6 +163,12 @@ class Withdrawal extends BaseComponent {
             checkedWit: false,
             money: null
         });
+        //清除金额输入框中的值
+        if (value) {
+            this.nativeinput.clearDeafult();
+        } else {
+            this.nativeinputTwo.clearDeafult();
+        }
     }
 
     //获取提现类别
@@ -164,7 +180,7 @@ class Withdrawal extends BaseComponent {
         }, () => {
             if (this.state.withdrawId === 1) {
                 this.bindingBank();
-            } else  if (!this.state.isWx) {
+            } else if (!this.state.isWx) {
                 showAlert({
                     title: '您还没有绑定微信，请先绑定微信',
                     btnText: '好'
@@ -255,7 +271,7 @@ class Withdrawal extends BaseComponent {
             <div className={`Withdrawal extract ${withdrawId === 0 ? 'withdrawColor' : ''}`}>
                 <div className="cash-content">
                     <div className="cash-content-navbar">
-                        <AppNavBar nativeGoBack title="CAM提现" color={navColorR}/>
+                        <AppNavBar nativeGoBack title="CAM提现"/>
                     </div>
                     <div style={{height: height}} className="cash-content-tabs">
                         <Tabs
@@ -274,18 +290,17 @@ class Withdrawal extends BaseComponent {
                                         value={selectorIndexName}
                                         onChange={(res) => this.getCategory(res)}
                                     >
-                                        <List.Item arrow="horizontal">提现类别</List.Item>
+                                        <List.Item style={{border: '1px solid #e5e5e5'}} arrow="horizontal">提现类别</List.Item>
                                     </Picker>
                                 </div>
                                 <div>
                                     <div className="weChat-inputItem">
-                                        <InputItem
-                                            type="digit"
-                                            placeholder="请输入提现金额"
-                                            clear
-                                            value={money}
-                                            onChange={(res) => this.getInput(res)}
-                                            moneyKeyboardAlign="left"
+                                        <NativeInput
+                                            nativeType="text"
+                                            nativeValue={money}
+                                            nativePla="请输入提现金额"
+                                            ref={(res) => { this.nativeinput = res }}
+                                            nativeChange={this.getInput}
                                         />
                                     </div>
 
@@ -300,7 +315,7 @@ class Withdrawal extends BaseComponent {
                                     </div>
 
                                     <div className="weChat-button">
-                                        <Button type="primary" className="large-button important" onClick={() => this.submit()}>确定</Button>
+                                        <Button type="primary" className="large-button important" onClick={this.submit}>确定</Button>
                                     </div>
                                 </div>
                             </div>
@@ -322,18 +337,17 @@ class Withdrawal extends BaseComponent {
                                             value={selectorIndexName}
                                             onChange={(res) => this.getCategory(res)}
                                         >
-                                            <List.Item arrow="horizontal">提现类别</List.Item>
+                                            <List.Item style={{border: '1px solid #e5e5e5'}} arrow="horizontal">提现类别</List.Item>
                                         </Picker>
                                     </div>
                                     <div>
                                         <div className="weChat-inputItem">
-                                            <InputItem
-                                                type="digit"
-                                                placeholder="请输入提现金额"
-                                                clear
-                                                value={money}
-                                                onChange={(res) => this.getInput(res)}
-                                                moneyKeyboardAlign="left"
+                                            <NativeInput
+                                                nativeType="text"
+                                                nativeValue={money}
+                                                nativePla="请输入提现金额"
+                                                nativeChange={this.getInput}
+                                                ref={(res) => { this.nativeinputTwo = res }}
                                             />
                                         </div>
 
@@ -369,11 +383,19 @@ class Withdrawal extends BaseComponent {
                         <div className="popup-wrap">
                             <div className="popup-top">
                                 <div onClick={this.closePopup}>
+<<<<<<< HEAD
+                                    <span className="icon command-left" onClick={this.closePopup}/>
+                                </div>
+                                <div className="popup-title">请输入支付密码</div>
+                                <div onClick={this.closePopup}>
+                                    <span className="icon command-right" onClick={this.closePopup}/>
+=======
                                     <span className="icon command-left" onClick={() => this.closePopup()}/>
                                 </div>
                                 <div className="popup-title">请输入支付密码</div>
                                 <div onClick={this.closePopup}>
                                     <span className="icon command-right" onClick={() => this.closePopup()}/>
+>>>>>>> develop
                                 </div>
                             </div>
                             <div className="popup-bottom">

@@ -29,7 +29,6 @@ const {urlCfg} = Configs;
 const {appHistory, native, getUrlParam, setNavColor} = Utils;
 const hybird = process.env.NATIVE;
 const arr = [{
-
     title: '全部',
     value: 0,
     checked: false
@@ -142,9 +141,9 @@ class PossessEvaluate extends BaseComponent {
         const {pageToBe, pageCount, userType} = this.state;
         temp.isLoading = true;
         this.setState({hasMore: true});
-        this.fetch(userType === '2' ? urlCfg.busiMallOrder : urlCfg.mallOrder, {method: 'post', data: {status: 3, all: userType === '2' ? '' : 1,  page: pageToBe, pagesize: temp.pagesize, pageCount}}, noLoading)
+        this.fetch(userType === '2' ? urlCfg.busiMallOrder : urlCfg.mallOrder, {data: {status: 3, all: userType === '2' ? '' : 1,  page: pageToBe, pagesize: temp.pagesize, pageCount}}, noLoading)
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     temp.isLoading = false;
                     if (pageToBe === 1) {
                         temp.stackData = res.list;
@@ -172,9 +171,9 @@ class PossessEvaluate extends BaseComponent {
         const {page, types, arrChecked, userType} = this.state;
         temp.isLoading = true;
         this.setState({hasMore: true});
-        this.fetch(userType === '2' ? urlCfg.busiAppraiselist : urlCfg.myAppraiseList, {method: 'post', data: {page, pagesize: temp.pagesize, types}}, noLoading)
+        this.fetch(userType === '2' ? urlCfg.busiAppraiselist : urlCfg.myAppraiseList, {data: {page, pagesize: temp.pagesize, types}}, noLoading)
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     temp.isLoading = false;
                     if (page === 1) {
                         temp.stackDataAlready = res.data;
@@ -318,45 +317,25 @@ class PossessEvaluate extends BaseComponent {
 
     //评价类型
     evalute = (num) => {
-        let str = '';
-        switch (num) {
-        case '1':
-            str = '好评';
-            break;
-        case '2':
-            str = '中评';
-            break;
-        case '3':
-            str = '差评';
-            break;
-        default: str = '';
-        }
-        return str;
+        const arrList = new Map([
+            ['1', '好评'],
+            ['2', '中评'],
+            ['3', '差评']
+        ]);
+        return arrList.get(num);
     }
 
     //状态判断
-    tabTopName = (name) => {
+    tabTopName = (index) => {
         // "0待付款;1待发货;2待收货;3待评价"
-        switch (name) {
-        case '0':
-            name = '等待付款';
-            break;
-        case '1':
-            name = '等待发货';
-            break;
-        case '2':
-            name = '卖家已发货';
-            break;
-        case '3':
-            name = '待评价';
-            break;
-        case '4':
-            name = '交易完成';
-            break;
-        default:
-            name = '';
-        }
-        return name;
+        const arrStatus = new Map([
+            ['0', '等待付款'],
+            ['1', '等待发货'],
+            ['2', '卖家已发货'],
+            ['3', '待评价'],
+            ['4', '交易完成']
+        ]);
+        return arrStatus.get(index);
     }
 
     //底部结构
@@ -435,7 +414,7 @@ class PossessEvaluate extends BaseComponent {
                     <div className="shop-lists">
                         <div className="shop-name" onClick={userType === '2' ? '' : () => this.goShopHome(item.shop_id)}>
                             <div className="shop-title">
-                                <LazyLoadIndex lazyInfo={{offset: -30, imgUrl: userType === '2' ? item.avatarUrl : item.picpath, overflow: true}}/>
+                                <LazyLoadIndex src={userType === '2' ? item.avatarUrl : item.picpath}/>
                                 <p>{userType === '2' ? item.nickname : item.shopName }</p>
                                 <div className="icon enter"/>
                             </div>
@@ -445,7 +424,7 @@ class PossessEvaluate extends BaseComponent {
                             <div key={items.id} className="goods" onClick={userType === '2' ? '' : () => this.skipDetail(item.id, item.all_deposit)}>
                                 <div className="goods-left">
                                     <div>
-                                        <LazyLoadIndex lazyInfo={{offset: -30, imgUrl: items.pr_picpath, overflow: true}}/>
+                                        <LazyLoadIndex src={item.pr_picpath}/>
                                     </div>
                                 </div>
                                 <div className="goods-right">
@@ -475,7 +454,7 @@ class PossessEvaluate extends BaseComponent {
                                 {
                                     userType === '2' ? '' : (
                                         <div className="buttons">
-                                            <div className="evaluate-button" onClick={() => this.promptlyEstimate(item.id, item.all_deposit)}>立即评价</div>
+                                            <div className="evaluate-button" onClick={() => this.promptlyEstimate(item.id, item.if_express)}>立即评价</div>
                                         </div>
                                     )
                                 }
@@ -495,7 +474,7 @@ class PossessEvaluate extends BaseComponent {
             <div className="have-evaluation">
                 <div className="discuss">
                     <div className="discuss-user">
-                        <LazyLoadIndex lazyInfo={{offset: -30, imgUrl: item.avatarUrl, overflow: true}}/>
+                        <LazyLoadIndex src={item.avatarUrl}/>
                         <div className="user-center">{item.nickname}</div>
                         <div className="user-right">{this.evalute(item.mark_type)}</div>
                     </div>
@@ -507,7 +486,7 @@ class PossessEvaluate extends BaseComponent {
                         <div className="consult">{item.content}</div>
                         <div className="picture">
                             {
-                                item.pics.length > 0 && item.pics.map((value, index) => <LazyLoadIndex key={keyNum++} bigPicture={() => this.bigPicture(item.pics, index)} lazyInfo={{offset: -30, imgUrl: value, overflow: true}}/>)
+                                item.pics.length > 0 && item.pics.map((value, index) => <LazyLoadIndex src={value} bigPicture={() => this.bigPicture(item.pics, index)}/>)
                             }
                         </div>
                         {
@@ -517,7 +496,7 @@ class PossessEvaluate extends BaseComponent {
                             <div className="append">
                                 <div className="append-chase">追评</div>
                                 <div className="append-theory">{item.add.content}</div>
-                                {item.add && item.add.pics && item.add.pics.length > 0 && item.add.pics.map((data, index) => <LazyLoadIndex bigPicture={() => this.bigPicture(item.add.pics, index)} lazyInfo={{offset: -30, imgUrl: data, overflow: true}}/>)}
+                                {item.add && item.add.pics && item.add.pics.length > 0 && item.add.pics.map((data, index) => <LazyLoadIndex src={data} bigPicture={() => this.bigPicture(item.add.pics, index)}/>)}
                                 {item.add && item.add.return_content && <div className="reply">商家回复：{item.add.return_content}</div>}
                             </div>
                         )}
@@ -585,7 +564,8 @@ class PossessEvaluate extends BaseComponent {
             tabkey: index,
             refreshing: true,
             requestOne: true,
-            hasMore: true
+            hasMore: false,
+            pageCount: -1
         });
         //储存tab选中状态，以便子级返回本页面时，选中
         this.props.setTab(index);

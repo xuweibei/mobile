@@ -74,7 +74,11 @@ class shopList extends BaseComponent {
                                 <div className="work-time">营业时间{item.open_time}-{item.close_time}<span>{item.discount}km</span></div>
                                 <div className="content-wrapper">
                                     <div className="awatar">
-                                        <img src={item.picpath} alt=""/>
+                                        <img
+                                            src={item.picpath}
+                                            alt=""
+                                            onError={(e) => { e.target.src = item.df_logo }}
+                                        />
                                     </div>
                                     <div className="right-content">
                                         {/* <div className="star-box">

@@ -64,7 +64,8 @@ class CategoryListView extends BaseComponent {
             flag: [false, false, false],
             showStatus: [false, false, false],
             initStatus: false, // 判断是否显示筛选框
-            id: props.id.toString()
+            id: props.id.toString(),
+            shopId: props.shoppingId
         };
     }
 
@@ -76,7 +77,8 @@ class CategoryListView extends BaseComponent {
     componentWillReceiveProps(data, value) {
         if (data.id !== this.state.id) {
             this.setState({
-                id: data.id
+                id: data.id,
+                shopId: data.shoppingId
             }, () => {
                 this.getCategoryList();
             });
@@ -85,33 +87,35 @@ class CategoryListView extends BaseComponent {
 
     // 初始获取获取分类列表数据
     getCategoryList = (num, noLoading) => {
-        const {currentIndex, showStatus, id} = this.state;
+        const {currentIndex, showStatus, id, shopId} = this.state;
         if (num) {
             this.setState({
                 initStatus: true
             });
         }
+<<<<<<< HEAD
+
+=======
         if (num % 2 === 0) {
             showStatus[currentIndex] = !showStatus[currentIndex];
         } else {
             showStatus[currentIndex] = !showStatus[currentIndex];
         }
+>>>>>>> develop
         const {page} = this.state;
         const keywords = this.props.keywords;
         this.temp.isLoading = true;
 
-
-        this.fetch(urlCfg.getCategoryList, {
-            data: {
-                page: page,
-                pagesize: this.temp.pagesize,
-                id: id,
-                types: 2,
-                order: num || null,
-                keyword: '' || keywords
-            }
-        }, noLoading)
-            .subscribe((res) => {
+        if (shopId) { //店内搜索
+            this.fetch(urlCfg.allGoodsInTheShop, {
+                data: {
+                    page,
+                    pagesize: this.temp.pagesize,
+                    id: shopId,
+                    order: num || null,
+                    key: keywords
+                }
+            }).subscribe((res) => {
                 this.temp.isLoading = false;
                 if (res.status === 0) {
                     if (this.state.isLoading) {
@@ -123,9 +127,9 @@ class CategoryListView extends BaseComponent {
                         }, 600);
                     }
                     if (page === 1) {
-                        this.temp.stackData = res.data;
+                        this.temp.stackData = res.data.data;
                     } else {
-                        this.temp.stackData = this.temp.stackData.concat(res.data);
+                        this.temp.stackData = this.temp.stackData.concat(res.data.data);
                     }
                     this.setState((prevState) => (
                         {
@@ -136,6 +140,43 @@ class CategoryListView extends BaseComponent {
                     ));
                 }
             });
+        } else {
+            this.fetch(urlCfg.getCategoryList, {
+                data: {
+                    page: page,
+                    pagesize: this.temp.pagesize,
+                    id: id,
+                    types: 2,
+                    order: num || null,
+                    keyword: '' || keywords
+                }
+            }, noLoading)
+                .subscribe((res) => {
+                    this.temp.isLoading = false;
+                    if (res.status === 0) {
+                        if (this.state.isLoading) {
+                            setTimeout(() => {
+                                this.setState({
+                                    refreshing: false,
+                                    isLoading: false
+                                });
+                            }, 600);
+                        }
+                        if (page === 1) {
+                            this.temp.stackData = res.data;
+                        } else {
+                            this.temp.stackData = this.temp.stackData.concat(res.data);
+                        }
+                        this.setState((prevState) => (
+                            {
+                                dataSource: prevState.dataSource.cloneWithRows(this.temp.stackData),
+                                pageCount: res.page_count,
+                                hasFetch: true
+                            }
+                        ));
+                    }
+                });
+        }
     };
 
     //emptyGoTo 空白页跳转
@@ -242,13 +283,12 @@ class CategoryListView extends BaseComponent {
     };
 
     render() {
-        const {dataSource, hasFetch, currentIndex, showStatus, initStatus, refreshing} = this.state;
-        const shopId = this.props.shoppingId;
+        const {dataSource, hasFetch, currentIndex, showStatus, initStatus, refreshing, shopId} = this.state;
         const row = (item) => (
             <div className="goods" key={item.id} onClick={() => this.switchTo(item.id)}>
                 <div className="goods-name">
                     <div className="goods-picture">
-                        <LazyLoadIndex lazyInfo={{offset: -50, overflow: true, imgUrl: item.picpath}}/>
+                        <LazyLoadIndex src={item.picpath}/>
                     </div>
                     <div className="goods-information">
                         <div className="goods-explain">{item.title}</div>

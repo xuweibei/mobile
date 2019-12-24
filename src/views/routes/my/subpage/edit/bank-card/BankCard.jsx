@@ -32,8 +32,7 @@ const bankImg = {
 class BankCard extends BaseComponent {
     state = {
         userBankArr: [], //用户信息
-        shopBankArr: [], //消費者銀行卡
-        userTypes: this.props.userTypes
+        shopBankArr: [] //消費者銀行卡
     };
 
     componentDidMount() {
@@ -41,18 +40,6 @@ class BankCard extends BaseComponent {
         if (!bankInfo) {
             getBankCardList();
         }
-    }
-
-    //获取列表数据
-    getList = () => {
-        this.fetch(urlCfg.getTheBankCardList).subscribe(res => {
-            if (res && res.status === 0) {
-                this.setState({
-                    userBankArr: res.data.user,
-                    shopBankArr: res.data.shoper
-                });
-            }
-        });
     }
 
     //添加或者编辑银行卡
@@ -141,8 +128,6 @@ class BankCard extends BaseComponent {
                                         <div className="background-tl">{item.bankArea}</div>
                                     </div>
                                     <div className="card">
-                                        {/*FIXME: 用正则来简化*/}
-                                        {/* {//我是需要截取，正则可以吗？} */}
                                         <span>{item.bankNo.slice(0, 4)}</span>
                                         <span>****</span>
                                         <span>****</span>
@@ -155,44 +140,35 @@ class BankCard extends BaseComponent {
                         )) : (
                             <div>
                                 <p className="explain">CAM余额提现卡</p>
-                                <div className="no-card" onClick={this.editBankCode}>
+                                <div className="no-card" style={{border: '1px solid #e5e5e5'}} onClick={this.editBankCode}>
                                     <div className="icon noCard-t"/>
                                     <span className="noCard-b">添加银行卡</span>
                                 </div>
                             </div>
                         )
                     }
-                    {/* {
-                        userTypes === '2' && bankInfo && (bankInfo.shoper.length > 0
-                            ? (
-                                <div className="card-box">
-                                    <p className="explain">营业提现卡</p>
-                                    {bankInfo.shoper.map(item => (
-                                        <div key={item.id} className={this.backgroundImng(item.bankId) ? 'background-blue' : 'background-red'}>
-                                            <div className="background-t">
-                                                <div className="logo" style={{backgroundPosition: bankImg[item.bankId] ? `${bankImg[item.bankId][0]}px ${bankImg[item.bankId][1]}px` : '1000px 1000px'}}/>
-                                                <div className="background-tl">{item.bankArea}</div>
-                                            </div>
-                                            <div className="card">
-                                                <span>{item.bankNo.slice(0, 4)}</span>
-                                                <span>****</span>
-                                                <span>****</span>
-                                                <span>****</span>
-                                                <span>{item.bankNo.substring(item.bankNo.length - 3)}</span>
-                                            </div>
+                    {
+                        bankInfo && (bankInfo.shoper.length > 0 ? (
+                            <div className="card-box">
+                                <p className="explain">营业提现卡</p>
+                                {bankInfo.shoper.map(item => (
+                                    <div key={item.id} className={this.backgroundImng(item.bankId) ? 'background-blue' : 'background-red'}>
+                                        <div className="background-t">
+                                            <div className="logo" style={{backgroundPosition: bankImg[item.bankId] ? `${bankImg[item.bankId][0] / 50}rem ${bankImg[item.bankId][1] / 50}rem` : '1000px 1000px'}}/>
+                                            <div className="background-tl">{item.bankArea}</div>
                                         </div>
-                                    ))}
-                                </div>
-                            ) : (
-                                <div>
-                                    <p className="explain">营业提现卡</p>
-                                    <div className="no-card" onClick={this.editBankCode}>
-                                        <div className="icon noCard-t"/>
-                                        <span className="noCard-b">添加银行卡</span>
+                                        <div className="card">
+                                            <span>{item.bankNo.slice(0, 4)}</span>
+                                            <span>****</span>
+                                            <span>****</span>
+                                            <span>****</span>
+                                            <span>{item.bankNo.substring(item.bankNo.length - 3)}</span>
+                                        </div>
                                     </div>
-                                </div>
-                            ))
-                    } */}
+                                ))}
+                            </div>
+                        ) : null)
+                    }
                 </div>
                 {pwsPopup && (
                     <div className="enter-password-box">
@@ -213,10 +189,8 @@ class BankCard extends BaseComponent {
 }
 
 const mapStateToProps = state => {
-    const base = state.get('base');
     const edit = state.get('my');
     return {
-        userTypes: base.get('userTypes'),
         bankInfo: edit.get('bankInfo')
     };
 };

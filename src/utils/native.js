@@ -60,7 +60,7 @@ export const getShopCartInfo = (str, obj, callBack) => new Promise((resolve, rej
 });
 
 //获取userToken
-export const getAppUserToken = () => new Promise((resolve) => {
+export const getAppUserToken = () => new Promise((resolve, reject) => {
     setTimeout(() => {
         if (window.WebViewJavascriptBridge && window.WebViewJavascriptBridge.callHandler && process.env.NATIVE) {
             window.WebViewJavascriptBridge.callHandler('wxLoginCallback',
@@ -75,6 +75,8 @@ export const getAppUserToken = () => new Promise((resolve) => {
                         showFail('身份验证失败');
                     }
                 });
+        } else {
+            reject();
         }
     }, 500);
 });
@@ -93,10 +95,11 @@ global.goBack = function () {
     } else {
         store.dispatch(baseActionCreator.setReturn(false));
     }
+    return 1;
 };
 
 
-//h5跳登录页时，清除缓存
+//h5跳原生登录页时，清除缓存
 global.clearCache = function () {
     removeValue(LOCALSTORAGE.USER_TOKEN); // 清除token,localstorage
     store.dispatch(baseActionCreator.setUserToken('')); // 清除redux的userToken
@@ -105,13 +108,33 @@ global.clearCache = function () {
 
 //原生跳h5重置历史
 global.restHistory = function () {
-    appHistory.reduction();
+// appHistory.reduction();
 };
 
+global.goBackApp = function () {
+    // 跳回app时调用;
+};
+
+
+//返回封装
 export function goBackModal() {
     if (process.env.NATIVE && appHistory.length() === 0) {
         native('goBack');
     } else {
         appHistory.goBack();
     }
+}
+
+//判断部分机型边框样式不兼容
+export function nativeCssDiff() {
+    const str = navigator.userAgent;
+    console.log(str, '看了第三方估计快了');
+    const phoneModal =  ['OPPO R7sm', 'm1 note', 'Letv X501', 'Redmi Note 4X', 'OPPO A59m'];
+    let onOff = false;
+    phoneModal.forEach(item => {
+        if (str.indexOf(item) > -1) {
+            onOff = true;
+        }
+    });
+    return onOff;
 }

@@ -125,7 +125,6 @@ class Register extends BaseComponent {
         });
     }
 
-    // FIXME: 倒计时用统一封装的 verification-code
     setTime = (countdown) => {
         if (countdown === 0) {
             this.setState({
@@ -205,7 +204,8 @@ class Register extends BaseComponent {
     }
 
     //短信验证码登陆
-    login = () => {
+    login = (e) => {
+        e.stopPropagation();
         const phone = validator.wipeOut(this.state.phone);
         const code = this.state.code;
         if (!phone) {
@@ -392,8 +392,6 @@ class Register extends BaseComponent {
     onCodeChange = (value) => {
         this.setState({
             zhj: '1'
-        }, () => {
-            console.log(this.zhj);
         });
         this.setState({
             code: value
@@ -416,7 +414,6 @@ class Register extends BaseComponent {
     //微信登录
     wxLogin = () => {
         TD.log(TD_EVENT_ID.LOGIN.ID, TD_EVENT_ID.LOGIN.LABEL.WX_LOGIN);
-        console.log('微信登录');
     };
 
     //忘记密码或者验证码获取失败
@@ -482,7 +479,6 @@ class Register extends BaseComponent {
     render() {
         const {convert, agreementStatus, phone, maxLength, code, text, lineText, forgotText, verification, textType, shadow, eyes, fouceShow, agreeType} = this.state;
         const {agreement} = this.props;
-        console.log(agreement.get('pr_content'));
         return (
             <div className="login-register">
                 {this.loginModal()}

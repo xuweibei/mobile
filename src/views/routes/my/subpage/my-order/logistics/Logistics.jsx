@@ -27,8 +27,6 @@ export default class MyOrder extends BaseComponent {
 
     initMap = () => {
         const map = new window.BMap.Map('home');
-        // FIXME: 经纬度不能写死
-        //产品需求，固定地图
         const point = new window.BMap.Point(116.404, 39.915);
         map.centerAndZoom(point, 15);
     };
@@ -55,7 +53,7 @@ export default class MyOrder extends BaseComponent {
                 if (res && res.status === 0) {
                     if (res.data) {
                         this.setState({
-                            orderInfo: JSON.parse(res.data.express_content).data,
+                            orderInfo: res.data.express_content ? JSON.parse(res.data.express_content).data : [],
                             ordertatus: res.data.status,
                             expressNo: res.data.express_no,
                             pic: res.data.picpath,

@@ -11,7 +11,7 @@ const {errorType} = Utils;
 export function getMyInfo(action$) {
     return action$.ofType(actionTypes.GET_MYINFO)
         .switchMap(
-            (action) => XHR.fetch(urlCfg.personalCenter, {method: 'post', data: action.payload.data})
+            (action) => XHR.fetch(urlCfg.personalCenter, {data: action.payload.data})
                 .map(res => {
                     if (res && res.status !== 0) {
                         return errorType(res);

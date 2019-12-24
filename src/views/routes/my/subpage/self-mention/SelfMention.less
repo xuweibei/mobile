@@ -2,6 +2,7 @@
 .Self-mention {
     .navbar {
         background: @fiery-red;
+        // height: 120px;
         .nav-left {
             margin-right: 60px;
         }
@@ -186,6 +187,10 @@
             .look-button {
                 font-size: @font-size-24;
                 color: @dark-gray;
+                border: 2px solid #666;
+                border-radius: 25px;
+                width: 150px;
+                text-align: center;
             }
             .delete {
                 margin-right: 10px;
@@ -197,6 +202,10 @@
                 border-color: @fiery-red;
                 color: @fiery-red;
                 margin-left: 20px;
+                border: 2px solid #666;
+                border-radius: 25px;
+                width: 150px;
+                text-align: center;
             }
         }
         .drawback{
@@ -236,7 +245,16 @@
                 border: none;
                 transform: translate3d(74px, -10px, 0);
                 border-radius: 50px;
-                margin-left:32px;
+                margin-left:4px;
+            }
+        }
+    }
+    .general-other{
+        .am-tabs-tab-bar-wrap {
+            .am-tabs-default-bar-content {
+                .am-tabs-default-bar-tab {
+                    border-right: 1PX solid @to-light-gray;
+                }
             }
         }
     }

@@ -13,7 +13,7 @@ const tabs = [
     {title: '商品'},
     {title: '店铺'}
 ];
-const {appHistory, native, showInfo} = Utils;
+const {appHistory, native, showInfo, nativeCssDiff} = Utils;
 const {urlCfg} = Configs;
 const {MESSAGE: {Form, Feedback}, FIELD} = Constants;
 class Collect extends BaseComponent {
@@ -31,7 +31,7 @@ class Collect extends BaseComponent {
             isLoading: true,
             pagesize: 5
         };
-        const value = this.props.tabValue;
+        const {tabValue} = this.props;
         this.state = {
             goodsSource, //商品列表
             shopSource, //店铺列表
@@ -40,8 +40,8 @@ class Collect extends BaseComponent {
             pageCount: -1, //商品总页码初始
             pageCountShopping: -1, //店铺总页码初始
             refreshing: false, //刷新状态是否可见
-            statusNum: value || 1, //返回时tab状态
-            tabKey: value ? value - 1 : 0, //tab状态
+            statusNum: tabValue || 1, //返回时tab状态
+            tabKey: tabValue ? tabValue - 1 : 0, //tab状态
             hasMore: true, // 是否有更多数据
             height: document.documentElement.clientHeight - (window.isWX ? window.rem * 1.08 : window.rem * 1.98)
         };
@@ -59,9 +59,9 @@ class Collect extends BaseComponent {
             .subscribe((res) => {
                 this.temp.isLoading = false;
                 if (res && res.status === 0) {
-                    this.setState({
-                        isEdit: window.isWX && (res.data && res.data.length > 0)
-                    });
+                    // this.setState({
+                    //     isEdit: window.isWX && (res.data && res.data.length > 0)
+                    // });
                     if (tabKey === 0) {
                         if (page === 1) {
                             this.temp.stackData = res.data;
@@ -363,7 +363,7 @@ class Collect extends BaseComponent {
                 <div className="goods" key={item.id} onClick={() => this.shopGoods(item.pr_id)}>
                     <div className="goods-box">
                         <div>
-                            <LazyLoad lazyInfo={{imgUrl: item.picpath, offset: -20, overflow: true}}/>
+                            <LazyLoad src={item.picpath}/>
                         </div>
                         <div className="desc">
                             <div className="desc-title">{item.title}</div>
@@ -411,14 +411,18 @@ class Collect extends BaseComponent {
                             <span className="Shop-Nr">人均消费</span>
                             <span className="Shop-Nr wide">￥{item.consume_per}</span>
                         </div>
-                        <div className="button">进店</div>
+                        <div
+                            className="button"
+                            style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}
+                        >进店
+                        </div>
                     </div>
                     <div className="shop-goods">
                         {
                             item.pr && item.pr.length ? item.pr.map(data => (
                                 <div className="item" key={data.title}>
                                     <div className="image" onClick={() => this.shopGoods(data.id)}>
-                                        <LazyLoad lazyInfo={{imgUrl: data.picpath, offset: -50, overflow: true}}/>
+                                        <LazyLoad src={data.picpath}/>
                                         <span>{data.price}</span>
                                     </div>
                                     <p onClick={() => this.shopGoods(data.id)}>{data.title}</p>
@@ -462,7 +466,9 @@ class Collect extends BaseComponent {
         return (
             <div data-component="collect" data-role="page" className={`collect ${window.isWX ? 'WX-CL' : ''}`}>
                 <AppNavBar
-                    title="我的收藏"
+                    status="2"
+                    title={window.isWX ? '' : '我的收藏'}
+                    show={!window.isWX}
                     {
                     ...tabKey === 0 && goodsSource.getRowCount() > 0 ? {
                         isEdit,

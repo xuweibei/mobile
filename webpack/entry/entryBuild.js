@@ -28,7 +28,6 @@ const {getAppUserToken, systemApi: {getValue}} = Utils;
 
 const {LOCALSTORAGE} = Constants;
 const usertoken = store.getState().get('base').get(LOCALSTORAGE.USER_TOKEN) || (getValue(LOCALSTORAGE.USER_TOKEN) === 'null' ? null : getValue(LOCALSTORAGE.USER_TOKEN));
-
 const history = syncHistoryWithStore(hashHistory, store, {
     selectLocationState(state) {
         return state.get('routing').toObject();
@@ -50,6 +49,11 @@ const HomePage = () => (
 
 if (!usertoken) {
     getAppUserToken().then(res => {
+        ReactDOM.render(
+            <HomePage/>,
+            document.getElementById('root')
+        );
+    }).catch(res=>{
         ReactDOM.render(
             <HomePage/>,
             document.getElementById('root')

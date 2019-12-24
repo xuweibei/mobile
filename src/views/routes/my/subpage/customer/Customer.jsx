@@ -1,5 +1,5 @@
 /**
- * 我的客户
+ * 区域总量
  */
 import {connect} from 'react-redux';
 import {Tabs, List} from 'antd-mobile';
@@ -13,7 +13,7 @@ const {FIELD} = Constants;
 const Item = List.Item;
 const Brief = Item.Brief;
 const {urlCfg} = Configs;
-const {appHistory, native} = Utils;
+const {appHistory, native, nativeCssDiff} = Utils;
 const hybirid = process.env.NATIVE;
 //tab配置信息
 const tabs = [
@@ -59,13 +59,13 @@ class Customer extends BaseComponent {
             }
         ];
         if (page === 1) {
-            this.fetch(urlCfg.myCustomer, {data: param[0]}, noLoading).subscribe(res => {
+            this.fetch(urlCfg.regionalTota, {data: param[0]}, noLoading).subscribe(res => {
                 if (res.status === 0) {
                     this.handleResult(res, true);
                 }
             });
         } else {
-            this.fetch(urlCfg.myCustomer, {data: param[1]}).subscribe(res => {
+            this.fetch(urlCfg.regionalTota, {data: param[1]}).subscribe(res => {
                 if (res.status === 0) {
                     this.handleResult(res, false);
                 }
@@ -192,7 +192,7 @@ class Customer extends BaseComponent {
             <React.Fragment>
                 {window.isWX ? null : (
                     <AppNavBar
-                        title="我的客户"
+                        title="区域总量"
                         goBackModal={this.goBackModal}
                     />
                 )}
@@ -200,7 +200,7 @@ class Customer extends BaseComponent {
                     <p> {totalNum}人</p>
                     <span>总人数</span>
                 </div>
-                <div className="customer-list">
+                <div className={`customer-list ${nativeCssDiff() ? 'general-other' : 'general'}`}>
                     <Tabs
                         tabs={tabs}
                         initialPage={tabKey}

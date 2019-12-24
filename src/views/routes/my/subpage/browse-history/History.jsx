@@ -5,12 +5,14 @@ import {connect} from 'react-redux';
 import {Tabs, ListView} from 'antd-mobile';
 import {baseActionCreator as actionCreator} from '../../../../../redux/baseAction';
 import Nothing from '../../../../common/nothing/Nothing';
+import LazyLoad from '../../../../common/lazy-load/LazyLoad';
 import AppNavBar from '../../../../common/navbar/NavBar';
 import './History.less';
 
 const {urlCfg} = Configs;
 const {appHistory, showInfo, confirmDate, native} = Utils;
-const {MESSAGE: {Feedback}, FIELD} = Constants;
+const {MESSAGE: {Feedback, Form}, FIELD} = Constants;
+const hybirid = process.env.NATIVE;
 //tab配置信息
 const tabs = [
     {title: '商品历史', type: 1},
@@ -91,8 +93,8 @@ class History extends BaseComponent {
         this.setState((prevState) => ({
             data: prevState.data.cloneWithRowsAndSections(this.dataBlobs, this.sectionIDs, this.rowIDs),
             pageCount: res.page_count,
-            isLoading: false,
-            isEdit: window.isWX
+            isLoading: false
+            // isEdit: window.isWX
         }), () => {
             console.log(this.state.data);
             if (page < this.state.pageCount) {
@@ -150,9 +152,7 @@ class History extends BaseComponent {
                         onClick={() => this.goToGoodsDetail(item.pr_id)}
                     >
                         <div className="goods-row-left">
-                            <img
-                                src={item.picpath}
-                            />
+                            <LazyLoad src={item.picpath}/>
                         </div>
                         <div className="goods-row-right">
                             <div className="goods-row-right-zeroth">
@@ -260,7 +260,6 @@ class History extends BaseComponent {
 
     //返回键回调
     goBackModal = () => {
-        const hybirid = process.env.NATIVE;
         if (hybirid) {
             native('goBack');
         } else {
@@ -271,9 +270,12 @@ class History extends BaseComponent {
 
     //点击顶部导航右侧按钮
     changeNavRight = (isEdit) => {
-        this.setState({
-            isEdit
-        });
+        this.setState((prevState) => ({
+            data: prevState.data.cloneWithRowsAndSections(this.dataBlobs, this.sectionIDs, this.rowIDs),
+            isEdit,
+            isLoading: false
+            // isEdit: window.isWX
+        }));
     };
 
     //点击每行复选框
@@ -304,21 +306,18 @@ class History extends BaseComponent {
                 console.log('添加选中id', this.state.checkedIds);
             });
         }
-
-        const dataSource2 = new ListView.DataSource({
-            getRowData,
-            getSectionHeaderData: getSectionData,
-            rowHasChanged: (row1, row2) => row1 !== row2,
-            sectionHeaderHasChanged: (s1, s2) => s1 !== s2
-        });
         this.setState((prevState) => ({
-            data: dataSource2.cloneWithRowsAndSections(this.dataBlobs, this.sectionIDs, this.rowIDs)
+            data: prevState.data.cloneWithRowsAndSections(this.dataBlobs, this.sectionIDs, this.rowIDs)
         }));
     };
 
     //点击加入收藏夹回调
     addCollect = () => {
         const {type, checkedIds} = this.state;
+        if (checkedIds && checkedIds.length === 0) {
+            showInfo(Form.No_Select_Select);
+            return;
+        }
         this.fetch(urlCfg.addCollect, {
             data: {
                 type,
@@ -337,7 +336,10 @@ class History extends BaseComponent {
         const {showConfirm} = this.props;
         let arr = [];
         if (!clear) {
-            if (checkedIds.length === 0) return;
+            if (checkedIds && checkedIds.length === 0) {
+                showInfo(Form.No_Select_Select);
+                return;
+            }
             arr = checkedIds;
         }
         showConfirm({
@@ -400,19 +402,19 @@ class History extends BaseComponent {
         );
         return (
             <div className="browsing-history">
-                {window.isWX ? null : (
-                    <AppNavBar
-                        title="浏览历史"
-                        goBackModal={this.goBackModal}
-                        {...(data && data.getRowCount() > 0)
-                            ? {
-                                rightEdit: true,
-                                isEdit,
-                                changeNavRight: this.changeNavRight
-                            } : null
-                        }
-                    />
-                )}
+                <AppNavBar
+                    status="2"
+                    title={window.isWX ? '' : '浏览历史'}
+                    show={!window.isWX}
+                    goBackModal={this.goBackModal}
+                    {...(data && data.getRowCount() > 0)
+                        ? {
+                            rightEdit: true,
+                            isEdit,
+                            changeNavRight: this.changeNavRight
+                        } : null
+                    }
+                />
                 <div className={tabKey === 0 ? `history-list-goods ${isEdit ? 'base' : ''}` : `history-list-shop ${isEdit ? 'base' : ''}`}>
                     <Tabs
                         tabs={tabs}

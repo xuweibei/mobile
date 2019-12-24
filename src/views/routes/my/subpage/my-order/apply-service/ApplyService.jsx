@@ -1,9 +1,8 @@
+//选择售后类型
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './ApplyService.less';
 
-const {getUrlParam, appHistory, showInfo, setNavColor} = Utils;
-const {navColorF} = Constants;
-const hybird = process.env.NATIVE;
+const {getUrlParam, appHistory, showInfo} = Utils;
 const article = [
     {
         text: '仅退款',
@@ -25,18 +24,6 @@ export default class applyService extends BaseComponent {
         prId: decodeURI(getUrlParam('prId', encodeURI(this.props.location.search))), //退款所需参数 商品id
         arrInfo: decodeURI(getUrlParam('arrInfo', encodeURI(this.props.location.search))), //退款所需参数 标签
         onlyReturnMoney: decodeURI(getUrlParam('onlyReturnMoney', encodeURI(this.props.location.search)))//待发货过来的退款，不让他点击退货退款给提示
-    }
-
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
     }
 
     //售后申请类型

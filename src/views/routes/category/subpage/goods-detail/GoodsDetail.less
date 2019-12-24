@@ -194,6 +194,11 @@
             }
             .bot-right{
                 float: right;
+                a{
+                    text-decoration:none;
+                    pointer-events:none; 
+                    color: @darker-black;
+                }
             }
         }
     }
@@ -243,9 +248,10 @@
     .detail-img{
         // padding: 0 30px 30px;
         padding-bottom: 120px;
-        line-height: 38px;
+        // line-height: 38px;
         width: 100%;
         background: @white;
+        overflow-wrap: break-word;
         .ql-indent-1{
             word-break: break-word;
             img{
@@ -501,6 +507,7 @@
         color: @white;
         line-height: 80px;
         text-align: center;
+        margin-top:6px;
     }
 }
 .ido {
@@ -510,3 +517,4 @@
     content: '\E640';
     display: block;
 }
+
