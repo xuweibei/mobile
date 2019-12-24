@@ -204,11 +204,7 @@ class ReDetail extends BaseComponent {
     }
 
     render() {
-<<<<<<< HEAD
         const {selfSufficiency, selfGoods, maskStatus, collectId} = this.state;
-=======
-        const {selfSufficiency, selfGoods, collectId, maskStatus} = this.state;
->>>>>>> develop
         return (
             <div data-component="Self-orderingDetails" data-role="page" className="Self-orderingDetails">
                 <AppNavBar goBackModal={this.goBackModal} title="订单详情"/>

@@ -10,10 +10,7 @@ export default class Evaluate extends React.PureComponent {
         evalute: PropTypes.object.isRequired,
         shopH: PropTypes.func.isRequired,
         openSku: PropTypes.func.isRequired,
-<<<<<<< HEAD
         routeToEvalute: PropTypes.func.isRequired,
-=======
->>>>>>> develop
         hasType: PropTypes.bool.isRequired
     }
 
@@ -22,12 +19,8 @@ export default class Evaluate extends React.PureComponent {
     }
 
     render() {
-<<<<<<< HEAD
         const {Element, names, goodsDetail, shop, shopH, openSku, hasType, evalute, routeToEvalute} = this.props;
         console.log(evalute);
-=======
-        const {Element, names, goodsDetail, shop, shopH, openSku, hasType} = this.props;
->>>>>>> develop
         return (
             <Element name="evaluate" className="goods-shop">
                 <div className="framing">

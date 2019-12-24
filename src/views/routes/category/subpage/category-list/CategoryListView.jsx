@@ -93,15 +93,11 @@ class CategoryListView extends BaseComponent {
                 initStatus: true
             });
         }
-<<<<<<< HEAD
-
-=======
         if (num % 2 === 0) {
             showStatus[currentIndex] = !showStatus[currentIndex];
         } else {
             showStatus[currentIndex] = !showStatus[currentIndex];
         }
->>>>>>> develop
         const {page} = this.state;
         const keywords = this.props.keywords;
         this.temp.isLoading = true;
