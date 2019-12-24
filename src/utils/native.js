@@ -60,7 +60,7 @@ export const getShopCartInfo = (str, obj, callBack) => new Promise((resolve, rej
 });
 
 //获取userToken
-export const getAppUserToken = () => new Promise((resolve) => {
+export const getAppUserToken = () => new Promise((resolve, reject) => {
     setTimeout(() => {
         if (window.WebViewJavascriptBridge && window.WebViewJavascriptBridge.callHandler && process.env.NATIVE) {
             window.WebViewJavascriptBridge.callHandler('wxLoginCallback',
@@ -75,6 +75,8 @@ export const getAppUserToken = () => new Promise((resolve) => {
                         showFail('身份验证失败');
                     }
                 });
+        } else {
+            reject();
         }
     }, 500);
 });

@@ -82,7 +82,7 @@ export const urlCfg = {
     orderAppraise: href.apiPath + '/my-order-appra-page', //订单评价页面
     findShop: href.apiPath + '/discover-gps', //发现周围商家
     findForShopName: href.apiPath + '/discover-search-mall', //搜索商家
-    publishAssess: href.apiPath + '/my-order-appra', //发布评价
+    publishAssess: href.apiPath + '/my-order-appra-mul', //发布评价
     picSave: href.apiPath + '/pic-save-bases', //上传图片
     submitOrder: href.apiPath + '/submit-order-page', //提交订单界面
     shopCartOrder: href.apiPath + '/submit-order', //提交购物车和订单
@@ -128,7 +128,7 @@ export const urlCfg = {
     getHistory: href.apiPath + '/my-browse-list', //获取浏览历史列表
     delHistory: href.apiPath + '/clear-browse', //删除或清空浏览历史
     myCustomer: href.apiPath + '/myguest', //我的客户列表
-    regionalTota:href.apiPath + '/getguest', // 区域总量
+    regionalTota: href.apiPath + '/getguest', // 区域总量
     customerInfo: href.apiPath + '/getment-detail', //客户详情
     customerOrder: href.apiPath + '/getment-order', //客户订单量
     myBusiness: href.apiPath + '/getmentor', //我的业务列表

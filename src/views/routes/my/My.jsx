@@ -7,7 +7,7 @@
  * 只有商家有两种身份,可以进行切换，商家和消费者；
  * iden_type 为 1 普通消费者；为2 商家， 为3 推广员，为4，双重身份中的消费者
  */
-import {WhiteSpace, Badge, Grid, Carousel, WingBlank,List} from 'antd-mobile';
+import {WhiteSpace, Badge, Grid, Carousel, WingBlank, List} from 'antd-mobile';
 import {connect} from 'react-redux';
 import {dropByCacheKey} from 'react-router-cache-route';
 import {baseActionCreator} from '../../../redux/baseAction';
@@ -478,7 +478,6 @@ class My extends BaseComponent {
                             />
                         </div>
                     </div>
-                    
                     <div className="my-order-form">
                         <div className="my-order-box">
                             <div className="order-box-name">线上订单</div>
@@ -558,28 +557,22 @@ class My extends BaseComponent {
                                     </ul>
                                 </div>
                             ) : (
-                            <div>
-                                <div className="conumer-info">
-                                    <List>
-                                        {this.consumer.map((item,index) => (
-                                            index === 0 && <List.Item arrow={'horizontal'} key={item.title} onClick={() => this.jumpRouter(item.event)}>
-                                                <span className={'icon ' + item.icon}/>
-                                                <p>{item.title}</p>
-                                            </List.Item>
-                                        ))}
-                                    </List>
+                                <div>
+                                    <div className="conumer-info">
+                                        <List>
+                                            {this.consumer.map((item, index) => (
+                                                index === 0 && (<List.Item arrow="horizontal" key={item.title} onClick={() => this.jumpRouter(item.event)}> <span className={'icon ' + item.icon}/><p>{item.title}</p></List.Item>)
+                                            ))}
+                                        </List>
+                                    </div>
+                                    <div className="conumer-info">
+                                        <List>
+                                            {this.consumer.map((item, index) => (
+                                                index === 1 && (<List.Item arrow="horizontal" key={item.title} onClick={() => this.jumpRouter(item.event)}> <span className={'icon ' + item.icon}/> <p>{item.title}</p></List.Item>)
+                                            ))}
+                                        </List>
+                                    </div>
                                 </div>
-                                <div className="conumer-info">
-                                    <List>
-                                        {this.consumer.map((item,index) => (
-                                            index === 1 && <List.Item arrow={'horizontal'} key={item.title} onClick={() => this.jumpRouter(item.event)}>
-                                                <span className={'icon ' + item.icon}/>
-                                                <p>{item.title}</p>
-                                            </List.Item>
-                                        ))}
-                                    </List>
-                                </div>
-                            </div>
                             )
                         }
                         {   //用户身份为消费者时展示

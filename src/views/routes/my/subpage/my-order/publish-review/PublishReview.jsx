@@ -105,7 +105,6 @@ export default class PublishReview extends BaseComponent {
                             itemImg.url = encodeURIComponent(itemImg.urlB);
                             delete itemImg.urlB;
                         });
-                        console.log(fileArr,'待付款里考虑')
                         this.fetch(urlCfg.picSave, {data: {
                             type: 1,
                             id: res.id,

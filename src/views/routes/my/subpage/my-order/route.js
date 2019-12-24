@@ -17,7 +17,7 @@ import ReturnGoods from './apply-service/ReturnGoods';
 import ApplyDrawback from './apply-drawback/ApplyDrawback';
 import ShopSearch from './shop-search/ShopSearch';
 import shopDetail from './shop-search/shopDetail';
-import MyComplain from './my-complain/MyComplain'
+import MyComplain from './my-complain/MyComplain';
 
 const OrderModal = () => (
     <React.Fragment>

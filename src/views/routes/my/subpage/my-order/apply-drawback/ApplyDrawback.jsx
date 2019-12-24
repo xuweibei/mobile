@@ -70,7 +70,7 @@ export default class applyDrawback extends BaseComponent {
                         dataList: res.data,
                         typeSelectIndexs: res.data.types,
                         typeSelectIndexsTime: res.data.types,
-                        typeSelectText: res.data.types === '0' ? '仅退款' : '退货退款',
+                        typeSelectText: res.data.types === '1' ? '仅退款' : '退货退款',
                         selectText: res.data.return_reason,
                         questionInfo: res.data.describe
                     });
@@ -160,7 +160,7 @@ export default class applyDrawback extends BaseComponent {
         native('picCallback', {num: nativePicNum}).then(res => {
             const arr = filesArr;
             res.data.img.forEach(item => {
-                arr.push({imgB: item[0], imgS: item[1], id: new Date()});
+                arr.push({urlB: item[0], url: item[1], id: new Date()});
             });
             this.setState({
                 filesArr: arr,
@@ -187,8 +187,7 @@ export default class applyDrawback extends BaseComponent {
             .subscribe(res => {
                 if (res && res.status === 0) {
                     filesArr.forEach(item => {
-                        item.imgB = encodeURIComponent(item.imgB);
-                        item.imgS = encodeURIComponent(item.imgS);
+                        item.url = encodeURIComponent(item.urlB);
                     });
                     if (filesArr.length > 0) {
                         const fileArrPro = [];
@@ -198,11 +197,10 @@ export default class applyDrawback extends BaseComponent {
                                     this.fetch(urlCfg.pictureUploadBase, {
                                         data: {
                                             id,
-                                            type: 3,
+                                            type: 2,
                                             ix: index,
                                             num: filesArr.length,
-                                            file: item.imgB,
-                                            filex: item.imgS
+                                            file: item.url
                                         }
                                     }).subscribe(value => {
                                         if (value && value.status === 0) {
@@ -261,7 +259,7 @@ export default class applyDrawback extends BaseComponent {
                                             <div className="btn-left" onClick={this.typeBlockedOut}>取消</div>
                                             <div className="btn-right" onClick={this.typeClickSelect}>确定</div>
                                         </div>
-                                        {/*type == 2  线下*/}
+                                        {/*type == 2  线下  refurn 为1 表示仅退款*/}
                                         {(type === '2' || refurn === '1') ? (
                                             <div className="closedAngle-list">
                                                 {offlineType.map(item => (
@@ -336,7 +334,7 @@ export default class applyDrawback extends BaseComponent {
                                                     filesArr && filesArr.map((value, index) => index < 9 && (
                                                         <li id={value.id}>
                                                             <span onClick={() => this.deleteImg(value.id)}>×</span>
-                                                            <img src={value.imgS}/>
+                                                            <img src={value.url}/>
                                                         </li>
                                                     ))
                                                 }

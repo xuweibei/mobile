@@ -24,7 +24,6 @@ const appraises = [
     {index: 4},
     {index: 5}
 ];
-const hybird = process.env.NATIVE;
 
 export default class MyEvaluate extends BaseComponent {
     state = {
@@ -109,7 +108,7 @@ export default class MyEvaluate extends BaseComponent {
 
     //点击添加图片
     addPictrue = (data, index) => {
-        if (hybird) {
+        if (process.env.NATIVE) {
             native('picCallback', {num: data.get('nativePicNum') || 9}).then(res => {
                 const {files, evaluate} = this.state;
                 const arr = [];
@@ -188,9 +187,9 @@ export default class MyEvaluate extends BaseComponent {
 
     //发布评价
     evaluationSuccess = () => {
-        
         const {evaluate, estimate, discuss, anonymous, shop, logistics, files, selfHelp} = this.state;
         const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
+        console.log(files, files.toJS(), evaluate.toJS(), '电饭锅看来');
         //判断店铺 物流是否评分
         if (!shop) {
             showInfo(Form.No_EvaluateShop);
@@ -201,61 +200,61 @@ export default class MyEvaluate extends BaseComponent {
             return;
         }
         const pasArr = [];//文字请求集合
-        const ids = [];//文字保存成功后的id集合
-        evaluate.map((item, index) => {
+        const picArr = [];//图片请求集合
+        evaluate.forEach((item, index) => {
             if (item.get('pr_id')) { //先将所有的文字评价先保存
-                pasArr.push(new Promise((resolve, reject) => {
-                    this.fetch(urlCfg.publishAssess, {data: {
-                        pr_id: item.get('pr_id'),
-                        order_id: id,
-                        mark_type: estimate[index],
-                        types: 0,
-                        content: discuss[index],
-                        pr_title: item.get('pr_title'),
-                        anonymous: anonymous ? '1' : '0',
-                        shop_mark: shop,
-                        logistics_mark: selfHelp === '2' ? '' : logistics,
-                        property_content: item.get('property_content'),
-                        have_pic: (files.get(index) && files.get(index).length > 0) ? 1 : ''
-                    }}).subscribe((res) => {
-                        if (res && res.status === 0) {
-                            if (!files.get(index) || (files.get(index) && files.get(index).length > 0) === 0) {
-                                resolve('done');//如果是没有图片的，就给个标识
-                            } else {
-                                ids.push(res.id);
-                                resolve(ids);
-                            }
-                        }
-                    });
-                }));
+                pasArr.push({
+                    pr_id: item.get('pr_id'),
+                    mark_type: estimate[index],
+                    types: 0,
+                    content: discuss[index],
+                    pr_title: item.get('pr_title'),
+                    anonymous: anonymous ? '1' : '0',
+                    shop_mark: shop,
+                    logistics_mark: selfHelp === '2' ? '' : logistics,
+                    property_content: item.get('property_content'),
+                    have_pic: (files.get(index) && files.get(index).length > 0) ? 1 : '',
+                    goods_id: item.get('id')
+                });
             }
         });
-        Promise.all(pasArr).then(res => {
-            if (ids.length > 0) { //有图片就再保存图片
-                files.forEach((item,index)=>{
-                    item.forEach(data=>{
-                        if(data.url){
-                            data.url = encodeURIComponent(data.url);
-                        }
-                    })
-                })
-                ids.forEach((item, index) => {
-                    this.fetch(urlCfg.picSave, {data: {
-                        type: 1,
-                        id: item,
-                        file: files.get(index)
-                    }}).subscribe((resr) => {
-                        if (resr && resr.status === 0) {
-                            showSuccess(Feedback.Evaluate_Success);
-                            dropByCacheKey('OrderPage');
-                            setTimeout(() => { appHistory.replace('/evaluationSuccess') }, 1000);
+        this.fetch(urlCfg.publishAssess, {data: {
+            order_id: id,
+            pingjia_content: pasArr
+        }}).subscribe((res) => {
+            if (res && res.status === 0) {
+                if (files.some(item => item && item.length > 0) && res.id && res.id.length > 0) { //有图片先请求
+                    files.forEach((item, index) => {
+                        console.log(item, '电饭锅看来');
+                        if (item) {
+                            item.forEach(data => {
+                                if (data.url) {
+                                    data.url = encodeURIComponent(data.url);
+                                }
+                            });
+                            picArr.push(new Promise((resolve, reject) => {
+                                this.fetch(urlCfg.picSave, {data: {
+                                    type: 1,
+                                    id: res.id[index],
+                                    file: files.get(index)
+                                }}).subscribe((resr) => {
+                                    if (resr && resr.status === 0) {
+                                        resolve(resr);
+                                    }
+                                });
+                            }));
+                            Promise.all(picArr).then(dataRes => {
+                                showSuccess(Feedback.Evaluate_Success);
+                                dropByCacheKey('OrderPage');
+                                setTimeout(() => { appHistory.replace('/evaluationSuccess') }, 1000);
+                            });
                         }
                     });
-                });
-            } else { //没有图片就直接跳转
-                showSuccess(Feedback.Evaluate_Success);
-                dropByCacheKey('OrderPage');
-                setTimeout(() => { appHistory.replace('/evaluationSuccess') }, 1000);
+                } else {
+                    showSuccess(Feedback.Evaluate_Success);
+                    dropByCacheKey('OrderPage');
+                    setTimeout(() => { appHistory.replace('/evaluationSuccess') }, 1000);
+                }
             }
         });
     };

@@ -291,7 +291,7 @@ class CategoryListView extends BaseComponent {
             <div className="goods" key={item.id} onClick={() => this.switchTo(item.id)}>
                 <div className="goods-name">
                     <div className="goods-picture">
-                        <LazyLoadIndex lazyInfo={{offset: -50, overflow: true, imgUrl: item.picpath}}/>
+                        <LazyLoadIndex src={item.picpath}/>
                     </div>
                     <div className="goods-information">
                         <div className="goods-explain">{item.title}</div>

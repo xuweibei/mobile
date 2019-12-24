@@ -11,7 +11,7 @@ import CancelOrder from '../../../../../common/cancel-order/CancleOrder';
 import Animation from '../../../../../common/animation/Animation';
 import './ShopDetail.less';
 
-const {appHistory, showSuccess, showInfo, getUrlParam,nativeCssDiff} = Utils;
+const {appHistory, showSuccess, showInfo, getUrlParam, nativeCssDiff} = Utils;
 const {MESSAGE: {Form, Feedback}, FIELD, navColorR} = Constants;
 const {urlCfg} = Configs;
 
@@ -403,7 +403,7 @@ class MyOrderSearch extends BaseComponent {
                     <div className="goods" onClick={(ev) => this.goToOrderDetail(item.id, item.status, ev)}>
                         <div className="goods-left">
                             <div>
-                                <LazyLoadIndex lazyInfo={{offset: -30, imgUrl: items.pr_picpath, overflow: true}}/>
+                                <LazyLoadIndex src={items.pr_picpath}/>
                             </div>
                         </div>
                         <div className="goods-right">
