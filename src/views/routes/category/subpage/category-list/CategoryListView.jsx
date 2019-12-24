@@ -92,13 +92,16 @@ class CategoryListView extends BaseComponent {
             this.setState({
                 initStatus: true
             });
-            if (num % 2 === 0) {
-                showStatus[currentIndex] = !showStatus[currentIndex];
-            } else {
-                showStatus[currentIndex] = !showStatus[currentIndex];
-            }
         }
+<<<<<<< HEAD
 
+=======
+        if (num % 2 === 0) {
+            showStatus[currentIndex] = !showStatus[currentIndex];
+        } else {
+            showStatus[currentIndex] = !showStatus[currentIndex];
+        }
+>>>>>>> develop
         const {page} = this.state;
         const keywords = this.props.keywords;
         this.temp.isLoading = true;
@@ -217,7 +220,7 @@ class CategoryListView extends BaseComponent {
             refreshing: true,
             isLoading: true,
             currentIndex: null,
-            showStatus: [false, false, false],
+            // showStatus: [false, false, false],
             flag: [false, false, false]
         }, () => {
             this.getCategoryList(0, true);
@@ -227,40 +230,34 @@ class CategoryListView extends BaseComponent {
     // 过滤tab点击切换
     filterTab = (index) => {
         this.listViewCon.scrollTo(0, 0);  // 切换标签的时候滚动回滚到顶部
-        this.setState({
-            currentIndex: index,
-            page: 1,
-            hasMore: true
-        }, () => {
-            if (index === 0) {
-                this.setState((pre) => ({
-                    flag: !pre.flag
-                }));
-                if (this.state.flag) {
-                    this.getCategoryList(5);
-                } else {
-                    this.getCategoryList(6);
-                }
-            } else if (index === 1) {
-                this.setState((pre) => ({
-                    flag: !pre.flag
-                }));
-                if (this.state.flag) {
-                    this.getCategoryList(3);
-                } else {
-                    this.getCategoryList(4);
-                }
-            } else if (index === 2) {
-                this.setState((pre) => ({
-                    flag: !pre.flag
-                }));
-                if (this.state.flag) {
-                    this.getCategoryList(1);
-                } else {
-                    this.getCategoryList(2);
-                }
-            }
+        this.setState(preState => {
+            preState.flag[index] = !preState.flag[index];
+            return {
+                currentIndex: index,
+                page: 1,
+                hasMore: true,
+                flag: preState.flag
+            };
         });
+        if (index === 0) {
+            if (this.state.flag[index]) {
+                this.getCategoryList(5);
+            } else {
+                this.getCategoryList(6);
+            }
+        } else if (index === 1) {
+            if (this.state.flag[index]) {
+                this.getCategoryList(3);
+            } else {
+                this.getCategoryList(4);
+            }
+        } else if (index === 2) {
+            if (this.state.flag[index]) {
+                this.getCategoryList(1);
+            } else {
+                this.getCategoryList(2);
+            }
+        }
     };
 
     //渲染排序
