@@ -2,9 +2,12 @@
  * 根组件  封装组件一些逻辑通用方法
  */
 import PropTypes from 'prop-types';
+import dsBridge from 'dsbridge';
 import {is} from 'immutable';
+import {store} from '../../redux/store';
 import {baseActionCreator as actionCreator} from '../../redux/baseAction';
 
+const {systemApi: {setValue}} = Utils;
 class BaseComponent extends React.Component {
     static propTypes = {
         children: PropTypes.array
@@ -23,6 +26,16 @@ class BaseComponent extends React.Component {
         super(props, context);
     }
 
+    componentWillMount() {
+        if (process.env.NATIVE) {
+            dsBridge.call('wxLoginCallback', (data) => { //设置userToken
+                const str = new RegExp('"', 'g');
+                const userToken = data.replace(str, '').split(':')[1];
+                window.localStorage.setItem('userToken', userToken);
+                store.dispatch(actionCreator.setUserToken(data.usertoken));
+            });
+        }
+    }
 
     shouldComponentUpdate(nextProps, nextState) {
         const thisProps = this.props || {},

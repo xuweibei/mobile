@@ -19,7 +19,72 @@ import ShopSearch from './shop-search/ShopSearch';
 import shopDetail from './shop-search/shopDetail';
 import MyComplain from './my-complain/MyComplain';
 
-const OrderModal = () => (
+// const PossessEvaluate = Loadable({
+//     loader: () => import(/* webpackChunkName: 'hybird' */ './possess-evaluate/PossessEvaluate'),
+//     loading: () => null
+// });
+// const ListDetails = Loadable({
+//     loader: () => import(/* webpackChunkName: 'ListDetails' */ './List-details/ListDetails'),
+//     loading: () => null
+// });
+// const payMoney = Loadable({
+//     loader: () => import(/* webpackChunkName: 'payMoney' */ './pay-money/PayMoney'),
+//     loading: () => null
+// });
+// const PaymentCompleted = Loadable({
+//     loader: () => import(/* webpackChunkName: 'PaymentCompleted' */ './payment-completed/PaymentCompleted'),
+//     loading: () => null
+// });
+// const Logistics = Loadable({
+//     loader: () => import(/* webpackChunkName: 'Logistics' */ './logistics/Logistics'),
+//     loading: () => null
+// });
+// const MyEvaluatePage = Loadable({
+//     loader: () => import(/* webpackChunkName: 'MyEvaluatePage' */ './my-evaluation-detail/MyEvaluate'),
+//     loading: () => null
+// });
+// const EvaluationSuccessPage = Loadable({
+//     loader: () => import(/* webpackChunkName: 'EvaluationSuccessPage' */ './my-evaluation-detail/EvaluationSuccess'),
+//     loading: () => null
+// });
+// const publishReview = Loadable({
+//     loader: () => import(/* webpackChunkName: 'publishReview' */ './publish-review/PublishReview'),
+//     loading: () => null
+// });
+
+// const refundDetailsPage = Loadable({
+//     loader: () => import(/* webpackChunkName: 'refundDetailsPage' */ './refund-details/RefundDetails'),
+//     loading: () => null
+// });
+// const ApplyServicePage = Loadable({
+//     loader: () => import(/* webpackChunkName: 'ApplyServicePage' */ './apply-service/ApplyService'),
+//     loading: () => null
+// });
+// const OnlyRefund = Loadable({
+//     loader: () => import(/* webpackChunkName: 'OnlyRefund' */ './apply-service/OnlyRefund'),
+//     loading: () => null
+// });
+// const ReturnGoods = Loadable({
+//     loader: () => import(/* webpackChunkName: 'ReturnGoods' */ './apply-service/ReturnGoods'),
+//     loading: () => null
+// });
+// const ApplyDrawback = Loadable({
+//     loader: () => import(/* webpackChunkName: 'ApplyDrawback' */ './apply-drawback/ApplyDrawback'),
+//     loading: () => null
+// });
+// const ShopSearch = Loadable({
+//     loader: () => import(/* webpackChunkName: 'ShopSearch' */ './shop-search/ShopSearch'),
+//     loading: () => null
+// });
+// const shopDetail = Loadable({
+//     loader: () => import(/* webpackChunkName: 'shopDetail' */ './shop-search/shopDetail'),
+//     loading: () => null
+// });
+// const MyComplain = Loadable({
+//     loader: () => import(/* webpackChunkName: 'MyComplain' */ './my-complain/MyComplain'),
+//     loading: () => null
+// });
+const OrderModalOther = () => (
     <React.Fragment>
         <CacheRoute path="/myOrder" when="back" cacheKey="OrderPage" component={OrderPage}/>
         <Route path="/listDetails" component={ListDetails}/> {/* 订单详情-(5.3.1)*/}
@@ -42,4 +107,4 @@ const OrderModal = () => (
     </React.Fragment>
 );
 
-export default OrderModal;
+export default OrderModalOther;

@@ -10,37 +10,37 @@
         <script type="text/javascript">
                 if((/android/gi).test(navigator.appVersion)){
                 // <!-- jsbridge 前端初始化 安卓  -->
-                    function connectWebViewJavascriptBridge(callback) {
-                        if (window.WebViewJavascriptBridge) {
-                            callback(WebViewJavascriptBridge)
-                        } else {
-                            document.addEventListener(
-                                'WebViewJavascriptBridgeReady'
-                                , function() {
-                                    callback(WebViewJavascriptBridge)
-                                },
-                                false
-                            );
-                        }
-                    }
-                    connectWebViewJavascriptBridge(function(bridge) {
-                        bridge.init(function(message, responseCallback) {
-                            // console.log('JS got a message', message);
-                            var data = {
-                                'Javascript Responds': '测试中文!'
-                            };
-                            if (responseCallback) {
-                                // console.log('JS responding with', data);
-                                responseCallback(data);
-                            }
-                        });
-                        bridge.registerHandler("functionInJs", function(data, responseCallback) {
-                            if (responseCallback) {
-                                var responseData = "Javascript Says Right back aka!";
-                                responseCallback(responseData);
-                            }
-                        });
-                    })
+                    // function connectWebViewJavascriptBridge(callback) {
+                    //     if (window.WebViewJavascriptBridge) {
+                    //         callback(WebViewJavascriptBridge)
+                    //     } else {
+                    //         document.addEventListener(
+                    //             'WebViewJavascriptBridgeReady'
+                    //             , function() {
+                    //                 callback(WebViewJavascriptBridge)
+                    //             },
+                    //             false
+                    //         );
+                    //     }
+                    // }
+                    // connectWebViewJavascriptBridge(function(bridge) {
+                    //     bridge.init(function(message, responseCallback) {
+                    //         // console.log('JS got a message', message);
+                    //         var data = {
+                    //             'Javascript Responds': '测试中文!'
+                    //         };
+                    //         if (responseCallback) {
+                    //             // console.log('JS responding with', data);
+                    //             responseCallback(data);
+                    //         }
+                    //     });
+                    //     bridge.registerHandler("functionInJs", function(data, responseCallback) {
+                    //         if (responseCallback) {
+                    //             var responseData = "Javascript Says Right back aka!";
+                    //             responseCallback(responseData);
+                    //         }
+                    //     });
+                    // })
                 }else{
                 // <!-- jsbridge 前端初始化 ios  -->
                     function setupWebViewJavascriptBridge(callback) {

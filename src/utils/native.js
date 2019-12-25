@@ -1,6 +1,7 @@
 /**
  * 对接原生方法
  */
+import dsBridge from 'dsbridge';
 import {store} from '../redux/store';
 import {systemApi} from './systemApi';
 import {baseActionCreator} from '../redux/baseAction';
@@ -8,7 +9,6 @@ import {appHistory} from './appHistory';
 
 const {systemApi: {removeValue}, showInfo, showFail} = Utils;
 const {LOCALSTORAGE} = Constants;
-
 //统一封装原生接口请求
 export const native = (str, obj, callBack) => new Promise((resolve, reject) => {
     if (window.WebViewJavascriptBridge && window.WebViewJavascriptBridge.callHandler && process.env.NATIVE) {
@@ -61,34 +61,34 @@ export const getShopCartInfo = (str, obj, callBack) => new Promise((resolve, rej
 
 //获取userToken
 export const getAppUserToken = () => new Promise((resolve, reject) => {
-    setTimeout(() => {
-        if (window.WebViewJavascriptBridge && window.WebViewJavascriptBridge.callHandler && process.env.NATIVE) {
-            window.WebViewJavascriptBridge.callHandler('wxLoginCallback',
-                JSON.stringify({}),
-                (responseData) => {
-                    resolve(responseData);
-                    if (responseData && JSON.parse(responseData).status === '0') {
-                        const str = JSON.parse(responseData).data.usertoken || null;
-                        systemApi.setValue('userToken', str);
-                        store.dispatch(baseActionCreator.setUserToken(str));
-                    } else if (responseData) {
-                        showFail('身份验证失败');
-                    }
-                });
-        } else {
-            reject();
-        }
-    }, 500);
+    // setTimeout(() => {
+    if (window.WebViewJavascriptBridge && window.WebViewJavascriptBridge.callHandler && process.env.NATIVE) {
+        window.WebViewJavascriptBridge.callHandler('wxLoginCallback',
+            JSON.stringify({}),
+            (responseData) => {
+                console.log(responseData, '卡列表估计快了发过火');
+                resolve(responseData);
+                if (responseData && JSON.parse(responseData).status === '0') {
+                    const str = JSON.parse(responseData).data.usertoken || null;
+                    systemApi.setValue('userToken', str);
+                    store.dispatch(baseActionCreator.setUserToken(str));
+                } else if (responseData) {
+                    showFail('身份验证失败');
+                }
+            });
+        resolve();
+    } else {
+        reject();
+    }
+    // }, 500);
 });
 
 //安卓底部回退按钮 // APP右滑
 global.goBack = function () {
     const onOff = store.getState().get('base').get('returnStatus');
     if (!onOff) {
-        if (appHistory.length() === 0) {
-            setTimeout(() => {
-                process.env.NATIVE && window.WebViewJavascriptBridge.callHandler('goBack');
-            }, 500);
+        if (appHistory.length() === 0 && process.env.NATIVE) {
+            dsBridge.call('goBack');
         } else {
             appHistory.goBack();
         }
@@ -119,7 +119,8 @@ global.goBackApp = function () {
 //返回封装
 export function goBackModal() {
     if (process.env.NATIVE && appHistory.length() === 0) {
-        native('goBack');
+        // native('goBack');
+        dsBridge.call('goBack');
     } else {
         appHistory.goBack();
     }

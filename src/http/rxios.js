@@ -3,18 +3,19 @@
  */
 import axios from 'axios';
 import jsonp from 'jsonp';
+import dsBridge from 'dsbridge';
 // import {Observable} from 'rxjs';
 import {defer} from 'rxjs/Observable/defer';
 import {Subject} from 'rxjs/Subject';
 import 'rxjs/add/operator/do';
 import {store} from '../redux/store';
-import {native} from '../utils/native';
+// import {native} from '../utils/native';
 
 import {baseActionCreator as actionCreator} from '../redux/baseAction';
 
 
 const {CancelToken} = axios;
-const {systemApi: {getValue, removeValue}, appHistory, showFail} = Utils;
+const {systemApi: {removeValue}, appHistory, showFail} = Utils;
 const {MESSAGE, LOCALSTORAGE} = Constants;
 
 // http request 拦截器
@@ -23,7 +24,7 @@ axios.interceptors.request.use(
         const state = store.getState();
         const userToken = state.get('base').get(LOCALSTORAGE.USER_TOKEN);
         if (!config.data) config.data = {};
-        config.data.userToken = userToken || (getValue(LOCALSTORAGE.USER_TOKEN) === 'null' ? '' : getValue(LOCALSTORAGE.USER_TOKEN));
+        config.data.userToken = userToken || (window.localStorage.getItem(LOCALSTORAGE.USER_TOKEN) === 'null' ? '' : window.localStorage.getItem(LOCALSTORAGE.USER_TOKEN));
         return config;
     },
     error => {
@@ -39,7 +40,8 @@ axios.interceptors.response.use(
                 removeValue(LOCALSTORAGE.USER_TOKEN); // 清除token,localstorage
                 store.dispatch(actionCreator.setUserToken('')); // 清除redux的userToken
                 //重定向到原生登录页
-                native('loginout');
+                // native('loginout');
+                dsBridge.call('loginout');
             } else {
                 appHistory.push('/login');
             }

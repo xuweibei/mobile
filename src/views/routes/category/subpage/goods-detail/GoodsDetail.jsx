@@ -66,7 +66,11 @@ class GoodsDetail extends BaseComponent {
         max: 0 //商品库存
     };
 
+    componentWillMount() {
+    }
+
     componentDidMount() {
+        // alert(2);
         this.init();
     }
 
