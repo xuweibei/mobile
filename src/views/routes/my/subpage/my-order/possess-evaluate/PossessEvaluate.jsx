@@ -414,7 +414,7 @@ class PossessEvaluate extends BaseComponent {
                     <div className="shop-lists">
                         <div className="shop-name" onClick={userType === '2' ? '' : () => this.goShopHome(item.shop_id)}>
                             <div className="shop-title">
-                                <LazyLoadIndex lazyInfo={{offset: -30, imgUrl: userType === '2' ? item.avatarUrl : item.picpath, overflow: true}}/>
+                                <LazyLoadIndex src={userType === '2' ? item.avatarUrl : item.picpath}/>
                                 <p>{userType === '2' ? item.nickname : item.shopName }</p>
                                 <div className="icon enter"/>
                             </div>
@@ -424,7 +424,7 @@ class PossessEvaluate extends BaseComponent {
                             <div key={items.id} className="goods" onClick={userType === '2' ? '' : () => this.skipDetail(item.id, item.all_deposit)}>
                                 <div className="goods-left">
                                     <div>
-                                        <LazyLoadIndex lazyInfo={{offset: -30, imgUrl: items.pr_picpath, overflow: true}}/>
+                                        <LazyLoadIndex src={item.pr_picpath}/>
                                     </div>
                                 </div>
                                 <div className="goods-right">
@@ -454,7 +454,7 @@ class PossessEvaluate extends BaseComponent {
                                 {
                                     userType === '2' ? '' : (
                                         <div className="buttons">
-                                            <div className="evaluate-button" onClick={() => this.promptlyEstimate(item.id, item.all_deposit)}>立即评价</div>
+                                            <div className="evaluate-button" onClick={() => this.promptlyEstimate(item.id, item.if_express)}>立即评价</div>
                                         </div>
                                     )
                                 }
@@ -474,7 +474,7 @@ class PossessEvaluate extends BaseComponent {
             <div className="have-evaluation">
                 <div className="discuss">
                     <div className="discuss-user">
-                        <LazyLoadIndex lazyInfo={{offset: -30, imgUrl: item.avatarUrl, overflow: true}}/>
+                        <LazyLoadIndex src={item.avatarUrl}/>
                         <div className="user-center">{item.nickname}</div>
                         <div className="user-right">{this.evalute(item.mark_type)}</div>
                     </div>
@@ -486,7 +486,7 @@ class PossessEvaluate extends BaseComponent {
                         <div className="consult">{item.content}</div>
                         <div className="picture">
                             {
-                                item.pics.length > 0 && item.pics.map((value, index) => <LazyLoadIndex key={keyNum++} bigPicture={() => this.bigPicture(item.pics, index)} lazyInfo={{offset: -30, imgUrl: value, overflow: true}}/>)
+                                item.pics.length > 0 && item.pics.map((value, index) => <LazyLoadIndex src={value} bigPicture={() => this.bigPicture(item.pics, index)}/>)
                             }
                         </div>
                         {
@@ -496,7 +496,7 @@ class PossessEvaluate extends BaseComponent {
                             <div className="append">
                                 <div className="append-chase">追评</div>
                                 <div className="append-theory">{item.add.content}</div>
-                                {item.add && item.add.pics && item.add.pics.length > 0 && item.add.pics.map((data, index) => <LazyLoadIndex bigPicture={() => this.bigPicture(item.add.pics, index)} lazyInfo={{offset: -30, imgUrl: data, overflow: true}}/>)}
+                                {item.add && item.add.pics && item.add.pics.length > 0 && item.add.pics.map((data, index) => <LazyLoadIndex src={data} bigPicture={() => this.bigPicture(item.add.pics, index)}/>)}
                                 {item.add && item.add.return_content && <div className="reply">商家回复：{item.add.return_content}</div>}
                             </div>
                         )}
@@ -564,7 +564,8 @@ class PossessEvaluate extends BaseComponent {
             tabkey: index,
             refreshing: true,
             requestOne: true,
-            pageCount:-1
+            hasMore: false,
+            pageCount: -1
         });
         //储存tab选中状态，以便子级返回本页面时，选中
         this.props.setTab(index);

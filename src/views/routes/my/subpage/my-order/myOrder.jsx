@@ -405,6 +405,7 @@ class MyOrder extends BaseComponent {
             //赋址改变，为重新渲染
             arr.push(Object.assign({}, value));
         });
+
         this.setState((prevState) => ({
             dataSource: prevState.dataSource.cloneWithRows(arr),
             retainArr: arr
@@ -447,10 +448,12 @@ class MyOrder extends BaseComponent {
                             showModal: false,
                             modalTitle: '',
                             status: 2,
+                            retainArr: [],
                             page: 1
                         }, () => {
                             if (this.statusChoose(this.props.location.pathname.split('/')[2]) === '2') { //这里是为了判断撤销完后回退的还是收货页面时不请求，手动请求
                                 this.getMallOrder(2, 1);
+                                return;
                             }
                         });
                         //确定撤销后，跳转到待收货那列
@@ -658,7 +661,7 @@ class MyOrder extends BaseComponent {
                     <div className="goods" key={item.id} onClick={(ev) => this.goToOrderDetail(item.id, item.return_status, item.return_id, items.return_types, ev)}>
                         <div className="goods-left">
                             <div>
-                                <LazyLoadIndex lazyInfo={{offset: -30, imgUrl: items.pr_picpath, overflow: true}}/>
+                                <LazyLoadIndex src={items.pr_picpath}/>
                             </div>
                         </div>
                         <div className="goods-right">

@@ -212,9 +212,15 @@
         </script>
         <script src='https://res2.wx.qq.com/open/js/jweixin-1.4.0.js'></script>
         <script src="https://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/vconsole/3.0.0/vconsole.min.js"></script>
+<<<<<<< HEAD
         <!-- <script>
             new VConsole()
         </script> -->
+=======
+        <script>
+            // new VConsole()
+        </script>
+>>>>>>> develop
         <script>
             if (window.isWX) {
                     const data=JSON.stringify({
@@ -227,41 +233,41 @@
                 headers: new Headers({
                             'Content-Type': 'application/json'
                         })
-            }).then(res => res.json()).then(response => 
-                wx.config({
-                    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-                    appId: response.appId, // 必填，公众号的唯一标识
-                    timestamp: response.timestamp, // 必填，生成签名的时间戳
-                    nonceStr: response.nonceStr, // 必填，生成签名的随机串
-                    signature: response.signature,// 必填，签名
-                    jsApiList: ['getLocation','scanQRCode','openLocation','updateAppMessageShareData','updateTimelineShareData'] // 必填，需要使用的JS接口列表
+                }).then(res => res.json()).then(response => 
+                    wx.config({
+                        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                        appId: response.appId, // 必填，公众号的唯一标识
+                        timestamp: response.timestamp, // 必填，生成签名的时间戳
+                        nonceStr: response.nonceStr, // 必填，生成签名的随机串
+                        signature: response.signature,// 必填，签名
+                        jsApiList: ['getLocation','scanQRCode','openLocation','updateAppMessageShareData','updateTimelineShareData'] // 必填，需要使用的JS接口列表
                     })
                 )
             } else  {
                 let xmlhttp;
-            if (window.XMLHttpRequest) {
-                xmlhttp = new XMLHttpRequest();
-            } else {
-                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            xmlhttp.open("POST", 'https://cs.zzha.vip/wechat/index', true);
-            xmlhttp.setRequestHeader("Content-type","application/json");
-            xmlhttp.send(data);
-            xmlhttp.onreadystatechange = function(){
-                if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-                    if (xmlhttp.responseText) {
-                        const json = JSON.parse(xmlhttp.responseText);
-                        wx.config({
-                            debug: true,
-                            appId: json.appId, // 必填，公众号的唯一标识
-                            timestamp: json.timestamp, // 必填，生成签名的时间戳
-                            nonceStr: json.nonceStr, // 必填，生成签名的随机串
-                            signature: json.signature,// 必填，签名
-                            jsApiList: ['getLocation','scanQRCode','openLocation','updateAppMessageShareData','updateTimelineShareData'] // 必填，需要使用的JS接口列表
-                        })
-                    } 
+                if (window.XMLHttpRequest) {
+                    xmlhttp = new XMLHttpRequest();
+                } else {
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
                 }
-            }
+                xmlhttp.open("POST", 'https://cs.zzha.vip/wechat/index', true);
+                xmlhttp.setRequestHeader("Content-type","application/json");
+                xmlhttp.send(data);
+                xmlhttp.onreadystatechange = function(){
+                    if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+                        if (xmlhttp.responseText) {
+                            const json = JSON.parse(xmlhttp.responseText);
+                            wx.config({
+                                debug: true,
+                                appId: json.appId, // 必填，公众号的唯一标识
+                                timestamp: json.timestamp, // 必填，生成签名的时间戳
+                                nonceStr: json.nonceStr, // 必填，生成签名的随机串
+                                signature: json.signature,// 必填，签名
+                                jsApiList: ['getLocation','scanQRCode','openLocation','updateAppMessageShareData','updateTimelineShareData'] // 必填，需要使用的JS接口列表
+                            })
+                        } 
+                    }
+                }
             }
             
             window.wx.ready(() => {

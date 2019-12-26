@@ -557,28 +557,22 @@ class My extends BaseComponent {
                                     </ul>
                                 </div>
                             ) : (
-                            <div>
-                                <div className="conumer-info">
-                                    <List>
-                                        {this.consumer.map((item,index) => (
-                                            index === 0 && <List.Item arrow={'horizontal'} key={item.title} onClick={() => this.jumpRouter(item.event)}>
-                                                <span className={'icon ' + item.icon}/>
-                                                <p>{item.title}</p>
-                                            </List.Item>
-                                        ))}
-                                    </List>
+                                <div>
+                                    <div className="conumer-info">
+                                        <List>
+                                            {this.consumer.map((item, index) => (
+                                                index === 0 && (<List.Item arrow="horizontal" key={item.title} onClick={() => this.jumpRouter(item.event)}> <span className={'icon ' + item.icon}/><p>{item.title}</p></List.Item>)
+                                            ))}
+                                        </List>
+                                    </div>
+                                    <div className="conumer-info">
+                                        <List>
+                                            {this.consumer.map((item, index) => (
+                                                index === 1 && (<List.Item arrow="horizontal" key={item.title} onClick={() => this.jumpRouter(item.event)}> <span className={'icon ' + item.icon}/> <p>{item.title}</p></List.Item>)
+                                            ))}
+                                        </List>
+                                    </div>
                                 </div>
-                                <div className="conumer-info">
-                                    <List>
-                                        {this.consumer.map((item,index) => (
-                                            index === 1 && <List.Item arrow={'horizontal'} key={item.title} onClick={() => this.jumpRouter(item.event)}>
-                                                <span className={'icon ' + item.icon}/>
-                                                <p>{item.title}</p>
-                                            </List.Item>
-                                        ))}
-                                    </List>
-                                </div>
-                            </div>
                             )
                         }
                         {   //用户身份为消费者时展示

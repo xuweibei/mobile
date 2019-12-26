@@ -58,30 +58,38 @@ export default class MyComplain extends BaseComponent {
             .subscribe(res => {
                 if (res && res.status === 0) {
                     fileMain.forEach(item => {
-                        item.imgB = encodeURIComponent(item.imgB);
-                        item.imgS = encodeURIComponent(item.imgS);
+                        item.url = encodeURIComponent(item.imgB);
                     });
                     if (fileMain.length > 0) {
+                        const fileArrPro = [];
                         fileMain.forEach((item, index) => {
-                            this.fetch(urlCfg.pictureUploadBase, {
-                                data: {
-                                    id: res.data.id,
-                                    type: 4,
-                                    ix: index,
-                                    num: fileMain.length,
-                                    file: item.imgB,
-                                    filex: item.imgS
-                                }
-                            }).subscribe(value => {
-                                if (value && value.status === 0) {
-                                    showSuccess(Feedback.submit_Success);
-                                    if (process.env.NATIVE) {
-                                        native('goHome');
-                                    } else {
-                                        appHistory.push('/home');
-                                    }
-                                }
-                            });
+                            if (item) {
+                                fileArrPro.push(new Promise((resolve, reject) => {
+                                    this.fetch(urlCfg.pictureUploadBase, {
+                                        data: {
+                                            id: res.data.id,
+                                            type: 4,
+                                            ix: index,
+                                            num: fileMain.length,
+                                            file: item.url
+                                        }
+                                    }).subscribe(value => {
+                                        if (value && value.status === 0) {
+                                            resolve(value);
+                                        }
+                                    });
+                                }));
+                            }
+                        });
+                        Promise.all(fileArrPro).then(ooo => {
+                            showSuccess(Feedback.submit_Success);
+                            if (process.env.NATIVE) {
+                                native('goHome');
+                            } else {
+                                appHistory.push('/home');
+                            }
+                        }).catch(err => {
+                            console.log(err);
                         });
                     } else {
                         showSuccess(Feedback.submit_Success);
@@ -98,8 +106,9 @@ export default class MyComplain extends BaseComponent {
 
     //原生图片选择
     addPictrue = () => {
+        const {fileMain} = this.state;
         if (process.env.NATIVE) {
-            native('picCallback', {num: 9}).then(res => {
+            native('picCallback', {num: 9 - fileMain.length}).then(res => {
                 const arr = [];
                 res.data.img.forEach(item => {
                     arr.push({imgB: item[0], imgS: item[1], id: new Date()});
@@ -149,7 +158,7 @@ export default class MyComplain extends BaseComponent {
                                                 ))
                                             }
                                             {
-                                                fileMain && fileMain.length <= 9 && (
+                                                fileMain && fileMain.length < 9 && (
                                                     <li className="imgAdd-button" onClick={() => this.addPictrue()}>
                                                         <span>+</span>
                                                     </li>

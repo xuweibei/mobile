@@ -193,7 +193,7 @@ class ShopHome extends BaseComponent {
                 <div className="goods-name" onClick={() => this.allgoods(item.id)}>
                     <div className="goods-picture">
                         <LazyLoadIndex
-                            lazyInfo={{imgUrl: item.picpath, offset: -30, overflow: true}}
+                            src={item.picpath}
                         />
                     </div>
                     <div className="goods-information">

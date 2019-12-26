@@ -59,13 +59,13 @@ class Customer extends BaseComponent {
             }
         ];
         if (page === 1) {
-            this.fetch(urlCfg.myCustomer, {data: param[0]}, noLoading).subscribe(res => {
+            this.fetch(urlCfg.regionalTota, {data: param[0]}, noLoading).subscribe(res => {
                 if (res.status === 0) {
                     this.handleResult(res, true);
                 }
             });
         } else {
-            this.fetch(urlCfg.myCustomer, {data: param[1]}).subscribe(res => {
+            this.fetch(urlCfg.regionalTota, {data: param[1]}).subscribe(res => {
                 if (res.status === 0) {
                     this.handleResult(res, false);
                 }
