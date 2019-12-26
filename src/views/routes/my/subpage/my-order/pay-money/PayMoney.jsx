@@ -1,5 +1,6 @@
 /**支付页面 */
 import React from 'react';
+import dsBridge from 'dsbridge';
 import {connect} from 'react-redux';
 import './PayMoney.less';
 import {dropByCacheKey} from 'react-router-cache-route';
@@ -7,7 +8,7 @@ import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAc
 import {InputGrid} from '../../../../../common/input-grid/InputGrid';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 
-const {appHistory, getUrlParam, native, systemApi: {getValue, removeValue}, supple, showFail, showInfo, nativeCssDiff} = Utils;
+const {appHistory, getUrlParam, native, systemApi: {getValue, removeValue}, supple, showInfo, nativeCssDiff} = Utils;
 const {urlCfg} = Configs;
 const mode = [
     {
@@ -179,13 +180,20 @@ class PayMoney extends BaseComponent {
                             timestamp: res.data.arr.timestamp,
                             sign: res.data.arr.sign
                         };
-                        native('wxPayCallback', obj).then((data) => {
+                        dsBridge.call('wxPayCallback', obj, (dataList) => {
                             native('goH5', {'': ''});
-                            appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&id=${res.data.order_id}&types=${selectIndex}&deposit=${listArr.deposit}&if_express=${res.data.if_express}`);
-                        }).catch(data => {
-                            native('goH5', {'': ''});
-                            showFail(data.message);
+                            const data = dataList ? JSON.parse(dataList) : '';
+                            if (data && data.status === '0') {
+                                appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&id=${res.data.order_id}&types=${selectIndex}&deposit=${listArr.deposit}&if_express=${res.data.if_express}`);
+                            }
                         });
+                        // native('wxPayCallback', obj).then((data) => {
+                        //     native('goH5', {'': ''});
+                        //     appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&id=${res.data.order_id}&types=${selectIndex}&deposit=${listArr.deposit}&if_express=${res.data.if_express}`);
+                        // }).catch(data => {
+                        //     native('goH5', {'': ''});
+                        //     showFail(data.message);
+                        // });
                     } else {
                         // window.location.href = res.data.mweb_url;
                     }
@@ -200,15 +208,22 @@ class PayMoney extends BaseComponent {
             .subscribe(res => {
                 if (res && res.status === 0) {
                     if (process.env.NATIVE) {
-                        native('authInfo', res.data.response).then((data) => {
+                        dsBridge.call('authInfo', res.data.response, (dataList) => {
                             native('goH5', {'': ''});
+                            const data = dataList ? JSON.parse(dataList) : '';
                             if (data && data.status === '0') {
                                 appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&id=${res.data.order_id}&types=${selectIndex}&deposit=${listArr.deposit || listArr.all_deposit}&if_express=${res.data.if_express}`);
                             }
-                        }).catch(data => {
-                            native('goH5', {'': ''});
-                            showFail(data.message);
                         });
+                        // native('authInfo', res.data.response).then((data) => {
+                        //     native('goH5', {'': ''});
+                        //     if (data && data.status === '0') {
+                        //         appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&id=${res.data.order_id}&types=${selectIndex}&deposit=${listArr.deposit || listArr.all_deposit}&if_express=${res.data.if_express}`);
+                        //     }
+                        // }).catch(data => {
+                        //     native('goH5', {'': ''});
+                        //     showFail(data.message);
+                        // });
                     } else {
                         // window.location.href = res.data.mweb_url;
                     }
@@ -222,14 +237,21 @@ class PayMoney extends BaseComponent {
         this.fetch(urlCfg.batchPayment, {data: {type: 1, payType: selectIndex === 1 ? 2 : 1, order_no: listArr.order}})
             .subscribe(res => {
                 if (res && res.status === 0) {
-                    //selectIndex === 1为微信支付
-                    native(selectIndex === 1 ? 'payWX' : 'payAliPay', {qrCode: res.data.appPayRequest.qrCode, order_no: listArr.order[0], type: process.env.NATIVE ? 1 : 2, payType: selectIndex === 1 ? 2 : 1}).then((data) => {
+                    dsBridge.call(selectIndex === 1 ? 'payWX' : 'payAliPay', {qrCode: res.data.appPayRequest.qrCode, order_no: listArr.order[0], type: process.env.NATIVE ? 1 : 2, payType: selectIndex === 1 ? 2 : 1}, (dataList) => {
                         native('goH5', {'': ''});
-                        appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&types=${selectIndex}&deposit=${listArr.all_deposit}&if_express=${res.if_express}&batch=1`);
-                    }).catch(data => {
-                        native('goH5', {'': ''});
-                        showFail(data.message);
+                        const data = dataList ? JSON.parse(dataList) : '';
+                        if (data && data.status === '0') {
+                            appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&types=${selectIndex}&deposit=${listArr.all_deposit}&if_express=${res.if_express}&batch=1`);
+                        }
                     });
+                    //selectIndex === 1为微信支付
+                    // native(selectIndex === 1 ? 'payWX' : 'payAliPay', {qrCode: res.data.appPayRequest.qrCode, order_no: listArr.order[0], type: process.env.NATIVE ? 1 : 2, payType: selectIndex === 1 ? 2 : 1}).then((data) => {
+                    //     native('goH5', {'': ''});
+                    //     appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&types=${selectIndex}&deposit=${listArr.all_deposit}&if_express=${res.if_express}&batch=1`);
+                    // }).catch(data => {
+                    //     native('goH5', {'': ''});
+                    //     showFail(data.message);
+                    // });
                     if (res.data.status === 1) {
                         showInfo(res.data.message);
                     }

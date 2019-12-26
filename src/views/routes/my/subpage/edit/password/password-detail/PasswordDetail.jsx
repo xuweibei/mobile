@@ -9,7 +9,7 @@ import GeisInputItem from '../../../../../../common/form/input/GeisInputItem';
 import {baseActionCreator as actionCreator} from '../../../../../../../redux/baseAction';
 import './PasswordDetail.less';
 
-const {appHistory, validator, showInfo, showSuccess, getUrlParam, native, setNavColor} = Utils;
+const {appHistory, validator, showInfo, showSuccess, getUrlParam, native} = Utils;
 const {urlCfg} = Configs;
 const {MESSAGE: {Form, Feedback}, navColorR} = Constants;
 const getPass = { //获取验证码按钮的样式
@@ -42,13 +42,13 @@ class passwordDetail extends BaseComponent {
 
     componentWillMount() {
         if (process.env.NATIVE) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorR});
+            native('native', {color: navColorR});
         }
     }
 
     componentWillReceiveProps() {
         if (process.env.NATIVE) {
-            setNavColor('setNavColor', {color: navColorR});
+            native('native', {color: navColorR});
         }
     }
 

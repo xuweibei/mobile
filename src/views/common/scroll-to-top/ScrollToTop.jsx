@@ -7,7 +7,7 @@ import {withRouter} from 'react-router-dom';
 import AppNavBar from '../navbar/NavBar';
 import Nothing from '../nothing/Nothing';
 
-const {appHistory, setNavColor, native} = Utils;
+const {appHistory, native} = Utils;
 const {FIELD, navColorF} = Constants;
 class ScrollToTop extends React.PureComponent {
     static propTypes = {
@@ -26,13 +26,13 @@ class ScrollToTop extends React.PureComponent {
 
     componentWillMount() {
         if (process.env.NATIVE) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
+            native('native', {color: navColorF});
         }
     }
 
     componentWillReceiveProps() {
         if (process.env.NATIVE) {
-            setNavColor('setNavColor', {color: navColorF});
+            native('native', {color: navColorF});
         }
     }
 

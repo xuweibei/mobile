@@ -26,8 +26,7 @@ const temp = {
 let keyNum = 0.11211212;
 const {FIELD, navColorF} = Constants;
 const {urlCfg} = Configs;
-const {appHistory, native, getUrlParam, setNavColor} = Utils;
-const hybird = process.env.NATIVE;
+const {appHistory, native, getUrlParam} = Utils;
 const arr = [{
     title: '全部',
     value: 0,
@@ -89,14 +88,14 @@ class PossessEvaluate extends BaseComponent {
     }
 
     componentWillMount() {
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
+        if (process.env.NATIVE) { //设置tab颜色
+            native('native', {color: navColorF});
         }
     }
 
     componentWillReceiveProps(nextProps) {
         const userType = nextProps.location.search.split('=')[1];
-        if (hybird && (userType !== this.state.userType)) {
+        if (process.env.NATIVE && (userType !== this.state.userType)) {
             this.setState({
                 dataSource: new ListView.DataSource({
                     rowHasChanged: (row1, row2) => row1 !== row2
@@ -121,8 +120,8 @@ class PossessEvaluate extends BaseComponent {
                 this.sentPas();
             });
         }
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
+        if (process.env.NATIVE) {
+            native('native', {color: navColorF});
         }
     }
 
@@ -573,7 +572,7 @@ class PossessEvaluate extends BaseComponent {
 
     goBackModal = () => {
         this.props.setTab('');
-        if (hybird && appHistory.length() === 0) {
+        if (process.env.NATIVE && appHistory.length() === 0) {
             native('goBack');
         }
         appHistory.goBack();

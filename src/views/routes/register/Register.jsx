@@ -8,7 +8,7 @@ import {baseActionCreator as actionCreator} from '../../../redux/baseAction';
 import './Register.less';
 
 const {MESSAGE: {LOGIN, Form}, COUNTERNUM, LOCALSTORAGE, TD_EVENT_ID, navColorF, WEB_NAME} = Constants;
-const {appHistory, validator, showInfo, systemApi: {setValue}, TD, setNavColor} = Utils;
+const {appHistory, validator, showInfo, systemApi: {setValue}, TD, native} = Utils;
 const {urlCfg, appCfg} = Configs;
 const hybird = process.env.NATIVE;
 
@@ -40,13 +40,13 @@ class Register extends BaseComponent {
 
     componentWillMount() {
         if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
+            native('native', {color: navColorF});
         }
     }
 
     componentWillReceiveProps() {
         if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
+            native('native', {color: navColorF});
         }
     }
 

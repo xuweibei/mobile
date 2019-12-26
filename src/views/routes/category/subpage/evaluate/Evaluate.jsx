@@ -8,7 +8,7 @@ import Nothing from '../../../../common/nothing/Nothing';
 import './Evaluate.less';
 
 const {urlCfg} = Configs;
-const {appHistory, getUrlParam, showInfo, showSuccess, setNavColor} = Utils;
+const {appHistory, getUrlParam, showInfo, showSuccess, native} = Utils;
 const {MESSAGE: {Form, Feedback}, FIELD, navColorF} = Constants;
 
 export default class Evaluate extends BaseComponent {
@@ -32,13 +32,13 @@ export default class Evaluate extends BaseComponent {
 
     componentWillMount() {
         if (process.env.NATIVE) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
+            native('native', {color: navColorF});
         }
     }
 
     componentWillReceiveProps() {
         if (process.env.NATIVE) {
-            setNavColor('setNavColor', {color: navColorF});
+            native('native', {color: navColorF});
         }
     }
 

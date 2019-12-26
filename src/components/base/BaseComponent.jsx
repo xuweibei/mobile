@@ -4,10 +4,8 @@
 import PropTypes from 'prop-types';
 import dsBridge from 'dsbridge';
 import {is} from 'immutable';
-import {store} from '../../redux/store';
 import {baseActionCreator as actionCreator} from '../../redux/baseAction';
 
-const {systemApi: {setValue}} = Utils;
 class BaseComponent extends React.Component {
     static propTypes = {
         children: PropTypes.array
@@ -29,10 +27,11 @@ class BaseComponent extends React.Component {
     componentWillMount() {
         if (process.env.NATIVE) {
             dsBridge.call('wxLoginCallback', (data) => { //设置userToken
-                const str = new RegExp('"', 'g');
-                const userToken = data.replace(str, '').split(':')[1];
-                window.localStorage.setItem('userToken', userToken);
-                store.dispatch(actionCreator.setUserToken(data.usertoken));
+                const obj = data ? JSON.parse(data) : '';
+                if (obj && obj.status === '0') {
+                    window.localStorage.setItem('userToken', obj.data.usertoken);
+                    this.context.store.dispatch(actionCreator.setUserToken(obj.data.usertoken));
+                }
             });
         }
     }

@@ -14,7 +14,7 @@ import Sku from '../../common/sku/Sku';
 import './shopCart.less';
 
 const {urlCfg} = Configs;
-const {appHistory, showInfo, showSuccess, native, systemApi: {removeValue}, getUrlParam, setNavColor, systemApi: {setValue}, nativeCssDiff} = Utils;
+const {appHistory, showInfo, showSuccess, native, systemApi: {removeValue}, getUrlParam, systemApi: {setValue}, nativeCssDiff} = Utils;
 const {MESSAGE: {Form, Feedback}, FIELD, navColorR} = Constants;
 
 // let payInNum = 0;
@@ -44,7 +44,7 @@ class ShopCart extends BaseComponent {
 
     componentWillMount() {
         if (process.env.NATIVE) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorR});
+            native('native', {color: navColorR});
             this.getNativeUserToken();
         }
         this.getCart();
@@ -65,7 +65,7 @@ class ShopCart extends BaseComponent {
 
     componentWillReceiveProps(next) {
         if (process.env.NATIVE) {
-            setNavColor('setNavColor', {color: navColorR});
+            native('native', {color: navColorR});
             const timerNext = decodeURI(getUrlParam('time', encodeURI(next.location.search)));
             const timer = decodeURI(getUrlParam('time', encodeURI(this.props.location.search)));
             const token = decodeURI(getUrlParam('token', encodeURI(next.location.search)));

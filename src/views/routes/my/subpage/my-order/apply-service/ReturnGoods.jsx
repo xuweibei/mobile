@@ -6,7 +6,7 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 import './ReturnGoods.less';
 
 
-const {showInfo, appHistory, getUrlParam, setNavColor} = Utils;
+const {showInfo, appHistory, getUrlParam, native} = Utils;
 const {navColorF} = Constants;
 const {urlCfg} = Configs;
 const hybird = process.env.NATIVE;
@@ -24,13 +24,13 @@ class ApplyServiceDetail extends BaseComponent {
 
     componentWillMount() {
         if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
+            native('native', {color: navColorF});
         }
     }
 
     componentWillReceiveProps() {
         if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
+            native('native', {color: navColorF});
         }
     }
 

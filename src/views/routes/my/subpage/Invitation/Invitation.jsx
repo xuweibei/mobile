@@ -1,5 +1,6 @@
 /**邀请码页面 */
 
+import dsBrige from 'dsbridge';
 import {Button, ActionSheet} from 'antd-mobile';
 import {connect} from 'react-redux';
 import {baseActionCreator as actionCreator} from '../../../../../redux/baseAction';
@@ -50,7 +51,7 @@ class Invitation extends BaseComponent {
         const {shareArr} = this.state;
         if (process.env.NATIVE) {
             if (shareArr) {
-                native('savePicCallback', {type: 2, imgUrl: shareArr});
+                native('savePicCallback', {type: '2', imgUrl: shareArr});
             } else {
                 showInfo('暂无图片可以保存');
             }
@@ -97,11 +98,15 @@ class Invitation extends BaseComponent {
                 imgUrl: shareArr
             };
             if (shareArr) {
-                native('showShare', obj).then(res => {
-                    native('goH5', {'': ''});
-                }).catch(err => {
+                dsBrige.call('showShare', obj, res => {
+                    alert(2);
                     native('goH5', {'': ''});
                 });
+                // native('showShare', obj).then(res => {
+                //     native('goH5', {'': ''});
+                // }).catch(err => {
+                //     native('goH5', {'': ''});
+                // });
             } else {
                 showInfo('暂无图片可以分享');
             }

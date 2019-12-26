@@ -9,7 +9,7 @@ import CategoryListView from './CategoryListView';
 import './CategoryList.less';
 
 
-const {getUrlParam, TD, setNavColor, goBackModal} = Utils;
+const {getUrlParam, TD, native, goBackModal} = Utils;
 const {TD_EVENT_ID} = Constants;
 const {navColorF} = Constants;
 
@@ -32,7 +32,7 @@ class CategoryList extends BaseComponent {
     componentWillMount() {
         this.init();
         if (process.env.NATIVE) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
+            native('native', {color: navColorF});
         }
     }
 
@@ -45,7 +45,7 @@ class CategoryList extends BaseComponent {
             });
         }
         if (process.env.NATIVE) {
-            setNavColor('setNavColor', {color: navColorF});
+            native('native', {color: navColorF});
         }
     }
 

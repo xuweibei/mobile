@@ -6,7 +6,7 @@ import Animation from '../../../../common/animation/Animation';
 import {ListFooter} from '../../../../common/list-footer';
 import './Notice.less';
 
-const {appHistory, showInfo, showSuccess, native, setNavColor} = Utils;
+const {appHistory, showInfo, showSuccess, native, native} = Utils;
 const {MESSAGE: {Form, Feedback}, FIELD, navColorF} = Constants;
 const {urlCfg} = Configs;
 
@@ -50,13 +50,13 @@ export default class Notice extends BaseComponent {
 
     componentWillMount() {
         if (process.env.NATIVE) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
+            native('native', {color: navColorF});
         }
     }
 
     componentWillReceiveProps() {
         if (process.env.NATIVE) {
-            setNavColor('setNavColor', {color: navColorF});
+            native('native', {color: navColorF});
         }
     }
 

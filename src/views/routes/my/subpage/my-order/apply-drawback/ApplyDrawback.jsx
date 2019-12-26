@@ -1,9 +1,10 @@
 /**修改申请 */
+import dsBridge from 'dsbridge';
 import {TextareaItem, Button, ImagePicker} from 'antd-mobile';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './ApplyDrawback.less';
 
-const {dealImage, appHistory, getUrlParam, showSuccess, native} = Utils;
+const {dealImage, appHistory, getUrlParam, showSuccess} = Utils;
 const  {urlCfg} = Configs;
 const {MESSAGE: {Feedback}} = Constants;
 
@@ -157,16 +158,29 @@ export default class applyDrawback extends BaseComponent {
     //原生图片选择
     addPictrue = () => {
         const {nativePicNum, filesArr} = this.state;
-        native('picCallback', {num: nativePicNum}).then(res => {
+        dsBridge.call('picCallback', {num: nativePicNum}, (dataList) => {
+            const res = dataList ? JSON.parse(dataList) : '';
             const arr = filesArr;
-            res.data.img.forEach(item => {
-                arr.push({urlB: item[0], url: item[1], id: new Date()});
-            });
-            this.setState({
-                filesArr: arr,
-                nativePicNum: 9 - arr.length
-            });
+            if (res && res.status  === '0') {
+                res.data.img.forEach(item => {
+                    arr.push({urlB: item[0], url: item[1], id: new Date()});
+                });
+                this.setState({
+                    filesArr: arr,
+                    nativePicNum: 9 - arr.length
+                });
+            }
         });
+        // native('picCallback', {num: nativePicNum}).then(res => {
+        //     const arr = filesArr;
+        //     res.data.img.forEach(item => {
+        //         arr.push({urlB: item[0], url: item[1], id: new Date()});
+        //     });
+        //     this.setState({
+        //         filesArr: arr,
+        //         nativePicNum: 9 - arr.length
+        //     });
+        // });
     };
 
     //点击删除图片

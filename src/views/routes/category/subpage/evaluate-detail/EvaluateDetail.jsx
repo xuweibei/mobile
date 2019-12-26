@@ -7,7 +7,7 @@ import AppNavBar from '../../../../common/navbar/NavBar';
 import './EvaluateDetail.less';
 
 const {urlCfg} = Configs;
-const {getUrlParam, showInfo, setNavColor} = Utils;
+const {getUrlParam, showInfo, native} = Utils;
 const {MESSAGE: {Form, Feedback}, navColorF} = Constants;
 
 export default class EvaluateDetail extends BaseComponent {
@@ -30,13 +30,13 @@ export default class EvaluateDetail extends BaseComponent {
 
     componentWillMount() {
         if (process.env.NATIVE) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
+            native('native', {color: navColorF});
         }
     }
 
     componentWillReceiveProps() {
         if (process.env.NATIVE) {
-            setNavColor('setNavColor', {color: navColorF});
+            native('native', {color: navColorF});
         }
     }
 

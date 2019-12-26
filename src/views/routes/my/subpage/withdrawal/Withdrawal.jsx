@@ -11,7 +11,7 @@ import {InputGrid} from '../../../../common/input-grid/InputGrid';
 import AppNavBar from '../../../../common/navbar/NavBar';
 
 const {urlCfg} = Configs;
-const {showInfo, validator, appHistory, setNavColor} = Utils;
+const {showInfo, validator, appHistory, native} = Utils;
 const {MESSAGE: {Form, Feedback}, navColorR} = Constants;
 const hybird = process.env.NATIVE;
 
@@ -61,13 +61,13 @@ class Withdrawal extends BaseComponent {
 
     componentWillMount() {
         if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorR});
+            native('native', {color: navColorR});
         }
     }
 
     componentWillReceiveProps() {
         if (hybird) {
-            setNavColor('setNavColor', {color: navColorR});
+            native('native', {color: navColorR});
         }
     }
 

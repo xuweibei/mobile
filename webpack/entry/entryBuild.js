@@ -50,10 +50,12 @@ const HomePage = () => (
 
 //获取userToken
 dsBridge.call('wxLoginCallback', (data) => {
-    const str = new RegExp('"',"g");
-    const userToken = data.replace(str,'').split(':')[1];
-    window.localStorage.setItem('userToken',userToken);
-    store.dispatch(baseActionCreator.setUserToken(userToken));
+    console.log(data,'老豆腐干电饭锅')
+    const obj = data ? JSON.parse(data) : '';
+    if(obj && obj.status === '0'){
+        window.localStorage.setItem('userToken',obj.data.usertoken);
+        store.dispatch(baseActionCreator.setUserToken(obj.data.usertoken));
+    }
     ReactDOM.render(
         <HomePage/>,
         document.getElementById('root')

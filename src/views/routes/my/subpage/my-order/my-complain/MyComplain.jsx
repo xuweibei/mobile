@@ -1,9 +1,10 @@
 /**我要投诉 */
+import dsBridge from 'dsbridge';
 import {TextareaItem, ImagePicker} from 'antd-mobile';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './MyComplain.less';
 
-const {dealImage, showInfo, appHistory, showSuccess, getUrlParam, native} = Utils;
+const {dealImage, showInfo, appHistory, showSuccess, getUrlParam} = Utils;
 const {urlCfg} = Configs;
 const {MESSAGE: {Form, Feedback}} = Constants;
 export default class MyComplain extends BaseComponent {
@@ -84,7 +85,8 @@ export default class MyComplain extends BaseComponent {
                         Promise.all(fileArrPro).then(ooo => {
                             showSuccess(Feedback.submit_Success);
                             if (process.env.NATIVE) {
-                                native('goHome');
+                                dsBridge.call('goHome');
+                                // native('goHome');
                             } else {
                                 appHistory.push('/home');
                             }
@@ -94,7 +96,8 @@ export default class MyComplain extends BaseComponent {
                     } else {
                         showSuccess(Feedback.submit_Success);
                         if (process.env.NATIVE) {
-                            native('goHome');
+                            // native('goHome');
+                            dsBridge.call('goHome');
                         } else {
                             appHistory.push('/home');
                         }
@@ -108,15 +111,27 @@ export default class MyComplain extends BaseComponent {
     addPictrue = () => {
         const {fileMain} = this.state;
         if (process.env.NATIVE) {
-            native('picCallback', {num: 9 - fileMain.length}).then(res => {
+            dsBridge.call('picCallback', {num: 9 - fileMain.length}, (dataList => {
+                const res = dataList ? JSON.parse(dataList) : '';
                 const arr = [];
-                res.data.img.forEach(item => {
-                    arr.push({imgB: item[0], imgS: item[1], id: new Date()});
-                });
-                this.setState((proveState) => ({
-                    fileMain: proveState.fileMain.concat(arr)
-                }));
-            });
+                if (res && res.status === '0') {
+                    res.data.img.forEach(item => {
+                        arr.push({imgB: item[0], imgS: item[1], id: new Date()});
+                    });
+                    this.setState((proveState) => ({
+                        fileMain: proveState.fileMain.concat(arr)
+                    }));
+                }
+            }));
+            // native('picCallback', {num: 9 - fileMain.length}).then(res => {
+            //     const arr = [];
+            //     res.data.img.forEach(item => {
+            //         arr.push({imgB: item[0], imgS: item[1], id: new Date()});
+            //     });
+            //     this.setState((proveState) => ({
+            //         fileMain: proveState.fileMain.concat(arr)
+            //     }));
+            // });
         }
     };
 
