@@ -1,61 +1,61 @@
 import React from 'react';
 import {Route} from 'react-router-dom';
-// import Edit from './edit';
-// import PasswordPage from './password/Password';
-// import PasswordDetailPage from './password/password-detail/PasswordDetail';
-// import PasswordPayment from './password/password-detail-payment/PasswordPayment';
-// // import UserId from './userId/UserId';
-// import Addr from './address/Address';
-// import bankCardPage from './bank-card/BankCard';
-// import bankCardDetailPage from './bank-card/BankCardDetail';
-// // import InformationPage from './information/Information';
-// // import FeedbackRouters from './user-agreement/Feedback';
-// // import Account from './account/Account';//切换账号
-// // import AddAccount from './account/AddAccount';//添加账号
-// import Source from './source';/*确认源头*/
-// import BlankPage from './blank';
-// import Agreement from './argeeMore';
+import Edit from './edit';
+import PasswordPage from './password/Password';
+import PasswordDetailPage from './password/password-detail/PasswordDetail';
+import PasswordPayment from './password/password-detail-payment/PasswordPayment';
+// import UserId from './userId/UserId';
+import Addr from './address/Address';
+import bankCardPage from './bank-card/BankCard';
+import bankCardDetailPage from './bank-card/BankCardDetail';
+// import InformationPage from './information/Information';
+// import FeedbackRouters from './user-agreement/Feedback';
+// import Account from './account/Account';//切换账号
+// import AddAccount from './account/AddAccount';//添加账号
+import Source from './source';/*确认源头*/
+import BlankPage from './blank';
+import Agreement from './argeeMore';
 
-const Edit = Loadable({
-    loader: () => import(/* webpackChunkName: 'Edit' */ './edit'),
-    loading: () => null
-});
-const PasswordPage = Loadable({
-    loader: () => import(/* webpackChunkName: 'Edit' */ './password/Password'),
-    loading: () => null
-});
-const PasswordDetailPage = Loadable({
-    loader: () => import(/* webpackChunkName: 'Edit' */ './password/password-detail/PasswordDetail'),
-    loading: () => null
-});
-const PasswordPayment = Loadable({
-    loader: () => import(/* webpackChunkName: 'Edit' */ './password/password-detail-payment/PasswordPayment'),
-    loading: () => null
-});
-const Agreement = Loadable({
-    loader: () => import(/* webpackChunkName: 'Edit' */ './argeeMore'),
-    loading: () => null
-});
-const Addr = Loadable({
-    loader: () => import(/* webpackChunkName: 'Edit' */ './address/Address'),
-    loading: () => null
-});
-const bankCardPage = Loadable({
-    loader: () => import(/* webpackChunkName: 'Edit' */ './bank-card/BankCard'),
-    loading: () => null
-});
-const bankCardDetailPage = Loadable({
-    loader: () => import(/* webpackChunkName: 'Edit' */ './bank-card/BankCardDetail'),
-    loading: () => null
-});
-const Source = Loadable({
-    loader: () => import(/* webpackChunkName: 'Edit' */ './source'),
-    loading: () => null
-});
-const BlankPage = Loadable({
-    loader: () => import(/* webpackChunkName: 'Edit' */ './blank'),
-    loading: () => null
-});
+// const Edit = Loadable({
+//     loader: () => import(/* webpackChunkName: 'Edit' */ './edit'),
+//     loading: () => null
+// });
+// const PasswordPage = Loadable({
+//     loader: () => import(/* webpackChunkName: 'Edit' */ './password/Password'),
+//     loading: () => null
+// });
+// const PasswordDetailPage = Loadable({
+//     loader: () => import(/* webpackChunkName: 'Edit' */ './password/password-detail/PasswordDetail'),
+//     loading: () => null
+// });
+// const PasswordPayment = Loadable({
+//     loader: () => import(/* webpackChunkName: 'Edit' */ './password/password-detail-payment/PasswordPayment'),
+//     loading: () => null
+// });
+// const Agreement = Loadable({
+//     loader: () => import(/* webpackChunkName: 'Edit' */ './argeeMore'),
+//     loading: () => null
+// });
+// const Addr = Loadable({
+//     loader: () => import(/* webpackChunkName: 'Edit' */ './address/Address'),
+//     loading: () => null
+// });
+// const bankCardPage = Loadable({
+//     loader: () => import(/* webpackChunkName: 'Edit' */ './bank-card/BankCard'),
+//     loading: () => null
+// });
+// const bankCardDetailPage = Loadable({
+//     loader: () => import(/* webpackChunkName: 'Edit' */ './bank-card/BankCardDetail'),
+//     loading: () => null
+// });
+// const Source = Loadable({
+//     loader: () => import(/* webpackChunkName: 'Edit' */ './source'),
+//     loading: () => null
+// });
+// const BlankPage = Loadable({
+//     loader: () => import(/* webpackChunkName: 'Edit' */ './blank'),
+//     loading: () => null
+// });
 const EditModal = () => (
     <React.Fragment>
         <Route path="/edit" component={Edit}/>

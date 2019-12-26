@@ -11,21 +11,12 @@ const shopListPage = Loadable({
     loading: () => null
 });
 
-const Find = () => {
-    if (!process.env.NATIVE) {
-        return (
-            <React.Fragment>
-                <Route path="/find" component={FindPage}/>
-                <Route path="/shop-list" component={shopListPage}/>
-            </React.Fragment>
-        );
-    }
-    return (
-        <React.Fragment>
-            <Route path="/shop-list" component={shopListPage}/>
-        </React.Fragment>
-    );
-};
+const Find = () => (
+    <React.Fragment>
+        <Route path="/find" component={FindPage}/>
+        <Route path="/shop-list" component={shopListPage}/>
+    </React.Fragment>
+);
 
 
 export default Find;

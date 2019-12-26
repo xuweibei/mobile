@@ -8,7 +8,7 @@ const MY = {
 };
 
 export const LOCALSTORAGE = {
-    USER_TOKEN: 'userToken',
+    USER_TOKEN: 'zpyg_userToken',
     APP_VERSION: 'appVersion', // app版本
     ...MY
 };

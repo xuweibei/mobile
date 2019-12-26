@@ -8,6 +8,34 @@ import ShopHomeIndexFourPage from './shop-home-index-four/ShopHomeIndexFour';
 import ShopHomeIndexFivePage from './shop-home-index-five/ShopHomeIndexFive';
 import ShopHomeDetailPage from './ShopHomeDetail';
 
+// const ShopHome = Loadable({
+//     loader: () => import(/* webpackChunkName: 'orderMains' */ './ShopHome'),
+//     loading: () => null
+// });
+// const ShopHomeIndexOnePage = Loadable({
+//     loader: () => import(/* webpackChunkName: 'orderMains' */ './shop-home-index-one/ShopHomeIndex'),
+//     loading: () => null
+// });
+// const ShopHomeIndexTwoPage = Loadable({
+//     loader: () => import(/* webpackChunkName: 'orderMains' */ './shop-home-index-two/ShopHomeIndexTwo'),
+//     loading: () => null
+// });
+// const ShopHomeIndexThirdPage = Loadable({
+//     loader: () => import(/* webpackChunkName: 'orderMains' */ './shop-home-index-third/ShopHomeIndexThird'),
+//     loading: () => null
+// });
+// const ShopHomeIndexFourPage = Loadable({
+//     loader: () => import(/* webpackChunkName: 'orderMains' */ './shop-home-index-four/ShopHomeIndexFour'),
+//     loading: () => null
+// });
+// const ShopHomeIndexFivePage = Loadable({
+//     loader: () => import(/* webpackChunkName: 'orderMains' */ './shop-home-index-five/ShopHomeIndexFive'),
+//     loading: () => null
+// });
+// const ShopHomeDetailPage = Loadable({
+//     loader: () => import(/* webpackChunkName: 'orderMains' */ './ShopHomeDetail'),
+//     loading: () => null
+// });
 const ShopHomeModal = () => (
     <React.Fragment>
         <Route path="/shopHome" component={ShopHome}/>

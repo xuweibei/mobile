@@ -2,40 +2,33 @@ import CacheRoute from 'react-router-cache-route';
 import React from 'react';
 import {Route} from 'react-router-dom';
 
-const CategoryPage = Loadable({
-    loader: () => import(/* webpackChunkName: 'wechat' */ './Category'),
-    loading: () => null
-});
-
 const EvaluatePage = Loadable({
-    loader: () => import(/* webpackChunkName: 'hybird' */ './subpage/evaluate/Evaluate'),
+    loader: () => import(/* webpackChunkName: 'My' */ './subpage/evaluate/Evaluate'),
     loading: () => null
 });
 
 const EvaluateDetailPage = Loadable({
-    loader: () => import(/* webpackChunkName: 'hybird' */ './subpage/evaluate-detail/EvaluateDetail'),
+    loader: () => import(/* webpackChunkName: 'My' */ './subpage/evaluate-detail/EvaluateDetail'),
     loading: () => null
 });
 
 const CategoryListPage = Loadable({
-    loader: () => import(/* webpackChunkName: 'hybird' */ './subpage/category-list/CategoryList'),
+    loader: () => import(/* webpackChunkName: 'My' */ './subpage/category-list/CategoryList'),
     loading: () => null
 });
 
 const GoodsDetailPage = Loadable({
-    loader: () => import(/* webpackChunkName: 'hybird' */ './subpage/goods-detail/GoodsDetail'),
+    loader: () => import(/* webpackChunkName: 'My' */ './subpage/goods-detail/GoodsDetail'),
     loading: () => null
 });
 
 
-const Classify = () =>  (
+const Classify = () => (
     <React.Fragment>
-        <Route path="/category" component={CategoryPage}/>
         <CacheRoute path="/categoryList" cacheKey="CategoryListPage" component={CategoryListPage} when="back"/>
         <CacheRoute path="/goodsDetail" cacheKey="GoodsDetailPage" component={GoodsDetailPage}/>
-        <CacheRoute path="/evaluate" component={EvaluatePage}/>,
+        <CacheRoute path="/evaluate" component={EvaluatePage}/>
         <Route path="/evaluateDetail" component={EvaluateDetailPage}/>
     </React.Fragment>
 );
-
 export default Classify;
