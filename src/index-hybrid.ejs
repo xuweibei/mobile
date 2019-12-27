@@ -103,6 +103,12 @@
         <% } %>
     </head>
     <body>
+        <div>
+            骨架屏动画
+        </div>
+        <script>
+            console.log(window.location.href)
+        </script>
         <div id="root"></div>
         <% if (htmlWebpackPlugin.options.env === 'test'||htmlWebpackPlugin.options.env === 'prev') { %>
         <!-- VConsole调试 (mobile 上调试)-->

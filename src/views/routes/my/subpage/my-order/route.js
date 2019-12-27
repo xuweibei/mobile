@@ -73,7 +73,7 @@ const MyComplain = Loadable({
 });
 const OrderModalOther = () => (
     <React.Fragment>
-        <CacheRoute path="/myOrder" when="back" cacheKey="OrderPage" component={OrderPage}/>
+        {/* <CacheRoute path="/myOrder" when="back" cacheKey="OrderPage" component={OrderPage}/> */}
         <Route path="/listDetails" component={ListDetails}/> {/* 订单详情-(5.3.1)*/}
         <Route path="/payMoney" component={payMoney}/> {/* 订单支付*/}
         <Route path="/paymentCompleted" component={PaymentCompleted}/> {/* 支付成功*/}
