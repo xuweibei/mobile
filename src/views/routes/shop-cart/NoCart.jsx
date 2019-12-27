@@ -44,7 +44,7 @@ class ShopCart extends BaseComponent {
 
     componentWillMount() {
         if (process.env.NATIVE) { //设置tab颜色
-            native('native', {color: navColorR});
+            native('setNavColor', {color: navColorR});
             this.getNativeUserToken();
         }
         this.getCart();
@@ -65,7 +65,7 @@ class ShopCart extends BaseComponent {
 
     componentWillReceiveProps(next) {
         if (process.env.NATIVE) {
-            native('native', {color: navColorR});
+            native('setNavColor', {color: navColorR});
             const timerNext = decodeURI(getUrlParam('time', encodeURI(next.location.search)));
             const timer = decodeURI(getUrlParam('time', encodeURI(this.props.location.search)));
             const token = decodeURI(getUrlParam('token', encodeURI(next.location.search)));

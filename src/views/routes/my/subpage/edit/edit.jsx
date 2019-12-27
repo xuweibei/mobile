@@ -195,10 +195,14 @@ class Edit extends BaseComponent {
     bindingWeChat = () => {
         const {getUserInfo} = this.props;
         dsBrige.call('bindWxCallback', {'': ''}, (res) => {
-            alert(1);
             native('goH5', {'': ''});
-            showInfo(Feedback.wxbind_Success);
-            getUserInfo();
+            const data = res ? JSON.parse(res) : '';
+            if (data.status === '0') {
+                showInfo(Feedback.wxbind_Success);
+                getUserInfo();
+            } else {
+                showInfo(data.message);
+            }
         });
         // native('bindWxCallback', {'': ''}).then(res => {
         //     native('goH5', {'': ''});

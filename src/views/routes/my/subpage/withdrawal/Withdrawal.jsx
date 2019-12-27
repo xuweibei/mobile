@@ -61,13 +61,13 @@ class Withdrawal extends BaseComponent {
 
     componentWillMount() {
         if (hybird) { //设置tab颜色
-            native('native', {color: navColorR});
+            native('setNavColor', {color: navColorR});
         }
     }
 
     componentWillReceiveProps() {
         if (hybird) {
-            native('native', {color: navColorR});
+            native('setNavColor', {color: navColorR});
         }
     }
 

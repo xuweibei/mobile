@@ -176,12 +176,12 @@ class MyOrder extends BaseComponent {
     //跳转我的订单
     gotoMyOrder = (index) => {
         const url = new Map([
-            [0, '/myOrder/qb'],
-            [1, '/myOrder/fk'],
-            [2, '/myOrder/fh'],
-            [3, '/myOrder/sh'],
-            [4, '/myOrder/pj'],
-            [5, '/myOrder/ssh']
+            [0, '/myOrder/qb?color=#ff2d51'],
+            [1, '/myOrder/fk?color=#ff2d51'],
+            [2, '/myOrder/fh?color=#ff2d51'],
+            [3, '/myOrder/sh?color=#ff2d51'],
+            [4, '/myOrder/pj?color=#ff2d51'],
+            [5, '/myOrder/ssh?color=#ff2d51']
         ]);
         appHistory.replace(url.get(index));
     };

@@ -12,7 +12,6 @@ deleteFile(entryBuildPath);
 fs.mkdirSync(entryBuildPath);
 console.log('entryBuildPath2', entryBuildPath);
 const entryContent = (data) => {
-    console.log(data.component,'；；电饭锅')
     return (
 `import React, {Fragment} from 'react';
 import ReactDOM from 'react-dom';
@@ -26,11 +25,7 @@ import BasePage from '../src/views/common/base/BasePage';
 import {ViewRoutesHybrid} from '../src/views/${data.component}';
 import '../src/views/${data.less}';
 
-
-const {getAppUserToken, systemApi: {getValue,setValue}} = Utils;
-
 const {LOCALSTORAGE} = Constants;
-const usertoken = store.getState().get('base').get(LOCALSTORAGE.USER_TOKEN) || (getValue(LOCALSTORAGE.USER_TOKEN) === 'null' ? null : getValue(LOCALSTORAGE.USER_TOKEN));
 const history = syncHistoryWithStore(hashHistory, store, {
     selectLocationState(state) {
         return state.get('routing').toObject();
@@ -55,7 +50,7 @@ dsBridge.call('wxLoginCallback', (data) => {
     console.log(data,'老豆腐干电饭锅')
     const obj = data ? JSON.parse(data) : '';
     if(obj && obj.status === '0'){
-        window.localStorage.setItem('zpyg_userToken',obj.data.usertoken);
+        window.localStorage.setItem(LOCALSTORAGE.USER_TOKEN,obj.data.usertoken);
         store.dispatch(baseActionCreator.setUserToken(obj.data.usertoken));
     }
     ReactDOM.render(

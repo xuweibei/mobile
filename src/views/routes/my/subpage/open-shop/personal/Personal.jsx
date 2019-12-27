@@ -24,13 +24,13 @@ class Personal extends BaseComponent {
 
     componentWillReceiveProps() {
         if (hybird) {
-            native('native', {color: navColorF});
+            native('setNavColor', {color: navColorF});
         }
     }
 
     componentWillMount() {
         if (hybird) { //设置tab颜色
-            native('native', {color: navColorF});
+            native('setNavColor', {color: navColorF});
         }
         const type = decodeURI(getUrlParam('type', encodeURI(this.props.location.search)));
         if (window.location.href.includes('auditStatus')) {

@@ -42,13 +42,13 @@ class passwordDetail extends BaseComponent {
 
     componentWillMount() {
         if (process.env.NATIVE) { //设置tab颜色
-            native('native', {color: navColorR});
+            native('setNavColor', {color: navColorR});
         }
     }
 
     componentWillReceiveProps() {
         if (process.env.NATIVE) {
-            native('native', {color: navColorR});
+            native('setNavColor', {color: navColorR});
         }
     }
 

@@ -26,13 +26,13 @@ class ScrollToTop extends React.PureComponent {
 
     componentWillMount() {
         if (process.env.NATIVE) { //设置tab颜色
-            native('native', {color: navColorF});
+            native('setNavColor', {color: navColorF});
         }
     }
 
     componentWillReceiveProps() {
         if (process.env.NATIVE) {
-            native('native', {color: navColorF});
+            native('setNavColor', {color: navColorF});
         }
     }
 

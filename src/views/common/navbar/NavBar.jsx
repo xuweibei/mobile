@@ -58,14 +58,14 @@ class NavBar extends React.PureComponent {
     componentWillMount() {
         if (process.env.NATIVE) { //设置tab颜色
             const {color} = this.props;
-            native('native', {color: color || navColorF});
+            native('setNavColor', {color: color || navColorF});
         }
     }
 
     componentWillReceiveProps() {
         if (process.env.NATIVE) {
             const {color} = this.props;
-            native('native', {color: color || navColorF});
+            native('setNavColor', {color: color || navColorF});
         }
     }
 

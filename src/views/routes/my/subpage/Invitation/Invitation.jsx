@@ -51,7 +51,7 @@ class Invitation extends BaseComponent {
         const {shareArr} = this.state;
         if (process.env.NATIVE) {
             if (shareArr) {
-                native('savePicCallback', {type: '2', imgUrl: shareArr});
+                native('savePicCallback', {type: '2', imgUrl: encodeURIComponent(shareArr)});
             } else {
                 showInfo('暂无图片可以保存');
             }

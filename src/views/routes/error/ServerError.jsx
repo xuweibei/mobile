@@ -21,13 +21,13 @@ const Error = () => (
 export default class ServerError extends React.PureComponent {
     componentWillMount() {
         if (hybird) {
-            native('native', {color: navColorF});
+            native('setNavColor', {color: navColorF});
         }
     }
 
     componentWillReceiveProps() {
         if (hybird) {
-            native('native', {color: navColorF});
+            native('setNavColor', {color: navColorF});
         }
     }
 

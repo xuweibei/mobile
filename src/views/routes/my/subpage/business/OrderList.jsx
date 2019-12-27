@@ -34,13 +34,13 @@ export default class OrderList extends BaseComponent {
 
     componentWillMount() {
         if (hybird) { //设置tab颜色
-            native('native', {color: navColorF});
+            native('setNavColor', {color: navColorF});
         }
     }
 
     componentWillReceiveProps() {
         if (hybird) {
-            native('native', {color: navColorF});
+            native('setNavColor', {color: navColorF});
         }
     }
 
