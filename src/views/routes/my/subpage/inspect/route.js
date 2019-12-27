@@ -1,13 +1,34 @@
 import React from 'react';
 import {Route} from 'react-router-dom';
-import Inspect from './Inspect';
-import InspectOrder from './inspect-order/InspectOrder';
-import Consumer from './consumer/Consumer';
-import Succcess from './success-file/SuccessFile';
-import consumerSearch from './consumer-search/ConsumerSearch';
-import consumerDetail from './consumer-search/ConsumerDetail';
-import FailWrite from './fail-write/FailWrite';
 
+const Inspect = Loadable({
+    loader: () => import(/* webpackChunkName: 'My' */ './Inspect'),
+    loading: () => null
+});
+const InspectOrder = Loadable({
+    loader: () => import(/* webpackChunkName: 'My' */ './inspect-order/InspectOrder'),
+    loading: () => null
+});
+const Consumer = Loadable({
+    loader: () => import(/* webpackChunkName: 'My' */ './consumer/Consumer'),
+    loading: () => null
+});
+const Succcess = Loadable({
+    loader: () => import(/* webpackChunkName: 'My' */ './success-file/SuccessFile'),
+    loading: () => null
+});
+const consumerSearch = Loadable({
+    loader: () => import(/* webpackChunkName: 'My' */ './consumer-search/ConsumerSearch'),
+    loading: () => null
+});
+const consumerDetail = Loadable({
+    loader: () => import(/* webpackChunkName: 'My' */ './consumer-search/ConsumerDetail'),
+    loading: () => null
+});
+const FailWrite = Loadable({
+    loader: () => import(/* webpackChunkName: 'My' */ './fail-write/FailWrite'),
+    loading: () => null
+});
 const InspectModal = () => (
     <React.Fragment>
         <Route path="/inspect" component={Inspect}/>{/*立即核销*/}

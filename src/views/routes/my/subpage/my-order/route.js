@@ -1,24 +1,11 @@
 import React from 'react';
 import CacheRoute from 'react-router-cache-route';
 import {Route} from 'react-router-dom';
-// import OrderPage from './myOrder';
-// import ListDetails from './List-details/ListDetails';
-// import payMoney from './pay-money/PayMoney';
-// import PaymentCompleted from './payment-completed/PaymentCompleted';
-// import Logistics from './logistics/Logistics';
-// import possessEvaluatePage from './possess-evaluate/PossessEvaluate';
-// import MyEvaluatePage from './my-evaluation-detail/MyEvaluate';
-// import EvaluationSuccessPage from './my-evaluation-detail/EvaluationSuccess';
-// import publishReview from './publish-review/PublishReview';
-// import refundDetailsPage from './refund-details/RefundDetails';
-// import ApplyServicePage from './apply-service/ApplyService';
-// import OnlyRefund from './apply-service/OnlyRefund';
-// import ReturnGoods from './apply-service/ReturnGoods';
-// import ApplyDrawback from './apply-drawback/ApplyDrawback';
-// import ShopSearch from './shop-search/ShopSearch';
-// import shopDetail from './shop-search/shopDetail';
-// import MyComplain from './my-complain/MyComplain';
 
+const OrderPage = Loadable({
+    loader: () => import(/* webpackChunkName: 'orderMains' */ './myOrder'),
+    loading: () => null
+});
 const PossessEvaluate = Loadable({
     loader: () => import(/* webpackChunkName: 'orderMains' */ './possess-evaluate/PossessEvaluate'),
     loading: () => null
@@ -100,7 +87,6 @@ const OrderModalOther = () => (
         <Route path="/refundDetails" component={refundDetailsPage}/> {/* 售后退款详情页*/}
         <Route path="/logistics" component={Logistics}/> {/* 我的 物流*/}
         <Route path="/myComplain" component={MyComplain}/> {/* 我要投诉 */}
-        {/* <Route path="/consultHistory" component={ConsultHistory}/> 协商历史 */}
         <Route path="/applyDrawback" component={ApplyDrawback}/> {/* 修改申请*/}
         <Route path="/shop-search" component={ShopSearch}/> {/*商店搜索*/}
         <Route path="/shop-detail" component={shopDetail}/> {/*商店搜索详情*/}

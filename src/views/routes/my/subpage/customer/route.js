@@ -5,11 +5,11 @@ import Customer from './Customer';
 // import OrderList from './OrderList';
 
 const CustomerInfo = Loadable({
-    loader: () => import(/* webpackChunkName: 'MyCustomer' */ './CustomerInfo'),
+    loader: () => import(/* webpackChunkName: 'My' */ './CustomerInfo'),
     loading: () => null
 });
 const OrderList = Loadable({
-    loader: () => import(/* webpackChunkName: 'MyCustomer' */ './OrderList'),
+    loader: () => import(/* webpackChunkName: 'My' */ './OrderList'),
     loading: () => null
 });
 const MyCustomerModal = () => (

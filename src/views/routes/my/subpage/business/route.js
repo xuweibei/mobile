@@ -5,12 +5,12 @@ import Business from './Business';
 // import OrderList from './OrderList';
 
 const BusinessInfo = Loadable({
-    loader: () => import(/* webpackChunkName: 'MyBusiness' */ './BusinessInfo'),
+    loader: () => import(/* webpackChunkName: 'My' */ './BusinessInfo'),
     loading: () => null
 });
 
 const OrderList = Loadable({
-    loader: () => import(/* webpackChunkName: 'MyBusiness' */ './OrderList'),
+    loader: () => import(/* webpackChunkName: 'My' */ './OrderList'),
     loading: () => null
 });
 const MyBusinessModal = () => (

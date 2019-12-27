@@ -1,76 +1,71 @@
 import {Route} from 'react-router-dom';
 
-const MyPage = Loadable({
-    loader: () => import(/* webpackChunkName: 'wechat' */ './My'),
+
+const MyCustomer = Loadable({
+    loader: () => import(/* webpackChunkName: 'My' */ './subpage/customer/route'),
     loading: () => null
 });
-
 
 const OrderPage = Loadable({
-    loader: () => import(/* webpackChunkName: 'OrderPage' */ './subpage/my-order/route'),
-    loading: () => null
-});
-const MyCustomer = Loadable({
-    loader: () => import(/* webpackChunkName: 'MyCustomer' */ './subpage/customer/route'),
+    loader: () => import(/* webpackChunkName: 'orderMains' */ './subpage/my-order/route'),
     loading: () => null
 });
 const MyBusiness = Loadable({
-    loader: () => import(/* webpackChunkName: 'MyBusiness' */ './subpage/business/route'),
+    loader: () => import(/* webpackChunkName: 'My' */ './subpage/business/route'),
     loading: () => null
 });
 const MyInvitation = Loadable({
-    loader: () => import(/* webpackChunkName: 'MyInvitation' */ './subpage/Invitation/route'),
+    loader: () => import(/* webpackChunkName: 'My' */ './subpage/Invitation/route'),
     loading: () => null
 });
 const MyCollect = Loadable({
-    loader: () => import(/* webpackChunkName: 'MyCollect' */ './subpage/my-collect/route'),
+    loader: () => import(/* webpackChunkName: 'My' */ './subpage/my-collect/route'),
     loading: () => null
 });
-
-
 const AppendOrder = Loadable({
-    loader: () => import(/* webpackChunkName: 'AppendOrder' */ './subpage/append-order/route'),
+    loader: () => import(/* webpackChunkName: 'My' */ './subpage/append-order/route'),
     loading: () => null
 });
 const SelfMention = Loadable({
-    loader: () => import(/* webpackChunkName: 'SelfMention' */ './subpage/self-mention/route'),
+    loader: () => import(/* webpackChunkName: 'My' */ './subpage/self-mention/route'),
     loading: () => null
 });
+
 const Edit = Loadable({
     loader: () => import(/* webpackChunkName: 'Edit' */ './subpage/edit/route'),
     loading: () => null
 });
 const WithdrawalRouters = Loadable({
-    loader: () => import(/* webpackChunkName: 'WithdrawalRouters' */ './subpage/withdrawal/route'),
+    loader: () => import(/* webpackChunkName: 'My' */ './subpage/withdrawal/route'),
     loading: () => null
 });
 const RecordPage = Loadable({
-    loader: () => import(/* webpackChunkName: 'RecordPage' */ './subpage/withdrawal/record/route'),
+    loader: () => import(/* webpackChunkName: 'My' */ './subpage/withdrawal/record/route'),
     loading: () => null
 });
 const ShopHomePage = Loadable({
-    loader: () => import(/* webpackChunkName: 'ShopHomePage' */ './subpage/shop-home/route'),
+    loader: () => import(/* webpackChunkName: 'My' */ './subpage/shop-home/route'),
     loading: () => null
 });
 const OpenShopPage = Loadable({
-    loader: () => import(/* webpackChunkName: 'OpenShopPage' */ './subpage/open-shop/route'),
+    loader: () => import(/* webpackChunkName: 'My' */ './subpage/open-shop/route'),
     loading: () => null
 });
 const PeraonalSotes = Loadable({
-    loader: () => import(/* webpackChunkName: 'PeraonalSotes' */ './subpage/personal-stores/route'),
+    loader: () => import(/* webpackChunkName: 'My' */ './subpage/personal-stores/route'),
     loading: () => null
 });
 const BrowseHistory = Loadable({
-    loader: () => import(/* webpackChunkName: 'BrowseHistory' */ './subpage/browse-history/route'),
+    loader: () => import(/* webpackChunkName: 'My' */ './subpage/browse-history/route'),
     loading: () => null
 });
 const InspectModal = Loadable({
-    loader: () => import(/* webpackChunkName: 'InspectModal' */ './subpage/inspect/route'),
+    loader: () => import(/* webpackChunkName: 'My' */ './subpage/inspect/route'),
     loading: () => null
 });
+
 const My = () => (
     <React.Fragment>
-        <Route path="/my" component={MyPage}/>
         <Route path="/customer" component={MyCustomer}/>
         <Route path="/business" component={MyBusiness}/>
         <Route path="/collect" component={MyCollect}/>
@@ -88,6 +83,4 @@ const My = () => (
         <OrderPage/>
     </React.Fragment>
 );
-
-
 export default My;

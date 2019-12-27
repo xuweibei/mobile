@@ -29,7 +29,7 @@ class BaseComponent extends React.Component {
             dsBridge.call('wxLoginCallback', (data) => { //设置userToken
                 const obj = data ? JSON.parse(data) : '';
                 if (obj && obj.status === '0') {
-                    window.localStorage.setItem('userToken', obj.data.usertoken);
+                    window.localStorage.setItem('zpyg_userToken', obj.data.usertoken);
                     this.context.store.dispatch(actionCreator.setUserToken(obj.data.usertoken));
                 }
             });

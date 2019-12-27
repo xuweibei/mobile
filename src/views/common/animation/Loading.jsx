@@ -91,13 +91,12 @@ class Loading extends React.PureComponent {
                     {
                         window.location.href.includes('goodsDetail') && <DetailSkelon/>
                     }
-                    {/* {
-                        window.location.href.includes('')
+                    {
+                        (window.location.href.includes('browseHistory') || window.location.href.includes('collect') || window.location.href.includes('shopCart')) && <ShopListSkelon/>
                     }
                     {
-
-                    } */}
-                    {/* <ListSkelon/> */}
+                        !window.location.href.includes('goodsDetail') && !(window.location.href.includes('browseHistory') || window.location.href.includes('collect') || window.location.href.includes('shopCart')) && <ListSkelon/>
+                    }
                 </div>
             </div>
         );

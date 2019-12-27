@@ -12,6 +12,7 @@ deleteFile(entryBuildPath);
 fs.mkdirSync(entryBuildPath);
 console.log('entryBuildPath2', entryBuildPath);
 const entryContent = (data) => {
+    console.log(data.component,'；；电饭锅')
     return (
 `import React, {Fragment} from 'react';
 import ReactDOM from 'react-dom';
@@ -22,7 +23,7 @@ import {baseActionCreator} from '../src/redux/baseAction';
 import {syncHistoryWithStore} from 'react-router-redux';
 import {store, hashHistory} from '../src/redux/store';
 import BasePage from '../src/views/common/base/BasePage';
-import {ViewRoutes} from '../src/views/${data.component}';
+import {ViewRoutesHybrid} from '../src/views/${data.component}';
 import '../src/views/${data.less}';
 
 
@@ -37,12 +38,13 @@ const history = syncHistoryWithStore(hashHistory, store, {
 });
 
 history.listen((location, action) => {});
+
 const HomePage = () => (
     <Provider store={store}>
         <Router hashHistory={history}>
             <Fragment>
                 <BasePage/>
-                <ViewRoutes/>
+                <ViewRoutesHybrid/>
             </Fragment>
         </Router>
     </Provider>
@@ -53,7 +55,7 @@ dsBridge.call('wxLoginCallback', (data) => {
     console.log(data,'老豆腐干电饭锅')
     const obj = data ? JSON.parse(data) : '';
     if(obj && obj.status === '0'){
-        window.localStorage.setItem('userToken',obj.data.usertoken);
+        window.localStorage.setItem('zpyg_userToken',obj.data.usertoken);
         store.dispatch(baseActionCreator.setUserToken(obj.data.usertoken));
     }
     ReactDOM.render(
