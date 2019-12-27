@@ -1,5 +1,5 @@
 /**
- * 我的业务
+ * 我的客户
  */
 import {connect} from 'react-redux';
 import {Tabs, List} from 'antd-mobile';
@@ -13,7 +13,7 @@ const Item = List.Item;
 const Brief = Item.Brief;
 const {urlCfg} = Configs;
 const {FIELD} = Constants;
-const {appHistory, native} = Utils;
+const {appHistory, native, nativeCssDiff} = Utils;
 //tab配置信息
 const tabs = [
     {title: '全部', type: 0},
@@ -192,7 +192,7 @@ class Customer extends BaseComponent {
             <React.Fragment>
                 {window.isWX ? null : (
                     <AppNavBar
-                        title="我的业务"
+                        title="我的客户"
                         goBackModal={this.goBackModal}
                     />
                 )}
@@ -200,7 +200,7 @@ class Customer extends BaseComponent {
                     <p> {totalNum}人</p>
                     <span>总人数</span>
                 </div>
-                <div className="customer-list">
+                <div className={`customer-list ${nativeCssDiff() ? 'general-other' : 'general'}`}>
                     <Tabs
                         tabs={tabs}
                         initialPage={tabKey}

@@ -7,7 +7,7 @@ import {InputItem} from 'antd-mobile';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 
 const hybird = process.env.NATIVE;
-const {setNavColor} = Utils;
+const {native} = Utils;
 const {navColorF} = Constants;
 
 export default class Check extends BaseComponent {
@@ -17,13 +17,13 @@ export default class Check extends BaseComponent {
 
     componentWillMount() {
         if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
+            native('native', {color: navColorF});
         }
     }
 
     componentWillReceiveProps() {
         if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
+            native('native', {color: navColorF});
         }
     }
 

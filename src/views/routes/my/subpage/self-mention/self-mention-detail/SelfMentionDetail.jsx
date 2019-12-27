@@ -1,4 +1,5 @@
 import React from 'react';
+import dsBridge from 'dsbridge';
 import {connect} from 'react-redux';
 import './SelfMentionDetail.less';
 import {List, Radio, TextareaItem, Modal, Tabs, InputItem} from 'antd-mobile';
@@ -35,16 +36,22 @@ class ReDetail extends BaseComponent {
     }
 
     componentDidMount() {
-        const {setOrder, location: {search}} = this.props;
+        const {setOrder, location: {search}, setIds} = this.props;
         const timer = decodeURI(getUrlParam('time', encodeURI(search)));
         if (process.env.NATIVE) {
             if (timer === 'null') { //非购物车进入时
                 this.getOrderSelf();
             } else { //这里的情况是，原生那边跳转的时候，需要处理一些问题，所以就购物车过来的时候，存数据，这边取数据
-                getShopCartInfo('getSelfMentio', {'': ''}).then(res => {
-                    setOrder(res.data.arr);
-                    this.getOrderSelf();
+                dsBridge.call('getSelfMentio', {'': ''}, (data) => {
+                    const res = data ? JSON.parse(data) : '';
+                    if (res && res.status === 0) {
+                        setOrder(res.data.arr);
+                        setIds(res.data.cartArr);
+                        this.getOrderSelf();
+                    }
                 });
+                // getShopCartInfo('getSelfMentio', {'': ''}).then(res => {
+                // });
             }
         } else {
             this.getOrderSelf();
@@ -411,6 +418,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
     setOrder: shopCartActionCreator.setOrder,
     setOrderInfo: ActionCreator.setOrderInformation,
+    setIds: shopCartActionCreator.setIds,
     showAlert: baseActionCreator.showAlert
 };
 

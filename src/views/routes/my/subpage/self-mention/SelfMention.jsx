@@ -11,14 +11,14 @@ import CancelOrder from '../../../../common/cancel-order/CancleOrder';
 import MyListView from '../../../../common/my-list-view/MyListView';
 import AppNavBar from '../../../../common/navbar/NavBar';
 
-const {appHistory, showInfo, native, getUrlParam, systemApi: {removeValue}} = Utils;
+const {appHistory, showInfo, native, getUrlParam, systemApi: {removeValue}, nativeCssDiff} = Utils;
 const {urlCfg} = Configs;
 const {MESSAGE: {Feedback}, FIELD, navColorR} = Constants;
 const tabs = [
     {title: '全部'},
     {title: '未完成'},
-    {title: '已完成'}
-    // {title: '售后'}
+    {title: '已完成'},
+    {title: '售后'}
 ];
 class ReDetail extends BaseComponent {
     state ={
@@ -253,7 +253,7 @@ class ReDetail extends BaseComponent {
     }
 
     //前往售后详情页
-    skipAfterSale = (e, id) => {
+    skipAfterSale = (e, id) => { //type为2表示线下订单过去的
         appHistory.push(`/refundDetails?id=${id}&type=2`);
         e.stopPropagation();
     }
@@ -279,7 +279,6 @@ class ReDetail extends BaseComponent {
 
     render() {
         const {pageList, status, refreshing, isLoading, hasMore, canStatus, navColor, height} = this.state;
-
         //每行渲染样式
         const row = item => (
             <div className="shop-lists" key={item.id} onClick={(e) => this.skipDetail(e, item.id, item.return_id)}>
@@ -298,7 +297,7 @@ class ReDetail extends BaseComponent {
                     <div className="goods" key={items.pr_id}>
                         <div className="goods-left">
                             <div>
-                                <LazyLoadIndex lazyInfo={{offset: -30, imgUrl: items.pr_picpath, overflow: true}}/>
+                                <LazyLoadIndex src={items.pr_picpath}/>
                             </div>
                         </div>
                         <div className="goods-right">
@@ -308,7 +307,7 @@ class ReDetail extends BaseComponent {
                             </div>
                             <div className="goods-sku">
                                 <div className="sku-left">
-                                    {(items.property_content && items.property_content > 0) ? items.property_content.map(data => (
+                                    {(items.property_content && items.property_content.length > 0) ? items.property_content.map(data => (
                                         <div key={data} className="goods-size">{data}</div>
                                     )) : ''}
                                     {/*<div>规格</div>*/}
@@ -331,40 +330,40 @@ class ReDetail extends BaseComponent {
                         {/*等待付款*/}
                         {(item.status === '0' && !item.return_status) && (
                             <div className="buttons">
-                                <span className="look-button delete" onClick={(e) => this.cancelOrder(e, item.id)}>取消</span>
-                                <div className="evaluate-button" onClick={(e) => this.payNow(e, item)}>立即付款</div>
+                                <span className="look-button delete" onClick={(e) => this.cancelOrder(e, item.id)} style={{border: nativeCssDiff() ? '1PX solid #666' : '0.02rem solid #666'}}>取消</span>
+                                <div className="evaluate-button" onClick={(e) => this.payNow(e, item)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>立即付款</div>
                             </div>
                         )}
                         {/*等待使用*/}
                         {(item.status === '1' || item.return_status === '1') && (
                             <div className="buttons">
-                                {/* {!item.return_status && (
+                                {!item.return_status && (
                                     <div onClick={(e) => this.serviceRefund(e, item.id)}>退款</div>
-                                )} */}
-                                <div className="evaluate-button" onClick={(e) => this.skipSelf(e, item.id)}>立即使用</div>
+                                )}
+                                <div className="evaluate-button" onClick={(e) => this.skipSelf(e, item.id)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>立即使用</div>
                                 {item.return_status === '1' && (
-                                    <div className="evaluate-button" onClick={(e) => this.skipAfterSale(e, item.return_id)}>查看详情</div>
+                                    <div className="evaluate-button" onClick={(e) => this.skipAfterSale(e, item.return_id)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>查看详情</div>
                                 )}
                             </div>
                         )}
                         {/*订单完成，等待评价*/}
                         {((item.status === '3' || item.status === '10' || item.status === '12' || item.status === '13') && !item.return_status) && (
                             <div className="buttons">
-                                <span className="look-button delete" onClick={(e) => this.deleteOrder(e, item.id)}>删除</span>
-                                {/* <div className="evaluate-button" onClick={(e) => this.promptlyAssess(e, item.id)}>待评价</div> 暂时屏蔽 */}
+                                <span className="look-button delete" style={{border: nativeCssDiff() ? '1PX solid #666' : '0.02rem solid #666'}} onClick={(e) => this.deleteOrder(e, item.id)}>删除</span>
+                                <div className="evaluate-button" onClick={(e) => this.promptlyAssess(e, item.id)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>待评价</div>
                             </div>
                         )}
                         {/*订单完成*/}
                         {(item.status === '4' && !item.return_status) && (
                             <div className="buttons">
-                                <span className="look-button delete" onClick={(e) => this.deleteOrder(e, item.id)}>删除</span>
-                                <div className="evaluate-button" onClick={(e) => this.skipDetail(e, item.id)}>查看详情</div>
+                                <span className="look-button delete" onClick={(e) => this.deleteOrder(e, item.id)} style={{border: nativeCssDiff() ? '1PX solid #666' : '0.02rem solid #666'}}>删除</span>
+                                <div className="evaluate-button" onClick={(e) => this.skipDetail(e, item.id)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>查看详情</div>
                             </div>
                         )}
                         {/*退款中  1 退款成功 3  退款失败 4 退款关闭 5*/}
-                        { (item.return_status === '3' || item.return_status === '4') && (
+                        { (item.status === '10' || item.status === '12' || item.status === '13') && (item.return_status === '3' || item.return_status === '4') && (
                             <div className="buttons">
-                                <div className="evaluate-button" onClick={(e) => this.skipAfterSale(e, item.return_id)}>查看详情</div>
+                                <div className="evaluate-button" onClick={(e) => this.skipAfterSale(e, item.return_id)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>查看详情</div>
                             </div>
                         )}
                     </div>
@@ -374,7 +373,7 @@ class ReDetail extends BaseComponent {
         return (
             <div data-component="Self-mention" data-role="page" className="Self-mention">
                 <AppNavBar title="线下订单" backgroundColor={navColor} goBackModal={this.goBackModal} goToSearch={this.goToSearch} rightShow redBackground search color={navColorR}/>
-                <div>
+                <div className={`${nativeCssDiff() ? 'general-other' : 'general'}`}>
                     <Tabs
                         tabs={tabs}
                         page={status}

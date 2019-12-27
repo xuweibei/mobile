@@ -14,7 +14,7 @@ import FailureAudit from './FailureAudit';
 import Audit from './personal/Audit';
 import './OpenShop.less';
 
-const {appHistory, getUrlParam, showFail, setNavColor} = Utils;
+const {appHistory, getUrlParam, showFail, native} = Utils;
 const {MESSAGE: {Feedback}, navColorF} = Constants;
 const hybird = process.env.NATIVE;
 
@@ -44,13 +44,13 @@ class OpenShop extends BaseComponent {
 
     componentWillMount() {
         if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
+            native('native', {color: navColorF});
         }
     }
 
     componentWillReceiveProps() {
         if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
+            native('native', {color: navColorF});
         }
     }
 

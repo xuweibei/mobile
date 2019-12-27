@@ -2,6 +2,7 @@
  * 根组件  封装组件一些逻辑通用方法
  */
 import PropTypes from 'prop-types';
+import dsBridge from 'dsbridge';
 import {is} from 'immutable';
 import {baseActionCreator as actionCreator} from '../../redux/baseAction';
 
@@ -21,6 +22,18 @@ class BaseComponent extends React.Component {
 
     constructor(props, context) {
         super(props, context);
+    }
+
+    componentWillMount() {
+        if (process.env.NATIVE) {
+            dsBridge.call('wxLoginCallback', (data) => { //设置userToken
+                const obj = data ? JSON.parse(data) : '';
+                if (obj && obj.status === '0') {
+                    window.localStorage.setItem('userToken', obj.data.usertoken);
+                    this.context.store.dispatch(actionCreator.setUserToken(obj.data.usertoken));
+                }
+            });
+        }
     }
 
     shouldComponentUpdate(nextProps, nextState) {

@@ -6,7 +6,7 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 import './ReturnGoods.less';
 
 
-const {showInfo, appHistory, getUrlParam, setNavColor} = Utils;
+const {showInfo, appHistory, getUrlParam, native} = Utils;
 const {navColorF} = Constants;
 const {urlCfg} = Configs;
 const hybird = process.env.NATIVE;
@@ -24,13 +24,13 @@ class ApplyServiceDetail extends BaseComponent {
 
     componentWillMount() {
         if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
+            native('native', {color: navColorF});
         }
     }
 
     componentWillReceiveProps() {
         if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
+            native('native', {color: navColorF});
         }
     }
 
@@ -93,7 +93,7 @@ class ApplyServiceDetail extends BaseComponent {
         if (logistMain.length < 8) return showInfo('请输入正确的物流单号');
         this.fetch(urlCfg.setLogisticsList, {method: 'post', data: {id: id, exp_id: applyId, exp_no: logistMain, type: 2}})
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     showInfo(res.message);
                     //将我的订单的tab状态设置为售后
                     this.props.setOrderStatus(4);

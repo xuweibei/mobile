@@ -5,7 +5,7 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 import VerificationCode from '../../../../../common/verification-code';
 import './Account.less';
 
-const {showInfo, validator, appHistory, showSuccess, setNavColor} = Utils;
+const {showInfo, validator, appHistory, showSuccess, native} = Utils;
 const {urlCfg} = Configs;
 const {MESSAGE: {Form, Feedback}, VERIFY_FAILED, navColorF} = Constants;
 const hybird = process.env.NATIVE;
@@ -25,13 +25,13 @@ class AddAounted extends BaseComponent {
 
     componentWillMount() {
         if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
+            native('native', {color: navColorF});
         }
     }
 
     componentWillReceiveProps() {
         if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
+            native('native', {color: navColorF});
         }
     }
 

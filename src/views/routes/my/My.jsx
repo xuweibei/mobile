@@ -7,7 +7,7 @@
  * 只有商家有两种身份,可以进行切换，商家和消费者；
  * iden_type 为 1 普通消费者；为2 商家， 为3 推广员，为4，双重身份中的消费者
  */
-import {WhiteSpace, Badge, Grid, Carousel, WingBlank} from 'antd-mobile';
+import {WhiteSpace, Badge, Grid, Carousel, WingBlank, List} from 'antd-mobile';
 import {connect} from 'react-redux';
 import {dropByCacheKey} from 'react-router-cache-route';
 import {baseActionCreator} from '../../../redux/baseAction';
@@ -16,9 +16,7 @@ import {FooterBar} from '../../common/foot-bar/FooterBar';
 import MyLogistics from './subpage/my-logistics/MyLogistics';
 import './My.less';
 
-const {appHistory, rollStatus: {offRoll, openRoll, getScrollTop}, setNavColor} = Utils;
-const hybird = process.env.NATIVE;
-const {navColorR} = Constants;
+const {appHistory, rollStatus: {offRoll, openRoll, getScrollTop}} = Utils;
 
 //线上订单模块
 const myOrderIconData = [
@@ -36,17 +34,17 @@ const myOrderIconData = [
         text: '待收货',
         className: 'icon issue',
         num: 0
-    }
-    /*{
+    },
+    {
         text: '待评价',
         className: 'icon evaluate',
         num: 0
-    },*/
-    /* {
+    },
+    {
         text: '售后',
         className: 'icon sale',
         num: 0
-    }*/
+    }
 ];
 //线下订单模块
 const myOrderSelfData = [
@@ -59,12 +57,12 @@ const myOrderSelfData = [
         text: '已完成',
         className: 'icon accomplish',
         num: 0
-    }/*,
+    },
     {
         text: '售后',
         className: 'icon marketing',
         num: 0
-    }*/
+    }
 ];
 //商家顶部导航模块
 const shopOrder = [
@@ -91,10 +89,10 @@ const consumerOrder = [
         text: '浏览历史',
         className: 'icon history'
     },
-    /* {
+    {
         text: '评价中心',
         className: 'icon assessment-center'
-    },*/
+    },
     {
         text: '二维码',
         className: 'icon qr-code'
@@ -115,9 +113,6 @@ class My extends BaseComponent {
         dropByCacheKey('OrderPage');//清除我的订单的缓存
         dropByCacheKey('PossessEvaluate');//清除我的评价的缓存
         dropByCacheKey('History');//清除浏览历史的缓存
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorR});
-        }
     }
 
     componentDidMount() {
@@ -132,12 +127,6 @@ class My extends BaseComponent {
         super.componentWillUnmount();
         const {showMenu} = this.props;
         showMenu(true);
-    }
-
-    componentWillReceiveProps() {
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorR});
-        }
     }
 
     //商家cam信息
@@ -176,23 +165,23 @@ class My extends BaseComponent {
 
     //消费者或推广员cam信息
     consumer = [
+        // {
+        //     title: 'CAM转出',
+        //     icon: 'tOut',
+        //     event: '/rollOut'
+        // },
+        // {
+        //     title: '资产管理',
+        //     icon: 'asset',
+        //     event: `/myAssets?userToken=${this.props.myInfo && this.props.myInfo.info.iden_type}`
+        // },
         {
-            title: 'CAM转出',
-            icon: 'tOut',
-            event: '/rollOut'
-        },
-        {
-            title: '资产管理',
-            icon: 'asset',
-            event: `/myAssets?userToken=${this.props.myInfo && this.props.myInfo.info.iden_type}`
-        },
-        {
-            title: '我的客户',
+            title: '区域总量',
             icon: 'custer',
             event: '/customer'
         },
         {
-            title: '我的业务',
+            title: '我的客户',
             icon: 'busin',
             event: '/business'
         }
@@ -213,7 +202,8 @@ class My extends BaseComponent {
                 [0, '/collect'],
                 [1, '/browseHistory'],
                 // [2, `/possessEvaluate?userType=${myInfo.info.iden_type}`],
-                [2, '/invitation']
+                [2, '/possessEvaluate'],
+                [3, '/invitation']
             ]);
         }
         appHistory.push(url.get(index));
@@ -420,12 +410,12 @@ class My extends BaseComponent {
                                             text={myInfo && (userInfo.typeName)}
                                         />
                                     </div>
-                                    <p className="basic-data-UID" onClick={this.routeTo}>UID:{myInfo && (userInfo.no)}</p>
+                                    <div className="basic-data-UID" onClick={this.routeTo}>UID:{myInfo && (userInfo.no)}</div>
                                     {   //用户身份为消费商的时候展示
                                         myInfo && myInfo.info.iden_type === '2' && <div className="icon conmuterId" onClick={this.changeYourself}>我是消费者</div>
                                     }
                                     {   //用户身份为消费者时展示
-                                        myInfo && myInfo.info.iden_type === '4' && <div className="icon switchId" onClick={() => this.changeYourself('shop')}>我是商家</div>
+                                        // myInfo && myInfo.info.iden_type === '4' && <div className="icon switchId" onClick={() => this.changeYourself('shop')}>我是商家</div>
                                     }
                                 </div>
                             </div>
@@ -433,7 +423,8 @@ class My extends BaseComponent {
                         <div className="my-top-icon">
                             <Grid
                                 data={(myInfo && myInfo.info.iden_type === '2') ? shopOrder : consumerOrder}
-                                columnNum={(myInfo && myInfo.info.iden_type === '2') ? 3 : 3}
+                                // columnNum={(myInfo && myInfo.info.iden_type === '2') ? 3 : 3}
+                                columnNum={4}
                                 hasLine={false}
                                 activeStyle={false}
                                 renderItem={dataItem => (
@@ -464,6 +455,29 @@ class My extends BaseComponent {
                             </div>
                         )
                     }
+
+                    <div className="my-order-form">
+                        <div className="my-order-box">
+                            <div className="order-box-name">线下订单</div>
+                            <div onClick={() => this.jumpRouter('/selfMention')} className="order-box-see">查看全部<span className="icon Arrow"/></div>
+                        </div>
+                        <div className="my-selfOrder-icon">
+                            <Grid
+                                data={myOrderSelfData}
+                                columnNum={3}
+                                hasLine={false}
+                                activeStyle={false}
+                                renderItem={dataItem => (
+                                    <div className="orderInfo">
+                                        <div className={dataItem.className + ' orderLogo selfOrder'}/>
+                                        <Badge text={dataItem.num !== '0' ? dataItem.num : ''}/>
+                                        <div>{dataItem.text}</div>
+                                    </div>
+                                )}
+                                onClick={(ev, index) => this.gotoSelfMyOrder(index)}
+                            />
+                        </div>
+                    </div>
                     <div className="my-order-form">
                         <div className="my-order-box">
                             <div className="order-box-name">线上订单</div>
@@ -472,7 +486,7 @@ class My extends BaseComponent {
                         <div className="my-order-icon">
                             <Grid
                                 data={arrOrder}
-                                columnNum={3}
+                                columnNum={5}
                                 hasLine={false}
                                 activeStyle={false}
                                 renderItem={dataItem => (
@@ -526,32 +540,9 @@ class My extends BaseComponent {
                             }
                         </div>
                     </div>
-
                     <div className="my-order-form">
                         <div className="my-order-box">
-                            <div className="order-box-name">线下订单</div>
-                            <div onClick={() => this.jumpRouter('/selfMention')} className="order-box-see">查看全部<span className="icon Arrow"/></div>
-                        </div>
-                        <div className="my-selfOrder-icon">
-                            <Grid
-                                data={myOrderSelfData}
-                                columnNum={2}
-                                hasLine={false}
-                                activeStyle={false}
-                                renderItem={dataItem => (
-                                    <div className="orderInfo">
-                                        <div className={dataItem.className + ' orderLogo selfOrder'}/>
-                                        <Badge text={dataItem.num !== '0' ? dataItem.num : ''}/>
-                                        <div>{dataItem.text}</div>
-                                    </div>
-                                )}
-                                onClick={(ev, index) => this.gotoSelfMyOrder(index)}
-                            />
-                        </div>
-                    </div>
-                    <div className="my-order-form">
-                        <div className="my-order-box">
-                            <div className="order-box-name">CAM系统</div>
+                            {/* <div className="order-box-name">CAM系统</div> */}
                         </div>
                         {   //用户身份为商家的判断
                             (myInfo && myInfo.info.iden_type === '2') ? (
@@ -566,15 +557,21 @@ class My extends BaseComponent {
                                     </ul>
                                 </div>
                             ) : (
-                                <div className="conumer-info">
-                                    <ul>
-                                        {this.consumer.map(item => (
-                                            <li key={item.title} onClick={() => this.jumpRouter(item.event)}>
-                                                <span className={'icon ' + item.icon}/>
-                                                <p>{item.title}</p>
-                                            </li>
-                                        ))}
-                                    </ul>
+                                <div>
+                                    <div className="conumer-info">
+                                        <List>
+                                            {this.consumer.map((item, index) => (
+                                                index === 0 && (<List.Item arrow="horizontal" key={item.title} onClick={() => this.jumpRouter(item.event)}> <span className={'icon ' + item.icon}/><p>{item.title}</p></List.Item>)
+                                            ))}
+                                        </List>
+                                    </div>
+                                    <div className="conumer-info">
+                                        <List>
+                                            {this.consumer.map((item, index) => (
+                                                index === 1 && (<List.Item arrow="horizontal" key={item.title} onClick={() => this.jumpRouter(item.event)}> <span className={'icon ' + item.icon}/> <p>{item.title}</p></List.Item>)
+                                            ))}
+                                        </List>
+                                    </div>
                                 </div>
                             )
                         }

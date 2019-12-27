@@ -9,7 +9,7 @@ import App from './views/App';
 const render = Component => {
     ReactDOM.render(
         <Component/>,
-        document.getElementById('root'),
+        document.getElementById('root')
     );
 };
 

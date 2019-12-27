@@ -11,7 +11,7 @@ export const FIELD = {
     No_Customer: '暂无客户',
     No_Evaluation: '暂无历史',
     No_Business: '暂无业务',
-    No_Goods: '购物车功能暂未上线!请稍后',
+    No_Goods: '购物车什么都没有呢！',
     Await: '您的开店申请已提交，审核结果在3个工作日内公布，您可登陆网站WWW.XXX.COM查看相关信息。',
     Audit_Failure: '您填写的信息有误，请前往填写后再次提交审核。',
     Succeed: '',

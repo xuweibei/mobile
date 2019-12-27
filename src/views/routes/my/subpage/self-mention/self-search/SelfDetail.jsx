@@ -155,7 +155,7 @@ class ReDetail extends BaseComponent {
                     <div className="goods" key={items.pr_id} onClick={() => this.skipDetail(item.id)}>
                         <div className="goods-left">
                             <div>
-                                <LazyLoadIndex lazyInfo={{offset: -30, imgUrl: items.pr_picpath, overflow: true}}/>
+                                <LazyLoadIndex src={items.pr_picpath}/>
                             </div>
                         </div>
                         <div className="goods-right">
@@ -170,7 +170,7 @@ class ReDetail extends BaseComponent {
                                     ))}
                                     <div>规格</div>
                                 </div>
-                                <div className="sku-right">x{items.pr_num}</div>
+                                <div className="sku-right">x{items.num}</div>
                             </div>
                             <div className="btn-keep">记账量：{items.deposit}</div>
                         </div>

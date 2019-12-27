@@ -7,7 +7,7 @@ import './Customer.less';
 
 const Item = List.Item;
 const {urlCfg} = Configs;
-const {appHistory, getUrlParam, setNavColor} = Utils;
+const {appHistory, getUrlParam, native, goBackModal} = Utils;
 const {navColorF} = Constants;
 const hybird = process.env.NATIVE;
 
@@ -27,13 +27,13 @@ export default class CustomerInfo extends BaseComponent {
 
     componentWillMount() {
         if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
+            native('native', {color: navColorF});
         }
     }
 
     componentWillReceiveProps() {
         if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
+            native('native', {color: navColorF});
         }
     }
 
@@ -57,16 +57,6 @@ export default class CustomerInfo extends BaseComponent {
         appHistory.push({pathname: `/customer-order-list?uid=${uid}`});
     }
 
-    //返回键回调
-    goBackModal = () => {
-        const hybirid = process.env.NATIVE;
-        if (hybirid) {
-            window.location.href = '?fun=Back';
-        } else {
-            appHistory.goBack();
-        }
-    };
-
     render() {
         const {info} = this.state;
         const row = [
@@ -85,7 +75,7 @@ export default class CustomerInfo extends BaseComponent {
                 {window.isWX ? null : (
                     <AppNavBar
                         title="我的客户"
-                        goBackModal={this.goBackModal}
+                        goBackModal={goBackModal}
                     />
                 )}
                 <div className="info-title">

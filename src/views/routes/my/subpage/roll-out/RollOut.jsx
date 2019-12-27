@@ -5,7 +5,7 @@ import {List, InputItem} from 'antd-mobile';
 import AppNavBar from '../../../../common/navbar/NavBar';
 
 const {urlCfg} = Configs;
-const {showInfo, validator, appHistory, native} = Utils;
+const {showInfo, validator, appHistory, native, nativeCssDiff} = Utils;
 const {MESSAGE: {Form}} = Constants;
 
 export default class ReDetail extends BaseComponent {
@@ -85,7 +85,7 @@ export default class ReDetail extends BaseComponent {
             <div data-component="roll-out" data-role="page" className="roll-out">
                 <AppNavBar title="CAM转出" nativeGoBack/>
                 <div className="import-box">
-                    <div className="import-UID">
+                    <div className={`import-UID ${nativeCssDiff() ? 'general-other' : 'general'}`}>
                         <List>
                             <InputItem
                                 type="number"

@@ -13,7 +13,7 @@ import './Individual.less';
 
 const {urlCfg} = Configs;
 const {MESSAGE: {Form}, navColorF} = Constants;
-const {showInfo, validator, setNavColor} = Utils;
+const {showInfo, validator, native} = Utils;
 const hybird = process.env.NATIVE;
 // const RadioItem = Radio.RadioItem;
 const data = [
@@ -61,13 +61,13 @@ class Individual extends BaseComponent {
 
     componentWillMount() {
         if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
+            native('native', {color: navColorF});
         }
     }
 
     componentWillReceiveProps() {
         if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
+            native('native', {color: navColorF});
         }
     }
 

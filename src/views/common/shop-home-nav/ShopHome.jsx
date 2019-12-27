@@ -8,7 +8,7 @@ import './ShopHome.less';
 
 const {urlCfg} = Configs;
 
-const {appHistory, showInfo, TD, goBackModal} = Utils;
+const {appHistory, showInfo, TD, goBackModal, nativeCssDiff} = Utils;
 const {TD_EVENT_ID} = Constants;
 const {MESSAGE: {Feedback}} = Constants;
 
@@ -183,12 +183,12 @@ class ShopHome extends BaseComponent {
                             {
                                 shopInfo && shopInfo.collection > 0
                                     ? (
-                                        <div className="collection" onClick={this.cancelShopCollextion}>
+                                        <div className="collection" style={{border: nativeCssDiff() ? '1PX solid #fff' : '0.02rem solid #fff'}} onClick={this.cancelShopCollextion}>
                                             <span>取消收藏</span>
                                         </div>
                                     )
                                     : (
-                                        <div className="collection" onClick={this.shopCollextion}>
+                                        <div className="collection" style={{border: nativeCssDiff() ? '1PX solid #fff' : '0.02rem solid #fff'}} onClick={this.shopCollextion}>
                                             <span>+收藏</span>
                                         </div>
                                     )

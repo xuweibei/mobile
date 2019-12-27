@@ -39,7 +39,7 @@ export default class MyAssets extends BaseComponent {
         this.setState({
             hasMore: true
         }, () => {
-            this.fetch(urlCfg.myListOfAssets, {data: {page: page,  pagesize: this.temp.pagesize, tp: 5}})
+            this.fetch(urlCfg.myListOfAssets, {data: {page,  pagesize: this.temp.pagesize, tp: 5}})
                 .subscribe(res => {
                     this.temp.isLoading = false;
                     if (res && res.status === 0) {

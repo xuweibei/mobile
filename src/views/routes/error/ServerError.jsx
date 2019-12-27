@@ -4,7 +4,7 @@
 import AppNavBar from '../../common/navbar/NavBar';
 import Nothing from '../../common/nothing/Nothing';
 
-const {appHistory, setNavColor} = Utils;
+const {appHistory, native} = Utils;
 const {FIELD, navColorF} = Constants;
 const hybird = process.env.NATIVE;
 const Error = () => (
@@ -21,13 +21,13 @@ const Error = () => (
 export default class ServerError extends React.PureComponent {
     componentWillMount() {
         if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
+            native('native', {color: navColorF});
         }
     }
 
     componentWillReceiveProps() {
         if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
+            native('native', {color: navColorF});
         }
     }
 

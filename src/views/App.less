@@ -213,9 +213,19 @@ body, .page{
     box-shadow: 0 4px 35px 0 @button-shadow-red !important;
 }
 //辅助按钮
-.auxiliary-button {
+.auxiliary-button{
     .auxiliaryButton();
-
+}
+.auxiliary-button.general {
+    .auxiliaryButton();
+}
+.auxiliary-button.general-other{
+    &.red{
+        border: 1PX solid @fiery-red !important;
+    }
+    &.gray{
+        border: 1PX solid @gray !important;
+    }
 }
 //禁用按钮颜色
 .disable-button {
@@ -238,6 +248,17 @@ body, .page{
 .am-picker-popup-wrap {
     overflow: inherit;
 }
+//商品详情顶部more样式
+div.am-popover.am-popover-placement-bottomRight {
+    width: 40% !important;
+    left: 400px;
+    .am-popover-content{
+        .am-popover-inner-wrapper{
+            justify-content: space-around;
+        }
+    }
+}
+
 //模板标题和价格公用样式
 .introduce-left {
     font-size: 30px;

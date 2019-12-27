@@ -14,7 +14,7 @@ const {appHistory, getUrlParam, validator, showInfo, showSuccess} = Utils;
 const {MESSAGE: {Form, Feedback}} = Constants;
 const {urlCfg} = Configs;
 const getPass = {
-    width: '100px',
+    width: '120px',
     color: '#de1212',
     fontSize: '0.3rem',
     border: 'none',

@@ -1,6 +1,7 @@
 /*
 * 确认订单
 * */
+import dsBridge from 'dsbridge';
 import {connect} from 'react-redux';
 import {InputItem, List, Button, Icon} from 'antd-mobile';
 import {myActionCreator as ActionCreator} from '../../actions/index';
@@ -9,7 +10,7 @@ import {baseActionCreator as actionCreator} from '../../../../../redux/baseActio
 import AppNavBar from '../../../../common/navbar/NavBar';
 import './AppendOrder.less';
 
-const {appHistory, showFail, getUrlParam, getShopCartInfo, systemApi: {setValue, removeValue, getValue}, native} = Utils;
+const {appHistory, showFail, getUrlParam, getShopCartInfo, systemApi: {setValue, removeValue, getValue}, native, nativeCssDiff} = Utils;
 const {urlCfg} = Configs;
 
 const nowTimeStamp = Date.now();
@@ -55,11 +56,19 @@ class appendOrder extends BaseComponent {
             if (timer === 'null') { //非购物车进入的时候
                 this.getOrderState();
             } else {
-                getShopCartInfo('getInfo', obj).then(res => {
-                    setOrder(res.data.arr);
-                    setIds(res.data.cartArr);
-                    that.getOrderState();
-                });//原生方法获取前面的redux
+                dsBridge.call('getInfo', obj, (data) => {
+                    const res = data ? JSON.parse(data) : '';
+                    if (res && res.status === 0) {
+                        setOrder(res.data.arr);
+                        setIds(res.data.cartArr);
+                        that.getOrderState();
+                    }
+                });
+                // getShopCartInfo('getInfo', obj).then(res => {
+                //     setOrder(res.data.arr);
+                //     setIds(res.data.cartArr);
+                //     that.getOrderState();
+                // });//原生方法获取前面的redux
             }
         } else {
             this.getOrderState();
@@ -121,7 +130,6 @@ class appendOrder extends BaseComponent {
         } else {
             remark = order;
         }
-        console.log(remark);
         const {address} = this.props;
         const source = decodeURI(getUrlParam('source', encodeURI(this.props.location.search)));
         let invoiceInfo;
@@ -180,16 +188,6 @@ class appendOrder extends BaseComponent {
     goToShop = (id) => {
         appHistory.push({pathname: `/shopHome?id=${id}`});
     };
-
-    //保存身份证
-    // getIdCart = (val, index) => {
-    //     const {IDcard} = this.state;
-    //     const array = IDcard.concat([]);
-    //     array[index] = val;
-    //     this.setState({
-    //         IDcard: array
-    //     });
-    // };
 
     //獲取備注信息
     getRemark = (val, index) => {
@@ -407,7 +405,7 @@ class appendOrder extends BaseComponent {
                                             <span>{shop.shopName}</span>
                                         </div>
                                         <div className="top-enter">
-                                            <span onClick={() => this.goToShop(shop.shop_id)}>进店</span>
+                                            <span onClick={() => this.goToShop(shop.shop_id)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>进店</span>
                                         </div>
                                     </div>
                                     {
@@ -458,21 +456,19 @@ class appendOrder extends BaseComponent {
                                         ))
                                     }
                                     <div className="goods-attr">
-                                        <ul>
-                                            <div className="range-top">
-                                                <li className="list">
-                                                    <span>记账量</span>
-                                                    <span>{shop.all_deposit}</span>
-                                                </li>
-                                                <li className="list">
-                                                    <span>商品总价</span>
-                                                    <span>￥{shop.all_price}</span>
-                                                </li>
-                                                <li className="list">
-                                                    <span>运费</span>
-                                                    <span>￥{shop.express_money}</span>
-                                                </li>
-                                            </div>
+                                        <ul className="range-top">
+                                            <li className="list">
+                                                <span>记账量</span>
+                                                <span>{shop.all_deposit}</span>
+                                            </li>
+                                            <li className="list">
+                                                <span>商品总价</span>
+                                                <span>￥{shop.all_price}</span>
+                                            </li>
+                                            <li className="list">
+                                                <span>运费</span>
+                                                <span>￥{shop.express_money}</span>
+                                            </li>
                                         </ul>
                                     </div>
                                     <List>

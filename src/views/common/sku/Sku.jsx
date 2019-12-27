@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import {Modal, Button} from 'antd-mobile';
 import './Sku.less';
 
-const {showInfo} = Utils;
+const {showInfo, nativeCssDiff} = Utils;
 const {MESSAGE: {Feedback}} = Constants;
 class Sku extends React.PureComponent {
     //组件API类型
@@ -76,7 +76,8 @@ class Sku extends React.PureComponent {
     //生成字典
     initSKU= () => {
         const {stocks} = this.props;
-        console.log('库存信息stocks:', stocks);
+        // console.log(stocks, '手机卡和第三届');
+        // console.log('库存信息stocks:', stocks);
         const data = stocks.reduce((obj, item) => {
             const object = Object.assign({}, obj);
             const total = item.attribute.reduce((arr, value) => {
@@ -86,7 +87,7 @@ class Sku extends React.PureComponent {
             object[total.join(';')] = Object.assign({}, item);
             return object;
         }, {});
-        console.log('所有sku组合：', data);
+        // console.log('所有sku组合：', data);
         const SKUResult = {};
         // 需要剔除stock为 0 的库存
         const skuKeys = Object.keys(data).reduce((arr, key) => {
@@ -95,7 +96,7 @@ class Sku extends React.PureComponent {
             }
             return arr;
         }, []);
-        console.log('库存不为0的sku组合：', skuKeys);
+        // console.log('库存不为0的sku组合：', skuKeys);
         const _this = this;
         skuKeys.forEach(skuKey => {
             const sku = data[skuKey];
@@ -105,6 +106,8 @@ class Sku extends React.PureComponent {
                 const key = combArr[j].join(';');
                 //为拆开的每个字典key生成对应的value
                 if (SKUResult[key]) {
+                    // console.log(SKUResult, '萨克都卡时间段卡萨');
+
                     // SKUResult[key].prices.push(sku.price);
                     // SKUResult[key].originalPrices.push(sku.original_price);
                     // SKUResult[key].deposits.push(sku.deposit);
@@ -116,8 +119,10 @@ class Sku extends React.PureComponent {
                         // deposits: [sku.deposit],
                         stocks: parseInt(sku.stock, 10)
                     };
+                    // console.log(SKUResult, '萨克都卡时间段卡萨');
                 }
             }
+            // console.log(skuKey, '萨克都卡时间段卡萨');
             SKUResult[skuKey] = {
                 price: sku.price,
                 originalPrice: sku.original_price,
@@ -125,7 +130,7 @@ class Sku extends React.PureComponent {
                 stocks: parseInt(sku.stock, 10)
             };
         });
-        console.log('字典：', SKUResult);
+        // console.log('字典：', SKUResult);
         return SKUResult;
     };
 
@@ -146,7 +151,7 @@ class Sku extends React.PureComponent {
                 resultArrs.push(combArr);
             }
         }
-        console.log('将库存不为0的sku组合拆开生成字典的key', resultArrs);
+        // console.log('将库存不为0的sku组合拆开生成字典的key', resultArrs);
         return resultArrs;
     }
 
@@ -194,7 +199,7 @@ class Sku extends React.PureComponent {
     skuHandler= () => {
         const {detail, attributes} = this.props;
         const {selectedTemp, skuResult} = this.state;
-        console.log('商品属性attributes:', attributes);
+        // console.log('商品属性attributes:', skuResult);
         // 根据已选中的selectedTemp，生成字典查询selectedIdsTemp
         const selectedIdsTemp = Object.keys(selectedTemp).reduce((arr, value) => {
             if (selectedTemp[value]) {
@@ -203,7 +208,7 @@ class Sku extends React.PureComponent {
             return arr;
         }, []);
         const selectedIds = selectedIdsTemp.filter(item => item);
-        console.log('当前选中属性值', selectedIds);
+        // console.log('当前选中属性值', selectedIds);
         // 处理attributes数据，根据字典查询结果计算当前选择情况的价格范围以及总数量。
         // 并添加selected和unselectable属性，用于render判断。
         attributes.forEach((attribute, index) => {
@@ -214,9 +219,9 @@ class Sku extends React.PureComponent {
                     let testAttrIds = [...selectedIdsTemp];
                     testAttrIds[index] = item.id;
                     testAttrIds = testAttrIds.filter(v => v);
-                    console.log('testAttrIds', testAttrIds.join(';'));
+                    // console.log('testAttrIds', testAttrIds.join(';'));
                     item.unselectable = !(Object.keys(skuResult).indexOf(testAttrIds.join(';')) !== -1);
-                    console.log('下一步可选的属性值:', item);
+                    // console.log('下一步可选的属性值:', item);
                 }
             });
         });
@@ -241,7 +246,7 @@ class Sku extends React.PureComponent {
 
     //选择配送方式
     clickPickType= (tId) => {
-        console.log('选择配送方式', tId);
+        // console.log('选择配送方式', tId);
         this.setState({
             selectType: tId
         });
@@ -251,7 +256,7 @@ class Sku extends React.PureComponent {
     clickHandler= (clickId, index) => {
         const {attributes} = this.props;
         const {selectedTemp} = this.state;
-        console.log('选中项：', clickId, '选中第几行规格：', index);
+        // console.log('选中项：', clickId, '选中第几行规格：', index);
         attributes.forEach((info) => {
             if (selectedTemp[info.name] && selectedTemp[info.name].id === clickId) {
                 //删除已选中项
@@ -271,7 +276,7 @@ class Sku extends React.PureComponent {
         this.setState({
             selectedTemp
         }, () => {
-            console.log('selectedTemp', this.state.selectedTemp);
+            // console.log('selectedTemp', this.state.selectedTemp);
             this.skuHandler();
         });
     };
@@ -279,7 +284,7 @@ class Sku extends React.PureComponent {
     //提示信息
     showToast = (selectedTemp) => {
         const {attributes} = this.props;
-        console.log('已选择', selectedTemp, Object.keys(selectedTemp));
+        // console.log('已选择', selectedTemp, Object.keys(selectedTemp));
         const arr = [];
         attributes.forEach(item => {
             if (!Object.keys(selectedTemp).includes(item.name)) arr.push(item.name);
@@ -305,11 +310,11 @@ class Sku extends React.PureComponent {
     };
 
     //渲染额外内容
-    getExtraElement=() => {
+    getExtraElement=(a) => {
         const {extra} = this.props;
         let extraElement;
         if (typeof extra === 'function') {
-            extraElement = extra();
+            extraElement = extra(a);
         } else {
             extraElement = extra;
         }
@@ -319,6 +324,7 @@ class Sku extends React.PureComponent {
     render() {
         const {selectedTemp, selectType, submitalbe, price, originalPrice, deposit, stock} = this.state;
         const {type, attributes, cover, visible, onClose} = this.props;
+        console.log(stock, '啥都卡死的框架按收到货');
         return (
             <Modal
                 className="panel-mask"
@@ -346,54 +352,58 @@ class Sku extends React.PureComponent {
                             <div className="close icon" onClick={onClose}/>
                         </div>
                     </div>
-                    <div className="panel-content-box">
-                        <div className="panel-content">
-                            <div className="methods" key={type.name}>
-                                <div className="heading">{type.name}</div>
-                                <div className="select">
-                                    {type.data.map(item => (
-                                        <Button
-                                            className={item.id.toString() === selectType ? 'active-att' : 'select-att'}
-                                            key={item.id}
-                                            onClick={() => this.clickPickType(item.id.toString())}
-                                        >
-                                            {item.value}
-                                        </Button>
-                                    ))}
-                                </div>
-                            </div>
-                            {attributes.map((attribute, index) => (
-                                <div className="methods" key={attribute.name}>
-                                    <div className="heading">{attribute.name}</div>
+                    <div className="panel-bot">
+                        <div className="panel-content-box">
+                            <div className="panel-content">
+                                <div className={`methods ${nativeCssDiff() ? 'general-other' : 'general'}`} key={type.name}>
+                                    <div className="heading">{type.name}</div>
                                     <div className="select">
-                                        {attribute.data.map(item => {
-                                            const styleName = item.selected
-                                                ? 'active-att'//选中
-                                                : 'select-att'; //未选中
-                                            return (
-                                                <Button
-                                                    className={styleName}
-                                                    key={item.id}
-                                                    disabled={!!item.unselectable}
-                                                    onClick={() => this.clickHandler(item.id, index)}
-                                                >
-                                                    {item.value}
-                                                </Button>
-                                            );
-                                        })}
+                                        {type.data.map(item => (
+                                            <Button
+                                                className={item.id.toString() === selectType ? 'active-att' : 'select-att'}
+                                                key={item.id}
+                                                onClick={() => this.clickPickType(item.id.toString())}
+                                            >
+                                                {item.value}
+                                            </Button>
+                                        ))}
                                     </div>
                                 </div>
-                            ))}
+                                {attributes.map((attribute, index) => (
+                                    <div className={`methods ${nativeCssDiff() ? 'general-other' : 'general'}`} key={attribute.name}>
+                                        <div className="heading">{attribute.name}</div>
+                                        <div className="select">
+                                            {attribute.data.map(item => {
+                                                const styleName = item.selected
+                                                    ? 'active-att'//选中
+                                                    : 'select-att'; //未选中
+                                                return (
+                                                    <Button
+                                                        className={styleName}
+                                                        key={item.id}
+                                                        disabled={!!item.unselectable}
+                                                        onClick={() => this.clickHandler(item.id, index)}
+                                                    >
+                                                        {item.value}
+                                                    </Button>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                            {this.getExtraElement(stock)}
                         </div>
-                        {this.getExtraElement()}
+                        <Button
+                            style={{width: '93%', margin: 'auto'}}
+                            onClick={submitalbe
+                                ? this.onSubmit
+                                : () => this.showToast(selectedTemp)
+                            }
+                        >确定
+                        </Button>
                     </div>
-                    <Button
-                        onClick={submitalbe
-                            ? this.onSubmit
-                            : () => this.showToast(selectedTemp)
-                        }
-                    >确定
-                    </Button>
+
                 </div>
             </Modal>
         );

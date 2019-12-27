@@ -5,7 +5,7 @@ import VerificationCode from '../../../../../../common/verification-code';
 import {InputGrid} from '../../../../../../common/input-grid/InputGrid';
 import './PasswordPayment.less';
 
-const {appHistory, validator, showInfo, showSuccess, getUrlParam, setNavColor} = Utils;
+const {appHistory, validator, showInfo, showSuccess, getUrlParam, native} = Utils;
 const {urlCfg} = Configs;
 const {MESSAGE: {Form, Feedback}, navColorR} = Constants;
 const getPass = { //获取验证码按钮的样式
@@ -47,13 +47,13 @@ class passwordPayment extends BaseComponent {
 
     componentWillMount() {
         if (process.env.NATIVE) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorR});
+            native('native', {color: navColorR});
         }
     }
 
     componentWillReceiveProps() {
         if (process.env.NATIVE) {
-            setNavColor('setNavColor', {color: navColorR});
+            native('native', {color: navColorR});
         }
     }
 
@@ -208,7 +208,7 @@ class passwordPayment extends BaseComponent {
     }
 
     render() {
-        const {editModal, getOff} = this.state;
+        const {editModal, getOff, phoneNum} = this.state;
         const {getFieldDecorator} = this.props.form;//getFieldDecorator用于和表单进行双向绑定
         return (
             <React.Fragment>
@@ -262,7 +262,7 @@ class passwordPayment extends BaseComponent {
                                             type="phone"
                                             placeholder="请输手机号码"
                                             onChange={this.phoneChange}
-                                            value={this.state.phoneNum}
+                                            value={phoneNum}
                                             clear
                                         >输入手机号
                                         </InputItem>
@@ -282,7 +282,7 @@ class passwordPayment extends BaseComponent {
                                                 placeholder=""
                                                 className="sure-pass"
                                                 ref={ref => { this.yzm = ref }}
-                                                maxLength={6}
+                                                maxLength={4}
                                             >验证码
                                             </InputItem>
                                         )

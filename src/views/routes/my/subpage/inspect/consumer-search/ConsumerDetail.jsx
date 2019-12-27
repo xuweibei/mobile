@@ -24,7 +24,7 @@ export default class InspectOrder extends BaseComponent {
     }
 
     whiteList = () => {
-        this.fetch(urlCfg.whiteList, {method: 'post', data: {key: decodeURI(getUrlParam('keywords', encodeURI(this.props.location.search)))}}).subscribe(res => {
+        this.fetch(urlCfg.whiteList, {data: {key: decodeURI(getUrlParam('keywords', encodeURI(this.props.location.search)))}}).subscribe(res => {
             if (res && res.status === 0) {
                 this.setState({
                     list: res.list

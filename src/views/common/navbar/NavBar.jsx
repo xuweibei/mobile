@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './NavBar.less';
 
-const {appHistory, native, showInfo, setNavColor} = Utils;
+const {appHistory, native, showInfo} = Utils;
 const {navColorF} = Constants;
 // const hashs = window.location.hash;
 // const str = hashs.substring(hashs.length - 8);
@@ -30,7 +30,8 @@ class NavBar extends React.PureComponent {
         backgroundColor: PropTypes.string,
         rightExplainClick: PropTypes.func,
         show: PropTypes.bool,
-        color: PropTypes.string
+        color: PropTypes.string,
+        status: PropTypes.string
     }
 
     static defaultProps = {
@@ -50,20 +51,21 @@ class NavBar extends React.PureComponent {
         show: true,
         backgroundColor: '',
         rightExplainClick: () => {},
-        color: ''
+        color: '',
+        status: '1'
     };
 
     componentWillMount() {
         if (process.env.NATIVE) { //设置tab颜色
             const {color} = this.props;
-            setNavColor('setNavColor', {color: color || navColorF});
+            native('native', {color: color || navColorF});
         }
     }
 
     componentWillReceiveProps() {
         if (process.env.NATIVE) {
             const {color} = this.props;
-            setNavColor('setNavColor', {color: color || navColorF});
+            native('native', {color: color || navColorF});
         }
     }
 
@@ -73,7 +75,7 @@ class NavBar extends React.PureComponent {
         if (process.env.NATIVE) { //app状态下
             if (goBackModal) { //如果是有返回处理函数，则执行这个函数
                 goBackModal();
-            } else if (nativeGoBack) { //如果没又返回处理函数，而是有 nativeGoBack 这个原生直接下级页面的标识，则返回时走原生方法
+            } else if (nativeGoBack || appHistory.length() === 0) { //如果没又返回处理函数，而是有 nativeGoBack 这个原生直接下级页面的标识，则返回时走原生方法
                 native('goBack');
             } else { //其他情况则走返回
                 appHistory.goBack();
@@ -110,15 +112,16 @@ class NavBar extends React.PureComponent {
     }
 
     render() {
-        const {title, rightShow, redBackground, rightSearch, show, rightExplain, rightEdit, search, isEdit, backgroundColor} = this.props;
+        const {title, rightShow, redBackground, rightSearch, show, rightExplain, rightEdit, search, isEdit, backgroundColor, status} = this.props;
         if (window.isWX) {
             if (title) {
                 document.title = title;
             }
-            return null;
+            // return null;
         }
+
         return (
-            window.isWX ? null : (
+            (window.isWX && status === '1') ? null : (
                 <div className="wrapTabNav">
                     <div className="navbar" style={{backgroundColor: backgroundColor || '@white'}}>
                         { redBackground //红底

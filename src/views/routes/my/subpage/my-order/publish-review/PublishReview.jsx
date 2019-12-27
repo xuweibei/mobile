@@ -1,13 +1,14 @@
 /**发表追评 */
 
 import React from 'react';
+import dsBridge from 'dsbridge';
 import {List, TextareaItem, ImagePicker, WingBlank} from 'antd-mobile';
 import {dropByCacheKey} from 'react-router-cache-route';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './PublishReview.less';
 
-const {getUrlParam, dealImage, showInfo, showSuccess, appHistory, native, setNavColor} = Utils;
-const {MESSAGE: {Form, Feedback}, IMGSIZE, navColorF} = Constants;
+const {getUrlParam, dealImage, showInfo, showSuccess, appHistory} = Utils;
+const {MESSAGE: {Form, Feedback}, IMGSIZE} = Constants;
 const {urlCfg} = Configs;
 export default class PublishReview extends BaseComponent {
     state = {
@@ -21,23 +22,11 @@ export default class PublishReview extends BaseComponent {
         this.getList();
     }
 
-    componentWillMount() {
-        if (process.env.NATIVE) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (process.env.NATIVE) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
     getList = () => {
         const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
-        this.fetch(urlCfg.rublishReview, {method: 'post', data: {id}})
+        this.fetch(urlCfg.rublishReview, {data: {id}})
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     this.setState({
                         publishInfo: res.data
                     });
@@ -76,19 +65,23 @@ export default class PublishReview extends BaseComponent {
 
     //原生图片选择
     addPictrue = () => {
-        const {nativePicNum} = this.state;
+        const {nativePicNum, fileArr} = this.state;
         if (process.env.NATIVE) {
-            native('picCallback', {num: nativePicNum}).then(res => {
-                const {fileArr} = this.state;
+            dsBridge.call('picCallback', {num: nativePicNum}, (dataList) => {
                 const arr = fileArr;
-                res.data.img.forEach((item, index) => {
-                    arr.push({imgB: item[0], imgS: item[1], id: new Date()});
-                });
-                this.setState({
-                    fileArr: arr,
-                    nativePicNum: 9 - arr.length
-                });
+                const res = dataList ? JSON.parse(dataList) : '';
+                if (res && res.status === '0') {
+                    res.data.img.forEach((item, index) => {
+                        arr.push({url: item[0], urlB: item[1], id: new Date()});
+                    });
+                    this.setState({
+                        fileArr: arr,
+                        nativePicNum: 9 - arr.length
+                    });
+                }
             });
+            // native('picCallback', {num: nativePicNum}).then(res => {
+            // });
         }
     };
 
@@ -110,21 +103,20 @@ export default class PublishReview extends BaseComponent {
             return;
         }
         const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
-        this.fetch(urlCfg.publishAReview, {method: 'post', data: {pingjia_id: id, content: textValue, have_pic: fileArr.length > 0 ? 1 : ''}})
+        this.fetch(urlCfg.publishAReview, {data: {pingjia_id: id, content: textValue, have_pic: fileArr.length > 0 ? 1 : ''}})
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     if (fileArr.length > 0) {
                         fileArr.forEach(itemImg => {
-                            itemImg.urlB = encodeURIComponent(itemImg.imgB);
-                            delete itemImg.imgB;
-                            delete itemImg.url;
+                            itemImg.url = encodeURIComponent(itemImg.urlB);
+                            delete itemImg.urlB;
                         });
                         this.fetch(urlCfg.picSave, {data: {
                             type: 1,
                             id: res.id,
                             file: fileArr
                         }}).subscribe((resr) => {
-                            if (resr.status === 0) {
+                            if (res && resr.status === 0) {
                                 showSuccess(Feedback.Evaluate_Success);
                                 dropByCacheKey('PossessEvaluate');
                                 appHistory.replace('/evaluationSuccess');
@@ -137,8 +129,6 @@ export default class PublishReview extends BaseComponent {
                     }
                 }
             });
-        // FIXME: 这个跟不返回是一样的效果
-        //已优化
     }
 
     goToGoods = () => {
@@ -180,7 +170,7 @@ export default class PublishReview extends BaseComponent {
                                                 fileArr && fileArr.map((value, index) => index < 9 && (
                                                     <li id={value.id}>
                                                         <span onClick={() => this.deleteImg(value.id)}>×</span>
-                                                        <img src={value.imgS}/>
+                                                        <img src={value.url}/>
                                                     </li>
                                                 ))
                                             }

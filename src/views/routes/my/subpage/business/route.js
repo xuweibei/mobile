@@ -1,9 +1,18 @@
 import {Route} from 'react-router-dom';
 import CacheRoute from 'react-router-cache-route';
 import Business from './Business';
-import BusinessInfo from './BusinessInfo';
-import OrderList from './OrderList';
+// import BusinessInfo from './BusinessInfo';
+// import OrderList from './OrderList';
 
+const BusinessInfo = Loadable({
+    loader: () => import(/* webpackChunkName: 'MyBusiness' */ './BusinessInfo'),
+    loading: () => null
+});
+
+const OrderList = Loadable({
+    loader: () => import(/* webpackChunkName: 'MyBusiness' */ './OrderList'),
+    loading: () => null
+});
 const MyBusinessModal = () => (
     <React.Fragment>
         <CacheRoute path="/business" component={Business} when="back"/>

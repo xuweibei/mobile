@@ -11,7 +11,7 @@ import MyListView from '../../../../../common/my-list-view/MyListView';
 
 const {FIELD, navColorF} = Constants;
 const {urlCfg} = Configs;
-const {showInfo, setNavColor} = Utils;
+const {showInfo, native} = Utils;
 const hybird = process.env.NATIVE;
 
 export default class Record extends BaseComponent {
@@ -27,13 +27,13 @@ export default class Record extends BaseComponent {
 
     componentWillMount() {
         if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
+            native('native', {color: navColorF});
         }
     }
 
     componentWillReceiveProps() {
         if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
+            native('native', {color: navColorF});
         }
     }
 

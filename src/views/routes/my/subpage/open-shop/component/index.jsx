@@ -9,7 +9,7 @@ import SelfType from './SelfType';
 import {urlCfg} from '../../../../../../configs/urlCfg';
 
 
-const {appHistory, getUrlParam, native, systemApi: {getValue}, setNavColor} = Utils;
+const {appHistory, getUrlParam, native, systemApi: {getValue}, native} = Utils;
 const {navColorF} = Constants;
 
 
@@ -22,13 +22,13 @@ class ShopIndex extends BaseComponent {
 
     componentWillMount() {
         if (process.env.NATIVE) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
+            native('native', {color: navColorF});
         }
     }
 
     componentWillReceiveProps() {
         if (process.env.NATIVE) {
-            setNavColor('setNavColor', {color: navColorF});
+            native('native', {color: navColorF});
         }
     }
 

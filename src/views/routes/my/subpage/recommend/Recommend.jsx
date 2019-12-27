@@ -98,7 +98,7 @@ export default class Recommend extends BaseComponent {
         const row = (item, index) => (
             <div className="recommend-list" onClick={() => this.switchTo(item.id)} key={index.toString()}>
                 <div className="image">
-                    <LazyLoad lazyInfo={{imgUrl: item.banner, offset: -30, overflow: true}}/>
+                    <LazyLoad src={item.banner}/>
                 </div>
                 <div className="desc">
                     <div className="desc-title">

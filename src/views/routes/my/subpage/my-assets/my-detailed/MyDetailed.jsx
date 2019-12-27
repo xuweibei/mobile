@@ -4,7 +4,6 @@
 import {Picker} from 'antd-mobile';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import Nothing from '../../../../../common/nothing/Nothing';
-import {showInfo} from '../../../../../../utils/mixin';
 import './MyDetailed.less';
 
 const {FIELD} = Constants;

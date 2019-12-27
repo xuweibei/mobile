@@ -1,15 +1,15 @@
 /**发表评论 */
-// FIXME: 需要优化
-//已优化
 import React from 'react';
+import dsBridge from 'dsbridge';
+import Immutable from 'immutable';
 import './MyEvaluate.less';
 import {dropByCacheKey} from 'react-router-cache-route';
 import {Radio, Flex, TextareaItem, ImagePicker} from 'antd-mobile';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 
 const {urlCfg} = Configs;
-const {appHistory, getUrlParam, dealImage, showInfo, showSuccess, native, setNavColor} = Utils;
-const {MESSAGE: {Form, Feedback}, IMGSIZE, navColorF} = Constants;
+const {appHistory, getUrlParam, showInfo, showSuccess} = Utils;
+const {MESSAGE: {Form, Feedback}, IMGSIZE} = Constants;
 //评价 好评 中评 差评
 const evaluates = [
     {value: 1, title: '好评'},
@@ -25,12 +25,11 @@ const appraises = [
     {index: 4},
     {index: 5}
 ];
-const hybird = process.env.NATIVE;
 
 export default class MyEvaluate extends BaseComponent {
     state = {
-        files: {}, //上传图片张数（最多）二维数组
-        evaluate: [], //评价商品数量
+        files: Immutable.List([]), //上传图片张数（最多）二维数组
+        evaluate: Immutable.List([]), //评价商品集合
         estimate: [], //不同商品评价状态、好评、中评、差评
         discuss: [], //获取评价内容
         anonymous: true, //是否匿名评价
@@ -41,11 +40,16 @@ export default class MyEvaluate extends BaseComponent {
     };
 
     componentDidMount() {
+        this.getMoreList();
+    }
+
+    //获取信息
+    getMoreList = () => {
         //获取订单ID
         const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
         const assess = decodeURI(getUrlParam('assess', encodeURI(this.props.location.search)));
         this.fetch(urlCfg.orderAppraise, {data: {id}}).subscribe((res) => {
-            if (res.status === 0) {
+            if (res && res.status === 0) {
                 const arrly = [];
                 const array = [];
                 const pic = [];
@@ -57,27 +61,14 @@ export default class MyEvaluate extends BaseComponent {
                 res.list.forEach(item => {
                     item.nativePicNum = 9; //设置原生状态下，可以选择图片的数量
                 });
-                this.setState({
-                    evaluate: res.list, //获取订单商品
+                this.setState((prevState) => ({
+                    evaluate: prevState.evaluate.merge(res.list), //获取订单商品
                     estimate: arrly, //获取订单的 商品数量 不同商品评价状态先默认为1
                     discuss: array, //获取商品的评价内容数量 先以空字符串push进去相对应的数量
-                    files: pic, //获取订单的商品数量，先以空数组push进去相对应的数量
                     selfHelp: assess //等于2 为是从自提过来的评价
-                });
+                }));
             }
         });
-    }
-
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
     }
 
     //获取商品评价状态、好评、中评、差评
@@ -100,7 +91,7 @@ export default class MyEvaluate extends BaseComponent {
         });
     }
 
-    //获取商品上传图片
+    //商品上传图片
     increase = (index, filer) => {
         //限制图片上传大小
         filer = filer.filter(item => {
@@ -109,79 +100,73 @@ export default class MyEvaluate extends BaseComponent {
             }
             return showInfo(Feedback.DOT_TWOM);
         });
-        const {filerAll} = this.state;
-        const wxUrl = filer.map((imgB) => {
-            const objTemp = {
-                url: '',
-                urlB: ''
-            };
-            dealImage(imgB, 100, (imgSX) => { //小图片压缩 图片信息 图片大下 返回压缩图片路径
-                objTemp.url = imgSX;
-            });
-            dealImage(imgB, 800, (imgD) => { //大图片压缩 图片信息 图片大下 返回压缩图片路径
-                objTemp.urlB = imgD;
-            });
-            return objTemp;
-        });
         const {files} = this.state;
-        //将原数组重新赋值给array 数组赋值问题
-        const array = files.concat([]);
-        //将对应的商品图片 替换到array相对应的位置
-        array[index] = wxUrl;
-        filerAll[index] = filer;
+        const newFiles = files.set(index, filer);
         this.setState({
-            files: array,
-            filerAll: filerAll
+            files: newFiles
         });
     }
 
     //点击添加图片
     addPictrue = (data, index) => {
-        if (hybird) {
-            native('picCallback', {num: data.nativePicNum}).then(res => {
+        if (process.env.NATIVE) {
+            dsBridge.call('picCallback', {num: data.get('nativePicNum') || 9}, (dataList) => {
+                const res = dataList ? JSON.parse(dataList) : '';
                 const {files, evaluate} = this.state;
                 const arr = [];
-                res.data.img.forEach(item => {
-                    arr.push({urlB: item[0], url: item[1], id: new Date(), nativePicNum: 9});
-                });
-                if (files[index]) {
-                    files.forEach((item, num) => {
-                        if (num === index) {
-                            item.push(...arr);
-                            evaluate.forEach((value, i) => {
-                                if (i === index) {
-                                    value.nativePicNum = 9 - item.length;//动态计算原生可选择图片的数量
-                                }
-                            });
-                        }
+                if (res && res.status === '0') {
+                    res.data.img.forEach(item => {
+                        arr.push({urlB: item[0], url: item[1], id: new Date(), nativePicNum: 9});
                     });
-                } else {
-                    files[index] = arr;
-                    evaluate[index].nativePicNum = 8;//动态计算原生可选择图片的数量
+                    let oldData = files;//设置初始值
+                    let oldDataEv = evaluate;//设置初始值
+                    if (files.get(index)) { //超过一张图片的时候走这里
+                        oldData = files.map((item, num) => {
+                            oldDataEv = evaluate.map((value, i) => { //遍历最初数据，让其可选图片数量做出改变
+                                if (i === index) {
+                                    const newData = value.set('nativePicNum', 9 - item.length);
+                                    return newData;
+                                }
+                                return value;
+                            });
+                            if (num === index) { //超过一张时候的处理
+                                item = item.concat(...arr);
+                                return item;
+                            }
+                            return item;
+                        });
+                    } else {
+                        oldData = files.set(index, arr);//某条数据第一次添加的时候
+                        oldDataEv = evaluate.setIn([index, 'nativePicNum'], 8);//动态计算原生可选择图片的数量
+                    }
+                    this.setState({
+                        files: oldData,
+                        evaluate: oldDataEv
+                    });
                 }
-                this.setState({
-                    files: [...files],
-                    evaluate
-                });
             });
+            // native('picCallback', {num: data.get('nativePicNum') || 9}).then(res => {
+
+            // });
         }
     };
 
     //点击删除图片
     deleteImg = (id, index) => {
         const {files, evaluate} = this.state;
-        const arr = [];
-        files.forEach((item, num) => {
-            item = item.filter(data => data.id !== id);
-            item.forEach(data => {
-                if (data.id !== id) {
-                    evaluate[num].nativePicNum = 9 - item.length;//动态计算原生可选择图片的数量
+        const nnn = files.map((item, num) => {
+            item.forEach((lalala, numData) => {
+                if (lalala.id === id) {
+                    evaluate.setIn([numData, 'nativePicNum'], 9 - item.length);
                 }
             });
-            arr.push(item);
+            if (num === index) {
+                return item.filter(data => data.id !== id);
+            }
+            return item;
         });
         this.setState({
-            files: [...arr],
+            files: nnn,
             evaluate
         });
     };
@@ -211,7 +196,7 @@ export default class MyEvaluate extends BaseComponent {
     evaluationSuccess = () => {
         const {evaluate, estimate, discuss, anonymous, shop, logistics, files, selfHelp} = this.state;
         const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
-        console.log(files, '接口螺丝刀讲课费');
+        console.log(files, files.toJS(), evaluate.toJS(), '电饭锅看来');
         //判断店铺 物流是否评分
         if (!shop) {
             showInfo(Form.No_EvaluateShop);
@@ -221,61 +206,82 @@ export default class MyEvaluate extends BaseComponent {
             showInfo(Form.No_EvaluateLogistics);
             return;
         }
-        for (let i = 0; i < evaluate.length; i++) {
-            this.fetch(urlCfg.publishAssess, {data: {
-                pr_id: evaluate[i].pr_id,
-                order_id: id,
-                mark_type: estimate[i],
-                types: 0,
-                content: discuss[i],
-                pr_title: evaluate[i].pr_title,
-                anonymous: anonymous ? '1' : '0',
-                shop_mark: shop,
-                logistics_mark: selfHelp === '2' ? '' : logistics,
-                property_content: evaluate[i].property_content,
-                have_pic: files[i].length > 0 ? 1 : ''
-            }}).subscribe((res) => {
-                if (res.status === 0) {
-                    if (!files[i] || files[i].length === 0) {
-                        showSuccess(Feedback.Evaluate_Success);
-                        dropByCacheKey('OrderPage');
-                        setTimeout(() => { appHistory.replace('/evaluationSuccess') }, 1000);
-                    } else {
-                        files.forEach(data => {
-                            data.forEach(value => {
-                                value.urlB = encodeURIComponent(value.urlB);
-                                delete value.url;
+        const pasArr = [];//文字请求集合
+        const picArr = [];//图片请求集合
+        evaluate.forEach((item, index) => {
+            if (item.get('pr_id')) { //先将所有的文字评价先保存
+                pasArr.push({
+                    pr_id: item.get('pr_id'),
+                    mark_type: estimate[index],
+                    types: 0,
+                    content: discuss[index],
+                    pr_title: item.get('pr_title'),
+                    anonymous: anonymous ? '1' : '0',
+                    shop_mark: shop,
+                    logistics_mark: selfHelp === '2' ? '' : logistics,
+                    property_content: item.get('property_content'),
+                    have_pic: (files.get(index) && files.get(index).length > 0) ? 1 : '',
+                    goods_id: item.get('id')
+                });
+            }
+        });
+        this.fetch(urlCfg.publishAssess, {data: {
+            order_id: id,
+            pingjia_content: pasArr
+        }}).subscribe((res) => {
+            if (res && res.status === 0) {
+                if (files.some(item => item && item.length > 0) && res.id && res.id.length > 0) { //有图片先请求
+                    files.forEach((item, index) => {
+                        console.log(item, '电饭锅看来');
+                        if (item) {
+                            item.forEach(data => {
+                                if (data.url) {
+                                    data.url = encodeURIComponent(data.url);
+                                }
                             });
-                        });
-                        this.fetch(urlCfg.picSave, {data: {
-                            type: 1,
-                            id: res.id,
-                            file: files[i]
-                        }}).subscribe((resr) => {
-                            if (resr.status === 0) {
+                            picArr.push(new Promise((resolve, reject) => {
+                                this.fetch(urlCfg.picSave, {data: {
+                                    type: 1,
+                                    id: res.id[index],
+                                    file: files.get(index)
+                                }}).subscribe((resr) => {
+                                    if (resr && resr.status === 0) {
+                                        resolve(resr);
+                                    }
+                                });
+                            }));
+                            Promise.all(picArr).then(dataRes => {
                                 showSuccess(Feedback.Evaluate_Success);
                                 dropByCacheKey('OrderPage');
                                 setTimeout(() => { appHistory.replace('/evaluationSuccess') }, 1000);
-                            }
-                        });
-                    }
+                            });
+                        }
+                    });
+                } else {
+                    showSuccess(Feedback.Evaluate_Success);
+                    dropByCacheKey('OrderPage');
+                    setTimeout(() => { appHistory.replace('/evaluationSuccess') }, 1000);
                 }
-            });
-        }
+            }
+        });
     };
 
     render() {
-        const {estimate, filerAll, files, evaluate, anonymous, shop, logistics, selfHelp} = this.state;
+        const {estimate, files, evaluate, anonymous, shop, logistics, selfHelp} = this.state;
+        console.log(evaluate, '水电费看了');
+        console.log(evaluate.toJS(), '二位热');
+        console.log(files.toJS(), '傲世轻物');
+        console.log(files, '扣篮大赛');
         return (
             <div data-component="MyEvaluate" data-role="page" className="MyEvaluate">
                 {/*评论头部*/}
                 <AppNavBar title="发表评论"/>
                 <div className="contents">
-                    {evaluate.map((item, index) => (
+                    {evaluate.size > 0 ? evaluate.map((item, index) => (
                         <div className="appraise">
                             <div className="trade-box">
                                 <div className="trade-name">
-                                    <img src={item.picpath} alt=""/>
+                                    <img src={item.get('picpath')} alt=""/>
                                     <div className="choice">
                                         {evaluates.map(items => (
                                             <Flex>
@@ -299,11 +305,11 @@ export default class MyEvaluate extends BaseComponent {
                                     <div className="upload-img">
                                         <div className="img-list">
                                             {
-                                                hybird ? (
+                                                process.env.NATIVE ? (
                                                     <div className="picture-area">
                                                         <ul>
                                                             {
-                                                                files[index] && files[index].map((value, num) => num < 9 && (
+                                                                files.get(index) && files.get(index).map((value, num) => num < 9 && (
                                                                     <li id={value.id}>
                                                                         <span onClick={() => this.deleteImg(value.id, index)}>×</span>
                                                                         <img src={value.url}/>
@@ -311,7 +317,7 @@ export default class MyEvaluate extends BaseComponent {
                                                                 ))
                                                             }
                                                             {
-                                                                (!files[index] || files[index].length < 9) && (
+                                                                (!files.get(index) || files.get(index).length < 9) && (
                                                                     <li className="imgAdd-button" onClick={() => this.addPictrue(item, index)}>
                                                                         <span>+</span>
                                                                     </li>
@@ -321,9 +327,9 @@ export default class MyEvaluate extends BaseComponent {
                                                     </div>
                                                 ) : (
                                                     <ImagePicker
-                                                        files={filerAll[index]}
+                                                        files={files.get(index)}
                                                         onChange={(file) => this.increase(index, file)}
-                                                        selectable={(filerAll[index] ? filerAll[index].length : 1) < 9}
+                                                        selectable={(files.get(index) ? files.get(index).length : 1) < 9}
                                                     />
                                                 )}
                                         </div>
@@ -331,7 +337,7 @@ export default class MyEvaluate extends BaseComponent {
                                 </div>
                             </div>
                         </div>
-                    ))}
+                    )) : ''}
                     <div className="Comment-content">
                         <div className="side-margin">
                             <div className="anonymous">

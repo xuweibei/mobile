@@ -7,7 +7,7 @@ import {withRouter} from 'react-router-dom';
 import AppNavBar from '../navbar/NavBar';
 import Nothing from '../nothing/Nothing';
 
-const {appHistory, setNavColor} = Utils;
+const {appHistory, native} = Utils;
 const {FIELD, navColorF} = Constants;
 class ScrollToTop extends React.PureComponent {
     static propTypes = {
@@ -26,13 +26,13 @@ class ScrollToTop extends React.PureComponent {
 
     componentWillMount() {
         if (process.env.NATIVE) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
+            native('native', {color: navColorF});
         }
     }
 
     componentWillReceiveProps() {
         if (process.env.NATIVE) {
-            setNavColor('setNavColor', {color: navColorF});
+            native('native', {color: navColorF});
         }
     }
 
@@ -43,9 +43,15 @@ class ScrollToTop extends React.PureComponent {
     }
 
     static getDerivedStateFromError(a, v) {
-        console.log(a, 'sssssssssssssssssssssss');
-        console.log(v, 'dddddddddddddddddddddddd');
         return {hasError: true};
+    }
+
+    goBackModal = () => {
+        if (process.env.NATIVE && appHistory.length() === 0) {
+            native('goFinish');
+        } else {
+            appHistory.goBack();
+        }
     }
 
     render() {
@@ -53,11 +59,11 @@ class ScrollToTop extends React.PureComponent {
         if (hasError) {
             return (
                 <React.Fragment>
-                    <AppNavBar title="页面崩溃"/>
+                    <AppNavBar title="页面崩溃" goBackModal={this.goBackModal}/>
                     <Nothing
                         text={FIELD.Page_Crash}
                         title="返回"
-                        onClick={() => appHistory.goBack()}
+                        onClick={this.goBackModal}
                     />
                 </React.Fragment>
             );

@@ -75,7 +75,6 @@ class Find extends BaseComponent {
     }
 
     componentWillUnmount() {
-        // dropByCacheKey('FindPage');
         super.componentWillUnmount();
         const {showMenu} = this.props;
         showMenu(true);
@@ -151,8 +150,6 @@ class Find extends BaseComponent {
                         showInfo(Feedback.Search_Success);
                         this.setState({
                             shops: res.data
-                        }, () => {
-                            this.renderMap();
                         });
                     }
                 });
@@ -250,7 +247,6 @@ class Find extends BaseComponent {
     //导航到店
     goShop = () => {
         const {searchLeft, nowLongitude, nowLatitude, addressInfo, latitude, longitude, shopName} = this.state;
-        console.log(nowLongitude, nowLatitude);
         const lat = Number(nowLatitude);
         const lon = Number(nowLongitude);
         if (searchLeft === '导航到店') {
@@ -278,6 +274,7 @@ class Find extends BaseComponent {
         });
     };
 
+    // 弹出搜索框
     showPopup = (showPopup) => {
         setTimeout(() => {
             this.setState({
@@ -307,6 +304,7 @@ class Find extends BaseComponent {
         }
     }
 
+    // 根据搜索框输入地址定位
     addressGoGeoc = (address) => {
         // 创建地址解析器实例
         const myGeo = new window.BMap.Geocoder();
@@ -334,7 +332,6 @@ class Find extends BaseComponent {
                 this.fetch(urlCfg.findForShopName, {data: {title: this.state.shopName, latitude: latitude, longitude: longitude}})
                     .subscribe((res) => {
                         if (res.status === 0 && res.data.length > 0) {
-                            console.log('卧槽 ，太无情');
                             showInfo(Feedback.Search_Success);
                             const {setShopList} = this.props;
                             setShopList(res.data);
@@ -343,7 +340,9 @@ class Find extends BaseComponent {
                                 showPopup2: false,
                                 toggle: true,
                                 shopList: res,
-                                shops: res.data
+                                shops: res.data,
+                                searchLeft: '店铺列表',
+                                searchRight: '取消搜索'
                             }, () => {
                                 this.renderMap();
                             });
@@ -356,7 +355,6 @@ class Find extends BaseComponent {
             if (address.length === 0) {
                 showInfo(Form.No_Search_Address);
             } else {
-                console.log('卧槽，无情');
                 this.addressGoGeoc(address);
                 this.setState({
                     showPopup2: false
@@ -367,7 +365,6 @@ class Find extends BaseComponent {
 
     //关闭弹窗
     close = (prop) => {
-        console.log('卧槽，真吉尔无情');
         this.setState({
             [prop]: false
         });
@@ -375,6 +372,7 @@ class Find extends BaseComponent {
 
     //返回地图渲染markers
     returnMapRender = () => {
+        this.map.removeOverlay(this.polyline);
         this.setState({
             close: false,
             toggle: false
@@ -385,13 +383,19 @@ class Find extends BaseComponent {
 
     //店铺名称点击
     shopNameClick = (item) => {
+        console.log(item);
         const {longitude, latitude} = this.state;
         this.map.removeOverlay(this.polyline);
         const pt = new window.BMap.Point(item.longitude, item.latitude);
         this.map.centerAndZoom(pt, 13);
         this.setState({
             showPopup1: false,
-            oldId: item.id
+            oldId: item.id,
+            close: true,
+            searchLeft: '导航到店',
+            searchRight: '店铺信息',
+            toggle: true,
+            shopId: item.id
         });
         const walk = new window.BMap.WalkingRoute(this.map, {});
         const {oldId} = this.state;

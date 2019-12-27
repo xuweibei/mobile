@@ -193,15 +193,15 @@ class ShopHome extends BaseComponent {
                 <div className="goods-name" onClick={() => this.allgoods(item.id)}>
                     <div className="goods-picture">
                         <LazyLoadIndex
-                            lazyInfo={{imgUrl: item.picpath, offset: -30, overflow: true}}
+                            src={item.picpath}
                         />
                     </div>
                     <div className="goods-information">
                         <div className="goods-explain">{item.title}</div>
-                        <span className="btn-keep">记账量：{item.deposit}</span>
+                        <span className="btn-keep">记账量{item.deposit}</span>
                         <div className="payment">
-                            <span>{item.num_sold}人付款</span>
-                            <span className="payment-r">￥{item.original_price}</span>
+                            <span>销量：{item.num_sold}</span>
+                            <span className="payment-r">￥{item.price_original}</span>
                         </div>
                         <div className="price">￥{item.price}</div>
                     </div>

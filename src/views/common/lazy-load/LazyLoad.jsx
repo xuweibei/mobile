@@ -1,12 +1,20 @@
 /*
 * 商品图片懒加载
 * */
-import LazyLoad, {forceCheck} from 'react-lazyload';
-import PropTypes from 'prop-types';
 
-export default class LazyLoadIndex extends React.PureComponent {
+import React from 'react';
+import PropTypes from 'prop-types';
+import LazyLoad from 'vanilla-lazyload';
+import lazyloadConfig from './config/lazyload';
+
+// Only initialize it one time for the entire application
+if (!document.lazyLoadInstance) {
+    document.lazyLoadInstance = new LazyLoad(lazyloadConfig);
+}
+
+export class LazyImage extends React.PureComponent {
     static propTypes = {
-        lazyInfo: PropTypes.object.isRequired,
+        src: PropTypes.object.isRequired,
         bigPicture: PropTypes.func
     }
 
@@ -14,21 +22,31 @@ export default class LazyLoadIndex extends React.PureComponent {
         bigPicture() {}
     };
 
+    // Update lazyLoad after first rendering of every image
+    componentDidMount() {
+        document.lazyLoadInstance.update();
+    }
+
+    // Update lazyLoad after rerendering of every image
+    componentDidUpdate() {
+        document.lazyLoadInstance.update();
+    }
+
     lazyImg = () => <img src={require('../../../assets/images/Lazy-loading.png')} alt="正在加载。。。"/>;
 
     render() {
-        const {lazyInfo, bigPicture} = this.props;
-        forceCheck();//当LazyLoad组件进入视口而没有调整大小或滚动事件时很有用，例如，当组件的容器被隐藏然后可见时。
+        const {src, bigPicture} = this.props;
         return (
-            <LazyLoad overflow={lazyInfo.overflow} offset={lazyInfo.offset} placeholder={this.lazyImg()} alt="">
+            src ? (
                 <img
-                    data-original={lazyInfo.imgUrl}
+                    onError={(e) => { e.target.src = require('../../../assets/images/Lazy-loading.png') }}
+                    className="lazy"
                     onClick={bigPicture}
-                    key={new Date()}
-                    onLoad={(e) => { e.target.src = lazyInfo.imgUrl || require('../../../assets/images/Lazy-loading.png') }}
-                    src={lazyInfo.imgUrl || require('../../../assets/images/Lazy-loading.png')}
+                    src={src}
                 />
-            </LazyLoad>
+            ) : this.lazyImg()
         );
     }
 }
+
+export default LazyImage;

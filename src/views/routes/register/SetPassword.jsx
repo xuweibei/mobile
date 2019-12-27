@@ -7,7 +7,7 @@ import AppNavBar from '../../common/navbar/NavBar';
 import './SetPassword.less';
 
 const {urlCfg} = Configs;
-const {getUrlParam, appHistory, showInfo, showSuccess, native, setNavColor} = Utils;
+const {getUrlParam, appHistory, showInfo, showSuccess, native} = Utils;
 const {MESSAGE: {Form, Feedback}, navColorF} = Constants;
 
 export default class SetPassWord extends BaseComponent {
@@ -21,13 +21,13 @@ export default class SetPassWord extends BaseComponent {
 
     componentWillMount() {
         if (process.env.NATIVE) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
+            native('native', {color: navColorF});
         }
     }
 
     componentWillReceiveProps() {
         if (process.env.NATIVE) {
-            setNavColor('setNavColor', {color: navColorF});
+            native('native', {color: navColorF});
         }
     }
 

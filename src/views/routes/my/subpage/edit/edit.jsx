@@ -1,6 +1,7 @@
 /**我的设置页面 */
 
 import React from 'react';
+import dsBrige from 'dsbridge';
 import {connect} from 'react-redux';
 import {List, Button} from 'antd-mobile';
 import AppNavBar from '../../../../common/navbar/NavBar';
@@ -9,7 +10,7 @@ import {baseActionCreator} from '../../../../../redux/baseAction';
 import './edit.less';
 
 const Item = List.Item;
-const {appHistory, systemApi: {removeValue}, native, showInfo, getUrlParam} = Utils;
+const {appHistory, systemApi: {removeValue}, native, showInfo} = Utils;
 const {urlCfg} = Configs;
 const {LOCALSTORAGE, MESSAGE: {Feedback}, WEB_NAME} = Constants;
 class Edit extends BaseComponent {
@@ -18,9 +19,6 @@ class Edit extends BaseComponent {
         if (!userInfo) {
             getUserInfo();
         }
-        const userType = decodeURI(getUrlParam('userType', encodeURI(this.props.location.search)));
-        //全局储存用户身份
-        this.props.setUseType(userType);
     }
 
     //初始化列表数据
@@ -34,7 +32,7 @@ class Edit extends BaseComponent {
                     {
                         key: '1-1',
                         extra: '修改',
-                        param: '/extname',
+                        param: '/extname?router=extname',
                         subName: 'pig',
                         value: '昵称',
                         moredes: userInfo && userInfo.nickname
@@ -59,7 +57,7 @@ class Edit extends BaseComponent {
                         key: '1-4',
                         name: 'see',
                         arrow: 'horizontal',
-                        param: '/enid',
+                        param: '/enid?router=enid',
                         subName: 'before',
                         more: true,
                         value: '源头UID'
@@ -96,7 +94,7 @@ class Edit extends BaseComponent {
                     {
                         key: '3-2',
                         extra: (userInfo && userInfo.address.length > 0) ? '' : '修改', //只允许修改一次
-                        param: (userInfo && userInfo.address.length > 0) ? '' : '/locationarea', //只允许修改一次
+                        param: (userInfo && userInfo.address.length > 0) ? '' : '/locationarea?router=locationarea', //只允许修改一次
                         subName: 'locationarea',
                         name: 'area',
                         value: '当前区域',
@@ -130,7 +128,7 @@ class Edit extends BaseComponent {
                 key: '5',
                 name: 'not',
                 arrow: 'horizontal',
-                param: '/userAgreementDetail',
+                param: '/userAgreementDetail?router=userAgreementDetail',
                 subName: 'about',
                 value: '关于' + WEB_NAME
             }
@@ -186,7 +184,7 @@ class Edit extends BaseComponent {
         } else if (item.param) {
             //判断是否有源头uid，locker_id状态为0则没有；需跳转到确认页面
             if (item.more && userInfo.locker_id === 0) {
-                this.switchTo('/source');
+                this.switchTo('/source?router=source');
             } else {
                 this.switchTo(item.param);
             }
@@ -196,13 +194,19 @@ class Edit extends BaseComponent {
     //绑定微信
     bindingWeChat = () => {
         const {getUserInfo} = this.props;
-        native('bindWxCallback', {'': ''}).then(res => {
+        dsBrige.call('bindWxCallback', {'': ''}, (res) => {
+            alert(1);
             native('goH5', {'': ''});
             showInfo(Feedback.wxbind_Success);
             getUserInfo();
-        }).catch(err => {
-            native('goH5', {'': ''});
         });
+        // native('bindWxCallback', {'': ''}).then(res => {
+        //     native('goH5', {'': ''});
+        //     showInfo(Feedback.wxbind_Success);
+        //     getUserInfo();
+        // }).catch(err => {
+        //     native('goH5', {'': ''});
+        // });
     };
 
     //页面跳转
@@ -243,12 +247,21 @@ class Edit extends BaseComponent {
     changeTheAvatar = () => {
         if (process.env.NATIVE) {
             const arr = [];
-            native('picCallback', {num: 1}).then(res => {
-                res.data.img.forEach(item => {
-                    arr.push({imgB: item[0], imgS: item[1]});
-                    this.updataImg(arr);
-                });
+            dsBrige.call('picCallback', {num: 1}, (res) => {
+                const data = res ? JSON.parse(res) : '';
+                if (data && data.status === '0') {
+                    data.data.img.forEach(item => {
+                        arr.push({imgB: item[0], imgS: item[1]});
+                        this.updataImg(arr);
+                    });
+                }
             });
+            // native('picCallback', {num: 1}).then(res => {
+            //     res.data.img.forEach(item => {
+            //         arr.push({imgB: item[0], imgS: item[1]});
+            //         this.updataImg(arr);
+            //     });
+            // });
         }
     }
 
@@ -280,6 +293,7 @@ class Edit extends BaseComponent {
                             src={userInfo && userInfo.avatarUrl}
                             alt=""
                             onClick={this.changeTheAvatar}
+                            onError={(e) => { e.target.src = userInfo.defaultUrl }}
                         />
                         {/* <div className="my-name">{nickname}</div> ff说是将昵称去掉，自己先留着 */}
                         <div>UID:{userInfo && userInfo.no}</div>
@@ -306,10 +320,8 @@ class Edit extends BaseComponent {
 }
 
 const mapStateToProps = state => {
-    const base = state.get('base');
     const EditInfo = state.get('my');
     return {
-        userTypes: base.get('userTypes'),
         userInfo: EditInfo.get('userInfo')
     };
 };
