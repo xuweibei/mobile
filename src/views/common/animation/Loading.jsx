@@ -8,7 +8,7 @@ import ShopListSkelon from '../skelon/ShopListSkelon';
 
 const {getPixelRatio} = Utils;
 class Loading extends React.PureComponent {
-    componentDidMount() {
+    componentWillMount() {
         console.log('渲染动画');
         this.draw();
     }

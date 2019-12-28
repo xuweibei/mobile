@@ -24,7 +24,7 @@ axios.interceptors.request.use(
         const state = store.getState();
         const userToken = state.get('base').get(LOCALSTORAGE.USER_TOKEN);
         if (!config.data) config.data = {};
-        config.data.userToken = userToken || (window.localStorage.getItem(LOCALSTORAGE.USER_TOKEN) === 'null' ? '' : window.localStorage.getItem(LOCALSTORAGE.USER_TOKEN));
+        config.data.userToken = userToken || (window.localStorage.getItem('zpyg_userToken') === 'null' ? '' : window.localStorage.getItem('zpyg_userToken'));
         return config;
     },
     error => {
