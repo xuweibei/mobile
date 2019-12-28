@@ -11,6 +11,7 @@ class BaseComponent extends React.Component {
         children: PropTypes.array
     };
 
+
     static contextTypes = {
         store: PropTypes.object
     };
@@ -35,6 +36,13 @@ class BaseComponent extends React.Component {
             });
         }
     }
+
+    // componentDidMount() {
+    //     window.timeClear = setTimeout(() => {
+    //         const skelon = document.getElementById('skelon');
+    //         skelon.style.display = 'none';
+    //     }, 1500);
+    // }
 
     shouldComponentUpdate(nextProps, nextState) {
         const thisProps = this.props || {},
@@ -73,6 +81,7 @@ class BaseComponent extends React.Component {
         this.setState((prevState) => ({
             prevState
         }));
+        // clearTimeout(window.timeClear);
     }
 
     // 获取组件名称

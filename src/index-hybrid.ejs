@@ -103,12 +103,173 @@
         <% } %>
     </head>
     <body>
-        <div>
-            <!-- 骨架屏动画 -->
-        </div>
         <script>
-            console.log(window.location.href)
+            var loadingAnimation = document.getElementById("skelon");
+            loadingAnimation.style.overflowY = "hidden";
+            if (window.loading.style) {
+                if (window.loading.style.cssText) {
+                    loadingAnimation.style.display = "block";
+                }
+            }
+            var detailContainer = document.getElementByClassName("detail-container");
+            var listContaine = document.getElementByClassName("list-container")
+            var shopListContainer = document.getElementByClassName('shop-list-container')
+            var isAddress = window.location.href
+            if(isAddress.includes('goodsDetail')){
+                detailContainer.style.display = 'block'
+                shopListContainer.display = 'none'
+                listContaine.display = 'none'
+            }
+            if(isAddress.includes('shopCart')){
+                shopListContainer.display = 'block'
+                detailContainer.style.display = 'none'
+                listContaine.display = 'none'
+            }
         </script>
+        <div id="skelon">
+            <!-- 详情 -->
+            <div class="detail-container" style="display: none;">
+                <div class="detail-top"></div>
+                <div class="detail-bottom">
+                  <div class="detail-item-title"></div>
+                  <div class="detail-item"></div>
+                  <div class="detail-item"></div>
+                  <div class="detail-item"></div>
+                  <div class="detail-item"></div>
+                  <div class="detail-item"></div>
+                  <div class="detail-item"></div>
+                  <div class="detail-item"></div>
+                  <div class="detail-item"></div>
+                </div>
+            </div>
+            <!-- 店铺列表 -->
+            <div class="shop-list-container" style="display: none;">
+                <div class="shop-list-content">
+                  <div class="shop-list-item">
+                    <div class="shop-list-item-top">
+                      <div class="item"></div>
+                    </div>
+                    <div class="shop-list-item-bot">
+                      <div class="shop-list-item-bot-left"></div>
+                      <div class="shop-list-item-bot-right">
+                        <div class="shop-list-item-bot-right-item"></div>
+                        <div class="shop-list-item-bot-right-item"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="shop-list-item">
+                    <div class="shop-list-item-top">
+                      <div class="item"></div>
+                    </div>
+                    <div class="shop-list-item-bot">
+                      <div class="shop-list-item-bot-left"></div>
+                      <div class="shop-list-item-bot-right">
+                        <div class="shop-list-item-bot-right-item"></div>
+                        <div class="shop-list-item-bot-right-item"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="shop-list-item">
+                    <div class="shop-list-item-top">
+                      <div class="item"></div>
+                    </div>
+                    <div class="shop-list-item-bot">
+                      <div class="shop-list-item-bot-left"></div>
+                      <div class="shop-list-item-bot-right">
+                        <div class="shop-list-item-bot-right-item"></div>
+                        <div class="shop-list-item-bot-right-item"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="shop-list-item">
+                    <div class="shop-list-item-top">
+                      <div class="item"></div>
+                    </div>
+                    <div class="shop-list-item-bot">
+                      <div class="shop-list-item-bot-left"></div>
+                      <div class="shop-list-item-bot-right">
+                        <div class="shop-list-item-bot-right-item"></div>
+                        <div class="shop-list-item-bot-right-item"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="shop-list-item">
+                    <div class="shop-list-item-top">
+                      <div class="item"></div>
+                    </div>
+                    <div class="shop-list-item-bot">
+                      <div class="shop-list-item-bot-left"></div>
+                      <div class="shop-list-item-bot-right">
+                        <div class="shop-list-item-bot-right-item"></div>
+                        <div class="shop-list-item-bot-right-item"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="shop-list-item">
+                    <div class="shop-list-item-top">
+                      <div class="item"></div>
+                    </div>
+                    <div class="shop-list-item-bot">
+                      <div class="shop-list-item-bot-left"></div>
+                      <div class="shop-list-item-bot-right">
+                        <div class="shop-list-item-bot-right-item"></div>
+                        <div class="shop-list-item-bot-right-item"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <!-- 列表页 -->
+            <div class="list-container" style="display: block;">
+                <div class="list-content">
+                  <div class="list-item-container">
+                    <div class="list-item-left"></div>
+                    <div class="list-item-right">
+                      <div class="list-item-right-item"></div>
+                      <div class="list-item-right-item"></div>
+                      <div class="list-item-right-item"></div>
+                      <div class="list-item-right-item"></div>
+                    </div>
+                  </div>
+                  <div class="list-item-container">
+                    <div class="list-item-left"></div>
+                    <div class="list-item-right">
+                      <div class="list-item-right-item"></div>
+                      <div class="list-item-right-item"></div>
+                      <div class="list-item-right-item"></div>
+                      <div class="list-item-right-item"></div>
+                    </div>
+                  </div>
+                  <div class="list-item-container">
+                    <div class="list-item-left"></div>
+                    <div class="list-item-right">
+                      <div class="list-item-right-item"></div>
+                      <div class="list-item-right-item"></div>
+                      <div class="list-item-right-item"></div>
+                      <div class="list-item-right-item"></div>
+                    </div>
+                  </div>
+                  <div class="list-item-container">
+                    <div class="list-item-left"></div>
+                    <div class="list-item-right">
+                      <div class="list-item-right-item"></div>
+                      <div class="list-item-right-item"></div>
+                      <div class="list-item-right-item"></div>
+                      <div class="list-item-right-item"></div>
+                    </div>
+                  </div>
+                  <div class="list-item-container">
+                    <div class="list-item-left"></div>
+                    <div class="list-item-right">
+                      <div class="list-item-right-item"></div>
+                      <div class="list-item-right-item"></div>
+                      <div class="list-item-right-item"></div>
+                      <div class="list-item-right-item"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>
         <div id="root"></div>
         <% if (htmlWebpackPlugin.options.env === 'test'||htmlWebpackPlugin.options.env === 'prev') { %>
         <!-- VConsole调试 (mobile 上调试)-->
@@ -123,4 +284,193 @@
         <%var chunks = htmlWebpackPlugin.files.chunks;for (var chunk in chunks) {%>
         <script src="<%=chunks[chunk].entry %>"></script><% } %>
     </body>
+    <style>
+        @keyframes skelon{
+          0% {background-position: 100% 50%;}
+          100% {background-position: 0 50%;}
+        }
+        #skelon{
+            position: fixed;
+            width: 100%;
+            background-color: #fff;
+            z-index: 9999;
+            height: 100vh;
+        }
+        body{
+          margin: 0;
+        }
+        /* 列表骨架屏 */
+        .list-content{
+          padding: 0 15px;
+          padding-top: 30px;
+        }
+        .list-item-container{
+          display: flex;
+          justify-content: flex-start;
+          margin-bottom: 15px;
+        }
+        .list-item-left{
+          width: 120px;
+          height: 120px;
+          background-color: #F2F2F2;
+          margin-right: 10px;
+          border-radius: 5px;
+          background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 37%, #f2f2f2 63%);
+          background-size: 400% 100%;
+          -webkit-animation: skelon 1.4s ease infinite;
+          animation: skelon 1.4s ease infinite;
+        }
+        .list-item-right{
+          padding-top: 10px;
+          flex: 1;
+        }
+        .list-item-right-item{
+          height: 15px;
+          border-radius: 5px;
+          background-color: #F2F2F2;
+          background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 37%, #f2f2f2 63%);
+          background-size: 400% 100%;
+          -webkit-animation: skelon 1.4s ease infinite;
+          animation: skelon 1.4s ease infinite;
+        }
+        /* .list-item-right-item:nth-child(1){
+        width: 100%;
+        } */
+        .list-item-right-item:nth-child(2){
+        margin-top: 6px; 
+        width: 160px;
+        }
+        .list-item-right-item:nth-child(3){
+        margin-top: 16px; 
+        width: 90px;
+        }
+        .list-item-right-item:nth-child(4){
+        margin-top: 28px; 
+        width: 50px;
+        }
+        /* 详情骨架屏 */
+        .detail-container{
+    
+        }
+        .detail-top{
+          height: 290px;
+          background-color: #F2F2F2;
+          background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 37%, #f2f2f2 63%);
+          background-size: 400% 100%;
+          -webkit-animation: skelon 1.4s ease infinite;
+          animation: skelon 1.4s ease infinite;
+        }
+        .detail-bottom{
+          padding: 16px 15px;
+          background-color: #fff;
+        }
+        .detail-item-title{
+          width: 100px;
+          /* background-color: #FFCCD4; */
+          height: 24px;
+          border-radius: 5px;
+          background: linear-gradient(90deg, #FFCCD4 25%, rgb(255, 182, 182) 37%, #FFCCD4 63%);
+          background-size: 400% 100%;
+          -webkit-animation: skelon 1.4s ease infinite;
+          animation: skelon 1.4s ease infinite;
+        }
+        .detail-item{
+          height: 15px;
+          border-radius: 5px;
+          background-color: #F2F2F2;
+          background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 37%, #f2f2f2 63%);
+          background-size: 400% 100%;
+          -webkit-animation: skelon 1.4s ease infinite;
+          animation: skelon 1.4s ease infinite;
+        }
+        .detail-item:nth-child(2){
+          margin-top: 12px;
+        }
+        .detail-item:nth-child(3){
+          margin-top: 12px;
+          width: 150px;
+        }
+        .detail-item:nth-child(4){
+          margin-top: 16px;
+          width: 60px;
+        }
+        .detail-item:nth-child(5){
+          margin-top: 30px;
+          width: 200px;
+        }
+        .detail-item:nth-child(6){
+          margin-top: 20px;
+          width: 200px;
+        }
+        .detail-item:nth-child(7){
+          margin-top:25px;
+          width: 60px;
+        }
+        .detail-item:nth-child(8){
+          margin-top: 12px;
+          width: 160px;
+        }
+        .detail-item:nth-child(9){
+          margin-top: 40px;
+          width: 100px;
+        }
+        /* 店铺列表骨架屏 */
+        .shop-list-content{
+          padding: 0 15px;
+          padding-top: 30px;
+        }
+        .shop-list-item{
+          margin-bottom: 40px;
+        }
+        .shop-list-item div{
+          border-radius: 5px;
+        }
+        .shop-list-item-top{
+          height: 15px;
+        }
+        .shop-list-item-top>.item{
+          height: 15px;
+          width: 140px;
+          background-color: #f2f2f2;
+          background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 37%, #f2f2f2 63%);
+          background-size: 400% 100%;
+          -webkit-animation: skelon 1.4s ease infinite;
+          animation: skelon 1.4s ease infinite;
+          float: right;
+        }
+        .shop-list-item-bot{
+          display: flex;
+          justify-content: flex-start;
+        }
+        .shop-list-item-bot-left{
+          width: 50px;
+          height: 50px;
+          margin-right: 5px;
+          background-color: #f2f2f2;
+          background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 37%, #f2f2f2 63%);
+          background-size: 400% 100%;
+          -webkit-animation: skelon 1.4s ease infinite;
+          animation: skelon 1.4s ease infinite;
+        }
+        .shop-list-item-bot-right{
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+        }
+        .shop-list-item-bot-right-item{
+          height: 15px;
+          background-color: #f2f2f2;
+          background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 37%, #f2f2f2 63%);
+          background-size: 400% 100%;
+          -webkit-animation: skelon 1.4s ease infinite;
+          animation: skelon 1.4s ease infinite;
+        }
+        .shop-list-item-bot-right-item:nth-child(1){
+          width: 90px;
+        }
+        .shop-list-item-bot-right-item:nth-child(2){
+          width: 240px;
+          margin-top: 8px;
+        }
+    </style>
 </html>

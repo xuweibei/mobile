@@ -2,13 +2,13 @@
 * 页面加载动画
 * */
 import './Animation.less';
-import DetailSkelon from '../skelon/DetailSkelon';
-import ListSkelon from '../skelon/ListSkelon';
-import ShopListSkelon from '../skelon/ShopListSkelon';
+// import DetailSkelon from '../skelon/DetailSkelon';
+// import ListSkelon from '../skelon/ListSkelon';
+// import ShopListSkelon from '../skelon/ShopListSkelon';
 
 const {getPixelRatio} = Utils;
 class Loading extends React.PureComponent {
-    componentWillMount() {
+    componentDidMount() {
         console.log('渲染动画');
         this.draw();
     }
@@ -87,7 +87,7 @@ class Loading extends React.PureComponent {
                     width="40"
                     height="40"
                 />
-                <div className="skelon">
+                {/* <div className="skelon">
                     {
                         window.location.href.includes('goodsDetail') && <DetailSkelon/>
                     }
@@ -97,7 +97,7 @@ class Loading extends React.PureComponent {
                     {
                         !window.location.href.includes('goodsDetail') && !(window.location.href.includes('browseHistory') || window.location.href.includes('collect') || window.location.href.includes('shopCart')) && <ListSkelon/>
                     }
-                </div>
+                </div> */}
             </div>
         );
     }
