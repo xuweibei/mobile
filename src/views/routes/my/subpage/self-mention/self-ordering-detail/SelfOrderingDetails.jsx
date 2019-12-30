@@ -204,7 +204,11 @@ class ReDetail extends BaseComponent {
     }
 
     render() {
+<<<<<<< HEAD
         const {selfSufficiency, selfGoods, maskStatus, collectId} = this.state;
+=======
+        const {selfSufficiency, selfGoods, collectId, maskStatus} = this.state;
+>>>>>>> develop
         return (
             <div data-component="Self-orderingDetails" data-role="page" className="Self-orderingDetails">
                 <AppNavBar goBackModal={this.goBackModal} title="订单详情"/>
@@ -252,7 +256,7 @@ class ReDetail extends BaseComponent {
                                         <div className="goods-sku">
                                             <div className="sku-left">
                                                 {(item.property_content && item.property_content.length > 0) ? item.property_content.map(items => (
-                                                    <div className="goods-size">{items}</div>
+                                                    <div className="goods-size" key={items}>{items}</div>
                                                 )) : ''}
                                             </div>
                                             <div className="local">x{item.num}</div>

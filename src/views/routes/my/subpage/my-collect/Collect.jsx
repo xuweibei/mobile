@@ -363,7 +363,7 @@ class Collect extends BaseComponent {
                 <div className="goods" key={item.id} onClick={() => this.shopGoods(item.pr_id)}>
                     <div className="goods-box">
                         <div>
-                            <LazyLoad lazyInfo={{imgUrl: item.picpath, offset: 80, overflow: true}}/>
+                            <LazyLoad src={item.picpath}/>
                         </div>
                         <div className="desc">
                             <div className="desc-title">{item.title}</div>
@@ -422,7 +422,7 @@ class Collect extends BaseComponent {
                             item.pr && item.pr.length ? item.pr.map(data => (
                                 <div className="item" key={data.title}>
                                     <div className="image" onClick={() => this.shopGoods(data.id)}>
-                                        <LazyLoad lazyInfo={{imgUrl: data.picpath, offset: 100, overflow: true}}/>
+                                        <LazyLoad src={data.picpath}/>
                                         <span>{data.price}</span>
                                     </div>
                                     <p onClick={() => this.shopGoods(data.id)}>{data.title}</p>

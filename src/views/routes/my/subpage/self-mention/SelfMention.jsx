@@ -253,7 +253,7 @@ class ReDetail extends BaseComponent {
     }
 
     //前往售后详情页
-    skipAfterSale = (e, id) => {
+    skipAfterSale = (e, id) => { //type为2表示线下订单过去的
         appHistory.push(`/refundDetails?id=${id}&type=2`);
         e.stopPropagation();
     }
@@ -297,7 +297,7 @@ class ReDetail extends BaseComponent {
                     <div className="goods" key={items.pr_id}>
                         <div className="goods-left">
                             <div>
-                                <LazyLoadIndex lazyInfo={{offset: -30, imgUrl: items.pr_picpath, overflow: true}}/>
+                                <LazyLoadIndex src={items.pr_picpath}/>
                             </div>
                         </div>
                         <div className="goods-right">
@@ -350,7 +350,7 @@ class ReDetail extends BaseComponent {
                         {((item.status === '3' || item.status === '10' || item.status === '12' || item.status === '13') && !item.return_status) && (
                             <div className="buttons">
                                 <span className="look-button delete" style={{border: nativeCssDiff() ? '1PX solid #666' : '0.02rem solid #666'}} onClick={(e) => this.deleteOrder(e, item.id)}>删除</span>
-                                <div className="evaluate-button" onClick={(e) => this.promptlyAssess(e, item.id)}>待评价</div>
+                                <div className="evaluate-button" onClick={(e) => this.promptlyAssess(e, item.id)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>待评价</div>
                             </div>
                         )}
                         {/*订单完成*/}
@@ -361,7 +361,7 @@ class ReDetail extends BaseComponent {
                             </div>
                         )}
                         {/*退款中  1 退款成功 3  退款失败 4 退款关闭 5*/}
-                        { (item.return_status === '3' || item.return_status === '4') && (
+                        { (item.status === '10' || item.status === '12' || item.status === '13') && (item.return_status === '3' || item.return_status === '4') && (
                             <div className="buttons">
                                 <div className="evaluate-button" onClick={(e) => this.skipAfterSale(e, item.return_id)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>查看详情</div>
                             </div>

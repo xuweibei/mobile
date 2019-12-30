@@ -17,6 +17,7 @@ import ReturnGoods from './apply-service/ReturnGoods';
 import ApplyDrawback from './apply-drawback/ApplyDrawback';
 import ShopSearch from './shop-search/ShopSearch';
 import shopDetail from './shop-search/shopDetail';
+import MyComplain from './my-complain/MyComplain';
 
 const OrderModal = () => (
     <React.Fragment>
@@ -33,7 +34,7 @@ const OrderModal = () => (
         <Route path="/returnGoods" component={ReturnGoods}/> {/* 退货退款*/}
         <Route path="/refundDetails" component={refundDetailsPage}/> {/* 售后退款详情页*/}
         <Route path="/logistics" component={Logistics}/> {/* 我的 物流*/}
-        {/* <Route path="/myComplain" component={MyComplain}/> 我要投诉 */}
+        <Route path="/myComplain" component={MyComplain}/> {/* 我要投诉 */}
         {/* <Route path="/consultHistory" component={ConsultHistory}/> 协商历史 */}
         <Route path="/applyDrawback" component={ApplyDrawback}/> {/* 修改申请*/}
         <Route path="/shop-search" component={ShopSearch}/> {/*商店搜索*/}

@@ -60,14 +60,15 @@ class showButton extends BaseComponent {
         return (
             <Popover
                 mask
+                className="fortest"
                 overlayClassName="fortest"
                 visible={visible}
                 overlay={[
                     (<Item key="1" icon={myImg('family.svg')}><p>首页</p></Item>),
-                    // (<Item key="2" icon={myImg('star.svg')}>收藏</Item>),
-                    // (<Item key="3" icon={myImg('shop-cart.svg')}>购物车</Item>),
+                    (<Item key="2" icon={myImg('star.svg')}>收藏</Item>),
+                    (<Item key="3" icon={myImg('shop-cart.svg')}>购物车</Item>),
                     (<Item key="4" icon={myImg('info.svg')}><p>消息</p></Item>)
-                    // (<Item key="5" icon={myImg('share.svg')}>分享</Item>)
+                    // (<Item key="5" icon={myImg('share.svg')}>分享</Item>) //余丽
                 ]}
                 align={{
                     overflow: {

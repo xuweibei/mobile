@@ -1,17 +1,32 @@
 /** 评价成功*/
 import {connect} from 'react-redux';
+import {ListView} from 'antd-mobile';
 import {dropByCacheKey} from 'react-router-cache-route';
 import LazyLoadIndex from '../../../../../common/lazy-load/LazyLoad';
 import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAction';
 import AppNavBar from '../../../../../common/navbar/NavBar';
+import {ListFooter} from '../../../../../common/list-footer';
 import './EvaluationSuccess.less';
 
 const {appHistory} = Utils;
 const {urlCfg} = Configs;
+const temp = {
+    stackData: [],
+    isLoading: true,
+    pagesize: 20
+};
 class EvaluationSuccess extends BaseComponent {
     state = {
+        dataSource: new ListView.DataSource({
+            rowHasChanged: (row1, row2) => row1 !== row2
+        }), //长列表容器
+        height: document.documentElement.clientHeight - (window.isWX ?  window.rem * 1.08 : window.rem * 1.78),
         recommend: [], //获取评价列表
-        greatDemand: [] //热门商品列表
+        greatDemand: [], //热门商品列表
+        refreshing: false, //是否显示刷新状态
+        hasMore: false, //底部请求状态文字显示情况
+        pageDem: 1, //热门推荐页码
+        pageCount: -1
     };
 
     componentDidMount() {
@@ -32,13 +47,28 @@ class EvaluationSuccess extends BaseComponent {
     }
 
     //热门推荐
-    greatDemand = () => {
+    greatDemand = (pageDem) => {
+        const {pageCount} = this.state;
+        temp.isLoading = true;
         this.fetch(urlCfg.homeRecommendPr,
-            {data: {status: 3, page: 1, pagesize: 3}}).subscribe((res) => {
+            {data: {status: 3, page: 1, pagesize: 20, pageCount, pageDem}}).subscribe((res) => {
             if (res && res.status === 0) {
-                this.setState({
-                    greatDemand: res.data
-                });
+                temp.isLoading = false;
+                if (pageDem === 1) {
+                    temp.stackData = res.list;
+                } else {
+                    temp.stackData = temp.stackData.concat(res.list);
+                }
+                if (pageDem >= res.pageCount) {
+                    this.setState({
+                        hasMore: false
+                    });
+                }
+                this.setState((prevState) => ({
+                    dataSource: prevState.dataSource.cloneWithRows(temp.stackData),
+                    pageCount: res.pageCount,
+                    refreshing: false
+                }));
             }
         });
     }
@@ -65,8 +95,57 @@ class EvaluationSuccess extends BaseComponent {
         appHistory.push(`/myEvaluate?id=${id}`);
     }
 
+    //上拉加载
+    onEndReached = () => {
+        const {pageDem, pageCount} = this.state;
+        if (temp.isLoading) return;
+        if (pageCount > pageDem) {
+            this.setState((pervState) => ({
+                pageDem: pervState.pageDem + 1,
+                hasMore: true
+            }), () => {
+                this.greatDemand(this.state.pageDem);
+            });
+        } else {
+            this.setState({
+                hasMore: false
+            });
+        }
+    };
+
     render() {
-        const {recommend, greatDemand} = this.state;
+        const {recommend, dataSource, hasMore, height} = this.state;
+        const row = item => (
+            <div className="goods">
+                {
+                    item && (
+                        <div className="goods-name">
+                            <div className="goods-picture" onClick={() => this.goToGooods(item.pr_id)}>
+                                <img src={item.picpath}/>
+                            </div>
+                            <div className="goods-information">
+                                <div className="goods-explain" onClick={() => this.goToGooods(item.pr_id)}>{item.title}</div>
+                                <div className="bookkeeping" onClick={() => this.goToGooods(item.pr_id)}>
+                                    <span className="bookkeeping-l">记账量：{item.deposit}</span>
+                                    <span className="bookkeeping-r">{item.city}</span>
+                                </div>
+                                <div className="payment">
+                                    <span>{item.sale_num}人付款</span>
+                                    {/*<span className="payment-r">￥9999</span>*/}
+                                </div>
+                                <div className="price" onClick={this.shopHome.bind(this, item.shop_id)}>
+                                    <div className="price-l">
+                                        <span className="enter-l">{item.shopName}</span>
+                                        <span className="enter-r">进店<span className="icon"/></span>
+                                    </div>
+                                    <div className="price-r">￥{item.price}</div>
+                                </div>
+                            </div>
+                        </div>
+                    )
+                }
+            </div>
+        );
         return (
             <div className="Evaluation-success">
                 <AppNavBar title="评价成功"/>
@@ -89,7 +168,7 @@ class EvaluationSuccess extends BaseComponent {
                                     <div className="goods-name">
                                         <div className="goods-picture">
                                             {/* <img src={data.pr_picpath} alt=""/> */}
-                                            <LazyLoadIndex lazyInfo={{offset: -10, imgUrl: item.picpath, overflow: false}}/>
+                                            <LazyLoadIndex src={item.pr_picpath}/>
                                         </div>
                                         <div className="goods-information">
                                             <div className="goods-explain explain-appraise" onClick={() => this.goToGooods(data.pr_id)}>{data.pr_title}</div>
@@ -123,33 +202,22 @@ class EvaluationSuccess extends BaseComponent {
                 </div>
                 <div className="recommend">
                     <div className="recommend-text">热门推荐</div>
-                    {(greatDemand && greatDemand.length > 0) ? greatDemand.map(item => (
-                        <div className="goods">
-                            <div className="goods-name">
-                                <div className="goods-picture" onClick={() => this.goToGooods(item.pr_id)}>
-                                    <LazyLoadIndex lazyInfo={{offset: -60, imgUrl: item.picpath_s, overflow: false}}/>
-                                </div>
-                                <div className="goods-information">
-                                    <div className="goods-explain" onClick={() => this.goToGooods(item.pr_id)}>{item.title}</div>
-                                    <div className="bookkeeping" onClick={() => this.goToGooods(item.pr_id)}>
-                                        <span className="bookkeeping-l">记账量：{item.deposit}</span>
-                                        <span className="bookkeeping-r">{item.city}</span>
-                                    </div>
-                                    <div className="payment">
-                                        <span>{item.sale_num}人付款</span>
-                                        {/*<span className="payment-r">￥9999</span>*/}
-                                    </div>
-                                    <div className="price" onClick={this.shopHome.bind(this, item.shop_id)}>
-                                        <div className="price-l">
-                                            <span className="enter-l">{item.shopName}</span>
-                                            <span className="enter-r">进店<span className="icon"/></span>
-                                        </div>
-                                        <div className="price-r">￥{item.price}</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    )) : ''}
+                    {
+                        dataSource.getRowCount() > 0 ? (
+                            <ListView
+                                dataSource={dataSource}
+                                initialListSize={temp.pagesize}
+                                renderRow={row}
+                                style={{
+                                    height: height
+                                }}
+                                pageSize={temp.pagesize}
+                                onEndReachedThreshold={30}
+                                onEndReached={this.onEndReached}
+                                renderFooter={() => ListFooter(hasMore)}
+                            />
+                        ) : ''
+                    }
                 </div>
             </div>
         );
