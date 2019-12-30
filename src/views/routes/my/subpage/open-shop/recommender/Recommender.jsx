@@ -9,8 +9,6 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 const {urlCfg} = Configs;
 
 const {appHistory, showInfo, native, systemApi: {setValue}} = Utils;
-const {navColorF} = Constants;
-
 export default class Recommender extends BaseComponent {
     constructor(props, context) {
         super(props, context);
@@ -21,18 +19,6 @@ export default class Recommender extends BaseComponent {
         UID: '',
         phone: '',
         verification: false
-    }
-
-    componentWillMount() {
-        if (process.env.NATIVE) { //设置tab颜色
-            native('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (process.env.NATIVE) {
-            native('setNavColor', {color: navColorF});
-        }
     }
 
     routeTo = () => {

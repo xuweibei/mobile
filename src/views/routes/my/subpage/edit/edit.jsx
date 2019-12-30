@@ -1,7 +1,6 @@
 /**我的设置页面 */
 
 import React from 'react';
-import dsBrige from 'dsbridge';
 import {connect} from 'react-redux';
 import {List, Button} from 'antd-mobile';
 import AppNavBar from '../../../../common/navbar/NavBar';
@@ -194,7 +193,7 @@ class Edit extends BaseComponent {
     //绑定微信
     bindingWeChat = () => {
         const {getUserInfo} = this.props;
-        dsBrige.call('bindWxCallback', {'': ''}, (res) => {
+        window.DsBridge.call('bindWxCallback', {'': ''}, (res) => {
             native('goH5', {'': ''});
             const data = res ? JSON.parse(res) : '';
             if (data.status === '0') {
@@ -251,7 +250,7 @@ class Edit extends BaseComponent {
     changeTheAvatar = () => {
         if (process.env.NATIVE) {
             const arr = [];
-            dsBrige.call('picCallback', {num: 1}, (res) => {
+            window.DsBridge.call('picCallback', {num: 1}, (res) => {
                 const data = res ? JSON.parse(res) : '';
                 if (data && data.status === '0') {
                     data.data.img.forEach(item => {

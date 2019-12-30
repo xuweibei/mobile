@@ -1,6 +1,5 @@
 /**发表评论 */
 import React from 'react';
-import dsBridge from 'dsbridge';
 import Immutable from 'immutable';
 import './MyEvaluate.less';
 import {dropByCacheKey} from 'react-router-cache-route';
@@ -110,7 +109,7 @@ export default class MyEvaluate extends BaseComponent {
     //点击添加图片
     addPictrue = (data, index) => {
         if (process.env.NATIVE) {
-            dsBridge.call('picCallback', {num: data.get('nativePicNum') || 9}, (dataList) => {
+            window.DsBridge.call('picCallback', {num: data.get('nativePicNum') || 9}, (dataList) => {
                 const res = dataList ? JSON.parse(dataList) : '';
                 const {files, evaluate} = this.state;
                 const arr = [];

@@ -11,7 +11,7 @@ import './PasswordDetail.less';
 
 const {appHistory, validator, showInfo, showSuccess, getUrlParam, native} = Utils;
 const {urlCfg} = Configs;
-const {MESSAGE: {Form, Feedback}, navColorR} = Constants;
+const {MESSAGE: {Form, Feedback}, navColorO} = Constants;
 const getPass = { //获取验证码按钮的样式
     float: 'right',
     marginRight: '18px',
@@ -42,13 +42,13 @@ class passwordDetail extends BaseComponent {
 
     componentWillMount() {
         if (process.env.NATIVE) { //设置tab颜色
-            native('setNavColor', {color: navColorR});
+            native('setNavColor', {color: navColorO});
         }
     }
 
     componentWillReceiveProps() {
         if (process.env.NATIVE) {
-            native('setNavColor', {color: navColorR});
+            native('setNavColor', {color: navColorO});
         }
     }
 

@@ -7,7 +7,7 @@ import {ListFooter} from '../../../../common/list-footer';
 import './Notice.less';
 
 const {appHistory, showInfo, showSuccess, native} = Utils;
-const {MESSAGE: {Form, Feedback}, FIELD, navColorF} = Constants;
+const {MESSAGE: {Form, Feedback}, FIELD} = Constants;
 const {urlCfg} = Configs;
 
 const CheckboxItem = Checkbox.CheckboxItem;
@@ -46,18 +46,6 @@ export default class Notice extends BaseComponent {
             hasMore: false, //底部加载文字的显示
             height: document.documentElement.clientHeight - (window.isWX ? document.documentElement.clientWidth / 7.5 * 0.88 : document.documentElement.clientWidth / 7.5 * 2.3)
         };
-    }
-
-    componentWillMount() {
-        if (process.env.NATIVE) { //设置tab颜色
-            native('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (process.env.NATIVE) {
-            native('setNavColor', {color: navColorF});
-        }
     }
 
     componentDidMount() {

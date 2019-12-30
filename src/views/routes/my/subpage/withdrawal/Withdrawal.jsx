@@ -11,9 +11,8 @@ import {InputGrid} from '../../../../common/input-grid/InputGrid';
 import AppNavBar from '../../../../common/navbar/NavBar';
 
 const {urlCfg} = Configs;
-const {showInfo, validator, appHistory, native} = Utils;
-const {MESSAGE: {Form, Feedback}, navColorR} = Constants;
-const hybird = process.env.NATIVE;
+const {showInfo, validator, appHistory} = Utils;
+const {MESSAGE: {Form, Feedback}} = Constants;
 
 const tabs = [
     {title: '微信零钱'},
@@ -57,18 +56,6 @@ class Withdrawal extends BaseComponent {
     componentDidMount() {
         this.income();
         this.payPassWord();
-    }
-
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            native('setNavColor', {color: navColorR});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybird) {
-            native('setNavColor', {color: navColorR});
-        }
     }
 
     //获取初始值信息

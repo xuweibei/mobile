@@ -1,6 +1,5 @@
 /**支付页面 */
 import React from 'react';
-import dsBridge from 'dsbridge';
 import {connect} from 'react-redux';
 import './PayMoney.less';
 import {dropByCacheKey} from 'react-router-cache-route';
@@ -180,7 +179,7 @@ class PayMoney extends BaseComponent {
                             timestamp: res.data.arr.timestamp,
                             sign: res.data.arr.sign
                         };
-                        dsBridge.call('wxPayCallback', obj, (dataList) => {
+                        window.DsBridge.call('wxPayCallback', obj, (dataList) => {
                             native('goH5', {'': ''});
                             const data = dataList ? JSON.parse(dataList) : '';
                             if (data && data.status === '0') {
@@ -208,7 +207,7 @@ class PayMoney extends BaseComponent {
             .subscribe(res => {
                 if (res && res.status === 0) {
                     if (process.env.NATIVE) {
-                        dsBridge.call('authInfo', res.data.response, (dataList) => {
+                        window.DsBridge.call('authInfo', res.data.response, (dataList) => {
                             native('goH5', {'': ''});
                             const data = dataList ? JSON.parse(dataList) : '';
                             if (data && data.status === '0') {
@@ -237,7 +236,7 @@ class PayMoney extends BaseComponent {
         this.fetch(urlCfg.batchPayment, {data: {type: 1, payType: selectIndex === 1 ? 2 : 1, order_no: listArr.order}})
             .subscribe(res => {
                 if (res && res.status === 0) {
-                    dsBridge.call(selectIndex === 1 ? 'payWX' : 'payAliPay', {qrCode: res.data.appPayRequest.qrCode, order_no: listArr.order[0], type: process.env.NATIVE ? 1 : 2, payType: selectIndex === 1 ? 2 : 1}, (dataList) => {
+                    window.DsBridge.call(selectIndex === 1 ? 'payWX' : 'payAliPay', {qrCode: res.data.appPayRequest.qrCode, order_no: listArr.order[0], type: process.env.NATIVE ? 1 : 2, payType: selectIndex === 1 ? 2 : 1}, (dataList) => {
                         native('goH5', {'': ''});
                         const data = dataList ? JSON.parse(dataList) : '';
                         if (data && data.status === '0') {

@@ -15,7 +15,6 @@ const entryContent = (data) => {
     return (
 `import React, {Fragment} from 'react';
 import ReactDOM from 'react-dom';
-import dsBridge from 'dsbridge';
 import {HashRouter as Router} from 'react-router-dom';
 import {Provider} from 'react-redux';
 import {baseActionCreator} from '../src/redux/baseAction';
@@ -46,8 +45,8 @@ const HomePage = () => (
 );
 
 //获取userToken
-dsBridge.call('wxLoginCallback', (data) => {
-    console.log(data,'老豆腐干电饭锅')
+window.DsBridge.call('wxLoginCallback', (data) => {
+    console.log(data,'时高时低')
     const obj = data ? JSON.parse(data) : '';
     if(obj && obj.status === '0'){
         window.localStorage.setItem(LOCALSTORAGE.USER_TOKEN,obj.data.usertoken);

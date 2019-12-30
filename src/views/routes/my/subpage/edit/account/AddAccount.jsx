@@ -5,10 +5,9 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 import VerificationCode from '../../../../../common/verification-code';
 import './Account.less';
 
-const {showInfo, validator, appHistory, showSuccess, native} = Utils;
+const {showInfo, validator, appHistory, showSuccess} = Utils;
 const {urlCfg} = Configs;
-const {MESSAGE: {Form, Feedback}, VERIFY_FAILED, navColorF} = Constants;
-const hybird = process.env.NATIVE;
+const {MESSAGE: {Form, Feedback}, VERIFY_FAILED} = Constants;
 
 const getPass = { //获取验证码按钮的样式
     border: 'none',
@@ -21,18 +20,6 @@ const getPass = { //获取验证码按钮的样式
 class AddAounted extends BaseComponent {
     state={
         getOff: false //点击获取验证码是否可以获取，默认不可以，除非输入的电话号码符合要求
-    }
-
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            native('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybird) {
-            native('setNavColor', {color: navColorF});
-        }
     }
 
      //获取验证码

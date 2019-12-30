@@ -10,7 +10,6 @@ import {urlCfg} from '../../../../../../configs/urlCfg';
 
 
 const {appHistory, getUrlParam, native, systemApi: {getValue}} = Utils;
-const {navColorF} = Constants;
 
 
 class ShopIndex extends BaseComponent {
@@ -19,18 +18,6 @@ class ShopIndex extends BaseComponent {
         intro: {},
         sure: ''
     };
-
-    componentWillMount() {
-        if (process.env.NATIVE) { //设置tab颜色
-            native('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (process.env.NATIVE) {
-            native('setNavColor', {color: navColorF});
-        }
-    }
 
     componentDidMount() {
         const status = decodeURI(getUrlParam('status', encodeURI(this.props.location.search)));

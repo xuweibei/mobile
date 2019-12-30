@@ -58,6 +58,7 @@ class NavBar extends React.PureComponent {
     componentWillMount() {
         if (process.env.NATIVE) { //设置tab颜色
             const {color} = this.props;
+            console.log(color, '第考虑到法国次的颜色');
             native('setNavColor', {color: color || navColorF});
         }
     }
@@ -65,6 +66,7 @@ class NavBar extends React.PureComponent {
     componentWillReceiveProps() {
         if (process.env.NATIVE) {
             const {color} = this.props;
+            console.log(color, '感觉');
             native('setNavColor', {color: color || navColorF});
         }
     }

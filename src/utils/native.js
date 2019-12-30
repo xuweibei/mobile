@@ -1,7 +1,6 @@
 /**
  * 对接原生方法
  */
-import dsBridge from 'dsbridge';
 import {store} from '../redux/store';
 import {systemApi} from './systemApi';
 import {baseActionCreator} from '../redux/baseAction';
@@ -11,7 +10,7 @@ const {systemApi: {removeValue}, showFail} = Utils;
 const {LOCALSTORAGE} = Constants;
 //统一封装原生接口请求
 export const native = (str, obj) => {
-    dsBridge.call(str, obj);
+    window.DsBridge.call(str, obj);
 };
 
 // new Promise((resolve, reject) => {
@@ -34,7 +33,7 @@ export const native = (str, obj) => {
 
 //设置nav的颜色，回传给原生
 export const setNavColor = (str, obj) => {
-    dsBridge.call(str, obj);
+    window.DsBridge.call(str, obj);
 };
 
 // new Promise((resolve, reject) => {
@@ -51,7 +50,7 @@ export const setNavColor = (str, obj) => {
 
 //获取购物车点击结算的时候的跳转数据
 export const getShopCartInfo = (str, obj, callBack) => {
-    dsBridge.call(str, obj);
+    window.DsBridge.call(str, obj);
 };
 
 
@@ -102,7 +101,7 @@ global.goBack = function () {
     const onOff = store.getState().get('base').get('returnStatus');
     if (!onOff) {
         if (appHistory.length() === 0 && process.env.NATIVE) {
-            dsBridge.call('goBack');
+            window.DsBridge.call('goBack');
         } else {
             appHistory.goBack();
         }
@@ -134,7 +133,7 @@ global.goBackApp = function () {
 export function goBackModal() {
     if (process.env.NATIVE && appHistory.length() === 0) {
         // native('goBack');
-        dsBridge.call('goBack');
+        window.DsBridge.call('goBack');
     } else {
         appHistory.goBack();
     }

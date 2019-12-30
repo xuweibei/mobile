@@ -3,7 +3,6 @@
  */
 import axios from 'axios';
 import jsonp from 'jsonp';
-import dsBridge from 'dsbridge';
 // import {Observable} from 'rxjs';
 import {defer} from 'rxjs/Observable/defer';
 import {Subject} from 'rxjs/Subject';
@@ -41,7 +40,7 @@ axios.interceptors.response.use(
                 store.dispatch(actionCreator.setUserToken('')); // 清除redux的userToken
                 //重定向到原生登录页
                 // native('loginout');
-                dsBridge.call('loginout');
+                window.DsBridge.call('loginout');
             } else {
                 appHistory.push('/login');
             }

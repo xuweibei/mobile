@@ -9,13 +9,15 @@ import Loading from '../animation/Loading';
 import Menu from '../menu/Menu';
 import Top from '../top/Top';
 
-let timeClear = null;//定时器
 class BasePage extends BaseComponent {
     componentDidMount() {
-        timeClear = setTimeout(() => {
-            const skelon = document.getElementById('skelon');
-            skelon.style.display = 'none';
-        }, 1500);
+        if (process.env.NATIVE) {
+            const timeClear = setTimeout(() => {
+                const skelon = document.getElementById('skelon');
+                skelon.style.display = 'none';
+                clearTimeout(timeClear);
+            }, 500);
+        }
     }
 
     renderAlert = () => {
@@ -33,10 +35,6 @@ class BasePage extends BaseComponent {
             />
         );
     };
-
-    componentWillUnmount() {
-        clearTimeout(timeClear);
-    }
 
     renderConfirm = () => {
         const {

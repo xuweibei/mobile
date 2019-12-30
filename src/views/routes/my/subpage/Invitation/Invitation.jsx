@@ -1,6 +1,5 @@
 /**邀请码页面 */
 
-import dsBrige from 'dsbridge';
 import {Button, ActionSheet} from 'antd-mobile';
 import {connect} from 'react-redux';
 import {baseActionCreator as actionCreator} from '../../../../../redux/baseAction';
@@ -98,8 +97,7 @@ class Invitation extends BaseComponent {
                 imgUrl: shareArr
             };
             if (shareArr) {
-                dsBrige.call('showShare', obj, res => {
-                    alert(2);
+                window.DsBridge.call('showShare', obj, res => {
                     native('goH5', {'': ''});
                 });
                 // native('showShare', obj).then(res => {

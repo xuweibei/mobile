@@ -9,9 +9,8 @@ import CategoryListView from './CategoryListView';
 import './CategoryList.less';
 
 
-const {getUrlParam, TD, native, goBackModal} = Utils;
+const {getUrlParam, TD, goBackModal} = Utils;
 const {TD_EVENT_ID} = Constants;
-const {navColorF} = Constants;
 
 class CategoryList extends BaseComponent {
     state = {
@@ -31,9 +30,6 @@ class CategoryList extends BaseComponent {
 
     componentWillMount() {
         this.init();
-        if (process.env.NATIVE) { //设置tab颜色
-            native('setNavColor', {color: navColorF});
-        }
     }
 
     componentWillReceiveProps(nextProps, value) { //路由跳转时的判断，id有变化就请求
@@ -43,9 +39,6 @@ class CategoryList extends BaseComponent {
             }, () => {
                 this.init();
             });
-        }
-        if (process.env.NATIVE) {
-            native('setNavColor', {color: navColorF});
         }
     }
 

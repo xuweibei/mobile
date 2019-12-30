@@ -1,7 +1,6 @@
 /**发表追评 */
 
 import React from 'react';
-import dsBridge from 'dsbridge';
 import {List, TextareaItem, ImagePicker, WingBlank} from 'antd-mobile';
 import {dropByCacheKey} from 'react-router-cache-route';
 import AppNavBar from '../../../../../common/navbar/NavBar';
@@ -67,7 +66,7 @@ export default class PublishReview extends BaseComponent {
     addPictrue = () => {
         const {nativePicNum, fileArr} = this.state;
         if (process.env.NATIVE) {
-            dsBridge.call('picCallback', {num: nativePicNum}, (dataList) => {
+            window.DsBridge.call('picCallback', {num: nativePicNum}, (dataList) => {
                 const arr = fileArr;
                 const res = dataList ? JSON.parse(dataList) : '';
                 if (res && res.status === '0') {

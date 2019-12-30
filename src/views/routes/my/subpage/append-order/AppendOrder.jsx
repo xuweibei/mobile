@@ -1,7 +1,6 @@
 /*
 * 确认订单
 * */
-import dsBridge from 'dsbridge';
 import {connect} from 'react-redux';
 import {InputItem, List, Button, Icon} from 'antd-mobile';
 import {myActionCreator as ActionCreator} from '../../actions/index';
@@ -56,7 +55,7 @@ class appendOrder extends BaseComponent {
             if (timer === 'null') { //非购物车进入的时候
                 this.getOrderState();
             } else {
-                dsBridge.call('getInfo', obj, (data) => {
+                window.DsBridge.call('getInfo', obj, (data) => {
                     const res = data ? JSON.parse(data) : '';
                     if (res && res.status === 0) {
                         setOrder(res.data.arr);

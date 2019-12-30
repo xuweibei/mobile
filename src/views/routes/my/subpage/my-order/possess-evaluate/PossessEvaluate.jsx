@@ -24,7 +24,7 @@ const temp = {
     isLoading: true
 };
 let keyNum = 0.11211212;
-const {FIELD, navColorF} = Constants;
+const {FIELD} = Constants;
 const {urlCfg} = Configs;
 const {appHistory, native, getUrlParam} = Utils;
 const arr = [{
@@ -87,12 +87,6 @@ class PossessEvaluate extends BaseComponent {
         this.sentPas();
     }
 
-    componentWillMount() {
-        if (process.env.NATIVE) { //设置tab颜色
-            native('setNavColor', {color: navColorF});
-        }
-    }
-
     componentWillReceiveProps(nextProps) {
         const userType = nextProps.location.search.split('=')[1];
         if (process.env.NATIVE && (userType !== this.state.userType)) {
@@ -119,9 +113,6 @@ class PossessEvaluate extends BaseComponent {
             }, () => {
                 this.sentPas();
             });
-        }
-        if (process.env.NATIVE) {
-            native('setNavColor', {color: navColorF});
         }
     }
 
