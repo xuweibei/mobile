@@ -17,6 +17,7 @@
                 background-color: #fff;
                 z-index: 9999;
                 height: 100vh;
+                overflow: hidden;
             }
             body{
                 margin: 0;
@@ -439,15 +440,9 @@
         <div id="root"></div>
         <script>
             var loadingAnimation = document.getElementById("skelon");
-            loadingAnimation.style.overflowY = "hidden";
-            if (window.loading.style) {
-                if (window.loading.style.cssText) {
-                    loadingAnimation.style.display = "block";
-                }
-            }
-            var detailContainer = document.getElementByClassName("detail-container");
-            var listContaine = document.getElementByClassName("list-container")
-            var shopListContainer = document.getElementByClassName('shop-list-container')
+            var detailContainer = document.getElementsByClassName("detail-container");
+            var listContaine = document.getElementsByClassName("list-container")
+            var shopListContainer = document.getElementsByClassName('shop-list-container')
             var isAddress = window.location.href
             if(isAddress.includes('goodsDetail')){
                 detailContainer.style.display = 'block'
@@ -467,9 +462,6 @@
             new VConsole();
         </script>
         <% } %>
-        <script>
-            if(!window.Promise){document.writeln('<script src="https://cdn.bootcss.com/es6-promise/3.2.2/es6-promise.min.js"'+'>'+'<'+'/'+'script>');}
-        </script>
         <%var chunks = htmlWebpackPlugin.files.chunks;for (var chunk in chunks) {%>
         <script src="<%=chunks[chunk].entry %>"></script><% } %>
     </body>
