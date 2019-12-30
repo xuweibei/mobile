@@ -62,7 +62,6 @@ export default class EvaluateDetail extends BaseComponent {
     //点赞
     evaLike = (item) => {
         const id = item.id;
-        console.log(item, id);
         if (item.zan) {
             this.fetch(urlCfg.notLike, {
                 data: {
@@ -225,7 +224,7 @@ export default class EvaluateDetail extends BaseComponent {
                                 {
                                     appraise.return_content && (
                                         <div className="chat-box">
-                                            <div className="chat">商家回复：{add.return_content}</div>
+                                            <div className="chat">商家回复：{appraise.return_content}</div>
                                         </div>
                                     )
                                 }
