@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import './NavBar.less';
 
 const {appHistory, native, showInfo} = Utils;
-const {navColorF} = Constants;
+const {navColorF, navColorR} = Constants;
 // const hashs = window.location.hash;
 // const str = hashs.substring(hashs.length - 8);
 // const hash = str;
@@ -58,15 +58,22 @@ class NavBar extends React.PureComponent {
     componentWillMount() {
         if (process.env.NATIVE) { //设置tab颜色
             const {color} = this.props;
-            console.log(color, '第考虑到法国次的颜色');
-            native('setNavColor', {color: color || navColorF});
+            this.setNavClor(color);
         }
     }
 
-    componentWillReceiveProps() {
+    componentWillReceiveProps(nextProps) {
         if (process.env.NATIVE) {
             const {color} = this.props;
-            console.log(color, '感觉');
+            this.setNavClor(color);
+        }
+    }
+
+    //设置顶部颜色
+    setNavClor = (color) => {
+        if (window.location.hash.includes('myOrder') || window.location.hash.includes('selfMention')) {
+            native('setNavColor', {color: navColorR});
+        } else {
             native('setNavColor', {color: color || navColorF});
         }
     }

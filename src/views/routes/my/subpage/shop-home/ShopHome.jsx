@@ -44,7 +44,8 @@ class ShopHome extends BaseComponent {
             hasPage: true, //有无更多数据
             lat: '',
             lon: '',
-            hasMore: false //底部请求状态文字显示情况
+            hasMore: false, //底部请求状态文字显示情况
+            business: false //表示从发现页面过来的，需要直接展示商家信息
         };
     }
 
@@ -52,7 +53,8 @@ class ShopHome extends BaseComponent {
         const str = decodeURI(getUrlParam('business', encodeURI(this.props.location.search)));
         if (str === '1') { //发现页面  跳转过来的时候，需要直接跳到商家信息的页面
             this.setState({
-                currentState: 'business'
+                currentState: 'business',
+                business: true
             });
         }
     }
@@ -193,6 +195,7 @@ class ShopHome extends BaseComponent {
                 <div className="goods-name" onClick={() => this.allgoods(item.id)}>
                     <div className="goods-picture">
                         <LazyLoadIndex
+                            key={item.picpath}
                             src={item.picpath}
                         />
                     </div>
@@ -245,30 +248,34 @@ class ShopHome extends BaseComponent {
     //底部tab
     onTabChange = (data) => {
         const {shopOnsInfo} = this.state;
-        let info = '';
-        switch (data) {
-        case 'category':
-            info = 'modal';
-            break;
-        case 'find':
-            info = 'business';
-            break;
-        case 'shopHome':
-            info = 'homePage';
-            break;
-        default:
-            if (process.env.NATIVE) {
-                native('goToShoper', {shopNo: shopOnsInfo.no, id: '', type: '1', shopNickName: shopOnsInfo.nickname, imType: '3', groud: '0'});//groud 为0 单聊，1群聊 imType 1商品2订单3空白  type 1商品 2订单
-            } else {
-                showInfo('联系商家');
+        this.setState({
+            business: false
+        }, () => {
+            let info = '';
+            switch (data) {
+            case 'category':
+                info = 'modal';
+                break;
+            case 'find':
+                info = 'business';
+                break;
+            case 'shopHome':
+                info = 'homePage';
+                break;
+            default:
+                if (process.env.NATIVE) {
+                    native('goToShoper', {shopNo: shopOnsInfo.no, id: '', type: '1', shopNickName: shopOnsInfo.nickname, imType: '3', groud: '0'});//groud 为0 单聊，1群聊 imType 1商品2订单3空白  type 1商品 2订单
+                } else {
+                    showInfo('联系商家');
+                }
+                break;
             }
-            break;
-        }
-        if (data !== 'im') {
-            this.setState({
-                currentState: info
-            });
-        }
+            if (data !== 'im') {
+                this.setState({
+                    currentState: info
+                });
+            }
+        });
     }
 
     //判断底部显示的状态
@@ -285,25 +292,29 @@ class ShopHome extends BaseComponent {
     }
 
     render() {
-        const {currentState, modelShow, shopModelArr, lat, lon} = this.state;
+        const {currentState, modelShow, shopModelArr, lat, lon, business} = this.state;
         const shoppingId = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
         let blockModel = <div/>;
-        switch (currentState) {
-        case 'homePage':
-            blockModel = modelShow && this.template(shopModelArr.mol_id);
-            break;
-        case 'business':
+        if (business) {
             blockModel = <ShopHomeDetail id={shoppingId} lat={lat} lon={lon}/>;
-            break;
-        case 'modal':
-            blockModel = this.structure();
-            break;
-        default:
-            blockModel = '';
+        } else {
+            switch (currentState) {
+            case 'homePage':
+                blockModel = modelShow && this.template(shopModelArr.mol_id);
+                break;
+            case 'business':
+                blockModel = <ShopHomeDetail id={shoppingId} lat={lat} lon={lon}/>;
+                break;
+            case 'modal':
+                blockModel = this.structure();
+                break;
+            default:
+                blockModel = '';
+            }
         }
         return (
             <React.Fragment>
-                <ShopHomes id={shoppingId} shopModelArr={shopModelArr} show={currentState === 'business'}/>
+                <ShopHomes id={shoppingId} shopModelArr={shopModelArr} show={currentState === 'business' || business}/>
                 <Top/>
                 {blockModel}
                 {

@@ -16,7 +16,7 @@ class BasePage extends BaseComponent {
                 const skelon = document.getElementById('skelon');
                 skelon.style.display = 'none';
                 clearTimeout(timeClear);
-            }, 500);
+            }, 1000);
         }
     }
 

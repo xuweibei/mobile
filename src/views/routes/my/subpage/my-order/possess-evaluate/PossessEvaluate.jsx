@@ -404,7 +404,7 @@ class PossessEvaluate extends BaseComponent {
                     <div className="shop-lists">
                         <div className="shop-name" onClick={userType === '2' ? '' : () => this.goShopHome(item.shop_id)}>
                             <div className="shop-title">
-                                <LazyLoadIndex src={userType === '2' ? item.avatarUrl : item.picpath}/>
+                                <LazyLoadIndex key={item.picpath} src={userType === '2' ? item.avatarUrl : item.picpath}/>
                                 <p>{userType === '2' ? item.nickname : item.shopName }</p>
                                 <div className="icon enter"/>
                             </div>
@@ -476,7 +476,7 @@ class PossessEvaluate extends BaseComponent {
                         <div className="consult">{item.content}</div>
                         <div className="picture">
                             {
-                                item.pics.length > 0 && item.pics.map((value, index) => <LazyLoadIndex src={value} bigPicture={() => this.bigPicture(item.pics, index)}/>)
+                                item.pics.length > 0 && item.pics.map((value, index) => <LazyLoadIndex key={value} src={value} bigPicture={() => this.bigPicture(item.pics, index)}/>)
                             }
                         </div>
                         {

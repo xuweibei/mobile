@@ -183,6 +183,7 @@ class Agreement extends BaseComponent {
                                     onSetProvince={this.setProvince}
                                     onSetCity={this.setCity}
                                     onSetCounty={this.setCounty}
+                                    onSetStreet={this.setStreet}
                                     add
                                 />
                             )
@@ -190,7 +191,6 @@ class Agreement extends BaseComponent {
                     </InputItem>
                     <Button className="button" onClick={this.submit}>确认修改</Button>
                 </div>
-
             </List>
         </div>
     )

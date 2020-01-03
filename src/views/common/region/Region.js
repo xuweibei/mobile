@@ -3,7 +3,7 @@
 * */
 
 import React from 'react';
-import {Picker, Toast} from 'antd-mobile';
+import {Picker} from 'antd-mobile';
 import './Region.less';
 
 const {urlCfg} = Configs;
@@ -19,19 +19,19 @@ class Region extends BaseComponent {
             countyData: [],
             countyIndex: 0,
             judge1: !!props.cityValue,
-            judge2: !!props.countyValue
+            judge2: !!props.countyValue,
+            judge3: !!props.street
         };
     }
 
     componentDidMount() {
-        const {provinceValue, cityValue, countyValue, provinceId, cityId} = this.props;
+        const {provinceValue, cityValue, countyValue, townValue, provinceId, cityId, countyId} = this.props;
         this.getProvince();
-        console.log(55555);
-        console.log(provinceValue, cityValue, countyValue);
         this.setState({
             provinceValue: provinceValue || '请选择所在地区',
             cityValue: cityValue || '请选择所在地区',
-            countyValue: countyValue || '请选择所在地区'
+            countyValue: countyValue || '请选择所在地区',
+            townValue: townValue || '请选择所在街道'
         });
         //读取市数组
         if (provinceId) {
@@ -41,6 +41,9 @@ class Region extends BaseComponent {
         if (cityId) {
             this.getCounty(cityId);
         }
+        if (countyId) {
+            this.getStreet(countyId);
+        }
     }
 
     //判断父级是否更新
@@ -48,12 +51,11 @@ class Region extends BaseComponent {
         const {provinceValue} = this.state;
         const {add, editStatus, editStatusChange} = this.props;
         if (editStatus && !add && provinceValue !== nextProps.provinceValue) {
-            console.log(1111111);
-            console.log(nextProps.provinceValue, nextProps.countyValue, nextProps.cityValue);
             this.setState({
                 provinceValue: nextProps.provinceValue,
                 countyValue: nextProps.countyValue,
                 cityValue: nextProps.cityValue,
+                townValue: nextProps.townValue,
                 judge1: true,
                 judge2: true
             });
@@ -62,6 +64,9 @@ class Region extends BaseComponent {
             }
             if (nextProps.cityId) {
                 this.getCounty(nextProps.cityId);
+            }
+            if (nextProps.countyId) {
+                this.getStreet(nextProps.countyId);
             }
             if (editStatusChange) {
                 this.props.editStatusChange();
@@ -74,170 +79,198 @@ class Region extends BaseComponent {
         const {provinceId} = this.props;
         this.fetch(urlCfg.selectAddress, {data: {code: 0}})
             .subscribe((res) => {
-                if (res) {
-                    if (res.status === 0) {
+                if (res && res.status === 0) {
+                    this.setState({
+                        provinceData: res.data
+                    });
+                    if (provinceId) {
                         this.setState({
-                            provinceData: res.data
+                            provinceIndex: this.getIndex(res.data[0], provinceId)
                         });
-                        if (provinceId) {
-                            this.setState({
-                                provinceIndex: this.getIndex(res.data[0], provinceId)
-                            });
-                        }
-                    } if (res.status === 1) {
-                        Toast.info(res.message);
                     }
                 }
             });
     }
 
+    //省级选择
     provinceChange = (e) => {
-        console.log('选择省');
         const {provinceData} = this.state;
+        const {onSetProvince} = this.props;
         if (provinceData[0].length === 0) return;
         let provinceName = '';
-        // let provinceId = '';
-        for (let i = 0; i < provinceData[0].length; i++) {
-            if (provinceData[0][i].value === e[0]) {
-                provinceName = provinceData[0][i].label;
-                // provinceId = provinceData[0][i].value;
+        provinceData[0].forEach(item => {
+            if (item.value === e[0]) {
+                provinceName = item.label;
             }
-        }
+        });
         this.setState({
             provinceValue: provinceName,
             cityValue: '请选择所在地区',
             countyValue: '',
+            townValue: '',
             cityIndex: 0,
             countyIndex: 0,
+            townIndex: 0,
             cityData: [],
-            countyData: []
+            countyData: [],
+            townData: []
         });
-        this.props.onSetProvince(provinceName); //省名字
-        // this.props.onSetCity('-请选择-');
-        // this.props.onSetCounty('-请选择-');
+        onSetProvince(e[0]); //省名字
         this.getCity(e[0]);
     };
 
-    //市
+    //市级请求
     getCity(cityCode) {
         const {cityId} = this.props;
         this.fetch(urlCfg.selectAddress, {data: {code: cityCode}})
             .subscribe((res) => {
-                if (res) {
-                    if (res.status === 0) {
+                if (res && res.status === 0) {
+                    this.setState({
+                        cityData: res.data
+                    }, () => {
                         this.setState({
-                            cityData: res.data
-                        }, () => {
-                            if (this.state.provinceValue === '请选择所在地区') {
-                                this.setState({
-                                    judge1: false
-                                });
-                            } else {
-                                this.setState({
-                                    judge1: true
-                                });
-                            }
+                            judge1: true
                         });
                         if (cityId) {
                             this.setState({
                                 cityIndex: this.getIndex(res.data[0], cityId)
                             });
                         }
-                    }
+                    });
                 }
             });
     }
 
+    //市级选择
     cityChange = (e) => {
         const {cityData} = this.state;
+        const {onSetCity} = this.props;
         if (cityData[0].length === 0) return;
         let cityName = '';
-        // let cityId = '';
-        for (let i = 0; i < cityData[0].length; i++) {
-            if (cityData[0][i].value === e[0]) {
-                cityName = cityData[0][i].label;
-                // cityId = cityData[0][i].value;
+        cityData[0].forEach(item => {
+            if (item.value === e[0]) {
+                cityName = item.label;
             }
-        }
+        });
         this.setState({
             cityValue: cityName,
             countyValue: '请选择所在地区',
+            townValue: '',
             countyIndex: 0,
-            countyData: []
+            townIndex: 0,
+            countyData: [],
+            townData: []
         });
-        this.props.onSetCity(cityName); //市名字
-        // this.props.onSetCounty('-请选择-');
+        onSetCity(e[0]); //市名字
         this.getCounty(e[0]);
     };
 
-    //县
+    //县请求
     getCounty(countyCode) {
         const {countyId} = this.props;
         this.fetch(urlCfg.selectAddress, {data: {code: countyCode}})
             .subscribe((res) => {
-                if (res) {
-                    if (res.status === 0) {
+                if (res && res.status === 0) {
+                    this.setState({
+                        countyData: res.data
+                    }, () => {
                         this.setState({
-                            countyData: res.data
-                        }, () => {
-                            if (this.state.cityValue === '请选择所在地区') {
-                                this.setState({
-                                    judge2: false
-                                });
-                            } else {
-                                this.setState({
-                                    judge2: true
-                                });
-                            }
+                            judge2: true
                         });
                         if (countyId) {
                             this.setState({
-                                cityIndex: this.getIndex(res.data[0], countyId)
+                                countyIndex: this.getIndex(res.data[0], countyId)
                             });
                         }
-                    }
+                    });
                 }
             });
     }
 
+    //县级选择
     countyChange = (e) => {
         const {countyData} = this.state;
-        const {onCountyId} = this.props;
+        const {onSetCounty} = this.props;
         if (countyData[0].length === 0) return;
         let countyName = '';
-        let countyId = '';
-        for (let i = 0; i < countyData[0].length; i++) {
-            if (countyData[0][i].value === e[0]) {
-                countyName = countyData[0][i].label;
-                countyId = countyData[0][i].value;
+        countyData[0].forEach(item => {
+            if (item.value === e[0]) {
+                countyName = item.label;
             }
-        }
+        });
         this.setState({
             countyValue: countyName
         });
-        if (onCountyId) {
-            onCountyId(countyId); //县id
-        }
-        this.props.onSetCounty(countyName); //县名字
+        this.setState({
+            countyValue: countyName,
+            townValue: '请选择所在街道',
+            townIndex: 0,
+            townData: []
+        });
+        onSetCounty(e[0]); //县名字
+        this.getStreet(e[0]);
     };
 
+    //街道请求
+    getStreet(streetCode) {
+        const {townId} = this.props;
+        this.fetch(urlCfg.selectAddress, {data: {code: streetCode}})
+            .subscribe((res) => {
+                if (res && res.status === 0) {
+                    this.setState({
+                        townData: res.data
+                    }, () => {
+                        this.setState({
+                            judge3: true
+                        });
+                        if (townId) {
+                            this.setState({
+                                townIndex: this.getIndex(res.data[0], townId)
+                            });
+                        }
+                    });
+                }
+            });
+    }
 
-    getIndex = (ary, id) => {
-        for (let i = 0; i < ary.length; i++) {
-            if (ary[i].code === id) {
-                return i;
+    //县级选择
+    streetChange = (e) => {
+        const {townData} = this.state;
+        const {onSetStreet} = this.props;
+        if (townData[0].length === 0) return;
+        let townName = '';
+        townData[0].forEach(item => {
+            if (item.value === e[0]) {
+                townName = item.label;
             }
+        });
+        this.setState({
+            townValue: townName
+        });
+        onSetStreet(e[0]); //街道名字
+    };
+
+    //获取id
+    getIndex = (ary, id) => {
+        let data = '';
+        if (ary && ary.length > 0) {
+            ary.forEach(item => {
+                if (item.code === id) {
+                    data = id;
+                }
+            });
         }
-        return undefined;
+        return data;
     };
 
     render() {
         const {
-            provinceData, provinceValue, provinceIndex,
-            cityData, cityValue, cityIndex,
+            provinceData, provinceValue, provinceIndex, cityData, cityValue, cityIndex, townValue,
+            townIndex, townData,
             countyData, countyValue, countyIndex,
-            judge1, judge2
+            judge1, judge2, judge3
         } = this.state;
+        const {typeFour} = this.props;
         return (
             <div className="regional">
                 <div className={provinceValue === '请选择所在地区' ?  'picker-inline' : 'gray-3'}>
@@ -248,9 +281,7 @@ class Region extends BaseComponent {
                         data={provinceData}
                         cols={1}
                     >
-                        <div>
-                            {provinceValue}
-                        </div>
+                        <div>{provinceValue}</div>
                     </Picker>
                 </div>
                 {judge1 && (
@@ -261,9 +292,7 @@ class Region extends BaseComponent {
                             data={cityData}
                             cascade={false}
                         >
-                            <div>
-                                {cityValue}
-                            </div>
+                            <div>{cityValue}</div>
                         </Picker>
                     </div>
                 )}
@@ -275,9 +304,19 @@ class Region extends BaseComponent {
                             cascade={false}
                             data={countyData}
                         >
-                            <div>
-                                {countyValue}
-                            </div>
+                            <div>{countyValue}</div>
+                        </Picker>
+                    </div>
+                )}
+                {judge3 && typeFour && (
+                    <div className={townValue === '请选择所在街道' ? 'picker-inline' : 'gray-3'}>
+                        <Picker
+                            onChange={this.streetChange}
+                            value={townIndex}
+                            cascade={false}
+                            data={townData}
+                        >
+                            <div>{townValue}</div>
                         </Picker>
                     </div>
                 )}

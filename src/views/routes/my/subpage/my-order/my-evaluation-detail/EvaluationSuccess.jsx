@@ -168,7 +168,7 @@ class EvaluationSuccess extends BaseComponent {
                                     <div className="goods-name">
                                         <div className="goods-picture">
                                             {/* <img src={data.pr_picpath} alt=""/> */}
-                                            <LazyLoadIndex src={item.pr_picpath}/>
+                                            <LazyLoadIndex key={item.pr_picpath} src={item.pr_picpath}/>
                                         </div>
                                         <div className="goods-information">
                                             <div className="goods-explain explain-appraise" onClick={() => this.goToGooods(data.pr_id)}>{data.pr_title}</div>

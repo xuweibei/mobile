@@ -363,7 +363,7 @@ class Collect extends BaseComponent {
                 <div className="goods" key={item.id} onClick={() => this.shopGoods(item.pr_id)}>
                     <div className="goods-box">
                         <div>
-                            <LazyLoad src={item.picpath}/>
+                            <LazyLoad key={item.picpath} src={item.picpath}/>
                         </div>
                         <div className="desc">
                             <div className="desc-title">{item.title}</div>
