@@ -55,23 +55,14 @@ class GoodsDetail extends BaseComponent {
         lineStatus: false, //底部商品状态栏
         ids: [], //选中属性id
         goodsSku: [], //商品的结果集
-<<<<<<< HEAD
-=======
         // shopAddress: '', // 店铺位置
->>>>>>> develop
         lineText: '', //商品状态栏文字
         pickType: {}, //配送方式
         selectType: '', //选中配送方式 1快递 2自提
         clickType: 0, //打开sku的方式 0箭头 1购物车 2立即购买
         totalNUm: 0, //商品库存,
         goodId: decodeURI(getUrlParam('id', encodeURI(this.props.location.search))),
-<<<<<<< HEAD
-        hasType: false,
-        evalute: {},
-        max: 0 //商品库存
-=======
         hasType: false
->>>>>>> develop
     };
 
     componentDidMount() {
@@ -164,17 +155,10 @@ class GoodsDetail extends BaseComponent {
                         stocks: stocks,
                         pickType: res.data.distribution_mode,
                         totalNUm: res.data.num_stock,
-<<<<<<< HEAD
-                        evalute: evalute,
-                        hasType: res.data.distribution_mode.data.some(item => item.value === '到店自提')
-                    },
-                    () => {
-=======
                         hasType: res.data.distribution_mode.data.some(item => item.value === '到店自提')
                     },
                     () => {
                         // this.getAddress();
->>>>>>> develop
                         this.getGoodsStatus();
                     }
                 );
@@ -182,8 +166,6 @@ class GoodsDetail extends BaseComponent {
         });
     };
 
-<<<<<<< HEAD
-=======
     // //地址逆解析
     // getAddress = () => {
     //     const myGeo = new window.BMap.Geocoder();
@@ -202,7 +184,6 @@ class GoodsDetail extends BaseComponent {
     //     });
     // };
 
->>>>>>> develop
     //开启sku
     openSku = () => {
         this.setState({
@@ -558,11 +539,7 @@ class GoodsDetail extends BaseComponent {
     render() {
         const {
             topSwithe, popup, paginationNum, ids, maskStatus,
-<<<<<<< HEAD
-            picPath, goodsDetail, shop, recommend, collect, status, evalute,
-=======
             picPath, goodsDetail, shop, recommend, collect,
->>>>>>> develop
             goodsAttr, stocks, lineStatus, lineText, pickType, selectType, names, hasType
         } = this.state;
         const renderCount = (max) => {
@@ -705,11 +682,6 @@ class GoodsDetail extends BaseComponent {
                     {/*店铺、商品规格*/}
                     <Evaluate
                         names={names}
-<<<<<<< HEAD
-                        routeToEvalute={() => this.routeToEvalute(evalute.id)}
-                        evalute={evalute}
-=======
->>>>>>> develop
                         hasType={hasType}
                         goodsDetail={goodsDetail}
                         Element={Element}
