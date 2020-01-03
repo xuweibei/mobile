@@ -19,23 +19,16 @@ import {HashRouter as Router} from 'react-router-dom';
 import {Provider} from 'react-redux';
 import {baseActionCreator} from '../src/redux/baseAction';
 import {syncHistoryWithStore} from 'react-router-redux';
-import {store, hashHistory} from '../src/redux/store';
+import {historyStore} from '../src/redux/store';
 import BasePage from '../src/views/common/base/BasePage';
 import {ViewRoutesHybrid} from '../src/views/${data.component}';
 import '../src/views/${data.less}';
 
 const {LOCALSTORAGE} = Constants;
-const history = syncHistoryWithStore(hashHistory, store, {
-    selectLocationState(state) {
-        return state.get('routing').toObject();
-    }
-});
-
-history.listen((location, action) => {});
 
 const HomePage = () => (
     <Provider store={store}>
-        <Router hashHistory={history}>
+        <Router hashHistory={historyStore}>
             <Fragment>
                 <BasePage/>
                 <ViewRoutesHybrid/>
