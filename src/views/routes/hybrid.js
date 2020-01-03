@@ -1,7 +1,7 @@
 import {Fragment} from 'react';
 import {HashRouter as Router} from 'react-router-dom';
 import {syncHistoryWithStore} from 'react-router-redux';
-import {store, hashHistory} from '../../redux/store';
+import {store, historyStore} from '../../redux/store';
 import ScrollToTop from '../common/scroll-to-top/ScrollToTop'; // 页面跳转后滚动条恢复到顶部
 import HomeRouters from './home/hybrid.route'; // 商城首页
 import CategoryRouters from './category/hybrid.route'; // 分类
@@ -12,7 +12,7 @@ import ErrorRouters from './error/route'; // 错误页面
 
 
 // syncHistoryWithStore 把history挂到store下
-const history = syncHistoryWithStore(hashHistory, store, {
+const history = syncHistoryWithStore(historyStore, store, {
     selectLocationState(state) {
         return state.get('routing').toObject();
     }
