@@ -19,7 +19,7 @@ import {HashRouter as Router} from 'react-router-dom';
 import {Provider} from 'react-redux';
 import {baseActionCreator} from '../src/redux/baseAction';
 import {syncHistoryWithStore} from 'react-router-redux';
-import {historyStore} from '../src/redux/store';
+import {historyStore,store} from '../src/redux/store';
 import BasePage from '../src/views/common/base/BasePage';
 import {ViewRoutesHybrid} from '../src/views/${data.component}';
 import '../src/views/${data.less}';
