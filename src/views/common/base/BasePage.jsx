@@ -5,7 +5,7 @@
 
 import {connect} from 'react-redux';
 import {Alert, Confirm} from '../../../components/modal/index';
-import Loading from '../animation/Loading';
+import CircleLoading from '../animation/circleLoading';
 import Menu from '../menu/Menu';
 import Top from '../top/Top';
 
@@ -58,7 +58,7 @@ class BasePage extends BaseComponent {
         const {showMenu, loadingShow} = this.props;
         return (
             <div data-component="base" data-role="page">
-                {loadingShow && <Loading/>}
+                {loadingShow && <CircleLoading/>}
                 {this.renderAlert()}
                 {this.renderConfirm()}
                 {
