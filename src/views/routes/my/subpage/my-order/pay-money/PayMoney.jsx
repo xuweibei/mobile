@@ -428,7 +428,7 @@ class PayMoney extends BaseComponent {
                 {/*CAM消费支付密码弹窗*/}
                 {pwsPopup && (
                     <div className="enter-password-box">
-                        <div className="enter-password">
+                        <div className="enter-password" style={{paddingBottom: !process.env.NATIVE ? '4.6rem' : '0.5rem'}}>
                             <div className="command">
                                 <span className="icon command-left" onClick={this.closePopup}/>
                                 <span className="icon command-center">请输入支付密码</span>

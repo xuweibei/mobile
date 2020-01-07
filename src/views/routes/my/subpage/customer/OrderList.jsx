@@ -38,7 +38,7 @@ export default class OrderList extends BaseComponent {
                 page
             }
         }, noLoading).subscribe(res => {
-            if (res.status === 0) {
+            if (res && res.status === 0) {
                 this.stackData = this.stackData.concat(res.data.data);
                 this.setState({
                     data: this.stackData,

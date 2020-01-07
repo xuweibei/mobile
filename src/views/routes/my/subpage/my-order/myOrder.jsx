@@ -362,7 +362,11 @@ class MyOrder extends BaseComponent {
 
     //查看物流
     goApplyService = (id, ev) => {
-        appHistory.push(`/logistics?lgId=${id}`);
+        if (process.env.NATIVE) {
+            native('goLogistics', {orderId: id});
+        } else {
+            appHistory.push(`/logistics?lgId=${id}`);
+        }
         ev.stopPropagation();
     }
 
