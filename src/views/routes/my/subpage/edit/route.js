@@ -13,7 +13,7 @@ import bankCardDetailPage from './bank-card/BankCardDetail';
 // import Account from './account/Account';//切换账号
 // import AddAccount from './account/AddAccount';//添加账号
 import Source from './source';/*确认源头*/
-import BlankPage from './blank';
+// import BlankPage from './blank';
 import Agreement from './argeeMore';
 
 // const Edit = Loadable({
@@ -78,7 +78,7 @@ const EditModal = () => (
         <Route path="/source" component={Source}/> {/*确认源头*/}
         <Route path="/virSource" component={Source}/> {/*确认源头手动输入*/}
         <Route path="/sourceBrowse" component={Source}/> {/*确认源头-扫码*/}
-        <Route path="/blankPage" component={BlankPage}/> {/*确认源头-扫码*/}
+        {/* <Route path="/blankPage" component={BlankPage}/> 空白页面原生使用 */}
     </React.Fragment>
 );
 
