@@ -77,7 +77,7 @@ class Region extends BaseComponent {
     //省
     getProvince() {
         const {provinceId} = this.props;
-        this.fetch(urlCfg.selectAddress, {data: {code: 0}})
+        this.fetch(urlCfg.selectAddress, {data: {code: 0}}, true)
             .subscribe((res) => {
                 if (res && res.status === 0) {
                     this.setState({
@@ -122,7 +122,7 @@ class Region extends BaseComponent {
     //市级请求
     getCity(cityCode) {
         const {cityId} = this.props;
-        this.fetch(urlCfg.selectAddress, {data: {code: cityCode}})
+        this.fetch(urlCfg.selectAddress, {data: {code: cityCode}}, true)
             .subscribe((res) => {
                 if (res && res.status === 0) {
                     this.setState({
@@ -168,7 +168,7 @@ class Region extends BaseComponent {
     //县请求
     getCounty(countyCode) {
         const {countyId} = this.props;
-        this.fetch(urlCfg.selectAddress, {data: {code: countyCode}})
+        this.fetch(urlCfg.selectAddress, {data: {code: countyCode}}, true)
             .subscribe((res) => {
                 if (res && res.status === 0) {
                     this.setState({
@@ -214,7 +214,7 @@ class Region extends BaseComponent {
     //街道请求
     getStreet(streetCode) {
         const {townId} = this.props;
-        this.fetch(urlCfg.selectAddress, {data: {code: streetCode}})
+        this.fetch(urlCfg.selectAddress, {data: {code: streetCode}}, true)
             .subscribe((res) => {
                 if (res && res.status === 0) {
                     this.setState({

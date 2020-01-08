@@ -61,7 +61,7 @@ class BankCardDetail extends BaseComponent {
 
     //获取银行卡
     getBank = () => {
-        this.fetch(urlCfg.getBank).subscribe(res => {
+        this.fetch(urlCfg.getBank, {}, true).subscribe(res => {
             if (res && res.status === 0) {
                 if (res.data.length) {
                     res.data.forEach(item => {

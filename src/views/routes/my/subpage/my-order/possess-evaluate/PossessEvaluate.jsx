@@ -247,6 +247,9 @@ class PossessEvaluate extends BaseComponent {
 
     //已评价 评价切换
     checkedDo = (num) => {
+        if (this.lv) { //切换的时候重新回到第一页
+            this.lv.scrollTo(0, 0);
+        }
         const {arrChecked} = this.state;
         arrChecked.forEach(item => { item.checked = false });
         arrChecked.forEach((item, index) => { if (index === num) { item.checked = true } });
@@ -377,6 +380,7 @@ class PossessEvaluate extends BaseComponent {
                             onEndReachedThreshold={20}
                             onEndReached={this.onEndReached}
                             renderFooter={() => ListFooter(hasMore)}
+                            ref={el => { this.lv = el }}
                             pullToRefresh={(
                                 <PullToRefresh
                                     refreshing={refreshing}
