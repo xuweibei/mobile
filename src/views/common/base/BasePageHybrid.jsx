@@ -8,6 +8,8 @@ import {Alert, Confirm} from '../../../components/modal/index';
 import Loading from '../animation/Loading';
 import Menu from '../menu/Menu';
 
+const {native} = Utils;
+
 class BasePageHybrid extends BaseComponent {
     componentDidMount() {
         if (process.env.NATIVE) {
@@ -16,6 +18,13 @@ class BasePageHybrid extends BaseComponent {
                 skelon.style.display = 'none';
                 clearTimeout(timeClear);
             }, 1000);
+        }
+    }
+
+    componentWillUpdate() {
+        if (!window.localStorage.getItem('close_key_board')) { //控制是否使用此方法
+            //关闭键盘
+            native('closeKeyboard');
         }
     }
 

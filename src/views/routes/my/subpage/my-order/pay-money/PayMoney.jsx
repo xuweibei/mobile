@@ -41,6 +41,7 @@ class PayMoney extends BaseComponent {
     componentWillMount() {
         //这里是为了控制原生右滑退出
         this.props.setReturn(true);
+        window.localStorage.setItem('close_key_board', '1');
     }
 
     componentDidMount() {
@@ -290,7 +291,7 @@ class PayMoney extends BaseComponent {
         const {showConfirm} = this.props;
         this.fetch(urlCfg.memberStatus, {data: {types: 0, chk_pass: 0}})
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     if (res.data.status !== 0) { //status为0为已设置，其他都是未设置
                         showConfirm({
                             title: '您还未设置支付密码，是否前往设置',
@@ -315,6 +316,8 @@ class PayMoney extends BaseComponent {
             setReturn(false);
         });
         hideConfirm();//关闭弹窗
+        //清除关闭键盘的方法
+        window.localStorage.removeItem('close_key_board');
     }
 
     //兼容部分机型样式判断

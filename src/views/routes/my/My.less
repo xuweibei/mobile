@@ -271,9 +271,32 @@
             .am-flexbox{
                 height:180px;
                 border-radius: 20px;
+                padding-top:18px;
                 .orderInfo {
                     div {
-                        margin-top: 15px;
+                        margin-top: 40px;
+                    }
+                    .orderLogo{
+                        position: absolute;
+                        left:50%;
+                        margin-left: -22px;
+                        top:10px;
+                        width:43px;
+                        height:43px;
+                    }
+                    .selfOrder{
+                        left:90px;
+                    }
+                    .am-badge{
+                        position: absolute;
+                        top:-4px;
+                        width:36px;
+                        height:30px;
+                        .am-badge-text{
+                            background:@garnet-red;
+                            padding:0;
+                            font-size: 9px;
+                        }
                     }
                 }
             }
@@ -375,16 +398,21 @@
                     left:50%;
                     margin-left: -22px;
                     top:10px;
+                    width:43px;
+                    height:43px;
                 }
                 .selfOrder{
                     left:90px;
                 }
                 .am-badge{
                     position: absolute;
-                    right:-12px;
-                    top:0px;
+                    top:-4px;
+                    width:36px;
+                    height:30px;
                     .am-badge-text{
                         background:@garnet-red;
+                        padding:0;
+                        font-size: 9px;
                     }
                 }
             }
