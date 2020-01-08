@@ -185,7 +185,8 @@ class ListDetails extends BaseComponent {
     //查看物流信息
     goToLocaice = () => {
         const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
-        appHistory.push(`/logistics?lgId=${id}`);
+        native('goLogistics', {orderId: id});
+        // appHistory.push(`/logistics?lgId=${id}`);
     }
 
     goBackModal = () => {

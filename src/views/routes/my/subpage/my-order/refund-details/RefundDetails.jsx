@@ -125,7 +125,11 @@ class refundDetails extends BaseComponent {
 
     //查看物流
     seeLogistics = (id) => {
-        appHistory.push(`/logistics?lgId=${id}&isReturn=1`);
+        if (process.env.NATIVE) {
+            native('goLogistics', {orderId: id});
+        } else {
+            appHistory.push(`/logistics?lgId=${id}&isReturn=1`);
+        }
     }
 
     //底部按钮

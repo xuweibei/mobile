@@ -7,9 +7,27 @@ import {connect} from 'react-redux';
 import {Alert, Confirm} from '../../../components/modal/index';
 import CircleLoading from '../animation/circleLoading';
 import Menu from '../menu/Menu';
-import Top from '../top/Top';
 
-class BasePage extends BaseComponent {
+const {native} = Utils;
+
+class BasePageHybrid extends BaseComponent {
+    componentDidMount() {
+        if (process.env.NATIVE) {
+            const timeClear = setTimeout(() => {
+                const skelon = document.getElementById('skelon');
+                skelon.style.display = 'none';
+                clearTimeout(timeClear);
+            }, 1000);
+        }
+    }
+
+    componentWillUpdate() {
+        if (!window.localStorage.getItem('close_key_board')) { //控制是否使用此方法
+            //关闭键盘
+            native('closeKeyboard');
+        }
+    }
+
     renderAlert = () => {
         const {
             alertShow, alertTitle, alertMsg, alertCallback,
@@ -54,7 +72,6 @@ class BasePage extends BaseComponent {
                 {
                     showMenu ? <Menu/> : null
                 }
-                <Top/>
             </div>
         );
     }
@@ -80,4 +97,4 @@ const mapStateToProps = (state) => {
 };
 
 
-export default connect(mapStateToProps, null)(BasePage);
+export default connect(mapStateToProps, null)(BasePageHybrid);
