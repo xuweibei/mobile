@@ -1,8 +1,7 @@
 import React from 'react';
 import './Animation.less';
 
-class CircleLoading extends React.PureComponent{
-
+class CircleLoading extends React.PureComponent {
     componentDidMount() {
         console.log('渲染动画');
         this.draw();
@@ -34,13 +33,13 @@ class CircleLoading extends React.PureComponent{
             ctx.arc(x + num * 4 * r, y, r, 0, Math.PI * 2, true);
             ctx.fill();
             ctx.closePath();
-        }
+        };
         const circle = (index) => {
             ctx.clearRect(0, 0, 330, 330);
             for (let i = 0; i < 3; i++) {
                 draw1(index, i);
             }
-        }
+        };
         const animate = () => {
             if (speed % 10 === 0) {
                 circle(number++);
@@ -50,7 +49,7 @@ class CircleLoading extends React.PureComponent{
             }
             speed++;
             this.timer = requestAnimationFrame(animate);
-        }
+        };
         animate();
     }
 
