@@ -38,25 +38,15 @@ class ShopHome extends BaseComponent {
             height: document.documentElement.clientHeight - (window.isWX ? window.rem * 2.7 : window.rem * 3.5),
             page: 1,
             pageCount: -1,
-            currentState: '', //判断当前点击状态对应的页面展示
+            currentState: decodeURI(getUrlParam('business', encodeURI(props.location.search))) === '1' ? 'business' : '', //判断当前点击状态对应的页面展示
             refreshing: false,
             modelShow: false, //判断有无模板
             hasPage: true, //有无更多数据
             lat: '',
             lon: '',
             hasMore: false, //底部请求状态文字显示情况
-            business: false //表示从发现页面过来的，需要直接展示商家信息
+            business: decodeURI(getUrlParam('business', encodeURI(props.location.search))) === '1' //表示从发现页面过来的，需要直接展示商家信息
         };
-    }
-
-    componentWillMount() {
-        const str = decodeURI(getUrlParam('business', encodeURI(this.props.location.search)));
-        if (str === '1') { //发现页面  跳转过来的时候，需要直接跳到商家信息的页面
-            this.setState({
-                currentState: 'business',
-                business: true
-            });
-        }
     }
 
     componentDidMount() {

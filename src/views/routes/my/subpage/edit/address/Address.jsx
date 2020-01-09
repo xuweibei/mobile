@@ -62,19 +62,20 @@ class Address extends BaseComponent {
         }
     };
 
-    componentWillReaciveProps(nextProps) {
-        const status = decodeURI(getUrlParam('status', encodeURI(this.props.location.search)));
-        const nextRouter = decodeURI(getUrlParam('status', encodeURI(nextProps.location.search)));
-        if (process.env.NATIVE && status !== nextRouter) {
-            this.setState({
-                edit: nextRouter
-            }, () => {
-                if (nextRouter === '1') {
-                    this.getList();
-                }
-            });
-        }
-    }
+    // componentWillReaciveProps(nextProps) {
+    //     const status = decodeURI(getUrlParam('status', encodeURI(this.props.location.search)));
+    //     const nextRouter = decodeURI(getUrlParam('status', encodeURI(nextProps.location.search)));
+    //     console.log(status,nextRouter,'扣篮大赛')
+    //     if (process.env.NATIVE && status !== nextRouter) {
+    //         this.setState({
+    //             edit: nextRouter
+    //         }, () => {
+    //             if (nextRouter === '1') {
+    //                 this.getList();
+    //             }
+    //         });
+    //     }
+    // }
 
     //前往新增地址页面
     switchTo = () => {
@@ -341,7 +342,6 @@ class Address extends BaseComponent {
     editDress = () => {
         const {getFieldProps, getFieldError} = this.props.form;
         const {province, city, county, town, addressArr, editStatus, addressStatus, height, defaultState} = this.state;
-        console.log(addressArr, 'SDK浪费个');
         return (
             <div data-component="add-address" data-role="page" className="add-address">
                 <AppNavBar title="地址管理"/>

@@ -194,3 +194,16 @@ export function confirmDate(date) {
 export function supple(num) {
     return num >= 0 && num < 10 ? '0' + num : '' + num;
 }
+
+//两数组去重
+export function spliceArr(arr, arr2) {
+    const tempArr = arr2;
+    arr.forEach(item => {
+        arr2.forEach((data, num) => {
+            if (data.id === item) {
+                tempArr.splice(tempArr.indexOf(arr2[num]), 1);
+            }
+        });
+    });
+    return tempArr;
+}

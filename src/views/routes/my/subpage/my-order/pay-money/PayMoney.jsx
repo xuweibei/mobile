@@ -28,19 +28,19 @@ const mode = [
 ];
 
 class PayMoney extends BaseComponent {
-    state = {
-        pwsPopup: false, //CAM消费支付密码弹窗
-        selectIndex: 0, //支付类型
-        listArr: [], //支付数据
-        orderId: decodeURI(getUrlParam('orderId', encodeURI(this.props.location.search))), //支付所需订单id
-        orderNum: decodeURI(getUrlParam('orderNum', encodeURI(this.props.location.search))), //支付所需订单编号
-        source: decodeURI(getUrlParam('source', encodeURI(this.props.location.search))),
-        money: decodeURI(getUrlParam('money', encodeURI(this.props.location.search)))
-    };
-
-    componentWillMount() {
+    constructor(props) {
+        super(props);
+        this.state = {
+            pwsPopup: false, //CAM消费支付密码弹窗
+            selectIndex: 0, //支付类型
+            listArr: [], //支付数据
+            orderId: decodeURI(getUrlParam('orderId', encodeURI(this.props.location.search))), //支付所需订单id
+            orderNum: decodeURI(getUrlParam('orderNum', encodeURI(this.props.location.search))), //支付所需订单编号
+            source: decodeURI(getUrlParam('source', encodeURI(this.props.location.search))),
+            money: decodeURI(getUrlParam('money', encodeURI(this.props.location.search)))
+        };
         //这里是为了控制原生右滑退出
-        this.props.setReturn(true);
+        props.setReturn(true);
         window.localStorage.setItem('close_key_board', '1');
     }
 

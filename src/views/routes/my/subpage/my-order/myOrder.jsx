@@ -31,36 +31,47 @@ const tabs = [
 
 
 class MyOrder extends BaseComponent {
-    state = {
-        dataSource: new ListView.DataSource({
-            rowHasChanged: (row1, row2) => row1 !== row2
-        }), //长列表容器
-        refreshing: false, //是否显示刷新状态
-        height: document.documentElement.clientHeight - (window.isWX ?  window.rem * 1.08 : window.rem * 1.78),
-        status: -1, //tab状态
-        delOrder: null, //删除订单id
-        remind: null, //提醒状态
-        page: 1,  //当前页数
-        pagesize: 10,  //每页条数
-        pageCount: -1,
-        hasMore: false, //底部请求状态文字显示情况
-        retainArr: []
-    };
-
-    componentWillMount() {
-        const num = this.statusChoose(this.props.location.pathname.split('/')[2]) || -1;
-        this.init(num);
+    constructor(props) {
+        super(props);
+        this.state = {
+            dataSource: new ListView.DataSource({
+                rowHasChanged: (row1, row2) => row1 !== row2
+            }), //长列表容器
+            refreshing: false, //是否显示刷新状态
+            height: document.documentElement.clientHeight - (window.isWX ?  window.rem * 1.08 : window.rem * 1.78),
+            status: -1, //tab状态
+            delOrder: null, //删除订单id
+            remind: null, //提醒状态
+            page: 1,  //当前页数
+            pagesize: 10,  //每页条数
+            pageCount: -1,
+            hasMore: false, //底部请求状态文字显示情况
+            retainArr: [],
+            propsData: props
+        };
         removeValue('orderInfo');//清除下单流程留下来的订单信息
         removeValue('orderArr');
     }
 
-    componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方
-        const numNext = this.statusChoose(nextProps.location.pathname.split('/')[2]) || -1;
-        const numPrev = this.statusChoose(this.props.location.pathname.split('/')[2]) || -1;
-        if (numNext !== numPrev) {
+    componentDidMount() {
+        const num = this.statusChoose(this.props.location.pathname.split('/')[2]) || -1;
+        this.init(num);
+    }
+
+    static getDerivedStateFromProps(prevProps, prevState) {
+        return {
+            propsData: prevProps
+        };
+    }
+
+    componentDidUpdate(prev, data) {
+        const numPrev = this.statusChoose(this.state.propsData.location.pathname.split('/')[2]) || -1;
+        const numPrev2 = this.statusChoose(data.propsData.location.pathname.split('/')[2]) || -1;
+        if (process.env.NATIVE && numPrev !== numPrev2) {
             const dataSource2 = new ListView.DataSource({
                 rowHasChanged: (row1, row2) => row1 !== row2
             });
+            // eslint-disable-next-line react/no-did-update-set-state
             this.setState({
                 page: 1,
                 // status,
@@ -68,15 +79,40 @@ class MyOrder extends BaseComponent {
                 dataSource: dataSource2,
                 retainArr: [],
                 hasMore: false,
-                status: numNext
+                status: numPrev
             }, () => {
                 temp.stackData = [];
-                this.init(numNext);
+                this.init(numPrev);
                 removeValue('orderInfo');//清除下单流程留下来的订单信息
                 removeValue('orderArr');
             });
         }
     }
+
+    // componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方
+    //     const numNext = this.statusChoose(nextProps.location.pathname.split('/')[2]) || -1;
+    //     const numPrev = this.statusChoose(this.props.location.pathname.split('/')[2]) || -1;
+    //     console.log(numNext, numPrev, '额叶任天野');
+    //     if (numNext !== numPrev) {
+    //         const dataSource2 = new ListView.DataSource({
+    //             rowHasChanged: (row1, row2) => row1 !== row2
+    //         });
+    //         this.setState({
+    //             page: 1,
+    //             // status,
+    //             pageCount: -1,
+    //             dataSource: dataSource2,
+    //             retainArr: [],
+    //             hasMore: false,
+    //             status: numNext
+    //         }, () => {
+    //             temp.stackData = [];
+    //             this.init(numNext);
+    //             removeValue('orderInfo');//清除下单流程留下来的订单信息
+    //             removeValue('orderArr');
+    //         });
+    //     }
+    // }
 
     init = (num) => {
         this.setState({

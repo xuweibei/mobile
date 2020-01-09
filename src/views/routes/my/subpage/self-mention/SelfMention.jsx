@@ -21,26 +21,29 @@ const tabs = [
     {title: '售后'}
 ];
 class ReDetail extends BaseComponent {
-    state ={
-        refreshing: false, //是否在下拉刷新时显示指示器
-        isLoading: false, //是否在上拉加载时显示提示
-        hasMore: false, //是否有数据可请求
-        status: 0, //tab状态
-        page: 1, //列表第几页
-        pageSize: 10, //每页多少条
-        pageCount: -1, //一共有多少页
-        pageList: [], //列表信息
-        orderId: 0, //订单id
-        canStatus: false, //是否弹出取消框
-        navColor: '@fiery-red', //nav背景颜色
-        height: document.documentElement.clientHeight - (window.isWX ? 0.75 : window.rem * 1.8)
-    }
-
-    componentWillMount() {
-        const num = this.statusChoose(this.props.location.pathname.split('/')[2]);
-        this.init(num);
+    constructor(props) {
+        super(props);
+        this.state = {
+            refreshing: false, //是否在下拉刷新时显示指示器
+            isLoading: false, //是否在上拉加载时显示提示
+            hasMore: false, //是否有数据可请求
+            status: 0, //tab状态
+            page: 1, //列表第几页
+            pageSize: 10, //每页多少条
+            pageCount: -1, //一共有多少页
+            pageList: [], //列表信息
+            orderId: 0, //订单id
+            canStatus: false, //是否弹出取消框
+            navColor: '@fiery-red', //nav背景颜色
+            height: document.documentElement.clientHeight - (window.isWX ? 0.75 : window.rem * 1.8)
+        };
         removeValue('orderInfo');//清除下单流程留下来的订单信息
         removeValue('orderArr');
+    }
+
+    componentDidmount() {
+        const num = this.statusChoose(this.props.location.pathname.split('/')[2]);
+        this.init(num);
     }
 
     componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方

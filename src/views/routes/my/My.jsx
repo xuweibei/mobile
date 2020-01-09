@@ -54,15 +54,15 @@ const consumerOrder = [
 ];
 
 class My extends BaseComponent {
-    state = {
-        userInfo: [], //用户个人信息
-        logistics: [], //物流信息
-        imgHeight: 140,
-        position: 0,
-        openShopStatus: '' //开店状态
-    };
-
-    componentWillMount() {
+    constructor(props) {
+        super(props);
+        this.state = {
+            userInfo: [], //用户个人信息
+            logistics: [], //物流信息
+            imgHeight: 140,
+            position: 0,
+            openShopStatus: '' //开店状态
+        };
         dropByCacheKey('OrderPage');//清除我的订单的缓存
         dropByCacheKey('PossessEvaluate');//清除我的评价的缓存
         dropByCacheKey('History');//清除浏览历史的缓存

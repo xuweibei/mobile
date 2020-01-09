@@ -18,12 +18,19 @@ const getPass = { //获取验证码按钮的样式
     lineHeight: '44px'
 };
 class passwordPayment extends BaseComponent {
-    state = {
-        phoneNum: '', //电话号码初始值
-        editModal: 'default', //当前状态
-        sentPay: '', //是否已设置支付密码
-        getOff: false //点击获取验证码是否可以获取，默认不可以，除非输入的电话号码符合要求
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            phoneNum: '', //电话号码初始值
+            editModal: 'default', //当前状态
+            sentPay: '', //是否已设置支付密码
+            getOff: false //点击获取验证码是否可以获取，默认不可以，除非输入的电话号码符合要求
+        };
+
+        if (process.env.NATIVE) { //设置tab颜色
+            native('setNavColor', {color: navColorO});
+        }
+    }
 
     // verifyPayword = () => {//是否设置过支付密码
     //     this.fetch(urlCfg.memberStatus, {method: 'post', data: {types: 0}})
@@ -43,13 +50,6 @@ class passwordPayment extends BaseComponent {
     //             }
     //         });
     // }
-
-
-    componentWillMount() {
-        if (process.env.NATIVE) { //设置tab颜色
-            native('setNavColor', {color: navColorO});
-        }
-    }
 
     componentWillReceiveProps() {
         if (process.env.NATIVE) {

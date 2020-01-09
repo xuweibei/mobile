@@ -23,24 +23,24 @@ const getPass = { //获取验证码按钮的样式
 };
 
 class passwordDetail extends BaseComponent {
-    state = {
-        countdown: Constants.COUNTERNUM,
-        phoneShow: true, //显示手机验证
-        passShow: false, //显示密码验证
-        phoneCode: '', //验证码初始值
-        phoneNum: '', //电话号码初始值
-        password: '', //密码初始值
-        passwordAgain: '', //二次密码初始值
-        sentPay: '', //是否设置支付密码,
-        getOff: false, //点击获取验证码是否可以获取，默认不可以，除非输入的电话号码符合要求
-        moreAccount: false, // 展示更多账号供其选择，忘记密码的时候
-        accountList: [], //更多账号的列表
-        passType: true, //第一个密码框的状态
-        passAType: true, //第二个密码框的状态
-        isLoagin: decodeURI(getUrlParam('login', encodeURI(this.props.location.search))) !== 'null' ? decodeURI(getUrlParam('login', encodeURI(this.props.location.search))) : 0
-    };
-
-    componentWillMount() {
+    constructor(props) {
+        super(props);
+        this.state = {
+            countdown: Constants.COUNTERNUM,
+            phoneShow: true, //显示手机验证
+            passShow: false, //显示密码验证
+            phoneCode: '', //验证码初始值
+            phoneNum: '', //电话号码初始值
+            password: '', //密码初始值
+            passwordAgain: '', //二次密码初始值
+            sentPay: '', //是否设置支付密码,
+            getOff: false, //点击获取验证码是否可以获取，默认不可以，除非输入的电话号码符合要求
+            moreAccount: false, // 展示更多账号供其选择，忘记密码的时候
+            accountList: [], //更多账号的列表
+            passType: true, //第一个密码框的状态
+            passAType: true, //第二个密码框的状态
+            isLoagin: decodeURI(getUrlParam('login', encodeURI(this.props.location.search))) !== 'null' ? decodeURI(getUrlParam('login', encodeURI(this.props.location.search))) : 0
+        };
         if (process.env.NATIVE) { //设置tab颜色
             native('setNavColor', {color: navColorO});
         }
