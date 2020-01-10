@@ -23,25 +23,30 @@ export default class Evaluate extends React.PureComponent {
         console.log(evalute);
         return (
             <Element name="evaluate" className="goods-shop">
-                <div className="framing">
-                    <div
-                        className="goods-select"
-                        onClick={openSku}
-                    >
-                        <div className="select-left">
-                            <div className="chose">选择</div>
-                            <div className="attrs">
-                                <span>选择</span>
-                                {
-                                    names && names.map((item, index) => (<span key={index.toString() + item}>{item}</span>))
-                                }
+                {
+                    goodsDetail.app_type !== '3' && (
+                        <div className="framing">
+                            <div
+                                className="goods-select"
+                                onClick={openSku}
+                            >
+                                <div className="select-left">
+                                    <div className="chose">选择</div>
+                                    <div className="attrs">
+                                        <span>选择</span>
+                                        {
+                                            names && names.map((item, index) => (<span key={index.toString() + item}>{item}</span>))
+                                        }
+                                    </div>
+                                </div>
+                                <div className="select-right">
+                                    <span className="icon right-icon"/>
+                                </div>
                             </div>
                         </div>
-                        <div className="select-right">
-                            <span className="icon right-icon"/>
-                        </div>
-                    </div>
-                </div>
+                    )
+                }
+
                 {
                     goodsDetail.effective_type === '0' ? (
                         <div className="serve">
@@ -92,10 +97,10 @@ export default class Evaluate extends React.PureComponent {
                             </div>
                             <div className="Shop-N">
                                 <span className="Shop-Nr">
-                                        人均消费
+                                    人均消费
                                 </span>
                                 <span className="Shop-Nr">
-                                ￥{shop.average_consumption}
+                                    ￥{shop.average_consumption}
                                 </span>
                             </div>
                         </div>

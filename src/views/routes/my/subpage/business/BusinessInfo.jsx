@@ -30,7 +30,7 @@ export default class CustomerInfo extends BaseComponent {
                 uid: this.uid
             }
         }).subscribe(res => {
-            if (res.status === 0) {
+            if (res && res.status === 0) {
                 this.setState({
                     info: res.data
                 });

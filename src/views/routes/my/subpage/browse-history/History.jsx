@@ -67,7 +67,7 @@ class History extends BaseComponent {
                 pagesize: 8
             }
         }).subscribe(res => {
-            if (res.status === 0 && res.data.length > 0) {
+            if (res && res.status === 0 && res.data.length > 0) {
                 this.handleResult(res);
             }
         });
