@@ -64,6 +64,7 @@ class My extends BaseComponent {
             openShopStatus: '' //开店状态
         };
         dropByCacheKey('OrderPage');//清除我的订单的缓存
+        dropByCacheKey('selfMentionOrderPage');//清除线下订单
         dropByCacheKey('PossessEvaluate');//清除我的评价的缓存
         dropByCacheKey('History');//清除浏览历史的缓存
     }

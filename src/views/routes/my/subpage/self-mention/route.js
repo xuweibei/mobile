@@ -1,5 +1,6 @@
 import React from 'react';
 import {Route} from 'react-router-dom';
+import CacheRoute from 'react-router-cache-route';
 // import SelfMention from './SelfMention';
 // import SelfAddress from './self-address/SelfAddress';
 // import PaySuccess from './pay-success/PaySuccess';
@@ -39,7 +40,7 @@ const seleList = Loadable({
 });
 const SelfMentionModal = () => (
     <React.Fragment>
-        <Route path="/selfMention" component={SelfMention}/>
+        <CacheRoute path="/selfMention" when="back" cacheKey="selfMentionOrderPage" component={SelfMention}/>
         <Route path="/selfMentionDetail" component={SelfMentionDetail}/> {/* 自提*/}
         <Route path="/selfOrderingDetails" component={SelfOrderingDetails}/> {/* 自提订单详情*/}
         <Route path="/paySuccess" component={PaySuccess}/> {/* 自提支付成功*/}

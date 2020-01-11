@@ -45,7 +45,8 @@ class ShopHome extends BaseComponent {
             lat: '',
             lon: '',
             hasMore: false, //底部请求状态文字显示情况
-            business: decodeURI(getUrlParam('business', encodeURI(props.location.search))) === '1' //表示从发现页面过来的，需要直接展示商家信息
+            business: decodeURI(getUrlParam('business', encodeURI(props.location.search))) === '1', //表示从发现页面过来的，需要直接展示商家信息
+            propsData: props
         };
     }
 
@@ -55,16 +56,33 @@ class ShopHome extends BaseComponent {
         this.getShopModel(shoppingId);
     }
 
-    componentWillReceiveProps(nextProps) {
+    static getDerviedStateFromProps(nextProps, prevState) {
+        return {
+            propsData: nextProps
+        };
+    }
+
+    componentDidUpdate(prevProps, prevState) {
         if (process.env.NATIVE) {
-            const shoppingId = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
-            const nextId = decodeURI(getUrlParam('id', encodeURI(nextProps.location.search)));
+            const shoppingId = decodeURI(getUrlParam('id', encodeURI(this.state.propsData.location.search)));
+            const nextId = decodeURI(getUrlParam('id', encodeURI(prevState.propsData.location.search)));
             if (shoppingId !== nextId) {
                 this.getShop(nextId);
                 this.getShopModel(nextId);
             }
         }
     }
+
+    // componentWillReceiveProps(nextProps) {
+    //     if (process.env.NATIVE) {
+    //         const shoppingId = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
+    //         const nextId = decodeURI(getUrlParam('id', encodeURI(nextProps.location.search)));
+    //         if (shoppingId !== nextId) {
+    //             this.getShop(nextId);
+    //             this.getShopModel(nextId);
+    //         }
+    //     }
+    // }
 
     //获取模板信息
     getShopModel = (id) => {

@@ -61,6 +61,14 @@ class PayMoney extends BaseComponent {
         }
     }
 
+    // static getDerivedStateFromProps(prevProps, prevState) {
+    //     //原生右滑退出处理
+    //     if (!prevProps.returnStatus) {
+    //         this.goBackModal();
+    //     }
+    //     return null;
+    // }
+
     componentWillReceiveProps(data, value) {
         //原生右滑退出处理
         if (!data.returnStatus) {
@@ -369,6 +377,7 @@ class PayMoney extends BaseComponent {
                     appHistory.goBack();
                 }
                 dropByCacheKey('OrderPage');//清除我的订单的缓存
+                dropByCacheKey('selfMentionOrderPage');//清除线下订单
                 //清除缓存
                 removeValue('orderInfo');
                 removeValue('orderArr');
