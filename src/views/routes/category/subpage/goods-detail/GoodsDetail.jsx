@@ -151,7 +151,7 @@ class GoodsDetail extends BaseComponent {
                 const evalute = res.pingjia ? res.pingjia : {};
                 evalute.count = res.pingjia_count;
                 const specification = [];
-                Object.keys(res.data.jd_parameter).forEach(item => {
+                res.data.jd_parameter && Object.keys(res.data.jd_parameter).forEach(item => {
                     specification.push(res.data.jd_parameter[item]);
                 });
                 this.setState(
@@ -171,7 +171,7 @@ class GoodsDetail extends BaseComponent {
                         evalute: evalute,
                         hasType: res.data.distribution_mode.data.some(item => item.value === '到店自提'),
                         specification,
-                        ids: res.data.sku_id
+                        ids: res.data.app_type === '3' ? res.data.attr_arr_list[0][0] : []
                     },
                     () => {
                         this.getGoodsStatus();
@@ -700,13 +700,17 @@ class GoodsDetail extends BaseComponent {
                         goToShopRecom={this.goToShopRecom}
                     />
 
-                    <Specification
-                        Element={Element}
-                        specification={specification}
-                        specificationStatus={specificationStatus}
-                        changeSpecification={this.changeSpecification}
-                        Link={Link}
-                    />
+                    {
+                        goodsDetail && goodsDetail.app_type === '3' && (
+                            <Specification
+                                Element={Element}
+                                specification={specification}
+                                specificationStatus={specificationStatus}
+                                changeSpecification={this.changeSpecification}
+                                Link={Link}
+                            />
+                        )
+                    }
 
 
                     {/*商品详情*/}
