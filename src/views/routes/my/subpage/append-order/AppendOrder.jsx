@@ -123,7 +123,7 @@ class appendOrder extends BaseComponent {
 
     //立即付款
     postOrder = () => {
-        const {addressInfo, shopInfo, order, invoice} = this.state;
+        const {addressInfo, shopInfo, order, invoice, num} = this.state;
         const invoices = JSON.parse(getValue('invoices'));
         const orders = JSON.parse(getValue('order'));
         let remark;
@@ -159,8 +159,8 @@ class appendOrder extends BaseComponent {
             const objTemp = {shop_id: item.shop_id, remarks: remark[index].toString(), invoice: invoiceInfo[index]};
             const prArr = [];
             if (item.data.length > 0) {
-                item.data.forEach(value => {
-                    prArr.push({pr_id: value.id, values: value.values, num: value.num, values_name: value.values_name});
+                item.data.forEach((value, i) => {
+                    prArr.push({pr_id: value.id, values: value.values, num: num[index][i], values_name: value.values_name});
                 });
             }
             objTemp.pr_arr = prArr;
@@ -414,7 +414,7 @@ class appendOrder extends BaseComponent {
     }
 
     render() {
-        const {shopInfo, addressInfo, total, self, currentIndex, textInfo, notAllow, invoiceStatus, invoice, invoiceIndex, num} = this.state;
+        const {shopInfo, addressInfo, self, currentIndex, textInfo, notAllow, invoiceStatus, invoice, invoiceIndex, num} = this.state;
         const {address} = this.props;
         const invoices = JSON.parse(getValue('invoices'));
         const orders = JSON.parse(getValue('order'));
