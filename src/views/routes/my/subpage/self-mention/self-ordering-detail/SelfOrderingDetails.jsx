@@ -206,6 +206,11 @@ class ReDetail extends BaseComponent {
         }
     }
 
+    moneyDot = (money) => {
+        const arr = money.toString().split('.');
+        return arr;
+    }
+
     render() {
         const {selfSufficiency, selfGoods, maskStatus, collectId} = this.state;
         return (
@@ -251,7 +256,7 @@ class ReDetail extends BaseComponent {
                                     <div className="goods-right">
                                         <div className="goods-desc">
                                             <div className="desc-title">{item.pr_title}</div>
-                                            <div className="desc_price">{item.price}</div>
+                                            <div className="desc_price">￥{this.moneyDot(item.price)[0] + '.'}<span className="small_money">{this.moneyDot(item.price)[1]}</span></div>
                                         </div>
                                         <div className="goods-sku">
                                             <div className="sku-left">
@@ -286,7 +291,7 @@ class ReDetail extends BaseComponent {
                     </div>
                     <div className="payable">
                         <span>实付款</span>
-                        <span>￥{selfSufficiency.countprice}</span>
+                        <span>￥{this.moneyDot(selfSufficiency.countprice)[0] + '.' }<span className="small_money">{this.moneyDot(selfSufficiency.countprice)[1]}</span></span>
                     </div>
                     <div className="order common-margin">
                         <div className="number">

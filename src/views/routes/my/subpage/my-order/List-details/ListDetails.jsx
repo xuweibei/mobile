@@ -209,6 +209,11 @@ class ListDetails extends BaseComponent {
         }
     }
 
+    moneyDot = (money) => {
+        const arr = money.toString().split('.');
+        return arr;
+    }
+
     render() {
         const {canInfo, canStatus, isJingDong} = this.state;
         return (
@@ -265,6 +270,7 @@ class ListDetails extends BaseComponent {
                                                     <div className="goods-right">
                                                         <div className="goods-desc">
                                                             <div className="desc-title">{item.pr_title}</div>
+                                                            <div className="desc_price">￥{this.moneyDot(item.price)[0] + '.'}<span className="small_money">{this.moneyDot(item.price)[1]}</span></div>
                                                         </div>
                                                         <div className="goods-sku">
                                                             <div className="sku-left">
@@ -309,7 +315,7 @@ class ListDetails extends BaseComponent {
                                 </div>
                                 <div className="payable">
                                     <span>实付款</span>
-                                    <span>￥{canInfo.countprice}</span>
+                                    <span>￥{this.moneyDot(canInfo.countprice)[0] + '.'}<span className="small_money">{this.moneyDot(canInfo.countprice)[1]}</span></span>
                                 </div>
                                 <div className="order common-margin">
                                     <div className="number">

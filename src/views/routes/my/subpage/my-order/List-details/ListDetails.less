@@ -188,11 +188,26 @@
                     font-size: 30px;
                     color: @darker-black;
                     margin-bottom: 16px;
+                    position: relative;
                     .desc-title{
                         .TextareaOverflow(2);
-                        margin-right: 28px;
                         font-size: 36px;
+                        float:left;
+                        width:3.2rem;
                     }
+                    .desc_price{
+                        float:right;
+                        .small_money{
+                            font-size:24px;
+                        }
+                    }
+                }
+                .goods-desc::after{/*伪元素是行内元素 正常浏览器清除浮动方法*/
+                    content: "";
+                    display: block;
+                    height: 0;
+                    clear:both;
+                    visibility: hidden;
                 }
                 .goods-sku {
                     display: flex;
@@ -283,6 +298,13 @@
         padding: 43px 30px 45px 30px;
         background-color: @white;
         margin-bottom: 20px;
+    }
+
+    .payable span:nth-child(2){
+        font-size: 36px;
+        .small_money{
+            font-size: 24px;
+        }
     }
 
     .order {
