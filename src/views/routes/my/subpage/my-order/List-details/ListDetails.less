@@ -139,6 +139,14 @@
                     text-overflow:ellipsis;
                     overflow: hidden;
                 }
+                .enter{
+                    margin-top:8px;
+                }
+                .enter:before {
+                    content: '\E643';
+                    color: @gray;
+                    font-size: @font-size-30;
+                }
             }
             span {
                 margin-top: 11px;
@@ -152,11 +160,6 @@
                 text-align: center;
                 border-radius: 50px;
                 font-size: @font-size-24;
-            }
-            .enter:before {
-                content: '\E643';
-                color: @gray;
-                font-size: @font-size-30;
             }
         }
         .goods {

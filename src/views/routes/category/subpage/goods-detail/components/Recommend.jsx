@@ -1,4 +1,4 @@
-import {Flex} from 'antd-mobile';
+
 import PropTypes from 'prop-types';
 import './Recommend.less';
 
@@ -46,17 +46,6 @@ export default class Recommend extends React.PureComponent {
                                 </div>
                             </div>
                         ))}
-                    </div>
-                </div>
-                <div className="recommend-commodity-detail">
-                    <div className="currency-detail">
-                        <Flex className="currency-detail-title">
-                            <Flex.Item className="title-border"/>
-                            <Flex.Item className="title-center">
-                                商品详情
-                            </Flex.Item>
-                            <Flex.Item className="title-border"/>
-                        </Flex>
                     </div>
                 </div>
             </Element>

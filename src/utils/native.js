@@ -6,7 +6,7 @@ import {systemApi} from './systemApi';
 import {baseActionCreator} from '../redux/baseAction';
 import {appHistory} from './appHistory';
 
-const {systemApi: {removeValue}, showFail} = Utils;
+const {systemApi: {removeValue}, showFail, getUrlParam} = Utils;
 const {LOCALSTORAGE} = Constants;
 //统一封装原生接口请求
 export const native = (str, obj) => {
@@ -101,7 +101,9 @@ global.goBack = function () {
     const onOff = store.getState().get('base').get('returnStatus');
     if (!onOff) {
         if (appHistory.length() === 0 && process.env.NATIVE) {
-            window.DsBridge.call('goBack');
+            if (!window.location.href.includes('userAgreementDetail')) {
+                window.DsBridge.call('goBack');
+            }
         } else {
             appHistory.goBack();
         }

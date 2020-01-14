@@ -13,7 +13,7 @@ const {urlCfg} = Configs;
 class ListDetails extends BaseComponent {
     state = {
         canInfo: {}, //数据容器
-        iiJingDong: decodeURI(getUrlParam('jingdong', encodeURI(this.props.location.search))) !== 'null' ? decodeURI(getUrlParam('jingdong', encodeURI(this.props.location.search)))  : ''
+        isJingDong: false
     };
 
     componentDidMount() {
@@ -26,7 +26,8 @@ class ListDetails extends BaseComponent {
             .subscribe(res => {
                 if (res && res.status === 0) {
                     this.setState({
-                        canInfo: res.data
+                        canInfo: res.data,
+                        isJingDong: res.data.app_type === '3'
                     });
                 }
             });
@@ -209,7 +210,7 @@ class ListDetails extends BaseComponent {
     }
 
     render() {
-        const {canInfo, canStatus} = this.state;
+        const {canInfo, canStatus, isJingDong} = this.state;
         return (
             <div data-component="List-details" data-role="page" className="List-details">
                 <AppNavBar goBackModal={this.goBackModal} rightShow title="订单详情"/>
@@ -249,9 +250,9 @@ class ListDetails extends BaseComponent {
                                             <div className="shop-title">
                                                 <img src={canInfo.shoper_pic} onError={(e) => { e.target.src = canInfo.df_logo }} alt=""/>
                                                 <p>{canInfo.shopName}</p>
+                                                {isJingDong && <div className="icon enter"/>}
                                             </div>
-                                            <div className="icon enter"/>
-                                            {/* <span><div className="right" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} onClick={(ev) => this.goShopHome(canInfo.shop_id, ev)}>进店</div></span> */}
+                                            {!isJingDong && <span><div className="right" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} onClick={(ev) => this.goShopHome(canInfo.shop_id, ev)}>进店</div></span>}
                                         </div>
                                         {
                                             canInfo.pr_list && canInfo.pr_list.map((item, index) => (
@@ -335,30 +336,31 @@ class ListDetails extends BaseComponent {
                                 <div className="business">
                                     <div className="business-left icon" onClick={this.goToShoper}><span>联系商家</span></div>
                                     {
-                                        window.isWX ? (
+                                        !isJingDong && (window.isWX ? (
                                             <div className="business-right icon">
                                                 <a href={`tel:${canInfo.shop_tel}`}>商家电话</a>
                                             </div>
                                         ) : (
                                             <span className="business-right icon" style={{borderRight: nativeCssDiff() ? '1PX solid #eee' : '0.02rem solid #eee'}} onClick={() => this.shopPhone(canInfo.shop_tel)}>商家电话</span>
-                                        )
+                                        ))
                                     }
                                 </div>
                             </div>
-
-                            <div className="collection common-margin">
-                                <div className="collection-left">
-                                    <img
-                                        src={canInfo.shoper_pic}
-                                        alt=""
-                                        onError={(e) => { e.target.src = canInfo.df_logo }}
-                                    />
-                                </div>
-                                <div className="collection-center">{canInfo.shopName}</div>
-                                {
-                                    canInfo.shop_collect === '0' ? <div onClick={() => this.collectDoIt({id: canInfo.shop_id, name: canInfo.shopName}, 'add')} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} className="collection-right">+收藏</div> : <div onClick={() => this.collectDoIt({id: canInfo.shop_collect, name: canInfo.shopName})} className="removeCollect" style={{border: nativeCssDiff() ? '1PX solid #ccc' : '0.02rem solid #ccc'}}>已收藏</div>
-                                }
-                            </div>
+                            {
+                                !isJingDong &&  (<div className="collection common-margin">
+                                                    <div className="collection-left">
+                                                        <img
+                                                            src={canInfo.shoper_pic}
+                                                            alt=""
+                                                            onError={(e) => { e.target.src = canInfo.df_logo }}
+                                                        />
+                                                    </div>
+                                                    <div className="collection-center">{canInfo.shopName}</div>
+                                                    {
+                                                        canInfo.shop_collect === '0' ? <div onClick={() => this.collectDoIt({id: canInfo.shop_id, name: canInfo.shopName}, 'add')} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} className="collection-right">+收藏</div> : <div onClick={() => this.collectDoIt({id: canInfo.shop_collect, name: canInfo.shopName})} className="removeCollect" style={{border: nativeCssDiff() ? '1PX solid #ccc' : '0.02rem solid #ccc'}}>已收藏</div>
+                                                    }
+                                                </div>)
+                            }
 
                             <div className="recommend-box">
                                 {/* <div className="recommend common-margin">热门推荐</div>
