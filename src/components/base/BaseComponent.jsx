@@ -40,15 +40,17 @@ class BaseComponent extends React.Component {
         // }, 1500);
         if (process.env.NATIVE) {
             const innerHeight = window.innerHeight;
-            window.addEventListener('resize', () => {
-                const root = document.getElementById('root');
-                const newInnerHeight = window.innerHeight;
-                if (innerHeight - newInnerHeight > 200) { //弹出键盘时触发
-                    root.setAttribute('style', 'overflow-y:auto;height:330px');
-                } else {
-                    root.setAttribute('style', 'overflow-y:"";height:""');
-                }
-            });
+            // window.addEventListener('resize', () => {
+            //     const root = document.getElementById('root');
+            //     const newInnerHeight = window.innerHeight;
+            //     if (innerHeight - newInnerHeight > 200) { //弹出键盘时触发
+            //         console.log(23);
+            //         root.setAttribute('style', 'overflow-y:auto;height:330px');
+            //     } else {
+            //         console.log(33333);
+            //         root.setAttribute('style', 'overflow-y:"";height:""');
+            //     }
+            // });
         }
     }
 

@@ -212,7 +212,7 @@ class BankCardDetail extends BaseComponent {
      };
 
      render() {
-         const {userInfo, getOff, height, bankArr} = this.state;
+         const {userInfo, getOff, bankArr} = this.state;
          const {getFieldDecorator} = this.props.form;
          return (
              <div data-component="bankCardDetail" data-role="page" className="bank-card-detail">

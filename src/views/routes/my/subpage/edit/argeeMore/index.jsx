@@ -289,7 +289,7 @@ class Agreement extends BaseComponent {
                 footer={[{text: '确定',
                     onPress: () => {
                         if (process.env.NATIVE && type !== 'null') {
-                            native('goBack');
+                            native('goLogin');
                         }
                         this.showModal(false);
                     }}]}

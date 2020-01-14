@@ -12,7 +12,8 @@ const {MESSAGE: {Form, Feedback}} = Constants;
 const {urlCfg} = Configs;
 class ListDetails extends BaseComponent {
     state = {
-        canInfo: {} //数据容器
+        canInfo: {}, //数据容器
+        iiJingDong: decodeURI(getUrlParam('jingdong', encodeURI(this.props.location.search))) !== 'null' ? decodeURI(getUrlParam('jingdong', encodeURI(this.props.location.search)))  : ''
     };
 
     componentDidMount() {
@@ -249,7 +250,8 @@ class ListDetails extends BaseComponent {
                                                 <img src={canInfo.shoper_pic} onError={(e) => { e.target.src = canInfo.df_logo }} alt=""/>
                                                 <p>{canInfo.shopName}</p>
                                             </div>
-                                            <span><div className="right" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} onClick={(ev) => this.goShopHome(canInfo.shop_id, ev)}>进店</div></span>
+                                            <div className="icon enter"/>
+                                            {/* <span><div className="right" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} onClick={(ev) => this.goShopHome(canInfo.shop_id, ev)}>进店</div></span> */}
                                         </div>
                                         {
                                             canInfo.pr_list && canInfo.pr_list.map((item, index) => (

@@ -339,19 +339,19 @@ class MyOrder extends BaseComponent {
     }
 
     //点击订单的时候的跳转
-    goToOrderDetail = (id, state, returnId, returnType, ev) => {
+    goToOrderDetail = (id, state, returnId, returnType, appYpe, ev) => {
         //return_status也就是这里的status大于0就是申请售后的订单了
         if (state > 0) {
             this.refundDetails(returnId, ev);
         } else {
-            this.skipDetail(id, returnType, ev);
+            this.skipDetail(id, returnType, appYpe, ev);
         }
         ev.stopPropagation();
     }
 
     //跳转到订单详情页
-    skipDetail = (id, returnType, ev) => {
-        appHistory.push(`/listDetails?id=${id}&refurn=${returnType ? '1' : ''}`);
+    skipDetail = (id, returnType, appYpe, ev) => {
+        appHistory.push(`/listDetails?id=${id}&refurn=${returnType ? '1' : ''}&jingdong=${appYpe}`);
         ev.stopPropagation();
     }
 
@@ -698,7 +698,7 @@ class MyOrder extends BaseComponent {
                     {/* <div className="right">{item.return_status !== '0' ? item.return_name : this.tabTopName(item.status)}</div> */}
                 </div>
                 {(item.pr_list && item.pr_list.length > 0) ? item.pr_list.map(items => (
-                    <div className="goods" key={item.id} onClick={(ev) => this.goToOrderDetail(item.id, item.return_status, item.return_id, items.return_types, ev)}>
+                    <div className="goods" key={item.id} onClick={(ev) => this.goToOrderDetail(item.id, item.return_status, item.return_id, items.return_types, items.app_type, ev)}>
                         <div className="goods-left">
                             <div>
                                 <LazyLoadIndex key={items.pr_picpath} src={items.pr_picpath}/>

@@ -46,7 +46,8 @@ class ShopHome extends BaseComponent {
             lon: '',
             hasMore: false, //底部请求状态文字显示情况
             business: decodeURI(getUrlParam('business', encodeURI(props.location.search))) === '1', //表示从发现页面过来的，需要直接展示商家信息
-            propsData: props
+            propsData: props,
+            isJingDong: decodeURI(getUrlParam('jingdong', encodeURI(props.location.search))) === '1' //判断是否是京东商品过来的
         };
     }
 
@@ -300,7 +301,7 @@ class ShopHome extends BaseComponent {
     }
 
     render() {
-        const {currentState, modelShow, shopModelArr, lat, lon, business} = this.state;
+        const {currentState, modelShow, shopModelArr, lat, lon, business, isJingDong} = this.state;
         const shoppingId = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
         let blockModel = <div/>;
         if (business) {
@@ -326,7 +327,7 @@ class ShopHome extends BaseComponent {
                 <Top/>
                 {blockModel}
                 {
-                    currentState && <ShopFooter onTabChange={(data) => { this.onTabChange(data) }} active={this.activeFn(modelShow, currentState)} haveModalAll={modelShow}/>
+                    !isJingDong && currentState && <ShopFooter onTabChange={(data) => { this.onTabChange(data) }} active={this.activeFn(modelShow, currentState)} haveModalAll={modelShow}/>
                 }
             </React.Fragment>
         );
