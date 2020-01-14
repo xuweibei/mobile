@@ -160,7 +160,7 @@ class ListDetails extends BaseComponent {
     //底部按钮内容
     bottomButton = (num) => {
         const blockMadel = new Map([
-            ['0', <div className="immediate-evaluation" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} onClick={this.payNow}>立即付款</div>],
+            ['0', <div className="immediate-evaluation new-style-paynow" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} onClick={this.payNow}>立即付款</div>],
             ['1', <div className="immediate-evaluation deliver" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} onClick={this.remindDelivery}>提醒发货</div>],
             ['2', <div className="immediate-evaluation" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} onClick={this.confirmTake}>确认收货</div>],
             ['3', <div className="immediate-evaluation" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} onClick={this.promptlyEstimate}>立即评价</div>]

@@ -251,6 +251,7 @@ class ReDetail extends BaseComponent {
                                     <div className="goods-right">
                                         <div className="goods-desc">
                                             <div className="desc-title">{item.pr_title}</div>
+                                            <div className="desc_price">{item.price}</div>
                                         </div>
                                         <div className="goods-sku">
                                             <div className="sku-left">
