@@ -43,8 +43,11 @@ class ReDetail extends BaseComponent {
                 this.getOrderSelf();
             } else { //这里的情况是，原生那边跳转的时候，需要处理一些问题，所以就购物车过来的时候，存数据，这边取数据
                 window.DsBridge.call('getSelfMentio', {'': ''}, (data) => {
+                    console.log(data, '就看来水电费接口');
                     const res = data ? JSON.parse(data) : '';
+                    console.log(res, '老地方开个会');
                     if (res && res.status === 0) {
+                        alert(2);
                         setOrder(res.data.arr);
                         setIds(res.data.cartArr);
                         this.getOrderSelf();
