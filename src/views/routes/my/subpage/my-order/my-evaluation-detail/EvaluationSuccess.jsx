@@ -130,7 +130,7 @@ class EvaluationSuccess extends BaseComponent {
                                     <span className="bookkeeping-r">{item.city}</span>
                                 </div>
                                 <div className="payment">
-                                    <span>{item.sale_num}人付款</span>
+                                    <span>{item.num_sold}人付款</span>
                                     {/*<span className="payment-r">￥9999</span>*/}
                                 </div>
                                 <div className="price" onClick={this.shopHome.bind(this, item.shop_id)}>
@@ -168,7 +168,7 @@ class EvaluationSuccess extends BaseComponent {
                                     <div className="goods-name">
                                         <div className="goods-picture">
                                             {/* <img src={data.pr_picpath} alt=""/> */}
-                                            <LazyLoadIndex src={item.pr_picpath}/>
+                                            <LazyLoadIndex key={item.pr_picpath} src={item.pr_picpath}/>
                                         </div>
                                         <div className="goods-information">
                                             <div className="goods-explain explain-appraise" onClick={() => this.goToGooods(data.pr_id)}>{data.pr_title}</div>

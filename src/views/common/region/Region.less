@@ -7,6 +7,34 @@
     //.hairline('bottom',@to-light-gray);
     margin-bottom: -4px;
     height: 88px!important;
+    .gray-3 {
+        display: inline-block;
+        max-width: 160px;
+        //text-align: right;
+        overflow: hidden;
+        white-space:nowrap;
+        text-overflow:ellipsis;
+        color: @darker-black;
+        font-size: @font-size-28;
+    }
+    .gray-3 div:nth-child(1) div {
+        overflow: hidden;
+        -o-text-overflow: ellipsis;
+        text-overflow: ellipsis;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        word-break: break-all;
+        display: block;
+    }
+    .gray-3 div:nth-child(1) div {
+        overflow: hidden;
+        -o-text-overflow: ellipsis;
+        text-overflow: ellipsis;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        word-break: break-all;
+        display: block;
+    }
 }
 .inline{
     display: inline-block;
@@ -20,17 +48,6 @@
     font-size: @font-size-28;
     color: #bbb;
     width: 100%;
-    margin-right: 30px;
+    margin-right: 0px;
     //margin-left: 10px;
-}
-.gray-3 {
-    display: inline-block;
-    //width: 240px;
-    //text-align: right;
-    overflow: hidden;
-    white-space:nowrap;
-    text-overflow:ellipsis;
-    margin-left: 30px;
-    color: @darker-black;
-    font-size: @font-size-28;
 }

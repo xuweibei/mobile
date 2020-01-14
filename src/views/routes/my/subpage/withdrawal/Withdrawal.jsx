@@ -11,9 +11,8 @@ import {InputGrid} from '../../../../common/input-grid/InputGrid';
 import AppNavBar from '../../../../common/navbar/NavBar';
 
 const {urlCfg} = Configs;
-const {showInfo, validator, appHistory, setNavColor} = Utils;
-const {MESSAGE: {Form, Feedback}, navColorR} = Constants;
-const hybird = process.env.NATIVE;
+const {showInfo, validator, appHistory} = Utils;
+const {MESSAGE: {Form, Feedback}} = Constants;
 
 const tabs = [
     {title: '微信零钱'},
@@ -57,18 +56,6 @@ class Withdrawal extends BaseComponent {
     componentDidMount() {
         this.income();
         this.payPassWord();
-    }
-
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorR});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorR});
-        }
     }
 
     //获取初始值信息
@@ -383,11 +370,11 @@ class Withdrawal extends BaseComponent {
                         <div className="popup-wrap">
                             <div className="popup-top">
                                 <div onClick={this.closePopup}>
-                                    <span className="icon command-left" onClick={() => this.closePopup()}/>
+                                    <span className="icon command-left" onClick={this.closePopup}/>
                                 </div>
                                 <div className="popup-title">请输入支付密码</div>
                                 <div onClick={this.closePopup}>
-                                    <span className="icon command-right" onClick={() => this.closePopup()}/>
+                                    <span className="icon command-right" onClick={this.closePopup}/>
                                 </div>
                             </div>
                             <div className="popup-bottom">

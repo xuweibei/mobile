@@ -31,36 +31,47 @@ const tabs = [
 
 
 class MyOrder extends BaseComponent {
-    state = {
-        dataSource: new ListView.DataSource({
-            rowHasChanged: (row1, row2) => row1 !== row2
-        }), //长列表容器
-        refreshing: false, //是否显示刷新状态
-        height: document.documentElement.clientHeight - (window.isWX ?  window.rem * 1.08 : window.rem * 1.78),
-        status: -1, //tab状态
-        delOrder: null, //删除订单id
-        remind: null, //提醒状态
-        page: 1,  //当前页数
-        pagesize: 10,  //每页条数
-        pageCount: -1,
-        hasMore: false, //底部请求状态文字显示情况
-        retainArr: []
-    };
-
-    componentWillMount() {
-        const num = this.statusChoose(this.props.location.pathname.split('/')[2]) || -1;
-        this.init(num);
+    constructor(props) {
+        super(props);
+        this.state = {
+            dataSource: new ListView.DataSource({
+                rowHasChanged: (row1, row2) => row1 !== row2
+            }), //长列表容器
+            refreshing: false, //是否显示刷新状态
+            height: document.documentElement.clientHeight - (window.isWX ?  window.rem * 1.08 : window.rem * 1.78),
+            status: -1, //tab状态
+            delOrder: null, //删除订单id
+            remind: null, //提醒状态
+            page: 1,  //当前页数
+            pagesize: 10,  //每页条数
+            pageCount: -1,
+            hasMore: false, //底部请求状态文字显示情况
+            retainArr: [],
+            propsData: props
+        };
         removeValue('orderInfo');//清除下单流程留下来的订单信息
         removeValue('orderArr');
     }
 
-    componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方
-        const numNext = this.statusChoose(nextProps.location.pathname.split('/')[2]) || -1;
-        const numPrev = this.statusChoose(this.props.location.pathname.split('/')[2]) || -1;
-        if (numNext !== numPrev) {
+    componentDidMount() {
+        const num = this.statusChoose(this.props.location.pathname.split('/')[2]) || -1;
+        this.init(num);
+    }
+
+    static getDerivedStateFromProps(prevProps, prevState) {
+        return {
+            propsData: prevProps
+        };
+    }
+
+    componentDidUpdate(prev, data) {
+        const numPrev = this.statusChoose(this.state.propsData.location.pathname.split('/')[2]) || -1;
+        const numPrev2 = this.statusChoose(data.propsData.location.pathname.split('/')[2]) || -1;
+        if (numPrev !== numPrev2) {
             const dataSource2 = new ListView.DataSource({
                 rowHasChanged: (row1, row2) => row1 !== row2
             });
+            // eslint-disable-next-line react/no-did-update-set-state
             this.setState({
                 page: 1,
                 // status,
@@ -68,15 +79,40 @@ class MyOrder extends BaseComponent {
                 dataSource: dataSource2,
                 retainArr: [],
                 hasMore: false,
-                status: numNext
+                status: numPrev
             }, () => {
                 temp.stackData = [];
-                this.init(numNext);
+                this.init(numPrev);
                 removeValue('orderInfo');//清除下单流程留下来的订单信息
                 removeValue('orderArr');
             });
         }
     }
+
+    // componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方
+    //     const numNext = this.statusChoose(nextProps.location.pathname.split('/')[2]) || -1;
+    //     const numPrev = this.statusChoose(this.props.location.pathname.split('/')[2]) || -1;
+    //     console.log(numNext, numPrev, '额叶任天野');
+    //     if (numNext !== numPrev) {
+    //         const dataSource2 = new ListView.DataSource({
+    //             rowHasChanged: (row1, row2) => row1 !== row2
+    //         });
+    //         this.setState({
+    //             page: 1,
+    //             // status,
+    //             pageCount: -1,
+    //             dataSource: dataSource2,
+    //             retainArr: [],
+    //             hasMore: false,
+    //             status: numNext
+    //         }, () => {
+    //             temp.stackData = [];
+    //             this.init(numNext);
+    //             removeValue('orderInfo');//清除下单流程留下来的订单信息
+    //             removeValue('orderArr');
+    //         });
+    //     }
+    // }
 
     init = (num) => {
         this.setState({
@@ -176,12 +212,12 @@ class MyOrder extends BaseComponent {
     //跳转我的订单
     gotoMyOrder = (index) => {
         const url = new Map([
-            [0, '/myOrder/qb'],
-            [1, '/myOrder/fk'],
-            [2, '/myOrder/fh'],
-            [3, '/myOrder/sh'],
-            [4, '/myOrder/pj'],
-            [5, '/myOrder/ssh']
+            [0, '/myOrder/qb?color=#ff2d51'],
+            [1, '/myOrder/fk?color=#ff2d51'],
+            [2, '/myOrder/fh?color=#ff2d51'],
+            [3, '/myOrder/sh?color=#ff2d51'],
+            [4, '/myOrder/pj?color=#ff2d51'],
+            [5, '/myOrder/ssh?color=#ff2d51']
         ]);
         appHistory.replace(url.get(index));
     };
@@ -362,7 +398,11 @@ class MyOrder extends BaseComponent {
 
     //查看物流
     goApplyService = (id, ev) => {
-        appHistory.push(`/logistics?lgId=${id}`);
+        if (process.env.NATIVE) {
+            native('goLogistics', {orderId: id});
+        } else {
+            appHistory.push(`/logistics?lgId=${id}`);
+        }
         ev.stopPropagation();
     }
 
@@ -483,7 +523,7 @@ class MyOrder extends BaseComponent {
         case '1': //待发货
             blockModal = (
                 <div className="buttons">
-                    {
+                    {/* { //余丽  暂时屏蔽
                         (item.refund_button === 1) && (
                             <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
                                 {
@@ -491,7 +531,7 @@ class MyOrder extends BaseComponent {
                                 }
                             </div>
                         )
-                    }
+                    } */}
                     {
                         !item.all_refund && <div className="evaluate-button" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} onClick={() => this.remindDelivery([item.id, item.can_tip])}>提醒发货</div>
                     }
@@ -501,7 +541,7 @@ class MyOrder extends BaseComponent {
         case '2'://待收货
             blockModal = (
                 <div className="buttons">
-                    {
+                    {/* {
                         item.refund_button === 1 && (
                             <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
                                 {
@@ -509,7 +549,7 @@ class MyOrder extends BaseComponent {
                                 }
                             </div>
                         )
-                    }
+                    } */}
                     <div className="look-button" onClick={(ev) => this.extendedReceipt(item.id, ev)} style={{border: this.styleCompatible()}}>延长收货</div>
                     <div className="look-button" onClick={(ev) => this.goApplyService(item.id, ev)} style={{border: this.styleCompatible()}}>查看物流</div>
                     {
@@ -661,7 +701,7 @@ class MyOrder extends BaseComponent {
                     <div className="goods" key={item.id} onClick={(ev) => this.goToOrderDetail(item.id, item.return_status, item.return_id, items.return_types, ev)}>
                         <div className="goods-left">
                             <div>
-                                <LazyLoadIndex src={items.pr_picpath}/>
+                                <LazyLoadIndex key={items.pr_picpath} src={items.pr_picpath}/>
                             </div>
                         </div>
                         <div className="goods-right">

@@ -10,6 +10,7 @@ class BaseComponent extends React.Component {
         children: PropTypes.array
     };
 
+
     static contextTypes = {
         store: PropTypes.object
     };
@@ -21,8 +22,37 @@ class BaseComponent extends React.Component {
 
     constructor(props, context) {
         super(props, context);
+        if (process.env.NATIVE) {
+            window.DsBridge.call('wxLoginCallback', (data) => { //设置userToken
+                const obj = data ? JSON.parse(data) : '';
+                if (obj && obj.status === '0') {
+                    window.localStorage.setItem('zpyg_userToken', obj.data.usertoken);
+                    this.context.store.dispatch(actionCreator.setUserToken(obj.data.usertoken));
+                }
+            });
+        }
     }
 
+    componentDidMount() {
+        // window.timeClear = setTimeout(() => {
+        //     const skelon = document.getElementById('skelon');
+        //     skelon.style.display = 'none';
+        // }, 1500);
+        if (process.env.NATIVE) {
+            const innerHeight = window.innerHeight;
+            window.addEventListener('resize', () => {
+                const root = document.getElementById('root');
+                const newInnerHeight = window.innerHeight;
+                if (innerHeight - newInnerHeight > 200) { //弹出键盘时触发
+                    console.log(23);
+                    root.setAttribute('style', 'overflow-y:auto;height:330px');
+                } else {
+                    console.log(33333);
+                    root.setAttribute('style', 'overflow-y:"";height:""');
+                }
+            });
+        }
+    }
 
     shouldComponentUpdate(nextProps, nextState) {
         const thisProps = this.props || {},
@@ -48,7 +78,7 @@ class BaseComponent extends React.Component {
 
     // 元素销毁时，清掉未完成Ajax回调函数, 关闭alert、confirm弹窗
     componentWillUnmount() {
-        console.log('BaseComponent componentWillUnmount', this.getComponnetName());
+        // console.log('BaseComponent componentWillUnmount', this.getComponnetName());
         const {store} = this.context,
             base = store.getState().get('base');
         base.get('alertShow') && store.dispatch(actionCreator.hideAlert());
@@ -61,6 +91,7 @@ class BaseComponent extends React.Component {
         this.setState((prevState) => ({
             prevState
         }));
+        // clearTimeout(window.timeClear);
     }
 
     // 获取组件名称

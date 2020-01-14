@@ -8,8 +8,7 @@ import '../../../redux/reducers/baseReducer';
 import PropTypes from 'prop-types';
 
 
-const {appHistory, native} = Utils;
-const hybird = process.env.NATIVE;
+const {goBackModal} = Utils;
 export default class Error extends BaseComponent {
     static defaultProps = {
         title: '404',
@@ -38,7 +37,7 @@ export default class Error extends BaseComponent {
                     className="error-title"
                     mode="light"
                     icon={<Icon type="left" size="lg"/>}
-                    onLeftClick={() => { (hybird && appHistory.length() === 0) ? native('goBack') : appHistory.goBack() }}
+                    onLeftClick={goBackModal}
                 >
                     {title}
                 </NavBar>

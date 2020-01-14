@@ -76,6 +76,7 @@ class refundDetails extends BaseComponent {
                                 dropByCacheKey('OrderPage');//清除我的订单的缓存
                                 appHistory.go(-1);
                             } else {
+                                dropByCacheKey('selfMentionOrderPage');//清除线下订单
                                 appHistory.replace('/selfMention');
                             }
                         }
@@ -125,7 +126,11 @@ class refundDetails extends BaseComponent {
 
     //查看物流
     seeLogistics = (id) => {
-        appHistory.push(`/logistics?lgId=${id}&isReturn=1`);
+        if (process.env.NATIVE) {
+            native('goLogistics', {orderId: id});
+        } else {
+            appHistory.push(`/logistics?lgId=${id}&isReturn=1`);
+        }
     }
 
     //底部按钮

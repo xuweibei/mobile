@@ -14,7 +14,7 @@ if (!document.lazyLoadInstance) {
 
 export class LazyImage extends React.PureComponent {
     static propTypes = {
-        src: PropTypes.object.isRequired,
+        src: PropTypes.string.isRequired,
         bigPicture: PropTypes.func
     }
 

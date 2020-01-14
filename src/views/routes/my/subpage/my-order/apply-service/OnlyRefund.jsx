@@ -6,7 +6,7 @@ import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAc
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './ApplyService.less';
 
-const {appHistory, showInfo, dealImage, getUrlParam, native, TD} = Utils;
+const {appHistory, showInfo, dealImage, getUrlParam, TD} = Utils;
 const {MESSAGE: {Form, Feedback}, TD_EVENT_ID} = Constants;
 const {urlCfg} = Configs;
 //退货退款类型
@@ -149,6 +149,7 @@ class applyService extends BaseComponent {
                                 } else {
                                     appHistory.go(-3);
                                 }
+                                dropByCacheKey('selfMentionOrderPage');//清除线下订单
                                 setTimeout(() => {
                                     appHistory.push(`/selfOrderingDetails?id=${orderId}`);
                                 });
@@ -178,6 +179,7 @@ class applyService extends BaseComponent {
                             } else {
                                 appHistory.go(-2);
                             }
+                            dropByCacheKey('selfMentionOrderPage');//清除线下订单
                             setTimeout(() => {
                                 appHistory.push(`/selfOrderingDetails?id=${orderId}`);
                             });
@@ -205,16 +207,29 @@ class applyService extends BaseComponent {
     addPictrue = () => {
         const {nativePicNum, fileInfo} = this.state;
         if (hybird) {
-            native('picCallback', {num: nativePicNum}).then(res => {
+            window.DsBridge.call('picCallback', {num: nativePicNum}, (dataList) => {
+                const res = dataList ? JSON.parse(dataList) : '';
                 const arr = fileInfo;
-                res.data.img.forEach(item => {
-                    arr.push({urlB: item[0], url: item[1], id: new Date()});
-                });
-                this.setState({
-                    fileInfo: arr,
-                    nativePicNum: 9 - arr.length
-                });
+                if (res && res.status === '0') {
+                    res.data.img.forEach(item => {
+                        arr.push({urlB: item[0], url: item[1], id: new Date()});
+                    });
+                    this.setState({
+                        fileInfo: arr,
+                        nativePicNum: 9 - arr.length
+                    });
+                }
             });
+            // native('picCallback', {num: nativePicNum}).then(res => {
+            //     const arr = fileInfo;
+            //     res.data.img.forEach(item => {
+            //         arr.push({urlB: item[0], url: item[1], id: new Date()});
+            //     });
+            //     this.setState({
+            //         fileInfo: arr,
+            //         nativePicNum: 9 - arr.length
+            //     });
+            // });
         }
     };
 

@@ -19,12 +19,15 @@ const article = [
 export default class applyService extends BaseComponent {
     state = {
         onlyRefund: false, //是否是 仅退款
-        Id: decodeURI(getUrlParam('orderId', encodeURI(this.props.location.search))), //退款所需参数 订单id
-        returnType: decodeURI(getUrlParam('returnType', encodeURI(this.props.location.search))), //退款所需参数 单个商品进行退款还是整条订单进行退款
-        prId: decodeURI(getUrlParam('prId', encodeURI(this.props.location.search))), //退款所需参数 商品id
-        arrInfo: decodeURI(getUrlParam('arrInfo', encodeURI(this.props.location.search))), //退款所需参数 标签
-        onlyReturnMoney: decodeURI(getUrlParam('onlyReturnMoney', encodeURI(this.props.location.search)))//待发货过来的退款，不让他点击退货退款给提示
+        Id: this.getParameter('orderId'), //退款所需参数 订单id
+        returnType: this.getParameter('returnType'), //退款所需参数 单个商品进行退款还是整条订单进行退款
+        prId: this.getParameter('prId'), //退款所需参数 商品id
+        arrInfo: this.getParameter('arrInfo'), //退款所需参数 标签
+        onlyReturnMoney: this.getParameter('onlyReturnMoney')//待发货过来的退款，不让他点击退货退款给提示
     }
+
+    //获取参数
+    getParameter = (value) => decodeURI(getUrlParam(value, encodeURI(this.props.location.search)))
 
     //售后申请类型
     serviceList = (value) => {

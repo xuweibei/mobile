@@ -19,9 +19,10 @@ class Address extends BaseComponent {
         edit: '', //路由状态
         defaultState: false, //设置为默认地址
         province: '', //省的名字
-        urban: '', //市辖区的名字
+        city: '', //市辖区的名字
         county: '', //城市的名字
-        addressArr: [], //初始地址
+        street: '', //街道的名字
+        addressArr: {}, //初始地址
         editStatus: true, //地址选择显示与否
         addressStatus: decodeURI(getUrlParam('status', encodeURI(this.props.location.search))), //编辑还是添加 1编辑2添加
         height: document.documentElement.clientHeight - (window.isWX ? window.rem * null : window.rem * 1.08) //扣除微信头部高度
@@ -29,31 +30,52 @@ class Address extends BaseComponent {
 
     componentDidMount() {
         const {addressList, getAddress, location: {search}} = this.props;
-        const router = decodeURI(getUrlParam('router', encodeURI(search)));
-        if (router === 'edit') {
-            this.setState({
-                edit: router
-            }, () => {
+        const status = decodeURI(getUrlParam('status', encodeURI(search)));
+        this.setState({
+            edit: status
+        }, () => {
+            if (status === '1') {
                 this.getList();
-            });
-        } else if (!addressList) {
-            getAddress();
-        }
+            } else if (!addressList) {
+                getAddress();
+            }
+        });
     }
 
-    componentWillReaciveProps(nextProps) {
-        const router = decodeURI(getUrlParam('router', encodeURI(this.props.location.search)));
-        const nextRouter = decodeURI(getUrlParam('router', encodeURI(nextProps.location.search)));
-        if (process.env.NATIVE && router !== nextRouter) {
-            this.setState({
-                edit: nextRouter
-            }, () => {
-                if (nextRouter === 'edit') {
-                    this.getList();
-                }
-            });
+    //获取信息
+    getList = () => {
+        const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
+        if (id !== 'null') {
+            this.fetch(urlCfg.editAddressOne, {data: {id}})
+                .subscribe(res => {
+                    if (res && res.status === 0) {
+                        this.setState({
+                            addressArr: res.data,
+                            province: res.data.province[0],
+                            city: res.data.city[0],
+                            county: res.data.county[0],
+                            town: res.data.town[0],
+                            defaultState: !!Number(res.data.if_default)
+                        });
+                    }
+                });
         }
-    }
+    };
+
+    // componentWillReaciveProps(nextProps) {
+    //     const status = decodeURI(getUrlParam('status', encodeURI(this.props.location.search)));
+    //     const nextRouter = decodeURI(getUrlParam('status', encodeURI(nextProps.location.search)));
+    //     console.log(status,nextRouter,'扣篮大赛')
+    //     if (process.env.NATIVE && status !== nextRouter) {
+    //         this.setState({
+    //             edit: nextRouter
+    //         }, () => {
+    //             if (nextRouter === '1') {
+    //                 this.getList();
+    //             }
+    //         });
+    //     }
+    // }
 
     //前往新增地址页面
     switchTo = () => {
@@ -80,7 +102,7 @@ class Address extends BaseComponent {
 
     //编辑地址
     editAdree = (ev, data) => {
-        appHistory.push(`/editAddress?id=${data ? data.id : ''}&status=${data ? '1' : '2'}&router=edit`);//2是添加，1是编辑
+        appHistory.push(`/editAddress?id=${data ? data.id : ''}&status=${data ? '1' : '2'}`);//2是添加，1是编辑
         ev.stopPropagation();
     }
 
@@ -107,13 +129,13 @@ class Address extends BaseComponent {
 
     // //点击保存
     // saveData = () => {
-    //     const {province, urban, county} = this.state;
+    //     const {province, city, county} = this.state;
     //     const district = [];
     //     if (province) {
     //         district.push(province);
     //     }
-    //     if (urban) {
-    //         district.push(urban);
+    //     if (city) {
+    //         district.push(city);
     //     }
     //     if (county) {
     //         district.push(county);
@@ -195,95 +217,6 @@ class Address extends BaseComponent {
         </div>
     )
 
-    editDress = () => {
-        const {getFieldProps, getFieldError} = this.props.form;
-        const {province, urban, county, addressArr, editStatus, addressStatus, height, defaultState} = this.state;
-        return (
-            <div data-component="add-address" data-role="page" className="add-address">
-                <AppNavBar title="地址管理"/>
-                <form style={{height: height}} className="location-list">
-                    <List>
-                        <div className="consignee">
-                            <InputItem
-                                {...getFieldProps('account', {initialValue: addressArr.linkname})}
-                                clear
-                                error={!!getFieldError('account')}
-                                onErrorClick={() => {}}
-                                placeholder="请输入您的收件人姓名"
-                                className="add-input"
-                            />
-                        </div>
-                        <InputItem
-                            className="add-input"
-                            {...getFieldProps('phone', {initialValue: addressArr.linktel})}
-                            placeholder="请输入电话号码"
-                            type="phone"
-                        />
-                        <div className="receiving-address">
-                            <InputItem>
-                                {
-                                    addressStatus === '1' ? (
-                                        <Region
-                                            onSetProvince={this.setProvince}
-                                            onSetCity={this.setCity}
-                                            onSetCounty={this.setCounty}
-                                            provinceValue={province}
-                                            cityValue={urban}
-                                            countyValue={county}
-                                            provinceId={addressArr.province_id}
-                                            cityId={addressArr.city_id}
-                                            editStatus={editStatus}
-                                            editStatusChange={this.editStatusChange}
-                                        />
-                                    ) : (
-                                        <Region
-                                            onSetProvince={this.setProvince}
-                                            onSetCity={this.setCity}
-                                            onSetCounty={this.setCounty}
-                                            add
-                                        />
-                                    )
-                                }
-                            </InputItem>
-                        </div>
-                        <TextareaItem
-                            {...getFieldProps('addressAll', {initialValue: addressArr.address})}
-                            placeholder="请输入详细地址"
-                            // autoHeight
-                            count={100}
-                        />
-                        <div className="default">
-                            {/*  <CheckboxItem onChange={(data) => this.onChangeDefault(data)} checked={defaultState}>
-                                {'设为默认地址'}
-                            </CheckboxItem>*/}
-                            <div onClick={this.onChangeDefault} className={`icon default-icon ${defaultState ? 'default-red' : ''}`}>设为默认地址</div>
-                        </div>
-                        <Button className="save" onClick={this.saveData}>保存</Button>
-                        {addressStatus === '1' && <Button className="delete" onClick={this.deleteData}>删除</Button>}
-                    </List>
-                </form>
-            </div>
-        );
-    }
-
-    getList = () => {
-        const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
-        if (id) {
-            this.fetch(urlCfg.editAddressOne, {data: {id}})
-                .subscribe(res => {
-                    if (res && res.status === 0) {
-                        this.setState({
-                            addressArr: res.data,
-                            province: res.data.province[0],
-                            urban: res.data.city[0],
-                            county: res.data.county[0],
-                            defaultState: !!Number(res.data.if_default)
-                        });
-                    }
-                });
-        }
-    };
-
 
     //设置是否默认地址
     onChangeDefault = () => {
@@ -294,24 +227,15 @@ class Address extends BaseComponent {
 
     //点击保存
     saveData = () => {
-        const {province, urban, county, defaultState, addressStatus} = this.state;
+        const {defaultState, addressStatus, addressArr} = this.state;
         const {form: {getFieldsValue}, location: {search}, getAddress} = this.props;
         const account = getFieldsValue().account;
         const addressAll = getFieldsValue().addressAll;
         const id = decodeURI(getUrlParam('id', encodeURI(search)));
         const phone = getFieldsValue().phone;
-        const district = [];
-        if (province) {
-            district.push(province);
-        }
-        if (urban) {
-            district.push(urban);
-        }
-        if (county) {
-            district.push(county);
-        }
+        const district = [addressArr.province_id, addressArr.city_id, addressArr.county_id, addressArr.town_id];
         //表单验证
-        if (!validator.checkRange(2, 20, account)) {
+        if (!validator.checkRange(2, 8, account)) {
             showInfo(Form.No_Name);
             return;
         }
@@ -323,7 +247,7 @@ class Address extends BaseComponent {
             showInfo(Form.Error_Phone);
             return;
         }
-        if (district.length < 3) {
+        if (!district.every(item => item)) {
             showInfo(Form.Error_Address);
             return;
         }
@@ -354,25 +278,43 @@ class Address extends BaseComponent {
 
     //  省市县的赋值
     setProvince = str => {
+        const {addressArr} = this.state;
+        addressArr.province_id = str;
+        addressArr.city_id = '';
+        addressArr.county_id = '';
+        addressArr.town_id = '';
         this.setState({
-            province: str,
-            urban: '',
-            county: ''
+            addressArr
         });
     };
 
     //  市辖区赋值
     setCity = str => {
+        const {addressArr} = this.state;
+        addressArr.city_id = str;
+        addressArr.county_id = '';
+        addressArr.town_id = '';
         this.setState({
-            urban: str,
-            county: ''
+            addressArr
         });
     };
 
     //  城市赋值
     setCounty = str => {
+        const {addressArr} = this.state;
+        addressArr.county_id = str;
+        addressArr.town_id = '';
         this.setState({
-            county: str
+            addressArr
+        });
+    };
+
+    //  街道赋值
+    setStreet = str => {
+        const {addressArr} = this.state;
+        addressArr.town_id = str;
+        this.setState({
+            addressArr
         });
     };
 
@@ -396,10 +338,89 @@ class Address extends BaseComponent {
         });
     };
 
+    //编辑结构
+    editDress = () => {
+        const {getFieldProps, getFieldError} = this.props.form;
+        const {province, city, county, town, addressArr, editStatus, addressStatus, height, defaultState} = this.state;
+        return (
+            <div data-component="add-address" data-role="page" className="add-address">
+                <AppNavBar title="地址管理"/>
+                <form style={{height: height}} className="location-list">
+                    <List>
+                        <div className="consignee">
+                            <InputItem
+                                {...getFieldProps('account', {initialValue: addressArr.linkname})}
+                                clear
+                                error={!!getFieldError('account')}
+                                onErrorClick={() => {}}
+                                placeholder="请输入您的收件人姓名"
+                                className="add-input"
+                            />
+                        </div>
+                        <InputItem
+                            className="add-input"
+                            {...getFieldProps('phone', {initialValue: addressArr.linktel})}
+                            placeholder="请输入电话号码"
+                            type="phone"
+                        />
+                        <div className="receiving-address">
+                            <InputItem>
+                                {
+                                    addressStatus === '1' ? (//为1是编辑，否则是添加
+                                        <Region
+                                            onSetProvince={this.setProvince}
+                                            onSetCity={this.setCity}
+                                            onSetCounty={this.setCounty}
+                                            onSetStreet={this.setStreet}
+                                            provinceValue={province}
+                                            cityValue={city}
+                                            countyValue={county}
+                                            townValue={town}
+                                            provinceId={addressArr.province_id}
+                                            cityId={addressArr.city_id}
+                                            countyId={addressArr.county_id}
+                                            townId={addressArr.town_id}
+                                            editStatus={editStatus}
+                                            editStatusChange={this.editStatusChange}
+                                            typeFour
+                                        />
+                                    ) : (
+                                        <Region
+                                            onSetProvince={this.setProvince}
+                                            onSetCity={this.setCity}
+                                            onSetCounty={this.setCounty}
+                                            onSetStreet={this.setStreet}
+                                            add
+                                            typeFour
+                                        />
+                                    )
+                                }
+                            </InputItem>
+                        </div>
+                        <TextareaItem
+                            {...getFieldProps('addressAll', {initialValue: addressArr.address})}
+                            placeholder="请输入详细地址"
+                            // autoHeight
+                            count={100}
+                        />
+                        <div className="default">
+                            {/*  <CheckboxItem onChange={(data) => this.onChangeDefault(data)} checked={defaultState}>
+                                {'设为默认地址'}
+                            </CheckboxItem>*/}
+                            <div onClick={this.onChangeDefault} className={`icon default-icon ${defaultState ? 'default-red' : ''}`}>设为默认地址</div>
+                        </div>
+                        <Button className="save" onClick={this.saveData}>保存</Button>
+                        {addressStatus === '1' && <Button className="delete" onClick={this.deleteData}>删除</Button>}
+                    </List>
+                </form>
+            </div>
+        );
+    }
+
     render() {
         const {addressList} = this.props;
         const {edit} = this.state;
-        if (edit === 'edit') {
+        if (edit === '1' || edit === '2') {
             return this.editDress();
         }
         return this.dressList(addressList);

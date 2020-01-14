@@ -17,54 +17,39 @@ const entryContent = (data) => {
 import ReactDOM from 'react-dom';
 import {HashRouter as Router} from 'react-router-dom';
 import {Provider} from 'react-redux';
+import {baseActionCreator} from '../src/redux/baseAction';
 import {syncHistoryWithStore} from 'react-router-redux';
-import {store, hashHistory} from '../src/redux/store';
-import BasePage from '../src/views/common/base/BasePage';
-import {ViewRoutes} from '../src/views/${data.component}';
+import {historyStore,store} from '../src/redux/store';
+import BasePageHybrid from '../src/views/common/base/BasePageHybrid';
+import {ViewRoutesHybrid} from '../src/views/${data.component}';
 import '../src/views/${data.less}';
 
-
-const {getAppUserToken, systemApi: {getValue}} = Utils;
-
 const {LOCALSTORAGE} = Constants;
-const usertoken = store.getState().get('base').get(LOCALSTORAGE.USER_TOKEN) || (getValue(LOCALSTORAGE.USER_TOKEN) === 'null' ? null : getValue(LOCALSTORAGE.USER_TOKEN));
-const history = syncHistoryWithStore(hashHistory, store, {
-    selectLocationState(state) {
-        return state.get('routing').toObject();
-    }
-});
 
-history.listen((location, action) => {});
 const HomePage = () => (
     <Provider store={store}>
-        <Router hashHistory={history}>
+        <Router hashHistory={historyStore}>
             <Fragment>
-                <BasePage/>
-                <ViewRoutes/>
+                <BasePageHybrid/>
+                <ViewRoutesHybrid/>
             </Fragment>
         </Router>
     </Provider>
 );
 
-
-if (!usertoken) {
-    getAppUserToken().then(res => {
-        ReactDOM.render(
-            <HomePage/>,
-            document.getElementById('root')
-        );
-    }).catch(res=>{
-        ReactDOM.render(
-            <HomePage/>,
-            document.getElementById('root')
-        );
-    });
-} else {
+//获取userToken
+window.DsBridge.call('wxLoginCallback', (data) => {
+    console.log(data,'时高时低')
+    const obj = data ? JSON.parse(data) : '';
+    if(obj && obj.status === '0'){
+        window.localStorage.setItem(LOCALSTORAGE.USER_TOKEN,obj.data.usertoken);
+        store.dispatch(baseActionCreator.setUserToken(obj.data.usertoken));
+    }
     ReactDOM.render(
         <HomePage/>,
         document.getElementById('root')
     );
-}
+});
 `
     )
 };

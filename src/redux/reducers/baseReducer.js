@@ -5,6 +5,7 @@
 import Immutable from 'immutable';
 import {baseActionTypes as ActionTypes} from '../baseAction';
 
+const {LOCALSTORAGE} = Constants;
 const {createReducer} = Utils,
     userType = {
         userType: '' //用户当前的身份证状态
@@ -153,7 +154,7 @@ export default {
         },
         [ActionTypes.SET_USER_TOKEN](state, action) {
             const {userToken} = action.payload;
-            return state.set('userToken', userToken);
+            return state.set(LOCALSTORAGE.USER_TOKEN, userToken);
         },
         [ActionTypes.SHOW_MENU](state, action) {
             const {isShowMenu} = action.playload;

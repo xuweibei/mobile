@@ -17,7 +17,7 @@ initReactFastclick();
 const App = () => {
     // 微信公众号登陆
     const code = getUrlParam('code');
-    window.loading.style = 'display:none';
+    // window.loading.style = 'display:none';
     if (window.isWX && code) {
         store.dispatch(baseActionCreator.setCode(code));
     }

@@ -13,9 +13,49 @@ import bankCardDetailPage from './bank-card/BankCardDetail';
 // import Account from './account/Account';//切换账号
 // import AddAccount from './account/AddAccount';//添加账号
 import Source from './source';/*确认源头*/
-import BlankPage from './blank';
+// import BlankPage from './blank';
 import Agreement from './argeeMore';
 
+// const Edit = Loadable({
+//     loader: () => import(/* webpackChunkName: 'Edit' */ './edit'),
+//     loading: () => null
+// });
+// const PasswordPage = Loadable({
+//     loader: () => import(/* webpackChunkName: 'Edit' */ './password/Password'),
+//     loading: () => null
+// });
+// const PasswordDetailPage = Loadable({
+//     loader: () => import(/* webpackChunkName: 'Edit' */ './password/password-detail/PasswordDetail'),
+//     loading: () => null
+// });
+// const PasswordPayment = Loadable({
+//     loader: () => import(/* webpackChunkName: 'Edit' */ './password/password-detail-payment/PasswordPayment'),
+//     loading: () => null
+// });
+// const Agreement = Loadable({
+//     loader: () => import(/* webpackChunkName: 'Edit' */ './argeeMore'),
+//     loading: () => null
+// });
+// const Addr = Loadable({
+//     loader: () => import(/* webpackChunkName: 'Edit' */ './address/Address'),
+//     loading: () => null
+// });
+// const bankCardPage = Loadable({
+//     loader: () => import(/* webpackChunkName: 'Edit' */ './bank-card/BankCard'),
+//     loading: () => null
+// });
+// const bankCardDetailPage = Loadable({
+//     loader: () => import(/* webpackChunkName: 'Edit' */ './bank-card/BankCardDetail'),
+//     loading: () => null
+// });
+// const Source = Loadable({
+//     loader: () => import(/* webpackChunkName: 'Edit' */ './source'),
+//     loading: () => null
+// });
+// const BlankPage = Loadable({
+//     loader: () => import(/* webpackChunkName: 'Edit' */ './blank'),
+//     loading: () => null
+// });
 const EditModal = () => (
     <React.Fragment>
         <Route path="/edit" component={Edit}/>
@@ -38,7 +78,7 @@ const EditModal = () => (
         <Route path="/source" component={Source}/> {/*确认源头*/}
         <Route path="/virSource" component={Source}/> {/*确认源头手动输入*/}
         <Route path="/sourceBrowse" component={Source}/> {/*确认源头-扫码*/}
-        <Route path="/blankPage" component={BlankPage}/> {/*确认源头-扫码*/}
+        {/* <Route path="/blankPage" component={BlankPage}/> 空白页面原生使用 */}
     </React.Fragment>
 );
 

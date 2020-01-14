@@ -22,18 +22,11 @@ const {MESSAGE: {Form, Feedback}} = Constants;
 class SourceBrowse extends BaseComponent {
     state = {
         height: document.documentElement.clientHeight - (window.isWX ? window.rem * null : window.rem * 1.08),
-        edit: '', //路由状态
+        edit: decodeURI(getUrlParam('router', encodeURI(this.props.location.search))), //路由状态
         nickname: decodeURI(getUrlParam('nickname', encodeURI(this.props.location.search))),
         phone: decodeURI(getUrlParam('phone', encodeURI(this.props.location.search))),
         uid: decodeURI(getUrlParam('uid', encodeURI(this.props.location.search))),
         avatarUrl: decodeURI(getUrlParam('avatarUrl', encodeURI(this.props.location.search)))
-    }
-
-    componentWillMount() {
-        const router = decodeURI(getUrlParam('router', encodeURI(this.props.location.search)));
-        this.setState({
-            edit: router
-        });
     }
 
     componentWillReceiveProps(next) {

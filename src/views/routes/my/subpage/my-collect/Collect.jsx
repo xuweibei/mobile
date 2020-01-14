@@ -13,7 +13,7 @@ const tabs = [
     {title: '商品'},
     {title: '店铺'}
 ];
-const {appHistory, native, showInfo, nativeCssDiff} = Utils;
+const {appHistory, native, showInfo, nativeCssDiff, spliceArr} = Utils;
 const {urlCfg} = Configs;
 const {MESSAGE: {Form, Feedback}, FIELD} = Constants;
 class Collect extends BaseComponent {
@@ -122,6 +122,7 @@ class Collect extends BaseComponent {
 
     //上拉加载
     onEndReached = () => {
+        console.log(1);
         const {pageShop, pageShopping, pageCountShop, pageCountShopping, tabKey} = this.state;
         if (this.temp.isLoading) return;
         if (tabKey === 0) {
@@ -291,26 +292,20 @@ class Collect extends BaseComponent {
                         showInfo(Feedback.Empty_Success);
                     }
                     if (tabKey === 0) {
-                        this.temp.stackData = [];
-                        this.setState({
-                            pageShop: 1,
-                            isEdit: false,
-                            hasMore: false,
-                            pageCount: -1,
-                            goodsArr: []
-                        }, () => {
-                            this.getCollectionList(this.state.pageShop);
+                        this.temp.stackData = spliceArr(ids, this.temp.stackData);
+                        this.setState((prevState) => ({
+                            isEdit: true,
+                            goodsSource: prevState.goodsSource.cloneWithRows(this.temp.stackData)
+                        }), () => {
+                            this.onEndReached();
                         });
                     } else {
-                        this.temp.stackShopData = [];
-                        this.setState({
-                            pageShop: 1,
-                            isEdit: false,
-                            hasMore: false,
-                            pageCount: -1,
-                            shopArr: []
-                        }, () => {
-                            this.getCollectionList(this.state.pageShop);
+                        this.temp.stackShopData = spliceArr(ids, this.temp.stackShopData);
+                        this.setState((prevState) => ({
+                            isEdit: true,
+                            shopSource: prevState.shopSource.cloneWithRows(this.temp.stackShopData)
+                        }), () => {
+                            this.onEndReached();
                         });
                     }
                 }
@@ -363,7 +358,7 @@ class Collect extends BaseComponent {
                 <div className="goods" key={item.id} onClick={() => this.shopGoods(item.pr_id)}>
                     <div className="goods-box">
                         <div>
-                            <LazyLoad src={item.picpath}/>
+                            <LazyLoad key={item.picpath} src={item.picpath}/>
                         </div>
                         <div className="desc">
                             <div className="desc-title">{item.title}</div>

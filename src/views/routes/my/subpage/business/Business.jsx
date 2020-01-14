@@ -60,19 +60,36 @@ class Customer extends BaseComponent {
                 pagesize: 10
             }
         ];
-        if (page === 1) {
-            this.fetch(urlCfg.myBusiness, {data: param[0]}, noLoading).subscribe(res => {
-                if (res.status === 0) {
-                    this.handleResult(res, true);
-                }
-            });
-        } else {
-            this.fetch(urlCfg.myBusiness, {data: param[1]}).subscribe(res => {
-                if (res.status === 0) {
-                    this.handleResult(res, false);
-                }
-            });
-        }
+        this.fetch(urlCfg.myBusiness, {data: param[page === 1 ? 0 : 1]}, page === 1 ? noLoading : '').subscribe(res => {
+            if (res && res.status === 0) {
+                this.handleResult(res, page === 1);
+            } else {
+                this.setState({
+                    totalNum: 0
+                });
+            }
+        });
+        // if (page === 1) {
+        //     this.fetch(urlCfg.myBusiness, {data: param[0]}, noLoading).subscribe(res => {
+        //         if (res.status === 0) {
+        //             this.handleResult(res, true);
+        //         } else {
+        //             this.setState({
+        //                 totalNum: 0
+        //             });
+        //         }
+        //     });
+        // } else {
+        //     this.fetch(urlCfg.myBusiness, {data: param[1]}).subscribe(res => {
+        //         if (res.status === 0) {
+        //             this.handleResult(res, false);
+        //         } else {
+        //             this.setState({
+        //                 totalNum: 0
+        //             });
+        //         }
+        //     });
+        // }
     };
 
     //处理接口请求结果.isFirst：是否第一页
@@ -108,8 +125,7 @@ class Customer extends BaseComponent {
             pageCount: 0,
             refreshing: false,
             isLoading: false,
-            hasMore: false,
-            totalNum: 0
+            hasMore: false
         }, () => {
             this.getCustomerList();
         });
@@ -150,8 +166,7 @@ class Customer extends BaseComponent {
 
     //返回键回调
     goBackModal = () => {
-        const hybirid = process.env.NATIVE;
-        if (hybirid) {
+        if (process.env.NATIVE) {
             native('goBack');
         } else {
             appHistory.goBack();
@@ -197,7 +212,7 @@ class Customer extends BaseComponent {
                     />
                 )}
                 <div className="customer-count">
-                    <p> {totalNum}人</p>
+                    <p> {totalNum || 0}人</p>
                     <span>总人数</span>
                 </div>
                 <div className={`customer-list ${nativeCssDiff() ? 'general-other' : 'general'}`}>

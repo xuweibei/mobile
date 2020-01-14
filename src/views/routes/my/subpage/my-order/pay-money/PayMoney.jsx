@@ -7,7 +7,7 @@ import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAc
 import {InputGrid} from '../../../../../common/input-grid/InputGrid';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 
-const {appHistory, getUrlParam, native, systemApi: {getValue, removeValue}, supple, showFail, showInfo, nativeCssDiff} = Utils;
+const {appHistory, getUrlParam, native, systemApi: {getValue, removeValue}, supple, showInfo, nativeCssDiff} = Utils;
 const {urlCfg} = Configs;
 const mode = [
     {
@@ -28,19 +28,20 @@ const mode = [
 ];
 
 class PayMoney extends BaseComponent {
-    state = {
-        pwsPopup: false, //CAM消费支付密码弹窗
-        selectIndex: 0, //支付类型
-        listArr: [], //支付数据
-        orderId: decodeURI(getUrlParam('orderId', encodeURI(this.props.location.search))), //支付所需订单id
-        orderNum: decodeURI(getUrlParam('orderNum', encodeURI(this.props.location.search))), //支付所需订单编号
-        source: decodeURI(getUrlParam('source', encodeURI(this.props.location.search))),
-        money: decodeURI(getUrlParam('money', encodeURI(this.props.location.search)))
-    };
-
-    componentWillMount() {
+    constructor(props) {
+        super(props);
+        this.state = {
+            pwsPopup: false, //CAM消费支付密码弹窗
+            selectIndex: 0, //支付类型
+            listArr: [], //支付数据
+            orderId: decodeURI(getUrlParam('orderId', encodeURI(this.props.location.search))), //支付所需订单id
+            orderNum: decodeURI(getUrlParam('orderNum', encodeURI(this.props.location.search))), //支付所需订单编号
+            source: decodeURI(getUrlParam('source', encodeURI(this.props.location.search))),
+            money: decodeURI(getUrlParam('money', encodeURI(this.props.location.search)))
+        };
         //这里是为了控制原生右滑退出
-        this.props.setReturn(true);
+        props.setReturn(true);
+        window.localStorage.setItem('close_key_board', '1');
     }
 
     componentDidMount() {
@@ -59,6 +60,14 @@ class PayMoney extends BaseComponent {
             this.getList(true);
         }
     }
+
+    // static getDerivedStateFromProps(prevProps, prevState) {
+    //     //原生右滑退出处理
+    //     if (!prevProps.returnStatus) {
+    //         this.goBackModal();
+    //     }
+    //     return null;
+    // }
 
     componentWillReceiveProps(data, value) {
         //原生右滑退出处理
@@ -179,13 +188,20 @@ class PayMoney extends BaseComponent {
                             timestamp: res.data.arr.timestamp,
                             sign: res.data.arr.sign
                         };
-                        native('wxPayCallback', obj).then((data) => {
+                        window.DsBridge.call('wxPayCallback', obj, (dataList) => {
                             native('goH5', {'': ''});
-                            appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&id=${res.data.order_id}&types=${selectIndex}&deposit=${listArr.deposit}&if_express=${res.data.if_express}`);
-                        }).catch(data => {
-                            native('goH5', {'': ''});
-                            showFail(data.message);
+                            const data = dataList ? JSON.parse(dataList) : '';
+                            if (data && data.status === '0') {
+                                appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&id=${res.data.order_id}&types=${selectIndex}&deposit=${listArr.deposit}&if_express=${res.data.if_express}`);
+                            }
                         });
+                        // native('wxPayCallback', obj).then((data) => {
+                        //     native('goH5', {'': ''});
+                        //     appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&id=${res.data.order_id}&types=${selectIndex}&deposit=${listArr.deposit}&if_express=${res.data.if_express}`);
+                        // }).catch(data => {
+                        //     native('goH5', {'': ''});
+                        //     showFail(data.message);
+                        // });
                     } else {
                         // window.location.href = res.data.mweb_url;
                     }
@@ -200,15 +216,22 @@ class PayMoney extends BaseComponent {
             .subscribe(res => {
                 if (res && res.status === 0) {
                     if (process.env.NATIVE) {
-                        native('authInfo', res.data.response).then((data) => {
+                        window.DsBridge.call('authInfo', res.data.response, (dataList) => {
                             native('goH5', {'': ''});
+                            const data = dataList ? JSON.parse(dataList) : '';
                             if (data && data.status === '0') {
                                 appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&id=${res.data.order_id}&types=${selectIndex}&deposit=${listArr.deposit || listArr.all_deposit}&if_express=${res.data.if_express}`);
                             }
-                        }).catch(data => {
-                            native('goH5', {'': ''});
-                            showFail(data.message);
                         });
+                        // native('authInfo', res.data.response).then((data) => {
+                        //     native('goH5', {'': ''});
+                        //     if (data && data.status === '0') {
+                        //         appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&id=${res.data.order_id}&types=${selectIndex}&deposit=${listArr.deposit || listArr.all_deposit}&if_express=${res.data.if_express}`);
+                        //     }
+                        // }).catch(data => {
+                        //     native('goH5', {'': ''});
+                        //     showFail(data.message);
+                        // });
                     } else {
                         // window.location.href = res.data.mweb_url;
                     }
@@ -222,14 +245,21 @@ class PayMoney extends BaseComponent {
         this.fetch(urlCfg.batchPayment, {data: {type: 1, payType: selectIndex === 1 ? 2 : 1, order_no: listArr.order}})
             .subscribe(res => {
                 if (res && res.status === 0) {
-                    //selectIndex === 1为微信支付
-                    native(selectIndex === 1 ? 'payWX' : 'payAliPay', {qrCode: res.data.appPayRequest.qrCode, order_no: listArr.order[0], type: process.env.NATIVE ? 1 : 2, payType: selectIndex === 1 ? 2 : 1}).then((data) => {
+                    window.DsBridge.call(selectIndex === 1 ? 'payWX' : 'payAliPay', {qrCode: res.data.appPayRequest.qrCode, order_no: listArr.order[0], type: process.env.NATIVE ? 1 : 2, payType: selectIndex === 1 ? 2 : 1}, (dataList) => {
                         native('goH5', {'': ''});
-                        appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&types=${selectIndex}&deposit=${listArr.all_deposit}&if_express=${res.if_express}&batch=1`);
-                    }).catch(data => {
-                        native('goH5', {'': ''});
-                        showFail(data.message);
+                        const data = dataList ? JSON.parse(dataList) : '';
+                        if (data && data.status === '0') {
+                            appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&types=${selectIndex}&deposit=${listArr.all_deposit}&if_express=${res.if_express}&batch=1`);
+                        }
                     });
+                    //selectIndex === 1为微信支付
+                    // native(selectIndex === 1 ? 'payWX' : 'payAliPay', {qrCode: res.data.appPayRequest.qrCode, order_no: listArr.order[0], type: process.env.NATIVE ? 1 : 2, payType: selectIndex === 1 ? 2 : 1}).then((data) => {
+                    //     native('goH5', {'': ''});
+                    //     appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&types=${selectIndex}&deposit=${listArr.all_deposit}&if_express=${res.if_express}&batch=1`);
+                    // }).catch(data => {
+                    //     native('goH5', {'': ''});
+                    //     showFail(data.message);
+                    // });
                     if (res.data.status === 1) {
                         showInfo(res.data.message);
                     }
@@ -269,7 +299,7 @@ class PayMoney extends BaseComponent {
         const {showConfirm} = this.props;
         this.fetch(urlCfg.memberStatus, {data: {types: 0, chk_pass: 0}})
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     if (res.data.status !== 0) { //status为0为已设置，其他都是未设置
                         showConfirm({
                             title: '您还未设置支付密码，是否前往设置',
@@ -294,6 +324,8 @@ class PayMoney extends BaseComponent {
             setReturn(false);
         });
         hideConfirm();//关闭弹窗
+        //清除关闭键盘的方法
+        window.localStorage.removeItem('close_key_board');
     }
 
     //兼容部分机型样式判断
@@ -345,6 +377,7 @@ class PayMoney extends BaseComponent {
                     appHistory.goBack();
                 }
                 dropByCacheKey('OrderPage');//清除我的订单的缓存
+                dropByCacheKey('selfMentionOrderPage');//清除线下订单
                 //清除缓存
                 removeValue('orderInfo');
                 removeValue('orderArr');
@@ -407,7 +440,7 @@ class PayMoney extends BaseComponent {
                 {/*CAM消费支付密码弹窗*/}
                 {pwsPopup && (
                     <div className="enter-password-box">
-                        <div className="enter-password">
+                        <div className="enter-password" style={{paddingBottom: !process.env.NATIVE ? '4.6rem' : '0.5rem'}}>
                             <div className="command">
                                 <span className="icon command-left" onClick={this.closePopup}/>
                                 <span className="icon command-center">请输入支付密码</span>

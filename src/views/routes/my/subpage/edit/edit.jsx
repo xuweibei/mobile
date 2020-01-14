@@ -193,13 +193,23 @@ class Edit extends BaseComponent {
     //绑定微信
     bindingWeChat = () => {
         const {getUserInfo} = this.props;
-        native('bindWxCallback', {'': ''}).then(res => {
+        window.DsBridge.call('bindWxCallback', {'': ''}, (res) => {
             native('goH5', {'': ''});
-            showInfo(Feedback.wxbind_Success);
-            getUserInfo();
-        }).catch(err => {
-            native('goH5', {'': ''});
+            const data = res ? JSON.parse(res) : '';
+            if (data.status === '0') {
+                showInfo(Feedback.wxbind_Success);
+                getUserInfo();
+            } else {
+                showInfo(data.message);
+            }
         });
+        // native('bindWxCallback', {'': ''}).then(res => {
+        //     native('goH5', {'': ''});
+        //     showInfo(Feedback.wxbind_Success);
+        //     getUserInfo();
+        // }).catch(err => {
+        //     native('goH5', {'': ''});
+        // });
     };
 
     //页面跳转
@@ -240,12 +250,21 @@ class Edit extends BaseComponent {
     changeTheAvatar = () => {
         if (process.env.NATIVE) {
             const arr = [];
-            native('picCallback', {num: 1}).then(res => {
-                res.data.img.forEach(item => {
-                    arr.push({imgB: item[0], imgS: item[1]});
-                    this.updataImg(arr);
-                });
+            window.DsBridge.call('picCallback', {num: 1}, (res) => {
+                const data = res ? JSON.parse(res) : '';
+                if (data && data.status === '0') {
+                    data.data.img.forEach(item => {
+                        arr.push({imgB: item[0], imgS: item[1]});
+                        this.updataImg(arr);
+                    });
+                }
             });
+            // native('picCallback', {num: 1}).then(res => {
+            //     res.data.img.forEach(item => {
+            //         arr.push({imgB: item[0], imgS: item[1]});
+            //         this.updataImg(arr);
+            //     });
+            // });
         }
     }
 

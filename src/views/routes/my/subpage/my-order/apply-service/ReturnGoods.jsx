@@ -1,3 +1,4 @@
+//退货退款
 import {dropByCacheKey} from 'react-router-cache-route';
 import {connect} from 'react-redux';
 import {Picker, InputItem, Button} from 'antd-mobile';
@@ -6,10 +7,8 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 import './ReturnGoods.less';
 
 
-const {showInfo, appHistory, getUrlParam, setNavColor} = Utils;
-const {navColorF} = Constants;
+const {showInfo, appHistory, getUrlParam} = Utils;
 const {urlCfg} = Configs;
-const hybird = process.env.NATIVE;
 class ApplyServiceDetail extends BaseComponent {
     state = {
         applyTitle: '请选择',
@@ -22,24 +21,12 @@ class ApplyServiceDetail extends BaseComponent {
         this.getLogisticsList();
     }
 
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
     //获取商家信息
     getList = () => {
         const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
-        this.fetch(urlCfg.getShopInfo, {method: 'post', data: {id}})
+        this.fetch(urlCfg.getShopInfo, {data: {id}})
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     this.setState({
                         shopInfo: res.data
                     });
@@ -99,6 +86,7 @@ class ApplyServiceDetail extends BaseComponent {
                     this.props.setOrderStatus(4);
                     //清除我的订单的缓存
                     dropByCacheKey('OrderPage');
+                    dropByCacheKey('selfMentionOrderPage');//清除线下订单
                     appHistory.replace(`/refundDetails?id=${id}`);
                 }
             });

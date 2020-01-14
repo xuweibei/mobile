@@ -24,10 +24,9 @@ const temp = {
     isLoading: true
 };
 let keyNum = 0.11211212;
-const {FIELD, navColorF} = Constants;
+const {FIELD} = Constants;
 const {urlCfg} = Configs;
-const {appHistory, native, getUrlParam, setNavColor} = Utils;
-const hybird = process.env.NATIVE;
+const {appHistory, native, getUrlParam} = Utils;
 const arr = [{
     title: '全部',
     value: 0,
@@ -80,7 +79,8 @@ class PossessEvaluate extends BaseComponent {
             arrChecked: arr, //已评价按钮状态切换集合
             userType: decodeURI(getUrlParam('userType', encodeURI(this.props.location.search))), //用户身份
             hasMore: false, //底部请求状态文字显示情况
-            requestOne: false //判断tab切换的时候是否请求接口
+            requestOne: false, //判断tab切换的时候是否请求接口
+            propsData: props
         };
     }
 
@@ -88,15 +88,16 @@ class PossessEvaluate extends BaseComponent {
         this.sentPas();
     }
 
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
+    static getDerivedStateFromProps(prevProps, prevState) {
+        return {
+            propsData: prevProps
+        };
     }
 
-    componentWillReceiveProps(nextProps) {
-        const userType = nextProps.location.search.split('=')[1];
-        if (hybird && (userType !== this.state.userType)) {
+    componentDidUpdate(data, value) {
+        const userType = value.propsData.location.search.split('=')[1];
+        if (process.env.NATIVE && (userType !== this.state.userType)) {
+            // eslint-disable-next-line react/no-did-update-set-state
             this.setState({
                 dataSource: new ListView.DataSource({
                     rowHasChanged: (row1, row2) => row1 !== row2
@@ -121,10 +122,36 @@ class PossessEvaluate extends BaseComponent {
                 this.sentPas();
             });
         }
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
     }
+
+    // componentWillReceiveProps(nextProps) {
+    //     const userType = nextProps.location.search.split('=')[1];
+    //     if (process.env.NATIVE && (userType !== this.state.userType)) {
+    //         this.setState({
+    //             dataSource: new ListView.DataSource({
+    //                 rowHasChanged: (row1, row2) => row1 !== row2
+    //             }),
+    //             alerdeyData: new ListView.DataSource({
+    //                 rowHasChanged: (row1, row2) => row1 !== row2
+    //             }),
+    //             page: 1, //已评价页码
+    //             pageToBe: 1, //待评价页码
+    //             types: this.props.evaStatus, //tab类型 默认进入页面为全部
+    //             pageCount: -1,
+    //             pageCountToBe: -1,
+    //             tabkey: this.props.tabValue || 0, //tab状态
+    //             refreshing: false, //是否显示刷新状态
+    //             height: document.documentElement.clientHeight - (window.isWX ? window.rem * 1.08 : window.rem * 2),
+    //             heightAlready: document.documentElement.clientHeight - (window.isWX ? window.rem * 2.98 : window.rem * 4.06), //已评价的列表高
+    //             arrChecked: arr, //已评价按钮状态切换集合
+    //             userType: userType, //用户身份
+    //             hasMore: false, //底部请求状态文字显示情况
+    //             requestOne: false //判断tab切换的时候是否请求接口
+    //         }, () => {
+    //             this.sentPas();
+    //         });
+    //     }
+    // }
 
     //我的评价页面的请求
     sentPas = () => {
@@ -257,6 +284,9 @@ class PossessEvaluate extends BaseComponent {
 
     //已评价 评价切换
     checkedDo = (num) => {
+        if (this.lv) { //切换的时候重新回到第一页
+            this.lv.scrollTo(0, 0);
+        }
         const {arrChecked} = this.state;
         arrChecked.forEach(item => { item.checked = false });
         arrChecked.forEach((item, index) => { if (index === num) { item.checked = true } });
@@ -387,6 +417,7 @@ class PossessEvaluate extends BaseComponent {
                             onEndReachedThreshold={20}
                             onEndReached={this.onEndReached}
                             renderFooter={() => ListFooter(hasMore)}
+                            ref={el => { this.lv = el }}
                             pullToRefresh={(
                                 <PullToRefresh
                                     refreshing={refreshing}
@@ -414,7 +445,7 @@ class PossessEvaluate extends BaseComponent {
                     <div className="shop-lists">
                         <div className="shop-name" onClick={userType === '2' ? '' : () => this.goShopHome(item.shop_id)}>
                             <div className="shop-title">
-                                <LazyLoadIndex src={userType === '2' ? item.avatarUrl : item.picpath}/>
+                                <LazyLoadIndex key={item.picpath} src={userType === '2' ? item.avatarUrl : item.picpath}/>
                                 <p>{userType === '2' ? item.nickname : item.shopName }</p>
                                 <div className="icon enter"/>
                             </div>
@@ -486,7 +517,7 @@ class PossessEvaluate extends BaseComponent {
                         <div className="consult">{item.content}</div>
                         <div className="picture">
                             {
-                                item.pics.length > 0 && item.pics.map((value, index) => <LazyLoadIndex src={value} bigPicture={() => this.bigPicture(item.pics, index)}/>)
+                                item.pics.length > 0 && item.pics.map((value, index) => <LazyLoadIndex key={value} src={value} bigPicture={() => this.bigPicture(item.pics, index)}/>)
                             }
                         </div>
                         {
@@ -573,7 +604,7 @@ class PossessEvaluate extends BaseComponent {
 
     goBackModal = () => {
         this.props.setTab('');
-        if (hybird && appHistory.length() === 0) {
+        if (process.env.NATIVE && appHistory.length() === 0) {
             native('goBack');
         }
         appHistory.goBack();

@@ -14,20 +14,40 @@ class ShopFooter extends React.PureComponent {
 
     state = {
         selectedTab: this.props.active,
-        haveModalAll: this.props.haveModalAll //判断该店铺是否有模板，没有的话，就不显示店铺模板信息
+        haveModalAll: this.props.haveModalAll, //判断该店铺是否有模板，没有的话，就不显示店铺模板信息
+        propsData: this.props
     };
 
-    componentWillReceiveProps(nextProps) {
+    static getDerivedStateFromProps(nextProps, prevState) {
+        return {
+            propsData: nextProps
+        };
+    }
+
+    componentDidUpdate(prevProps, prevState) {
         if (process.env.NATIVE) {
-            const haveNext = nextProps.haveModalAll;
-            const have = this.props.haveModalAll;
+            const haveNext = prevState.propsData.haveModalAll;
+            const have = this.state.propsData.haveModalAll;
             if (haveNext !== have) {
+                // eslint-disable-next-line react/no-did-update-set-state
                 this.setState({
                     haveModalAll: haveNext
                 });
             }
         }
     }
+
+    // componentWillReceiveProps(nextProps) {
+    //     if (process.env.NATIVE) {
+    //         const haveNext = nextProps.haveModalAll;
+    //         const have = this.props.haveModalAll;
+    //         if (haveNext !== have) {
+    //             this.setState({
+    //                 haveModalAll: haveNext
+    //             });
+    //         }
+    //     }
+    // }
 
     gotoPage = (path) => {
         this.props.onTabChange(path);

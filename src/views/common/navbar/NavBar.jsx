@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './NavBar.less';
 
-const {appHistory, native, showInfo, setNavColor} = Utils;
-const {navColorF} = Constants;
+const {appHistory, native, showInfo} = Utils;
+const {navColorF, navColorR} = Constants;
 // const hashs = window.location.hash;
 // const str = hashs.substring(hashs.length - 8);
 // const hash = str;
@@ -55,17 +55,30 @@ class NavBar extends React.PureComponent {
         status: '1'
     };
 
-    componentWillMount() {
+    constructor(props) {
+        super(props);
+        this.state = {};//初始化需要
         if (process.env.NATIVE) { //设置tab颜色
             const {color} = this.props;
-            setNavColor('setNavColor', {color: color || navColorF});
+            this.setNavClor(color);
         }
     }
 
-    componentWillReceiveProps() {
+    static getDerivedStateFromProps(nextProps) {
         if (process.env.NATIVE) {
-            const {color} = this.props;
-            setNavColor('setNavColor', {color: color || navColorF});
+            const {color} = nextProps;
+            native('setNavColor', {color: color || navColorF});
+        }
+        // 否则，对于state不进行任何操作
+        return null;
+    }
+
+    //设置顶部颜色
+    setNavClor = (color) => {
+        if (window.location.hash.includes('myOrder') || window.location.hash.includes('selfMention')) {
+            native('setNavColor', {color: navColorR});
+        } else {
+            native('setNavColor', {color: color || navColorF});
         }
     }
 
@@ -75,7 +88,7 @@ class NavBar extends React.PureComponent {
         if (process.env.NATIVE) { //app状态下
             if (goBackModal) { //如果是有返回处理函数，则执行这个函数
                 goBackModal();
-            } else if (nativeGoBack) { //如果没又返回处理函数，而是有 nativeGoBack 这个原生直接下级页面的标识，则返回时走原生方法
+            } else if (nativeGoBack || appHistory.length() === 0) { //如果没又返回处理函数，而是有 nativeGoBack 这个原生直接下级页面的标识，则返回时走原生方法
                 native('goBack');
             } else { //其他情况则走返回
                 appHistory.goBack();

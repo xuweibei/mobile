@@ -36,6 +36,9 @@ class appendOrder extends BaseComponent {
         textInfo: '企业',
         invoiceStatus: false,  //发票弹框显示状态
         notAllow: true, //不支持提交状态
+        num: [], // 商品数量
+        deps: [], // 记账量
+        prices: [], //商品单价
         invoice: [],
         invoiceIndex: '',
         invoiceName: '',
@@ -43,7 +46,8 @@ class appendOrder extends BaseComponent {
         invoiceBank: '',
         invoiceAddress: '',
         bankCard: '',
-        invoicePhone: ''
+        invoicePhone: '',
+        propsData: this.props
     };
 
     componentDidMount() {
@@ -55,22 +59,38 @@ class appendOrder extends BaseComponent {
             if (timer === 'null') { //非购物车进入的时候
                 this.getOrderState();
             } else {
-                getShopCartInfo('getInfo', obj).then(res => {
-                    setOrder(res.data.arr);
-                    setIds(res.data.cartArr);
-                    that.getOrderState();
-                });//原生方法获取前面的redux
+                window.DsBridge.call('getInfo', obj, (data) => {
+                    const res = data ? JSON.parse(data) : '';
+                    if (res && res.status === 0) {
+                        setOrder(res.data.arr);
+                        setIds(res.data.cartArr);
+                        that.getOrderState();
+                    }
+                });
+                // getShopCartInfo('getInfo', obj).then(res => {
+                //     setOrder(res.data.arr);
+                //     setIds(res.data.cartArr);
+                //     that.getOrderState();
+                // });//原生方法获取前面的redux
             }
         } else {
             this.getOrderState();
         }
     }
 
-    componentWillReceiveProps(next, data) {
-        const {setOrder, setIds, location} = this.props;
-        const timerNext = decodeURI(getUrlParam('time', encodeURI(next.location.search)));
-        const timer = decodeURI(getUrlParam('time', encodeURI(location.search)));
-        if (process.env.NATIVE && timer && timerNext !== timer) {
+
+    static getDerivedStateFromProps(prevProps, data) {
+        return {
+            propsData: prevProps
+        };
+    }
+
+    componentDidUpdate(prev, data) {
+        const {propsData: {setOrder, setIds}} = this.state;
+        const timerNext = decodeURI(getUrlParam('time', encodeURI(this.state.propsData.location.search)));
+        const timer = decodeURI(getUrlParam('time', encodeURI(data.propsData.location.search)));
+        if (process.env.NATIVE && timerNext !== timer) {
+            // eslint-disable-next-line react/no-did-update-set-state
             this.setState({
                 shopInfo: [],
                 addressInfo: {},
@@ -100,6 +120,40 @@ class appendOrder extends BaseComponent {
         }
     }
 
+    // componentWillReceiveProps(next, data) {
+    //     const {setOrder, setIds, location} = this.props;
+    //     const timerNext = decodeURI(getUrlParam('time', encodeURI(next.location.search)));
+    //     const timer = decodeURI(getUrlParam('time', encodeURI(location.search)));
+    //     if (process.env.NATIVE && timer && timerNext !== timer) {
+    //         this.setState({
+    //             shopInfo: [],
+    //             addressInfo: {},
+    //             goodsCount: 0,
+    //             goods: [],
+    //             idCard: '', //身份证
+    //             total: 0, // 总价
+    //             totalCount: 0, //商品总数量
+    //             files: {},
+    //             order: {}, //订单备注信息
+    //             IDcard: [],
+    //             date: now,
+    //             self: true, //发票类型
+    //             currentIndex: 0, //默认发票选中类型
+    //             textInfo: '企业',
+    //             invoiceStatus: false,  //发票弹框显示状态
+    //             notAllow: true, //不支持提交状态
+    //             invoice: {},
+    //             invoiceIndex: ''
+    //         }, () => {
+    //             getShopCartInfo('getInfo', {'': ''}).then(res => {
+    //                 setOrder(res.data.arr);
+    //                 setIds(res.data.cartArr);
+    //                 this.getOrderState();
+    //             });//原生方法获取前面的redux
+    //         });
+    //     }
+    // }
+
     componentWillUnmount() {
         const {saveAddress} = this.props;
         saveAddress('');
@@ -112,7 +166,7 @@ class appendOrder extends BaseComponent {
 
     //立即付款
     postOrder = () => {
-        const {addressInfo, shopInfo, order, invoice} = this.state;
+        const {addressInfo, shopInfo, order, invoice, num} = this.state;
         const invoices = JSON.parse(getValue('invoices'));
         const orders = JSON.parse(getValue('order'));
         let remark;
@@ -148,8 +202,8 @@ class appendOrder extends BaseComponent {
             const objTemp = {shop_id: item.shop_id, remarks: remark[index].toString(), invoice: invoiceInfo[index]};
             const prArr = [];
             if (item.data.length > 0) {
-                item.data.forEach(value => {
-                    prArr.push({pr_id: value.id, values: value.values, num: value.num, values_name: value.values_name});
+                item.data.forEach((value, i) => {
+                    prArr.push({pr_id: value.id, values: value.values, num: num[index][i], values_name: value.values_name});
                 });
             }
             objTemp.pr_arr = prArr;
@@ -196,12 +250,17 @@ class appendOrder extends BaseComponent {
 
     //总共几件商品
     totalCount = () => {
-        const {goods} = this.state;
-        let num = 0;
-        goods.map(item => item.map(good => {
-            num += Number(good.num);
-        }));
-        return num;
+        const {num} = this.state;
+        let nums = 0;
+        // num.forEach(item => {
+        //     item.forEach(v => {
+        //         nums += Number(v);
+        //     });
+        // });
+        num[0].forEach(item => {
+            nums += Number(item);
+        });
+        return nums;
     };
 
     //获取订单页面数据
@@ -241,6 +300,9 @@ class appendOrder extends BaseComponent {
                         goods: res.data ? res.data.map(shop => shop.data.map(goods => goods)) : [],
                         IDcard: cardArr,
                         order: infoArry,
+                        num: res.data ? res.data.map(shop => shop.data.map(goods => goods.num)) : [],
+                        deps: res.data ? res.data.map(shop => shop.data.map(goods => goods.deposit)) : [],
+                        prices: res.data ? res.data.map(shop => shop.data.map(goods => goods.price)) : [],
                         invoice
                     }, () => {
                         const {goods} = this.state;
@@ -347,8 +409,55 @@ class appendOrder extends BaseComponent {
         }
     }
 
+    // 修改商品数量
+    changeNum = (index, i, type, types, stock) => {
+        const {num} = this.state;
+        const numArr = [...num[index]];
+        const arr = [];
+        let nowNum = Number(num[index][i]);
+
+        type === 'add' ? nowNum++ : nowNum--;
+        if (nowNum > Number(stock) && types === '2') {
+            showFail('商品库存不足!');
+            nowNum--;
+            return;
+        }
+        if (nowNum <= 0) {
+            showFail('商品购买最低为1件!');
+            nowNum++;
+            return;
+        }
+        this.setState(prevState => {
+            numArr.splice(i, 1, nowNum.toString());
+            arr.push(numArr);
+            return {
+                num: arr
+            };
+        });
+    }
+
+    // 总记账量
+    totalDep = () => {
+        const {num, deps} = this.state;
+        let dep = 0;
+        for (let i = 0; i < num[0].length; i++) {
+            dep += Number(num[0][i] * (Number(deps[0][i]) * 100));
+        }
+        return dep / 100;
+    }
+
+    // 商品总价
+    totalPrice = () => {
+        const {num, prices} = this.state;
+        let price = 0;
+        for (let i = 0; i < num[0].length; i++) {
+            price += Number(num[0][i] * (Number(prices[0][i]) * 100));
+        }
+        return price / 100;
+    }
+
     render() {
-        const {shopInfo, addressInfo, total, self, currentIndex, textInfo, notAllow, invoiceStatus, invoice, invoiceIndex} = this.state;
+        const {shopInfo, addressInfo, self, currentIndex, textInfo, notAllow, invoiceStatus, invoice, invoiceIndex, num} = this.state;
         const {address} = this.props;
         const invoices = JSON.parse(getValue('invoices'));
         const orders = JSON.parse(getValue('order'));
@@ -365,7 +474,7 @@ class appendOrder extends BaseComponent {
                                             <span>{(address && address.linkname) || addressInfo.linkname}</span>
                                             <span>{(address && address.linktel) || addressInfo.linktel}</span>
                                         </div>
-                                        <div className="left-bottom">{(address && address.address) || addressInfo.address}
+                                        <div className="left-bottom">{(address && (address.addr_detail && address.addr_detail.toString().replace(/,/g, '')) + address.address) || addressInfo.addr_detail ? ((addressInfo.addr_detail && addressInfo.addr_detail.toString().replace(/,/g, '')) + addressInfo.address) : ''}
                                         </div>
                                     </div>
                                     <div className="address-right">
@@ -389,18 +498,17 @@ class appendOrder extends BaseComponent {
                                             <div className="avatar"><img
                                                 src={shop.picpath}
                                                 onError={(e) => { e.target.src = shop.df_logo }}
-                                                alt=""
                                                 className="image"
                                             />
                                             </div>
-                                            <span>{shop.shopName}</span>
+                                            <span onClick={() => this.goToShop(shop.shop_id)}>{shop.shopName}</span>
                                         </div>
                                         <div className="top-enter">
                                             <span onClick={() => this.goToShop(shop.shop_id)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>进店</span>
                                         </div>
                                     </div>
                                     {
-                                        shop && shop.data.map((goods) => (
+                                        shop && shop.data.map((goods, i) => (
                                             <React.Fragment>
                                                 <div key={goods.id}>
                                                     <div className="distance-box">
@@ -425,15 +533,19 @@ class appendOrder extends BaseComponent {
                                                                             ))}
 
                                                                         </div>
+                                                                        <div className="cate">
+                                                                            <span className="add-left" onClick={() => this.changeNum(index, i, 'sub', goods.app_type, goods.stock)}/>
+                                                                            <span
+                                                                                className="sku-right"
+                                                                            >{num[index][i]}
+                                                                            </span>
+                                                                            <span className="add-right" onClick={() => this.changeNum(index, i, 'add', goods.app_type, goods.stock)}/>
+                                                                        </div>
                                                                     </div>
                                                                     <div className="num-add">
                                                                         <div className="desc-count">
                                                                             记账量：{goods.deposit}
                                                                         </div>
-                                                                        <span
-                                                                            className="sku-right"
-                                                                        >X{goods.num}
-                                                                        </span>
                                                                     </div>
                                                                     {
                                                                         (goods && goods.in_area === 0) && (<div className="not-allow">该商品在该地区暂不支持销售</div>)
@@ -486,14 +598,24 @@ class appendOrder extends BaseComponent {
                 {
                     !notAllow && (<div className="notAllow">当前有商品在该地区暂不支持销售，非常抱歉！</div>)
                 }
-                <div className="pay">
-                    <div className="pay-left">
-                        <span className="space">共{this.totalCount()}件</span>
-                        <span>合计：</span>
-                        <span>￥{total}</span>
-                    </div>
-                    <Button onClick={this.postOrder} disabled={!notAllow}>立即付款</Button>
-                </div>
+                {
+                    shopInfo && shopInfo.length > 0 && (
+                        <div className="pay">
+                            <div className="pay-left">
+                                <div className="space">共{this.totalCount()}件</div>
+                                <div className="total-price">
+                                    <div>
+                                        <span>合计：</span>
+                                        <span className="total-pri">￥{this.totalPrice()}</span>
+                                    </div>
+                                    <div className="total-dep">记账量:{this.totalDep()}</div>
+                                </div>
+                            </div>
+                            <Button onClick={this.postOrder} disabled={!notAllow}>立即付款</Button>
+                        </div>
+                    )
+                }
+
                 {
                     invoiceStatus && (
                         <div className="panel">

@@ -1,4 +1,3 @@
-// import {useEffect, useState} from 'react';
 import './NewOpenShop.less';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 
@@ -6,8 +5,8 @@ const {urlCfg} = Configs;
 const {native, showInfo} = Utils;
 export default class OpenShop extends BaseComponent {
     state = {
-        qrCode: '', // 二维码
-        banner: '', // banner
+        qrCode: '',
+        banner: '',
         url: ''
     }
 
@@ -15,6 +14,7 @@ export default class OpenShop extends BaseComponent {
         this.getData();
     }
 
+    // 获取数据
     getData = () => {
         this.fetch(urlCfg.getQrCode).subscribe(res => {
             if (res && res.status === 0) {
@@ -27,9 +27,13 @@ export default class OpenShop extends BaseComponent {
         });
     }
 
+    // const goTo = () => {
+    //     window.open('www.shop.zzha.vip.com');
+    // };
+
     //保存图片
     saveImg = () => {
-        const {qrCode} = this.state;
+        const qrCode = this.state.qrCode;
         if (qrCode) {
             native('savePicCallback', {type: 2, imgUrl: qrCode});
         } else {
@@ -38,7 +42,7 @@ export default class OpenShop extends BaseComponent {
     };
 
     render() {
-        const {banner, qrCode, url} = this.state;
+        const {qrCode, url, banner} = this.state;
         return (
             <div className="open-shop">
                 <AppNavBar

@@ -7,10 +7,9 @@ import {baseActionCreator as actionCreator} from '../../../redux/baseAction';
 // import VerBtn from '../../common/verification-code/index';
 import './Register.less';
 
-const {MESSAGE: {LOGIN, Form}, COUNTERNUM, LOCALSTORAGE, TD_EVENT_ID, navColorF, WEB_NAME} = Constants;
-const {appHistory, validator, showInfo, systemApi: {setValue}, TD, setNavColor} = Utils;
+const {MESSAGE: {LOGIN, Form}, COUNTERNUM, LOCALSTORAGE, TD_EVENT_ID, WEB_NAME} = Constants;
+const {appHistory, validator, showInfo, systemApi: {setValue}, TD} = Utils;
 const {urlCfg, appCfg} = Configs;
-const hybird = process.env.NATIVE;
 
 class Register extends BaseComponent {
     state = {
@@ -37,18 +36,6 @@ class Register extends BaseComponent {
         agreementStatus: false, // 协议状态
         agreeType: 0
     };
-
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
-        }
-    }
 
     componentDidMount() {
         const {showMenu} = this.props;

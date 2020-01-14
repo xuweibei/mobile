@@ -6,7 +6,7 @@ import {dropByCacheKey} from 'react-router-cache-route';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './PublishReview.less';
 
-const {getUrlParam, dealImage, showInfo, showSuccess, appHistory, native} = Utils;
+const {getUrlParam, dealImage, showInfo, showSuccess, appHistory} = Utils;
 const {MESSAGE: {Form, Feedback}, IMGSIZE} = Constants;
 const {urlCfg} = Configs;
 export default class PublishReview extends BaseComponent {
@@ -66,16 +66,21 @@ export default class PublishReview extends BaseComponent {
     addPictrue = () => {
         const {nativePicNum, fileArr} = this.state;
         if (process.env.NATIVE) {
-            native('picCallback', {num: nativePicNum}).then(res => {
+            window.DsBridge.call('picCallback', {num: nativePicNum}, (dataList) => {
                 const arr = fileArr;
-                res.data.img.forEach((item, index) => {
-                    arr.push({url: item[0], urlB: item[1], id: new Date()});
-                });
-                this.setState({
-                    fileArr: arr,
-                    nativePicNum: 9 - arr.length
-                });
+                const res = dataList ? JSON.parse(dataList) : '';
+                if (res && res.status === '0') {
+                    res.data.img.forEach((item, index) => {
+                        arr.push({url: item[0], urlB: item[1], id: new Date()});
+                    });
+                    this.setState({
+                        fileArr: arr,
+                        nativePicNum: 9 - arr.length
+                    });
+                }
             });
+            // native('picCallback', {num: nativePicNum}).then(res => {
+            // });
         }
     };
 

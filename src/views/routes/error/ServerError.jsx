@@ -4,31 +4,33 @@
 import AppNavBar from '../../common/navbar/NavBar';
 import Nothing from '../../common/nothing/Nothing';
 
-const {appHistory, setNavColor} = Utils;
+const {native, goBackModal} = Utils;
 const {FIELD, navColorF} = Constants;
-const hybird = process.env.NATIVE;
 const Error = () => (
     <React.Fragment>
         <AppNavBar title="服务器异常"/>
         <Nothing
             text={FIELD.Server_Error}
             title="返回"
-            onClick={() => appHistory.goBack()}
+            onClick={goBackModal}
         />
     </React.Fragment>
 );
 
 export default class ServerError extends React.PureComponent {
-    componentWillMount() {
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
+    constructor(props) {
+        super(props);
+        this.state = {};
+        if (process.env.NATIVE) {
+            native('setNavColor', {color: navColorF});
         }
     }
 
-    componentWillReceiveProps() {
-        if (hybird) {
-            setNavColor('setNavColor', {color: navColorF});
+    static getDerivedStateFromProps(nextProps) {
+        if (process.env.NATIVE) {
+            native('setNavColor', {color: navColorF});
         }
+        return null;
     }
 
     render() {

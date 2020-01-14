@@ -7,6 +7,7 @@ import {connect} from 'react-redux';
 import {Link, Element, scrollSpy, animateScroll} from 'react-scroll';
 import Recommend from './components/Recommend';
 import Evaluate from './components/Evaluate';
+import Specification from './components/specification';
 import {shopCartActionCreator as action} from '../../../shop-cart/actions';
 import {baseActionCreator as actionCreator} from '../../../../../redux/baseAction';
 import Sku from '../../../../common/sku/Sku';
@@ -29,11 +30,14 @@ const listText = [
         key: 'recommend'
     },
     {
+        title: '规格',
+        key: 'specification'
+    },
+    {
         title: '详情',
         key: 'details'
     }
 ];
-
 const Item = Popover.Item;
 class GoodsDetail extends BaseComponent {
     state = {
@@ -55,14 +59,19 @@ class GoodsDetail extends BaseComponent {
         lineStatus: false, //底部商品状态栏
         ids: [], //选中属性id
         goodsSku: [], //商品的结果集
-        // shopAddress: '', // 店铺位置
         lineText: '', //商品状态栏文字
         pickType: {}, //配送方式
-        selectType: '', //选中配送方式 1快递 2自提
+        selectType: '1', //选中配送方式 1快递 2自提
         clickType: 0, //打开sku的方式 0箭头 1购物车 2立即购买
         totalNUm: 0, //商品库存,
         goodId: decodeURI(getUrlParam('id', encodeURI(this.props.location.search))),
-        hasType: false
+        hasType: false,
+        evalute: {},
+        max: 0, //商品库存
+        propsData: this.props,
+        specification: [],  // 京东商品参数
+        list: [],
+        specificationStatus: true
     };
 
     componentDidMount() {
@@ -76,7 +85,7 @@ class GoodsDetail extends BaseComponent {
     }
 
     //网页滚动
-    handleScroll=(e) => {
+    handleScroll = (e) => {
         const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
         if (scrollTop / window.devicePixelRatio > 50) {
             this.setState({topSwithe: false});
@@ -85,11 +94,18 @@ class GoodsDetail extends BaseComponent {
         }
     }
 
-    componentWillReceiveProps(nextProps, value) { //路由跳转时的判断，id有变化就请求
+    static getDerivedStateFromProps(nextProps, prevState) {
+        return {
+            propsData: nextProps
+        };
+    }
+
+    componentDidUpdate(prevProps, prevState) {
         if (process.env.NATIVE) {
-            const id = decodeURI(getUrlParam('id', encodeURI(nextProps.location.search)));
+            const id = decodeURI(getUrlParam('id', encodeURI(this.state.propsData.location.search)));
             const {goodId} = this.state;
             if (id !== goodId) {
+                // eslint-disable-next-line react/no-did-update-set-state
                 this.setState({
                     topSwithe: true,
                     popup: false, //sku是否显示
@@ -99,7 +115,7 @@ class GoodsDetail extends BaseComponent {
                     shop: {}, //  详情商店数据
                     recommend: [], //店铺商品推荐
                     goodsAttr: [],
-                    stocks: [],
+                    stocks: [], // sku属性
                     type: '',
                     names: [], //选中商品属性
                     collect: [], //商品收藏状态
@@ -112,7 +128,7 @@ class GoodsDetail extends BaseComponent {
                     // shopAddress: '', // 店铺位置
                     lineText: '', //商品状态栏文字
                     pickType: {}, //配送方式
-                    selectType: '', //选中配送方式 1快递 2自提
+                    selectType: '1', //选中配送方式 1快递 2自提
                     clickType: 0, //打开sku的方式 0箭头 1购物车 2立即购买
                     totalNUm: 0, //商品库存,
                     goodId: id
@@ -123,6 +139,44 @@ class GoodsDetail extends BaseComponent {
         }
     }
 
+    // componentWillReceiveProps(nextProps, value) { //路由跳转时的判断，id有变化就请求
+    //     if (process.env.NATIVE) {
+    //         const id = decodeURI(getUrlParam('id', encodeURI(nextProps.location.search)));
+    //         const {goodId} = this.state;
+    //         if (id !== goodId) {
+    //             this.setState({
+    //                 topSwithe: true,
+    //                 popup: false, //sku是否显示
+    //                 paginationNum: 1,
+    //                 goodsDetail: {}, //详情界面
+    //                 picPath: [], //轮播
+    //                 shop: {}, //  详情商店数据
+    //                 recommend: [], //店铺商品推荐
+    //                 goodsAttr: [],
+    //                 stocks: [],
+    //                 type: '',
+    //                 names: [], //选中商品属性
+    //                 collect: [], //商品收藏状态
+    //                 status: '1', //判断商品是否下架
+    //                 visible: false,
+    //                 text: '',
+    //                 lineStatus: false, //底部商品状态栏
+    //                 ids: [], //选中属性id
+    //                 goodsSku: [], //商品的结果集
+    //                 // shopAddress: '', // 店铺位置
+    //                 lineText: '', //商品状态栏文字
+    //                 pickType: {}, //配送方式
+    //                 selectType: '', //选中配送方式 1快递 2自提
+    //                 clickType: 0, //打开sku的方式 0箭头 1购物车 2立即购买
+    //                 totalNUm: 0, //商品库存,
+    //                 goodId: id
+    //             }, () => {
+    //                 this.init();
+    //             });
+    //         }
+    //     }
+    // }
+
     //获取商品详情
     getGoodsDetail = () => {
         const {goodId} = this.state;
@@ -131,7 +185,6 @@ class GoodsDetail extends BaseComponent {
                 animateScroll.scrollToTop();
                 const stocks = [];
                 res.sku.forEach(item => {
-                    // console.log(item, '看时间ad看见爱上达克赛德');
                     stocks.push({
                         attribute: item.attribute,
                         original_price: item.price_original,
@@ -142,6 +195,10 @@ class GoodsDetail extends BaseComponent {
                 });
                 const evalute = res.pingjia ? res.pingjia : {};
                 evalute.count = res.pingjia_count;
+                const specification = [];
+                res.data.jd_parameter && Object.keys(res.data.jd_parameter).forEach(item => {
+                    specification.push(res.data.jd_parameter[item]);
+                });
                 this.setState(
                     {
                         goodsDetail: res.data,
@@ -155,34 +212,19 @@ class GoodsDetail extends BaseComponent {
                         stocks: stocks,
                         pickType: res.data.distribution_mode,
                         totalNUm: res.data.num_stock,
-                        hasType: res.data.distribution_mode.data.some(item => item.value === '到店自提')
+                        list: res.data.app_type && res.data.app_type === '2' ? listText.filter(item => item.title !== '规格') : listText,
+                        evalute: evalute,
+                        hasType: res.data.distribution_mode.data.some(item => item.value === '到店自提'),
+                        specification,
+                        ids: res.data.app_type === '3' ? res.data.attr_arr_list[0][0] : []
                     },
                     () => {
-                        // this.getAddress();
                         this.getGoodsStatus();
                     }
                 );
             }
         });
     };
-
-    // //地址逆解析
-    // getAddress = () => {
-    //     const myGeo = new window.BMap.Geocoder();
-    //     const {shop} = this.state;
-    //     const lat = shop.latitude;
-    //     const lon = shop.longitude;
-    //     myGeo.getLocation(new window.BMap.Point(lon, lat), result => {
-    //         if (result) {
-    //             const city = result.addressComponents.city;
-    //             const province = result.addressComponents.province;
-    //             const shopAddress = province + city;
-    //             this.setState({
-    //                 shopAddress: shopAddress
-    //             });
-    //         }
-    //     });
-    // };
 
     //开启sku
     openSku = () => {
@@ -281,7 +323,6 @@ class GoodsDetail extends BaseComponent {
             showFail('请输入购买商品数量!');
             return;
         }
-        // console.log(paginationNum, '会计师课件等哈萨克简单');
         const str = ids.toString();
         if (str.length === 0) {
             this.setState({
@@ -305,7 +346,6 @@ class GoodsDetail extends BaseComponent {
         } else {
             appHistory.push('/selfMentionDetail');
         }
-        // this.props.history.push({pathname: '/appendorder', arr: arr});
     };
 
     //收藏商品
@@ -444,7 +484,6 @@ class GoodsDetail extends BaseComponent {
     onChangeCount = value => {
         const {max} = this.state;
         if (value > max) {
-            // alert('三大类科技阿萨德');
             showFail(Form.No_Stocks);
             this.setState({
                 paginationNum: max
@@ -515,7 +554,6 @@ class GoodsDetail extends BaseComponent {
                 (<Item key="2" icon={myImg('star.svg')}>收藏</Item>), //产品说C端屏蔽了
                 (!window.isWX && (<Item key="3" icon={myImg('shop-cart.svg')}>购物车</Item>)),
                 (!window.isWX && (<Item key="4" icon={myImg('info.svg')}><p>消息</p></Item>))
-                // (<Item key="5" icon={myImg('share.svg')}>分享</Item>)//余丽
             ]}
         >
             <Icon type="ellipsis"/>
@@ -536,12 +574,21 @@ class GoodsDetail extends BaseComponent {
         appHistory.push(`/evaluate?id=${id}`);
     }
 
+    changeSpecification = () => {
+        this.setState(prevState => ({
+            specificationStatus: !prevState.specificationStatus
+        }));
+    }
+
     render() {
         const {
             topSwithe, popup, paginationNum, ids, maskStatus,
-            picPath, goodsDetail, shop, recommend, collect,
-            goodsAttr, stocks, lineStatus, lineText, pickType, selectType, names, hasType
+            picPath, goodsDetail, shop, recommend, collect, status, evalute,
+            goodsAttr, stocks, lineStatus, lineText, pickType, selectType, names, hasType, list,
+            specification, specificationStatus
         } = this.state;
+
+        // console.log(specification);
         const renderCount = (max) => {
             this.setState(() => ({
                 max
@@ -561,7 +608,7 @@ class GoodsDetail extends BaseComponent {
                             />
                         )}
                     >
-                    数量
+                        数量
                     </List.Item>
                 </List>
             );
@@ -607,7 +654,7 @@ class GoodsDetail extends BaseComponent {
                             </li>
                             <li className="list">
                                 <ul>
-                                    {listText.map(item => (
+                                    {list.length > 0 && list.map(item => (
                                         <li key={item.title} className="items">
                                             <Link activeClass="on on-tab" to={item.key} spy smooth duration={500} >
                                                 {item.title}
@@ -624,9 +671,7 @@ class GoodsDetail extends BaseComponent {
                         </ul>
                     </div>
                 )}
-                {/* <div className="goods-detail-wrapper"> */}
-                {/* <Element name="goods" className="goods-banner"> */}
-                <Carousel autoplay={false} infinite>
+                <Carousel autoplay infinite>
                     {picPath.map((item) => (
                         <div
                             key={item}
@@ -642,9 +687,9 @@ class GoodsDetail extends BaseComponent {
                 {/* </Element> */}
                 {/*商品详情规格*/}
                 <div className="goods-norms">
-                    <div className="norms-money">
+                    <div className="norms-money" name="goods">
                         <div className="money">
-                                ￥{goodsDetail.price}{' '}
+                            ￥{goodsDetail.price}{' '}
                             <p className="money-max">￥{goodsDetail.price_original}</p>
                         </div>
                         <div className="money-keep">
@@ -659,15 +704,15 @@ class GoodsDetail extends BaseComponent {
                             <Flex>
                                 <Flex.Item>
                                     <div className="bot-left">
-                                    邮费：
+                                        邮费：
                                         {
-                                            goodsDetail.express_money && (<span>{'￥' +  goodsDetail.express_money || '免邮'}</span>)
+                                            goodsDetail.express_money && (<span>{'￥' + goodsDetail.express_money || '免邮'}</span>)
                                         }
                                     </div>
                                 </Flex.Item>
                                 <Flex.Item>
                                     <div className="bot-center">
-                                    销量：{goodsDetail.num_sold}
+                                        销量：{goodsDetail.num_sold}
                                     </div>
                                 </Flex.Item>
                                 <Flex.Item>
@@ -682,6 +727,8 @@ class GoodsDetail extends BaseComponent {
                     {/*店铺、商品规格*/}
                     <Evaluate
                         names={names}
+                        routeToEvalute={() => this.routeToEvalute(evalute.id)}
+                        evalute={evalute}
                         hasType={hasType}
                         goodsDetail={goodsDetail}
                         Element={Element}
@@ -689,14 +736,42 @@ class GoodsDetail extends BaseComponent {
                         shopH={this.shopH}
                         openSku={this.openSku}
                     />
+
+
                     {/*店铺推荐*/}
                     <Recommend
                         recommend={recommend}
                         Element={Element}
                         goToShopRecom={this.goToShopRecom}
                     />
+
+                    {
+                        goodsDetail && goodsDetail.app_type === '3' && (
+                            <Specification
+                                Element={Element}
+                                specification={specification}
+                                specificationStatus={specificationStatus}
+                                changeSpecification={this.changeSpecification}
+                                Link={Link}
+                            />
+                        )
+                    }
+
+
                     {/*商品详情*/}
+                    <div className="recommend-commodity-detail">
+                        <div className="currency-detail">
+                            <Flex className="currency-detail-title">
+                                <Flex.Item className="title-border"/>
+                                <Flex.Item className="title-center">
+                                    商品详情
+                                </Flex.Item>
+                                <Flex.Item className="title-border"/>
+                            </Flex>
+                        </div>
+                    </div>
                     <Element name="details" className="detail-img lis" dangerouslySetInnerHTML={{__html: goodsDetail.intro}}/>
+
                     {lineStatus ? <div className="timeout">{lineText}</div> : null}
                     {/*底部固定购买栏*/}
                     {
@@ -754,20 +829,20 @@ class GoodsDetail extends BaseComponent {
                         </div>
                     </div>
                     {
-                        goodsDetail.effective_type === '0' ? (
+                        goodsDetail.effective_type === '0' || goodsDetail.app_type === '2' ? (
                             <div className={`${(status === '0' || status === '2') ? 'disble-btn' : 'bottom-btn'}`} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>
                                 <Flex>
                                     <Flex.Item
                                         className={`${(status === '0' || status === '2') ? 'disable-cart' : 'cart'}`}
                                         onClick={this.addCart}
                                     >
-                                加入购物车
+                                        加入购物车
                                     </Flex.Item>
                                     <Flex.Item
                                         className={`${(status === '0' || status === '2') ? 'disable-emption' : 'emption'}`}
                                         onClick={() => this.emption('pay')}
                                     >
-                                立即购买
+                                        立即购买
                                     </Flex.Item>
                                 </Flex>
                             </div>

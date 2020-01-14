@@ -1,5 +1,6 @@
 import React from 'react';
 import copy from 'copy-to-clipboard';
+import {dropByCacheKey} from 'react-router-cache-route';
 import {connect} from 'react-redux';
 import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAction';
 import AppNavBar from '../../../../../common/navbar/NavBar';
@@ -89,6 +90,7 @@ class ReDetail extends BaseComponent {
                     .subscribe(res => {
                         if (res && res.status === 0) {
                             showInfo('成功删除订单');
+                            dropByCacheKey('selfMentionOrderPage');//清除线下订单
                             appHistory.goBack();
                         }
                     });
@@ -186,6 +188,7 @@ class ReDetail extends BaseComponent {
     }
 
     goBackModal = () => {
+        dropByCacheKey('selfMentionOrderPage');//清除线下订单
         if (appHistory.length() === 0) {
             appHistory.replace('/selfMention');
         } else {
@@ -204,7 +207,7 @@ class ReDetail extends BaseComponent {
     }
 
     render() {
-        const {selfSufficiency, selfGoods, collectId, maskStatus} = this.state;
+        const {selfSufficiency, selfGoods, maskStatus, collectId} = this.state;
         return (
             <div data-component="Self-orderingDetails" data-role="page" className="Self-orderingDetails">
                 <AppNavBar goBackModal={this.goBackModal} title="订单详情"/>
