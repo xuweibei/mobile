@@ -392,6 +392,20 @@ class PayMoney extends BaseComponent {
         this.props.setReturn(true);
     };
 
+    //设置cam支付弹框距离
+    getScrollTop = () => {
+        let str = '6rem';
+        if (this.payBtn) {
+            const scr = this.payBtn.getBoundingClientRect().top;
+            if (scr < 200 && process.env.NATIVE) {
+                str = '0.5rem';
+            } else if (!process.env.NATIV) {
+                str = '4.5rem';
+            }
+        }
+        return str;
+    }
+
     render() {
         const {selectIndex, listArr, pwsPopup, remainingTime} = this.state;
         return (
@@ -439,14 +453,14 @@ class PayMoney extends BaseComponent {
                 <div className="promptly" onClick={this.payRightNow}>立即支付￥{listArr.price || listArr.all_price} </div>
                 {/*CAM消费支付密码弹窗*/}
                 {pwsPopup && (
-                    <div className="enter-password-box">
-                        <div className="enter-password" style={{paddingBottom: !process.env.NATIVE ? '4.6rem' : '0.5rem'}}>
+                    <div className="enter-password-box" >
+                        <div className="enter-password" ref={payBtn => { this.payBtn = payBtn }} style={{paddingBottom: this.getScrollTop()}}>
                             <div className="command">
                                 <span className="icon command-left" onClick={this.closePopup}/>
                                 <span className="icon command-center">请输入支付密码</span>
                                 <span className="icon command-right" onClick={this.closePopup}/>
                             </div>
-                            <InputGrid focus onInputGrid={this.inputGrid}/>
+                            <InputGrid focus onInputGrid={this.inputGrid} propsType="number"/>
                             <p onClick={() => this.forgetPws()}>忘记密码</p>
                         </div>
                     </div>

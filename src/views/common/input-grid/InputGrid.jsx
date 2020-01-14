@@ -10,13 +10,15 @@ class InputGrid extends React.PureComponent {
         onInputGrid: PropTypes.func.isRequired,
         focus: PropTypes.bool,
         clearPropsInput: PropTypes.func, //父级清除value
-        num: PropTypes.number //第几个input
+        num: PropTypes.number, //第几个input
+        propsType: PropTypes.string
     };
 
     static defaultProps = {
         focus: false,
         clearPropsInput: () => {},
-        num: 0
+        num: 0,
+        propsType: 'text'
     }
 
     state = {
@@ -73,6 +75,7 @@ class InputGrid extends React.PureComponent {
     //渲染函数
     render() {
         const {value} = this.state;
+        const {propsType} = this.props;
         return (
             <div className="frame">
                 <div className="frame-biu">
@@ -82,7 +85,7 @@ class InputGrid extends React.PureComponent {
                     <div className="frame-biu-one"/>
                     <div className="frame-biu-one"/>
                 </div>
-                <input className="input-pws" maxLength="6" value={value} type="text" ref={number => { this.numInput = number }} onChange={this.inputGrid} onClick={this.clearInput}/>
+                <input className="input-pws" maxLength="6" value={value} type={propsType} ref={number => { this.numInput = number }} onChange={this.inputGrid} onClick={this.clearInput}/>
             </div>
         );
     }
