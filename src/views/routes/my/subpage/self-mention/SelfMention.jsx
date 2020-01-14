@@ -303,6 +303,11 @@ class ReDetail extends BaseComponent {
         }
     }
 
+    moneyDot = (money) => {
+        const arr = money.toString().split('.');
+        return arr;
+    }
+
     render() {
         const {pageList, status, refreshing, isLoading, hasMore, canStatus, navColor, height} = this.state;
         //每行渲染样式
@@ -350,8 +355,10 @@ class ReDetail extends BaseComponent {
                             总记账量：<span>{item.all_deposit}</span>
                         </div>
                         <div className="total-price">
-                            <div className="total-price-left">共{item.pr_num}件商品</div>
-                            <div className="total-price-right"><span>合计：</span><span className="money">{item.all_price}元</span></div>
+                            {/* <div className="total-price-left">共{item.pr_num}件商品</div> */}
+                            <div className="total-price-left"/>
+                            <div className="total-price-right">共{item.pr_count}件商品 合计：<span className="money">￥{this.moneyDot(item.all_price)[0] + '.'}<span className="samll-money">{this.moneyDot(item.all_price)[1]}</span></span></div>
+                            {/* <div className="total-price-right"><span>合计：</span><span className="money">{item.all_price}元</span></div> */}
                         </div>
                         {/*等待付款*/}
                         {(item.status === '0' && !item.return_status) && (

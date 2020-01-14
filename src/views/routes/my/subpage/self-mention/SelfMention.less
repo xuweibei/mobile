@@ -55,8 +55,7 @@
             }
             .right{
                 color: @fiery-red;
-                font-size: @font-size-30;
-                font-weight:bold;
+                font-size: @font-size-26;
                 line-height: 72px;
             }
         }
@@ -87,6 +86,7 @@
                         width: 245px;
                         height: 67px;
                         .TextareaOverflow(2);
+                        font-size:36px;
                     }
                 }
 
@@ -104,16 +104,21 @@
                             max-width: 33%;
                             //flex: 1;
                             .TextareaOverflow(1);
+                            font-size: 24px;
+                            color:#999999;
                         }
                     }
                     .sku-right {
                         text-align: right;
+                        font-size: 24px;
+                        color:#999999;
                         //flex: 1;
                     }
                 }
-                //.btn-keep {
-                //    padding-top: 5px;
-                //}
+                .btn-keep {
+                    background:#ffeaed;
+                    color:#FF2D51;
+                }
 
                 .goods-price {
                     font-size: 36px;
@@ -130,9 +135,10 @@
                 width: 420px;
                 float: right;
                 .total-count{
-                    font-size: 26px;
+                    font-size: 24px;
                     font-weight: 500;
                     text-align: right;
+                    color: #666;
                     span{
                         color: @fiery-red;
                         font-weight: normal;
@@ -153,6 +159,17 @@
                         -webkit-line-clamp: 1;
                         -webkit-box-orient: vertical;
                         text-overflow: ellipsis;
+                        color: #666;
+                        font-size: 24px;
+                        .money {
+                            margin-top: 1px;
+                            font-weight: bold;
+                            font-size: @font-size-36;
+                            color:#333;
+                            .samll-money{
+                                font-size: 24px;
+                            }
+                        }
                     }
                     .total-price-left{
                         flex: 1;
@@ -164,6 +181,9 @@
                         margin-top: 1px;
                         font-weight: bold;
                         font-size: @font-size-30;
+                        .samll-money{
+                            font-size: 24px;
+                        }
                     }
                 }
             }
