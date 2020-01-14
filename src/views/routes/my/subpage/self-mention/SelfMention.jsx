@@ -373,7 +373,7 @@ class ReDetail extends BaseComponent {
                             </div>
                         )}
                         {/*订单完成，等待评价*/}
-                        {((item.status === '3' || item.status === '10' || item.status === '12' || item.status === '13') && !item.return_status) && (
+                        {(item.status === '3' && !item.return_status) && (
                             <div className="buttons">
                                 <span className="look-button delete" style={{border: nativeCssDiff() ? '1PX solid #666' : '0.02rem solid #666'}} onClick={(e) => this.deleteOrder(e, item.id)}>删除</span>
                                 <div className="evaluate-button" onClick={(e) => this.promptlyAssess(e, item.id)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>待评价</div>

@@ -673,6 +673,11 @@ class MyOrder extends BaseComponent {
         }
     }
 
+    moneyDot = (money) => {
+        const arr = money.toString().split('.');
+        return arr;
+    }
+
     render() {
         const {dataSource, hasMore, height, status, canStatus, refreshing} = this.state;
         const row = item => (
@@ -707,7 +712,7 @@ class MyOrder extends BaseComponent {
                         <div className="goods-right">
                             <div className="goods-desc">
                                 <div className="desc-title">{items.pr_title}</div>
-                                <div className="price">￥{items.price}</div>
+                                <div className="price">￥{this.moneyDot(items.price)[0] + '.'}<span className="samll-money">{this.moneyDot(items.price)[1]}</span></div>
                             </div>
                             <div className="goods-sku">
                                 <div className="sku-left">
@@ -729,8 +734,8 @@ class MyOrder extends BaseComponent {
                             总记账量：<span>{item.all_deposit}</span>
                         </div>
                         <div className="total-price">
-                            <div className="total-price-left">共{item.pr_count}件商品</div>
-                            <div className="total-price-right">合计：<span className="zxa">￥{item.all_price}(含运费：{item.express_money})</span></div>
+                            <div className="total-price-left"/>
+                            <div className="total-price-right">共{item.pr_count}件商品 合计：<span className="zxa">￥{this.moneyDot(item.all_price)[0] + '.'}<span className="samll-money">{this.moneyDot(item.all_price)[1]}</span><span> (运费￥{item.express_money})</span></span></div>
                         </div>
                         {//售后状态下 退款申请中
                             item.return_status === '1' && (

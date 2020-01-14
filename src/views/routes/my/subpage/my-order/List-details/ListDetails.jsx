@@ -160,7 +160,7 @@ class ListDetails extends BaseComponent {
     //底部按钮内容
     bottomButton = (num) => {
         const blockMadel = new Map([
-            ['0', <div className="immediate-evaluation new-style-paynow" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} onClick={this.payNow}>立即付款</div>],
+            ['0', <div className="immediate-evaluation" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} onClick={this.payNow}>立即付款</div>],
             ['1', <div className="immediate-evaluation deliver" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} onClick={this.remindDelivery}>提醒发货</div>],
             ['2', <div className="immediate-evaluation" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} onClick={this.confirmTake}>确认收货</div>],
             ['3', <div className="immediate-evaluation" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} onClick={this.promptlyEstimate}>立即评价</div>]
@@ -213,7 +213,7 @@ class ListDetails extends BaseComponent {
         const {canInfo, canStatus, isJingDong} = this.state;
         return (
             <div data-component="List-details" data-role="page" className="List-details">
-                <AppNavBar goBackModal={this.goBackModal} rightShow title="订单详情"/>
+                <AppNavBar goBackModal={this.goBackModal} rightShow title="订单详情" redBackground backgroundColor="#F20C00"/>
                 {
                     canInfo.status ? (
                         <div>
@@ -347,21 +347,20 @@ class ListDetails extends BaseComponent {
                                 </div>
                             </div>
                             {
-                                !isJingDong && (<div className="collection common-margin">
-                                    <div className="collection-left">
-                                        <img
-                                            src={canInfo.shoper_pic}
-                                            alt=""
-                                            onError={(e) => { e.target.src = canInfo.df_logo }}
-                                        />
+                                !isJingDong && (
+                                    <div className="collection common-margin">
+                                        <div className="collection-left">
+                                            <img
+                                                src={canInfo.shoper_pic}
+                                                alt=""
+                                                onError={(e) => { e.target.src = canInfo.df_logo }}
+                                            />
+                                        </div>
+                                        <div className="collection-center">{canInfo.shopName}</div>
+                                        {canInfo.shop_collect === '0' ? <div onClick={() => this.collectDoIt({id: canInfo.shop_id, name: canInfo.shopName}, 'add')} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} className="collection-right">+收藏</div> : <div onClick={() => this.collectDoIt({id: canInfo.shop_collect, name: canInfo.shopName})} className="removeCollect" style={{border: nativeCssDiff() ? '1PX solid #ccc' : '0.02rem solid #ccc'}}>已收藏</div>}
                                     </div>
-                                    <div className="collection-center">{canInfo.shopName}</div>
-                                    {
-                                        canInfo.shop_collect === '0' ? <div onClick={() => this.collectDoIt({id: canInfo.shop_id, name: canInfo.shopName}, 'add')} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} className="collection-right">+收藏</div> : <div onClick={() => this.collectDoIt({id: canInfo.shop_collect, name: canInfo.shopName})} className="removeCollect" style={{border: nativeCssDiff() ? '1PX solid #ccc' : '0.02rem solid #ccc'}}>已收藏</div>
-                                    }
-                            </div>)
+                                )
                             }
-
                             <div className="recommend-box">
                                 {/* <div className="recommend common-margin">热门推荐</div>
                                 <div className="hot-push-goods">
@@ -417,7 +416,7 @@ class ListDetails extends BaseComponent {
                                     (canInfo.status === '10' || canInfo.status === '6' || canInfo.status === '4' || canInfo.status === '3') &&  <div className="cancel-order" style={{borderRight: nativeCssDiff() ? '1PX solid #666' : '0.02rem solid #666'}} onClick={this.deleteOrder}>删除订单</div>
                                 }
                                 {   //待付款订单状态可操作
-                                    (canInfo.status === '0') &&  <div className="cancel-order new-style-cancel" onClick={() => this.setState({canStatus: true, canCelId: canInfo.pr_id})}>取消订单</div>
+                                    (canInfo.status === '0') &&  <div className="cancel-order" onClick={() => this.setState({canStatus: true, canCelId: canInfo.pr_id})}>取消订单</div>
                                 }
                                 {
                                     this.bottomButton(canInfo.status)

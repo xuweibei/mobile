@@ -79,6 +79,10 @@
         white-space:nowrap;
         width: 126px;
         text-align: right;
+        font-size: 30px;
+        .samll-money{
+            font-size: 24px;
+        }
     }
     .shop-lists .goods .goods-right {
         width: 400px;
@@ -134,7 +138,6 @@
             .right{
                 color: @fiery-red;
                 line-height: 72px;
-                font-weight: bold;
             }
             .icon-select-z:before {
                 font-size: 34px;
@@ -207,6 +210,8 @@
                     padding: 3px 12px;
                     height: auto;
                     line-height: 30px;
+                    color:#FF2D51;
+                    background:#ffeaed;
                 }
 
                 .goods-price {
@@ -229,6 +234,7 @@
                     font-size: 26px;
                     font-weight: 500;
                     text-align: right;
+                    color:#666666;
                     span{
                         color: @fiery-red;
                         font-weight: normal;
@@ -249,8 +255,20 @@
                         -webkit-line-clamp: 1;
                         -webkit-box-orient: vertical;
                         text-overflow: ellipsis;
+                        color:#666666;
+                        font-size: 24px;
                         .zxa {
                             margin-top: 1px;
+                            font-size: 36px;
+                            color:#333333;
+                            span{
+                                color:#666666;
+                                font-size: 24px;
+                            }
+                            .samll-money{
+                                font-size: 24px;
+                                color:#333333;
+                            }
                         }
                     }
                     .total-price-left{
@@ -258,6 +276,8 @@
                         text-align: right !important;
                         line-height: 38px;
                         margin-right:10px;
+                        color:#666666;
+                        font-size: 24px;
                     }
                     span{
                         font-size: @font-size-30;
