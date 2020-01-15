@@ -3,6 +3,7 @@
 * */
 import PropTypes from 'prop-types';
 import './InputGrid.less';
+import {showFail} from '../../../utils/mixin';
 
 // TODO: 考虑用Immutable数据结构
 class InputGrid extends React.PureComponent {
@@ -33,11 +34,16 @@ class InputGrid extends React.PureComponent {
     }
 
     inputGrid = (e) => {
+        const {propsType} = this.props;
         const {valueGrid} = this.state;
         const val = e.target.value;
         const str = e.target;
         const aa = val.charAt(val.length - 1);
         const bb = [];
+        if (propsType === 'number' && !/^[0-9]*$/.test(val.slice(val.length - 1))) {
+            showFail('请输入数字');
+            return;
+        }
         for (let i = 0;  i < val.length; i++) {
             bb.push('*');
         }
@@ -75,7 +81,6 @@ class InputGrid extends React.PureComponent {
     //渲染函数
     render() {
         const {value} = this.state;
-        const {propsType} = this.props;
         return (
             <div className="frame">
                 <div className="frame-biu">
@@ -85,7 +90,7 @@ class InputGrid extends React.PureComponent {
                     <div className="frame-biu-one"/>
                     <div className="frame-biu-one"/>
                 </div>
-                <input className="input-pws" maxLength="6" value={value} type={propsType} ref={number => { this.numInput = number }} onChange={this.inputGrid} onClick={this.clearInput}/>
+                <input className="input-pws" maxLength="6" value={value} type="text" ref={number => { this.numInput = number }} onChange={this.inputGrid} onClick={this.clearInput}/>
             </div>
         );
     }

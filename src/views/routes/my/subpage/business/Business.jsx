@@ -97,7 +97,7 @@ class Customer extends BaseComponent {
         const {page} = this.state;
         const extra = (isFirst && {
             pageCount: res.data.page_count,
-            totalNum: res.data.number
+            totalNum: res.data.count
         });
         this.stackData = this.stackData.concat(res.data.list);
         this.setState({

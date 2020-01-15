@@ -24,6 +24,10 @@ export class LazyImage extends React.PureComponent {
 
     // Update lazyLoad after first rendering of every image
     componentDidMount() {
+        // setTimeout(() => {
+        //     this.imgs.classList.remove('error');
+        //     console.log(123456, this.imgs.className);
+        // });
         document.lazyLoadInstance.update();
     }
 
@@ -36,13 +40,16 @@ export class LazyImage extends React.PureComponent {
 
     render() {
         const {src, bigPicture} = this.props;
+        if (this.imgs) {
+            this.imgs.classList.remove('error');
+        }
         return (
             src ? (
                 <img
                     onError={(e) => { e.target.src = require('../../../assets/images/Lazy-loading.png') }}
-                    className="lazy"
                     onClick={bigPicture}
                     src={src}
+                    ref={imgs => { this.imgs = imgs }}
                 />
             ) : this.lazyImg()
         );

@@ -37,7 +37,8 @@ class PayMoney extends BaseComponent {
             orderId: decodeURI(getUrlParam('orderId', encodeURI(this.props.location.search))), //支付所需订单id
             orderNum: decodeURI(getUrlParam('orderNum', encodeURI(this.props.location.search))), //支付所需订单编号
             source: decodeURI(getUrlParam('source', encodeURI(this.props.location.search))),
-            money: decodeURI(getUrlParam('money', encodeURI(this.props.location.search)))
+            money: decodeURI(getUrlParam('money', encodeURI(this.props.location.search))),
+            btnOnOff: false
         };
         //这里是为了控制原生右滑退出
         props.setReturn(true);
@@ -394,16 +395,22 @@ class PayMoney extends BaseComponent {
 
     //设置cam支付弹框距离
     getScrollTop = () => {
-        let str = '6rem';
-        if (this.payBtn) {
-            const scr = this.payBtn.getBoundingClientRect().top;
-            if (scr < 200 && process.env.NATIVE) {
-                str = '0.5rem';
-            } else if (!process.env.NATIV) {
-                str = '4.5rem';
+        if (!this.state.btnOnOff) return;
+        this.setState({
+            btnOnOff: true
+        }, () => {
+            let str = '6rem';
+            if (this.payBtn) {
+                console.log(this.payBtn.getBoundingClientRect().top, '考虑的双方各');
+                const scr = this.payBtn.getBoundingClientRect().top;
+                if (scr < 200 && process.env.NATIVE) {
+                    str = '0.5rem';
+                } else if (!process.env.NATIV) {
+                    str = '4.5rem';
+                }
             }
-        }
-        return str;
+            return str;
+        });
     }
 
     render() {
@@ -454,6 +461,7 @@ class PayMoney extends BaseComponent {
                 {/*CAM消费支付密码弹窗*/}
                 {pwsPopup && (
                     <div className="enter-password-box" >
+                        {/* <div className="enter-password" ref={payBtn => { this.payBtn = payBtn }}> */}
                         <div className="enter-password" ref={payBtn => { this.payBtn = payBtn }} style={{paddingBottom: this.getScrollTop()}}>
                             <div className="command">
                                 <span className="icon command-left" onClick={this.closePopup}/>
