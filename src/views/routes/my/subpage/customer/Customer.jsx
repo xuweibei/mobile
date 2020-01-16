@@ -62,12 +62,20 @@ class Customer extends BaseComponent {
             this.fetch(urlCfg.regionalTota, {data: param[0]}, noLoading).subscribe(res => {
                 if (res.status === 0) {
                     this.handleResult(res, true);
+                } else {
+                    this.setState({
+                        totalNum: 0
+                    });
                 }
             });
         } else {
             this.fetch(urlCfg.regionalTota, {data: param[1]}).subscribe(res => {
                 if (res.status === 0) {
                     this.handleResult(res, false);
+                } else {
+                    this.setState({
+                        totalNum: 0
+                    });
                 }
             });
         }
@@ -109,8 +117,7 @@ class Customer extends BaseComponent {
             pageCount: 0,
             refreshing: false,
             isLoading: false,
-            hasMore: false,
-            totalNum: 0
+            hasMore: false
         }, () => {
             this.getCustomerList();
         });
@@ -197,7 +204,7 @@ class Customer extends BaseComponent {
                     />
                 )}
                 <div className="customer-count">
-                    <p> {totalNum}人</p>
+                    <p> {totalNum || 0}人</p>
                     <span>总人数</span>
                 </div>
                 <div className={`customer-list ${nativeCssDiff() ? 'general-other' : 'general'}`}>

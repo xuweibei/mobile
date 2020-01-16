@@ -3,9 +3,8 @@ import AppNavBar from '../../../../common/navbar/NavBar';
 import Nothing from '../../../../common/nothing/Nothing';
 
 
-const {appHistory, native} = Utils;
-const {FIELD, navColorF} = Constants;
-const hybird = process.env.NATIVE;
+const {appHistory} = Utils;
+const {FIELD} = Constants;
 
 export default class FailureAudit extends BaseComponent {
     emptyGoTo = () => {
@@ -17,18 +16,6 @@ export default class FailureAudit extends BaseComponent {
         // }
         appHistory.replace('/selectType');
     };
-
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            native('native', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybird) {
-            native('native', {color: navColorF});
-        }
-    }
 
     render() {
         return (

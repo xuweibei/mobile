@@ -1,6 +1,5 @@
 /**发表评论 */
 import React from 'react';
-import dsBridge from 'dsbridge';
 import Immutable from 'immutable';
 import './MyEvaluate.less';
 import {dropByCacheKey} from 'react-router-cache-route';
@@ -110,7 +109,7 @@ export default class MyEvaluate extends BaseComponent {
     //点击添加图片
     addPictrue = (data, index) => {
         if (process.env.NATIVE) {
-            dsBridge.call('picCallback', {num: data.get('nativePicNum') || 9}, (dataList) => {
+            window.DsBridge.call('picCallback', {num: data.get('nativePicNum') || 9}, (dataList) => {
                 const res = dataList ? JSON.parse(dataList) : '';
                 const {files, evaluate} = this.state;
                 const arr = [];
@@ -124,7 +123,7 @@ export default class MyEvaluate extends BaseComponent {
                         oldData = files.map((item, num) => {
                             oldDataEv = evaluate.map((value, i) => { //遍历最初数据，让其可选图片数量做出改变
                                 if (i === index) {
-                                    const newData = value.set('nativePicNum', 9 - item.length);
+                                    const newData = value.set('nativePicNum', 9 - item.length - arr.length);
                                     return newData;
                                 }
                                 return value;
@@ -137,7 +136,7 @@ export default class MyEvaluate extends BaseComponent {
                         });
                     } else {
                         oldData = files.set(index, arr);//某条数据第一次添加的时候
-                        oldDataEv = evaluate.setIn([index, 'nativePicNum'], 8);//动态计算原生可选择图片的数量
+                        oldDataEv = evaluate.setIn([index, 'nativePicNum'], 9 - arr.length);//动态计算原生可选择图片的数量
                     }
                     this.setState({
                         files: oldData,
@@ -196,7 +195,6 @@ export default class MyEvaluate extends BaseComponent {
     evaluationSuccess = () => {
         const {evaluate, estimate, discuss, anonymous, shop, logistics, files, selfHelp} = this.state;
         const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
-        console.log(files, files.toJS(), evaluate.toJS(), '电饭锅看来');
         //判断店铺 物流是否评分
         if (!shop) {
             showInfo(Form.No_EvaluateShop);
@@ -232,7 +230,6 @@ export default class MyEvaluate extends BaseComponent {
             if (res && res.status === 0) {
                 if (files.some(item => item && item.length > 0) && res.id && res.id.length > 0) { //有图片先请求
                     files.forEach((item, index) => {
-                        console.log(item, '电饭锅看来');
                         if (item) {
                             item.forEach(data => {
                                 if (data.url) {
@@ -268,10 +265,6 @@ export default class MyEvaluate extends BaseComponent {
 
     render() {
         const {estimate, files, evaluate, anonymous, shop, logistics, selfHelp} = this.state;
-        console.log(evaluate, '水电费看了');
-        console.log(evaluate.toJS(), '二位热');
-        console.log(files.toJS(), '傲世轻物');
-        console.log(files, '扣篮大赛');
         return (
             <div data-component="MyEvaluate" data-role="page" className="MyEvaluate">
                 {/*评论头部*/}

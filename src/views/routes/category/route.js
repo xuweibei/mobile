@@ -33,7 +33,7 @@ const Classify = () =>  (
         <Route path="/category" component={CategoryPage}/>
         <CacheRoute path="/categoryList" cacheKey="CategoryListPage" component={CategoryListPage} when="back"/>
         <CacheRoute path="/goodsDetail" cacheKey="GoodsDetailPage" component={GoodsDetailPage}/>
-        <CacheRoute path="/evaluate" component={EvaluatePage}/>,
+        <CacheRoute path="/evaluate" component={EvaluatePage}/>
         <Route path="/evaluateDetail" component={EvaluateDetailPage}/>
     </React.Fragment>
 );

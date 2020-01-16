@@ -176,12 +176,12 @@ class MyOrder extends BaseComponent {
     //跳转我的订单
     gotoMyOrder = (index) => {
         const url = new Map([
-            [0, '/myOrder/qb'],
-            [1, '/myOrder/fk'],
-            [2, '/myOrder/fh'],
-            [3, '/myOrder/sh'],
-            [4, '/myOrder/pj'],
-            [5, '/myOrder/ssh']
+            [0, '/myOrder/qb?color=#ff2d51'],
+            [1, '/myOrder/fk?color=#ff2d51'],
+            [2, '/myOrder/fh?color=#ff2d51'],
+            [3, '/myOrder/sh?color=#ff2d51'],
+            [4, '/myOrder/pj?color=#ff2d51'],
+            [5, '/myOrder/ssh?color=#ff2d51']
         ]);
         appHistory.replace(url.get(index));
     };
@@ -483,7 +483,7 @@ class MyOrder extends BaseComponent {
         case '1': //待发货
             blockModal = (
                 <div className="buttons">
-                    {
+                    {/* { //余丽  暂时屏蔽
                         (item.refund_button === 1) && (
                             <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
                                 {
@@ -491,7 +491,7 @@ class MyOrder extends BaseComponent {
                                 }
                             </div>
                         )
-                    }
+                    } */}
                     {
                         !item.all_refund && <div className="evaluate-button" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} onClick={() => this.remindDelivery([item.id, item.can_tip])}>提醒发货</div>
                     }
@@ -501,7 +501,7 @@ class MyOrder extends BaseComponent {
         case '2'://待收货
             blockModal = (
                 <div className="buttons">
-                    {
+                    {/* {
                         item.refund_button === 1 && (
                             <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
                                 {
@@ -509,7 +509,7 @@ class MyOrder extends BaseComponent {
                                 }
                             </div>
                         )
-                    }
+                    } */}
                     <div className="look-button" onClick={(ev) => this.extendedReceipt(item.id, ev)} style={{border: this.styleCompatible()}}>延长收货</div>
                     <div className="look-button" onClick={(ev) => this.goApplyService(item.id, ev)} style={{border: this.styleCompatible()}}>查看物流</div>
                     {
@@ -661,7 +661,7 @@ class MyOrder extends BaseComponent {
                     <div className="goods" key={item.id} onClick={(ev) => this.goToOrderDetail(item.id, item.return_status, item.return_id, items.return_types, ev)}>
                         <div className="goods-left">
                             <div>
-                                <LazyLoadIndex src={items.pr_picpath}/>
+                                <LazyLoadIndex key={items.pr_picpath} src={items.pr_picpath}/>
                             </div>
                         </div>
                         <div className="goods-right">

@@ -309,7 +309,7 @@ module.exports = (env = {}) => {
                 Configs: [path.resolve(__dirname, ENTRYDIR + '/configs/index')],
                 Constants: [path.resolve(__dirname, ENTRYDIR + '/constants/index')],
                 Utils: [path.resolve(__dirname, ENTRYDIR + '/utils/index')],
-                BaseComponent: [path.resolve(__dirname, ENTRYDIR + '/components/base/BaseComponent'), 'default'],
+                BaseComponent: [path.resolve(__dirname, ENTRYDIR + '/components/base/BaseComponent'), 'default']
             }),
             ...newHtml,
             new ExtractTextPlugin({

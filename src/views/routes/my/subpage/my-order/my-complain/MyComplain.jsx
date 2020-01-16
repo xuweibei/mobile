@@ -1,5 +1,4 @@
 /**我要投诉 */
-import dsBridge from 'dsbridge';
 import {TextareaItem, ImagePicker} from 'antd-mobile';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './MyComplain.less';
@@ -85,7 +84,7 @@ export default class MyComplain extends BaseComponent {
                         Promise.all(fileArrPro).then(ooo => {
                             showSuccess(Feedback.submit_Success);
                             if (process.env.NATIVE) {
-                                dsBridge.call('goHome');
+                                window.DsBridge.call('goHome');
                                 // native('goHome');
                             } else {
                                 appHistory.push('/home');
@@ -97,7 +96,7 @@ export default class MyComplain extends BaseComponent {
                         showSuccess(Feedback.submit_Success);
                         if (process.env.NATIVE) {
                             // native('goHome');
-                            dsBridge.call('goHome');
+                            window.DsBridge.call('goHome');
                         } else {
                             appHistory.push('/home');
                         }
@@ -111,7 +110,7 @@ export default class MyComplain extends BaseComponent {
     addPictrue = () => {
         const {fileMain} = this.state;
         if (process.env.NATIVE) {
-            dsBridge.call('picCallback', {num: 9 - fileMain.length}, (dataList => {
+            window.DsBridge.call('picCallback', {num: 9 - fileMain.length}, (dataList => {
                 const res = dataList ? JSON.parse(dataList) : '';
                 const arr = [];
                 if (res && res.status === '0') {

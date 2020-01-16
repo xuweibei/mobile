@@ -8,9 +8,7 @@ import './Business.less';
 
 const Item = List.Item;
 const {urlCfg} = Configs;
-const {getUrlParam, native, goBackModal} = Utils;
-const {navColorF} = Constants;
-const hybird = process.env.NATIVE;
+const {getUrlParam, goBackModal} = Utils;
 
 export default class OrderList extends BaseComponent {
     constructor(props) {
@@ -30,18 +28,6 @@ export default class OrderList extends BaseComponent {
 
     componentDidMount() {
         this.getOrderList();
-    }
-
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            native('native', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybird) {
-            native('native', {color: navColorF});
-        }
     }
 
     //获取订单列表

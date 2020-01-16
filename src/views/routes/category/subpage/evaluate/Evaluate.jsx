@@ -8,8 +8,8 @@ import Nothing from '../../../../common/nothing/Nothing';
 import './Evaluate.less';
 
 const {urlCfg} = Configs;
-const {appHistory, getUrlParam, showInfo, showSuccess, native} = Utils;
-const {MESSAGE: {Form, Feedback}, FIELD, navColorF} = Constants;
+const {appHistory, getUrlParam, showInfo, showSuccess} = Utils;
+const {MESSAGE: {Form, Feedback}, FIELD} = Constants;
 
 export default class Evaluate extends BaseComponent {
     state = {
@@ -28,18 +28,6 @@ export default class Evaluate extends BaseComponent {
 
     componentDidMount() {
         this.getEvaluate();
-    }
-
-    componentWillMount() {
-        if (process.env.NATIVE) { //设置tab颜色
-            native('native', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (process.env.NATIVE) {
-            native('native', {color: navColorF});
-        }
     }
 
     switchTo = (id) => {

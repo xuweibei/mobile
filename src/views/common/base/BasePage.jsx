@@ -10,6 +10,16 @@ import Menu from '../menu/Menu';
 import Top from '../top/Top';
 
 class BasePage extends BaseComponent {
+    componentDidMount() {
+        if (process.env.NATIVE) {
+            const timeClear = setTimeout(() => {
+                const skelon = document.getElementById('skelon');
+                skelon.style.display = 'none';
+                clearTimeout(timeClear);
+            }, 1000);
+        }
+    }
+
     renderAlert = () => {
         const {
             alertShow, alertTitle, alertMsg, alertCallback,

@@ -3,7 +3,6 @@
  */
 import axios from 'axios';
 import jsonp from 'jsonp';
-import dsBridge from 'dsbridge';
 // import {Observable} from 'rxjs';
 import {defer} from 'rxjs/Observable/defer';
 import {Subject} from 'rxjs/Subject';
@@ -24,7 +23,7 @@ axios.interceptors.request.use(
         const state = store.getState();
         const userToken = state.get('base').get(LOCALSTORAGE.USER_TOKEN);
         if (!config.data) config.data = {};
-        config.data.userToken = userToken || (window.localStorage.getItem(LOCALSTORAGE.USER_TOKEN) === 'null' ? '' : window.localStorage.getItem(LOCALSTORAGE.USER_TOKEN));
+        config.data.userToken = userToken || (window.localStorage.getItem('zpyg_userToken') === 'null' ? '' : window.localStorage.getItem('zpyg_userToken'));
         return config;
     },
     error => {
@@ -41,7 +40,7 @@ axios.interceptors.response.use(
                 store.dispatch(actionCreator.setUserToken('')); // 清除redux的userToken
                 //重定向到原生登录页
                 // native('loginout');
-                dsBridge.call('loginout');
+                window.DsBridge.call('loginout');
             } else {
                 appHistory.push('/login');
             }

@@ -1,6 +1,5 @@
 //申请退款 仅退款
 import {connect} from 'react-redux';
-import dsBridge from 'dsbridge';
 import {dropByCacheKey} from 'react-router-cache-route';
 import {TextareaItem, Button, ImagePicker} from 'antd-mobile';
 import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAction';
@@ -206,7 +205,7 @@ class applyService extends BaseComponent {
     addPictrue = () => {
         const {nativePicNum, fileInfo} = this.state;
         if (hybird) {
-            dsBridge.call('picCallback', {num: nativePicNum}, (dataList) => {
+            window.DsBridge.call('picCallback', {num: nativePicNum}, (dataList) => {
                 const res = dataList ? JSON.parse(dataList) : '';
                 const arr = fileInfo;
                 if (res && res.status === '0') {

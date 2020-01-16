@@ -155,7 +155,7 @@ class ReDetail extends BaseComponent {
                     <div className="goods" key={items.pr_id} onClick={() => this.skipDetail(item.id)}>
                         <div className="goods-left">
                             <div>
-                                <LazyLoadIndex src={items.pr_picpath}/>
+                                <LazyLoadIndex key={items.pr_picpath} src={items.pr_picpath}/>
                             </div>
                         </div>
                         <div className="goods-right">

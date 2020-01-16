@@ -43,7 +43,7 @@
 
 //     componentWillMount() {
 //         if (process.env.NATIVE) { //设置tab颜色
-//             native('native', {color: navColorR});
+//             native('setNavColor', {color: navColorR});
 //         }
 //         this.getCart();
 //     }
@@ -55,7 +55,7 @@
 
 //     componentWillReceiveProps(next) {
 //         if (process.env.NATIVE) {
-//             native('native', {color: navColorR});
+//             native('setNavColor', {color: navColorR});
 //             const timerNext = decodeURI(getUrlParam('time', encodeURI(next.location.search)));
 //             const timer = decodeURI(getUrlParam('time', encodeURI(this.props.location.search)));
 //             if (timer !== timerNext) {

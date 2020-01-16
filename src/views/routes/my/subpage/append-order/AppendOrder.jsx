@@ -1,7 +1,6 @@
 /*
 * 确认订单
 * */
-import dsBridge from 'dsbridge';
 import {connect} from 'react-redux';
 import {InputItem, List, Button, Icon} from 'antd-mobile';
 import {myActionCreator as ActionCreator} from '../../actions/index';
@@ -56,7 +55,7 @@ class appendOrder extends BaseComponent {
             if (timer === 'null') { //非购物车进入的时候
                 this.getOrderState();
             } else {
-                dsBridge.call('getInfo', obj, (data) => {
+                window.DsBridge.call('getInfo', obj, (data) => {
                     const res = data ? JSON.parse(data) : '';
                     if (res && res.status === 0) {
                         setOrder(res.data.arr);
@@ -374,7 +373,7 @@ class appendOrder extends BaseComponent {
                                             <span>{(address && address.linkname) || addressInfo.linkname}</span>
                                             <span>{(address && address.linktel) || addressInfo.linktel}</span>
                                         </div>
-                                        <div className="left-bottom">{(address && address.address) || addressInfo.address}
+                                        <div className="left-bottom">{(address && (address.addr_detail && address.addr_detail.toString().replace(/,/g, '')) + address.address) || addressInfo.addr_detail ? ((addressInfo.addr_detail && addressInfo.addr_detail.toString().replace(/,/g, '')) + addressInfo.address) : ''}
                                         </div>
                                     </div>
                                     <div className="address-right">

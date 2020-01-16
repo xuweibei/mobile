@@ -9,8 +9,7 @@ import SelfType from './SelfType';
 import {urlCfg} from '../../../../../../configs/urlCfg';
 
 
-const {appHistory, getUrlParam, native, systemApi: {getValue}, native} = Utils;
-const {navColorF} = Constants;
+const {appHistory, getUrlParam, native, systemApi: {getValue}} = Utils;
 
 
 class ShopIndex extends BaseComponent {
@@ -19,18 +18,6 @@ class ShopIndex extends BaseComponent {
         intro: {},
         sure: ''
     };
-
-    componentWillMount() {
-        if (process.env.NATIVE) { //设置tab颜色
-            native('native', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (process.env.NATIVE) {
-            native('native', {color: navColorF});
-        }
-    }
 
     componentDidMount() {
         const status = decodeURI(getUrlParam('status', encodeURI(this.props.location.search)));

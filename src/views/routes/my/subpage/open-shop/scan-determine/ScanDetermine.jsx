@@ -5,25 +5,11 @@ import React from 'react';
 import './ScanDetermine.less';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 
-const {appHistory, native} = Utils;
-const {navColorF} = Constants;
-const hybird = process.env.NATIVE;
+const {appHistory} = Utils;
 
 export default class ScanDetermine extends BaseComponent {
     constructor(props, context) {
         super(props, context);
-    }
-
-    componentWillMount() {
-        if (hybird) { //设置tab颜色
-            native('native', {color: navColorF});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (hybird) {
-            native('native', {color: navColorF});
-        }
     }
 
     routeTo = () => {

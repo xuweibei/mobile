@@ -1,5 +1,4 @@
 import React from 'react';
-import dsBridge from 'dsbridge';
 import {connect} from 'react-redux';
 import './SelfMentionDetail.less';
 import {List, Radio, TextareaItem, Modal, Tabs, InputItem} from 'antd-mobile';
@@ -42,7 +41,7 @@ class ReDetail extends BaseComponent {
             if (timer === 'null') { //非购物车进入时
                 this.getOrderSelf();
             } else { //这里的情况是，原生那边跳转的时候，需要处理一些问题，所以就购物车过来的时候，存数据，这边取数据
-                dsBridge.call('getSelfMentio', {'': ''}, (data) => {
+                window.DsBridge.call('getSelfMentio', {'': ''}, (data) => {
                     const res = data ? JSON.parse(data) : '';
                     if (res && res.status === 0) {
                         setOrder(res.data.arr);

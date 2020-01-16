@@ -170,169 +170,6 @@
         </script>
     </head>
     <body>
-        <script>
-            var loadingAnimation = document.getElementById("skelon");
-            loadingAnimation.style.overflowY = "hidden";
-            if (window.loading.style) {
-                if (window.loading.style.cssText) {
-                    loadingAnimation.style.display = "block";
-                }
-            }
-            var detailContainer = document.getElementByClassName("detail-container");
-            var listContaine = document.getElementByClassName("list-container")
-            var shopListContainer = document.getElementByClassName('shop-list-container')
-            var isAddress = window.location.href
-            if(isAddress.includes('goodsDetail')){
-                detailContainer.style.display = 'block'
-            }
-            if(isAddress.includes('shopCart')){
-                shopListContainer.display = 'block'
-            }
-        </script>
-        <div id="skelon">
-            <!-- 详情 -->
-            <div class="detail-container" style="display: none;">
-                <div class="detail-top"></div>
-                <div class="detail-bottom">
-                  <div class="detail-item-title"></div>
-                  <div class="detail-item"></div>
-                  <div class="detail-item"></div>
-                  <div class="detail-item"></div>
-                  <div class="detail-item"></div>
-                  <div class="detail-item"></div>
-                  <div class="detail-item"></div>
-                  <div class="detail-item"></div>
-                  <div class="detail-item"></div>
-                </div>
-            </div>
-            <!-- 店铺列表 -->
-            <div class="shop-list-container" style="display: none;">
-                <div class="shop-list-content">
-                  <div class="shop-list-item">
-                    <div class="shop-list-item-top">
-                      <div class="item"></div>
-                    </div>
-                    <div class="shop-list-item-bot">
-                      <div class="shop-list-item-bot-left"></div>
-                      <div class="shop-list-item-bot-right">
-                        <div class="shop-list-item-bot-right-item"></div>
-                        <div class="shop-list-item-bot-right-item"></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="shop-list-item">
-                    <div class="shop-list-item-top">
-                      <div class="item"></div>
-                    </div>
-                    <div class="shop-list-item-bot">
-                      <div class="shop-list-item-bot-left"></div>
-                      <div class="shop-list-item-bot-right">
-                        <div class="shop-list-item-bot-right-item"></div>
-                        <div class="shop-list-item-bot-right-item"></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="shop-list-item">
-                    <div class="shop-list-item-top">
-                      <div class="item"></div>
-                    </div>
-                    <div class="shop-list-item-bot">
-                      <div class="shop-list-item-bot-left"></div>
-                      <div class="shop-list-item-bot-right">
-                        <div class="shop-list-item-bot-right-item"></div>
-                        <div class="shop-list-item-bot-right-item"></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="shop-list-item">
-                    <div class="shop-list-item-top">
-                      <div class="item"></div>
-                    </div>
-                    <div class="shop-list-item-bot">
-                      <div class="shop-list-item-bot-left"></div>
-                      <div class="shop-list-item-bot-right">
-                        <div class="shop-list-item-bot-right-item"></div>
-                        <div class="shop-list-item-bot-right-item"></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="shop-list-item">
-                    <div class="shop-list-item-top">
-                      <div class="item"></div>
-                    </div>
-                    <div class="shop-list-item-bot">
-                      <div class="shop-list-item-bot-left"></div>
-                      <div class="shop-list-item-bot-right">
-                        <div class="shop-list-item-bot-right-item"></div>
-                        <div class="shop-list-item-bot-right-item"></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="shop-list-item">
-                    <div class="shop-list-item-top">
-                      <div class="item"></div>
-                    </div>
-                    <div class="shop-list-item-bot">
-                      <div class="shop-list-item-bot-left"></div>
-                      <div class="shop-list-item-bot-right">
-                        <div class="shop-list-item-bot-right-item"></div>
-                        <div class="shop-list-item-bot-right-item"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            <!-- 列表页 -->
-            <div class="list-container" style="display: none;">
-                <div class="list-content">
-                  <div class="list-item-container">
-                    <div class="list-item-left"></div>
-                    <div class="list-item-right">
-                      <div class="list-item-right-item"></div>
-                      <div class="list-item-right-item"></div>
-                      <div class="list-item-right-item"></div>
-                      <div class="list-item-right-item"></div>
-                    </div>
-                  </div>
-                  <div class="list-item-container">
-                    <div class="list-item-left"></div>
-                    <div class="list-item-right">
-                      <div class="list-item-right-item"></div>
-                      <div class="list-item-right-item"></div>
-                      <div class="list-item-right-item"></div>
-                      <div class="list-item-right-item"></div>
-                    </div>
-                  </div>
-                  <div class="list-item-container">
-                    <div class="list-item-left"></div>
-                    <div class="list-item-right">
-                      <div class="list-item-right-item"></div>
-                      <div class="list-item-right-item"></div>
-                      <div class="list-item-right-item"></div>
-                      <div class="list-item-right-item"></div>
-                    </div>
-                  </div>
-                  <div class="list-item-container">
-                    <div class="list-item-left"></div>
-                    <div class="list-item-right">
-                      <div class="list-item-right-item"></div>
-                      <div class="list-item-right-item"></div>
-                      <div class="list-item-right-item"></div>
-                      <div class="list-item-right-item"></div>
-                    </div>
-                  </div>
-                  <div class="list-item-container">
-                    <div class="list-item-left"></div>
-                    <div class="list-item-right">
-                      <div class="list-item-right-item"></div>
-                      <div class="list-item-right-item"></div>
-                      <div class="list-item-right-item"></div>
-                      <div class="list-item-right-item"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-        </div>
         <div id="root"></div>
         <div id="loading">
             <img class="c-bgimg" src="../src/assets/images/c-bg.png" alt="">
@@ -356,7 +193,7 @@
             // body.style.height = "100vh";
             if (window.loading.style) {
                 if (window.loading.style.cssText) {
-                    loadingAnimation.style.display = "block";
+                    loadingAnimation.style.display = "none";
                 }
             }
             // https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc750bd9a0064d947&redirect_uri=http://csmp.zzha.vip/&response_type=code&scope=snsapi_userinfo#wechat_redirect
@@ -390,7 +227,7 @@
                 headers: new Headers({
                             'Content-Type': 'application/json'
                         })
-                }).then(res => res.json()).then(response => 
+                }).then(res => res.json()).then(response =>
                     wx.config({
                         debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
                         appId: response.appId, // 必填，公众号的唯一标识
@@ -422,11 +259,11 @@
                                 signature: json.signature,// 必填，签名
                                 jsApiList: ['getLocation','scanQRCode','openLocation','updateAppMessageShareData','updateTimelineShareData'] // 必填，需要使用的JS接口列表
                             })
-                        } 
+                        }
                     }
                 }
             }
-            
+
             window.wx.ready(() => {
                 wx.updateAppMessageShareData({
                     title: '公众号',
@@ -450,186 +287,4 @@
         <%var chunks = htmlWebpackPlugin.files.chunks;for (var chunk in chunks) {%>
         <script src="<%=chunks[chunk].entry %>"></script><% } %>
     </body>
-    <style>
-        @keyframes skelon{
-          0% {background-position: 100% 50%;}
-          100% {background-position: 0 50%;}
-        }
-        body{
-          margin: 0;
-        }
-        /* 列表骨架屏 */
-        .list-content{
-          padding: 0 30px;
-          padding-top: 60px;
-        }
-        .list-item-container{
-          display: flex;
-          justify-content: flex-start;
-          margin-bottom: 30px;
-        }
-        .list-item-left{
-          width: 240px;
-          height: 240px;
-          background-color: #F2F2F2;
-          margin-right: 20px;
-          border-radius: 10px;
-          background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 37%, #f2f2f2 63%);
-          background-size: 400% 100%;
-          -webkit-animation: skelon 1.4s ease infinite;
-          animation: skelon 1.4s ease infinite;
-        }
-        .list-item-right{
-          padding-top: 10px;
-          flex: 1;
-        }
-        .list-item-right-item{
-          height: 30px;
-          border-radius: 10px;
-          background-color: #F2F2F2;
-          background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 37%, #f2f2f2 63%);
-          background-size: 400% 100%;
-          -webkit-animation: skelon 1.4s ease infinite;
-          animation: skelon 1.4s ease infinite;
-        }
-        /* .list-item-right-item:nth-child(1){
-        width: 100%;
-        } */
-        .list-item-right-item:nth-child(2){
-        margin-top: 12px; 
-        width: 320px;
-        }
-        .list-item-right-item:nth-child(3){
-        margin-top: 32px; 
-        width: 180px;
-        }
-        .list-item-right-item:nth-child(4){
-        margin-top: 56px; 
-        width: 100px;
-        }
-        /* 详情骨架屏 */
-        .detail-container{
-    
-        }
-        .detail-top{
-          height: 580px;
-          background-color: #F2F2F2;
-          background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 37%, #f2f2f2 63%);
-          background-size: 400% 100%;
-          -webkit-animation: skelon 1.4s ease infinite;
-          animation: skelon 1.4s ease infinite;
-        }
-        .detail-bottom{
-          padding: 32px 30px;
-          background-color: #fff;
-        }
-        .detail-item-title{
-          width: 200px;
-          /* background-color: #FFCCD4; */
-          height: 48px;
-          border-radius: 10px;
-          background: linear-gradient(90deg, #FFCCD4 25%, rgb(255, 182, 182) 37%, #FFCCD4 63%);
-          background-size: 400% 100%;
-          -webkit-animation: skelon 1.4s ease infinite;
-          animation: skelon 1.4s ease infinite;
-        }
-        .detail-item{
-          height: 30px;
-          border-radius: 10px;
-          background-color: #F2F2F2;
-          background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 37%, #f2f2f2 63%);
-          background-size: 400% 100%;
-          -webkit-animation: skelon 1.4s ease infinite;
-          animation: skelon 1.4s ease infinite;
-        }
-        .detail-item:nth-child(2){
-          margin-top: 24px;
-        }
-        .detail-item:nth-child(3){
-          margin-top: 24px;
-          width: 300px;
-        }
-        .detail-item:nth-child(4){
-          margin-top: 32px;
-          width: 120px;
-        }
-        .detail-item:nth-child(5){
-          margin-top: 60px;
-          width: 400px;
-        }
-        .detail-item:nth-child(6){
-          margin-top: 40px;
-          width: 400px;
-        }
-        .detail-item:nth-child(7){
-          margin-top: 50px;
-          width: 120px;
-        }
-        .detail-item:nth-child(8){
-          margin-top: 24px;
-          width: 320px;
-        }
-        .detail-item:nth-child(9){
-          margin-top: 80px;
-          width: 200px;
-        }
-        /* 店铺列表骨架屏 */
-        .shop-list-content{
-          padding: 0 30px;
-          padding-top: 60px;
-        }
-        .shop-list-item{
-          margin-bottom: 80px;
-        }
-        .shop-list-item div{
-          border-radius: 10px;
-        }
-        .shop-list-item-top{
-          height: 30px;
-        }
-        .shop-list-item-top>.item{
-          height: 30px;
-          width: 280px;
-          background-color: #f2f2f2;
-          background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 37%, #f2f2f2 63%);
-          background-size: 400% 100%;
-          -webkit-animation: skelon 1.4s ease infinite;
-          animation: skelon 1.4s ease infinite;
-          float: right;
-        }
-        .shop-list-item-bot{
-          display: flex;
-          justify-content: flex-start;
-        }
-        .shop-list-item-bot-left{
-          width: 100px;
-          height: 100px;
-          margin-right: 10px;
-          background-color: #f2f2f2;
-          background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 37%, #f2f2f2 63%);
-          background-size: 400% 100%;
-          -webkit-animation: skelon 1.4s ease infinite;
-          animation: skelon 1.4s ease infinite;
-        }
-        .shop-list-item-bot-right{
-          display: flex;
-          flex-direction: column;
-          justify-content: flex-end;
-        }
-        .shop-list-item-bot-right-item{
-          height: 30px;
-          background-color: #f2f2f2;
-          background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 37%, #f2f2f2 63%);
-          background-size: 400% 100%;
-          -webkit-animation: skelon 1.4s ease infinite;
-          animation: skelon 1.4s ease infinite;
-        }
-        .shop-list-item-bot-right-item:nth-child(1){
-          width: 180px;
-        }
-        .shop-list-item-bot-right-item:nth-child(2){
-          width: 480px;
-          margin-top: 16px;
-        }
-        </style>
 </html>

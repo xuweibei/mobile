@@ -2,7 +2,6 @@
  * 根组件  封装组件一些逻辑通用方法
  */
 import PropTypes from 'prop-types';
-import dsBridge from 'dsbridge';
 import {is} from 'immutable';
 import {baseActionCreator as actionCreator} from '../../redux/baseAction';
 
@@ -10,6 +9,7 @@ class BaseComponent extends React.Component {
     static propTypes = {
         children: PropTypes.array
     };
+
 
     static contextTypes = {
         store: PropTypes.object
@@ -26,7 +26,7 @@ class BaseComponent extends React.Component {
 
     componentWillMount() {
         if (process.env.NATIVE) {
-            dsBridge.call('wxLoginCallback', (data) => { //设置userToken
+            window.DsBridge.call('wxLoginCallback', (data) => { //设置userToken
                 const obj = data ? JSON.parse(data) : '';
                 if (obj && obj.status === '0') {
                     window.localStorage.setItem('zpyg_userToken', obj.data.usertoken);
@@ -35,6 +35,13 @@ class BaseComponent extends React.Component {
             });
         }
     }
+
+    // componentDidMount() {
+    //     window.timeClear = setTimeout(() => {
+    //         const skelon = document.getElementById('skelon');
+    //         skelon.style.display = 'none';
+    //     }, 1500);
+    // }
 
     shouldComponentUpdate(nextProps, nextState) {
         const thisProps = this.props || {},
@@ -73,6 +80,7 @@ class BaseComponent extends React.Component {
         this.setState((prevState) => ({
             prevState
         }));
+        // clearTimeout(window.timeClear);
     }
 
     // 获取组件名称

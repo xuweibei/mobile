@@ -1,5 +1,4 @@
 /**修改申请 */
-import dsBridge from 'dsbridge';
 import {TextareaItem, Button, ImagePicker} from 'antd-mobile';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './ApplyDrawback.less';
@@ -158,7 +157,7 @@ export default class applyDrawback extends BaseComponent {
     //原生图片选择
     addPictrue = () => {
         const {nativePicNum, filesArr} = this.state;
-        dsBridge.call('picCallback', {num: nativePicNum}, (dataList) => {
+        window.DsBridge.call('picCallback', {num: nativePicNum}, (dataList) => {
             const res = dataList ? JSON.parse(dataList) : '';
             const arr = filesArr;
             if (res && res.status  === '0') {
