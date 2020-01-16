@@ -562,11 +562,11 @@ class appendOrder extends BaseComponent {
                                         <ul className="range-top">
                                             <li className="list">
                                                 <span>记账量</span>
-                                                <span>{shop.all_deposit}</span>
+                                                <span>{this.totalDep()}</span>
                                             </li>
                                             <li className="list">
                                                 <span>商品总价</span>
-                                                <span>￥{shop.all_price}</span>
+                                                <span>￥{this.totalPrice()}</span>
                                             </li>
                                             <li className="list">
                                                 <span>运费</span>
