@@ -5,21 +5,14 @@ const {showInfo, native, appHistory} = Utils;
 const {MESSAGE: {Form}} = Constants;
 
 export default class MyLogistics extends BaseComponent {
-    state = {
-        open: false,
-        selectIndex: 0,
-        phoneArr: []
-    };
-
-    componentWillMount() {
-        const {logInfo} = this.props;
-        const arr = [];
-        logInfo.forEach(item => {
-            arr.push(item.express_content.phone);
-        });
-        this.setState({
-            phoneArr: arr
-        });
+    constructor(props) {
+        super(props);
+        const {logInfo} = props;
+        this.state = {
+            open: false,
+            selectIndex: 0,
+            phoneArr: logInfo.map(item => item.express_content.phone)
+        };
     }
 
     //物流状态

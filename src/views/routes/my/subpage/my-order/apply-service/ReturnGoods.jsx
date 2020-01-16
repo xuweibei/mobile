@@ -1,3 +1,4 @@
+//退货退款
 import {dropByCacheKey} from 'react-router-cache-route';
 import {connect} from 'react-redux';
 import {Picker, InputItem, Button} from 'antd-mobile';
@@ -23,9 +24,9 @@ class ApplyServiceDetail extends BaseComponent {
     //获取商家信息
     getList = () => {
         const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
-        this.fetch(urlCfg.getShopInfo, {method: 'post', data: {id}})
+        this.fetch(urlCfg.getShopInfo, {data: {id}})
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     this.setState({
                         shopInfo: res.data
                     });
@@ -85,6 +86,7 @@ class ApplyServiceDetail extends BaseComponent {
                     this.props.setOrderStatus(4);
                     //清除我的订单的缓存
                     dropByCacheKey('OrderPage');
+                    dropByCacheKey('selfMentionOrderPage');//清除线下订单
                     appHistory.replace(`/refundDetails?id=${id}`);
                 }
             });

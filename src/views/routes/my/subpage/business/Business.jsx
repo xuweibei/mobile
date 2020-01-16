@@ -60,27 +60,36 @@ class Customer extends BaseComponent {
                 pagesize: 10
             }
         ];
-        if (page === 1) {
-            this.fetch(urlCfg.myBusiness, {data: param[0]}, noLoading).subscribe(res => {
-                if (res.status === 0) {
-                    this.handleResult(res, true);
-                } else {
-                    this.setState({
-                        totalNum: 0
-                    });
-                }
-            });
-        } else {
-            this.fetch(urlCfg.myBusiness, {data: param[1]}).subscribe(res => {
-                if (res.status === 0) {
-                    this.handleResult(res, false);
-                } else {
-                    this.setState({
-                        totalNum: 0
-                    });
-                }
-            });
-        }
+        this.fetch(urlCfg.myBusiness, {data: param[page === 1 ? 0 : 1]}, page === 1 ? noLoading : '').subscribe(res => {
+            if (res && res.status === 0) {
+                this.handleResult(res, page === 1);
+            } else {
+                this.setState({
+                    totalNum: 0
+                });
+            }
+        });
+        // if (page === 1) {
+        //     this.fetch(urlCfg.myBusiness, {data: param[0]}, noLoading).subscribe(res => {
+        //         if (res.status === 0) {
+        //             this.handleResult(res, true);
+        //         } else {
+        //             this.setState({
+        //                 totalNum: 0
+        //             });
+        //         }
+        //     });
+        // } else {
+        //     this.fetch(urlCfg.myBusiness, {data: param[1]}).subscribe(res => {
+        //         if (res.status === 0) {
+        //             this.handleResult(res, false);
+        //         } else {
+        //             this.setState({
+        //                 totalNum: 0
+        //             });
+        //         }
+        //     });
+        // }
     };
 
     //处理接口请求结果.isFirst：是否第一页
@@ -88,7 +97,7 @@ class Customer extends BaseComponent {
         const {page} = this.state;
         const extra = (isFirst && {
             pageCount: res.data.page_count,
-            totalNum: res.data.number
+            totalNum: res.data.count
         });
         this.stackData = this.stackData.concat(res.data.list);
         this.setState({
@@ -157,8 +166,7 @@ class Customer extends BaseComponent {
 
     //返回键回调
     goBackModal = () => {
-        const hybirid = process.env.NATIVE;
-        if (hybirid) {
+        if (process.env.NATIVE) {
             native('goBack');
         } else {
             appHistory.goBack();

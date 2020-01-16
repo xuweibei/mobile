@@ -18,12 +18,12 @@ class ShopHomeIndexTwo extends React.PureComponent {
         shopModelArr: PropTypes.object.isRequired
     };
 
-    state = {
-        selectedIndex: 0
-    };
-
-    componentWillMount() {
-        const {shopModelArr: {content}} = this.props;
+    constructor(props) {
+        super(props);
+        this.state = {
+            selectedIndex: 0
+        };
+        const {shopModelArr: {content}} = props;
         bottomNum = content.pr_banner.length;
     }
 

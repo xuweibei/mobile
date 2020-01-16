@@ -17,11 +17,12 @@ class Search extends BaseComponent {
         hot: null,
         history: null,
         textStatus: false,
-        keywords: '' //搜索框搜索内容
+        keywords: '', //搜索框搜索内容
+        shopSearch: decodeURI(getUrlParam('shopSearch', encodeURI(this.props.location.search)))
     }
 
     componentDidMount() {
-        const shopSearch = decodeURI(getUrlParam('shopSearch', encodeURI(this.props.location.search)));
+        const {shopSearch} = this.state;
         if (shopSearch === 'null') { //如果是非店铺跳过来，则将店铺id清除
             this.props.setshoppingId('');
         }
@@ -33,7 +34,7 @@ class Search extends BaseComponent {
     }
 
     componentWillReceiveProps() {
-        const shopSearch = decodeURI(getUrlParam('shopSearch', encodeURI(this.props.location.search)));
+        const {shopSearch} = this.state;
         if (shopSearch === 'null') { //如果是非店铺跳过来，则将店铺id清除
             this.props.setshoppingId('');
         }
@@ -110,7 +111,7 @@ class Search extends BaseComponent {
     };
 
     render() {
-        const {hot, history, textStatus} = this.state;
+        const {hot, history, textStatus, shopSearch} = this.state;
         return (
             <div data-component="search" data-role="page" className="search">
                 <div className="search-box">
@@ -129,38 +130,44 @@ class Search extends BaseComponent {
                     >{textStatus ? '搜索' : '取消'}
                     </div>
                 </div>
-                <div className="search-popular aroundBlank">
-                    <div className="search-title">热门搜索</div>
-                    <div className="search-popular-content">
-                        {
-                            hot && hot.map((item, index) => (
-                                <Button
-                                    className={`auxiliary-button red ${nativeCssDiff() ? 'general-other' : 'general'}`}
-                                    activeStyle={false}
-                                    onClick={() => this.switchTo(item.keyword)}
-                                    key={index.toString()}
-                                >{item.keyword}
-                                </Button>
-                            ))
-                        }
-                    </div>
-                </div>
-                <div className="search-popular aroundBlank">
-                    <div className="search-title">历史搜索</div>
-                    <div className="search-popular-content">
-                        {
-                            history && history.map((item, index) => (
-                                <Button
-                                    className={`auxiliary-button gray ${nativeCssDiff() ? 'general-other' : 'general'}`}
-                                    activeStyle={false}
-                                    key={index.toString()}
-                                    onClick={() => this.switchTo(item.keyword)}
-                                >{item.keyword}
-                                </Button>
-                            ))
-                        }
-                    </div>
-                </div>
+                {
+                    shopSearch !== '1' && ( //店铺跳到这个页面的时候，先暂时将这两屏蔽，余丽
+                        <div>
+                            <div className="search-popular aroundBlank">
+                                <div className="search-title">热门搜索</div>
+                                <div className="search-popular-content">
+                                    {
+                                        hot && hot.map((item, index) => (
+                                            <Button
+                                                className={`auxiliary-button red ${nativeCssDiff() ? 'general-other' : 'general'}`}
+                                                activeStyle={false}
+                                                onClick={() => this.switchTo(item.keyword)}
+                                                key={index.toString()}
+                                            >{item.keyword}
+                                            </Button>
+                                        ))
+                                    }
+                                </div>
+                            </div>
+                            <div className="search-popular aroundBlank">
+                                <div className="search-title">历史搜索</div>
+                                <div className="search-popular-content">
+                                    {
+                                        history && history.map((item, index) => (
+                                            <Button
+                                                className={`auxiliary-button gray ${nativeCssDiff() ? 'general-other' : 'general'}`}
+                                                activeStyle={false}
+                                                key={index.toString()}
+                                                onClick={() => this.switchTo(item.keyword)}
+                                            >{item.keyword}
+                                            </Button>
+                                        ))
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    )
+                }
             </div>
         );
     }

@@ -31,7 +31,8 @@ class ReDetail extends BaseComponent {
         shopdata: [], //店铺
         address: '', //门店地址
         textarea: '', //获取备注信息
-        protocolModal: false //协议弹出框
+        protocolModal: false, //协议弹出框
+        propsData: this.props
     }
 
     componentDidMount() {
@@ -42,8 +43,11 @@ class ReDetail extends BaseComponent {
                 this.getOrderSelf();
             } else { //这里的情况是，原生那边跳转的时候，需要处理一些问题，所以就购物车过来的时候，存数据，这边取数据
                 window.DsBridge.call('getSelfMentio', {'': ''}, (data) => {
+                    console.log(data, '就看来水电费接口');
                     const res = data ? JSON.parse(data) : '';
+                    console.log(res, '老地方开个会');
                     if (res && res.status === 0) {
+                        alert(2);
                         setOrder(res.data.arr);
                         setIds(res.data.cartArr);
                         this.getOrderSelf();
@@ -57,9 +61,15 @@ class ReDetail extends BaseComponent {
         }
     }
 
-    componentWillReceiveProps(next) {
-        const {setOrder, location: {search}} = this.props;
-        const timerNext = decodeURI(getUrlParam('time', encodeURI(next.location.search)));
+    static getDerivedStateFromProps(nextProps, prevState) {
+        return {
+            propsData: nextProps
+        };
+    }
+
+    componentDidUptate(prevProps, prevState) {
+        const {propsData: {setOrder, location: {search}}} = this.state;
+        const timerNext = decodeURI(getUrlParam('time', encodeURI(prevState.propsData.location.search)));
         const timer = decodeURI(getUrlParam('time', encodeURI(search)));
         if ((timerNext !== timer) && process.env.NATIVE) {
             this.setState({
@@ -85,6 +95,35 @@ class ReDetail extends BaseComponent {
             });
         }
     }
+
+    // componentWillReceiveProps(next) {
+    //     const {setOrder, location: {search}} = this.props;
+    //     const timerNext = decodeURI(getUrlParam('time', encodeURI(next.location.search)));
+    //     const timer = decodeURI(getUrlParam('time', encodeURI(search)));
+    //     if ((timerNext !== timer) && process.env.NATIVE) {
+    //         this.setState({
+    //             modal: false, //自提弹窗是否弹出
+    //             currentTab: 0, //当前自提日期的key
+    //             valueItem: 0, //当前自提时间的key
+    //             value: '请选择', //当前自提时间
+    //             rdata: [{list: []}], //获取所有自提时间
+    //             tabsr: [], //获取所有自提日期
+    //             radioTreaty: false, //自提协议是否勾选
+    //             OrderSelf: [], //获取自提数据
+    //             alertPhone: 0, //自提手机号
+    //             showPhone: true, //是否显示修改自提手机号
+    //             goodsArr: [], //订单商品遍历
+    //             shopdata: [], //店铺
+    //             address: '', //门店地址
+    //             textarea: '' //获取备注信息
+    //         }, () => {
+    //             getShopCartInfo('getSelfMentio', {'': ''}).then(res => {
+    //                 setOrder(res.data.arr);
+    //                 this.getOrderSelf();
+    //             });
+    //         });
+    //     }
+    // }
 
     //自提数据获取
     getOrderSelf = () => {

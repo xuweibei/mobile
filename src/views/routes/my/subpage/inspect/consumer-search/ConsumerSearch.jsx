@@ -10,13 +10,13 @@ const {urlCfg} = Configs;
 const {appHistory} = Utils;
 
 class Search extends BaseComponent {
-    state = {
-        history: null, //历史记录
-        textStatus: false, //右边文字状态
-        keywords: '' //搜索框搜索内容
-    }
-
-    componentWillMount() {
+    constructor(props) {
+        super(props);
+        this.state = {
+            history: null, //历史记录
+            textStatus: false, //右边文字状态
+            keywords: '' //搜索框搜索内容
+        };
         dropByCacheKey('CategoryListPage');
     }
 

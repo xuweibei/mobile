@@ -7,7 +7,7 @@ import AppNavBar from '../../../../common/navbar/NavBar';
 import './Invitation.less';
 
 const {urlCfg} = Configs;
-const {native, getUrlParam, TD, showInfo, nativeCssDiff} = Utils;
+const {native, getUrlParam, TD, showInfo, showFail, nativeCssDiff} = Utils;
 const {TD_EVENT_ID} = Constants;
 //分享列表
 const dataList = [
@@ -50,7 +50,14 @@ class Invitation extends BaseComponent {
         const {shareArr} = this.state;
         if (process.env.NATIVE) {
             if (shareArr) {
-                native('savePicCallback', {type: '2', imgUrl: encodeURIComponent(shareArr)});
+                native('savePicCallback', {type: '2', imgUrl: encodeURIComponent(shareArr)}, (data) => {
+                    console.log(data, '看了是到付款了发');
+                    if (data.status === 0) {
+                        showInfo('保存成功');
+                    } else {
+                        showFail('保存失败');
+                    }
+                });
             } else {
                 showInfo('暂无图片可以保存');
             }
@@ -70,9 +77,14 @@ class Invitation extends BaseComponent {
             });
     }
 
-    componentWillReceiveProps() {
+    static getDeivedStateFromProps(prevProps, prevState) {
         ActionSheet.close();//关闭分享
+        return null;
     }
+
+    // componentWillReceiveProps() {
+    //     ActionSheet.close();//关闭分享
+    // }
 
     //弹出分享框maskImg
     showShareActionSheet = () => {

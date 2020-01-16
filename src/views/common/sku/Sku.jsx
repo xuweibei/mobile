@@ -276,7 +276,6 @@ class Sku extends React.PureComponent {
         this.setState({
             selectedTemp
         }, () => {
-            // console.log('selectedTemp', this.state.selectedTemp);
             this.skuHandler();
         });
     };
@@ -287,6 +286,7 @@ class Sku extends React.PureComponent {
         // console.log('已选择', selectedTemp, Object.keys(selectedTemp));
         const arr = [];
         attributes.forEach(item => {
+            console.log(item, '德生科技啊哈撒读后感');
             if (!Object.keys(selectedTemp).includes(item.name)) arr.push(item.name);
         });
         showInfo(Feedback.Select + arr);
@@ -324,7 +324,6 @@ class Sku extends React.PureComponent {
     render() {
         const {selectedTemp, selectType, submitalbe, price, originalPrice, deposit, stock} = this.state;
         const {type, attributes, cover, visible, onClose} = this.props;
-        console.log(stock, '啥都卡死的框架按收到货');
         return (
             <Modal
                 className="panel-mask"

@@ -209,7 +209,28 @@ export default class EvaluateDetail extends BaseComponent {
                                     </ul>
                                 </div>
                                 <div className="review">追评</div>
-                                <div className="comment-bar">{add.content}</div>
+                                {/* <div className="comment-bar">{add.content}</div> */}
+                                {
+                                    add && (
+                                        <React.Fragment>
+                                            <div className="word">{add.content}</div>
+                                            <div className="picture">
+                                                <ul>
+                                                    {
+                                                        add.pics ? add.pics.map((pic, index) => (
+                                                            <li
+                                                                key={index.toString()}
+                                                                onClick={() => this.openMask(pic)}
+                                                            >
+                                                                <img src={pic}/>
+                                                            </li>
+                                                        )) : null
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </React.Fragment>
+                                    )
+                                }
                                 {
                                     appraise.return_content && (
                                         <div className="chat-box">

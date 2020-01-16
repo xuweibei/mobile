@@ -58,27 +58,36 @@ class Customer extends BaseComponent {
                 number: totalNum
             }
         ];
-        if (page === 1) {
-            this.fetch(urlCfg.regionalTota, {data: param[0]}, noLoading).subscribe(res => {
-                if (res.status === 0) {
-                    this.handleResult(res, true);
-                } else {
-                    this.setState({
-                        totalNum: 0
-                    });
-                }
-            });
-        } else {
-            this.fetch(urlCfg.regionalTota, {data: param[1]}).subscribe(res => {
-                if (res.status === 0) {
-                    this.handleResult(res, false);
-                } else {
-                    this.setState({
-                        totalNum: 0
-                    });
-                }
-            });
-        }
+        this.fetch(urlCfg.regionalTota, {data: param[page === 1 ? 0 : 1]}, page === 1 ? noLoading : '').subscribe(res => {
+            if (res && res.status === 0) {
+                this.handleResult(res, page === 1);
+            } else {
+                this.setState({
+                    totalNum: 0
+                });
+            }
+        });
+        // if (page === 1) {
+        //     this.fetch(urlCfg.regionalTota, {data: param[0]}, noLoading).subscribe(res => {
+        //         if (res.status === 0) {
+        //             this.handleResult(res, true);
+        //         } else {
+        //             this.setState({
+        //                 totalNum: 0
+        //             });
+        //         }
+        //     });
+        // } else {
+        //     this.fetch(urlCfg.regionalTota, {data: param[1]}).subscribe(res => {
+        //         if (res.status === 0) {
+        //             this.handleResult(res, false);
+        //         } else {
+        //             this.setState({
+        //                 totalNum: 0
+        //             });
+        //         }
+        //     });
+        // }
     };
 
     //处理接口请求结果.isFirst：是否第一页

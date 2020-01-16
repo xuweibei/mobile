@@ -5,7 +5,7 @@ import {InputItem, Button, Icon} from 'antd-mobile';
 import './ShopSearch.less';
 
 const {urlCfg} = Configs;
-const {appHistory} = Utils;
+const {appHistory, native} = Utils;
 
 export default class Search extends BaseComponent {
     state = {
@@ -22,7 +22,11 @@ export default class Search extends BaseComponent {
     searchType = () => {
         const {textStatus, keywords} = this.state;
         if (textStatus) {
-            appHistory.push(`/shop-detail?flag=${true}&keywords=${encodeURI(keywords)}`);
+            native('closeKeyboard');
+            const timer = setTimeout(() => {
+                clearTimeout(timer);
+                appHistory.push(`/shop-detail?flag=${true}&keywords=${encodeURI(keywords)}`);
+            }, 100);
         } else {
             appHistory.goBack();
         }

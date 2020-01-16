@@ -20,7 +20,8 @@ class Region extends BaseComponent {
             countyIndex: 0,
             judge1: !!props.cityValue,
             judge2: !!props.countyValue,
-            judge3: !!props.street
+            judge3: !!props.street,
+            propsData: props
         };
     }
 
@@ -46,27 +47,36 @@ class Region extends BaseComponent {
         }
     }
 
-    //判断父级是否更新
-    componentWillReceiveProps(nextProps) {
-        const {provinceValue} = this.state;
-        const {add, editStatus, editStatusChange} = this.props;
-        if (editStatus && !add && provinceValue !== nextProps.provinceValue) {
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (nextProps.provinceId) {
+            return {
+                propsData: nextProps
+            };
+        }
+        return null;
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        const {provinceValue, propsData} = this.state;
+        const {add, editStatus, editStatusChange} = prevState.propsData;
+        if (editStatus && !add && provinceValue !== propsData.provinceValue) {
+            // eslint-disable-next-line react/no-did-update-set-state
             this.setState({
-                provinceValue: nextProps.provinceValue,
-                countyValue: nextProps.countyValue,
-                cityValue: nextProps.cityValue,
-                townValue: nextProps.townValue,
+                provinceValue: propsData.provinceValue,
+                countyValue: propsData.countyValue,
+                cityValue: propsData.cityValue,
+                townValue: propsData.townValue,
                 judge1: true,
                 judge2: true
             });
-            if (nextProps.provinceId) {
-                this.getCity(nextProps.provinceId);
+            if (propsData.provinceId) {
+                this.getCity(propsData.provinceId);
             }
-            if (nextProps.cityId) {
-                this.getCounty(nextProps.cityId);
+            if (propsData.cityId) {
+                this.getCounty(propsData.cityId);
             }
-            if (nextProps.countyId) {
-                this.getStreet(nextProps.countyId);
+            if (propsData.countyId) {
+                this.getStreet(propsData.countyId);
             }
             if (editStatusChange) {
                 this.props.editStatusChange();
@@ -74,10 +84,39 @@ class Region extends BaseComponent {
         }
     }
 
+    //判断父级是否更新
+    // componentWillReceiveProps(nextProps) {
+    //     const {provinceValue} = this.state;
+    //     const {add, editStatus, editStatusChange} = this.props;
+    //     console.log(add, '是的', editStatus, '水电费', provinceValue);
+    //     if (editStatus && !add && provinceValue !== nextProps.provinceValue) {
+    //         this.setState({
+    //             provinceValue: nextProps.provinceValue,
+    //             countyValue: nextProps.countyValue,
+    //             cityValue: nextProps.cityValue,
+    //             townValue: nextProps.townValue,
+    //             judge1: true,
+    //             judge2: true
+    //         });
+    //         if (nextProps.provinceId) {
+    //             this.getCity(nextProps.provinceId);
+    //         }
+    //         if (nextProps.cityId) {
+    //             this.getCounty(nextProps.cityId);
+    //         }
+    //         if (nextProps.countyId) {
+    //             this.getStreet(nextProps.countyId);
+    //         }
+    //         if (editStatusChange) {
+    //             this.props.editStatusChange();
+    //         }
+    //     }
+    // }
+
     //省
     getProvince() {
         const {provinceId} = this.props;
-        this.fetch(urlCfg.selectAddress, {data: {code: 0}})
+        this.fetch(urlCfg.selectAddress, {data: {code: 0}}, true)
             .subscribe((res) => {
                 if (res && res.status === 0) {
                     this.setState({
@@ -122,7 +161,7 @@ class Region extends BaseComponent {
     //市级请求
     getCity(cityCode) {
         const {cityId} = this.props;
-        this.fetch(urlCfg.selectAddress, {data: {code: cityCode}})
+        this.fetch(urlCfg.selectAddress, {data: {code: cityCode}}, true)
             .subscribe((res) => {
                 if (res && res.status === 0) {
                     this.setState({
@@ -168,7 +207,7 @@ class Region extends BaseComponent {
     //县请求
     getCounty(countyCode) {
         const {countyId} = this.props;
-        this.fetch(urlCfg.selectAddress, {data: {code: countyCode}})
+        this.fetch(urlCfg.selectAddress, {data: {code: countyCode}}, true)
             .subscribe((res) => {
                 if (res && res.status === 0) {
                     this.setState({
@@ -214,7 +253,7 @@ class Region extends BaseComponent {
     //街道请求
     getStreet(streetCode) {
         const {townId} = this.props;
-        this.fetch(urlCfg.selectAddress, {data: {code: streetCode}})
+        this.fetch(urlCfg.selectAddress, {data: {code: streetCode}}, true)
             .subscribe((res) => {
                 if (res && res.status === 0) {
                     this.setState({

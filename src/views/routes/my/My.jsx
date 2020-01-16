@@ -18,52 +18,6 @@ import './My.less';
 
 const {appHistory, rollStatus: {offRoll, openRoll, getScrollTop}} = Utils;
 
-//线上订单模块
-const myOrderIconData = [
-    {
-        text: '待付款',
-        className: 'icon payment',
-        num: 0
-    },
-    {
-        text: '待发货',
-        className: 'icon delivery',
-        num: 0
-    },
-    {
-        text: '待收货',
-        className: 'icon issue',
-        num: 0
-    },
-    {
-        text: '待评价',
-        className: 'icon evaluate',
-        num: 0
-    },
-    {
-        text: '售后',
-        className: 'icon sale',
-        num: 0
-    }
-];
-//线下订单模块
-const myOrderSelfData = [
-    {
-        text: '未完成',
-        className: 'icon unfinished',
-        num: 0
-    },
-    {
-        text: '已完成',
-        className: 'icon accomplish',
-        num: 0
-    },
-    {
-        text: '售后',
-        className: 'icon marketing',
-        num: 0
-    }
-];
 //商家顶部导航模块
 const shopOrder = [
     {
@@ -100,17 +54,17 @@ const consumerOrder = [
 ];
 
 class My extends BaseComponent {
-    state = {
-        userInfo: [], //用户个人信息
-        logistics: [], //物流信息
-        data: ['1', '2', '3'],
-        imgHeight: 140,
-        position: 0,
-        openShopStatus: '' //开店状态
-    };
-
-    componentWillMount() {
+    constructor(props) {
+        super(props);
+        this.state = {
+            userInfo: [], //用户个人信息
+            logistics: [], //物流信息
+            imgHeight: 140,
+            position: 0,
+            openShopStatus: '' //开店状态
+        };
         dropByCacheKey('OrderPage');//清除我的订单的缓存
+        dropByCacheKey('selfMentionOrderPage');//清除线下订单
         dropByCacheKey('PossessEvaluate');//清除我的评价的缓存
         dropByCacheKey('History');//清除浏览历史的缓存
     }
@@ -128,40 +82,6 @@ class My extends BaseComponent {
         const {showMenu} = this.props;
         showMenu(true);
     }
-
-    //商家cam信息
-    shopCam = [
-        {
-            title: '店铺信息',
-            icon: 'shop',
-            event: '/personalStores'
-        },
-        {
-            title: 'CAM转出',
-            icon: 'tOut',
-            event: '/rollOut'
-        },
-        {
-            title: '我的收入',
-            icon: 'icome',
-            event: '/icome?status=6'
-        },
-        {
-            title: '我的客户',
-            icon: 'custer',
-            event: '/customer'
-        },
-        {
-            title: '我的业务',
-            icon: 'busin',
-            event: '/business'
-        },
-        {
-            title: '资产管理',
-            icon: 'asset',
-            event: `/myAssets?userToken=${this.props.myInfo && this.props.myInfo.info.iden_type}`
-        }
-    ];
 
     //消费者或推广员cam信息
     consumer = [
@@ -346,38 +266,12 @@ class My extends BaseComponent {
         return str;
     }
 
-    //徽标的背景色
-    /*logoBackground = () => {
-        const {userType} = this.state;
-        let str = '';
-        if (userType === '2') {
-            str =  'linear-gradient(0deg,rgba(101,50,255,1) 0%,rgba(146,110,255,1) 100%)';
-        } else if (userType === '3') {
-            str =  'linear-gradient(0deg,rgba(255,204,0,1) 0%,rgba(255,255,110,1) 100%)';
-        } else if (userType === '1' || userType === '4') {
-            str =  'linear-gradient(0deg,rgba(254,196,7,1) 0%,rgba(252,139,0,1) 100%)';
-        }
-        return str;
-    }*/
-
-    //切换身份
-    changeYourself = (data) => {
-        const {getMyInfo} = this.props;
-        getMyInfo({iden_type: data === 'shop' ? '2' : '4'});
-    }
-
     render() {
         const {showLogistics, imgHeight, selectIndex} = this.state;
         const {myInfo} = this.props;
         const userInfo = myInfo && myInfo.info;//用戶相关信息
         const picArr = myInfo && myInfo.pic; //广告位
         const logistics = myInfo && myInfo.logistics; //物流信息
-        const arrOrder = myInfo ? myOrderIconData.map((item, index) => {
-            myInfo.menub.forEach(value => {
-                item.num = value.num;
-            });
-            return item;
-        }) : myOrderIconData;//线上订单相关信息
         return (
             <div data-component="my" data-role="page" className="my">
                 <div className="aroundBlank">
@@ -411,12 +305,6 @@ class My extends BaseComponent {
                                         />
                                     </div>
                                     <div className="basic-data-UID" onClick={this.routeTo}>UID:{myInfo && (userInfo.no)}</div>
-                                    {   //用户身份为消费商的时候展示
-                                        myInfo && myInfo.info.iden_type === '2' && <div className="icon conmuterId" onClick={this.changeYourself}>我是消费者</div>
-                                    }
-                                    {   //用户身份为消费者时展示
-                                        // myInfo && myInfo.info.iden_type === '4' && <div className="icon switchId" onClick={() => this.changeYourself('shop')}>我是商家</div>
-                                    }
                                 </div>
                             </div>
                         </div>
@@ -455,7 +343,6 @@ class My extends BaseComponent {
                             </div>
                         )
                     }
-
                     <div className="my-order-form">
                         <div className="my-order-box">
                             <div className="order-box-name">线下订单</div>
@@ -463,15 +350,16 @@ class My extends BaseComponent {
                         </div>
                         <div className="my-selfOrder-icon">
                             <Grid
-                                data={myOrderSelfData}
-                                columnNum={3}
+                                data={myInfo && myInfo.menuc}
+                                columnNum={myInfo && myInfo.menuc.length}
                                 hasLine={false}
                                 activeStyle={false}
                                 renderItem={dataItem => (
                                     <div className="orderInfo">
-                                        <div className={dataItem.className + ' orderLogo selfOrder'}/>
+                                        <img src={dataItem.image} className="orderLogo"/>
+                                        {/* <div className={dataItem.className + ' orderLogo selfOrder'}/> */}
                                         <Badge text={dataItem.num !== '0' ? dataItem.num : ''}/>
-                                        <div>{dataItem.text}</div>
+                                        <div>{dataItem.value}</div>
                                     </div>
                                 )}
                                 onClick={(ev, index) => this.gotoSelfMyOrder(index)}
@@ -485,15 +373,16 @@ class My extends BaseComponent {
                         </div>
                         <div className="my-order-icon">
                             <Grid
-                                data={arrOrder}
-                                columnNum={5}
+                                data={myInfo && myInfo.menub}
+                                columnNum={myInfo && myInfo.menub.length}
                                 hasLine={false}
                                 activeStyle={false}
                                 renderItem={dataItem => (
                                     <div className="orderInfo">
-                                        <div className={dataItem.className + ' orderLogo'}/>
+                                        <img src={dataItem.image} className="orderLogo"/>
+                                        {/* <div className={dataItem.className + ' orderLogo'}/> */}
                                         <Badge text={dataItem.num !== '0' ? dataItem.num : ''}/>
-                                        <div>{dataItem.text}</div>
+                                        <div>{dataItem.value}</div>
                                     </div>
                                 )}
                                 onClick={(ev, index) => this.gotoMyOrder(index)}
@@ -544,39 +433,24 @@ class My extends BaseComponent {
                         <div className="my-order-box">
                             {/* <div className="order-box-name">CAM系统</div> */}
                         </div>
-                        {   //用户身份为商家的判断
-                            (myInfo && myInfo.info.iden_type === '2') ? (
-                                <div className="cam-info">
-                                    <ul>
-                                        {this.shopCam.map(item => (
-                                            <li key={item.title} onClick={() => this.jumpRouter(item.event)}>
-                                                <span className={'icon ' + item.icon}/>
-                                                <p>{item.title}</p>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            ) : (
-                                <div>
-                                    <div className="conumer-info">
-                                        <List>
-                                            {this.consumer.map((item, index) => (
-                                                index === 0 && (<List.Item arrow="horizontal" key={item.title} onClick={() => this.jumpRouter(item.event)}> <span className={'icon ' + item.icon}/><p>{item.title}</p></List.Item>)
-                                            ))}
-                                        </List>
-                                    </div>
-                                    <div className="conumer-info">
-                                        <List>
-                                            {this.consumer.map((item, index) => (
-                                                index === 1 && (<List.Item arrow="horizontal" key={item.title} onClick={() => this.jumpRouter(item.event)}> <span className={'icon ' + item.icon}/> <p>{item.title}</p></List.Item>)
-                                            ))}
-                                        </List>
-                                    </div>
-                                </div>
-                            )
-                        }
-                        {   //用户身份为消费者时展示
-                            (myInfo && myInfo.info.iden_type === '1') && picArr && picArr.length > 0 &&  (
+                        <div>
+                            <div className="conumer-info">
+                                <List>
+                                    {this.consumer.map((item, index) => (
+                                        index === 0 && (<List.Item arrow="horizontal" key={item.title} onClick={() => this.jumpRouter(item.event)}> <span className={'icon ' + item.icon}/><p>{item.title}</p></List.Item>)
+                                    ))}
+                                </List>
+                            </div>
+                            <div className="conumer-info">
+                                <List>
+                                    {this.consumer.map((item, index) => (
+                                        index === 1 && (<List.Item arrow="horizontal" key={item.title} onClick={() => this.jumpRouter(item.event)}> <span className={'icon ' + item.icon}/> <p>{item.title}</p></List.Item>)
+                                    ))}
+                                </List>
+                            </div>
+                        </div>
+                        {
+                            myInfo && picArr && picArr.length > 0 &&  (
                                 <div className="my-banner">
                                     <WingBlank>
                                         <Carousel

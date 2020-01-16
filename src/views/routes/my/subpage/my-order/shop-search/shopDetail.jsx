@@ -11,7 +11,7 @@ import CancelOrder from '../../../../../common/cancel-order/CancleOrder';
 import Animation from '../../../../../common/animation/Animation';
 import './ShopDetail.less';
 
-const {appHistory, showSuccess, showInfo, getUrlParam, nativeCssDiff} = Utils;
+const {appHistory, showSuccess, showInfo, getUrlParam, nativeCssDiff, native} = Utils;
 const {MESSAGE: {Form, Feedback}, FIELD, navColorR} = Constants;
 const {urlCfg} = Configs;
 
@@ -250,7 +250,11 @@ class MyOrderSearch extends BaseComponent {
 
     //查看物流
     goApplyService = (id, ev) => {
-        appHistory.push(`/logistics?lgId=${id}`);
+        if (process.env.NATIVE) {
+            native('goLogistics', {orderId: id});
+        } else {
+            appHistory.push(`/logistics?lgId=${id}`);
+        }
         ev.stopPropagation();
     }
 
@@ -280,6 +284,8 @@ class MyOrderSearch extends BaseComponent {
         ev.stopPropagation();
     }
 
+    //样式兼容统一封装
+    styleCompatible = () => (nativeCssDiff() ? '1PX solid #666' : '0.02rem solid #666')
 
     //底部按钮
     bottomModal = (item) => {

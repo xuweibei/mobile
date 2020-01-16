@@ -38,25 +38,17 @@ class ShopHome extends BaseComponent {
             height: document.documentElement.clientHeight - (window.isWX ? window.rem * 2.7 : window.rem * 3.5),
             page: 1,
             pageCount: -1,
-            currentState: '', //判断当前点击状态对应的页面展示
+            currentState: decodeURI(getUrlParam('business', encodeURI(props.location.search))) === '1' ? 'business' : '', //判断当前点击状态对应的页面展示
             refreshing: false,
             modelShow: false, //判断有无模板
             hasPage: true, //有无更多数据
             lat: '',
             lon: '',
             hasMore: false, //底部请求状态文字显示情况
-            business: false //表示从发现页面过来的，需要直接展示商家信息
+            business: decodeURI(getUrlParam('business', encodeURI(props.location.search))) === '1', //表示从发现页面过来的，需要直接展示商家信息
+            propsData: props,
+            isJingDong: decodeURI(getUrlParam('jingdong', encodeURI(props.location.search))) === '1' //判断是否是京东商品过来的
         };
-    }
-
-    componentWillMount() {
-        const str = decodeURI(getUrlParam('business', encodeURI(this.props.location.search)));
-        if (str === '1') { //发现页面  跳转过来的时候，需要直接跳到商家信息的页面
-            this.setState({
-                currentState: 'business',
-                business: true
-            });
-        }
     }
 
     componentDidMount() {
@@ -65,16 +57,33 @@ class ShopHome extends BaseComponent {
         this.getShopModel(shoppingId);
     }
 
-    componentWillReceiveProps(nextProps) {
+    static getDerviedStateFromProps(nextProps, prevState) {
+        return {
+            propsData: nextProps
+        };
+    }
+
+    componentDidUpdate(prevProps, prevState) {
         if (process.env.NATIVE) {
-            const shoppingId = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
-            const nextId = decodeURI(getUrlParam('id', encodeURI(nextProps.location.search)));
+            const shoppingId = decodeURI(getUrlParam('id', encodeURI(this.state.propsData.location.search)));
+            const nextId = decodeURI(getUrlParam('id', encodeURI(prevState.propsData.location.search)));
             if (shoppingId !== nextId) {
                 this.getShop(nextId);
                 this.getShopModel(nextId);
             }
         }
     }
+
+    // componentWillReceiveProps(nextProps) {
+    //     if (process.env.NATIVE) {
+    //         const shoppingId = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
+    //         const nextId = decodeURI(getUrlParam('id', encodeURI(nextProps.location.search)));
+    //         if (shoppingId !== nextId) {
+    //             this.getShop(nextId);
+    //             this.getShopModel(nextId);
+    //         }
+    //     }
+    // }
 
     //获取模板信息
     getShopModel = (id) => {
@@ -292,7 +301,7 @@ class ShopHome extends BaseComponent {
     }
 
     render() {
-        const {currentState, modelShow, shopModelArr, lat, lon, business} = this.state;
+        const {currentState, modelShow, shopModelArr, lat, lon, business, isJingDong} = this.state;
         const shoppingId = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
         let blockModel = <div/>;
         if (business) {
@@ -318,7 +327,7 @@ class ShopHome extends BaseComponent {
                 <Top/>
                 {blockModel}
                 {
-                    currentState && <ShopFooter onTabChange={(data) => { this.onTabChange(data) }} active={this.activeFn(modelShow, currentState)} haveModalAll={modelShow}/>
+                    !isJingDong && currentState && <ShopFooter onTabChange={(data) => { this.onTabChange(data) }} active={this.activeFn(modelShow, currentState)} haveModalAll={modelShow}/>
                 }
             </React.Fragment>
         );

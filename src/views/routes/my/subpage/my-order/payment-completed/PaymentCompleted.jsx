@@ -29,6 +29,7 @@ const mode = [
 class PaymentCompleted extends BaseComponent {
     componentWillMOunt() {
         dropByCacheKey('OrderPage');//清除我的订单的缓存
+        dropByCacheKey('selfMentionOrderPage');//清除线下订单
         //清除缓存
         removeValue('orderInfo');
         removeValue('orderArr');

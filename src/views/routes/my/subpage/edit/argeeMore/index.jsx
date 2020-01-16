@@ -35,23 +35,11 @@ class Agreement extends BaseComponent {
         edit: ''//路由
     };
 
-    componentWillMount() {
-        const type = decodeURI(getUrlParam('type', encodeURI(this.props.location.search)));
-        const router = decodeURI(getUrlParam('router', encodeURI(this.props.location.search)));
-        if (type !== 'null') { //登录页跳过来的时候
-            this.setState({
-                edit: 'userAgreementDetail'
-            }, () => {
-                this.getProtocol(Number(type));
-            });
-        } else {
-            this.setState({edit: router});
-        }
-    }
-
     componentDidMount() {
         const {uidInfo, getUid, areaInfo, getArea, nickname, getNickName, location: {search}} = this.props;
         const type = decodeURI(getUrlParam('type', encodeURI(search)));
+        const router = decodeURI(getUrlParam('router', encodeURI(search)));
+        // const type = decodeURI(getUrlParam('type', encodeURI(search)));
         if (type === 'null') { //非登录页跳转过来查看的时候
             if (!uidInfo) {
                 getUid();
@@ -62,19 +50,8 @@ class Agreement extends BaseComponent {
             if (!areaInfo) {
                 getArea();
             }
-        }
-    }
-
-    componentWillReaciveProps(nextProps) {
-        const router = decodeURI(getUrlParam('router', encodeURI(this.props.location.search)));
-        const nextRouter = decodeURI(getUrlParam('router', encodeURI(nextProps.location.search)));
-        const type = decodeURI(getUrlParam('type', encodeURI(nextProps.location.search)));
-        if (process.env.NATIVE && router !== nextRouter) {
-            this.setState({
-                edit: nextRouter
-            });
-        }
-        if (type !== 'null') {
+            this.setState({edit: router});
+        } else { //登录页跳过来的时候
             this.setState({
                 edit: 'userAgreementDetail'
             }, () => {
@@ -82,6 +59,25 @@ class Agreement extends BaseComponent {
             });
         }
     }
+
+    // componentWillReaciveProps(nextProps) {
+    //     const router = decodeURI(getUrlParam('router', encodeURI(this.props.location.search)));
+    //     const nextRouter = decodeURI(getUrlParam('router', encodeURI(nextProps.location.search)));
+    //     const type = decodeURI(getUrlParam('type', encodeURI(nextProps.location.search)));
+    //     console.log(router, nextRouter, type, '考虑到法国');
+    //     if (process.env.NATIVE && router !== nextRouter) {
+    //         this.setState({
+    //             edit: nextRouter
+    //         });
+    //     }
+    //     if (type !== 'null') {
+    //         this.setState({
+    //             edit: 'userAgreementDetail'
+    //         }, () => {
+    //             this.getProtocol(Number(type));
+    //         });
+    //     }
+    // }
 
     //源头uid
     userId = (uidInfo) => (
@@ -166,10 +162,10 @@ class Agreement extends BaseComponent {
             <AppNavBar title="所在区域管理"/>
             <List className="my-list">
                 <div style={{height: height}} className="receiving-reg">
-                    <Item
+                    {/* <Item
                         extra={areaInfo && areaInfo.join('-')}
                     >当前区域
-                    </Item>
+                    </Item> */}
                     <InputItem>
                         <div className="area">修改区域</div>
                         {
@@ -277,12 +273,12 @@ class Agreement extends BaseComponent {
                         {
                             !window.isWX && (
                                 <List>
-                                    <Item extra="有新版" arrow="horizontal" onClick={() => process.env.NATIVE && native('checkVersion', {'': ''})}>新版本检测</Item>
+                                    <Item extra="有新版" arrow="horizontal" onClick={() => process.env.NATIVE && native('checkVersion', {'': ''})}>检测</Item>
                                 </List>
                             )
                         }
                         <span className="corporate">中战华安控股集团有限公司</span>
-                        <span className="edition">当前版本号：1.0.3</span>
+                        <span className="edition">当前版本号：1.0</span>
                     </React.Fragment>
                 )
             }
@@ -293,7 +289,7 @@ class Agreement extends BaseComponent {
                 footer={[{text: '确定',
                     onPress: () => {
                         if (process.env.NATIVE && type !== 'null') {
-                            native('goBack');
+                            native('goBack', 'goLogin');
                         }
                         this.showModal(false);
                     }}]}

@@ -101,7 +101,9 @@ global.goBack = function () {
     const onOff = store.getState().get('base').get('returnStatus');
     if (!onOff) {
         if (appHistory.length() === 0 && process.env.NATIVE) {
-            window.DsBridge.call('goBack');
+            if (!window.location.href.includes('userAgreementDetail')) {
+                window.DsBridge.call('goBack');
+            }
         } else {
             appHistory.goBack();
         }

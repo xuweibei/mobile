@@ -1,17 +1,11 @@
 import {Route} from 'react-router-dom';
+import MyCustomerModal from './subpage/customer/route';
+import MyBusinessModal from './subpage/business/route';
+import InspectModal from './subpage/inspect/route';
 
-
-const MyCustomer = Loadable({
-    loader: () => import(/* webpackChunkName: 'My' */ './subpage/customer/route'),
-    loading: () => null
-});
 
 const OrderPage = Loadable({
     loader: () => import(/* webpackChunkName: 'orderMains' */ './subpage/my-order/route'),
-    loading: () => null
-});
-const MyBusiness = Loadable({
-    loader: () => import(/* webpackChunkName: 'My' */ './subpage/business/route'),
     loading: () => null
 });
 const MyInvitation = Loadable({
@@ -59,15 +53,13 @@ const BrowseHistory = Loadable({
     loader: () => import(/* webpackChunkName: 'My' */ './subpage/browse-history/route'),
     loading: () => null
 });
-const InspectModal = Loadable({
-    loader: () => import(/* webpackChunkName: 'My' */ './subpage/inspect/route'),
-    loading: () => null
-});
+// const InspectModal = Loadable({
+//     loader: () => import(/* webpackChunkName: 'My' */ './subpage/inspect/route'),
+//     loading: () => null
+// });
 
 const My = () => (
     <React.Fragment>
-        <Route path="/customer" component={MyCustomer}/>
-        <Route path="/business" component={MyBusiness}/>
         <Route path="/collect" component={MyCollect}/>
         <Route path="/appendorder" component={AppendOrder}/>
         <Route path="/withdrawal" component={WithdrawalRouters}/>
@@ -77,7 +69,9 @@ const My = () => (
         <Route path="/openShopPage" component={OpenShopPage}/>
         <Route path="/personalStores" component={PeraonalSotes}/>
         <Route path="/browseHistory" component={BrowseHistory}/>
-        <Route path="/inspect" component={InspectModal}/>
+        <InspectModal/>
+        <MyBusinessModal/>
+        <MyCustomerModal/>
         <SelfMention/>
         <Edit/>
         <OrderPage/>

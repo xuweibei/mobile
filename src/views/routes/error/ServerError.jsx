@@ -18,16 +18,19 @@ const Error = () => (
 );
 
 export default class ServerError extends React.PureComponent {
-    componentWillMount() {
+    constructor(props) {
+        super(props);
+        this.state = {};
         if (process.env.NATIVE) {
             native('setNavColor', {color: navColorF});
         }
     }
 
-    componentWillReceiveProps() {
+    static getDerivedStateFromProps(nextProps) {
         if (process.env.NATIVE) {
             native('setNavColor', {color: navColorF});
         }
+        return null;
     }
 
     render() {

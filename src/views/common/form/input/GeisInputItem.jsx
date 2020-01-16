@@ -37,7 +37,8 @@ class GeisInputItem extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            inputValue: ''
+            inputValue: '',
+            data: ''
         };
     }
 
@@ -67,7 +68,14 @@ class GeisInputItem extends React.PureComponent {
             ['cnEnNum', /^[\u4E00-\u9FA5A-Za-z0-9_]+$/],  //中英文数字
             ['float', /^[0-9]+.?[0-9]*$/]    //可以输入小数的数字
         ]);
-        if (!reg.get(type).test(e) && e !== '') return;
+        if (!reg.get(type).test(e) && e !== '') {
+            if (type === 'nonSpace') {
+                this.setState({//设置这个是为了输入空格的时候可以更新，这样空格就会被过滤了
+                    data: new Date()
+                });
+            }
+            return;
+        }
         const {onChange} = this.props;
         if (onChange) {
             onChange(e);
@@ -78,8 +86,9 @@ class GeisInputItem extends React.PureComponent {
     };
 
     render() {
-        const {clear, placeholder, editable, itemTitle, maxLength, showPass, isStyle, itemStyle} = this.props;
-        const {inputValue} = this.state;
+        const {clear, placeholder, editable, itemTitle, showPass, isStyle, maxLength, itemStyle} = this.props;
+        const {inputValue, data} = this.state;
+        console.log(data, '打印');
         return (
             <InputItem
                 value={inputValue}

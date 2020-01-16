@@ -2,7 +2,7 @@ export {
     keyMirror, createReducer, errorType, getUrlParam,
     showInfo, showFail, showSuccess, dealImage, isEqual,
     isPartialEqual, throttle, debounce, getPixelRatio, confirmDate,
-    supple
+    supple, spliceArr
 } from './mixin';
 export {systemApi} from './systemApi';
 export {rollStatus} from './rollStatus';

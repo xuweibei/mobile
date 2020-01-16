@@ -130,7 +130,7 @@ class EvaluationSuccess extends BaseComponent {
                                     <span className="bookkeeping-r">{item.city}</span>
                                 </div>
                                 <div className="payment">
-                                    <span>{item.sale_num}人付款</span>
+                                    <span>{item.num_sold}人付款</span>
                                     {/*<span className="payment-r">￥9999</span>*/}
                                 </div>
                                 <div className="price" onClick={this.shopHome.bind(this, item.shop_id)}>

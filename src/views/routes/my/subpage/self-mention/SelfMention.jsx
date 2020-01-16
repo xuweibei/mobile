@@ -21,32 +21,44 @@ const tabs = [
     {title: '售后'}
 ];
 class ReDetail extends BaseComponent {
-    state ={
-        refreshing: false, //是否在下拉刷新时显示指示器
-        isLoading: false, //是否在上拉加载时显示提示
-        hasMore: false, //是否有数据可请求
-        status: 0, //tab状态
-        page: 1, //列表第几页
-        pageSize: 10, //每页多少条
-        pageCount: -1, //一共有多少页
-        pageList: [], //列表信息
-        orderId: 0, //订单id
-        canStatus: false, //是否弹出取消框
-        navColor: '@fiery-red', //nav背景颜色
-        height: document.documentElement.clientHeight - (window.isWX ? 0.75 : window.rem * 1.8)
-    }
-
-    componentWillMount() {
-        const num = this.statusChoose(this.props.location.pathname.split('/')[2]);
-        this.init(num);
+    constructor(props) {
+        super(props);
+        this.state = {
+            refreshing: false, //是否在下拉刷新时显示指示器
+            isLoading: false, //是否在上拉加载时显示提示
+            hasMore: false, //是否有数据可请求
+            status: 0, //tab状态
+            page: 1, //列表第几页
+            pageSize: 10, //每页多少条
+            pageCount: -1, //一共有多少页
+            pageList: [], //列表信息
+            orderId: 0, //订单id
+            canStatus: false, //是否弹出取消框
+            navColor: '@fiery-red', //nav背景颜色
+            height: document.documentElement.clientHeight - (window.isWX ? 0.75 : window.rem * 1.8),
+            propsData: props
+        };
         removeValue('orderInfo');//清除下单流程留下来的订单信息
         removeValue('orderArr');
     }
 
-    componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方
-        const numNext = this.statusChoose(nextProps.location.pathname.split('/')[2]);
-        const numPrev = this.statusChoose(this.props.location.pathname.split('/')[2]);
+    componentDidMount() {
+        const num = this.statusChoose(this.props.location.pathname.split('/')[2]);
+        this.init(num);
+    }
+
+    static getDerivedStateFromProps(prevProps, prevState) {
+        return {
+            propsData: prevProps
+        };
+    }
+
+    componentDidUpdate(prev, data) {
+        // 父组件重传props时就会调用这个方
+        const numNext = this.statusChoose(this.state.propsData.location.pathname.split('/')[2]);
+        const numPrev = this.statusChoose(data.propsData.location.pathname.split('/')[2]);
         if (numNext !== numPrev) {
+            // eslint-disable-next-line react/no-did-update-set-state
             this.setState({
                 status: numNext
             }, () => {
@@ -56,6 +68,20 @@ class ReDetail extends BaseComponent {
             });
         }
     }
+
+    // componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方
+    //     const numNext = this.statusChoose(nextProps.location.pathname.split('/')[2]);
+    //     const numPrev = this.statusChoose(this.props.location.pathname.split('/')[2]);
+    //     if (numNext !== numPrev) {
+    //         this.setState({
+    //             status: numNext
+    //         }, () => {
+    //             this.init(numNext);
+    //             removeValue('orderInfo');//清除下单流程留下来的订单信息
+    //             removeValue('orderArr');
+    //         });
+    //     }
+    // }
 
     init = (num) => {
         this.setState({
@@ -347,7 +373,7 @@ class ReDetail extends BaseComponent {
                             </div>
                         )}
                         {/*订单完成，等待评价*/}
-                        {((item.status === '3' || item.status === '10' || item.status === '12' || item.status === '13') && !item.return_status) && (
+                        {((item.status === '3') && !item.return_status) && (
                             <div className="buttons">
                                 <span className="look-button delete" style={{border: nativeCssDiff() ? '1PX solid #666' : '0.02rem solid #666'}} onClick={(e) => this.deleteOrder(e, item.id)}>删除</span>
                                 <div className="evaluate-button" onClick={(e) => this.promptlyAssess(e, item.id)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>待评价</div>
