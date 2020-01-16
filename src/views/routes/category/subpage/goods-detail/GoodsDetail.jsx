@@ -7,7 +7,7 @@ import {connect} from 'react-redux';
 import {Link, Element, scrollSpy, animateScroll} from 'react-scroll';
 import Recommend from './components/Recommend';
 import Evaluate from './components/Evaluate';
-import Specification from './components/specification';
+// import Specification from './components/specification';
 import {shopCartActionCreator as action} from '../../../shop-cart/actions';
 import {baseActionCreator as actionCreator} from '../../../../../redux/baseAction';
 import Sku from '../../../../common/sku/Sku';
@@ -574,18 +574,17 @@ class GoodsDetail extends BaseComponent {
         appHistory.push(`/evaluate?id=${id}`);
     }
 
-    changeSpecification = () => {
-        this.setState(prevState => ({
-            specificationStatus: !prevState.specificationStatus
-        }));
-    }
+    // changeSpecification = () => {
+    //     this.setState(prevState => ({
+    //         specificationStatus: !prevState.specificationStatus
+    //     }));
+    // }
 
     render() {
         const {
             topSwithe, popup, paginationNum, ids, maskStatus,
             picPath, goodsDetail, shop, recommend, collect, status, evalute,
-            goodsAttr, stocks, lineStatus, lineText, pickType, selectType, names, hasType, list,
-            specification, specificationStatus
+            goodsAttr, stocks, lineStatus, lineText, pickType, selectType, names, hasType, list
         } = this.state;
 
         // console.log(specification);
@@ -745,7 +744,7 @@ class GoodsDetail extends BaseComponent {
                         goToShopRecom={this.goToShopRecom}
                     />
 
-                    {
+                    {/* {
                         goodsDetail && goodsDetail.app_type === '3' && (
                             <Specification
                                 Element={Element}
@@ -755,7 +754,7 @@ class GoodsDetail extends BaseComponent {
                                 Link={Link}
                             />
                         )
-                    }
+                    } */}
 
 
                     {/*商品详情*/}
