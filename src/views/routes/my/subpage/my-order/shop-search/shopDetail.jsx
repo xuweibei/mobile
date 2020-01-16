@@ -284,6 +284,8 @@ class MyOrderSearch extends BaseComponent {
         ev.stopPropagation();
     }
 
+    //样式兼容统一封装
+    styleCompatible = () => (nativeCssDiff() ? '1PX solid #666' : '0.02rem solid #666')
 
     //底部按钮
     bottomModal = (item) => {

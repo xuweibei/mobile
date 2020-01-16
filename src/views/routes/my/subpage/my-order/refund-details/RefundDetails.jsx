@@ -76,6 +76,7 @@ class refundDetails extends BaseComponent {
                                 dropByCacheKey('OrderPage');//清除我的订单的缓存
                                 appHistory.go(-1);
                             } else {
+                                dropByCacheKey('selfMentionOrderPage');//清除线下订单
                                 appHistory.replace('/selfMention');
                             }
                         }

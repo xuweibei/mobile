@@ -235,7 +235,7 @@ class Address extends BaseComponent {
         const phone = getFieldsValue().phone;
         const district = [addressArr.province_id, addressArr.city_id, addressArr.county_id, addressArr.town_id];
         //表单验证
-        if (!validator.checkRange(2, 20, account)) {
+        if (!validator.checkRange(2, 8, account)) {
             showInfo(Form.No_Name);
             return;
         }

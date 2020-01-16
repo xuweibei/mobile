@@ -1,5 +1,6 @@
 import React from 'react';
 import copy from 'copy-to-clipboard';
+import {dropByCacheKey} from 'react-router-cache-route';
 import {connect} from 'react-redux';
 import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAction';
 import AppNavBar from '../../../../../common/navbar/NavBar';
@@ -89,6 +90,7 @@ class ReDetail extends BaseComponent {
                     .subscribe(res => {
                         if (res && res.status === 0) {
                             showInfo('成功删除订单');
+                            dropByCacheKey('selfMentionOrderPage');//清除线下订单
                             appHistory.goBack();
                         }
                     });
@@ -186,6 +188,7 @@ class ReDetail extends BaseComponent {
     }
 
     goBackModal = () => {
+        dropByCacheKey('selfMentionOrderPage');//清除线下订单
         if (appHistory.length() === 0) {
             appHistory.replace('/selfMention');
         } else {

@@ -1,5 +1,7 @@
  @import "~style";
 .goods-detail{
+    // touch-action:none;
+    touch-action: pan-y;
     position: absolute;
     top: 0;
     right: 0;
@@ -260,6 +262,12 @@
         width: 100%;
         background: @white;
         overflow-wrap: break-word;
+        .ssd-module-wrap {
+            width: 100% !important;
+            div{
+                width: 100% !important;
+            }
+        }
         .ql-indent-1{
             word-break: break-word;
             img{

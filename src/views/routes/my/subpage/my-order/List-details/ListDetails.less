@@ -139,6 +139,14 @@
                     text-overflow:ellipsis;
                     overflow: hidden;
                 }
+                .enter{
+                    margin-top:8px;
+                }
+                .enter:before {
+                    content: '\E643';
+                    color: @gray;
+                    font-size: @font-size-30;
+                }
             }
             span {
                 margin-top: 11px;
@@ -476,8 +484,6 @@
         align-items: center;
         background-color: @white;
         box-shadow:@box-shadow-0271;
-        padding-left: 20px;
-        padding-right: 20px;
         .cancel-order {
             width: 140px;
             height: 50px;

@@ -149,6 +149,7 @@ class applyService extends BaseComponent {
                                 } else {
                                     appHistory.go(-3);
                                 }
+                                dropByCacheKey('selfMentionOrderPage');//清除线下订单
                                 setTimeout(() => {
                                     appHistory.push(`/selfOrderingDetails?id=${orderId}`);
                                 });
@@ -178,6 +179,7 @@ class applyService extends BaseComponent {
                             } else {
                                 appHistory.go(-2);
                             }
+                            dropByCacheKey('selfMentionOrderPage');//清除线下订单
                             setTimeout(() => {
                                 appHistory.push(`/selfOrderingDetails?id=${orderId}`);
                             });

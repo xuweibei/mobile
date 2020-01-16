@@ -67,7 +67,7 @@ class MyOrder extends BaseComponent {
     componentDidUpdate(prev, data) {
         const numPrev = this.statusChoose(this.state.propsData.location.pathname.split('/')[2]) || -1;
         const numPrev2 = this.statusChoose(data.propsData.location.pathname.split('/')[2]) || -1;
-        if (process.env.NATIVE && numPrev !== numPrev2) {
+        if (numPrev !== numPrev2) {
             const dataSource2 = new ListView.DataSource({
                 rowHasChanged: (row1, row2) => row1 !== row2
             });

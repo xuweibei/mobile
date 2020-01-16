@@ -1,6 +1,8 @@
 import {Route} from 'react-router-dom';
 import MyCustomerModal from './subpage/customer/route';
 import MyBusinessModal from './subpage/business/route';
+import InspectModal from './subpage/inspect/route';
+
 
 const MyPage = Loadable({
     loader: () => import(/* webpackChunkName: 'wechat' */ './My'),
@@ -58,10 +60,10 @@ const BrowseHistory = Loadable({
     loader: () => import(/* webpackChunkName: 'BrowseHistory' */ './subpage/browse-history/route'),
     loading: () => null
 });
-const InspectModal = Loadable({
-    loader: () => import(/* webpackChunkName: 'InspectModal' */ './subpage/inspect/route'),
-    loading: () => null
-});
+// const InspectModal = Loadable({
+//     loader: () => import(/* webpackChunkName: 'InspectModal' */ './subpage/inspect/route'),
+//     loading: () => null
+// });
 const My = () => (
     <React.Fragment>
         <Route path="/my" component={MyPage}/>
@@ -74,7 +76,7 @@ const My = () => (
         <Route path="/openShopPage" component={OpenShopPage}/>
         <Route path="/personalStores" component={PeraonalSotes}/>
         <Route path="/browseHistory" component={BrowseHistory}/>
-        <Route path="/inspect" component={InspectModal}/>
+        <InspectModal/>
         <MyBusinessModal/>
         <MyCustomerModal/>
         <SelfMention/>

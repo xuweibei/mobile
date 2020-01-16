@@ -212,12 +212,12 @@ class BankCardDetail extends BaseComponent {
      };
 
      render() {
-         const {userInfo, getOff, height, bankArr} = this.state;
+         const {userInfo, getOff, bankArr} = this.state;
          const {getFieldDecorator} = this.props.form;
          return (
              <div data-component="bankCardDetail" data-role="page" className="bank-card-detail">
                  <AppNavBar title="我的银行卡"/>
-                 <div style={{height: height}} className="bank-box">
+                 <div className="bank-box">
                      <div className={`mainInfo ${userInfo.bankId === undefined ? 'no-font-color' : 'font-color'}`}>
                          {
                              getFieldDecorator('name', {

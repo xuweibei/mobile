@@ -36,7 +36,14 @@ export default class OpenShop extends BaseComponent {
     saveImg = () => {
         const qrCode = this.state.qrCode;
         if (qrCode) {
-            native('savePicCallback', {type: 2, imgUrl: qrCode});
+            native('savePicCallback', {type: 2, imgUrl: qrCode}, (data) => {
+                console.log(data, '看了是到付款了发');
+                if (data.status === 0) {
+                    showInfo('保存成功');
+                } else {
+                    // showFail('保存失败');
+                }
+            });
         } else {
             showInfo('暂无图片可以保存');
         }
