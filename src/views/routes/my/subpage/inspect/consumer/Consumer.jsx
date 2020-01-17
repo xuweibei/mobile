@@ -13,24 +13,32 @@ class Consumer extends BaseComponent {
         list: {},
         order: [],
         val: decodeURI(getUrlParam('val', encodeURI(this.props.location.search))),
+        nextVal: '',
         codeStatus: 1
     }
 
     componentDidMount() {
         this.orderInfo();
-        console.log(window.location.href)
+        // console.log(window.location.href);
     }
 
-    // componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方
-    //     this.setState({
-    //         // val
-    //     });
-    // }
+    componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方
+        this.setState({
+            val: decodeURI(getUrlParam('val', encodeURI(this.props.location.search))),
+            nextVal: decodeURI(getUrlParam('val', encodeURI(nextProps.location.search)))
+        }, () => {
+            const {nextVal, val} = this.state;
+            // console.log(nextVal, val, '阿萨科技大哈萨克讲得好卡倒计时');
+            if (nextVal !== val) {
+                this.orderInfo(nextVal);
+            }
+        });
+    }
 
     //获取订单信息
-    orderInfo = () => {
-        const {val} = this.state;
-        console.log(val, 'aaaaaaaaaaaaaa');
+    orderInfo = (val = this.state.val) => {
+        // const {val} = this.state;
+        // console.log(val, 'aaaaaaaaaaaaaa');
         this.fetch(urlCfg.whiteShop, {data: {
             white_off: val
         }}).subscribe(res => {
