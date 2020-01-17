@@ -17,19 +17,26 @@ class Consumer extends BaseComponent {
     }
 
     componentDidMount() {
+        // console.log(window.location.href);
         this.orderInfo();
     }
 
-    // componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方
-    //     this.setState({
-    //         // val
-    //     });
-    // }
+    componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方
+        this.setState({
+            nextVal: decodeURI(getUrlParam('val', encodeURI(this.props.location.search)))
+        }, () => {
+            console.log(this.state.val, this.state.nextVal, '开机按手机卡实打实');
+            if (this.state.val !== this.state.nextVal) {
+                this.orderInfo();
+            }
+        });
+    }
 
     //获取订单信息
     orderInfo = () => {
         const {val} = this.state;
-        console.log(val, 'aaaaaaaaaaaaaa');
+        // if (val !==)
+        // console.log(val, 'aaaaaaaaaaaaaa');
         this.fetch(urlCfg.whiteShop, {data: {
             white_off: val
         }}).subscribe(res => {
