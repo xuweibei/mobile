@@ -19,6 +19,7 @@ class Consumer extends BaseComponent {
     componentDidMount() {
         // console.log(window.location.href);
         this.orderInfo();
+        console.log(window.location.href)
     }
 
     componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方
@@ -145,7 +146,6 @@ class Consumer extends BaseComponent {
 
 const mapStateToProps = state => {
     const my = state.get('my');
-
     return {
         verification: my.get('verification')
     };

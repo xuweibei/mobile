@@ -1,4 +1,4 @@
-/* 核销订单页面*/
+/*  订单页面*/
 
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './ConsumerSearch.less';
