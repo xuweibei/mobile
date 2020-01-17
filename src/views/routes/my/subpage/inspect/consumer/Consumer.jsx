@@ -18,6 +18,7 @@ class Consumer extends BaseComponent {
 
     componentDidMount() {
         this.orderInfo();
+        console.log(window.location.href)
     }
 
     //获取订单信息
@@ -127,7 +128,6 @@ class Consumer extends BaseComponent {
 
 const mapStateToProps = state => {
     const my = state.get('my');
-
     return {
         verification: my.get('verification')
     };
