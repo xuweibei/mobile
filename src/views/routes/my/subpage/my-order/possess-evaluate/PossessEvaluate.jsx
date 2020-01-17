@@ -446,7 +446,7 @@ class PossessEvaluate extends BaseComponent {
                     <div className="shop-lists">
                         <div className="shop-name" onClick={userType === '2' ? '' : () => this.goShopHome(item.shop_id)}>
                             <div className="shop-title">
-                                <LazyLoadIndex key={item.picpath} src={userType === '2' ? item.avatarUrl : item.picpath}/>
+                                <LazyLoadIndex key={item.picpath} src={userType === '2' ? item.avatarUrl : item.df_logo}/>
                                 <p>{userType === '2' ? item.nickname : item.shopName }</p>
                                 <div className="icon enter"/>
                             </div>

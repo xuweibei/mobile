@@ -18,6 +18,7 @@ class Consumer extends BaseComponent {
     }
 
     componentDidMount() {
+        // console.log(window.location.href);
         this.orderInfo();
         // console.log(window.location.href);
     }
@@ -28,7 +29,6 @@ class Consumer extends BaseComponent {
             nextVal: decodeURI(getUrlParam('val', encodeURI(nextProps.location.search)))
         }, () => {
             const {nextVal, val} = this.state;
-            // console.log(nextVal, val, '阿萨科技大哈萨克讲得好卡倒计时');
             if (nextVal !== val) {
                 this.orderInfo(nextVal);
             }
@@ -37,8 +37,6 @@ class Consumer extends BaseComponent {
 
     //获取订单信息
     orderInfo = (val = this.state.val) => {
-        // const {val} = this.state;
-        // console.log(val, 'aaaaaaaaaaaaaa');
         this.fetch(urlCfg.whiteShop, {data: {
             white_off: val
         }}).subscribe(res => {
