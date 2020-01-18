@@ -111,10 +111,13 @@ class appendOrder extends BaseComponent {
                 invoice: {},
                 invoiceIndex: ''
             }, () => {
-                getShopCartInfo('getInfo', {'': ''}).then(res => {
-                    setOrder(res.data.arr);
-                    setIds(res.data.cartArr);
-                    this.getOrderState();
+                window.DsBridge.call('getInfo', {'' : ''}, (dataValue) => {
+                    const res = dataValue ? JSON.parse(dataValue) : '';
+                    if (res && res.status === 0) {
+                        setOrder(res.data.arr);
+                        setIds(res.data.cartArr);
+                        this.getOrderState();
+                    }
                 });//原生方法获取前面的redux
             });
         }
