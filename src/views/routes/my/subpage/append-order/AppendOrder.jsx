@@ -588,7 +588,7 @@ class appendOrder extends BaseComponent {
                                     </List>
                                     <div className="payable">
                                         <span>实付款</span>
-                                        <span>￥{shop.actual_all_price}</span>
+                                        <span>￥{this.totalPrice()}</span>
                                     </div>
                                 </div>
                             ))

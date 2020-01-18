@@ -574,17 +574,17 @@ class GoodsDetail extends BaseComponent {
         appHistory.push(`/evaluate?id=${id}`);
     }
 
-    // changeSpecification = () => {
-    //     this.setState(prevState => ({
-    //         specificationStatus: !prevState.specificationStatus
-    //     }));
-    // }
+    changeSpecification = () => {
+        this.setState(prevState => ({
+            specificationStatus: !prevState.specificationStatus
+        }));
+    }
 
     render() {
         const {
             topSwithe, popup, paginationNum, ids, maskStatus,
             picPath, goodsDetail, shop, recommend, collect, status, evalute,
-            goodsAttr, stocks, lineStatus, lineText, pickType, selectType, names, hasType, list
+            goodsAttr, stocks, lineStatus, lineText, pickType, selectType, names, hasType, list,
         } = this.state;
 
         // console.log(specification);
