@@ -3,7 +3,7 @@ import './NewOpenShop.less';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 
 const {urlCfg} = Configs;
-const {native, showInfo} = Utils;
+const {showFail, showInfo} = Utils;
 export default class OpenShop extends BaseComponent {
     state = {
         qrCode: '',
@@ -36,12 +36,12 @@ export default class OpenShop extends BaseComponent {
     saveImg = () => {
         const qrCode = this.state.qrCode;
         if (qrCode) {
-            native('savePicCallback', {type: 2, imgUrl: qrCode}, (data) => {
-                console.log(data, '看了是到付款了发');
-                if (data.status === 0) {
-                    showInfo('保存成功');
+            window.DsBridge.call('savePicCallback', {imgUrl: encodeURIComponent(qrCode)}, (data) => {
+                const info = JSON.parse(data);
+                if (info.status === 0) {
+                    showInfo('图片保存成功');
                 } else {
-                    // showFail('保存失败');
+                    showFail('图片保存失败');
                 }
             });
         } else {

@@ -14,25 +14,28 @@ class Consumer extends BaseComponent {
         order: [],
         val: decodeURI(getUrlParam('val', encodeURI(this.props.location.search))),
         nextVal: '',
-        codeStatus: 1
+        codeStatus: 1,
+        propsData: this.props
     }
 
     componentDidMount() {
-        // console.log(window.location.href);
         this.orderInfo();
-        // console.log(window.location.href);
     }
 
-    componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方
-        this.setState({
-            val: decodeURI(getUrlParam('val', encodeURI(this.props.location.search))),
-            nextVal: decodeURI(getUrlParam('val', encodeURI(nextProps.location.search)))
-        }, () => {
-            const {nextVal, val} = this.state;
-            if (nextVal !== val) {
-                this.orderInfo(nextVal);
+    static getDerivedStateFromProps(prevProps, prevState) {
+        return {
+            propsData: prevProps
+        };
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (process.env.NATIVE) {
+            const val = decodeURI(getUrlParam('val', encodeURI(this.state.propsData.location.search)));
+            const valNew = decodeURI(getUrlParam('val', encodeURI(prevState.propsData.location.search)));
+            if (valNew !== val) {
+                this.orderInfo(val);
             }
-        });
+        }
     }
 
     //获取订单信息

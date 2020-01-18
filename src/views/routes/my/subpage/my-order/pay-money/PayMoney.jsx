@@ -462,7 +462,7 @@ class PayMoney extends BaseComponent {
                 {pwsPopup && (
                     <div className="enter-password-box" >
                         {/* <div className="enter-password" ref={payBtn => { this.payBtn = payBtn }}> */}
-                        <div className="enter-password" ref={payBtn => { this.payBtn = payBtn }} style={{paddingBottom: this.getScrollTop()}}>
+                        <div className="enter-password" ref={payBtn => { this.payBtn = payBtn }} style={{paddingBottom: process.env.NATIVE ? this.getScrollTop() : '4.5rem'}}>
                             <div className="command">
                                 <span className="icon command-left" onClick={this.closePopup}/>
                                 <span className="icon command-center">请输入支付密码</span>
