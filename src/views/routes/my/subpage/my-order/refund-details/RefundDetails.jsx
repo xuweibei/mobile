@@ -211,6 +211,28 @@ class refundDetails extends BaseComponent {
                             {/*<span>00:00:00</span>*/}
                         </div>
                     </div>
+                    <div className="refund-money-all">
+                        <span className="list-left">退回总金额：</span>
+                        <span className="list-right">
+                            ￥{123456}
+                        </span>
+                    </div>
+                    <div className="logistics-info">
+                        <div className="detail-list">
+                            <span className="list-left">店家姓名：</span>
+                            <span className="list-center">你多少吧</span>
+                            <span className="list-right">
+                                {refundArr.return_no}
+                            </span>
+                        </div>
+                        <div className="detail-list">
+                            <span className="list-left">店家地址：</span>
+                            <span>
+                                {refundArr.return_no}
+                            </span>
+                        </div>
+                        <p>商家已同意申请，请尽快寄出商品，同时填写相关的物流信息</p>
+                    </div>
                 </div>
                 {/*商品*/}
                 {/* <div className="consult-his" onClick={this.goToConsultHistory}><span>协商历史</span><span className="icon history"/></div> */}
@@ -276,6 +298,18 @@ class refundDetails extends BaseComponent {
                         <span className="list-left">申请数量：</span>
                         <span>{refundArr.num}件</span>
                     </div>
+                    <div className="detail-list">
+                        <span className="list-left">申请时间：</span>
+                        <span>{refundArr.num}件</span>
+                    </div>
+                    <div className="detail-list">
+                        <span className="list-left">取件方式：</span>
+                        <span>{refundArr.num}件</span>
+                    </div>
+                    <div className="detail-list">
+                        <span className="list-left">自营配送：</span>
+                        <span>{refundArr.num}件</span>
+                    </div>
                     {
                         refundArr.status === '3' && (
                             <div>
@@ -307,7 +341,7 @@ class refundDetails extends BaseComponent {
                     <div className="business-box">
                         <div className="business">
                             <div className="business-left icon" onClick={this.goToShoper}><span>联系商家</span></div>
-                            <span className="business-right icon" onClick={() => this.shopPhone()}>商家电话</span>
+                            {/* <span className="business-right icon" onClick={() => this.shopPhone()}>商家电话</span> */}
                         </div>
                     </div>
                 </div>

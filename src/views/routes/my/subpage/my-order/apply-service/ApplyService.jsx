@@ -13,10 +13,25 @@ const article = [
         text: '退货退款',
         title: '已收货，需要退还商品',
         value: 2
+    },
+    {
+        text: '换货',
+        title: '已收货，需要更换收到的商品',
+        value: 3,
+        isJingDong: true
+    },
+    {
+        text: '维修',
+        title: '已收货，需要维修收到的商品',
+        value: 4,
+        isJingDong: true
     }
 ];
 
 export default class applyService extends BaseComponent {
+    //获取参数
+    getParameter = (value) => decodeURI(getUrlParam(value, encodeURI(this.props.location.search)))
+
     state = {
         onlyRefund: false, //是否是 仅退款
         Id: this.getParameter('orderId'), //退款所需参数 订单id
@@ -25,9 +40,6 @@ export default class applyService extends BaseComponent {
         arrInfo: this.getParameter('arrInfo'), //退款所需参数 标签
         onlyReturnMoney: this.getParameter('onlyReturnMoney')//待发货过来的退款，不让他点击退货退款给提示
     }
-
-    //获取参数
-    getParameter = (value) => decodeURI(getUrlParam(value, encodeURI(this.props.location.search)))
 
     //售后申请类型
     serviceList = (value) => {
@@ -44,19 +56,27 @@ export default class applyService extends BaseComponent {
     }
 
     render() {
+        const isJD = this.getParameter('isJD');
         return (
             <div data-component="apply-service" data-role="page" className="apply-service">
                 <AppNavBar title="选择售后类型"/>
                 <div className="services">
-                    {article.map((item, index) => (
-                        <div className="service-list" key={index.toString()} onClick={() => this.serviceList(item.value)}>
-                            <div className="service-left">
-                                <div className="service-text">{item.text}</div>
-                                <div className="service-title">{item.title}</div>
-                            </div>
-                            <div className="service-right"><span className="icon icon-right"/></div>
-                        </div>
-                    ))}
+                    {
+                        article.map((item, index) => {
+                            if (isJD === 'null' ? !item.isJingDong : 1) {
+                                return (
+                                    <div className="service-list" key={index.toString()} onClick={() => this.serviceList(item.value)}>
+                                        <div className="service-left">
+                                            <div className="service-text">{item.text}</div>
+                                            <div className="service-title">{item.title}</div>
+                                        </div>
+                                        <div className="service-right"><span className="icon icon-right"/></div>
+                                    </div>
+                                );
+                            }
+                            return null;
+                        })
+                    }
                     {/*温馨提示信息*/}
                     <div className="prompt">
                         <div className="prompt-text">温馨提示</div>
