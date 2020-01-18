@@ -108,6 +108,7 @@ class ShopHome extends BaseComponent {
 
     //星星显示
     starsShow = (num) => {
+        num = num.toString();
         const a = num.slice(0, 1);
         const b = num.slice(2, 3);
         const arr = Array.from({length: a}, (v, k) => k);
@@ -129,7 +130,7 @@ class ShopHome extends BaseComponent {
 
     render() {
         const {shopModelArr, show} = this.props;
-        const {shopInfo, visible} = this.state;
+        const {shopInfo, visible, starsArr, half} = this.state;
         return (
             show ? '' : (
                 <div className="home-bar">
@@ -164,21 +165,25 @@ class ShopHome extends BaseComponent {
                             <div className="home-title">
                                 <div className="home-icons">
                                     <span className="text">{shopInfo && shopInfo.shopName}</span>
-                                    {/*{
-                                        starsArr && starsArr.map((item, index) => <div key={item} className="icon icon-tiny"/>)
+                                    {//确定是京东商品就展示星星
+                                        (shopInfo.is_jdshop && shopInfo.shoper_open_status !== '0' && starsArr) ? starsArr.map((item, index) => <div key={item} className="icon icon-tiny"/>) : ''
                                     }
                                     {
-                                        half && <div className="icon icon-ban"/>
-                                    }*/}
+                                        (shopInfo.is_jdshop && shopInfo.shoper_open_status !== '0' && half) ? <div className="icon icon-ban"/> : ''
+                                    }
                                     {
                                         shopInfo && shopInfo.shoper_open_status === '0' && <span className="reatIng">休息中</span>
                                     }
                                     {/* <span style={{color: '@duckling-yellow'}}>{shopInfo.shop_mark}分</span> */}
                                 </div>
-                                <div className="home-text">
-                                    {/*<span className="text">{shopInfo && shopInfo.shopName}</span>*/}
-                                    <span className="text-num">人均消费 ￥{shopInfo && shopInfo.conper}元</span>
-                                </div>
+                                {
+                                    !shopInfo.is_jdshop && (//不是京东商品就展示
+                                        <div className="home-text">
+                                            {/*<span className="text">{shopInfo && shopInfo.shopName}</span>*/}
+                                            <span className="text-num">人均消费 ￥{shopInfo && shopInfo.conper}元</span>
+                                        </div>
+                                    )
+                                }
                             </div>
                             {
                                 shopInfo && shopInfo.collection > 0

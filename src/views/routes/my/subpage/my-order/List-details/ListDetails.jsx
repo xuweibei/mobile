@@ -252,12 +252,12 @@ class ListDetails extends BaseComponent {
                                 <div className="shop-lists">
                                     <div className="common-margin">
                                         <div className="shop-name">
-                                            <div className="shop-title">
+                                            <div className="shop-title" onClick={(ev) => this.goShopHome(canInfo.shop_id, ev)}>
                                                 <img src={canInfo.shoper_pic} onError={(e) => { e.target.src = canInfo.df_logo }} alt=""/>
                                                 <p>{canInfo.shopName}</p>
                                                 {isJingDong && <div className="icon enter"/>}
                                             </div>
-                                            {!isJingDong && <span><div className="right" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} onClick={(ev) => this.goShopHome(canInfo.shop_id, ev)}>进店</div></span>}
+                                            {!isJingDong && <span><div className="right" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>进店</div></span>}
                                         </div>
                                         {
                                             canInfo.pr_list && canInfo.pr_list.map((item, index) => (

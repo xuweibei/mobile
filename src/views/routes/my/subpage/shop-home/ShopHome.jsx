@@ -35,7 +35,7 @@ class ShopHome extends BaseComponent {
         };
         this.state = {
             dataSource,
-            height: document.documentElement.clientHeight - (window.isWX ? window.rem * 2.7 : window.rem * 3.5),
+            height: document.documentElement.clientHeight - (window.isWX ? window.rem * 2.7 : window.rem * 2.8),
             page: 1,
             pageCount: -1,
             currentState: decodeURI(getUrlParam('business', encodeURI(props.location.search))) === '1' ? 'business' : '', //判断当前点击状态对应的页面展示
@@ -47,7 +47,7 @@ class ShopHome extends BaseComponent {
             hasMore: false, //底部请求状态文字显示情况
             business: decodeURI(getUrlParam('business', encodeURI(props.location.search))) === '1', //表示从发现页面过来的，需要直接展示商家信息
             propsData: props,
-            isJingDong: decodeURI(getUrlParam('jingdong', encodeURI(props.location.search))) === '1' //判断是否是京东商品过来的
+            isJingDong: false //判断是否是京东商品过来的
         };
     }
 
@@ -130,7 +130,9 @@ class ShopHome extends BaseComponent {
                     {
                         dataSource: prevState.dataSource.cloneWithRows(this.temp.stackData),
                         pageCount: res.data.page_count,
-                        shopOnsInfo: res.data.shop_info
+                        shopOnsInfo: res.data.shop_info,
+                        isJingDong: res.data.shop_info.is_jdshop === 1,
+                        height: res.data.shop_info.is_jdshop === 1 ? (document.documentElement.clientHeight - (window.isWX ? window.rem * 2 : window.rem * 2.8)) : (document.documentElement.clientHeight - (window.isWX ? window.rem * 2.7 : window.rem * 3.5))
                     }
                 ));
             }
