@@ -22,7 +22,12 @@ class CancelOrder extends React.Component {
     ];
 
     static propTypes = {
-        canStateChange: PropTypes.func.isRequired
+        canStateChange: PropTypes.func.isRequired,
+        propsData: PropTypes.object
+    }
+
+    static defaultProps = {
+        propsData: {}
     }
 
     //单选改变
@@ -40,7 +45,9 @@ class CancelOrder extends React.Component {
     //确定按钮
     mastSure = () => {
         const {value} = this.state;
-        const info = this.canCelInfoArr.find(item => item.value === value);
+        const {propsData} = this.props;
+        const arr = propsData || this.canCelInfoArr;
+        const info = arr.find(item => item.value === value);
         this.props.canStateChange('mastSure', info);
         this.setState({
             value: ''
@@ -49,6 +56,8 @@ class CancelOrder extends React.Component {
 
     render() {
         const {value} = this.state;
+        const {propsData} = this.props;
+        const arr = propsData || this.canCelInfoArr;
         return (
             <div className="mask-cancel">
                 <div className="cancel-wrap">
@@ -58,7 +67,7 @@ class CancelOrder extends React.Component {
                     </div>
                     <div className={`choose-info ${nativeCssDiff() ? 'general-other' : 'general'}`}>
                         {
-                            this.canCelInfoArr.map((item, index) => (
+                            arr.map((item, index) => (
                                 <div
                                     key={item.value}
                                     onClick={() => this.checkedChange(item.value)}

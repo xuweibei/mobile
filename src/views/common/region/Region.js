@@ -309,9 +309,9 @@ class Region extends BaseComponent {
             countyData, countyValue, countyIndex,
             judge1, judge2, judge3
         } = this.state;
-        const {typeFour} = this.props;
+        const {typeFour, textAlign} = this.props;
         return (
-            <div className="regional">
+            <div className="regional" style={{textAlign: textAlign || 'right'}}>
                 <div className={provinceValue === '请选择所在地区' ?  'picker-inline' : 'gray-3'}>
                     <Picker
                         onChange={this.provinceChange}
