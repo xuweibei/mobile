@@ -23,7 +23,7 @@ class CancelOrder extends React.Component {
 
     static propTypes = {
         canStateChange: PropTypes.func.isRequired,
-        propsData: PropTypes.object
+        propsData: PropTypes.array
     }
 
     static defaultProps = {

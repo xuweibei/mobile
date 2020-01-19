@@ -21,7 +21,7 @@ class Address extends BaseComponent {
         province: '', //省的名字
         city: '', //市辖区的名字
         county: '', //城市的名字
-        street: '', //街道的名字
+        town: '', //街道的名字
         addressArr: {}, //初始地址
         editStatus: true, //地址选择显示与否
         addressStatus: decodeURI(getUrlParam('status', encodeURI(this.props.location.search))), //编辑还是添加 1编辑2添加

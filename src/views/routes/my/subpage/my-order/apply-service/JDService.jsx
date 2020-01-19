@@ -11,152 +11,303 @@ import './JDService.less';
 
 const {showInfo, appHistory, getUrlParam} = Utils;
 const {urlCfg} = Configs;
-const resultInfoArr = [
-    {label: '质量问题', value: 1},
-    {label: '商品与描述不符', value: 2},
-    {label: '误购（不喜欢/大小不合适）', value: 3},
-    {label: '卖家发错货', value: 4},
-    {label: '其他', value: 5}
+let resultInfoArr = [
+    // {label: '质量问题', value: 1},
+    // {label: '商品与描述不符', value: 2},
+    // {label: '误购（不喜欢/大小不合适）', value: 3},
+    // {label: '卖家发错货', value: 4},
+    // {label: '其他', value: 5}
 ];
 class JDService extends BaseComponent {
-    state = {
-        applyTitle: '请选择',
-        addressArr: {}, //地址信息
-        logistArr: [], //物流集合
-        bowOnfo: false, //原因选择弹框
-        imgFiles: [], //图片集合
-        resultValue: {}, //退款原因
-        applyNum: 0, //申请数量
-        qusetDecrie: '', //问题描述
-        packArr: [
-            {
-                title: '是',
-                click: true
-            }, {
-                title: '否',
-                click: false
-            }
-        ], // 是否包装数据
-        describeArr: [
-            {
-                title: '无包装',
-                click: false
-            },
-            {
-                title: '包装完整',
-                click: false
-            },
-            {
-                title: '包装破损',
-                click: false
-            }
-        ], //包装描述
-        pickArr: [
-            {
-                title: '上门取件',
-                click: false
-            }, {
-                title: '客户发货',
-                click: false
-            }
-        ] //取件信息
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            applyTitle: '请选择',
+            addressArr: {}, //寄件地址信息
+            returnaddressArr: {}, //返件地址信息
+            logistArr: [], //物流集合
+            bowOnfo: false, //原因选择弹框
+            imgFiles: [], //图片集合
+            resultValue: {}, //退款原因
+            applyNum: 0, //申请数量
+            qusetDecrie: '', //问题描述
+            linkName: '', //联系人姓名
+            linkPhone: '', //联系人电话
+            adressDetail: '', //详细地址
+            returnAdressDetail: '', //返件详细地址
+            type: this.getParameter('type'),
+            orderId: this.getParameter('orderId'),
+            dataInfo: {}, //接口请求数据
+            province: '', //取件省的名字
+            city: '', //取件市辖区的名字
+            county: '', //取件城市的名字
+            town: '', //取件街道的名字
+            provinceReturn: '', //返件省的名字
+            cityReturn: '', //返件市辖区的名字
+            countyReturn: '', //返件城市的名字
+            townReturn: '', //返件街道的名字
+            editStatus: true, //地址选择显示与否
+            packArr: [
+                {
+                    title: '是',
+                    value: 1,
+                    click: false
+                }, {
+                    title: '否',
+                    value: 0,
+                    click: false
+                }
+            ], // 是否包装数据
+            describeArr: [
+                {
+                    title: '无包装',
+                    value: 0,
+                    click: false
+                },
+                {
+                    title: '包装完整',
+                    value: 10,
+                    click: false
+                },
+                {
+                    title: '包装破损',
+                    value: 20,
+                    click: false
+                }
+            ], //包装描述
+            pickArr: [
+                {
+                    title: '上门取件',
+                    click: false
+                }, {
+                    title: '客户发货',
+                    click: false
+                }
+            ], //取件信息,
+            returnPart: [
+                {
+                    title: '自营配送',
+                    click: false
+                }, {
+                    title: '第三方配送',
+                    click: false
+                }
+            ] //返件方式
+        };
+    }
+
 
     componentDidMount() {
+        this.getList();
     }
 
-    //获取商家信息
+    //获取参数
+    getParameter = (value) => decodeURI(getUrlParam(value, encodeURI(this.props.location.search)))
+
+    //获取申请信息
     getList = () => {
-        const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
-        this.fetch(urlCfg.getShopInfo, {data: {id}})
+        const {type, orderId} = this.state;
+        this.fetch(urlCfg.jdRefundPage, {data: {order_id: orderId, return_type: type}})
             .subscribe(res => {
                 if (res && res.status === 0) {
+                    resultInfoArr = res.data.reason;
                     this.setState({
-                        shopInfo: res.data
+                        dataInfo: res.data,
+                        linkName: res.data.linkname,
+                        linkPhone: res.data.linktel,
+                        adressDetail: res.data.address,
+                        addressArr: res.data.area,
+                        province: res.data.area.province,
+                        city: res.data.area.city,
+                        county: res.data.area.county,
+                        town: res.data.area.town,
+                        pickArr: res.data.ware_type.map(item => { item.click = false; return item })
                     });
+                    if (type !== 'null' && type !== '2') {
+                        this.setState({
+                            returnaddressArr: res.data.area,
+                            provinceReturn: res.data.area.province,
+                            cityReturn: res.data.area.city,
+                            countyReturn: res.data.area.county,
+                            townReturn: res.data.area.town
+                            // pickArr: res.data.ware_type.map(item => { item.click = false })
+                        });
+                    }
                 }
             });
     }
 
-    //获取物流列表
-    getLogisticsList = () => {
-        this.fetch(urlCfg.getLogisticsList)
-            .subscribe(res => {
-                if (res.status === 0) {
-                    res.data.forEach(item => {
-                        item.label = item.cate2;
-                        item.value = item.id;
-                    });
-                    this.setState({
-                        logistArr: [res.data]
-                    });
-                }
-            });
+    //获取标题名字
+    getTabName = (num) => {
+        const arr = new Map([
+            ['2', '申请退货/退款'],
+            ['3', '申请换货'],
+            ['4', '申请维修']
+        ]);
+        return arr.get(num);
     }
 
     //提交申请
-    submit = () => {
-        const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
-        const {applyId, logistMain} = this.state;
-        if (!applyId) return showInfo('请选择物流');
-        if (!logistMain) return showInfo('请填写物流单号');
-        if (logistMain.length < 8) return showInfo('请输入正确的物流单号');
-        this.fetch(urlCfg.setLogisticsList, {method: 'post', data: {id: id, exp_id: applyId, exp_no: logistMain, type: 2}})
+    onSubmit = () => {
+        const {packArr, describeArr, pickArr, resultValue, imgFiles,
+            applyNum, qusetDecrie, linkName, linkPhone, adressDetail, type, returnAdressDetail, returnaddressArr,
+            addressArr
+        } = this.state;
+        const adArr = [addressArr.provinceId, addressArr.cityId, addressArr.countyId, addressArr.townId];//取件地址集合
+        const reArr = [returnaddressArr.provinceId, returnaddressArr.cityId, returnaddressArr.countyId, returnaddressArr.townId];//返件地址集合
+        if (!resultValue.label) {
+            showInfo('请选择申请原因');
+            return;
+        }
+        if (!applyNum) {
+            showInfo('请填写申请数量');
+            return;
+        }
+        if (!qusetDecrie) {
+            showInfo('请填写问题描述');
+            return;
+        }
+        if (packArr.every(item => !item.click)) {
+            showInfo('请选择是否有包装');
+            return;
+        }
+        if (describeArr.every(item => !item.click)) {
+            showInfo('请选择包装描述');
+            return;
+        }
+        if (pickArr.every(item => !item.click)) {
+            showInfo('请选择取件方式');
+            return;
+        }
+        if (adArr.some(item => !item)) {
+            showInfo('请选择取件地址');
+            return;
+        }
+        if (!linkName) {
+            showInfo('请填写联系人');
+            return;
+        }
+        if (!linkPhone) {
+            showInfo('请填写联系人电话');
+            return;
+        }
+        if (!adressDetail) {
+            showInfo('请填写取件详细地址');
+            return;
+        }
+        if (type !== 'null' && type !== '2') {
+            if (!reArr.some(item => item)) {
+                showInfo('请选择取件地址');
+                return;
+            }
+            if (!returnAdressDetail) {
+                showInfo('请填写返件详细地址');
+                return;
+            }
+        }
+        let bar = '';//是否包装
+        let dec = '';//是否包装
+        let getType = '';//取件方式
+        packArr.forEach(item => {
+            if (item.click) {
+                bar = item.value;
+            }
+        });
+        describeArr.forEach(item => {
+            if (item.click) {
+                dec = item.value;
+            }
+        });
+        pickArr.forEach(item => {
+            if (item.click) {
+                getType = item.code;
+            }
+        });
+        this.fetch(urlCfg.jdRefundApply, {
+            data: {
+                type, ispackage: bar, package: dec, picktype: getType, name: linkName, tel: linkPhone, reasons: qusetDecrie, skunum: applyNum, pca: adArr}})
             .subscribe(res => {
-                if (res && res.status === 0) {
-                    showInfo(res.message);
-                    //将我的订单的tab状态设置为售后
-                    this.props.setOrderStatus(4);
-                    //清除我的订单的缓存
-                    dropByCacheKey('OrderPage');
-                    dropByCacheKey('selfMentionOrderPage');//清除线下订单
-                    appHistory.replace(`/refundDetails?id=${id}`);
-                }
+                // if (res && res.status === 0) {
+
+                // }
             });
-        return undefined;
     }
 
 
     //  省市县的赋值
-    setProvince = str => {
-        const {addressArr} = this.state;
-        addressArr.province_id = str;
-        addressArr.city_id = '';
-        addressArr.county_id = '';
-        addressArr.town_id = '';
-        this.setState({
-            addressArr
-        });
+    setProvince = (str, num) => {
+        const {addressArr, returnaddressArr} = this.state;
+        if (num === 1) {
+            addressArr.provinceId = str;
+            addressArr.cityId = '';
+            addressArr.countyId = '';
+            addressArr.townId = '';
+            this.setState({
+                addressArr
+            });
+        } else {
+            returnaddressArr.provinceId = str;
+            returnaddressArr.cityId = '';
+            returnaddressArr.countyId = '';
+            returnaddressArr.townId = '';
+            this.setState({
+                returnaddressArr
+            });
+        }
     };
 
     //  市辖区赋值
-    setCity = str => {
-        const {addressArr} = this.state;
-        addressArr.city_id = str;
-        addressArr.county_id = '';
-        addressArr.town_id = '';
-        this.setState({
-            addressArr
-        });
+    setCity = (str, num) => {
+        const {addressArr, returnaddressArr} = this.state;
+        if (num === 1) {
+            addressArr.cityId = str;
+            addressArr.countyId = '';
+            addressArr.townId = '';
+            this.setState({
+                addressArr
+            });
+        } else {
+            returnaddressArr.cityId = str;
+            returnaddressArr.countyId = '';
+            returnaddressArr.townId = '';
+            this.setState({
+                returnaddressArr
+            });
+        }
     };
 
     //  城市赋值
-    setCounty = str => {
-        const {addressArr} = this.state;
-        addressArr.county_id = str;
-        addressArr.town_id = '';
-        this.setState({
-            addressArr
-        });
+    setCounty = (str, num) => {
+        const {addressArr, returnaddressArr} = this.state;
+        if (num === 1) {
+            addressArr.countyId = str;
+            addressArr.townId = '';
+            this.setState({
+                addressArr
+            });
+        } else {
+            returnaddressArr.countyId = str;
+            returnaddressArr.townId = '';
+            this.setState({
+                returnaddressArr
+            });
+        }
     };
 
     //  街道赋值
-    setStreet = str => {
-        const {addressArr} = this.state;
-        addressArr.town_id = str;
-        this.setState({
-            addressArr
-        });
+    setStreet = (str, num) => {
+        const {addressArr, returnaddressArr} = this.state;
+        if (num === 1) {
+            addressArr.townId = str;
+            this.setState({
+                addressArr
+            });
+        } else {
+            returnaddressArr.townId = str;
+            this.setState({
+                returnaddressArr
+            });
+        }
     };
 
     //单选事件
@@ -170,17 +321,13 @@ class JDService extends BaseComponent {
         });
         let obj = {};
         if (id === 1) {
-            obj = {
-                packArr: arrNew
-            };
+            obj = {packArr: arrNew};
         } else if (id === 2) {
-            obj = {
-                describeArr: arrNew
-            };
+            obj = {describeArr: arrNew};
+        } else if (id === 3) {
+            obj = {pickArr: arrNew};
         } else {
-            obj = {
-                pickArr: arrNew
-            };
+            obj = {returnPart: arrNew};
         }
         this.setState(obj);
     }
@@ -200,21 +347,32 @@ class JDService extends BaseComponent {
         });
     }
 
+    //父级数据变更
+    editStatusChange = () => {
+        this.setState({
+            editStatus: false
+        });
+    };
+
+
     render() {
-        const {packArr, describeArr, pickArr, bowOnfo, resultValue, imgFiles, applyNum, qusetDecrie} = this.state;
-        console.log(resultValue, '扣篮大赛');
+        const {packArr, describeArr, pickArr, returnPart, bowOnfo, resultValue, imgFiles,
+            applyNum, qusetDecrie, linkName, linkPhone, adressDetail, type, dataInfo, addressArr,
+            province, city, county, town, editStatus, returnaddressArr, provinceReturn, cityReturn,
+            countyReturn, townReturn, returnAdressDetail
+        } = this.state;
         return (
             <div data-component="JDSerivce" data-role="page" className="JDSerivce">
-                <AppNavBar title="申请退货/退款"/>
+                <AppNavBar title={this.getTabName(type)}/>
                 <div className="main-top">
                     <div className="shop-info">
-                        <img src="../../../../../../assets/images/Lazy-loading.png"/>
-                        <p>就地方克里斯个就考虑对方估计快了叫你看了估计快了纳斯达克分类江南时代咖啡机克里斯丁减肥</p>
+                        <img src={dataInfo.pr_picpath}/>
+                        <p>{dataInfo.pr_title}</p>
                     </div>
                     <div className="apply-info">
                         <div className="apply" onClick={() => { this.setState({bowOnfo: true}) }}>
                             <p><span>*</span>申请原因</p>
-                            <input placeholder="请选择申请原因" disabled value={resultValue.label}/>
+                            <input placeholder="请选择申请原因" disabled value={resultValue && resultValue.label}/>
                             <div className="icon inp"/>
                         </div>
                         <div className="apply">
@@ -241,11 +399,14 @@ class JDService extends BaseComponent {
                                 />
                             )
                         }
-
-                        <div className="apply-money">
-                            <span className="info-left">退款金额：</span>
-                            <span className="info-right">￥324354</span>
-                        </div>
+                        {
+                            type === '2' && (
+                                <div className="apply-money">
+                                    <span className="info-left">退款金额：</span>
+                                    <span className="info-right">￥324354</span>
+                                </div>
+                            )
+                        }
                     </div>
                 </div>
                 <div className="main-center">
@@ -253,8 +414,8 @@ class JDService extends BaseComponent {
                         <p><span>*</span>是否有包装</p>
                         {
                             packArr.map((item, index) => (
-                                <div key={item.title} className="choise" onClick={() => this.changeRaio(1, index, packArr)}>
-                                    <i className={'icon hook' + (item.click ? ' active' : '')}/>
+                                <div key={item.title} className={'choise' + (item.click ? ' activeJD' : '')} onClick={() => this.changeRaio(1, index, packArr)}>
+                                    <i className="icon hook"/>
                                     <span>{item.title}</span>
                                 </div>
                             ))
@@ -264,8 +425,8 @@ class JDService extends BaseComponent {
                         <p><span>*</span>包装描述</p>
                         {
                             describeArr.map((item, index) => (
-                                <div key={item.title} className="choise" onClick={() => this.changeRaio(2, index, describeArr)}>
-                                    <i className={'icon hook' + (item.click ? ' active' : '')}/>
+                                <div key={item.title} className={'choise' + (item.click ? ' activeJD' : '')} onClick={() => this.changeRaio(2, index, describeArr)}>
+                                    <i className="icon hook"/>
                                     <span>{item.title}</span>
                                 </div>
                             ))
@@ -275,36 +436,89 @@ class JDService extends BaseComponent {
                         <p><span>*</span>取件方式</p>
                         {
                             pickArr.map((item, index) => (
-                                <div key={item.title} className="choise" onClick={() => this.changeRaio(3, index, pickArr)}>
-                                    <i className={'icon hook' + (item.click ? ' active' : '')}/>
-                                    <span>{item.title}</span>
+                                <div key={item.name} className={'choise' + (item.click ? ' activeJD' : '')} onClick={() => this.changeRaio(3, index, pickArr)}>
+                                    <i className="icon hook"/>
+                                    <span>{item.name}</span>
                                 </div>
                             ))
                         }
                     </div>
                     <div className="pick-info">
                         <p><span>*</span>取件信息</p>
-                        <input placeholder="请输入联系人姓名"/>
-                        <input placeholder="请输入联系人电话"/>
+                        <input placeholder="请输入联系人姓名" value={linkName} onChange={(data) => { this.setState({linkName: data.target.value}) }}/>
+                        <input placeholder="请输入联系人电话" type="number" value={linkPhone} onChange={(data) => { this.setState({linkPhone: data.target.value}) }}/>
                         <div className="region-style">
                             <Region
-                                onSetProvince={this.setProvince}
-                                onSetCity={this.setCity}
-                                onSetCounty={this.setCounty}
-                                onSetStreet={this.setStreet}
-                                add
+                                onSetProvince={(data) => { this.setProvince(data, 1) }}
+                                onSetCity={(data) => { this.setCity(data, 1) }}
+                                onSetCounty={(data) => { this.setCounty(data, 1) }}
+                                onSetStreet={(data) => { this.setStreet(data, 1) }}
+                                provinceValue={province}
+                                cityValue={city}
+                                countyValue={county}
+                                townValue={town}
+                                provinceId={addressArr.provinceId}
+                                cityId={addressArr.cityId}
+                                countyId={addressArr.countyId}
+                                townId={addressArr.townId}
+                                editStatus={editStatus}
+                                editStatusChange={this.editStatusChange}
                                 typeFour
                                 textAlign="left"
                             />
                             <div className="icon inp"/>
                         </div>
-                        <input placeholder="请输入详细地址"/>
+                        <input placeholder="请输入详细地址" value={adressDetail} onChange={(data) => { this.setState({adressDetail: data.target.value}) }}/>
                     </div>
+                    {
+                        type !== 'null' && type !== '2' && (
+                            <div className="return-parts">
+                                <p><span>*</span>返件地址</p>
+                                <div className="region-style">
+                                    <Region
+                                        onSetProvince={this.setProvince}
+                                        onSetCity={this.setCity}
+                                        onSetCounty={this.setCounty}
+                                        onSetStreet={this.setStreet}
+                                        provinceValue={provinceReturn}
+                                        cityValue={cityReturn}
+                                        countyValue={countyReturn}
+                                        townValue={townReturn}
+                                        provinceId={returnaddressArr.provinceId}
+                                        cityId={returnaddressArr.cityId}
+                                        countyId={returnaddressArr.countyId}
+                                        townId={returnaddressArr.townId}
+                                        editStatus={editStatus}
+                                        editStatusChange={this.editStatusChange}
+                                        typeFour
+                                        textAlign="left"
+                                    />
+                                    <div className="icon inp"/>
+                                </div>
+                                <input placeholder="请输入详细地址" value={returnAdressDetail} onChange={(data) => { this.setState({returnAdressDetail: data.target.value}) }}/>
+                            </div>
+                        )
+                    }
+                    {
+                        type !== 'null' && type !== '2' && (
+                            <div className="center-info return-info">
+                                <p><span>*</span>返件方式</p>
+                                {
+                                    returnPart.map((item, index) => (
+                                        <div key={item.title} className={'choise' + (item.click ? ' activeJD' : '')} onClick={() => this.changeRaio(4, index, returnPart)}>
+                                            <i className="icon hook"/>
+                                            <span>{item.title}</span>
+                                        </div>
+                                    ))
+                                }
+                            </div>
+                        )
+                    }
                     {
                         bowOnfo && <CancelOrder propsData={resultInfoArr} canStateChange={this.canStateChange}/>
                     }
                 </div>
-                <Button className="sub-btn">提交</Button>
+                <Button className="sub-btn" onClick={this.onSubmit}>提交</Button>
             </div>
         );
     }

@@ -1,6 +1,7 @@
 //选择售后类型
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './ApplyService.less';
+import {urlCfg} from '../../../../../../configs/urlCfg';
 
 const {getUrlParam, appHistory, showInfo} = Utils;
 const article = [
@@ -38,30 +39,69 @@ export default class applyService extends BaseComponent {
         returnType: this.getParameter('returnType'), //退款所需参数 单个商品进行退款还是整条订单进行退款
         prId: this.getParameter('prId'), //退款所需参数 商品id
         arrInfo: this.getParameter('arrInfo'), //退款所需参数 标签
-        onlyReturnMoney: this.getParameter('onlyReturnMoney')//待发货过来的退款，不让他点击退货退款给提示
+        onlyReturnMoney: this.getParameter('onlyReturnMoney'), //待发货过来的退款，不让他点击退货退款给提示
+        articleArr: []//退款申请选项
+    }
+
+    componentDidMount() {
+        this.getType();
+    }
+
+    //获取退款的方式
+    getType = () => {
+        this.fetch(urlCfg.selectAftersalestype, {data: {order_id: this.getParameter('orderId')}}).subscribe(res => {
+            if (res && res.status === 0) {
+                this.setState({
+                    articleArr: res.returnType_arr
+                });
+            }
+        });
     }
 
     //售后申请类型
+    // serviceList = (value) => {
+    //     const {Id, returnType, prId, arrInfo, onlyReturnMoney} = this.state;
+    //     if (onlyReturnMoney === '1' && value === 2) {
+    //         showInfo('商家还未发货，请选择“仅退款”');
+    //     } else {
+    //         let onOff = false;
+    //         if (!value) { //判断是否仅退款，true是
+    //             onOff = true;
+    //         }
+    //         appHistory.push(`/onlyRefund?orderId=${Id}&prId=${prId}&returnType=${returnType}&arrInfo=${arrInfo}&onlyRefund=${onOff}`);
+    //     }
+    // }
+
+    //售后申请类型
     serviceList = (value) => {
-        const {Id, returnType, prId, arrInfo, onlyReturnMoney} = this.state;
-        if (onlyReturnMoney === '1' && value === 2) {
+        const {Id, returnType, prId, arrInfo, onlyReturnMoney, articleArr} = this.state;
+        if (onlyReturnMoney === '1' && value.value === 2) {
             showInfo('商家还未发货，请选择“仅退款”');
         } else {
             let onOff = false;
-            if (!value) { //判断是否仅退款，true是
+            if (!value.value) { //判断是否仅退款，true是
                 onOff = true;
             }
-            appHistory.push(`/onlyRefund?orderId=${Id}&prId=${prId}&returnType=${returnType}&arrInfo=${arrInfo}&onlyRefund=${onOff}`);
+            if (articleArr.length === 2) {
+                appHistory.push(`/onlyRefund?orderId=${Id}&prId=${prId}&returnType=${returnType}&arrInfo=${arrInfo}&onlyRefund=${onOff}`);
+            } else if (articleArr.length === 4) {
+                if (value.value === 1) {
+                    appHistory.push(`/onlyRefund?orderId=${Id}&prId=${prId}&returnType=${returnType}&arrInfo=${arrInfo}&onlyRefund=${onOff}`);
+                } else {
+                    appHistory.push(`/JDService?orderId=${Id}&&type=${value.value}`);
+                }
+            }
         }
     }
 
     render() {
-        const isJD = this.getParameter('isJD');
+    // const isJD = this.getParameter('isJD');
+        const {articleArr} = this.state;
         return (
             <div data-component="apply-service" data-role="page" className="apply-service">
                 <AppNavBar title="选择售后类型"/>
                 <div className="services">
-                    {
+                    {/* {
                         article.map((item, index) => {
                             if (isJD === 'null' ? !item.isJingDong : 1) {
                                 return (
@@ -76,6 +116,17 @@ export default class applyService extends BaseComponent {
                             }
                             return null;
                         })
+                    } */}
+                    {
+                        articleArr.length > 0 ? article.map((item, index) => (
+                            <div className="service-list" key={index.toString()} onClick={() => this.serviceList(item)}>
+                                <div className="service-left">
+                                    <div className="service-text">{item.text}</div>
+                                    <div className="service-title">{item.title}</div>
+                                </div>
+                                <div className="service-right"><span className="icon icon-right"/></div>
+                            </div>
+                        )) : ''
                     }
                     {/*温馨提示信息*/}
                     <div className="prompt">

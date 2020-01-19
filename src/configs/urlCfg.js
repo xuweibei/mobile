@@ -51,6 +51,9 @@ export const urlCfg = {
     dailyIncome: href.apiPath + '/gettaking', //我的资产列表 -- 每天的收入
     dailyIncomeAll: href.apiPath + '/taking-other', //我的资产列表 -- 每天的收入集合
     afterSalesRefundList: href.apiPath + '/notice-list', //售后/退款 列表
+    selectAftersalestype: href.apiPath + '/select-aftersalestype', //售后/退款 申请选项
+    jdRefundPage: href.apiPath + '/jd-refund-page', //售后/退款 申请页
+    jdRefundApply: href.apiPath + '/jd-refund-apply', //售后/退款 申请保存
     originalQuantification: href.apiPath + '/invori', //原始定量
     commodityCollection: href.apiPath + '/my-collect-add-pr', //商品收藏
     updatePaymentPassword: href.apiPath + '/modifypaypwd', //更新支付密码
