@@ -524,7 +524,7 @@ class MyOrder extends BaseComponent {
             blockModal = (
                 <div className="buttons">
                     { //余丽  暂时屏蔽
-                        (item.refund_button === 1) && (
+                        item.refund_button === 1 && item.app_type === '3' && (
                             <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
                                 {
                                     item.showButton && <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev, 1)}>申请退款</span>
@@ -542,7 +542,7 @@ class MyOrder extends BaseComponent {
             blockModal = (
                 <div className="buttons">
                     {
-                        item.refund_button === 1 && (
+                        item.refund_button === 1 && item.app_type === '3' && (
                             <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
                                 {
                                     item.showButton && <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev)}>申请退款</span>

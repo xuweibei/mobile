@@ -302,15 +302,15 @@ class MyOrderSearch extends BaseComponent {
         case '1': //待发货
             blockModal = (
                 <div className="buttons">
-                    {/* {
-                        (item.refund_button === 1) && (
+                    {
+                        item.refund_button === 1 && item.app_type === '3' && (
                             <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
                                 {
                                     item.showButton && <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev, 1)}>申请退款</span>
                                 }
                             </div>
                         )
-                    } */}
+                    }
                     {
                         !item.all_refund && <div className="evaluate-button" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} onClick={() => this.remindDelivery([item.id, item.can_tip])}>提醒发货</div>
                     }
@@ -320,6 +320,15 @@ class MyOrderSearch extends BaseComponent {
         case '2'://待收货
             blockModal = (
                 <div className="buttons">
+                    {
+                        item.refund_button === 1 && item.app_type === '3' && (
+                            <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
+                                {
+                                    item.showButton && <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev)}>申请退款</span>
+                                }
+                            </div>
+                        )
+                    }
                     {
                         item.delayed_receiving === '0' && <div className="look-button" onClick={(ev) => this.extendedReceipt(item.id, ev)}>延长收货</div>
                     }
