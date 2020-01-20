@@ -118,7 +118,7 @@ export default class applyService extends BaseComponent {
                         })
                     } */}
                     {
-                        articleArr.length > 0 ? article.map((item, index) => (
+                        articleArr.length > 0 ? articleArr.map((item, index) => (
                             <div className="service-list" key={index.toString()} onClick={() => this.serviceList(item)}>
                                 <div className="service-left">
                                     <div className="service-text">{item.text}</div>
