@@ -54,6 +54,7 @@ export const urlCfg = {
     selectAftersalestype: href.apiPath + '/select-aftersalestype', //售后/退款 申请选项
     jdRefundPage: href.apiPath + '/jd-refund-page', //售后/退款 申请页
     jdRefundApply: href.apiPath + '/jd-refund-apply', //售后/退款 申请保存
+    jdCreateAfsApply: href.apiPath + '/jd-create-afs-apply', //售后/退款 申请保存后通知京东的接口
     originalQuantification: href.apiPath + '/invori', //原始定量
     commodityCollection: href.apiPath + '/my-collect-add-pr', //商品收藏
     updatePaymentPassword: href.apiPath + '/modifypaypwd', //更新支付密码

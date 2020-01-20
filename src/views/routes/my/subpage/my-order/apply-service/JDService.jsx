@@ -6,6 +6,7 @@ import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAc
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import CancelOrder from '../../../../../common/cancel-order/CancleOrder';
 import './JDService.less';
+import reducers from '../../../../category/reducers';
 
 
 const {showInfo, appHistory, getUrlParam} = Utils;
@@ -28,7 +29,8 @@ class JDService extends BaseComponent {
             bowOnfo: false, //原因选择弹框
             imgFiles: [], //图片集合
             resultValue: {}, //退款原因
-            applyNum: 0, //申请数量
+            applyNum: 1, //申请数量
+            returnMoney: '', //退款金额
             qusetDecrie: '', //问题描述
             linkName: '', //联系人姓名
             linkPhone: '', //联系人电话
@@ -122,6 +124,7 @@ class JDService extends BaseComponent {
                         city: res.data.area.city,
                         county: res.data.area.county,
                         town: res.data.area.town,
+                        returnMoney: res.data.single_price,
                         pickArr: res.data.ware_type.map(item => { item.click = false; return item })
                     });
                     if (type !== 'null' && type !== '2') {
@@ -155,7 +158,6 @@ class JDService extends BaseComponent {
             applyNum, qusetDecrie, linkName, linkPhone, adressDetail, type, returnAdressDetail, returnaddressArr,
             addressArr
         } = this.state;
-        console.log(imgFiles, '快乐番薯');
         const adArr = [addressArr.provinceId, addressArr.cityId, addressArr.countyId, addressArr.townId];//取件地址集合
         const reArr = [returnaddressArr.provinceId, returnaddressArr.cityId, returnaddressArr.countyId, returnaddressArr.townId];//返件地址集合
         if (!resultValue.label) {
@@ -234,9 +236,6 @@ class JDService extends BaseComponent {
                 reType = item.value;
             }
         });
-        if (imgFiles.length > 0) {
-
-        }
         this.fetch(urlCfg.jdRefundApply, {
             data: {
                 type,
@@ -249,19 +248,44 @@ class JDService extends BaseComponent {
                 picktype: getType,
                 name: linkName,
                 tel: linkPhone,
-                pca: adArr,
-                address: adressDetail,
-                ReturnwareDtopca: reArr,
-                ReturnwareDtoaddress: returnAdressDetail,
-                returnwareType: reType}})
+                pick_pca: adArr,
+                pick_address: adressDetail,
+                re_pca: reArr,
+                re_address: returnAdressDetail,
+                retype: reType}})
             .subscribe(res => {
                 if (res && res.status === 0) {
-                    showInfo('申请成功');
-                    appHistory.replace('/myOrder/ssh');
+                    if (imgFiles.length > 0) {
+                        const imgArr = [];
+                        imgFiles.forEach((item, index) => {
+                            imgArr.push(new Promise((resolve, reject) => {
+                                this.fetch(urlCfg.pictureUploadBase, {data: {type: 2, id: res.data.id, ix: index, file: encodeURIComponent(item.url)}})
+                                    .subscribe(data => {
+                                        if (data && data.status === 0) {
+                                            resolve();
+                                        }
+                                    });
+                            }));
+                        });
+                        Promise.all(imgArr).then(dataRes => {
+                            this.jingDongInfo();
+                        });
+                    } else {
+                        this.jingDongInfo();
+                    }
                 }
             });
     }
 
+    //jingdongInfo
+    jingDongInfo = (id) => {
+        this.fetch(urlCfg.jdCreateAfsApply, {data: {return_id: id}}).subscribe(dataValue => {
+            if (dataValue && dataValue.status === 0) {
+                showInfo('申请成功');
+                appHistory.replace('/myOrder/ssh');
+            }
+        });
+    }
 
     //  省市县的赋值
     setProvince = (str, num) => {
@@ -387,7 +411,7 @@ class JDService extends BaseComponent {
 
 
     render() {
-        const {packArr, describeArr, pickArr, returnPart, bowOnfo, resultValue, imgFiles,
+        const {packArr, describeArr, pickArr, returnPart, bowOnfo, resultValue, imgFiles, returnMoney,
             applyNum, qusetDecrie, linkName, linkPhone, adressDetail, type, dataInfo, addressArr,
             province, city, county, town, editStatus, returnaddressArr, provinceReturn, cityReturn,
             countyReturn, townReturn, returnAdressDetail
@@ -408,7 +432,7 @@ class JDService extends BaseComponent {
                         </div>
                         <div className="apply">
                             <p><span>*</span>商品数量</p>
-                            <input placeholder="请输入商品数量" type="number" value={applyNum} onChange={(data) => { this.setState({applyNum: data.target.value}) }}/>
+                            <input placeholder="请输入商品数量" type="number" value={applyNum} onChange={(data) => { this.setState({applyNum: data.target.value, returnMoney: dataInfo.single_price * data.target.value}) }}/>
                         </div>
                         <div className="apply">
                             <p><span>*</span>问题描述</p>
@@ -434,7 +458,7 @@ class JDService extends BaseComponent {
                             type === '10' && (
                                 <div className="apply-money">
                                     <span className="info-left">退款金额：</span>
-                                    <span className="info-right">￥324354</span>
+                                    <span className="info-right">￥{returnMoney}</span>
                                 </div>
                             )
                         }

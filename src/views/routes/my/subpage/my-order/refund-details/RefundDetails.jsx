@@ -300,7 +300,7 @@ class refundDetails extends BaseComponent {
                     </div>
                     <div className="detail-list">
                         <span className="list-left">申请时间：</span>
-                        <span>{refundArr.num}件</span>
+                        <span>{refundArr.crtdate}件</span>
                     </div>
                     <div className="detail-list">
                         <span className="list-left">取件方式：</span>
