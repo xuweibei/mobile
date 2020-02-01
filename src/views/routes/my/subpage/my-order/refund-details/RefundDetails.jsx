@@ -1,13 +1,14 @@
 //退款详情
 
 import {connect} from 'react-redux';
+import copy from 'copy-to-clipboard';
 import {dropByCacheKey} from 'react-router-cache-route';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import BaseComponent from '../../../../../../components/base/BaseComponent';
 import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAction';
 import './RefundDetails.less';
 
-const {getUrlParam, appHistory, showInfo, native} = Utils;
+const {getUrlParam, appHistory, showInfo, native, showSuccess} = Utils;
 const {urlCfg} = Configs;
 
 const {MESSAGE: {Form, Feedback}} = Constants;
@@ -189,6 +190,13 @@ class refundDetails extends BaseComponent {
         }
     }
 
+    //复制订单号
+    copyNo = () => {
+        const {refundArr} = this.state;
+        copy(refundArr.return_no);
+        showSuccess('复制成功');
+    }
+
     render() {
         const {refundArr} = this.state;
         const type = decodeURI(getUrlParam('type', encodeURI(this.props.location.search)));
@@ -278,6 +286,7 @@ class refundDetails extends BaseComponent {
                         <span className="list-left">退款编号：</span>
                         <span>
                             {refundArr.return_no}
+                            <span className="list-copy" onClick={this.copyNo}>复制</span>
                         </span>
                     </div>
                     <div className="detail-list">
@@ -294,13 +303,20 @@ class refundDetails extends BaseComponent {
                         <span className="list-left">退款原因：</span>
                         <span>{refundArr.reason ? refundArr.reason.split(',').join('|') : '' }</span>
                     </div>
+                    <div className="detail-list-quest">
+                        <span className="list-left">问题描述：</span>
+                        <p className="list-right">
+                            <p>{refundArr.reason ? refundArr.reason.split(',').join('|') : '' }</p>
+                            <img src=""/>
+                        </p>
+                    </div>
                     <div className="detail-list">
                         <span className="list-left">申请数量：</span>
                         <span>{refundArr.num}件</span>
                     </div>
                     <div className="detail-list">
                         <span className="list-left">申请时间：</span>
-                        <span>{refundArr.crtdate}件</span>
+                        <span>{refundArr.crtdate}</span>
                     </div>
                     <div className="detail-list">
                         <span className="list-left">取件方式：</span>

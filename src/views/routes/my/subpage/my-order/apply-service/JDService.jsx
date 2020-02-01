@@ -6,8 +6,6 @@ import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAc
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import CancelOrder from '../../../../../common/cancel-order/CancleOrder';
 import './JDService.less';
-import reducers from '../../../../category/reducers';
-
 
 const {showInfo, appHistory, getUrlParam} = Utils;
 const {urlCfg} = Configs;

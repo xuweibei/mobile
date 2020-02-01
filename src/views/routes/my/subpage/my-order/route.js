@@ -55,6 +55,14 @@ const ReturnGoods = Loadable({
     loader: () => import(/* webpackChunkName: 'orderMains' */ './apply-service/ReturnGoods'),
     loading: () => null
 });
+const JDLogistics = Loadable({
+    loader: () => import(/* webpackChunkName: 'orderMains' */ './apply-service/fillInLogistics'),
+    loading: () => null
+});
+const JDSaveSuccess = Loadable({
+    loader: () => import(/* webpackChunkName: 'orderMains' */ './apply-service/JDSaveSuccess'),
+    loading: () => null
+});
 const ApplyDrawback = Loadable({
     loader: () => import(/* webpackChunkName: 'orderMains' */ './apply-drawback/ApplyDrawback'),
     loading: () => null
@@ -90,6 +98,8 @@ const OrderModalOther = () => (
         <Route path="/applyService" component={ApplyServicePage}/> {/* 选择售后类型*/}
         <Route path="/onlyRefund" component={OnlyRefund}/> {/* 仅退款*/}
         <Route path="/returnGoods" component={ReturnGoods}/> {/* 退货退款*/}
+        <Route path="/fillInLogistics" component={JDLogistics}/> {/*京东填写物流*/}
+        <Route path="/jdsSaveSuccess" component={JDSaveSuccess}/> {/*京东售后提交成功*/}
         <Route path="/refundDetails" component={refundDetailsPage}/> {/* 售后退款详情页*/}
         <Route path="/JDService" component={JDService}/> {/* 京东 售后退款申请*/}
         <Route path="/logistics" component={Logistics}/> {/* 我的 物流*/}
