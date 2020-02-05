@@ -697,10 +697,12 @@ class GoodsDetail extends BaseComponent {
                                 记账量：{goodsDetail.deposit}
                             </div>
                         </div>
-                        <div className="norms-title">
+                        <div className={goodsDetail.app_type === '3' ? 'norms-title norms-type' : 'norms-title'}>
                             {goodsDetail.title}
                         </div>
-                        <div className="norms-bottom">
+                        {
+                            goodsDetail && goodsDetail.app_type === '2' && (
+                                <div className="norms-bottom">
                             <Flex>
                                 <Flex.Item>
                                     <div className="bot-left">
@@ -723,6 +725,8 @@ class GoodsDetail extends BaseComponent {
                                 </Flex.Item>
                             </Flex>
                         </div>
+                            )
+                        }
                     </div>
                     {/*店铺、商品规格*/}
                     <Evaluate
@@ -739,12 +743,16 @@ class GoodsDetail extends BaseComponent {
 
 
                     {/*店铺推荐*/}
-                    <Recommend
-                        recommend={recommend}
-                        Element={Element}
-                        goToShopRecom={this.goToShopRecom}
-                    />
-
+                    {
+                        goodsDetail && goodsDetail.app_type === '2' && (
+                            <Recommend
+                                recommend={recommend}
+                                Element={Element}
+                                goToShopRecom={this.goToShopRecom}
+                            />
+                        )
+                    }
+                
                     {
                         goodsDetail && goodsDetail.app_type === '3' && (
                             <Specification
@@ -756,7 +764,6 @@ class GoodsDetail extends BaseComponent {
                             />
                         )
                     }
-
 
                     {/*商品详情*/}
                     <div className="recommend-commodity-detail">
