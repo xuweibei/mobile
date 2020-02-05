@@ -93,7 +93,8 @@ export const urlCfg = {
     applicationForRefund: href.apiPath + '/refund-apply', //退款，退货退款
     getTXImInfo: href.apiPath + '/tencent-im', //获取腾讯im的账号和密码
     myAppraiseList: href.apiPath + '/my-appraiselist', //我的评价列表
-    refundDetail: href.apiPath + '/refund-detail', //我的评价列表
+    refundDetail: href.apiPath + '/refund-detail', //售后详情
+    refurefundOrderExpressndDetail: href.apiPath + '/refund-order-express', //京东物流填写
     rublishReview: href.apiPath + '/my-appra-add-page', //追评页面
     publishAReview: href.apiPath + '/my-order-add-appra', //追评评论
     personalAddress: href.apiPath + '/save-per-info', //个人所在区域管理

@@ -1,5 +1,4 @@
 //京东填写物流
-import {dropByCacheKey} from 'react-router-cache-route';
 import {connect} from 'react-redux';
 import {Picker, InputItem, Button, DatePickerView} from 'antd-mobile';
 import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAction';
@@ -10,38 +9,31 @@ import './ReturnGoods.less';
 const {showInfo, appHistory, getUrlParam} = Utils;
 const {urlCfg} = Configs;
 class JDLogistics extends BaseComponent {
+    //获取路由过来的信息
+    getPropsData = (data) => (decodeURI(getUrlParam(data, encodeURI(this.props.location.search))) === 'null' ? '' : decodeURI(getUrlParam(data, encodeURI(this.props.location.search))))
+
     state = {
         applyTitle: '',
         tiemrGoodValue: '', //保存的时间的值
-        shopInfo: {}, //商家信息集合
         logistArr: [], //物流集合
         timeValue: null, //发货时间的值
-        timerSure: false //是否选择了发货时间
+        timerSure: false, //是否选择了发货时间
+        id: this.getPropsData('id'),
+        shopperName: this.getPropsData('shopperName'), //店家姓名
+        shopperPhone: this.getPropsData('shopperPhone'), //店家电话
+        shopperArea: this.getPropsData('shopperArea') //店家地址
     };
 
     componentDidMount() {
-        // this.getList();
         this.getLogisticsList();
-    }
-
-    //获取商家信息
-    getList = () => {
-        const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
-        this.fetch(urlCfg.getShopInfo, {data: {id}})
-            .subscribe(res => {
-                if (res && res.status === 0) {
-                    this.setState({
-                        shopInfo: res.data
-                    });
-                }
-            });
+        console.log(this.formatDate(new Date()), '讲课费');
     }
 
     //获取物流列表
     getLogisticsList = () => {
         this.fetch(urlCfg.getLogisticsList)
             .subscribe(res => {
-                if (res.status === 0) {
+                if (res && res.status === 0) {
                     res.data.forEach(item => {
                         item.label = item.cate2;
                         item.value = item.id;
@@ -76,28 +68,30 @@ class JDLogistics extends BaseComponent {
 
     //提交申请
     submit = () => {
-        const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
-        const {applyId, logistMain, tiemrGoodValue} = this.state;
+        const {applyTitle, logistMain, tiemrGoodValue, id} = this.state;
         let timer = tiemrGoodValue;
         if (!timer) { //没有选择发货时间，则默认处理
             timer = this.formatDate(new Date());
         }
-        if (!applyId) return showInfo('请选择物流');
-        if (!logistMain) return showInfo('请填写物流单号');
-        if (logistMain.length < 8) return showInfo('请输入正确的物流单号');
-        this.fetch(urlCfg.setLogisticsList, {data: {id, exp_id: applyId, exp_no: logistMain, type: 2}})
+        if (!applyTitle) {
+            showInfo('请选择物流');
+            return;
+        }
+        if (!logistMain) {
+            showInfo('请填写物流单号');
+            return;
+        }
+        if (logistMain.length < 8) {
+            showInfo('请输入正确的物流单号');
+            return;
+        }
+        this.fetch(urlCfg.refurefundOrderExpressndDetail, {data: {return_id: id, express_name: applyTitle, express_no: logistMain, date: timer}})
             .subscribe(res => {
                 if (res && res.status === 0) {
-                    showInfo(res.message);
-                    //将我的订单的tab状态设置为售后
-                    this.props.setOrderStatus(4);
-                    //清除我的订单的缓存
-                    dropByCacheKey('OrderPage');
-                    dropByCacheKey('selfMentionOrderPage');//清除线下订单
+                    showInfo('提交成功');
                     appHistory.replace(`/refundDetails?id=${id}`);
                 }
             });
-        return undefined;
     }
 
     //时间戳转时间
@@ -132,6 +126,7 @@ class JDLogistics extends BaseComponent {
         });
     };
 
+    //补零
     addZero = (num) => (num < 10 ? '0' + num : num)
 
     timerChooseSure = () => {
@@ -141,7 +136,7 @@ class JDLogistics extends BaseComponent {
     }
 
     render() {
-        const {applyTitle, shopInfo, logistArr, timerSure, tiemrGoodValue} = this.state;
+        const {applyTitle, logistArr, logistMain, timerSure, tiemrGoodValue, shopperName, shopperPhone, shopperArea} = this.state;
         return (
             <div data-component="JDLogistics" data-role="page" className="JDLogistics">
                 <AppNavBar title="填写物流"/>
@@ -149,11 +144,12 @@ class JDLogistics extends BaseComponent {
                     <div className="address">
                         <div className="shop-name-box">
                             <span className="shop-name">店家姓名</span>
-                            <span>{shopInfo.shopName}</span>
+                            <span>{shopperName}</span>
+                            <span>{shopperPhone}</span>
                         </div>
                         <div className="position-box">
                             <span className="position">收货地址</span>
-                            <span>{shopInfo.takeAddress}</span>
+                            <span>{shopperArea}</span>
                         </div>
                         <p className="shop-info">商家已同意申请，请尽快寄出商品，同时填写相关的物流信息</p>
                     </div>
@@ -170,7 +166,7 @@ class JDLogistics extends BaseComponent {
                                     cols={1}
                                 >
                                     <div>
-                                        <span className="Apply-texts">{applyTitle || '请选择物流公司'}</span>
+                                        <span className={applyTitle ? 'Apply-texts activeShow' : 'Apply-texts'}>{applyTitle || '请选择物流公司'}</span>
                                         <span className="icon icon-Apply-tight"/>
                                     </div>
                                 </Picker>
@@ -178,7 +174,7 @@ class JDLogistics extends BaseComponent {
                         </div>
                     </div>
                     <div className="Apply-list">
-                        <div className="Apply-list-select">
+                        <div className={logistMain ? 'Apply-list-select activeShow' : 'Apply-list-select'}>
                             <InputItem
                                 clear
                                 type="number"
@@ -192,7 +188,7 @@ class JDLogistics extends BaseComponent {
                         <div className="Apply-list-select">
                             <div className="Apply-picker" onClick={this.timerChooseSure}>
                                 <div>
-                                    <span className="Apply-texts">{tiemrGoodValue || '请选择发货的时间'}</span>
+                                    <span className={tiemrGoodValue ? 'Apply-texts activeShow' : 'Apply-texts'}>{tiemrGoodValue || '请选择发货的时间'}</span>
                                     <span className="icon icon-Apply-tight"/>
                                 </div>
                             </div>
