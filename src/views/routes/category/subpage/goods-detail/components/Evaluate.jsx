@@ -11,7 +11,9 @@ export default class Evaluate extends React.PureComponent {
         shopH: PropTypes.func.isRequired,
         openSku: PropTypes.func.isRequired,
         routeToEvalute: PropTypes.func.isRequired,
-        hasType: PropTypes.bool.isRequired
+        hasType: PropTypes.bool.isRequired,
+        createStar: PropTypes.func.isRequired,
+        returnLev: PropTypes.func.isRequired
     };
 
     static defaultProps = {
@@ -28,7 +30,9 @@ export default class Evaluate extends React.PureComponent {
             openSku,
             hasType,
             evalute,
-            routeToEvalute
+            routeToEvalute,
+            createStar,
+            returnLev
         } = this.props;
         console.log(evalute);
         return (
@@ -107,11 +111,38 @@ export default class Evaluate extends React.PureComponent {
                                 </div>
                             </div>
                             <div className="Shop-N">
-                                <span className="Shop-Nr">人均消费</span>
-                                <span className="Shop-Nr">
-                                    ￥{shop.average_consumption}
-                                </span>
+                                {goodsDetail.app_type &&
+                                    goodsDetail.app_type === "2" && (
+                                        <React.Fragment>
+                                            <span className="Shop-Nr">
+                                                人均消费
+                                            </span>
+                                            <span className="Shop-Nr">
+                                                ￥{shop.average_consumption}
+                                            </span>
+                                        </React.Fragment>
+                                    )}
+                                {}
+                                {goodsDetail.app_type &&
+                                    goodsDetail.app_type === "3" &&
+                                    createStar()}
                             </div>
+                        </div>
+                    </div>
+                    <div className="score">
+                        <div className="score-left">
+                            <div>店铺评分</div>
+                            <div className="score-center">
+                                {shop && shop.shop_mark}
+                            </div>
+                            {returnLev(shop.shop_mark)}
+                        </div>
+                        <div className="score-right">
+                            <div>物流评分</div>
+                            <div className="score-center">
+                                {shop && shop.logistics_mark}
+                            </div>
+                            {returnLev(shop.logistics_mark)}
                         </div>
                     </div>
                 </div>
