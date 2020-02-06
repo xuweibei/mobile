@@ -4,30 +4,30 @@ import './ApplyService.less';
 import {urlCfg} from '../../../../../../configs/urlCfg';
 
 const {getUrlParam, appHistory, showInfo} = Utils;
-const article = [
-    {
-        text: '仅退款',
-        title: '未收到货（包含未签收），或已与卖家协商',
-        value: 0
-    },
-    {
-        text: '退货退款',
-        title: '已收货，需要退还商品',
-        value: 2
-    },
-    {
-        text: '换货',
-        title: '已收货，需要更换收到的商品',
-        value: 3,
-        isJingDong: true
-    },
-    {
-        text: '维修',
-        title: '已收货，需要维修收到的商品',
-        value: 4,
-        isJingDong: true
-    }
-];
+// const article = [
+//     {
+//         text: '仅退款',
+//         title: '未收到货（包含未签收），或已与卖家协商',
+//         value: 0
+//     },
+//     {
+//         text: '退货退款',
+//         title: '已收货，需要退还商品',
+//         value: 2
+//     },
+//     {
+//         text: '换货',
+//         title: '已收货，需要更换收到的商品',
+//         value: 3,
+//         isJingDong: true
+//     },
+//     {
+//         text: '维修',
+//         title: '已收货，需要维修收到的商品',
+//         value: 4,
+//         isJingDong: true
+//     }
+// ];
 
 export default class applyService extends BaseComponent {
     //获取参数
