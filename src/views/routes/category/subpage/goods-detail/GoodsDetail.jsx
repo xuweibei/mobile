@@ -706,6 +706,8 @@ class GoodsDetail extends BaseComponent {
             ele = <div style={{ ...base, background: "yellow" }}>中</div>;
         } else if (score < 2.5) {
             ele = <div style={{ ...base, background: "#999" }}>低</div>;
+        } else {
+            ele = <div></div>;
         }
         return ele;
     };
