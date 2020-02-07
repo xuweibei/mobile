@@ -9,15 +9,8 @@ import './JDSaveSuccess.less';
 const {appHistory, getUrlParam} = Utils;
 export default class JDSaveSuccess extends React.PureComponent {
     static propTypes = {
-        title: PropTypes.string,
-        onClick: PropTypes.func,
         location: PropTypes.object.isRequired
     }
-
-    static defaultProps = {
-        title: '',
-        onClick() {}
-    };
 
     //查看记录
     seeHistory = () => {
@@ -31,7 +24,7 @@ export default class JDSaveSuccess extends React.PureComponent {
         appHistory.replace(`listDetails?id=${id}`);
     }
 
-    renderEle = (title, onClick) => (
+    renderEle = () => (
         <div data-component="save-success" data-role="page" className="save-success">
             <AppNavBar title="填写物流"/>
             <div className="bg" >
@@ -50,9 +43,8 @@ export default class JDSaveSuccess extends React.PureComponent {
     )
 
     render() {
-        const {title, onClick} = this.props;
         return (
-            this.renderEle(title, onClick)
+            this.renderEle()
         );
     }
 }
