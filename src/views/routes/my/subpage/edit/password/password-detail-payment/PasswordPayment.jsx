@@ -124,7 +124,7 @@ class passwordPayment extends BaseComponent {
     //下一步
     nextPage = () => {
         const {form: {validateFields, getFieldValue}} = this.props;
-        validateFields({first: true}, (error, value) => {
+        validateFields({first: true, force: true}, (error, value) => {
             const phoneCode = getFieldValue('authCode');
             const phoneNum = getFieldValue('phone');
             if (!error) {

@@ -162,10 +162,10 @@ class Agreement extends BaseComponent {
             <AppNavBar title="所在区域管理"/>
             <List className="my-list">
                 <div style={{height: height}} className="receiving-reg">
-                    <Item
+                    {/* <Item
                         extra={areaInfo && areaInfo.join('-')}
                     >当前区域
-                    </Item>
+                    </Item> */}
                     <InputItem>
                         <div className="area">修改区域</div>
                         {
@@ -273,12 +273,12 @@ class Agreement extends BaseComponent {
                         {
                             !window.isWX && (
                                 <List>
-                                    <Item extra="有新版" arrow="horizontal" onClick={() => process.env.NATIVE && native('checkVersion', {'': ''})}>新版本检测</Item>
+                                    <Item extra="有新版" arrow="horizontal" onClick={() => process.env.NATIVE && native('checkVersion', {'': ''})}>检测</Item>
                                 </List>
                             )
                         }
                         <span className="corporate">中战华安控股集团有限公司</span>
-                        <span className="edition">当前版本号：1.0.3</span>
+                        <span className="edition">当前版本号：1.0</span>
                     </React.Fragment>
                 )
             }

@@ -27,7 +27,7 @@ class CancelOrder extends React.Component {
     }
 
     static defaultProps = {
-        propsData: {}
+        propsData: []
     }
 
     //单选改变
@@ -46,7 +46,7 @@ class CancelOrder extends React.Component {
     mastSure = () => {
         const {value} = this.state;
         const {propsData} = this.props;
-        const arr = propsData || this.canCelInfoArr;
+        const arr = propsData.length > 0 ? propsData : this.canCelInfoArr;
         const info = arr.find(item => item.value === value);
         this.props.canStateChange('mastSure', info);
         this.setState({
@@ -57,7 +57,7 @@ class CancelOrder extends React.Component {
     render() {
         const {value} = this.state;
         const {propsData} = this.props;
-        const arr = propsData || this.canCelInfoArr;
+        const arr = propsData.length > 0 ? propsData : this.canCelInfoArr;
         return (
             <div className="mask-cancel">
                 <div className="cancel-wrap">

@@ -124,9 +124,9 @@ class passwordDetail extends BaseComponent {
     nextPage = () => {
         const {form: {validateFields, getFieldValue}, showConfirm} = this.props;
         const {passShow, phoneNum, statusPay, isLoagin, uid} = this.state;
-        !passShow && validateFields({first: true}, (error, value) => {
-            const phoneCode = getFieldValue('authCode');
+        !passShow && validateFields({first: true, force: true}, (error, value) => {
             if (!error) {
+                const phoneCode = getFieldValue('authCode');
                 this.fetch(urlCfg.verificationVerificationCode, {data: {phone: validator.wipeOut(phoneNum), uid, vcode: validator.wipeOut(phoneCode), chk_pass: isLoagin || 0}})
                     .subscribe(res => {
                         if (res && res.status === 0) {

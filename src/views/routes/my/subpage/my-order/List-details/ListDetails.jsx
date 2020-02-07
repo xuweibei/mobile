@@ -12,8 +12,7 @@ const {MESSAGE: {Form, Feedback}} = Constants;
 const {urlCfg} = Configs;
 class ListDetails extends BaseComponent {
     state = {
-        canInfo: {}, //数据容器
-        isJingDong: false
+        canInfo: {} //数据容器
     };
 
     componentDidMount() {
@@ -26,8 +25,7 @@ class ListDetails extends BaseComponent {
             .subscribe(res => {
                 if (res && res.status === 0) {
                     this.setState({
-                        canInfo: res.data,
-                        isJingDong: res.data.app_type === '3'
+                        canInfo: res.data
                     });
                 }
             });
@@ -215,7 +213,7 @@ class ListDetails extends BaseComponent {
     }
 
     render() {
-        const {canInfo, canStatus, isJingDong} = this.state;
+        const {canInfo, canStatus} = this.state;
         return (
             <div data-component="List-details" data-role="page" className="List-details">
                 <AppNavBar goBackModal={this.goBackModal} rightShow title="订单详情" redBackground backgroundColor="#F20C00"/>
@@ -255,9 +253,9 @@ class ListDetails extends BaseComponent {
                                             <div className="shop-title" onClick={(ev) => this.goShopHome(canInfo.shop_id, ev)}>
                                                 <img src={canInfo.shoper_pic} onError={(e) => { e.target.src = canInfo.df_logo }} alt=""/>
                                                 <p>{canInfo.shopName}</p>
-                                                {isJingDong && <div className="icon enter"/>}
+                                                {canInfo.app_type === '3' && <span className="enter icon"/>}
                                             </div>
-                                            {!isJingDong && <span><div className="right" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>进店</div></span>}
+                                            {canInfo.app_type !== '3' && <span><div className="right" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} onClick={(ev) => this.goShopHome(canInfo.shop_id, ev)}>进店</div></span>}
                                         </div>
                                         {
                                             canInfo.pr_list && canInfo.pr_list.map((item, index) => (
@@ -342,18 +340,18 @@ class ListDetails extends BaseComponent {
                                 <div className="business">
                                     <div className="business-left icon" onClick={this.goToShoper}><span>联系商家</span></div>
                                     {
-                                        !isJingDong && (window.isWX ? (
+                                        window.isWX ? (
                                             <div className="business-right icon">
                                                 <a href={`tel:${canInfo.shop_tel}`}>商家电话</a>
                                             </div>
                                         ) : (
                                             <span className="business-right icon" style={{borderRight: nativeCssDiff() ? '1PX solid #eee' : '0.02rem solid #eee'}} onClick={() => this.shopPhone(canInfo.shop_tel)}>商家电话</span>
-                                        ))
+                                        )
                                     }
                                 </div>
                             </div>
                             {
-                                !isJingDong && (
+                                canInfo.app_type !== '3' && (
                                     <div className="collection common-margin">
                                         <div className="collection-left">
                                             <img

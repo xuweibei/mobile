@@ -125,6 +125,12 @@ class refundDetails extends BaseComponent {
         appHistory.push(`/returnGoods?id=${refundArr.id}&shopId=${refundArr.shop_mid}`);
     }
 
+    //京东填写物流
+    JDFillInLogistics = () => {
+        const {refundArr} = this.state;
+        appHistory.push(`/fillInLogistics?id=${refundArr.id}&shopperName=${refundArr.s_link_name}&shopperPhone=${refundArr.s_phone}&shopperArea=${encodeURIComponent(refundArr.s_address)}`);
+    }
+
     //查看物流
     seeLogistics = (id) => {
         if (process.env.NATIVE) {
@@ -222,21 +228,21 @@ class refundDetails extends BaseComponent {
                     <div className="refund-money-all">
                         <span className="list-left">退回总金额：</span>
                         <span className="list-right">
-                            ￥{123456}
+                            ￥{refundArr.return_price}
                         </span>
                     </div>
                     <div className="logistics-info">
                         <div className="detail-list">
                             <span className="list-left">店家姓名：</span>
-                            <span className="list-center">你多少吧</span>
-                            <span className="list-right">
-                                {refundArr.return_no}
+                            <span className="list-center">{refundArr.s_link_name}</span>
+                            <span>
+                                {refundArr.s_phone}
                             </span>
                         </div>
                         <div className="detail-list">
                             <span className="list-left">店家地址：</span>
-                            <span>
-                                {refundArr.return_no}
+                            <span className="list-right">
+                                {refundArr.s_address}
                             </span>
                         </div>
                         <p>商家已同意申请，请尽快寄出商品，同时填写相关的物流信息</p>
@@ -273,6 +279,7 @@ class refundDetails extends BaseComponent {
                                                 </span>
                                             </div>
                                             {refundArr.is_shoper === 0 && type !== '2' && this.allButton(refundArr)}
+                                            {refundArr.write_express === 1 && <div className="buttons"><div className="evaluate-button" onClick={this.JDFillInLogistics}>填写物流</div></div>}
                                         </div>
                                     </div>
                                 </div>
@@ -291,7 +298,7 @@ class refundDetails extends BaseComponent {
                     </div>
                     <div className="detail-list">
                         <span className="list-left">退款金额：</span>
-                        <span>{refundArr.return_price}</span>
+                        <span>￥{refundArr.return_price}</span>
                     </div>
                     <div className="detail-list">
                         <span className="list-left">申请时间：</span>
@@ -300,14 +307,16 @@ class refundDetails extends BaseComponent {
                         </span>
                     </div>
                     <div className="detail-list">
-                        <span className="list-left">退款原因：</span>
+                        <span className="list-left">申请原因：</span>
                         <span>{refundArr.reason ? refundArr.reason.split(',').join('|') : '' }</span>
                     </div>
                     <div className="detail-list-quest">
                         <span className="list-left">问题描述：</span>
                         <p className="list-right">
-                            <p>{refundArr.reason ? refundArr.reason.split(',').join('|') : '' }</p>
-                            <img src=""/>
+                            <p>{refundArr.describe}</p>
+                            {
+                                (refundArr.return_picpath && refundArr.return_picpath.length > 0) ? refundArr.return_picpath.map(item => <img src={item}/>) : ''
+                            }
                         </p>
                     </div>
                     <div className="detail-list">
@@ -318,14 +327,22 @@ class refundDetails extends BaseComponent {
                         <span className="list-left">申请时间：</span>
                         <span>{refundArr.crtdate}</span>
                     </div>
-                    <div className="detail-list">
-                        <span className="list-left">取件方式：</span>
-                        <span>{refundArr.num}件</span>
-                    </div>
-                    <div className="detail-list">
-                        <span className="list-left">自营配送：</span>
-                        <span>{refundArr.num}件</span>
-                    </div>
+                    {
+                        refundArr.pickwareType && (
+                            <div className="detail-list">
+                                <span className="list-left">取件方式：</span>
+                                <span>{refundArr.pickwareType}</span>
+                            </div>
+                        )
+                    }
+                    {
+                        refundArr.returnwareType && (
+                            <div className="detail-list">
+                                <span className="list-left">返件方式：</span>
+                                <span>{refundArr.returnwareType}</span>
+                            </div>
+                        )
+                    }
                     {
                         refundArr.status === '3' && (
                             <div>

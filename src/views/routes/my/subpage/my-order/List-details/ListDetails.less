@@ -152,6 +152,12 @@
                     font-size: @font-size-30;
                 }
             }
+            .shop-icon::before{
+                content: '\E643';
+                color: @gray;
+                font-size: @font-size-30;
+
+            }
             span {
                 margin-top: 11px;
             }
@@ -348,6 +354,8 @@
             justify-content: flex-start;
             span:nth-child(2) {
                 flex: 1;
+                word-wrap: break-word;
+                overflow: hidden;
             }
         }
     }

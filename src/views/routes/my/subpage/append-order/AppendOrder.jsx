@@ -9,7 +9,7 @@ import {baseActionCreator as actionCreator} from '../../../../../redux/baseActio
 import AppNavBar from '../../../../common/navbar/NavBar';
 import './AppendOrder.less';
 
-const {appHistory, showFail, getUrlParam, getShopCartInfo, systemApi: {setValue, removeValue, getValue}, native, nativeCssDiff} = Utils;
+const {appHistory, showFail, getUrlParam, systemApi: {setValue, removeValue, getValue}, native, nativeCssDiff} = Utils;
 const {urlCfg} = Configs;
 
 const nowTimeStamp = Date.now();
@@ -67,7 +67,7 @@ class appendOrder extends BaseComponent {
                         that.getOrderState();
                     }
                 });
-                // getShopCartInfo('getInfo', obj).then(res => {
+                /('getInfo', obj).then(res => {
                 //     setOrder(res.data.arr);
                 //     setIds(res.data.cartArr);
                 //     that.getOrderState();
@@ -111,10 +111,13 @@ class appendOrder extends BaseComponent {
                 invoice: {},
                 invoiceIndex: ''
             }, () => {
-                getShopCartInfo('getInfo', {'': ''}).then(res => {
-                    setOrder(res.data.arr);
-                    setIds(res.data.cartArr);
-                    this.getOrderState();
+                window.DsBridge.call('getInfo', {'': ''}, (dataValue) => {
+                    const res = dataValue ? JSON.parse(dataValue) : '';
+                    if (res && res.status === 0) {
+                        setOrder(res.data.arr);
+                        setIds(res.data.cartArr);
+                        this.getOrderState();
+                    }
                 });//原生方法获取前面的redux
             });
         }
@@ -145,7 +148,7 @@ class appendOrder extends BaseComponent {
     //             invoice: {},
     //             invoiceIndex: ''
     //         }, () => {
-    //             getShopCartInfo('getInfo', {'': ''}).then(res => {
+    //           ('getInfo', {'': ''}).then(res => {
     //                 setOrder(res.data.arr);
     //                 setIds(res.data.cartArr);
     //                 this.getOrderState();
@@ -562,11 +565,11 @@ class appendOrder extends BaseComponent {
                                         <ul className="range-top">
                                             <li className="list">
                                                 <span>记账量</span>
-                                                <span>{shop.all_deposit}</span>
+                                                <span>{this.totalDep()}</span>
                                             </li>
                                             <li className="list">
                                                 <span>商品总价</span>
-                                                <span>￥{shop.all_price}</span>
+                                                <span>￥{this.totalPrice()}</span>
                                             </li>
                                             <li className="list">
                                                 <span>运费</span>
@@ -588,7 +591,7 @@ class appendOrder extends BaseComponent {
                                     </List>
                                     <div className="payable">
                                         <span>实付款</span>
-                                        <span>￥{shop.actual_all_price}</span>
+                                        <span>￥{this.totalPrice()}</span>
                                     </div>
                                 </div>
                             ))

@@ -279,8 +279,7 @@ class JDService extends BaseComponent {
     jingDongInfo = (id) => {
         this.fetch(urlCfg.jdCreateAfsApply, {data: {return_id: id}}).subscribe(dataValue => {
             if (dataValue && dataValue.status === 0) {
-                showInfo('申请成功');
-                appHistory.replace('/myOrder/ssh');
+                appHistory.replace(`/jdsSaveSuccess?id=${id}`);
             }
         });
     }
