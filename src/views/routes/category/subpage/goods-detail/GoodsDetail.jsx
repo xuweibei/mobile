@@ -2,7 +2,6 @@
  *
  * 商品详情页面
  */
-<<<<<<< HEAD
 import { Carousel, Flex, Icon, List, Popover, Stepper } from "antd-mobile";
 import { connect } from "react-redux";
 import { Link, Element, scrollSpy, animateScroll } from "react-scroll";
@@ -29,22 +28,6 @@ const {
     MESSAGE: { Form, Feedback },
     TD_EVENT_ID
 } = Constants;
-=======
-import {Carousel, Flex, Icon, List, Popover, Stepper} from 'antd-mobile';
-import {connect} from 'react-redux';
-import {Link, Element, scrollSpy, animateScroll} from 'react-scroll';
-import Recommend from './components/Recommend';
-import Evaluate from './components/Evaluate';
-// import Specification from './components/specification';
-import {shopCartActionCreator as action} from '../../../shop-cart/actions';
-import {baseActionCreator as actionCreator} from '../../../../../redux/baseAction';
-import Sku from '../../../../common/sku/Sku';
-import './GoodsDetail.less';
-
-const {urlCfg} = Configs;
-const {appHistory, getUrlParam, showFail, showInfo, native, TD, systemApi: {setValue, removeValue}, nativeCssDiff} = Utils;
-const {MESSAGE: {Form, Feedback}, TD_EVENT_ID} = Constants;
->>>>>>> develop
 
 const myImg = src => (
     <img
@@ -731,7 +714,6 @@ class GoodsDetail extends BaseComponent {
 
     render() {
         const {
-<<<<<<< HEAD
             topSwithe,
             popup,
             paginationNum,
@@ -755,11 +737,6 @@ class GoodsDetail extends BaseComponent {
             list,
             specification,
             specificationStatus
-=======
-            topSwithe, popup, paginationNum, ids, maskStatus,
-            picPath, goodsDetail, shop, recommend, collect, status, evalute,
-            goodsAttr, stocks, lineStatus, lineText, pickType, selectType, names, hasType, list,
->>>>>>> develop
         } = this.state;
 
         // console.log(specification);
@@ -932,7 +909,6 @@ class GoodsDetail extends BaseComponent {
                     />
 
                     {/*店铺推荐*/}
-<<<<<<< HEAD
                     {goodsDetail && goodsDetail.app_type === "2" && (
                         <Recommend
                             recommend={recommend}
@@ -940,25 +916,6 @@ class GoodsDetail extends BaseComponent {
                             goToShopRecom={this.goToShopRecom}
                         />
                     )}
-=======
-                    <Recommend
-                        recommend={recommend}
-                        Element={Element}
-                        goToShopRecom={this.goToShopRecom}
-                    />
-
-                    {/* {
-                        goodsDetail && goodsDetail.app_type === '3' && (
-                            <Specification
-                                Element={Element}
-                                specification={specification}
-                                specificationStatus={specificationStatus}
-                                changeSpecification={this.changeSpecification}
-                                Link={Link}
-                            />
-                        )
-                    } */}
->>>>>>> develop
 
                     {goodsDetail && goodsDetail.app_type === "3" && (
                         <Specification
