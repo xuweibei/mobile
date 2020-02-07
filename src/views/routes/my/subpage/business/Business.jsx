@@ -13,7 +13,7 @@ const Item = List.Item;
 const Brief = Item.Brief;
 const {urlCfg} = Configs;
 const {FIELD} = Constants;
-const {appHistory, native, nativeCssDiff} = Utils;
+const {appHistory, native, nativeCssDiff, getUrlParam} = Utils;
 //tab配置信息
 const tabs = [
     {title: '全部', type: 0},
@@ -26,21 +26,23 @@ class Customer extends BaseComponent {
     constructor(props) {
         super(props);
         this.stackData = []; //数据堆，暂存业务列表
+        this.state = {
+            data: null, //数据源
+            type: 0, //请求参数：业务类型
+            tabKey: this.props.tabValue || 0, //当前选中tab
+            page: 1, //当前选中tab页码
+            pageCount: -1, //当前选中tab总页数
+            refreshing: false, //是否在下拉刷新时显示指示器
+            isLoading: false, //是否在上拉加载时显示提示
+            hasMore: false, //是否有数据可请求
+            totalNum: 0, //当前选中tab总人数
+            propsData: props
+        };
     }
 
-    state = {
-        data: null, //数据源
-        type: 0, //请求参数：业务类型
-        tabKey: this.props.tabValue || 0, //当前选中tab
-        page: 1, //当前选中tab页码
-        pageCount: -1, //当前选中tab总页数
-        refreshing: false, //是否在下拉刷新时显示指示器
-        isLoading: false, //是否在上拉加载时显示提示
-        hasMore: false, //是否有数据可请求
-        totalNum: 0 //当前选中tab总人数
-    };
 
     componentDidMount() {
+        console.log(window.location, '看了第三方');
         this.getCustomerList();
     }
 
@@ -92,12 +94,28 @@ class Customer extends BaseComponent {
         // }
     };
 
+    static getDerivedStateFromProps(prevProps, prevState) {
+        return {
+            propsData: prevProps
+        };
+    }
+
+    componentDidUpdate(prev, data) {
+        if (process.env.NATIVE) {
+            const timer = decodeURI(getUrlParam('time', encodeURI(this.state.propsData.location.search)));
+            const timerNext = decodeURI(getUrlParam('time', encodeURI(prev.location.search)));
+            if (timer !== timerNext) {
+                this.getCustomerList();
+            }
+        }
+    }
+
     //处理接口请求结果.isFirst：是否第一页
     handleResult = (res, isFirst) => {
         const {page} = this.state;
         const extra = (isFirst && {
             pageCount: res.data.page_count,
-            totalNum: res.data.number
+            totalNum: res.data.count
         });
         this.stackData = this.stackData.concat(res.data.list);
         this.setState({

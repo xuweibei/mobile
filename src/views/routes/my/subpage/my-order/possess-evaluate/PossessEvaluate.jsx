@@ -439,13 +439,14 @@ class PossessEvaluate extends BaseComponent {
     //待评价结构
     toBeEvaluatedRow = (item) => {
         const {userType} = this.state;
+        // console.log(item.picpath);
         return (
             <div className="unevaluated-box">
                 <div className="unevaluated">
                     <div className="shop-lists">
                         <div className="shop-name" onClick={userType === '2' ? '' : () => this.goShopHome(item.shop_id)}>
                             <div className="shop-title">
-                                <LazyLoadIndex key={item.picpath} src={userType === '2' ? item.avatarUrl : item.picpath}/>
+                                <LazyLoadIndex key={item.picpath} src={userType === '2' ? item.avatarUrl : item.df_logo}/>
                                 <p>{userType === '2' ? item.nickname : item.shopName }</p>
                                 <div className="icon enter"/>
                             </div>
@@ -455,7 +456,7 @@ class PossessEvaluate extends BaseComponent {
                             <div key={items.id} className="goods" onClick={userType === '2' ? '' : () => this.skipDetail(item.id, item.all_deposit)}>
                                 <div className="goods-left">
                                     <div>
-                                        <LazyLoadIndex src={item.pr_picpath}/>
+                                        <LazyLoadIndex src={item.pr_list[0].pr_picpath}/>
                                     </div>
                                 </div>
                                 <div className="goods-right">

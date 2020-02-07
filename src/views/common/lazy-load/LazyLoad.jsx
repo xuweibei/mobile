@@ -27,8 +27,10 @@ export class LazyImage extends React.PureComponent {
         document.lazyLoadInstance.update();
         const timer = setTimeout(() => {
             const errorData = document.getElementsByClassName('errorData');
-            for (let i = 0; i < errorData.length; i++) {
-                errorData[i].classList.remove('error');
+            if (errorData.length > 0) {
+                for (let i = 0; i < errorData.length; i++) {
+                    errorData[i].classList.remove('error');
+                }
             }
             clearTimeout(timer);
         }, 200);
@@ -43,7 +45,6 @@ export class LazyImage extends React.PureComponent {
 
     render() {
         const {src, bigPicture} = this.props;
-        console.log(this.imgs, '二');
         return (
             src ? (
                 <img

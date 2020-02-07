@@ -92,12 +92,12 @@ class Edit extends BaseComponent {
                     },
                     {
                         key: '3-2',
-                        extra: (userInfo && userInfo.address.length > 0) ? '' : '修改', //只允许修改一次
+                        extra: (userInfo && userInfo.address.length > 0) ? userInfo.address : '修改', //只允许修改一次
                         param: (userInfo && userInfo.address.length > 0) ? '' : '/locationarea?router=locationarea', //只允许修改一次
                         subName: 'locationarea',
                         name: 'area',
-                        value: '当前区域',
-                        moredes: userInfo && (userInfo.address ? userInfo.address.join('-') : '')
+                        value: '当前区域'
+                        // moredes: userInfo && (userInfo.address ? userInfo.address.join('-') : '')
                     }
                 ]
             },

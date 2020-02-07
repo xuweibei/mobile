@@ -9,7 +9,7 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 import BaseComponent from '../../../../../../components/base/BaseComponent';
 
 const {urlCfg} = Configs;
-const {validator, showInfo, appHistory, getUrlParam, systemApi: {setValue, getValue, removeValue}, getShopCartInfo, native} = Utils;
+const {validator, showInfo, appHistory, getUrlParam, systemApi: {setValue, getValue, removeValue}, native} = Utils;
 
 class ReDetail extends BaseComponent {
     constructor(props, context) {
@@ -50,8 +50,6 @@ class ReDetail extends BaseComponent {
                         this.getOrderSelf();
                     }
                 });
-                // getShopCartInfo('getSelfMentio', {'': ''}).then(res => {
-                // });
             }
         } else {
             this.getOrderSelf();
@@ -85,9 +83,12 @@ class ReDetail extends BaseComponent {
                 address: '', //门店地址
                 textarea: '' //获取备注信息
             }, () => {
-                getShopCartInfo('getSelfMentio', {'': ''}).then(res => {
-                    setOrder(res.data.arr);
-                    this.getOrderSelf();
+                window.DsBridge.call('getSelfMentio', {'': ''}, (data) => {
+                    const res = data ? JSON.parse(data) : '';
+                    if (res && res.status === 0) {
+                        setOrder(res.data.arr);
+                        this.getOrderSelf();
+                    }
                 });
             });
         }

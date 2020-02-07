@@ -50,9 +50,9 @@ class Invitation extends BaseComponent {
         const {shareArr} = this.state;
         if (process.env.NATIVE) {
             if (shareArr) {
-                native('savePicCallback', {type: '2', imgUrl: encodeURIComponent(shareArr)}, (data) => {
-                    console.log(data, '看了是到付款了发');
-                    if (data.status === 0) {
+                window.DsBridge.call('savePicCallback', {imgUrl: encodeURIComponent(shareArr)}, (data) => {
+                    const info = JSON.parse(data);
+                    if (info.status === 0) {
                         showInfo('保存成功');
                     } else {
                         showFail('保存失败');

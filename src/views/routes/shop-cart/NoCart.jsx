@@ -595,15 +595,15 @@ class ShopCart extends BaseComponent {
         return (price / 10000);
     }
 
-    //自提商品总数量
-    // selfNum = (index) => {
-    //     const {valid} = this.state;
-    //     let num = 0;
-    //     valid[index].data.forEach(item => {
-    //         num += Number(item.num);
-    //     });
-    //     return num;
-    // }
+    // 自提商品总数量
+    selfNum = (index) => {
+        const {valid} = this.state;
+        let num = 0;
+        valid[index].data.forEach(item => {
+            num += Number(item.num);
+        });
+        return num;
+    }
 
     //自提订单提交
     selfOrder = (index) => {
@@ -615,7 +615,6 @@ class ShopCart extends BaseComponent {
         }
         const arr = [];
         const cartArr = [];
-        console.log(valid[index], '傻大个撒还记得噶三季度');
         valid[index].data.map(item => {
             if (item.select === true) {
                 arr.push({
@@ -797,7 +796,7 @@ class ShopCart extends BaseComponent {
                                     <div className="self">
                                         <div className="total-count">总记账量：<span>{this.selfTotalCount(shop, index)}</span></div>
                                         <div className="total-goods">
-                                            {/* <div>共{this.selfNum(index)}件商品</div> */}
+                                            <div>共{this.selfNum(index)}件商品</div>
                                             <div>合计：<span>￥{this.selfPrice(index)}</span></div>
                                         </div>
                                         <div className="join">

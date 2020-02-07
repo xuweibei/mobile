@@ -43,7 +43,7 @@ class History extends BaseComponent {
 
     state = {
         data: dataSource, //数据源
-        type: 1, //请求参数：历史类型
+        type: this.props.tabValue ? 2 : 1, //请求参数：历史类型
         tabKey: this.props.tabValue || 0, //当前选中tab
         page: 1, //当前选中tab页码
         pageCount: -1, //当前选中tab总页数
@@ -54,6 +54,7 @@ class History extends BaseComponent {
     };
 
     componentDidMount() {
+        console.log(this.props.tabValue, '快乐的方式');
         this.getHistoryList();
     }
 

@@ -25,10 +25,10 @@ const consumerDetail = Loadable({
     loader: () => import(/* webpackChunkName: 'My' */ './consumer-search/ConsumerDetail'),
     loading: () => null
 });
-const FailWrite = Loadable({
-    loader: () => import(/* webpackChunkName: 'My' */ './fail-write/FailWrite'),
-    loading: () => null
-});
+// const FailWrite = Loadable({
+//     loader: () => import(/* webpackChunkName: 'My' */ './fail-write/FailWrite'),
+//     loading: () => null
+// });
 const InspectModal = () => (
     <React.Fragment>
         <Route path="/inspect" component={Inspect}/>{/*立即核销*/}
@@ -37,7 +37,7 @@ const InspectModal = () => (
         <Route path="/success-file" component={Succcess}/>{/*确认核销*/}
         <Route path="/consumer-search" component={consumerSearch}/>{/*核销订单搜索*/}
         <Route path="/consumer-detail" component={consumerDetail}/>{/*核销订单搜索详情*/}
-        <Route path="/fail-write" component={FailWrite}/>{/*核销失败*/}
+        {/*<Route path="/fail-write" component={FailWrite}/>核销失败*/}
     </React.Fragment>
 );
 

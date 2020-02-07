@@ -417,7 +417,7 @@ class Collect extends BaseComponent {
                             item.pr && item.pr.length ? item.pr.map(data => (
                                 <div className="item" key={data.title}>
                                     <div className="image" onClick={() => this.shopGoods(data.id)}>
-                                        <LazyLoad src={data.picpath}/>
+                                        <LazyLoad key={data.picpath} src={data.picpath}/>
                                         <span>{data.price}</span>
                                     </div>
                                     <p onClick={() => this.shopGoods(data.id)}>{data.title}</p>
