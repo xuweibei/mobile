@@ -198,9 +198,14 @@ class ShopHome extends BaseComponent {
         });
     };
 
+    moneyDot = (money) => {
+        const arr = money.toString().split('.');
+        return arr;
+    }
+
     //全部商品
     structure = () => {
-        const {height, dataSource, refreshing, hasMore} = this.state;
+        const {height, dataSource, refreshing, hasMore, isJingDong} = this.state;
         const row = (item) => (
             <div className="goods">
                 <div className="goods-name" onClick={() => this.allgoods(item.id)}>
@@ -212,12 +217,29 @@ class ShopHome extends BaseComponent {
                     </div>
                     <div className="goods-information">
                         <div className="goods-explain">{item.title}</div>
-                        <span className="btn-keep">记账量{item.deposit}</span>
+                        <span className="btn-keep">记账量：{item.deposit}</span>
                         <div className="payment">
                             <span>销量：{item.num_sold}</span>
                             <span className="payment-r">￥{item.price_original}</span>
                         </div>
                         <div className="price">￥{item.price}</div>
+                    </div>
+                </div>
+            </div>
+        );
+        const jdRow = (item) => (
+            <div className="goods">
+                <div className="goods-name" onClick={() => this.allgoods(item.id)}>
+                    <div className="goods-picture">
+                        <LazyLoadIndex
+                            key={item.picpath}
+                            src={item.picpath}
+                        />
+                    </div>
+                    <div className="goods-information">
+                        <div className="goods-explain">{item.title}</div>
+                        <span className="btn-keep btn-jd">记账量：{item.deposit}</span>
+                        <div className="price">￥{this.moneyDot(item.price)[0]}.<span>{this.moneyDot(item.price)[1]}</span></div>
                     </div>
                 </div>
             </div>
@@ -230,7 +252,7 @@ class ShopHome extends BaseComponent {
                             <ListView
                                 dataSource={dataSource}
                                 initialListSize={this.temp.pagesize}
-                                renderRow={row}
+                                renderRow={isJingDong ? jdRow : row}
                                 style={{
                                     height: height
                                 }}
