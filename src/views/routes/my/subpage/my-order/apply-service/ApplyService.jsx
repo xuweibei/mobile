@@ -40,6 +40,7 @@ export default class applyService extends BaseComponent {
         prId: this.getParameter('prId'), //退款所需参数 商品id
         arrInfo: this.getParameter('arrInfo'), //退款所需参数 标签
         onlyReturnMoney: this.getParameter('onlyReturnMoney'), //待发货过来的退款，不让他点击退货退款给提示
+        shopId: this.getParameter('shopId'), //店铺id
         articleArr: []//退款申请选项
     }
 
@@ -74,28 +75,34 @@ export default class applyService extends BaseComponent {
 
     //售后申请类型
     serviceList = (value) => {
-        const {Id, returnType, prId, arrInfo, onlyReturnMoney, articleArr} = this.state;
+        const {Id, returnType, prId, arrInfo, onlyReturnMoney, shopId} = this.state;
         if (onlyReturnMoney === '1' && value.value === 2) {
             showInfo('商家还未发货，请选择“仅退款”');
         } else {
             let onOff = false;
-            if (!value.value) { //判断是否仅退款，true是
+            if (value.value === 1) { //判断是否仅退款，true是
                 onOff = true;
             }
-            if (articleArr.length === 2) {
+            if (value.value === 1) { //仅退款
                 appHistory.push(`/onlyRefund?orderId=${Id}&prId=${prId}&returnType=${returnType}&arrInfo=${arrInfo}&onlyRefund=${onOff}`);
-            } else if (articleArr.length === 4) {
-                if (value.value === 1) {
-                    appHistory.push(`/onlyRefund?orderId=${Id}&prId=${prId}&returnType=${returnType}&arrInfo=${arrInfo}&onlyRefund=${onOff}`);
-                } else {
-                    appHistory.push(`/JDService?orderId=${Id}&&type=${value.value}`);
-                }
+            } else if (value.value === 10) { //退货退款
+                appHistory.push(`/returnGoods?id=${shopId}`);
+            } else { //京东售后
+                appHistory.push(`/JDService?orderId=${Id}&&type=${value.value}`);
             }
+            // if (articleArr.length === 2) {
+            //     appHistory.push(`/onlyRefund?orderId=${Id}&prId=${prId}&returnType=${returnType}&arrInfo=${arrInfo}&onlyRefund=${onOff}`);
+            // } else if (articleArr.length === 4) {
+            //     if (value.value === 1) {
+            //         appHistory.push(`/onlyRefund?orderId=${Id}&prId=${prId}&returnType=${returnType}&arrInfo=${arrInfo}&onlyRefund=${onOff}`);
+            //     } else {
+            //         appHistory.push(`/JDService?orderId=${Id}&&type=${value.value}`);
+            //     }
+            // }
         }
     }
 
     render() {
-    // const isJD = this.getParameter('isJD');
         const {articleArr} = this.state;
         return (
             <div data-component="apply-service" data-role="page" className="apply-service">

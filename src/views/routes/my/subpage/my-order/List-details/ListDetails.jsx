@@ -157,10 +157,11 @@ class ListDetails extends BaseComponent {
 
     //底部按钮内容
     bottomButton = (num) => {
+        const {canInfo} = this.state;
         const blockMadel = new Map([
             ['0', <div className="immediate-evaluation new-style-paynow" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} onClick={this.payNow}>立即付款</div>],
-            ['1', <div className="immediate-evaluation deliver" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} onClick={this.remindDelivery}>提醒发货</div>],
-            ['2', <div className="immediate-evaluation" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} onClick={this.confirmTake}>确认收货</div>],
+            ['1', canInfo.app_type === '3' ? '' : <div className="immediate-evaluation deliver" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} onClick={this.remindDelivery}>提醒发货</div>],
+            ['2', canInfo.app_type === '3' ? '' : <div className="immediate-evaluation" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} onClick={this.confirmTake}>确认收货</div>],
             ['3', <div className="immediate-evaluation" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} onClick={this.promptlyEstimate}>立即评价</div>]
         ]);
         return blockMadel.get(num);
@@ -207,9 +208,23 @@ class ListDetails extends BaseComponent {
         }
     }
 
+    //金额切割一下，好展示
     moneyDot = (money) => {
         const arr = money.toString().split('.');
         return arr;
+    }
+
+    //京东商品申请售后
+    JDService = () => {
+        const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
+        const shopId = this.state.canInfo.shop_id;
+        appHistory.push(`/applyService?orderId=${id}&shopId=${shopId}&returnType=1&onlyReturnMoney=`);
+    }
+
+    //京东商品申请售后中
+    JDServiceIng = () => {
+        const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
+        appHistory.push(`/refundDetails?id=${id}`);
     }
 
     render() {
@@ -424,6 +439,12 @@ class ListDetails extends BaseComponent {
                                 }
                                 {
                                     this.bottomButton(canInfo.status)
+                                }
+                                {   //京东商品可以申请售后
+                                    canInfo.app_type === '3' && canInfo.status && canInfo.return_status === 1 && <div className="cancel-order" style={{border: nativeCssDiff() ? '1PX solid rgba(102,102,102,1)' : '0.02rem solid rgba(102,102,102,1)'}} onClick={this.JDService}>申请售后</div>
+                                }
+                                {   //京东商品已申请售后可以查看
+                                    canInfo.app_type === '3' && canInfo.return_status && canInfo.return_status === 2 && <div className="cancel-order" style={{border: nativeCssDiff() ? '1PX solid rgba(102,102,102,1)' : '0.02rem solid rgba(102,102,102,1)'}} onClick={this.JDServiceIng}>售后中</div>
                                 }
                             </div>
                         </div>

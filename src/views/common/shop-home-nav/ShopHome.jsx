@@ -134,8 +134,11 @@ class ShopHome extends BaseComponent {
         return (
             show ? '' : (
                 <div className="home-bar">
-                    <div className="shade" style={{background: `url(${shopModelArr ? shopModelArr.picurl[0] : 'images/shop-home-bar.png'}) no-repeat`}}/>
-                    <div className="home-bar-top">
+                    {
+                        shopInfo.is_jdshop ? <div className="shade jd-shade"/> : <div className="shade" style={{background: `url(${shopModelArr ? shopModelArr.picurl[0] : 'images/shop-home-bar.png'}) no-repeat`}}/>
+                    }
+
+                    <div className={shopInfo.is_jdshop ? 'home-bar-top-jd' : 'home-bar-top'}>
                         <div className="bar-top">
                             {
                                 window.isWX ? null : (
