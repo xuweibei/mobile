@@ -47,7 +47,9 @@ class appendOrder extends BaseComponent {
         invoiceAddress: '',
         bankCard: '',
         invoicePhone: '',
-        propsData: this.props
+        propsData: this.props,
+        goodsArr: this.props.arr,
+        allDeposit: 0
     };
 
     componentDidMount() {
@@ -268,15 +270,15 @@ class appendOrder extends BaseComponent {
 
     //获取订单页面数据
     getOrderState = () => {
-        const {arr} = this.props;
-        const {address} = this.props;
+        const {goodsArr} = this.state;
+        const {arr, address} = this.props;
         let addressId;
         if (address) {
             addressId = address.id;
         }
         this.fetch(urlCfg.submitOrder, {
             data: {
-                pr_arr: arr,
+                pr_arr: goodsArr,
                 type: 2,
                 address_id: addressId
             }
@@ -297,6 +299,7 @@ class appendOrder extends BaseComponent {
                     }
                     this.setState({
                         total: res.all_price,
+                        allDeposit: res.all_deposit,
                         shopInfo: res.data,
                         addressInfo: res.addr,
                         files: array,
@@ -414,7 +417,7 @@ class appendOrder extends BaseComponent {
 
     // 修改商品数量
     changeNum = (index, i, type, types, stock) => {
-        const {num} = this.state;
+        const {num, goodsArr} = this.state;
         const numArr = [...num[index]];
         const arr = [];
         let nowNum = Number(num[index][i]);
@@ -432,35 +435,39 @@ class appendOrder extends BaseComponent {
         }
         this.setState(prevState => {
             numArr.splice(i, 1, nowNum.toString());
+            prevState.goodsArr[i].num = nowNum
             arr.push(numArr);
             return {
-                num: arr
+                num: arr,
+                goodsArr: prevState.goodsArr
             };
+        }, () => {
+            this.getOrderState()
         });
     }
 
     // 总记账量
-    totalDep = () => {
-        const {num, deps} = this.state;
-        let dep = 0;
-        for (let i = 0; i < num[0].length; i++) {
-            dep += Number(num[0][i] * (Number(deps[0][i]) * 100));
-        }
-        return dep / 100;
-    }
+    // totalDep = () => {
+    //     const {num, deps} = this.state;
+    //     let dep = 0;
+    //     for (let i = 0; i < num[0].length; i++) {
+    //         dep += Number(num[0][i] * (Number(deps[0][i]) * 100));
+    //     }
+    //     return dep / 100;
+    // }
 
     // 商品总价
-    totalPrice = () => {
-        const {num, prices} = this.state;
-        let price = 0;
-        for (let i = 0; i < num[0].length; i++) {
-            price += Number(num[0][i] * (Number(prices[0][i]) * 100));
-        }
-        return price / 100;
-    }
+    // totalPrice = () => {
+    //     const {num, prices} = this.state;
+    //     let price = 0;
+    //     for (let i = 0; i < num[0].length; i++) {
+    //         price += Number(num[0][i] * (Number(prices[0][i]) * 100));
+    //     }
+    //     return price / 100;
+    // }
 
     render() {
-        const {shopInfo, addressInfo, self, currentIndex, textInfo, notAllow, invoiceStatus, invoice, invoiceIndex, num} = this.state;
+        const {shopInfo, addressInfo, self, allDeposit, currentIndex, textInfo, notAllow, invoiceStatus, invoice, invoiceIndex, num, total} = this.state;
         const {address} = this.props;
         const invoices = JSON.parse(getValue('invoices'));
         const orders = JSON.parse(getValue('order'));
@@ -565,15 +572,15 @@ class appendOrder extends BaseComponent {
                                         <ul className="range-top">
                                             <li className="list">
                                                 <span>记账量</span>
-                                                <span>{this.totalDep()}</span>
+                                                <span>{shopInfo[index].all_deposit}</span>
                                             </li>
                                             <li className="list">
                                                 <span>商品总价</span>
-                                                <span>￥{this.totalPrice()}</span>
+                                                <span>￥{shopInfo[index].all_price}</span>
                                             </li>
                                             <li className="list">
                                                 <span>运费</span>
-                                                <span>￥{shop.express_money}</span>
+                                                <span>￥{shopInfo[index].express_money}</span>
                                             </li>
                                         </ul>
                                     </div>
@@ -591,7 +598,7 @@ class appendOrder extends BaseComponent {
                                     </List>
                                     <div className="payable">
                                         <span>实付款</span>
-                                        <span>￥{this.totalPrice()}</span>
+                                        <span>￥{shopInfo[index].actual_all_price}</span>
                                     </div>
                                 </div>
                             ))
@@ -609,9 +616,9 @@ class appendOrder extends BaseComponent {
                                 <div className="total-price">
                                     <div>
                                         <span>合计：</span>
-                                        <span className="total-pri">￥{this.totalPrice()}</span>
+                                        <span className="total-pri">￥{total}</span>
                                     </div>
-                                    <div className="total-dep">记账量:{this.totalDep()}</div>
+                                    <div className="total-dep">记账量:{allDeposit}</div>
                                 </div>
                             </div>
                             <Button onClick={this.postOrder} disabled={!notAllow}>立即付款</Button>
