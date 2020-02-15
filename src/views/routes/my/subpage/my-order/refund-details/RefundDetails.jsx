@@ -231,22 +231,27 @@ class refundDetails extends BaseComponent {
                             ￥{refundArr.return_price}
                         </span>
                     </div>
-                    <div className="logistics-info">
-                        <div className="detail-list">
-                            <span className="list-left">店家姓名：</span>
-                            <span className="list-center">{refundArr.s_link_name}</span>
-                            <span>
-                                {refundArr.s_phone}
-                            </span>
-                        </div>
-                        <div className="detail-list">
-                            <span className="list-left">店家地址：</span>
-                            <span className="list-right">
-                                {refundArr.s_address}
-                            </span>
-                        </div>
-                        <p>商家已同意申请，请尽快寄出商品，同时填写相关的物流信息</p>
-                    </div>
+                    {
+                        refundArr.status === '3'
+                        && (
+                            <div className="logistics-info">
+                                <div className="detail-list">
+                                    <span className="list-left">店家姓名：</span>
+                                    <span className="list-center">{refundArr.s_link_name}</span>
+                                    <span>
+                                        {refundArr.s_phone}
+                                    </span>
+                                </div>
+                                <div className="detail-list">
+                                    <span className="list-left">店家地址：</span>
+                                    <span className="list-right">
+                                        {refundArr.s_address}
+                                    </span>
+                                </div>
+                                <p>商家已同意申请，请尽快寄出商品，同时填写相关的物流信息</p>
+                            </div>
+                        )
+                    }
                 </div>
                 {/*商品*/}
                 {/* <div className="consult-his" onClick={this.goToConsultHistory}><span>协商历史</span><span className="icon history"/></div> */}

@@ -74,6 +74,7 @@ class ApplyServiceDetail extends BaseComponent {
     //提交申请
     submit = () => {
         const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
+        const down = decodeURI(getUrlParam('down', encodeURI(this.props.location.search)));
         const {applyId, logistMain} = this.state;
         if (!applyId) return showInfo('请选择物流');
         if (!logistMain) return showInfo('请填写物流单号');
@@ -81,13 +82,41 @@ class ApplyServiceDetail extends BaseComponent {
         this.fetch(urlCfg.setLogisticsList, {method: 'post', data: {id, exp_id: applyId, exp_no: logistMain, type: 2}})
             .subscribe(res => {
                 if (res && res.status === 0) {
-                    showInfo(res.message);
+                    // showInfo(res.message);
                     //将我的订单的tab状态设置为售后
                     this.props.setOrderStatus(4);
                     //清除我的订单的缓存
                     dropByCacheKey('OrderPage');
                     dropByCacheKey('selfMentionOrderPage');//清除线下订单
-                    appHistory.replace(`/refundDetails?id=${id}`);
+                    // appHistory.replace(`/refundDetails?id=${id}`);
+
+                    if (down === '1') { //线下订单申请
+                        // if (returnType === '1') {
+                        //     appHistory.go(-2);
+                        // } else {
+                        //     appHistory.go(-3);
+                        // }
+                        dropByCacheKey('selfMentionOrderPage');//清除线下订单
+                        // setTimeout(() => {
+                        //     appHistory.push(`/selfOrderingDetails?id=${orderId}`);
+                        // });
+                        // setOrderStatus(3);
+                        appHistory.replace(`/jdsSaveSuccess?id=${id}&self=1`);
+                    } else {
+                        //将我的订单的tab状态设置为售后
+                        // if (returnType === '1') { //整条订单退款
+                        //     appHistory.go(-2);
+                        // } else { //非整条订单退款
+                        //     appHistory.go(-3);
+                        // }
+                        //清除我的订单的缓存
+                        dropByCacheKey('OrderPage');
+                        // setTimeout(() => {
+                        //     appHistory.push(`/refundDetails?id=${res.id}`);
+                        // });
+                        // setOrderStatus(0);
+                        appHistory.replace(`/jdsSaveSuccess?id=${id}`);
+                    }
                 }
             });
         return undefined;

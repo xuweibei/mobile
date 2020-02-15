@@ -39,7 +39,6 @@ const HomePage = () => (
 
 //获取userToken
 window.DsBridge.call('wxLoginCallback', (data) => {
-    console.log(data,'时高时低')
     const obj = data ? JSON.parse(data) : '';
     if(obj && obj.status === '0'){
         window.localStorage.setItem(LOCALSTORAGE.USER_TOKEN,obj.data.usertoken);

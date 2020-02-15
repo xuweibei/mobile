@@ -59,7 +59,8 @@ export const urlCfg = {
     commodityCollection: href.apiPath + '/my-collect-add-pr', //商品收藏
     updatePaymentPassword: href.apiPath + '/modifypaypwd', //更新支付密码
     settingPageData: href.apiPath + '/set-used', //设置页面数据请求
-    wechatPayment: href.apiPath + '/wx-app-pay', //微信支付
+    // wechatPayment: href.apiPath + '/wx-app-pay', //微信支付
+    wechatPayment: href.apiPath + '/wxpay', //微信支付
     alipayPayment: href.apiPath + '/alipay', //支付宝支付
     batchPayment: href.apiPath + '/nmrs-pay', //批量支付
     storeDetails: href.apiPath + '/shop-detail', //商店详情

@@ -2,18 +2,18 @@
  *
  * 商品详情页面
  */
-import { Carousel, Flex, Icon, List, Popover, Stepper } from "antd-mobile";
-import { connect } from "react-redux";
-import { Link, Element, scrollSpy, animateScroll } from "react-scroll";
-import Recommend from "./components/Recommend";
-import Evaluate from "./components/Evaluate";
-import Specification from "./components/specification";
-import { shopCartActionCreator as action } from "../../../shop-cart/actions";
-import { baseActionCreator as actionCreator } from "../../../../../redux/baseAction";
-import Sku from "../../../../common/sku/Sku";
-import "./GoodsDetail.less";
+import {Carousel, Flex, Icon, List, Popover, Stepper} from 'antd-mobile';
+import {connect} from 'react-redux';
+import {Link, Element, scrollSpy, animateScroll} from 'react-scroll';
+import Recommend from './components/Recommend';
+import Evaluate from './components/Evaluate';
+import Specification from './components/specification';
+import {shopCartActionCreator as action} from '../../../shop-cart/actions';
+import {baseActionCreator as actionCreator} from '../../../../../redux/baseAction';
+import Sku from '../../../../common/sku/Sku';
+import './GoodsDetail.less';
 
-const { urlCfg } = Configs;
+const {urlCfg} = Configs;
 const {
     appHistory,
     getUrlParam,
@@ -21,11 +21,11 @@ const {
     showInfo,
     native,
     TD,
-    systemApi: { setValue, removeValue },
+    systemApi: {setValue, removeValue},
     nativeCssDiff
 } = Utils;
 const {
-    MESSAGE: { Form, Feedback },
+    MESSAGE: {Form, Feedback},
     TD_EVENT_ID
 } = Constants;
 
@@ -37,20 +37,20 @@ const myImg = src => (
 );
 const listText = [
     {
-        title: "商品",
-        key: "goods"
+        title: '商品',
+        key: 'goods'
     },
     {
-        title: "推荐",
-        key: "recommend"
+        title: '推荐',
+        key: 'recommend'
     },
     {
-        title: "规格",
-        key: "specification"
+        title: '规格',
+        key: 'specification'
     },
     {
-        title: "详情",
-        key: "details"
+        title: '详情',
+        key: 'details'
     }
 ];
 const Item = Popover.Item;
@@ -65,22 +65,22 @@ class GoodsDetail extends BaseComponent {
         recommend: [], //店铺商品推荐
         goodsAttr: [],
         stocks: [],
-        type: "",
+        type: '',
         names: [], //选中商品属性
         collect: [], //商品收藏状态
-        status: "1", //判断商品是否下架
+        status: '1', //判断商品是否下架
         visible: false,
-        text: "",
+        text: '',
         lineStatus: false, //底部商品状态栏
         ids: [], //选中属性id
         goodsSku: [], //商品的结果集
-        lineText: "", //商品状态栏文字
+        lineText: '', //商品状态栏文字
         pickType: {}, //配送方式
-        selectType: "1", //选中配送方式 1快递 2自提
+        selectType: '1', //选中配送方式 1快递 2自提
         clickType: 0, //打开sku的方式 0箭头 1购物车 2立即购买
         totalNUm: 0, //商品库存,
         goodId: decodeURI(
-            getUrlParam("id", encodeURI(this.props.location.search))
+            getUrlParam('id', encodeURI(this.props.location.search))
         ),
         hasType: false,
         evalute: {},
@@ -97,18 +97,17 @@ class GoodsDetail extends BaseComponent {
 
     init = () => {
         this.getGoodsDetail();
-        window.addEventListener("scroll", this.handleScroll);
+        window.addEventListener('scroll', this.handleScroll);
         scrollSpy.update();
     };
 
     //网页滚动
     handleScroll = e => {
-        const scrollTop =
-            document.documentElement.scrollTop || document.body.scrollTop;
+        const scrollTop =            document.documentElement.scrollTop || document.body.scrollTop;
         if (scrollTop / window.devicePixelRatio > 50) {
-            this.setState({ topSwithe: false });
+            this.setState({topSwithe: false});
         } else if (scrollTop / window.devicePixelRatio <= 100) {
-            this.setState({ topSwithe: true });
+            this.setState({topSwithe: true});
         }
     };
 
@@ -122,11 +121,11 @@ class GoodsDetail extends BaseComponent {
         if (process.env.NATIVE) {
             const id = decodeURI(
                 getUrlParam(
-                    "id",
+                    'id',
                     encodeURI(this.state.propsData.location.search)
                 )
             );
-            const { goodId } = this.state;
+            const {goodId} = this.state;
             if (id !== goodId) {
                 // eslint-disable-next-line react/no-did-update-set-state
                 this.setState(
@@ -140,19 +139,19 @@ class GoodsDetail extends BaseComponent {
                         recommend: [], //店铺商品推荐
                         goodsAttr: [],
                         stocks: [], // sku属性
-                        type: "",
+                        type: '',
                         names: [], //选中商品属性
                         collect: [], //商品收藏状态
-                        status: "1", //判断商品是否下架
+                        status: '1', //判断商品是否下架
                         visible: false,
-                        text: "",
+                        text: '',
                         lineStatus: false, //底部商品状态栏
                         ids: [], //选中属性id
                         goodsSku: [], //商品的结果集
                         // shopAddress: '', // 店铺位置
-                        lineText: "", //商品状态栏文字
+                        lineText: '', //商品状态栏文字
                         pickType: {}, //配送方式
-                        selectType: "1", //选中配送方式 1快递 2自提
+                        selectType: '1', //选中配送方式 1快递 2自提
                         clickType: 0, //打开sku的方式 0箭头 1购物车 2立即购买
                         totalNUm: 0, //商品库存,
                         goodId: id
@@ -205,8 +204,8 @@ class GoodsDetail extends BaseComponent {
 
     //获取商品详情
     getGoodsDetail = () => {
-        const { goodId } = this.state;
-        this.fetch(urlCfg.getGoodsDetail, { data: { id: goodId } }).subscribe(
+        const {goodId} = this.state;
+        this.fetch(urlCfg.getGoodsDetail, {data: {id: goodId}}).subscribe(
             res => {
                 if (res.status === 0) {
                     animateScroll.scrollToTop();
@@ -223,8 +222,8 @@ class GoodsDetail extends BaseComponent {
                     const evalute = res.pingjia ? res.pingjia : {};
                     evalute.count = res.pingjia_count;
                     const specification = [];
-                    res.data.jd_parameter &&
-                        Object.keys(res.data.jd_parameter).forEach(item => {
+                    res.data.jd_parameter
+                        && Object.keys(res.data.jd_parameter).forEach(item => {
                             specification.push(res.data.jd_parameter[item]);
                         });
                     this.setState(
@@ -241,18 +240,18 @@ class GoodsDetail extends BaseComponent {
                             pickType: res.data.distribution_mode,
                             totalNUm: res.data.num_stock,
                             list:
-                                res.data.app_type && res.data.app_type === "2"
+                                res.data.app_type && res.data.app_type === '2'
                                     ? listText.filter(
-                                          item => item.title !== "规格"
-                                      )
+                                        item => item.title !== '规格'
+                                    )
                                     : listText,
                             evalute: evalute,
                             hasType: res.data.distribution_mode.data.some(
-                                item => item.value === "到店自提"
+                                item => item.value === '到店自提'
                             ),
                             specification,
                             ids:
-                                res.data.app_type === "3"
+                                res.data.app_type === '3'
                                     ? res.data.attr_arr_list[0][0]
                                     : []
                         },
@@ -282,7 +281,7 @@ class GoodsDetail extends BaseComponent {
 
     //确定按钮点击
     confirmSku = (type, ids, names) => {
-        const { clickType } = this.state;
+        const {clickType} = this.state;
         this.setState(
             {
                 selectType: type,
@@ -316,9 +315,9 @@ class GoodsDetail extends BaseComponent {
             max
         } = this.state;
         if (
-            shop.shoper_open_status === "0" ||
-            status === "0" ||
-            status === "2"
+            shop.shoper_open_status === '0'
+            || status === '0'
+            || status === '2'
         ) {
             return;
         }
@@ -329,13 +328,13 @@ class GoodsDetail extends BaseComponent {
             });
             return;
         }
-        if (selectType === "3") {
+        if (selectType === '3') {
             showInfo(Feedback.Select_Consume);
             return;
         }
         if (paginationNum > max) {
             console.log(max, paginationNum);
-            showFail("商品库存不足");
+            showFail('商品库存不足');
             return;
         }
         this.fetch(urlCfg.addShopCart, {
@@ -348,7 +347,7 @@ class GoodsDetail extends BaseComponent {
                 pr_id: goodsDetail.id,
                 deposit: goodsDetail.deposit,
                 num: paginationNum,
-                sku: ids.join(",")
+                sku: ids.join(',')
             }
         }).subscribe(res => {
             if (res && res.status === 0) {
@@ -381,14 +380,14 @@ class GoodsDetail extends BaseComponent {
             selectType
         } = this.state;
         if (
-            shop.shoper_open_status === "0" ||
-            status === "0" ||
-            status === "2"
+            shop.shoper_open_status === '0'
+            || status === '0'
+            || status === '2'
         ) {
             return;
         }
         if (!paginationNum) {
-            showFail("请输入购买商品数量!");
+            showFail('请输入购买商品数量!');
             return;
         }
         const str = ids.toString();
@@ -406,19 +405,19 @@ class GoodsDetail extends BaseComponent {
             property: str,
             num: paginationNum
         });
-        const { setOrder } = this.props;
+        const {setOrder} = this.props;
         setOrder(arr);
-        setValue("orderArr", JSON.stringify(arr));
-        if (selectType === "1") {
+        setValue('orderArr', JSON.stringify(arr));
+        if (selectType === '1') {
             appHistory.push(`/appendorder?source=${2}`);
         } else {
-            appHistory.push("/selfMentionDetail");
+            appHistory.push('/selfMentionDetail');
         }
     };
 
     //收藏商品
     collect = () => {
-        const { shop, goodsDetail, collect } = this.state;
+        const {shop, goodsDetail, collect} = this.state;
         const id = goodsDetail.id;
         if (collect.length > 0) {
             this.delCollect();
@@ -434,7 +433,7 @@ class GoodsDetail extends BaseComponent {
                 }
             }).subscribe(res => {
                 if (res && res.status === 0) {
-                    showInfo("收藏成功！");
+                    showInfo('收藏成功！');
                     this.getGoodsDetail();
                 }
             });
@@ -443,7 +442,7 @@ class GoodsDetail extends BaseComponent {
 
     //取消商品收藏
     delCollect = () => {
-        const { collect } = this.state;
+        const {collect} = this.state;
         this.fetch(urlCfg.cancelCollect, {
             data: {
                 type: 1,
@@ -451,7 +450,7 @@ class GoodsDetail extends BaseComponent {
             }
         }).subscribe(res => {
             if (res && res.status === 0) {
-                showInfo("取消收藏成功!");
+                showInfo('取消收藏成功!');
                 this.getGoodsDetail();
             }
         });
@@ -468,7 +467,7 @@ class GoodsDetail extends BaseComponent {
     // 关闭图片mask
     maskClose = () => {
         this.setState({
-            maskPic: "",
+            maskPic: '',
             maskStatus: false
         });
     };
@@ -481,76 +480,76 @@ class GoodsDetail extends BaseComponent {
     // 跳转购物车
     shopCart = () => {
         //判断订单状态
-        this.props.setOrderStatus("");
+        this.props.setOrderStatus('');
         //店铺里面判断状态的id
-        this.props.setshoppingId("");
+        this.props.setshoppingId('');
         //清除收藏状态
-        this.props.setTab("");
+        this.props.setTab('');
         if (process.env.NATIVE) {
-            native("goShop");
+            native('goShop');
             appHistory.reduction(); //重置路由
         } else {
-            appHistory.push("/shopCart");
+            appHistory.push('/shopCart');
         }
     };
 
     // 跳转回首页
     goHome = (val, key) => {
         if (process.env.NATIVE && key === 0) {
-            native("goHome");
+            native('goHome');
         }
         if (key === 0) {
-            appHistory.replace("/home");
+            appHistory.replace('/home');
             this.setState({
                 visible: false
             });
         }
         //判断订单状态
-        this.props.setOrderStatus("");
+        this.props.setOrderStatus('');
         //店铺里面判断状态的id
-        this.props.setshoppingId("");
+        this.props.setshoppingId('');
         //清除收藏状态
-        this.props.setTab("");
+        this.props.setTab('');
     };
 
     //获取商品状态
     getGoodsStatus = () => {
-        const { status } = this.state;
+        const {status} = this.state;
         switch (status) {
-            case "0":
-                this.setState({
-                    lineStatus: true,
-                    lineText: "已下架"
-                });
-                break;
-            case "2":
-                this.setState({
-                    lineStatus: true,
-                    lineText: "商品已下架"
-                });
-                break;
-            default:
-                this.setState({
-                    lineStatus: false,
-                    lineText: ""
-                });
+        case '0':
+            this.setState({
+                lineStatus: true,
+                lineText: '已下架'
+            });
+            break;
+        case '2':
+            this.setState({
+                lineStatus: true,
+                lineText: '商品已下架'
+            });
+            break;
+        default:
+            this.setState({
+                lineStatus: false,
+                lineText: ''
+            });
         }
     };
 
     // 返回上一级
     goBackModal = () => {
         if (process.env.NATIVE && appHistory.length() === 0) {
-            native("goBack");
+            native('goBack');
         } else {
             appHistory.goBack();
         }
         //清除缓存
-        removeValue("orderArr");
+        removeValue('orderArr');
     };
 
     //改变购买数量
     onChangeCount = value => {
-        const { max } = this.state;
+        const {max} = this.state;
         if (value > max) {
             showFail(Form.No_Stocks);
             this.setState({
@@ -572,49 +571,49 @@ class GoodsDetail extends BaseComponent {
 
     //右侧按钮点击
     onSelect = opt => {
-        if (opt.key === "2") {
-            appHistory.push("/collect"); //收藏页面
-        } else if (opt.key === "1") {
+        if (opt.key === '2') {
+            appHistory.push('/collect'); //收藏页面
+        } else if (opt.key === '1') {
             if (process.env.NATIVE) {
-                native("goHome");
+                native('goHome');
                 appHistory.reduction(); //重置路由
             } else {
-                appHistory.push("/home");
+                appHistory.push('/home');
             }
-        } else if (opt.key === "3") {
+        } else if (opt.key === '3') {
             if (process.env.NATIVE) {
-                native("goShop");
+                native('goShop');
                 appHistory.reduction(); //重置路由
             } else {
-                appHistory.push("/shopCart");
+                appHistory.push('/shopCart');
             }
-        } else if (opt.key === "4") {
+        } else if (opt.key === '4') {
             if (process.env.NATIVE) {
-                const obj = { "": "" };
-                native("goToIm", obj);
+                const obj = {'': ''};
+                native('goToIm', obj);
             } else {
-                showInfo("im");
+                showInfo('im');
             }
-        } else if (opt.key === "5") {
-            appHistory.push("/invitation?share=1"); //分享页面
+        } else if (opt.key === '5') {
+            appHistory.push('/invitation?share=1'); //分享页面
         }
     };
 
     //联系商家
     goToShoper = () => {
-        const { shop, goodsDetail } = this.state;
+        const {shop, goodsDetail} = this.state;
         const id = goodsDetail.id;
         if (process.env.NATIVE) {
-            native("goToShoper", {
+            native('goToShoper', {
                 shopNo: shop.no,
                 id,
-                type: "1",
+                type: '1',
                 shopNickName: shop.nickname,
-                imType: "1",
-                groud: "0"
+                imType: '1',
+                groud: '0'
             }); //groud 为0 单聊，1群聊 imType 1商品2订单3空白  type 1商品 2订单
         } else {
-            showInfo("联系商家");
+            showInfo('联系商家');
         }
     };
 
@@ -625,25 +624,25 @@ class GoodsDetail extends BaseComponent {
             visible={this.state.visible}
             onVisibleChange={this.handleVisibleChange}
             overlay={[
-                <Item key="1" icon={myImg("family.svg")}>
+                <Item key="1" icon={myImg('family.svg')}>
                     <p>首页</p>
                 </Item>,
-                <Item key="2" icon={myImg("star.svg")}>
+                <Item key="2" icon={myImg('star.svg')}>
                     收藏
                 </Item>, //产品说C端屏蔽了
                 !window.isWX && (
-                    <Item key="3" icon={myImg("shop-cart.svg")}>
+                    <Item key="3" icon={myImg('shop-cart.svg')}>
                         购物车
                     </Item>
                 ),
                 !window.isWX && (
-                    <Item key="4" icon={myImg("info.svg")}>
+                    <Item key="4" icon={myImg('info.svg')}>
                         <p>消息</p>
                     </Item>
                 )
             ]}
         >
-            <Icon type="ellipsis" />
+            <Icon type="ellipsis"/>
         </Popover>
     );
 
@@ -672,18 +671,18 @@ class GoodsDetail extends BaseComponent {
 
     // 生成星星
     createStar = () => {
-        const { shop } = this.state;
+        const {shop} = this.state;
         // console.log(shop.shop_mark);
-        const slot = shop.shop_mark && shop.shop_mark.split(".")[1];
+        const slot = shop.shop_mark && shop.shop_mark.split('.')[1];
         const value = Number(shop.shop_mark);
         console.log(value);
         const arr = [];
         for (let i = 0; i < Math.floor(value); i++) {
-            const star = <div className="icon icon-tiny" key={i} />;
+            const star = <div className="icon icon-tiny" key={i}/>;
             arr.push(star);
         }
         if (slot >= 5) {
-            const stars = <div className="icon icon-stars" />;
+            const stars = <div className="icon icon-stars"/>;
             arr.push(stars);
         }
         return arr;
@@ -693,21 +692,21 @@ class GoodsDetail extends BaseComponent {
     returnLev = num => {
         const score = num && Number(num);
         const base = {
-            width: "20px",
-            height: "20px",
-            lineHeight: "15px",
-            textAlign: "center",
-            color: "#fff"
+            width: '20px',
+            height: '20px',
+            lineHeight: '15px',
+            textAlign: 'center',
+            color: '#fff'
         };
         let ele;
         if (score > 4) {
-            ele = <div style={{ ...base, background: "#FF2D51" }}>高</div>;
-        } else if (2.5 < score < 4) {
-            ele = <div style={{ ...base, background: "yellow" }}>中</div>;
+            ele = <div style={{...base, background: '#FF2D51'}}>高</div>;
+        } else if (score > 2.5 < 4) {
+            ele = <div style={{...base, background: 'yellow'}}>中</div>;
         } else if (score < 2.5) {
-            ele = <div style={{ ...base, background: "#999" }}>低</div>;
+            ele = <div style={{...base, background: '#999'}}>低</div>;
         } else {
-            ele = <div></div>;
+            ele = <div/>;
         }
         return ele;
     };
@@ -748,16 +747,16 @@ class GoodsDetail extends BaseComponent {
                 <List>
                     <List.Item
                         wrap
-                        extra={
+                        extra={(
                             <Stepper
-                                style={{ width: "100%", minWidth: "100px" }}
+                                style={{width: '100%', minWidth: '100px'}}
                                 showNumber
                                 max={max}
                                 min={1}
                                 value={paginationNum}
                                 onChange={this.onChangeCount}
                             />
-                        }
+                        )}
                     >
                         数量
                     </List.Item>
@@ -769,7 +768,7 @@ class GoodsDetail extends BaseComponent {
                 data-component="goodsDetail"
                 data-role="page"
                 className={
-                    this.state.popup ? "goods-detail ido" : "goods-detail"
+                    this.state.popup ? 'goods-detail ido' : 'goods-detail'
                 }
             >
                 {topSwithe ? (
@@ -781,7 +780,7 @@ class GoodsDetail extends BaseComponent {
                                         className="back-left"
                                         onClick={this.goBackModal}
                                     >
-                                        <div className="icon icon-back" />
+                                        <div className="icon icon-back"/>
                                     </div>
                                 )}
                             </Flex.Item>
@@ -807,8 +806,8 @@ class GoodsDetail extends BaseComponent {
                             </li>
                             <li className="list">
                                 <ul>
-                                    {list.length > 0 &&
-                                        list.map(item => (
+                                    {list.length > 0
+                                        && list.map(item => (
                                             <li
                                                 key={item.title}
                                                 className="items"
@@ -835,7 +834,7 @@ class GoodsDetail extends BaseComponent {
                 <Carousel autoplay infinite>
                     {picPath.map(item => (
                         <div key={item} onClick={e => this.openMask(e)}>
-                            <img src={item} className="banner-img" />
+                            <img src={item} className="banner-img"/>
                         </div>
                     ))}
                 </Carousel>
@@ -844,7 +843,7 @@ class GoodsDetail extends BaseComponent {
                 <div className="goods-norms">
                     <div className="norms-money" name="goods">
                         <div className="money">
-                            ￥{goodsDetail.price}{" "}
+                            ￥{goodsDetail.price}{' '}
                             <p className="money-max">
                                 ￥{goodsDetail.price_original}
                             </p>
@@ -856,14 +855,14 @@ class GoodsDetail extends BaseComponent {
                         </div>
                         <div
                             className={
-                                goodsDetail.app_type === "3"
-                                    ? "norms-title norms-type"
-                                    : "norms-title"
+                                goodsDetail.app_type === '3'
+                                    ? 'norms-title norms-type'
+                                    : 'norms-title'
                             }
                         >
                             {goodsDetail.title}
                         </div>
-                        {goodsDetail && goodsDetail.app_type === "2" && (
+                        {goodsDetail && goodsDetail.app_type === '2' && (
                             <div className="norms-bottom">
                                 <Flex>
                                     <Flex.Item>
@@ -871,9 +870,9 @@ class GoodsDetail extends BaseComponent {
                                             邮费：
                                             {goodsDetail.express_money && (
                                                 <span>
-                                                    {"￥" +
-                                                        goodsDetail.express_money ||
-                                                        "免邮"}
+                                                    {'￥'
+                                                        + goodsDetail.express_money
+                                                        || '免邮'}
                                                 </span>
                                             )}
                                         </div>
@@ -909,7 +908,7 @@ class GoodsDetail extends BaseComponent {
                     />
 
                     {/*店铺推荐*/}
-                    {goodsDetail && goodsDetail.app_type === "2" && (
+                    {goodsDetail && goodsDetail.app_type === '2' && (
                         <Recommend
                             recommend={recommend}
                             Element={Element}
@@ -917,7 +916,7 @@ class GoodsDetail extends BaseComponent {
                         />
                     )}
 
-                    {goodsDetail && goodsDetail.app_type === "3" && (
+                    {goodsDetail && goodsDetail.app_type === '3' && (
                         <Specification
                             Element={Element}
                             specification={specification}
@@ -931,25 +930,25 @@ class GoodsDetail extends BaseComponent {
                     <div className="recommend-commodity-detail">
                         <div className="currency-detail">
                             <Flex className="currency-detail-title">
-                                <Flex.Item className="title-border" />
+                                <Flex.Item className="title-border"/>
                                 <Flex.Item className="title-center">
                                     商品详情
                                 </Flex.Item>
-                                <Flex.Item className="title-border" />
+                                <Flex.Item className="title-border"/>
                             </Flex>
                         </div>
                     </div>
                     <Element
                         name="details"
                         className="detail-img lis"
-                        dangerouslySetInnerHTML={{ __html: goodsDetail.intro }}
+                        dangerouslySetInnerHTML={{__html: goodsDetail.intro}}
                     />
 
                     {lineStatus ? (
                         <div className="timeout">{lineText}</div>
                     ) : null}
                     {/*底部固定购买栏*/}
-                    {shop.shoper_open_status === "0" && (
+                    {shop.shoper_open_status === '0' && (
                         <div className="rest">该店暂未营业</div>
                     )}
                     {/*底部弹出选择商品框*/}
@@ -987,77 +986,77 @@ class GoodsDetail extends BaseComponent {
                 <div className="goodsDetail-bottom">
                     <div
                         className="icons-warp"
-                        style={{ width: nativeCssDiff() ? "2.6rem" : "3rem" }}
+                        style={{width: nativeCssDiff() ? '2.6rem' : '3rem'}}
                     >
                         <div className="icons">
                             <div
                                 className="phone-cart"
                                 onClick={this.goToShoper}
                             >
-                                <div className="icon icon-phone" />
+                                <div className="icon icon-phone"/>
                                 <div className="phone-text">联系卖家</div>
                             </div>
                             <div className="phone-cart" onClick={this.collect}>
                                 <div
                                     className={`icon ${
                                         collect.length > 0
-                                            ? "icon-collect-active"
-                                            : "icon-collect"
+                                            ? 'icon-collect-active'
+                                            : 'icon-collect'
                                     }`}
                                 />
                                 <div className="phone-text">收藏</div>
                             </div>
                             <div className="phone-cart" onClick={this.shopCart}>
-                                <div className="icon icon-cart" />
+                                <div className="icon icon-cart"/>
                                 <div className="phone-text">购物车</div>
                             </div>
                         </div>
                     </div>
-                    {goodsDetail.effective_type === "0" ||
-                    goodsDetail.app_type === "2" ? (
+                    {goodsDetail.effective_type === '0'
+                    || goodsDetail.app_type === '2' ? (
                         <div
-                            className={`${
-                                status === "0" || status === "2"
-                                    ? "disble-btn"
-                                    : "bottom-btn"
-                            }`}
-                            style={{
-                                border: nativeCssDiff()
-                                    ? "1PX solid #ff2d51"
-                                    : "0.02rem solid #ff2d51"
-                            }}
-                        >
-                            <Flex>
+                                className={`${
+                                    status === '0' || status === '2'
+                                        ? 'disble-btn'
+                                        : 'bottom-btn'
+                                }`}
+                                style={{
+                                    border: nativeCssDiff()
+                                        ? '1PX solid #ff2d51'
+                                        : '0.02rem solid #ff2d51'
+                                }}
+                            >
+                                <Flex>
                                 <Flex.Item
-                                    className={`${
-                                        status === "0" || status === "2"
-                                            ? "disable-cart"
-                                            : "cart"
-                                    }`}
-                                    onClick={this.addCart}
-                                >
+                                        className={`${
+                                            status === '0' || status === '2'
+                                                ? 'disable-cart'
+                                                : 'cart'
+                                        }`}
+                                        onClick={this.addCart}
+                                    >
                                     加入购物车
-                                </Flex.Item>
+                                    </Flex.Item>
                                 <Flex.Item
-                                    className={`${
-                                        status === "0" || status === "2"
-                                            ? "disable-emption"
-                                            : "emption"
-                                    }`}
-                                    onClick={() => this.emption("pay")}
-                                >
+                                        className={`${
+                                            status === '0' || status === '2'
+                                                ? 'disable-emption'
+                                                : 'emption'
+                                        }`}
+                                        onClick={() => this.emption('pay')}
+                                    >
                                     立即购买
-                                </Flex.Item>
+                                    </Flex.Item>
                             </Flex>
-                        </div>
-                    ) : (
-                        <div
-                            className="pay-now"
-                            onClick={() => this.emption("pay")}
-                        >
+                            </div>
+                        ) : (
+                            <div
+                                className="pay-now"
+                                onClick={() => this.emption('pay')}
+                            >
                             立即购买
-                        </div>
-                    )}
+                            </div>
+                        )}
                     {/* <div className="pay-now" onClick={() => this.emption('pay')}>立即购买</div> */}
                 </div>
             </div>

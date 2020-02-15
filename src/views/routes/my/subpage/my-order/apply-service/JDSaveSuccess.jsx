@@ -14,14 +14,19 @@ export default class JDSaveSuccess extends React.PureComponent {
 
     //查看记录
     seeHistory = () => {
-        const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
-        appHistory.replace(`refundDetails?id=${id}`);
+        const orderId = decodeURI(getUrlParam('orderId', encodeURI(this.props.location.search)));
+        appHistory.replace(`refundDetails?id=${orderId}`);
     }
 
     //回到订单
     goBackOrder = () => {
         const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
-        appHistory.replace(`listDetails?id=${id}`);
+        const self = decodeURI(getUrlParam('self', encodeURI(this.props.location.search)));
+        if (self === '1') {
+            appHistory.replace(`/selfOrderingDetails?id=${id}`);
+        } else {
+            appHistory.replace(`listDetails?id=${id}`);
+        }
     }
 
     renderEle = () => (
@@ -37,7 +42,7 @@ export default class JDSaveSuccess extends React.PureComponent {
             </div>
             <p className="toast">
                 <span>温馨提示：</span>
-                {/* <p>提示内容</p> */}
+                <p>客服将会在7个工作日内为您处理，请耐心等待</p>
             </p>
         </div>
     )

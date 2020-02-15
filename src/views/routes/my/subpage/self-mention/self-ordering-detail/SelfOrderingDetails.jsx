@@ -6,7 +6,7 @@ import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAc
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './SelfOrderingDetails.less';
 
-const {showSuccess, appHistory, getUrlParam, native, showFail, showInfo, nativeCssDiff} = Utils;
+const {showSuccess, appHistory, getUrlParam, native, showFail, showInfo, nativeCssDiff, moneyDot} = Utils;
 const {MESSAGE: {Feedback}} = Constants;
 const {urlCfg} = Configs;
 //right:0未付款;1已付款（待使用）;3已使用（未评价）;4交易成功（已评价）;10取消订单 ;11删除订单;12申请退款成功关闭订单;13商家关闭订单14商家删除订单
@@ -206,11 +206,6 @@ class ReDetail extends BaseComponent {
         }
     }
 
-    moneyDot = (money) => {
-        const arr = money.toString().split('.');
-        return arr;
-    }
-
     render() {
         const {selfSufficiency, selfGoods, maskStatus, collectId} = this.state;
         return (
@@ -256,7 +251,7 @@ class ReDetail extends BaseComponent {
                                     <div className="goods-right">
                                         <div className="goods-desc">
                                             <div className="desc-title">{item.pr_title}</div>
-                                            <div className="desc_price">￥{this.moneyDot(item.price)[0] + '.'}<span className="small_money">{this.moneyDot(item.price)[1]}</span></div>
+                                            <div className="desc_price">￥{moneyDot(item.price)[0] + '.'}<span className="small_money">{moneyDot(item.price)[1]}</span></div>
                                         </div>
                                         <div className="goods-sku">
                                             <div className="sku-left">
@@ -291,7 +286,7 @@ class ReDetail extends BaseComponent {
                     </div>
                     <div className="payable">
                         <span>实付款</span>
-                        <span>￥{this.moneyDot(selfSufficiency.countprice)[0] + '.' }<span className="small_money">{this.moneyDot(selfSufficiency.countprice)[1]}</span></span>
+                        <span>￥{moneyDot(selfSufficiency.countprice)[0] + '.' }<span className="small_money">{moneyDot(selfSufficiency.countprice)[1]}</span></span>
                     </div>
                     <div className="order common-margin">
                         <div className="number">

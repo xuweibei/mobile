@@ -223,8 +223,8 @@ class ListDetails extends BaseComponent {
 
     //京东商品申请售后中
     JDServiceIng = () => {
-        const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
-        appHistory.push(`/refundDetails?id=${id}`);
+        const {canInfo} = this.state;
+        appHistory.push(`/refundDetails?id=${canInfo.return_id}`);
     }
 
     render() {
@@ -437,14 +437,14 @@ class ListDetails extends BaseComponent {
                                 {   //待付款订单状态可操作
                                     (canInfo.status === '0') &&  <div className="cancel-order" onClick={() => this.setState({canStatus: true, canCelId: canInfo.pr_id})}>取消订单</div>
                                 }
-                                {
-                                    this.bottomButton(canInfo.status)
-                                }
-                                {   //京东商品可以申请售后
-                                    canInfo.app_type === '3' && canInfo.status && canInfo.return_status === 1 && <div className="cancel-order" style={{border: nativeCssDiff() ? '1PX solid rgba(102,102,102,1)' : '0.02rem solid rgba(102,102,102,1)'}} onClick={this.JDService}>申请售后</div>
+                                {   //京东商品可以申请售后   is_reservice 为0 不支持售后 为1 支持售后
+                                    canInfo.app_type === '3' && canInfo.is_reservice === 1 && canInfo.status && canInfo.return_status === 1 && <div className="server-order" style={{border: nativeCssDiff() ? '1PX solid rgba(102,102,102,1)' : '0.02rem solid rgba(102,102,102,1)'}} onClick={this.JDService}>申请售后</div>
                                 }
                                 {   //京东商品已申请售后可以查看
-                                    canInfo.app_type === '3' && canInfo.return_status && canInfo.return_status === 2 && <div className="cancel-order" style={{border: nativeCssDiff() ? '1PX solid rgba(102,102,102,1)' : '0.02rem solid rgba(102,102,102,1)'}} onClick={this.JDServiceIng}>售后中</div>
+                                    canInfo.app_type === '3' && canInfo.is_reservice === 1 && canInfo.return_status && canInfo.return_status === 2 && <div className="server-order" style={{border: nativeCssDiff() ? '1PX solid rgba(102,102,102,1)' : '0.02rem solid rgba(102,102,102,1)'}} onClick={this.JDServiceIng}>售后中</div>
+                                }
+                                {
+                                    this.bottomButton(canInfo.status)
                                 }
                             </div>
                         </div>

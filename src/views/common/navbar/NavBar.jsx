@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './NavBar.less';
 
-const {appHistory, native, showInfo} = Utils;
+const {appHistory, native, showInfo, systemApi: {isAndroid}} = Utils;
 const {navColorF, navColorR} = Constants;
 // const hashs = window.location.hash;
 // const str = hashs.substring(hashs.length - 8);
@@ -76,9 +76,19 @@ class NavBar extends React.PureComponent {
     //设置顶部颜色
     setNavClor = (color) => {
         if (window.location.hash.includes('myOrder') || window.location.hash.includes('selfMention')) {
-            native('setNavColor', {color: navColorR});
-        } else {
+            if (isAndroid) {
+                native('setNavColor', {color: navColorR});
+            } else {
+                native('setNavColor', {color: navColorR}, () => {
+                    const obj = {color: navColorR};
+                });
+            }
+        } else if (isAndroid) {
             native('setNavColor', {color: color || navColorF});
+        } else {
+            native('setNavColor', {color: navColorF}, () => {
+                const obj = {color: navColorF};
+            });
         }
     }
 

@@ -275,7 +275,7 @@ class JDService extends BaseComponent {
             });
     }
 
-    //jingdongInfo
+    //成功跳转
     jingDongInfo = (id) => {
         this.fetch(urlCfg.jdCreateAfsApply, {data: {return_id: id}}).subscribe(dataValue => {
             if (dataValue && dataValue.status === 0) {

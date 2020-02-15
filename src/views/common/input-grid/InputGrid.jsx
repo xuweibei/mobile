@@ -34,12 +34,14 @@ class InputGrid extends React.PureComponent {
     }
 
     inputGrid = (e) => {
+        console.log(e.keyCode, '离开水电费');
         const {propsType} = this.props;
         const {valueGrid} = this.state;
         const val = e.target.value;
         const str = e.target;
         const aa = val.charAt(val.length - 1);
         const bb = [];
+        console.log(val, !/^[0-9]*$/.test(val.slice(val.length - 1)), '说了快递费');
         if (propsType === 'number' && !/^[0-9]*$/.test(val.slice(val.length - 1))) {
             showFail('请输入数字');
             return;

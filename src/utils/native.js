@@ -9,8 +9,8 @@ import {appHistory} from './appHistory';
 const {systemApi: {removeValue}, showFail} = Utils;
 const {LOCALSTORAGE} = Constants;
 //统一封装原生接口请求
-export const native = (str, obj) => {
-    window.DsBridge.call(str, obj);
+export const native = (str, obj = {}, callBack = () => {}) => {
+    window.DsBridge.call(str, obj, callBack);
 };
 
 // new Promise((resolve, reject) => {

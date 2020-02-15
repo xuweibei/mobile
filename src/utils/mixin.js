@@ -207,3 +207,12 @@ export function spliceArr(arr, arr2) {
     });
     return tempArr;
 }
+
+//切割金额，变成一大一小
+export function moneyDot(money) {
+    let arr = '';
+    if (money) {
+        arr = money.toString().split('.');
+    }
+    return arr;
+}
