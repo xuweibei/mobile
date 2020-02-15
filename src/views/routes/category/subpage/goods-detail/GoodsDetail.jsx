@@ -41,6 +41,10 @@ const listText = [
         key: "goods"
     },
     {
+        title: "评价",
+        key: "evaluate"
+    },
+    {
         title: "推荐",
         key: "recommend"
     },
@@ -245,7 +249,7 @@ class GoodsDetail extends BaseComponent {
                                     ? listText.filter(
                                           item => item.title !== "规格"
                                       )
-                                    : listText,
+                                    : listText.filter(item => item.title !== '推荐'),
                             evalute: evalute,
                             hasType: res.data.distribution_mode.data.some(
                                 item => item.value === "到店自提"

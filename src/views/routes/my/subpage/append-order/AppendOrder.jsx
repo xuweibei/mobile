@@ -49,7 +49,8 @@ class appendOrder extends BaseComponent {
         invoicePhone: '',
         propsData: this.props,
         goodsArr: this.props.arr,
-        allDeposit: 0
+        allDeposit: 0,
+        goShop: true //是否显示进店按钮
     };
 
     componentDidMount() {
@@ -271,7 +272,7 @@ class appendOrder extends BaseComponent {
     //获取订单页面数据
     getOrderState = () => {
         const {goodsArr} = this.state;
-        const {arr, address} = this.props;
+        const {address} = this.props;
         let addressId;
         if (address) {
             addressId = address.id;
@@ -297,6 +298,7 @@ class appendOrder extends BaseComponent {
                             invoice.push([]);
                         }
                     }
+
                     this.setState({
                         total: res.all_price,
                         allDeposit: res.all_deposit,
@@ -309,7 +311,8 @@ class appendOrder extends BaseComponent {
                         num: res.data ? res.data.map(shop => shop.data.map(goods => goods.num)) : [],
                         deps: res.data ? res.data.map(shop => shop.data.map(goods => goods.deposit)) : [],
                         prices: res.data ? res.data.map(shop => shop.data.map(goods => goods.price)) : [],
-                        invoice
+                        invoice,
+                        goShop: !(res.data && res.data.map(shop => shop.data.some(item => item.app_type === '3')))[0]
                     }, () => {
                         const {goods} = this.state;
                         if (goods && goods.length > 0) {
@@ -417,7 +420,7 @@ class appendOrder extends BaseComponent {
 
     // 修改商品数量
     changeNum = (index, i, type, types, stock) => {
-        const {num, goodsArr} = this.state;
+        const {num} = this.state;
         const numArr = [...num[index]];
         const arr = [];
         let nowNum = Number(num[index][i]);
@@ -435,39 +438,19 @@ class appendOrder extends BaseComponent {
         }
         this.setState(prevState => {
             numArr.splice(i, 1, nowNum.toString());
-            prevState.goodsArr[i].num = nowNum
+            prevState.goodsArr[i].num = nowNum;
             arr.push(numArr);
             return {
                 num: arr,
                 goodsArr: prevState.goodsArr
             };
         }, () => {
-            this.getOrderState()
+            this.getOrderState();
         });
     }
 
-    // 总记账量
-    // totalDep = () => {
-    //     const {num, deps} = this.state;
-    //     let dep = 0;
-    //     for (let i = 0; i < num[0].length; i++) {
-    //         dep += Number(num[0][i] * (Number(deps[0][i]) * 100));
-    //     }
-    //     return dep / 100;
-    // }
-
-    // 商品总价
-    // totalPrice = () => {
-    //     const {num, prices} = this.state;
-    //     let price = 0;
-    //     for (let i = 0; i < num[0].length; i++) {
-    //         price += Number(num[0][i] * (Number(prices[0][i]) * 100));
-    //     }
-    //     return price / 100;
-    // }
-
     render() {
-        const {shopInfo, addressInfo, self, allDeposit, currentIndex, textInfo, notAllow, invoiceStatus, invoice, invoiceIndex, num, total} = this.state;
+        const {shopInfo, addressInfo, self, goShop, allDeposit, currentIndex, textInfo, notAllow, invoiceStatus, invoice, invoiceIndex, num, total} = this.state;
         const {address} = this.props;
         const invoices = JSON.parse(getValue('invoices'));
         const orders = JSON.parse(getValue('order'));
@@ -480,11 +463,20 @@ class appendOrder extends BaseComponent {
                             addressInfo ? (
                                 <div className="user-address" onClick={this.addressTo}>
                                     <div className="address-left">
-                                        <div className="left-top">
+                                        {/* <div className="left-top">
                                             <span>{(address && address.linkname) || addressInfo.linkname}</span>
                                             <span>{(address && address.linktel) || addressInfo.linktel}</span>
                                         </div>
                                         <div className="left-bottom">{(address && (address.addr_detail && address.addr_detail.toString().replace(/,/g, '')) + address.address) || addressInfo.addr_detail ? ((addressInfo.addr_detail && addressInfo.addr_detail.toString().replace(/,/g, '')) + addressInfo.address) : ''}
+                                        </div> */}
+                                        <div className="left-top">
+                                            <span>默认</span>
+                                            <span>{(address && (address.addr_detail && address.addr_detail.toString().replace(/,/g, ''))) || addressInfo.addr_detail ? ((addressInfo.addr_detail && addressInfo.addr_detail.toString().replace(/,/g, ''))) : ''}</span>
+                                        </div>
+                                        <div className="left-middle">{(address && address.address) || addressInfo.addr_detail ? (addressInfo.address) : ''}</div>
+                                        <div className="left-bottom">
+                                            <span>{(address && address.linkname) || addressInfo.linkname}</span>
+                                            <span>{(address && address.linktel) || addressInfo.linktel}</span>
                                         </div>
                                     </div>
                                     <div className="address-right">
@@ -514,7 +506,7 @@ class appendOrder extends BaseComponent {
                                             <span onClick={() => this.goToShop(shop.shop_id)}>{shop.shopName}</span>
                                         </div>
                                         <div className="top-enter">
-                                            <span onClick={() => this.goToShop(shop.shop_id)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>进店</span>
+                                            {goShop && (<span onClick={() => this.goToShop(shop.shop_id)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>进店</span>)}
                                         </div>
                                     </div>
                                     {
@@ -568,6 +560,18 @@ class appendOrder extends BaseComponent {
                                             </React.Fragment>
                                         ))
                                     }
+                                    <List>
+                                        <InputItem
+                                            placeholder="请和商家协议一致"
+                                            maxLength={50}
+                                            defaultValue={orders && orders[index]}
+                                            onChange={(val) => this.getRemark(val, index)}
+                                        >订单备注
+                                        </InputItem>
+                                        {
+                                            goShop && shop.data.some(goods => goods.if_invoice === '1') && (<List.Item key={index.toString()} onClick={() => { this.showPanel(index) }} className="invoice">发票抬头</List.Item>)
+                                        }
+                                    </List>
                                     <div className="goods-attr">
                                         <ul className="range-top">
                                             <li className="list">
@@ -584,18 +588,7 @@ class appendOrder extends BaseComponent {
                                             </li>
                                         </ul>
                                     </div>
-                                    <List>
-                                        <InputItem
-                                            placeholder="请和商家协议一致"
-                                            maxLength={50}
-                                            defaultValue={orders && orders[index]}
-                                            onChange={(val) => this.getRemark(val, index)}
-                                        >订单备注
-                                        </InputItem>
-                                        {
-                                            shop.data.some(goods => goods.if_invoice === '1') && (<List.Item key={index.toString()} onClick={() => { this.showPanel(index) }} className="invoice">发票抬头</List.Item>)
-                                        }
-                                    </List>
+
                                     <div className="payable">
                                         <span>实付款</span>
                                         <span>￥{shopInfo[index].actual_all_price}</span>
