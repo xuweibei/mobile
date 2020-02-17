@@ -41,6 +41,10 @@ const listText = [
         key: 'goods'
     },
     {
+        title: '评价',
+        key: 'evaluate'
+    },
+    {
         title: '推荐',
         key: 'recommend'
     },
@@ -244,7 +248,7 @@ class GoodsDetail extends BaseComponent {
                                     ? listText.filter(
                                         item => item.title !== '规格'
                                     )
-                                    : listText,
+                                    : listText.filter(item => item.title !== '推荐'),
                             evalute: evalute,
                             hasType: res.data.distribution_mode.data.some(
                                 item => item.value === '到店自提'
@@ -1014,41 +1018,41 @@ class GoodsDetail extends BaseComponent {
                     </div>
                     {goodsDetail.effective_type === '0'
                     || goodsDetail.app_type === '2' ? (
-                        <div
-                                className={`${
+                            <div
+                            className={`${
                                     status === '0' || status === '2'
                                         ? 'disble-btn'
                                         : 'bottom-btn'
                                 }`}
-                                style={{
+                            style={{
                                     border: nativeCssDiff()
                                         ? '1PX solid #ff2d51'
                                         : '0.02rem solid #ff2d51'
                                 }}
-                            >
-                                <Flex>
-                                <Flex.Item
-                                        className={`${
+                        >
+                            <Flex>
+                                    <Flex.Item
+                                    className={`${
                                             status === '0' || status === '2'
                                                 ? 'disable-cart'
                                                 : 'cart'
                                         }`}
-                                        onClick={this.addCart}
-                                    >
+                                    onClick={this.addCart}
+                                >
                                     加入购物车
-                                    </Flex.Item>
-                                <Flex.Item
-                                        className={`${
+                                </Flex.Item>
+                                    <Flex.Item
+                                    className={`${
                                             status === '0' || status === '2'
                                                 ? 'disable-emption'
                                                 : 'emption'
                                         }`}
-                                        onClick={() => this.emption('pay')}
-                                    >
+                                    onClick={() => this.emption('pay')}
+                                >
                                     立即购买
-                                    </Flex.Item>
-                            </Flex>
-                            </div>
+                                </Flex.Item>
+                                </Flex>
+                        </div>
                         ) : (
                             <div
                                 className="pay-now"

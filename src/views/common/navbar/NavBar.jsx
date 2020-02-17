@@ -76,19 +76,11 @@ class NavBar extends React.PureComponent {
     //设置顶部颜色
     setNavClor = (color) => {
         if (window.location.hash.includes('myOrder') || window.location.hash.includes('selfMention')) {
-            if (isAndroid) {
-                native('setNavColor', {color: navColorR});
-            } else {
-                native('setNavColor', {color: navColorR}, () => {
-                    const obj = {color: navColorR};
-                });
-            }
+            native('setNavColor', {color: navColorR});
         } else if (isAndroid) {
             native('setNavColor', {color: color || navColorF});
         } else {
-            native('setNavColor', {color: navColorF}, () => {
-                const obj = {color: navColorF};
-            });
+            native('setNavColor', {color: navColorF});
         }
     }
 

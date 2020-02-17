@@ -85,7 +85,7 @@ class Edit extends BaseComponent {
                 child: [
                     {
                         key: '3-1',
-                        extra: '修改',
+                        extra: (userInfo && userInfo.etone_acc_user && userInfo.etone_acc_shopper) ? '修改' : '绑定',
                         param: '/bankCard',
                         subName: 'bankCard',
                         value: '我的银行卡'

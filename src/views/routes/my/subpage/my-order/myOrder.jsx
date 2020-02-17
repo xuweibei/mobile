@@ -511,7 +511,6 @@ class MyOrder extends BaseComponent {
     //底部按钮
     bottomModal = (item) => {
         let blockModal = <div/>;
-        console.log(item, '就开始地方');
         switch (item.status) {
         case '0'://待付款
             blockModal = (
@@ -524,12 +523,17 @@ class MyOrder extends BaseComponent {
         case '1': //待发货
             blockModal = (
                 <div className="buttons">
-                    { //余丽  暂时屏蔽
-                        item.refund_button === 1 && item.app_type === '3' && (
+                    { //余丽  暂时屏蔽  is_reservice 为0 不支持售后 为1 支持售后
+                        item.showButton && item.refund_button === 1 && (
                             <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
-                                { //is_reservice 为0 不支持售后 为1 支持售后
-                                    item.showButton && item.is_reservice === 1 && <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev, 1)}>{item.app_type === '3' ? '申请售后' : '申请退款'}</span>
-                                }
+                                <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev, 1)}>申请退款</span>
+                            </div>
+                        )
+                    }
+                    {//is_reservice 为0 不支持售后 为1 支持售后   京东商品
+                        item.showButton && item.is_reservice === 1 && item.app_type === '3' && (
+                            <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
+                                <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev)}>申请售后</span>
                             </div>
                         )
                     }
@@ -543,11 +547,16 @@ class MyOrder extends BaseComponent {
             blockModal = (
                 <div className="buttons">
                     {
-                        item.refund_button === 1 && item.app_type === '3' && (
+                        item.showButton && item.refund_button === 1 && (
                             <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
-                                {//is_reservice 为0 不支持售后 为1 支持售后
-                                    item.showButton && item.is_reservice === 1 && <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev)}>{item.app_type === '3' ? '申请售后' : '申请退款'}</span>
-                                }
+                                <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev)}>申请退款</span>
+                            </div>
+                        )
+                    }
+                    {//is_reservice 为0 不支持售后 为1 支持售后  京东商品
+                        item.showButton && item.is_reservice === 1 && item.app_type === '3' && (
+                            <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
+                                <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev)}>申请售后</span>
                             </div>
                         )
                     }

@@ -34,37 +34,42 @@ class InputGrid extends React.PureComponent {
     }
 
     inputGrid = (e) => {
-        console.log(e.keyCode, '离开水电费');
         const {propsType} = this.props;
         const {valueGrid} = this.state;
         const val = e.target.value;
         const str = e.target;
         const aa = val.charAt(val.length - 1);
         const bb = [];
-        console.log(val, !/^[0-9]*$/.test(val.slice(val.length - 1)), '说了快递费');
-        if (propsType === 'number' && !/^[0-9]*$/.test(val.slice(val.length - 1))) {
-            showFail('请输入数字');
-            return;
-        }
-        for (let i = 0;  i < val.length; i++) {
-            bb.push('*');
-        }
-        if (valueGrid.length > val.length) {
-            valueGrid.pop();
+        if (valueGrid.length > val.length) { //点击删除时
             this.setState({
-                value: bb.join(''),
-                valueGrid: valueGrid
+                value: '',
+                valueGrid: []
             });
         } else {
-            this.setState(prevState => ({
-                value: bb.join(''),
-                valueGrid: prevState.valueGrid.splice(val.length - 1, 1, aa).concat(valueGrid)
-            }), () => {
-                if (valueGrid.length === 6) {
-                    str.blur();
-                    this.props.onInputGrid(valueGrid.join(''));
-                }
-            });
+            if (propsType === 'number' && !/^[0-9]*$/.test(val.slice(val.length - 1))) {
+                showFail('请输入数字');
+                return;
+            }
+            for (let i = 0;  i < val.length; i++) {
+                bb.push('*');
+            }
+            if (valueGrid.length > val.length) {
+                valueGrid.pop();
+                this.setState({
+                    value: bb.join(''),
+                    valueGrid: valueGrid
+                });
+            } else {
+                this.setState(prevState => ({
+                    value: bb.join(''),
+                    valueGrid: prevState.valueGrid.splice(val.length - 1, 1, aa).concat(valueGrid)
+                }), () => {
+                    if (valueGrid.length === 6) {
+                        str.blur();
+                        this.props.onInputGrid(valueGrid.join(''));
+                    }
+                });
+            }
         }
     }
 
