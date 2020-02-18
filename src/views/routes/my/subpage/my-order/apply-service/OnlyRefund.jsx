@@ -7,7 +7,7 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 import './ApplyService.less';
 
 const {appHistory, showInfo, dealImage, getUrlParam, TD} = Utils;
-const {MESSAGE: {Form, Feedback}, TD_EVENT_ID} = Constants;
+const {MESSAGE: {Form}, TD_EVENT_ID} = Constants;
 const {urlCfg} = Configs;
 //退货退款类型
 const molds = [
@@ -98,7 +98,7 @@ class applyService extends BaseComponent {
     //提交申请
     editApply = () => {
         const {selectText, Service, question, fileInfo} = this.state;
-        const {location: {search}, setOrderStatus} = this.props;
+        const {location: {search}} = this.props;
         const orderId = decodeURI(getUrlParam('orderId', encodeURI(search)));
         const prId = decodeURI(getUrlParam('prId', encodeURI(search)));
         const returnType = decodeURI(getUrlParam('returnType', encodeURI(search)));
