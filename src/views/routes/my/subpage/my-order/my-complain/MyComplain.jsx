@@ -3,7 +3,7 @@ import {TextareaItem, ImagePicker} from 'antd-mobile';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './MyComplain.less';
 
-const {dealImage, showInfo, appHistory, showSuccess, getUrlParam} = Utils;
+const {dealImage, showInfo, appHistory, showSuccess, getUrlParam, native} = Utils;
 const {urlCfg} = Configs;
 const {MESSAGE: {Form, Feedback}} = Constants;
 export default class MyComplain extends BaseComponent {
@@ -84,7 +84,9 @@ export default class MyComplain extends BaseComponent {
                         Promise.all(fileArrPro).then(ooo => {
                             showSuccess(Feedback.submit_Success);
                             if (process.env.NATIVE) {
-                                window.DsBridge.call('goHome');
+                                setTimeout(() => {
+                                    native('goHome');
+                                }, 2000);
                                 // native('goHome');
                             } else {
                                 appHistory.push('/home');
@@ -95,8 +97,9 @@ export default class MyComplain extends BaseComponent {
                     } else {
                         showSuccess(Feedback.submit_Success);
                         if (process.env.NATIVE) {
-                            // native('goHome');
-                            window.DsBridge.call('goHome');
+                            setTimeout(() => {
+                                native('goHome');
+                            }, 2000);
                         } else {
                             appHistory.push('/home');
                         }

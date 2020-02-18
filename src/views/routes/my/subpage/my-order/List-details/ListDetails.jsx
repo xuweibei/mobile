@@ -438,10 +438,10 @@ class ListDetails extends BaseComponent {
                                     (canInfo.status === '0') &&  <div className="cancel-order" onClick={() => this.setState({canStatus: true, canCelId: canInfo.pr_id})}>取消订单</div>
                                 }
                                 {   //京东商品可以申请售后   is_reservice 为0 不支持售后 为1 支持售后
-                                    canInfo.app_type === '3' && canInfo.is_reservice === 1 && canInfo.status && canInfo.return_status === 1 && <div className="server-order" style={{border: nativeCssDiff() ? '1PX solid rgba(102,102,102,1)' : '0.02rem solid rgba(102,102,102,1)'}} onClick={this.JDService}>申请售后</div>
+                                    // canInfo.app_type === '3' && canInfo.is_reservice === 1 && canInfo.status && canInfo.return_status === 1 && <div className="server-order" style={{border: nativeCssDiff() ? '1PX solid rgba(102,102,102,1)' : '0.02rem solid rgba(102,102,102,1)'}} onClick={this.JDService}>申请售后</div>暂时屏蔽  余丽
                                 }
                                 {   //京东商品已申请售后可以查看
-                                    canInfo.app_type === '3' && canInfo.is_reservice === 1 && canInfo.return_status && canInfo.return_status === 2 && <div className="server-order" style={{border: nativeCssDiff() ? '1PX solid rgba(102,102,102,1)' : '0.02rem solid rgba(102,102,102,1)'}} onClick={this.JDServiceIng}>售后中</div>
+                                    // canInfo.app_type === '3' && canInfo.is_reservice === 1 && canInfo.return_status && canInfo.return_status === 2 && <div className="server-order" style={{border: nativeCssDiff() ? '1PX solid rgba(102,102,102,1)' : '0.02rem solid rgba(102,102,102,1)'}} onClick={this.JDServiceIng}>售后中</div>暂时屏蔽  余丽
                                 }
                                 {
                                     this.bottomButton(canInfo.status)

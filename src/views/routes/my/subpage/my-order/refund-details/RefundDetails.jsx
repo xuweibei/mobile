@@ -242,13 +242,18 @@ class refundDetails extends BaseComponent {
                                         {refundArr.s_phone}
                                     </span>
                                 </div>
-                                <div className="detail-list">
-                                    <span className="list-left">店家地址：</span>
-                                    <span className="list-right">
-                                        {refundArr.s_address}
-                                    </span>
-                                </div>
-                                <p>商家已同意申请，请尽快寄出商品，同时填写相关的物流信息</p>
+                                {//types为1的时候不展示
+                                    refundArr.types !== '1'
+                                    && (
+                                        <div className="detail-list">
+                                            <span className="list-left">店家地址：</span>
+                                            <span className="list-right">
+                                                {refundArr.s_address}
+                                            </span>
+                                        </div>
+                                    )
+                                }
+                                <p>{refundArr.tips_msg}</p>
                             </div>
                         )
                     }
