@@ -54,7 +54,6 @@ class History extends BaseComponent {
     };
 
     componentDidMount() {
-        console.log(this.props.tabValue, '快乐的方式');
         this.getHistoryList();
     }
 

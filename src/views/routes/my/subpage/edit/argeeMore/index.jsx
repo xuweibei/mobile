@@ -60,25 +60,6 @@ class Agreement extends BaseComponent {
         }
     }
 
-    // componentWillReaciveProps(nextProps) {
-    //     const router = decodeURI(getUrlParam('router', encodeURI(this.props.location.search)));
-    //     const nextRouter = decodeURI(getUrlParam('router', encodeURI(nextProps.location.search)));
-    //     const type = decodeURI(getUrlParam('type', encodeURI(nextProps.location.search)));
-    //     console.log(router, nextRouter, type, '考虑到法国');
-    //     if (process.env.NATIVE && router !== nextRouter) {
-    //         this.setState({
-    //             edit: nextRouter
-    //         });
-    //     }
-    //     if (type !== 'null') {
-    //         this.setState({
-    //             edit: 'userAgreementDetail'
-    //         }, () => {
-    //             this.getProtocol(Number(type));
-    //         });
-    //     }
-    // }
-
     //源头uid
     userId = (uidInfo) => (
         <div data-component="userId" data-role="page" className="user-id">

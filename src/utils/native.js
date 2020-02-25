@@ -5,10 +5,15 @@ import {store} from '../redux/store';
 import {baseActionCreator} from '../redux/baseAction';
 import {appHistory} from './appHistory';
 
-const {systemApi: {removeValue}} = Utils;
+const {systemApi: {removeValue, isAndroid}} = Utils;
 const {LOCALSTORAGE} = Constants;
 //统一封装原生接口请求
-export const native = (str, obj = {}, callBack = () => {}) => {
+export const native = (str, obj, callBack = () => {}) => {
+    if (!obj && isAndroid) {
+        obj = 'null';
+    } else if (!obj) {
+        obj = {};
+    }
     if (process.env.NATIVE) { window.DsBridge.call(str, obj, callBack) }
 };
 

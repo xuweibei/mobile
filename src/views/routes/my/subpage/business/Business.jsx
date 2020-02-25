@@ -42,7 +42,6 @@ class Customer extends BaseComponent {
 
 
     componentDidMount() {
-        console.log(window.location, '看了第三方');
         this.getCustomerList();
     }
 

@@ -7,7 +7,7 @@ import {Radio, Flex, TextareaItem, ImagePicker} from 'antd-mobile';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 
 const {urlCfg} = Configs;
-const {appHistory, getUrlParam, showInfo, showSuccess} = Utils;
+const {appHistory, getUrlParam, showInfo, showSuccess, native} = Utils;
 const {MESSAGE: {Form, Feedback}, IMGSIZE} = Constants;
 //评价 好评 中评 差评
 const evaluates = [
@@ -109,7 +109,7 @@ export default class MyEvaluate extends BaseComponent {
     //点击添加图片
     addPictrue = (data, index) => {
         if (process.env.NATIVE) {
-            window.DsBridge.call('picCallback', {num: data.get('nativePicNum') || 9}, (dataList) => {
+            native('picCallback', {num: data.get('nativePicNum') || 9}, (dataList) => {
                 const res = dataList ? JSON.parse(dataList) : '';
                 const {files, evaluate} = this.state;
                 const arr = [];
@@ -144,9 +144,6 @@ export default class MyEvaluate extends BaseComponent {
                     });
                 }
             });
-            // native('picCallback', {num: data.get('nativePicNum') || 9}).then(res => {
-
-            // });
         }
     };
 

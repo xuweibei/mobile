@@ -39,12 +39,11 @@ export default class Inspect extends BaseComponent {
   //点击扫一扫
   sureSaoCode = () => {
       if (process.env.NATIVE) {
-          const obj = {
+          native('qrCodeScanCallback', {
               pay: urlCfg.importSum,
               write: urlCfg.consumer,
               source: urlCfg.sourceBrowse
-          };
-          native('qrCodeScanCallback', obj);
+          });
       }
   }
 

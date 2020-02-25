@@ -189,20 +189,13 @@ class PayMoney extends BaseComponent {
                             timestamp: res.data.arr.timestamp,
                             sign: res.data.arr.sign
                         };
-                        window.DsBridge.call('wxPayCallback', obj, (dataList) => {
+                        native('wxPayCallback', obj, (dataList) => {
                             native('goH5', {'': ''});
                             const data = dataList ? JSON.parse(dataList) : '';
                             if (data && data.status === '0') {
                                 appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&id=${res.data.order_id}&types=${selectIndex}&deposit=${listArr.deposit}&if_express=${res.data.if_express}`);
                             }
                         });
-                        // native('wxPayCallback', obj).then((data) => {
-                        //     native('goH5', {'': ''});
-                        //     appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&id=${res.data.order_id}&types=${selectIndex}&deposit=${listArr.deposit}&if_express=${res.data.if_express}`);
-                        // }).catch(data => {
-                        //     native('goH5', {'': ''});
-                        //     showFail(data.message);
-                        // });
                     } else {
                         // window.location.href = res.data.mweb_url;
                     }
@@ -217,22 +210,13 @@ class PayMoney extends BaseComponent {
             .subscribe(res => {
                 if (res && res.status === 0) {
                     if (process.env.NATIVE) {
-                        window.DsBridge.call('authInfo', res.data.response, (dataList) => {
+                        native('authInfo', res.data.response, (dataList) => {
                             native('goH5', {'': ''});
                             const data = dataList ? JSON.parse(dataList) : '';
                             if (data && data.status === '0') {
                                 appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&id=${res.data.order_id}&types=${selectIndex}&deposit=${listArr.deposit || listArr.all_deposit}&if_express=${res.data.if_express}`);
                             }
                         });
-                        // native('authInfo', res.data.response).then((data) => {
-                        //     native('goH5', {'': ''});
-                        //     if (data && data.status === '0') {
-                        //         appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&id=${res.data.order_id}&types=${selectIndex}&deposit=${listArr.deposit || listArr.all_deposit}&if_express=${res.data.if_express}`);
-                        //     }
-                        // }).catch(data => {
-                        //     native('goH5', {'': ''});
-                        //     showFail(data.message);
-                        // });
                     } else {
                         // window.location.href = res.data.mweb_url;
                     }
@@ -253,14 +237,6 @@ class PayMoney extends BaseComponent {
                             appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&types=${selectIndex}&deposit=${listArr.all_deposit}&if_express=${res.if_express}&batch=1`);
                         }
                     });
-                    //selectIndex === 1为微信支付
-                    // native(selectIndex === 1 ? 'payWX' : 'payAliPay', {qrCode: res.data.appPayRequest.qrCode, order_no: listArr.order[0], type: process.env.NATIVE ? 1 : 2, payType: selectIndex === 1 ? 2 : 1}).then((data) => {
-                    //     native('goH5', {'': ''});
-                    //     appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&types=${selectIndex}&deposit=${listArr.all_deposit}&if_express=${res.if_express}&batch=1`);
-                    // }).catch(data => {
-                    //     native('goH5', {'': ''});
-                    //     showFail(data.message);
-                    // });
                     if (res.data.status === 1) {
                         showInfo(res.data.message);
                     }
@@ -401,7 +377,6 @@ class PayMoney extends BaseComponent {
         }, () => {
             let str = '6rem';
             if (this.payBtn) {
-                console.log(this.payBtn.getBoundingClientRect().top, '考虑的双方各');
                 const scr = this.payBtn.getBoundingClientRect().top;
                 if (scr < 200 && process.env.NATIVE) {
                     str = '0.5rem';

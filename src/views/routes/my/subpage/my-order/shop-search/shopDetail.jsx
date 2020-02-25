@@ -1,4 +1,4 @@
-/**我的订单页面 之搜索 */
+/**线上订单页面 之搜索 */
 
 import React from 'react';
 import {connect} from 'react-redux';
@@ -54,13 +54,13 @@ class MyOrderSearch extends BaseComponent {
         temp.isLoading = true;
         this.fetch(urlCfg.mallOrder,
             {data:
-            {
-                page,
-                pagesize: temp.pagesize,
-                pageCount,
-                status: -1,
-                key: decodeURI(getUrlParam('keywords', encodeURI(this.props.location.search)))
-            }
+                {
+                    page,
+                    pagesize: temp.pagesize,
+                    pageCount,
+                    status: -1,
+                    key: decodeURI(getUrlParam('keywords', encodeURI(this.props.location.search)))
+                }
             }, noLoading)
             .subscribe((res) => {
                 temp.isLoading = false;
@@ -70,10 +70,6 @@ class MyOrderSearch extends BaseComponent {
                     } else {
                         temp.stackData = temp.stackData.concat(res.list);
                     }
-                    //为待付款需要取消订单的时候，或者售后订单需要删除的时候，将数据储存一份。
-                    this.setState((prevState) => ({
-                        retainArr: prevState.retainArr.concat(res.list)
-                    }));
                     if (page >= res.pageCount) {
                         this.setState({
                             hasMore: false
@@ -82,7 +78,8 @@ class MyOrderSearch extends BaseComponent {
                     this.setState((prevState) => ({
                         dataSource: prevState.dataSource.cloneWithRows(temp.stackData),
                         pageCount: res.pageCount,
-                        refreshing: false
+                        refreshing: false,
+                        retainArr: prevState.retainArr.concat(res.list)//为待付款需要取消订单的时候，或者售后订单需要删除的时候，将数据储存一份。
                     }
                     ));
                 }

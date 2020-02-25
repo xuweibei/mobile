@@ -50,7 +50,7 @@ class Invitation extends BaseComponent {
         const {shareArr} = this.state;
         if (process.env.NATIVE) {
             if (shareArr) {
-                window.DsBridge.call('savePicCallback', {imgUrl: encodeURIComponent(shareArr)}, (data) => {
+                native('savePicCallback', {imgUrl: encodeURIComponent(shareArr)}, (data) => {
                     const info = JSON.parse(data);
                     if (info.status === 0) {
                         showInfo('保存成功');
@@ -101,22 +101,20 @@ class Invitation extends BaseComponent {
         const {shareArr} = this.state;
         TD.log(TD_EVENT_ID.MY.ID, TD_EVENT_ID.MY.LABEL.SHARE);
         if (process.env.NATIVE) {
-            const obj = {
-                type: value + 1,
-                title: '分享',
-                content: '个人二维码',
-                url: shareArr,
-                imgUrl: shareArr
-            };
             if (shareArr) {
-                window.DsBridge.call('showShare', obj, res => {
-                    native('goH5', {'': ''});
-                });
-                // native('showShare', obj).then(res => {
-                //     native('goH5', {'': ''});
-                // }).catch(err => {
-                //     native('goH5', {'': ''});
-                // });
+                native(
+                    'showShare',
+                    {
+                        type: value + 1,
+                        title: '分享',
+                        content: '个人二维码',
+                        url: shareArr,
+                        imgUrl: shareArr
+                    },
+                    res => {
+                        native('goH5', {'': ''});
+                    }
+                );
             } else {
                 showInfo('暂无图片可以分享');
             }

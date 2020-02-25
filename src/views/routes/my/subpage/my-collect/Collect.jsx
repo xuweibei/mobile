@@ -122,7 +122,6 @@ class Collect extends BaseComponent {
 
     //上拉加载
     onEndReached = () => {
-        console.log(1);
         const {pageShop, pageShopping, pageCountShop, pageCountShopping, tabKey} = this.state;
         if (this.temp.isLoading) return;
         if (tabKey === 0) {

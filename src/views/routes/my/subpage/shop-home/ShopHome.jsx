@@ -74,17 +74,6 @@ class ShopHome extends BaseComponent {
         }
     }
 
-    // componentWillReceiveProps(nextProps) {
-    //     if (process.env.NATIVE) {
-    //         const shoppingId = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
-    //         const nextId = decodeURI(getUrlParam('id', encodeURI(nextProps.location.search)));
-    //         if (shoppingId !== nextId) {
-    //             this.getShop(nextId);
-    //             this.getShopModel(nextId);
-    //         }
-    //     }
-    // }
-
     //获取模板信息
     getShopModel = (id) => {
         this.fetch(urlCfg.shopModel, {data: {shop_id: id}})

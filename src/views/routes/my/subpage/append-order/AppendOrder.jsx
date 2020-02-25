@@ -70,11 +70,6 @@ class appendOrder extends BaseComponent {
                         that.getOrderState();
                     }
                 });
-                // /('getInfo', obj).then(res => {
-                //     setOrder(res.data.arr);
-                //     setIds(res.data.cartArr);
-                //     that.getOrderState();
-                // });//原生方法获取前面的redux
             }
         } else {
             this.getOrderState();

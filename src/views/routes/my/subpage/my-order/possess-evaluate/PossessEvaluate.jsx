@@ -439,7 +439,6 @@ class PossessEvaluate extends BaseComponent {
     //待评价结构
     toBeEvaluatedRow = (item) => {
         const {userType} = this.state;
-        // console.log(item.picpath);
         return (
             <div className="unevaluated-box">
                 <div className="unevaluated">
@@ -490,7 +489,6 @@ class PossessEvaluate extends BaseComponent {
                                         </div>
                                     )
                                 }
-
                             </div>
                         </div>
                     </div>

@@ -89,31 +89,6 @@ class MyOrder extends BaseComponent {
         }
     }
 
-    // componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方
-    //     const numNext = this.statusChoose(nextProps.location.pathname.split('/')[2]) || -1;
-    //     const numPrev = this.statusChoose(this.props.location.pathname.split('/')[2]) || -1;
-    //     console.log(numNext, numPrev, '额叶任天野');
-    //     if (numNext !== numPrev) {
-    //         const dataSource2 = new ListView.DataSource({
-    //             rowHasChanged: (row1, row2) => row1 !== row2
-    //         });
-    //         this.setState({
-    //             page: 1,
-    //             // status,
-    //             pageCount: -1,
-    //             dataSource: dataSource2,
-    //             retainArr: [],
-    //             hasMore: false,
-    //             status: numNext
-    //         }, () => {
-    //             temp.stackData = [];
-    //             this.init(numNext);
-    //             removeValue('orderInfo');//清除下单流程留下来的订单信息
-    //             removeValue('orderArr');
-    //         });
-    //     }
-    // }
-
     init = (num) => {
         this.setState({
             status: num

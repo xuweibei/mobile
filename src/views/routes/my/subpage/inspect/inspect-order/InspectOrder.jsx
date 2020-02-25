@@ -34,35 +34,23 @@ export default class InspectOrder extends BaseComponent {
     }
 
     getOrderStatus = (num) => {
-        let str = '';
-        switch (num) {
-        case '0':
-            str = '未付款';
-            break;
-        case '1':
-            str = '已付款';
-            break;
-        case '2':
-            str = '已发货';
-            break;
-        case '3':
-            str = '未发货';
-            break;
-        default:
-            str = '';
-        }
-        return str;
+        const titleArr = new Map([
+            ['0', '未付款'],
+            ['1', '已付款'],
+            ['2', '已发货'],
+            ['3', '未发货']
+        ]);
+        return titleArr.get(num);
     }
 
     //点击扫一扫
     sureSaoCode = () => {
         if (process.env.NATIVE) {
-            const obj = {
+            native('qrCodeScanCallback', {
                 pay: urlCfg.importSum,
                 write: urlCfg.consumer,
                 source: urlCfg.sourceBrowse
-            };
-            native('qrCodeScanCallback', obj);
+            });
         }
     }
 

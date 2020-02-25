@@ -69,20 +69,6 @@ class ReDetail extends BaseComponent {
         }
     }
 
-    // componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方
-    //     const numNext = this.statusChoose(nextProps.location.pathname.split('/')[2]);
-    //     const numPrev = this.statusChoose(this.props.location.pathname.split('/')[2]);
-    //     if (numNext !== numPrev) {
-    //         this.setState({
-    //             status: numNext
-    //         }, () => {
-    //             this.init(numNext);
-    //             removeValue('orderInfo');//清除下单流程留下来的订单信息
-    //             removeValue('orderArr');
-    //         });
-    //     }
-    // }
-
     init = (num) => {
         this.setState({
             status: num

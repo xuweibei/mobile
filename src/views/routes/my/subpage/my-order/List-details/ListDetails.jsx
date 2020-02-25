@@ -217,8 +217,7 @@ class ListDetails extends BaseComponent {
     //京东商品申请售后
     JDService = () => {
         const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
-        const shopId = this.state.canInfo.shop_id;
-        appHistory.push(`/applyService?orderId=${id}&shopId=${shopId}&returnType=1&onlyReturnMoney=`);
+        appHistory.push(`/applyService?orderId=${id}&shopId=${this.state.canInfo.shop_id}&returnType=1&onlyReturnMoney=`);
     }
 
     //京东商品申请售后中
