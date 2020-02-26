@@ -652,14 +652,18 @@ class GoodsDetail extends BaseComponent {
 
     // 推荐商品点击
     goToShopRecom = id => {
-        this.setState(
-            {
-                goodId: id
-            },
-            () => {
-                this.getGoodsDetail();
-            }
-        );
+        if (process.env.NATIVE) {
+            appHistory.replace(`/goodsDetail?id=${id}`);
+        } else {
+            this.setState(
+                {
+                    goodId: id
+                },
+                () => {
+                    this.getGoodsDetail();
+                }
+            );
+        }
     };
 
     // 跳转评价

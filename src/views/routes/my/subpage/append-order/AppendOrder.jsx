@@ -67,7 +67,11 @@ class appendOrder extends BaseComponent {
                     if (res && res.status === 0) {
                         setOrder(res.data.arr);
                         setIds(res.data.cartArr);
-                        that.getOrderState();
+                        this.setState({
+                            goodsArr: res.data.arr
+                        }, () => {
+                            that.getOrderState();
+                        });
                     }
                 });
             }

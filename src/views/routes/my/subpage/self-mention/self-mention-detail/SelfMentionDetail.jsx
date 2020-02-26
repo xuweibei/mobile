@@ -44,7 +44,7 @@ class ReDetail extends BaseComponent {
             } else { //这里的情况是，原生那边跳转的时候，需要处理一些问题，所以就购物车过来的时候，存数据，这边取数据
                 native('getSelfMentio', {'': ''}, (data) => {
                     const res = data ? JSON.parse(data) : '';
-                    if (res && res.status === 0) {
+                    if (res && (res.status === 0 || res.status === '0')) {
                         setOrder(res.data.arr);
                         setIds(res.data.cartArr);
                         this.getOrderSelf();
