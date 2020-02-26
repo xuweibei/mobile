@@ -40,7 +40,6 @@ axios.interceptors.response.use(
                 store.dispatch(actionCreator.setUserToken('')); // 清除redux的userToken
                 //重定向到原生登录页
                 native('loginout');
-                // window.DsBridge.call('loginout');
             } else {
                 appHistory.push('/login');
             }

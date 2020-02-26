@@ -56,7 +56,7 @@ global.goBackApp = function () {
 export function goBackModal() {
     if (process.env.NATIVE && appHistory.length() === 0) {
         // native('goBack');
-        window.DsBridge.call('goBack');
+        window.DsBridge.call('goBack', {'': ''}, () => {});
     } else {
         appHistory.goBack();
     }
