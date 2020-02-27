@@ -210,9 +210,12 @@ export function spliceArr(arr, arr2) {
 
 //切割金额，变成一大一小
 export function moneyDot(money) {
-    let arr = '';
+    let arr = ['00', '00'];
     if (money) {
         arr = money.toString().split('.');
+        if (!arr[1]) {
+            arr[1] = '00';
+        }
     }
     return arr;
 }

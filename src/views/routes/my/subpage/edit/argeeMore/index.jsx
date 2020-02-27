@@ -254,7 +254,7 @@ class Agreement extends BaseComponent {
                         {
                             !window.isWX && (
                                 <List>
-                                    <Item extra="有新版" arrow="horizontal" onClick={() => process.env.NATIVE && native('checkVersion', {'': ''}, () => {})}>检测</Item>
+                                    <Item extra="" arrow="horizontal" onClick={() => process.env.NATIVE && native('checkVersion', {'': ''}, () => {})}>检测</Item>
                                 </List>
                             )
                         }

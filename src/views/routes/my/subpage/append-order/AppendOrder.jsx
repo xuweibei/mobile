@@ -225,8 +225,8 @@ class appendOrder extends BaseComponent {
         }).subscribe((res) => {
             if (res && res.status === 0) {
                 const {setOrderInfo} = this.props;
-                setOrderInfo(res);
-                setValue('orderInfo', JSON.stringify(res));//将订单相关数据存入locastage
+                setOrderInfo(res.data);
+                setValue('orderInfo', JSON.stringify(res.data));//将订单相关数据存入locastage
                 appHistory.replace('/payMoney');
                 removeValue('invoices');
                 removeValue('order');
@@ -721,7 +721,6 @@ const mapStateToProps = state => {
     const shopCartState = state.get('shopCart');
     const myState = state.get('my');
     return {
-        arr: shopCartState.get('orderArr'),
         carId: shopCartState.get('ids'),
         address: myState.get('defaultAddress')
     };

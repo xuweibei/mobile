@@ -7,7 +7,7 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 import CancelOrder from '../../../../../common/cancel-order/CancleOrder';
 import './ListDetails.less';
 
-const {appHistory, getUrlParam, showSuccess, native, showInfo, nativeCssDiff} = Utils;
+const {appHistory, getUrlParam, showSuccess, native, showInfo, nativeCssDiff, systemApi: {removeValue}, moneyDot} = Utils;
 const {MESSAGE: {Form, Feedback}} = Constants;
 const {urlCfg} = Configs;
 class ListDetails extends BaseComponent {
@@ -151,6 +151,8 @@ class ListDetails extends BaseComponent {
 
     //立即支付
     payNow = () => {
+        removeValue('orderInfo');//先清除一下，正常流程下单页面的缓存数据，以免冲突
+        removeValue('orderArr');//先清除一下，正常流程下单页面的缓存数据，以免冲突
         const id = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
         appHistory.push(`/payMoney?orderId=${id}&orderNum=${this.state.canInfo.order_no}`);
     }
@@ -206,12 +208,6 @@ class ListDetails extends BaseComponent {
         } else {
             showInfo('联系商家');
         }
-    }
-
-    //金额切割一下，好展示
-    moneyDot = (money) => {
-        const arr = money.toString().split('.');
-        return arr;
     }
 
     //京东商品申请售后
@@ -282,7 +278,7 @@ class ListDetails extends BaseComponent {
                                                     <div className="goods-right">
                                                         <div className="goods-desc">
                                                             <div className="desc-title">{item.pr_title}</div>
-                                                            <div className="desc_price">￥{this.moneyDot(item.price)[0] + '.'}<span className="small_money">{this.moneyDot(item.price)[1]}</span></div>
+                                                            <div className="desc_price">￥{moneyDot(item.price)[0] + '.'}<span className="small_money">{moneyDot(item.price)[1]}</span></div>
                                                         </div>
                                                         <div className="goods-sku">
                                                             <div className="sku-left">
@@ -327,7 +323,7 @@ class ListDetails extends BaseComponent {
                                 </div>
                                 <div className="payable">
                                     <span>实付款</span>
-                                    <span>￥{this.moneyDot(canInfo.countprice)[0] + '.'}<span className="small_money">{this.moneyDot(canInfo.countprice)[1]}</span></span>
+                                    <span>￥{moneyDot(canInfo.countprice)[0] + '.'}<span className="small_money">{moneyDot(canInfo.countprice)[1]}</span></span>
                                 </div>
                                 <div className="order common-margin">
                                     <div className="number">

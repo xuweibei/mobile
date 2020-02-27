@@ -11,7 +11,7 @@ import Animation from '../../../../common/animation/Animation';
 import {ListFooter} from '../../../../common/list-footer';
 import './myOrder.less';
 
-const {appHistory, showSuccess, getUrlParam, showInfo, native, systemApi: {removeValue}, TD, nativeCssDiff} = Utils;
+const {appHistory, showSuccess, getUrlParam, showInfo, moneyDot, native, systemApi: {removeValue}, TD, nativeCssDiff} = Utils;
 const {TD_EVENT_ID} = Constants;
 const {MESSAGE: {Form, Feedback}, FIELD, navColorR} = Constants;
 const {urlCfg} = Configs;
@@ -46,7 +46,6 @@ class MyOrder extends BaseComponent {
             pagesize: 10,  //每页条数
             pageCount: -1,
             hasMore: false, //底部请求状态文字显示情况
-            retainArr: [],
             propsData: props
         };
         removeValue('orderInfo');//清除下单流程留下来的订单信息
@@ -77,7 +76,6 @@ class MyOrder extends BaseComponent {
                 // status,
                 pageCount: -1,
                 dataSource: dataSource2,
-                retainArr: [],
                 hasMore: false,
                 status: numPrev
             }, () => {
@@ -145,7 +143,6 @@ class MyOrder extends BaseComponent {
                     this.setState((prevState) => ({
                         dataSource: prevState.dataSource.cloneWithRows(temp.stackData),
                         pageCount: res.pageCount,
-                        retainArr: prevState.retainArr.concat(res.list),
                         refreshing: false
                     }));
                 }
@@ -176,7 +173,6 @@ class MyOrder extends BaseComponent {
                     this.setState((prevState) => ({
                         dataSource: prevState.dataSource.cloneWithRows(temp.stackData),
                         pageCount: res.pageCount,
-                        retainArr: prevState.retainArr.concat(res.list),
                         refreshing: false
                     }
                     ));
@@ -207,7 +203,6 @@ class MyOrder extends BaseComponent {
             status: index - 1,
             pageCount: -1,
             dataSource: dataSource2,
-            retainArr: [],
             hasMore: false
         }, () => {
             temp.stackData = [];
@@ -242,7 +237,6 @@ class MyOrder extends BaseComponent {
     //删除订单
     deleteOrder = (id) => {
         const {showConfirm} = this.props;
-        const {retainArr} = this.state;
         showConfirm({
             title: Form.Whether_delete,
             callbacks: [null, () => {
@@ -250,11 +244,12 @@ class MyOrder extends BaseComponent {
                     .subscribe((res) => {
                         if (res && res.status === 0) {
                             //操作数据，将已经选中取消的id进行去除，
-                            const arr = retainArr.filter(item => item.id !== id);
-                            this.setState((prevState) => ({
-                                dataSource: prevState.dataSource.cloneWithRows(arr),
-                                retainArr: arr
-                            }));
+                            // const deleteArr = temp.stackData.filter(item => item.id !== id);
+                            // temp.stackData = deleteArr;
+                            // this.setState((prevState) => ({
+                            //     dataSource: prevState.dataSource.cloneWithRows(deleteArr)
+                            // }));
+                            this.onRefresh();
                         }
                     });
             }]
@@ -277,7 +272,6 @@ class MyOrder extends BaseComponent {
                             temp.stackData = [];
                             this.setState({
                                 page: 1,
-                                retainArr: [],
                                 dataSource
                             }, () => {
                                 this.getMallOrder(status, this.state.page);
@@ -291,7 +285,7 @@ class MyOrder extends BaseComponent {
 
     //取消订单状态改变  确认取消
     canStateChange = (state, value) => {
-        const {canCelId, retainArr} = this.state;
+        const {canCelId} = this.state;
         TD.log(TD_EVENT_ID.MY.ID, TD_EVENT_ID.MY.LABEL.CANCEL_ORDER);
         if (state === 'mastSure' && value) {
             this.fetch(urlCfg.delMallOrder, {
@@ -300,10 +294,13 @@ class MyOrder extends BaseComponent {
                 if (res && res.status === 0) {
                     showSuccess(Feedback.Cancel_Success);
                     //操作数据，将已经选中取消的id进行去除，
-                    const arr = retainArr.filter(item => item.id !== canCelId);
+                    temp.stackData.forEach((item) => {
+                        if (item.id === canCelId) {
+                            item.status = '10';
+                        }
+                    });
                     this.setState((prevState) => ({
-                        dataSource: prevState.dataSource.cloneWithRows(arr),
-                        retainArr: arr
+                        dataSource: prevState.dataSource.cloneWithRows(temp.stackData)
                     }));
                 }
             });
@@ -332,6 +329,8 @@ class MyOrder extends BaseComponent {
 
     //立即支付
     payNow = (id, orderNum) => {
+        removeValue('orderInfo');//先清除一下，正常流程下单页面的缓存数据，以免冲突
+        removeValue('orderArr');//先清除一下，正常流程下单页面的缓存数据，以免冲突
         appHistory.push(`/payMoney?orderId=${id}&orderNum=${orderNum}&source=${4}`);
     }
 
@@ -344,7 +343,6 @@ class MyOrder extends BaseComponent {
     //延长收货
     extendedReceipt = (id, ev) => {
         const {showConfirm} = this.props;
-        const {retainArr} = this.state;
         showConfirm({
             title: Form.Whether_Lengthen,
             callbacks: [null, () => {
@@ -352,17 +350,14 @@ class MyOrder extends BaseComponent {
                     .subscribe(res => {
                         if (res && res.status === 0) {
                             showSuccess(Feedback.receipt_Success);
-                            const arr = [];
-                            retainArr.forEach((item) => {
+                            temp.stackData.forEach((item) => {
                                 if (item.id === id) {
                                     item.delayed_receiving = '1';
                                 }
                                 item.showButton = false;
-                                arr.push(Object.assign({}, item));
                             });
                             this.setState((prevState) => ({
-                                dataSource: prevState.dataSource.cloneWithRows(arr),
-                                retainArr: arr
+                                dataSource: prevState.dataSource.cloneWithRows(temp.stackData)
                             }));
                         }
                     });
@@ -409,37 +404,27 @@ class MyOrder extends BaseComponent {
 
     //控制显示与否申请退款按钮
     showRetunButton = (item, ev) => {
-        const {retainArr} = this.state;
-        const arr = [];
-        retainArr.forEach(value => {
+        temp.stackData.forEach(value => {
             if (item.id === value.id) {
                 value.showButton = !value.showButton;
             } else {
                 value.showButton = false;
             }
-            //赋址改变，为重新渲染
-            arr.push(Object.assign({}, value));
         });
 
         this.setState((prevState) => ({
-            dataSource: prevState.dataSource.cloneWithRows(arr),
-            retainArr: arr
+            dataSource: prevState.dataSource.cloneWithRows(temp.stackData)
         }));
         ev.stopPropagation();
     }
 
     //点击其他位置，将弹出的 申请退款 按钮隐藏
     closeButton = () => {
-        const {retainArr} = this.state;
-        const arr = [];
-        retainArr.forEach(value => {
+        temp.stackData.forEach(value => {
             value.showButton = false;
-            //赋址改变，为重新渲染
-            arr.push(Object.assign({}, value));
         });
         this.setState((prevState) => ({
-            dataSource: prevState.dataSource.cloneWithRows(arr),
-            retainArr: arr
+            dataSource: prevState.dataSource.cloneWithRows(temp.stackData)
         }));
     }
 
@@ -463,7 +448,6 @@ class MyOrder extends BaseComponent {
                             showModal: false,
                             modalTitle: '',
                             status: 2,
-                            retainArr: [],
                             page: 1
                         }, () => {
                             if (this.statusChoose(this.props.location.pathname.split('/')[2]) === '2') { //这里是为了判断撤销完后回退的还是收货页面时不请求，手动请求
@@ -577,22 +561,17 @@ class MyOrder extends BaseComponent {
 
     //点击多选
     checkAllStatus = (data, ev) => {
-        const {retainArr} = this.state;
-        const arr = [];
         const checkArr = [];//选中的订单集合
-        retainArr.forEach(item => {
+        temp.stackData.forEach(item => {
             if (data.id === item.id) {
                 item.select = !item.select;
             }
             if (item.select) {
                 checkArr.push(item);
             }
-            //赋址改变，为重新渲染
-            arr.push(Object.assign({}, item));
         });
         this.setState((prevState) => ({
-            dataSource: prevState.dataSource.cloneWithRows(arr),
-            retainArr: arr,
+            dataSource: prevState.dataSource.cloneWithRows(temp.stackData),
             checkArr
         }));
 
@@ -610,8 +589,7 @@ class MyOrder extends BaseComponent {
         this.setState({
             page: 1,
             refreshing: true,
-            pageCount: -1,
-            retainArr: []
+            pageCount: -1
         }, () => {
             temp.stackData = [];
             if (status === '4') {
@@ -658,11 +636,6 @@ class MyOrder extends BaseComponent {
         }
     }
 
-    moneyDot = (money) => {
-        const arr = money.toString().split('.');
-        return arr;
-    }
-
     render() {
         const {dataSource, hasMore, height, status, canStatus, refreshing} = this.state;
         const row = item => (
@@ -697,7 +670,7 @@ class MyOrder extends BaseComponent {
                         <div className="goods-right">
                             <div className="goods-desc">
                                 <div className="desc-title">{items.pr_title}</div>
-                                <div className="price">￥{this.moneyDot(items.price)[0] + '.'}<span className="samll-money">{this.moneyDot(items.price)[1]}</span></div>
+                                <div className="price">￥{moneyDot(items.price)[0] + '.'}<span className="samll-money">{moneyDot(items.price)[1]}</span></div>
                             </div>
                             <div className="goods-sku">
                                 <div className="sku-left">
@@ -720,7 +693,7 @@ class MyOrder extends BaseComponent {
                         </div>
                         <div className="total-price">
                             <div className="total-price-left"/>
-                            <div className="total-price-right">共{item.pr_count}件商品 合计：<span className="zxa">￥{this.moneyDot(item.all_price)[0] + '.'}<span className="samll-money">{this.moneyDot(item.all_price)[1]}</span><span> (运费￥{item.express_money})</span></span></div>
+                            <div className="total-price-right">共{item.pr_count}件商品 合计：<span className="zxa">￥{(moneyDot(item.all_price)[0]) + '.'}<span className="samll-money">{moneyDot(item.all_price)[1]}</span><span> (运费￥{item.express_money})</span></span></div>
                         </div>
                         {//售后状态下 退款申请中
                             item.return_status === '1' && (

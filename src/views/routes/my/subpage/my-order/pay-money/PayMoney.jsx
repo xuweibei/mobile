@@ -38,7 +38,7 @@ class PayMoney extends BaseComponent {
             orderNum: decodeURI(getUrlParam('orderNum', encodeURI(this.props.location.search))), //支付所需订单编号
             source: decodeURI(getUrlParam('source', encodeURI(this.props.location.search))),
             money: decodeURI(getUrlParam('money', encodeURI(this.props.location.search))),
-            btnOnOff: false
+            payInputBottom: '4.5rem'//cam密码输入框初始值
         };
         //这里是为了控制原生右滑退出
         props.setReturn(true);
@@ -192,8 +192,8 @@ class PayMoney extends BaseComponent {
                         native('wxPayCallback', obj, (dataList) => {
                             native('goH5', {'': ''});
                             const data = dataList ? JSON.parse(dataList) : '';
-                            if (data && data.status === '0') {
-                                appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&id=${res.data.order_id}&types=${selectIndex}&deposit=${listArr.deposit}&if_express=${res.data.if_express}`);
+                            if (data && (data.status === '0' || data.status === 0)) {
+                                appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&id=${res.data.order_id}&types=${selectIndex}&deposit=${listArr.deposit || listArr.all_deposit}&if_express=${res.data.if_express}`);
                             }
                         });
                     } else {
@@ -213,7 +213,7 @@ class PayMoney extends BaseComponent {
                         native('authInfo', res.data.response, (dataList) => {
                             native('goH5', {'': ''});
                             const data = dataList ? JSON.parse(dataList) : '';
-                            if (data && data.status === '0') {
+                            if (data && (data.status === '0' || data.status === 0)) {
                                 appHistory.replace(`/paymentCompleted?allPrice=${listArr.all_price}&id=${res.data.order_id}&types=${selectIndex}&deposit=${listArr.deposit || listArr.all_deposit}&if_express=${res.data.if_express}`);
                             }
                         });
@@ -369,27 +369,26 @@ class PayMoney extends BaseComponent {
         this.props.setReturn(true);
     };
 
-    //设置cam支付弹框距离
-    getScrollTop = () => {
-        if (!this.state.btnOnOff) return;
-        this.setState({
-            btnOnOff: true
-        }, () => {
-            let str = '6rem';
-            if (this.payBtn) {
-                const scr = this.payBtn.getBoundingClientRect().top;
-                if (scr < 200 && process.env.NATIVE) {
-                    str = '0.5rem';
-                } else if (!process.env.NATIV) {
-                    str = '4.5rem';
-                }
-            }
-            return str;
-        });
+    //cam输入框聚焦
+    callBackFoucs = () => {
+        if (process.env.NATIVE) {
+            this.setState({
+                payInputBottom: '0.8rem'
+            });
+        }
+    }
+
+    //cam输入框失焦
+    callBackBlur = () => {
+        if (process.env.NATIVE) {
+            this.setState({
+                payInputBottom: '4.5rem'
+            });
+        }
     }
 
     render() {
-        const {selectIndex, listArr, pwsPopup, remainingTime} = this.state;
+        const {selectIndex, listArr, pwsPopup, remainingTime, payInputBottom} = this.state;
         return (
             <div data-component="pay-money" data-role="page" className="pay-money">
                 <AppNavBar
@@ -436,14 +435,13 @@ class PayMoney extends BaseComponent {
                 {/*CAM消费支付密码弹窗*/}
                 {pwsPopup && (
                     <div className="enter-password-box" >
-                        {/* <div className="enter-password" ref={payBtn => { this.payBtn = payBtn }}> */}
-                        <div className="enter-password" ref={payBtn => { this.payBtn = payBtn }} style={{paddingBottom: process.env.NATIVE ? this.getScrollTop() : '4.5rem'}}>
+                        <div className="enter-password" style={{paddingBottom: payInputBottom}}>
                             <div className="command">
                                 <span className="icon command-left" onClick={this.closePopup}/>
                                 <span className="icon command-center">请输入支付密码</span>
                                 <span className="icon command-right" onClick={this.closePopup}/>
                             </div>
-                            <InputGrid focus onInputGrid={this.inputGrid} propsType="number"/>
+                            <InputGrid callBackBlur={this.callBackBlur} callBackFoucs={this.callBackFoucs} focus onInputGrid={this.inputGrid} propsType="number"/>
                             <p onClick={() => this.forgetPws()}>忘记密码</p>
                         </div>
                     </div>

@@ -12,12 +12,16 @@ class InputGrid extends React.PureComponent {
         focus: PropTypes.bool,
         clearPropsInput: PropTypes.func, //父级清除value
         num: PropTypes.number, //第几个input
-        propsType: PropTypes.string
+        propsType: PropTypes.string,
+        callBackFoucs: PropTypes.func,
+        callBackBlur: PropTypes.func
     };
 
     static defaultProps = {
         focus: false,
         clearPropsInput: () => {},
+        callBackFoucs: () => {},
+        callBackBlur: () => {},
         num: 0,
         propsType: 'text'
     }
@@ -85,6 +89,14 @@ class InputGrid extends React.PureComponent {
         }
     }
 
+    inputFocus = () => {
+        this.props.callBackFoucs();
+    }
+
+    inputBlur = () => {
+        this.props.callBackBlur();
+    }
+
     //渲染函数
     render() {
         const {value} = this.state;
@@ -97,7 +109,7 @@ class InputGrid extends React.PureComponent {
                     <div className="frame-biu-one"/>
                     <div className="frame-biu-one"/>
                 </div>
-                <input className="input-pws" maxLength="6" value={value} type="text" ref={number => { this.numInput = number }} onChange={this.inputGrid} onClick={this.clearInput}/>
+                <input className="input-pws" onFocus={this.inputFocus} onBlur={this.inputBlur} maxLength="6" value={value} type="text" ref={number => { this.numInput = number }} onChange={this.inputGrid} onClick={this.clearInput}/>
             </div>
         );
     }

@@ -23,7 +23,7 @@ global.goBack = function () {
     if (!onOff) {
         if (appHistory.length() === 0 && process.env.NATIVE) {
             if (!window.location.href.includes('userAgreementDetail')) {
-                window.DsBridge.call('goBack');
+                window.DsBridge.call('goBack', isAndroid ? 'null' : {}, () => {});
             }
         } else {
             appHistory.goBack();
@@ -56,7 +56,7 @@ global.goBackApp = function () {
 export function goBackModal() {
     if (process.env.NATIVE && appHistory.length() === 0) {
         // native('goBack');
-        window.DsBridge.call('goBack', {'': ''}, () => {});
+        window.DsBridge.call('goBack', isAndroid ? 'null' : {}, () => {});
     } else {
         appHistory.goBack();
     }
