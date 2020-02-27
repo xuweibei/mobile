@@ -683,7 +683,7 @@ class GoodsDetail extends BaseComponent {
         // console.log(shop.shop_mark);
         const slot = shop.shop_mark && shop.shop_mark.split('.')[1];
         const value = Number(shop.shop_mark);
-        console.log(value);
+        // console.log(value);
         const arr = [];
         for (let i = 0; i < Math.floor(value); i++) {
             const star = <div className="icon icon-tiny" key={i}/>;
@@ -702,7 +702,7 @@ class GoodsDetail extends BaseComponent {
         const base = {
             width: '20px',
             height: '20px',
-            lineHeight: '15px',
+            lineHeight: '20px',
             textAlign: 'center',
             color: '#fff'
         };
@@ -710,7 +710,7 @@ class GoodsDetail extends BaseComponent {
         if (score > 4) {
             ele = <div style={{...base, background: '#FF2D51'}}>高</div>;
         } else if (score > 2.5 && score < 4) {
-            ele = <div style={{...base, background: 'yellow'}}>中</div>;
+            ele = <div style={{...base, background: 'orange'}}>中</div>;
         } else if (score < 2.5) {
             ele = <div style={{...base, background: '#999'}}>低</div>;
         } else {

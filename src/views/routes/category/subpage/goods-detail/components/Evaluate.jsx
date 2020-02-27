@@ -86,6 +86,28 @@ export default class Evaluate extends React.PureComponent {
                         </div>
                     </div>
                 )}
+                <div className="evaluate">
+                    <div className="eva-top">
+                        <div>商品评价({(evalute && evalute.count) || 0})</div>
+                        <div onClick={routeToEvalute}>查看全部</div>
+                    </div>
+                    {evalute && (
+                        <div className="eva-content">
+                            <div className="desc">
+                                {evalute.avatarUrl && (
+                                    <img
+                                        className="eva-pic"
+                                        src={evalute.avatarUrl}
+                                    />
+                                )}
+                                <div className="eva-username">
+                                    {evalute.nickname}
+                                </div>
+                            </div>
+                            <p>{evalute.content}</p>
+                        </div>
+                    )}
+                </div>
                 <div className="shop-detali">
                     <div className="box1">
                         <div className="shop-logo">
@@ -115,10 +137,10 @@ export default class Evaluate extends React.PureComponent {
                                     && goodsDetail.app_type === '2' && (
                                     <React.Fragment>
                                         <span className="Shop-Nr">
-                                                人均消费
+                                            人均消费
                                         </span>
                                         <span className="Shop-Nr">
-                                                ￥{shop.average_consumption}
+                                            ￥{shop.average_consumption}
                                         </span>
                                     </React.Fragment>
                                 )}
@@ -146,28 +168,7 @@ export default class Evaluate extends React.PureComponent {
                         </div>
                     </div>
                 </div>
-                <div className="evaluate">
-                    <div className="eva-top">
-                        <div>商品评价({(evalute && evalute.count) || 0})</div>
-                        <div onClick={routeToEvalute}>查看全部</div>
-                    </div>
-                    {evalute && (
-                        <div className="eva-content">
-                            <div className="desc">
-                                {evalute.avatarUrl && (
-                                    <img
-                                        className="eva-pic"
-                                        src={evalute.avatarUrl}
-                                    />
-                                )}
-                                <div className="eva-username">
-                                    {evalute.nickname}
-                                </div>
-                            </div>
-                            <p>{evalute.content}</p>
-                        </div>
-                    )}
-                </div>
+
             </Element>
         );
     }
