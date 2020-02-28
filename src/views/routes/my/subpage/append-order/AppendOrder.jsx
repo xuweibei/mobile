@@ -721,6 +721,7 @@ const mapStateToProps = state => {
     const shopCartState = state.get('shopCart');
     const myState = state.get('my');
     return {
+        arr: shopCartState.get('orderArr'),
         carId: shopCartState.get('ids'),
         address: myState.get('defaultAddress')
     };
