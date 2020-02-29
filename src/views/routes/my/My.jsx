@@ -416,7 +416,7 @@ class My extends BaseComponent {
                                                                         <span className="icon state-left"/>
                                                                         <span className="state-right">{this.logisticsStatus(val.status)}</span>
                                                                     </div>
-                                                                    {val.express_content && <div className="location">{val.express_content.data.length > 0 ? val.express_content.data[0].context : ''}</div>}
+                                                                    {val.express_content && <div className="location">{(val.express_content.data && val.express_content.data.length > 0) ? val.express_content.data[0].context : ''}</div>}
                                                                 </span>
                                                             </div>
                                                         </div>
