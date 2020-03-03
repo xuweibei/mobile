@@ -10,11 +10,11 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 const {appHistory, getUrlParam, native, systemApi: {getValue, removeValue}, supple, showInfo, nativeCssDiff} = Utils;
 const {urlCfg} = Configs;
 const mode = [
-    {
-        title: 'CAM余额',
-        value: 0,
-        imgName: 'balance-cam'
-    },
+    // {
+    //     title: 'CAM余额',
+    //     value: 0,
+    //     imgName: 'balance-cam'
+    // },
     {
         title: '微信支付',
         value: 1,
@@ -32,7 +32,7 @@ class PayMoney extends BaseComponent {
         super(props);
         this.state = {
             pwsPopup: false, //CAM消费支付密码弹窗
-            selectIndex: 0, //支付类型
+            selectIndex: 1, //支付类型
             listArr: [], //支付数据
             orderId: decodeURI(getUrlParam('orderId', encodeURI(this.props.location.search))), //支付所需订单id
             orderNum: decodeURI(getUrlParam('orderNum', encodeURI(this.props.location.search))), //支付所需订单编号
@@ -411,7 +411,7 @@ class PayMoney extends BaseComponent {
 
                 <div className="payment-method-box">
                     {mode.map((item, index) => (
-                        <div key={item.value} className="payment-method" onClick={() => this.choicePay(index)}>
+                        <div key={item.value} className="payment-method" onClick={() => this.choicePay(item.value)}>
                             <div className="distance">
                                 <div className="pm-left">
                                     <div className={item.imgName}/>
@@ -419,8 +419,8 @@ class PayMoney extends BaseComponent {
                                 </div>
                                 <div className="pm-center">{item.title}</div>
                                 <div
-                                    className={`icon ${index === selectIndex ? 'icon-Selection' : 'icon-Unselected'}`}
-                                    style={{border: index !== selectIndex ? this.radiusCssShow() : ''}}
+                                    className={`icon ${item.value === selectIndex ? 'icon-Selection' : 'icon-Unselected'}`}
+                                    style={{border: item.value !== selectIndex ? this.radiusCssShow() : ''}}
                                 />
                             </div>
                         </div>
