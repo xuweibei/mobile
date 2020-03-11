@@ -7,7 +7,7 @@
  * 只有商家有两种身份,可以进行切换，商家和消费者；
  * iden_type 为 1 普通消费者；为2 商家， 为3 推广员，为4，双重身份中的消费者
  */
-import {WhiteSpace, Badge, Grid, Carousel, WingBlank, List} from 'antd-mobile';
+import {WhiteSpace, Badge, Grid, Carousel, WingBlank, List, Button} from 'antd-mobile';
 import {connect} from 'react-redux';
 import {dropByCacheKey} from 'react-router-cache-route';
 import {baseActionCreator} from '../../../redux/baseAction';
@@ -325,6 +325,7 @@ class My extends BaseComponent {
                             />
                         </div>
                     </div>
+                    {/* <Button onClick={() => this.jumpRouter('/cardVoucher')}>卡券包</Button> */}
 
                     <div className="setUpShop" onClick={() => this.jumpRouter((myInfo && myInfo.info.iden_type === '1') ? '/selectType' : myInfo.info.url.split('#')[1])}>
                         <img src={myInfo && (userInfo.shop_url)} alt=""/>

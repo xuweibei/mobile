@@ -1,9 +1,10 @@
 
 import React from 'react';
-import {InputItem, Button, NavBar, Icon} from 'antd-mobile';
+import {InputItem, Button} from 'antd-mobile';
 import {connect} from 'react-redux';
 import {createForm} from 'rc-form';
 import classnames from 'classnames';
+import AppNavBar from '../../../../../../common/navbar/NavBar';
 import VerificationCode from '../../../../../../common/verification-code';
 import GeisInputItem from '../../../../../../common/form/input/GeisInputItem';
 import {baseActionCreator as actionCreator} from '../../../../../../../redux/baseAction';
@@ -11,7 +12,7 @@ import './PasswordDetail.less';
 
 const {appHistory, validator, showInfo, showSuccess, getUrlParam, native} = Utils;
 const {urlCfg} = Configs;
-const {MESSAGE: {Form, Feedback}, navColorO} = Constants;
+const {MESSAGE: {Form, Feedback}, gradation} = Constants;
 const getPass = { //获取验证码按钮的样式
     float: 'right',
     marginRight: '18px',
@@ -41,15 +42,6 @@ class passwordDetail extends BaseComponent {
             passAType: true, //第二个密码框的状态
             isLoagin: decodeURI(getUrlParam('login', encodeURI(this.props.location.search))) !== 'null' ? decodeURI(getUrlParam('login', encodeURI(this.props.location.search))) : 0
         };
-        if (process.env.NATIVE) { //设置tab颜色
-            native('setNavColor', {color: navColorO});
-        }
-    }
-
-    componentWillReceiveProps() {
-        if (process.env.NATIVE) {
-            native('setNavColor', {color: navColorO});
-        }
     }
 
     //验证支付密码是否设置
@@ -298,12 +290,7 @@ class passwordDetail extends BaseComponent {
                         <div>
                             {
                                 !window.isWX && (
-                                    <NavBar
-                                        className="nab"
-                                        icon={<Icon type="left" size="lg" onClick={this.goBackModal}/>}
-                                    >
-                               身份验证
-                                    </NavBar>
+                                    <AppNavBar backgroundColor={gradation} redBackground title="身份验证"/>
                                 )
                             }
                             <div className={classnames('input-box', {'wx-input-box': window.isWX})}>
@@ -358,12 +345,7 @@ class passwordDetail extends BaseComponent {
                 {
                     passShow && (
                         <div>
-                            <NavBar
-                                className="nab"
-                                icon={<Icon type="left" size="lg" onClick={() => { this.setState({passShow: false, phoneShow: true}) }}/>}
-                            >
-                                设置登录密码
-                            </NavBar>
+                            <AppNavBar backgroundColor={gradation} redBackground title="设置登录密码" goBackModal={() => { this.setState({passShow: false, phoneShow: true}) }}/>
                             <div className="cipher-box">
                                 <div>
                                     <div className="icon-box" onClick={this.changeEyes}>

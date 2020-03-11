@@ -17,8 +17,8 @@ const {MESSAGE: {Feedback}, FIELD, navColorR} = Constants;
 const tabs = [
     {title: '全部'},
     {title: '未完成'},
-    {title: '已完成'}
-    // {title: '售后'} 暂时屏蔽，余丽
+    {title: '已完成'},
+    {title: '售后'}
 ];
 class ReDetail extends BaseComponent {
     constructor(props) {

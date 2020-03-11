@@ -1,13 +1,14 @@
-import {Button, InputItem, NavBar, Icon} from 'antd-mobile';
+import {Button, InputItem} from 'antd-mobile';
 import {createForm} from 'rc-form';
 import classnames from 'classnames';
+import AppNavBar from '../../../../../../common/navbar/NavBar';
 import VerificationCode from '../../../../../../common/verification-code';
 import {InputGrid} from '../../../../../../common/input-grid/InputGrid';
 import './PasswordPayment.less';
 
-const {appHistory, validator, showInfo, showSuccess, getUrlParam, native} = Utils;
+const {appHistory, validator, showInfo, showSuccess, getUrlParam} = Utils;
 const {urlCfg} = Configs;
-const {MESSAGE: {Form, Feedback}, navColorO} = Constants;
+const {MESSAGE: {Form, Feedback}, gradation} = Constants;
 const getPass = { //获取验证码按钮的样式
     float: 'right',
     marginRight: '18px',
@@ -26,10 +27,6 @@ class passwordPayment extends BaseComponent {
             sentPay: '', //是否已设置支付密码
             getOff: false //点击获取验证码是否可以获取，默认不可以，除非输入的电话号码符合要求
         };
-
-        if (process.env.NATIVE) { //设置tab颜色
-            native('setNavColor', {color: navColorO});
-        }
     }
 
     // verifyPayword = () => {//是否设置过支付密码
@@ -50,12 +47,6 @@ class passwordPayment extends BaseComponent {
     //             }
     //         });
     // }
-
-    componentWillReceiveProps() {
-        if (process.env.NATIVE) {
-            native('setNavColor', {color: navColorO});
-        }
-    }
 
     //获取验证码
     getPhoneCode = () => {
@@ -214,12 +205,7 @@ class passwordPayment extends BaseComponent {
             <React.Fragment>
                 {editModal === 'passEdit' && (
                     <div data-component="password-payment" data-role="page" className="password-payment">
-                        <NavBar
-                            className="nab"
-                            icon={<Icon type="left" size="lg" onClick={() => { this.setState({editModal: 'default'}) }}/>}
-                        >
-                            设置支付密码
-                        </NavBar>
+                        <AppNavBar backgroundColor={gradation} redBackground title="设置支付密码" goBackModal={() => { this.setState({editModal: 'default'}) }}/>
                         <div className="password-box">
                             <div className="payment-code">请输入支付密码</div>
                             <div className="content">
@@ -240,12 +226,7 @@ class passwordPayment extends BaseComponent {
                         <div>
                             {
                                 !window.isWX && (
-                                    <NavBar
-                                        className="nab"
-                                        icon={<Icon type="left" size="lg" onClick={() => { appHistory.goBack() }}/>}
-                                    >
-                            身份验证
-                                    </NavBar>
+                                    <AppNavBar backgroundColor={gradation} redBackground title="身份验证"/>
                                 )
                             }
                             <div className={classnames('cipher-box', {wxCipher: window.isWX})}>

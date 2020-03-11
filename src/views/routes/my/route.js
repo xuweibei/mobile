@@ -63,6 +63,11 @@ const BrowseHistory = Loadable({
 //     loader: () => import(/* webpackChunkName: 'InspectModal' */ './subpage/inspect/route'),
 //     loading: () => null
 // });
+
+const MyCardVoucherModal = Loadable({//卡券包
+    loader: () => import(/* webpackChunkName: 'BrowseHistory' */'./subpage/card-voucher/route'),
+    loading: () => null
+});
 const My = () => (
     <React.Fragment>
         <Route path="/my" component={MyPage}/>
@@ -81,6 +86,7 @@ const My = () => (
         <SelfMention/>
         <Edit/>
         <OrderPage/>
+        <MyCardVoucherModal/>
     </React.Fragment>
 );
 

@@ -4,7 +4,7 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 import './Password.less';
 
 const {appHistory} = Utils;
-const {navColorR} = Constants;
+const {navColorR, gradation} = Constants;
 class Password extends BaseComponent {
     //修改登录密码
     passwordDetail = () => {
@@ -19,7 +19,7 @@ class Password extends BaseComponent {
     render() {
         return (
             <div data-component="Password" data-role="page" className="password">
-                <AppNavBar title="密码管理" backgroundColor={navColorR} redBackground color={navColorR}/>
+                <AppNavBar title="密码管理" backgroundColor={gradation} redBackground color={navColorR}/>
                 <div className="land" onClick={this.passwordDetail}>
                     <div className="icon land-lo"/>
                     <div className="land-c">
