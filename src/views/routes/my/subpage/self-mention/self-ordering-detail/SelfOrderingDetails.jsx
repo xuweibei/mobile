@@ -381,17 +381,17 @@ class ReDetail extends BaseComponent {
                                 )} 暂时屏蔽 */}
                         </div>
                     )}
-                    {/* {(selfSufficiency.status === '1' || selfSufficiency.status === '3' || selfSufficiency.status === '4') && (
-                            <div>
-                                {selfSufficiency.return_name ? (
-                                    <div className="cancel-order" onClick={(e) => this.skipAfterSale(e, selfSufficiency.return_id)}>{selfSufficiency.return_name}</div>
-                                ) : (
-                                    <div className="cancel-order" onClick={(e) => this.serviceRefund(e, selfSufficiency.order_id)}>申请售后</div>
-                                )
-                                }
-                                {selfSufficiency.return_name && <div className="cancel-order" onClick={(e) => this.skipAfterSale(e, selfSufficiency.return_id)}>{selfSufficiency.return_name}</div>}
-                            </div>
-                        )} */}
+                    {(selfSufficiency.status === '1' || selfSufficiency.status === '3' || selfSufficiency.status === '4') && (
+                        <div>
+                            {selfSufficiency.return_name ? (
+                                <div className="cancel-order" onClick={(e) => this.skipAfterSale(e, selfSufficiency.return_id)}>{selfSufficiency.return_name}</div>
+                            ) : (
+                                <div className="cancel-order" onClick={(e) => this.serviceRefund(e, selfSufficiency.order_id)}>申请售后</div>
+                            )
+                            }
+                            {selfSufficiency.return_name && <div className="cancel-order" onClick={(e) => this.skipAfterSale(e, selfSufficiency.return_id)}>{selfSufficiency.return_name}</div>}
+                        </div>
+                    )}
                 </div>
             </div>
         );

@@ -66,7 +66,7 @@ export function goBackModal() {
 export function nativeCssDiff() {
     const str = navigator.userAgent;
     console.log(str, '型号参数查看');
-    const phoneModal =  ['OPPO R7sm', 'm1 note', 'Letv X501', 'Redmi Note 4X', 'OPPO A59m', 'COL-AL10'];
+    const phoneModal =  ['OPPO R7sm', 'm1 note', 'Letv X501', 'Redmi Note 4X', 'OPPO A59m', 'COL-AL10', 'HONOR'];
     let onOff = false;
     phoneModal.forEach(item => {
         if (str.indexOf(item) > -1) {

@@ -349,9 +349,9 @@ class ReDetail extends BaseComponent {
                         {/*等待使用*/}
                         {(item.status === '1' || item.return_status === '1') && (
                             <div className="buttons">
-                                {/* {!item.return_status && (
+                                {!item.return_status && (
                                     <div onClick={(e) => this.serviceRefund(e, item.id)}>退款</div>
-                                )} */}
+                                )}
                                 <div className="evaluate-button" onClick={(e) => this.skipSelf(e, item.id)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>立即使用</div>
                                 {item.return_status === '1' && (
                                     <div className="evaluate-button" onClick={(e) => this.skipAfterSale(e, item.return_id)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>查看详情</div>

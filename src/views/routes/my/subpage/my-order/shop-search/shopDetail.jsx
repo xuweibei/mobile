@@ -300,18 +300,18 @@ class MyOrderSearch extends BaseComponent {
             blockModal = (
                 <div className="buttons">
                     { //余丽  暂时屏蔽  is_reservice 为0 不支持售后 为1 支持售后
-                        // item.showButton && item.refund_button === 1 && (暂时屏蔽  余丽
-                        //     <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
-                        //         <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev, 1)}>申请退款</span>
-                        //     </div>
-                        // )
+                        item.showButton && item.refund_button === 1 && (
+                            <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
+                                <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev, 1)}>申请退款</span>
+                            </div>
+                        )
                     }
                     {//is_reservice 为0 不支持售后 为1 支持售后   京东商品
-                        // item.showButton && item.is_reservice === 1 && item.app_type === '3' && (暂时屏蔽  余丽
-                        //     <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
-                        //         <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev)}>申请售后</span>
-                        //     </div>
-                        // )
+                        item.showButton && item.is_reservice === 1 && item.app_type === '3' && (
+                            <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
+                                <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev)}>申请售后</span>
+                            </div>
+                        )
                     }
                     {
                         !item.all_refund && <div className="evaluate-button" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} onClick={() => this.remindDelivery([item.id, item.can_tip])}>提醒发货</div>
@@ -323,18 +323,18 @@ class MyOrderSearch extends BaseComponent {
             blockModal = (
                 <div className="buttons">
                     {
-                        // item.showButton && item.refund_button === 1 && (暂时屏蔽  余丽
-                        //     <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
-                        //         <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev)}>申请退款</span>
-                        //     </div>
-                        // )
+                        item.showButton && item.refund_button === 1 && (
+                            <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
+                                <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev)}>申请退款</span>
+                            </div>
+                        )
                     }
                     {//is_reservice 为0 不支持售后 为1 支持售后  京东商品
-                        // item.showButton && item.is_reservice === 1 && item.app_type === '3' && (暂时屏蔽  余丽
-                        //     <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
-                        //         <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev)}>申请售后</span>
-                        //     </div>
-                        // )
+                        item.showButton && item.is_reservice === 1 && item.app_type === '3' && (
+                            <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
+                                <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev)}>申请售后</span>
+                            </div>
+                        )
                     }
                     <div className="look-button" onClick={(ev) => this.extendedReceipt(item.id, ev)} style={{border: this.styleCompatible()}}>延长收货</div>
                     <div className="look-button" onClick={(ev) => this.goApplyService(item.id, ev)} style={{border: this.styleCompatible()}}>查看物流</div>

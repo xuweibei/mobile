@@ -176,7 +176,7 @@ class PayMoney extends BaseComponent {
     //微信支付
     wxPay = (listArr, orderNum, selectIndex) => {
         // alert('微信支付');
-        this.fetch(urlCfg.wechatPayment, {data: {order_no: orderNum[0], type: 1}})
+        this.fetch(urlCfg.payAppPay, {data: {order_no: orderNum[0], type: 1}})
             .subscribe(res => {
                 if (res && res.status === 0) {
                     if (process.env.NATIVE) {
@@ -206,7 +206,7 @@ class PayMoney extends BaseComponent {
     //支付宝支付
     alipay = (listArr, orderNum, selectIndex) => {
         // alert('支付宝支付');
-        this.fetch(urlCfg.alipayPayment, {data: {type: 1, order_no: orderNum[0]}})
+        this.fetch(urlCfg.payAppPay, {data: {order_no: orderNum[0], type: 2}})
             .subscribe(res => {
                 if (res && res.status === 0) {
                     if (process.env.NATIVE) {
