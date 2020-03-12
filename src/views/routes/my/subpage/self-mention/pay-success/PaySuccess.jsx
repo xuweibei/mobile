@@ -34,9 +34,9 @@ export default class PaySuccess extends BaseComponent {
             <div data-component="Pay-success" data-role="page" className="Pay-success">
                 <AppNavBar rightShow title="立即使用"/>
                 <div className="number">
-                    <span className="number-left">您的核销码为</span>
+                    <span className="number-left">核销验证码</span>
                     <span className="number-right">
-                        <span className="digit">{orderDetail.white_off}</span>
+                        <span className="digit">{orderDetail.white_off}{'19619173JAX'}</span>
                     </span>
                 </div>
 
@@ -45,9 +45,14 @@ export default class PaySuccess extends BaseComponent {
                         <span className="left-show">核销二维码</span>
                     </div>
                     <div className="shop-plan-center">
-                        <img src={orderDetail.white_off_code} alt=""/>
+                        {/* <img src={orderDetail.white_off_code} alt=""/> */}
+                        <img src="https://pic.zzha.vip/mall/white/qr/00/00/00/03/86246d8d53e682d4.jpg" alt=""/>
                     </div>
-                    <div className="shop-plan-bottom">使用方法：自提时请向商家出示此二维码完成核销</div>
+                    <div className="shop-plan-bottom">使用方法：核销时出示消费码给商家即可也可以到店扫码完成核销</div>
+                </div>
+                <div className="footer-tip">
+                    <span>温馨提示</span>
+                    <p>在我的订单待发货页面也可查看核销验证码哦</p>
                 </div>
             </div>
         );

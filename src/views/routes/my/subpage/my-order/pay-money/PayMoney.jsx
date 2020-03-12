@@ -180,16 +180,7 @@ class PayMoney extends BaseComponent {
             .subscribe(res => {
                 if (res && res.status === 0) {
                     if (process.env.NATIVE) {
-                        const obj = {
-                            prepayid: res.data.arr.prepayid,
-                            appid: res.data.arr.appid,
-                            partnerid: res.data.arr.partnerid,
-                            package: res.data.arr.package,
-                            noncestr: res.data.arr.noncestr,
-                            timestamp: res.data.arr.timestamp,
-                            sign: res.data.arr.sign
-                        };
-                        native('wxPayCallback', obj, (dataList) => {
+                        native('wxPayCallback', res.data ? res.data.arr : null, (dataList) => {
                             native('goH5', {'': ''});
                             const data = dataList ? JSON.parse(dataList) : '';
                             if (data && (data.status === '0' || data.status === 0)) {
