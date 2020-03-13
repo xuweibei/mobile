@@ -7,7 +7,7 @@
  * 只有商家有两种身份,可以进行切换，商家和消费者；
  * iden_type 为 1 普通消费者；为2 商家， 为3 推广员，为4，双重身份中的消费者
  */
-import {WhiteSpace, Badge, Grid, Carousel, WingBlank, List, Button} from 'antd-mobile';
+import {WhiteSpace, Badge, Grid, Carousel, WingBlank, List} from 'antd-mobile';
 import {connect} from 'react-redux';
 import {dropByCacheKey} from 'react-router-cache-route';
 import {baseActionCreator} from '../../../redux/baseAction';

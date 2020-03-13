@@ -121,12 +121,12 @@ class Customer extends BaseComponent {
             isLoading: false,
             ...extra
         }, () => {
-            console.log(`第${page}页`, this.stackData);
+            // console.log(`第${page}页`, this.stackData);
             if (page < this.state.pageCount) {
                 this.setState({
                     hasMore: true
                 }, () => {
-                    console.log('可上拉加载');
+                    // console.log('可上拉加载');
                 });
             }
         });

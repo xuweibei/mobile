@@ -125,40 +125,6 @@ class appendOrder extends BaseComponent {
         }
     }
 
-    // componentWillReceiveProps(next, data) {
-    //     const {setOrder, setIds, location} = this.props;
-    //     const timerNext = decodeURI(getUrlParam('time', encodeURI(next.location.search)));
-    //     const timer = decodeURI(getUrlParam('time', encodeURI(location.search)));
-    //     if (process.env.NATIVE && timer && timerNext !== timer) {
-    //         this.setState({
-    //             shopInfo: [],
-    //             addressInfo: {},
-    //             goodsCount: 0,
-    //             goods: [],
-    //             idCard: '', //身份证
-    //             total: 0, // 总价
-    //             totalCount: 0, //商品总数量
-    //             files: {},
-    //             order: {}, //订单备注信息
-    //             IDcard: [],
-    //             date: now,
-    //             self: true, //发票类型
-    //             currentIndex: 0, //默认发票选中类型
-    //             textInfo: '企业',
-    //             invoiceStatus: false,  //发票弹框显示状态
-    //             notAllow: true, //不支持提交状态
-    //             invoice: {},
-    //             invoiceIndex: ''
-    //         }, () => {
-    //           ('getInfo', {'': ''}).then(res => {
-    //                 setOrder(res.data.arr);
-    //                 setIds(res.data.cartArr);
-    //                 this.getOrderState();
-    //             });//原生方法获取前面的redux
-    //         });
-    //     }
-    // }
-
     componentWillUnmount() {
         const {saveAddress} = this.props;
         saveAddress('');

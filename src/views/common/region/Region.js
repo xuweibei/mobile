@@ -84,35 +84,6 @@ class Region extends BaseComponent {
         }
     }
 
-    //判断父级是否更新
-    // componentWillReceiveProps(nextProps) {
-    //     const {provinceValue} = this.state;
-    //     const {add, editStatus, editStatusChange} = this.props;
-    //     console.log(add, '是的', editStatus, '水电费', provinceValue);
-    //     if (editStatus && !add && provinceValue !== nextProps.provinceValue) {
-    //         this.setState({
-    //             provinceValue: nextProps.provinceValue,
-    //             countyValue: nextProps.countyValue,
-    //             cityValue: nextProps.cityValue,
-    //             townValue: nextProps.townValue,
-    //             judge1: true,
-    //             judge2: true
-    //         });
-    //         if (nextProps.provinceId) {
-    //             this.getCity(nextProps.provinceId);
-    //         }
-    //         if (nextProps.cityId) {
-    //             this.getCounty(nextProps.cityId);
-    //         }
-    //         if (nextProps.countyId) {
-    //             this.getStreet(nextProps.countyId);
-    //         }
-    //         if (editStatusChange) {
-    //             this.props.editStatusChange();
-    //         }
-    //     }
-    // }
-
     //省
     getProvince() {
         const {provinceId} = this.props;

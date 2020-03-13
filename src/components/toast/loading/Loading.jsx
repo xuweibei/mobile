@@ -74,7 +74,7 @@ class Loading extends React.PureComponent {
                 width,
                 textAlign: 'center'
             };
-        console.log('Loading render');
+        // console.log('Loading render');
         return (
             <div style={{display: visible ? 'block' : 'none'}}>
                 <div className="am-modal-wrap">

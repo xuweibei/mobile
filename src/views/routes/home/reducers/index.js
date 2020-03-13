@@ -29,7 +29,6 @@ export default {
         },
         [ActionsTypes.SET_NAV](state, action) {
             const {nav} = action.payload;
-            console.log(nav, 'sadaihNKas');
             return state.set('nav', nav);
         }
     })

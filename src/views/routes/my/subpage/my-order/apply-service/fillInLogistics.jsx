@@ -26,7 +26,6 @@ class JDLogistics extends BaseComponent {
 
     componentDidMount() {
         this.getLogisticsList();
-        console.log(this.formatDate(new Date()), '讲课费');
     }
 
     //获取物流列表

@@ -3,12 +3,12 @@ import './Animation.less';
 
 class CircleLoading extends React.PureComponent {
     componentDidMount() {
-        console.log('渲染动画');
+        // console.log('渲染动画');
         this.draw();
     }
 
     componentWillUnmount() {
-        console.log('卸载组件');
+        // console.log('卸载组件');
         this.clear();
     }
 
@@ -16,7 +16,7 @@ class CircleLoading extends React.PureComponent {
         let number = 0;
         let speed = 0;
         if (!canvas) {
-            console.log('无canvas');
+            // console.log('无canvas');
             return;
         }
         const ctx = canvas.getContext('2d');
@@ -71,7 +71,7 @@ class CircleLoading extends React.PureComponent {
     // 清除动画缓存
     clear= () => {
         window.cancelAnimationFrame(this.timer);
-        console.log('清理');
+        // console.log('清理');
     };
 
     render() {

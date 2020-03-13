@@ -48,7 +48,7 @@ export default class MyLogistics extends BaseComponent {
     //底部结构
     bottomModal = (logInfo, index, open) =>  (
         <React.Fragment>
-            <div className="transport">
+            <div className="transport" key={logInfo.express_cate2}>
                 <div>
                     <span className="railing-state">{this.logisticsStatus(logInfo.status)}</span>
                 </div>

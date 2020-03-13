@@ -44,7 +44,7 @@ export default class MyComplain extends BaseComponent {
             this.setState({
                 fileMain
             }, () => {
-                console.log(fileMain);
+                // console.log(fileMain);
             });
         });
     }

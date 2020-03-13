@@ -87,7 +87,7 @@ export default {
         },
         [ActionTypes.HIDE_LOADING](state) {
             let loadingNum = state.get('loadingNum');
-            console.log(loadingNum);
+            // console.log(loadingNum);
             loadingNum = loadingNum > 0 ? --loadingNum : 0;
             if (loadingNum === 0) {
                 return state.set('loadingShow', false)
@@ -149,7 +149,7 @@ export default {
         },
         [ActionTypes.SET_CODE](state, action) {
             const {code} = action.playload;
-            console.log('code', code);
+            // console.log('code', code);
             return state.set('code', code);
         },
         [ActionTypes.SET_USER_TOKEN](state, action) {

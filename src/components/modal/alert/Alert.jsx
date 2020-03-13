@@ -7,9 +7,6 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {baseActionCreator as actionCreator} from '../../../redux/baseAction';
 
-
-let n = 0;
-
 class Alert extends BaseComponent {
     static defaultProps = {
         visible: false,
@@ -32,20 +29,14 @@ class Alert extends BaseComponent {
         super(props, context);
     }
 
-    componentWillReceiveProps(nextProps) {
-        console.log(n++);
-    }
-
     hideAlert() {
         this.props.hideAlert();
     }
 
     render() {
-        console.log('alter render');
         const {
             visible, title, callback, btnText, alertName
         } = this.props;
-        console.log(this.props);
         return (
             <Modal
                 title={title}

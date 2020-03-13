@@ -33,7 +33,7 @@ export default {
         },
         [ActionTypes.SET_REFRESH](state, action) {
             const {freshing} = action.playload;
-            console.log('refreshing');
+            // console.log('refreshing');
             return state.set('fresh', freshing);
         }
     })

@@ -62,14 +62,6 @@ class PayMoney extends BaseComponent {
         }
     }
 
-    // static getDerivedStateFromProps(prevProps, prevState) {
-    //     //原生右滑退出处理
-    //     if (!prevProps.returnStatus) {
-    //         this.goBackModal();
-    //     }
-    //     return null;
-    // }
-
     componentWillReceiveProps(data, value) {
         //原生右滑退出处理
         if (!data.returnStatus) {

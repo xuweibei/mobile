@@ -9,12 +9,12 @@ import './Animation.less';
 const {getPixelRatio} = Utils;
 class Loading extends React.PureComponent {
     componentDidMount() {
-        console.log('渲染动画');
+        // console.log('渲染动画');
         this.draw();
     }
 
     componentWillUnmount() {
-        console.log('卸载组件');
+        // console.log('卸载组件');
         this.clear();
     }
 
@@ -75,7 +75,7 @@ class Loading extends React.PureComponent {
     // 清除动画缓存
     clear= () => {
         window.cancelAnimationFrame(this.timer);
-        console.log('清理');
+        // console.log('清理');
     };
 
     render() {

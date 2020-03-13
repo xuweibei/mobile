@@ -168,44 +168,6 @@ class GoodsDetail extends BaseComponent {
         }
     }
 
-    // componentWillReceiveProps(nextProps, value) { //路由跳转时的判断，id有变化就请求
-    //     if (process.env.NATIVE) {
-    //         const id = decodeURI(getUrlParam('id', encodeURI(nextProps.location.search)));
-    //         const {goodId} = this.state;
-    //         if (id !== goodId) {
-    //             this.setState({
-    //                 topSwithe: true,
-    //                 popup: false, //sku是否显示
-    //                 paginationNum: 1,
-    //                 goodsDetail: {}, //详情界面
-    //                 picPath: [], //轮播
-    //                 shop: {}, //  详情商店数据
-    //                 recommend: [], //店铺商品推荐
-    //                 goodsAttr: [],
-    //                 stocks: [],
-    //                 type: '',
-    //                 names: [], //选中商品属性
-    //                 collect: [], //商品收藏状态
-    //                 status: '1', //判断商品是否下架
-    //                 visible: false,
-    //                 text: '',
-    //                 lineStatus: false, //底部商品状态栏
-    //                 ids: [], //选中属性id
-    //                 goodsSku: [], //商品的结果集
-    //                 // shopAddress: '', // 店铺位置
-    //                 lineText: '', //商品状态栏文字
-    //                 pickType: {}, //配送方式
-    //                 selectType: '', //选中配送方式 1快递 2自提
-    //                 clickType: 0, //打开sku的方式 0箭头 1购物车 2立即购买
-    //                 totalNUm: 0, //商品库存,
-    //                 goodId: id
-    //             }, () => {
-    //                 this.init();
-    //             });
-    //         }
-    //     }
-    // }
-
     //获取商品详情
     getGoodsDetail = () => {
         const {goodId} = this.state;

@@ -89,14 +89,14 @@ class History extends BaseComponent {
                 this.stackData = [...this.stackData, ...item.data];
             }
         });
-        console.log('数据源', this.sectionIDs, this.rowIDs);
+        // console.log('数据源', this.sectionIDs, this.rowIDs);
         this.setState((prevState) => ({
             data: prevState.data.cloneWithRowsAndSections(this.dataBlobs, this.sectionIDs, this.rowIDs),
             pageCount: res.page_count,
             isLoading: false
             // isEdit: window.isWX
         }), () => {
-            console.log(this.state.data);
+            // console.log(this.state.data);
             if (page < this.state.pageCount) {
                 this.setState({
                     hasMore: true
@@ -291,7 +291,7 @@ class History extends BaseComponent {
                 checkedIds: [...newArr]
             }, () => {
                 this.checkedIds = newArr;
-                console.log('移除选中id', this.state.checkedIds);
+                // console.log('移除选中id', this.state.checkedIds);
             });
         } else {
             this.stackData.map(v => {
@@ -303,7 +303,7 @@ class History extends BaseComponent {
             this.setState({
                 checkedIds: [...this.checkedIds]
             }, () => {
-                console.log('添加选中id', this.state.checkedIds);
+                // console.log('添加选中id', this.state.checkedIds);
             });
         }
         this.setState((prevState) => ({

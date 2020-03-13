@@ -267,7 +267,7 @@ function  _setReturn(onOff) {
 }
 
 function  _getAgreement(data) {
-    console.log(data);
+    // console.log(data);
     return {
         type: baseActionTypes.GET_AGREEMENT,
         payload: {

@@ -82,10 +82,6 @@ class Invitation extends BaseComponent {
         return null;
     }
 
-    // componentWillReceiveProps() {
-    //     ActionSheet.close();//关闭分享
-    // }
-
     //弹出分享框maskImg
     showShareActionSheet = () => {
         if (!window.isWX) {

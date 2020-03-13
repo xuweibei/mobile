@@ -99,7 +99,7 @@ class Rxios {
                             console.error(err.message);
                             subject.error(err);
                         } else {
-                            console.log(data);
+                            // console.log(data);
                             subject.next(data);
                         }
                     });
