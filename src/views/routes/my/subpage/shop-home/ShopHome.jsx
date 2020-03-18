@@ -215,7 +215,7 @@ class ShopHome extends BaseComponent {
                     </div>
                     <div className="goods-information">
                         <div className="goods-explain">{item.title}</div>
-                        <span className="btn-keep">记账量：{item.deposit}</span>
+                        <span className="btn-keep">C米：{item.deposit}</span>
                         <div className="payment">
                             <span>销量：{item.num_sold}</span>
                             <span className="payment-r">￥{item.price_original}</span>
@@ -236,7 +236,7 @@ class ShopHome extends BaseComponent {
                     </div>
                     <div className="goods-information">
                         <div className="goods-explain">{item.title}</div>
-                        <span className="btn-keep btn-jd">记账量：{item.deposit}</span>
+                        <span className="btn-keep btn-jd">C米：{item.deposit}</span>
                         <div className="price">￥{this.moneyDot(item.price)[0]}.<span>{this.moneyDot(item.price)[1]}</span></div>
                     </div>
                 </div>

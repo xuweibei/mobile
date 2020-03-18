@@ -37,7 +37,7 @@ class appendOrder extends BaseComponent {
         invoiceStatus: false,  //发票弹框显示状态
         notAllow: true, //不支持提交状态
         num: [], // 商品数量
-        deps: [], // 记账量
+        deps: [], // C米
         prices: [], //商品单价
         invoice: [],
         invoiceIndex: '',
@@ -511,7 +511,7 @@ class appendOrder extends BaseComponent {
                                                                     </div>
                                                                     <div className="num-add">
                                                                         <div className="desc-count">
-                                                                            记账量：{goods.deposit}
+                                                                            C米：{goods.deposit}
                                                                         </div>
                                                                     </div>
                                                                     {
@@ -540,7 +540,7 @@ class appendOrder extends BaseComponent {
                                     <div className="goods-attr">
                                         <ul className="range-top">
                                             <li className="list">
-                                                <span>记账量</span>
+                                                <span>C米</span>
                                                 <span>{shopInfo[index].all_deposit}</span>
                                             </li>
                                             <li className="list">
@@ -576,7 +576,7 @@ class appendOrder extends BaseComponent {
                                         <span>合计：</span>
                                         <span className="total-pri">￥{total}</span>
                                     </div>
-                                    <div className="total-dep">记账量:{allDeposit}</div>
+                                    <div className="total-dep">C米:{allDeposit}</div>
                                 </div>
                             </div>
                             <Button onClick={this.postOrder} disabled={!notAllow}>立即付款</Button>

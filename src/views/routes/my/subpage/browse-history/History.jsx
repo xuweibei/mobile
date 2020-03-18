@@ -159,7 +159,7 @@ class History extends BaseComponent {
                                 {item.title}
                             </div>
                             <div className="goods-row-right-first">
-                                <span>记账量：{item.deposit}</span>
+                                <span>C米：{item.deposit}</span>
                                 {
                                     !isEdit
                                         ? item.status === '0' && <span className="goods-row-right-isout">已下架</span> : null

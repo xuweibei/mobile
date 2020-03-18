@@ -324,14 +324,14 @@ class ReDetail extends BaseComponent {
                                 </div>
                                 <div className="sku-right">x{items.num}</div>
                             </div>
-                            <div className="btn-keep">记账量：{items.deposit}</div>
+                            <div className="btn-keep">C米：{items.deposit}</div>
                         </div>
                     </div>
                 )) : ''}
                 <div className="shop-bottom">
                     <div className="right-bottom">
                         <div className="total-count">
-                            总记账量：<span>{item.all_deposit}</span>
+                            总C米：<span>{item.all_deposit}</span>
                         </div>
                         <div className="total-price">
                             {/* <div className="total-price-left">共{item.pr_num}件商品</div> */}

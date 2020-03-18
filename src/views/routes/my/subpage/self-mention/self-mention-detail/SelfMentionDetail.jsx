@@ -339,7 +339,7 @@ class ReDetail extends BaseComponent {
                                     </div>
                                     <div className="sku-right">x{item.num}</div>
                                 </div>
-                                <div className="btn-keep">记账量：{item.deposit}</div>
+                                <div className="btn-keep">C米：{item.deposit}</div>
                             </div>
                         </div>
                     ))}
@@ -355,7 +355,7 @@ class ReDetail extends BaseComponent {
                     <div className="shop-bottom">
                         <div className="right-bottom">
                             <div className="total-count">
-                                总记账量：<span>{OrderSelf.all_deposit}</span>
+                                总C米：<span>{OrderSelf.all_deposit}</span>
                             </div>
                             <div className="total-price">
                                 <div className="total-price-left">共{OrderSelf.all_pr_num}件商品</div>

@@ -325,7 +325,7 @@
 //         return num;
 //     };
 
-//     //总记账量
+//     //总C米
 //     getTotalCount = () => {
 //         const {valid} = this.state;
 //         const deposit = [];
@@ -556,7 +556,7 @@
 //         }
 //     }
 
-//     // //自提商品总记账量
+//     // //自提商品总C米
 //     selfTotalCount = (shop, index) => {
 //         const {valid} = this.state;
 //         let num = 0;
@@ -752,7 +752,7 @@
 //                                                     </div>
 //                                                     <div className="num-add">
 //                                                         <div className="desc-count">
-//                                                             记账量：
+//                                                             C米：
 //                                                             {goods.deposit}
 //                                                         </div>
 //                                                         <div className="num-right">
@@ -779,7 +779,7 @@
 //                                     {
 //                                         loadDown && (
 //                                             <div className="self">
-//                                                 <div className="total-count">总记账量：<span>{this.selfTotalCount(shop, index)}</span></div>
+//                                                 <div className="total-count">总C米：<span>{this.selfTotalCount(shop, index)}</span></div>
 //                                                 <div className="total-goods">
 //                                                     <div>共{this.selfNum(index)}件商品</div>
 //                                                     <div>合计：<span>￥{this.selfPrice(index)}</span></div>

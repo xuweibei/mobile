@@ -970,7 +970,7 @@ class MyOrder extends BaseComponent {
                                     </div>
                                 </div>
                                 <div className="btn-keep">
-                                      记账量：{items.deposit}
+                                      C米：{items.deposit}
                                 </div>
                                 <div className="buttons">
                                     {items.return_name}
@@ -999,7 +999,7 @@ class MyOrder extends BaseComponent {
                 <div className="shop-bottom">
                     <div className="right-bottom">
                         <div className="total-count">
-                            总记账量：<span>{item.all_deposit}</span>
+                            总C米：<span>{item.all_deposit}</span>
                         </div>
                         <div className="total-price">
                             <div className="total-price-left"/>

@@ -287,7 +287,7 @@ class ListDetails extends BaseComponent {
                                                             <div className="local">x{item.num}</div>
                                                         </div>
                                                         <div className="accounting">
-                                                            <div className="btn-keep">记账量：{item.deposit}</div>
+                                                            <div className="btn-keep">C米：{item.deposit}</div>
                                                         </div>
                                                         {/* {   //订单为待评价的时候
                                                             (canInfo.status === '3' || canInfo.status === '4') && <div className="after-service" onClick={(ev) => this.goToIm(ev)}>申请售后</div>
@@ -308,7 +308,7 @@ class ListDetails extends BaseComponent {
                                 <div className="total-price">
                                     <div className="common-margin">
                                         <div className="total">
-                                            <span>记账量</span>
+                                            <span>C米</span>
                                             <span>{canInfo.all_deposit}</span>
                                         </div>
                                         <div className="total total-center">
@@ -400,7 +400,7 @@ class ListDetails extends BaseComponent {
                                                                 </div>
                                                             </div>
                                                             <div className="accounting">
-                                                                <div className="btn-keep accounting-left">记账量：{item.property.deposit}</div>
+                                                                <div className="btn-keep accounting-left">C米：{item.property.deposit}</div>
                                                                 <div className="accounting-right">{item.area}</div>
                                                             </div>
                                                             <div className="drawee">

@@ -290,7 +290,7 @@ class CategoryListView extends BaseComponent {
                     <div className="goods-information">
                         <div className="goods-explain">{item.title}</div>
                         <div className="bookkeeping">
-                            <span className="bookkeeping-left">记账量：{item.deposit}</span>
+                            <span className="bookkeeping-left">C米：{item.deposit}</span>
                             <span className="bookkeeping-right">{item.province + item.city}</span>
                         </div>
                         <div className="payment">

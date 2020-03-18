@@ -42,7 +42,7 @@ export default class Recommend extends React.PureComponent {
                                     </div>
                                 </div>
                                 <div className="recommend-accounting-volume">
-                                    记账量：{item.deposit}
+                                    C米：{item.deposit}
                                 </div>
                             </div>
                         ))}

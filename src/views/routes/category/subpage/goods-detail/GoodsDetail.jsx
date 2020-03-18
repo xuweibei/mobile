@@ -820,7 +820,7 @@ class GoodsDetail extends BaseComponent {
                         </div>
                         <div className="money-keep">
                             <div className="btn-keep">
-                                记账量：{goodsDetail.deposit}
+                                C米：{goodsDetail.deposit}
                             </div>
                         </div>
                         <div

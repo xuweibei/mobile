@@ -89,7 +89,7 @@ class PaymentCompleted extends BaseComponent {
                 <div className="bill">
                     <div className={isJD ? 'frame-jd' : 'frame-success'}>
                         <div className="bill-top">
-                            <span>记账量</span>
+                            <span>C米</span>
                             <span>+{deposit || getValue('orderInfo').all_deposit}</span>
                         </div>
                         <div className="bill-top center">

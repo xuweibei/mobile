@@ -262,7 +262,7 @@ class ReDetail extends BaseComponent {
                                             <div className="local">x{item.num}</div>
                                         </div>
                                         <div className="accounting">
-                                            <div className="btn-keep">记账量：{item.deposit}</div>
+                                            <div className="btn-keep">C米：{item.deposit}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -272,7 +272,7 @@ class ReDetail extends BaseComponent {
                     <div className="total-price">
                         <div className="common-margin">
                             <div className="bookkeeping">
-                                <span className="bookkeeping-left">记账量</span>
+                                <span className="bookkeeping-left">C米</span>
                                 <span className="bookkeeping-riht">{selfSufficiency.all_deposit}</span>
                             </div>
                             <div className="all-prices">
@@ -346,7 +346,7 @@ class ReDetail extends BaseComponent {
                                                 </div>
                                             </div>
                                             <div className="accounting">
-                                                <div className="btn-keep accounting-left">记账量：{item.deposit || 0}</div>
+                                                <div className="btn-keep accounting-left">C米：{item.deposit || 0}</div>
                                                 <div className="accounting-right">{item.area}</div>
                                             </div>
                                             <div className="drawee">

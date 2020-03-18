@@ -120,7 +120,7 @@ class Consumer extends BaseComponent {
                                                             <span>规格</span>
                                                         </div>
                                                         <div className="accounts">
-                                                            <span>记账量：{item.deposit}</span>
+                                                            <span>C米：{item.deposit}</span>
                                                             <span>x{item.num}</span>
                                                         </div>
                                                     </div>
@@ -128,7 +128,7 @@ class Consumer extends BaseComponent {
                                             ))
                                         }
                                     </div>
-                                    <p className="altogether">总记账量：<span>{list.all_deposit}</span></p>
+                                    <p className="altogether">总C米：<span>{list.all_deposit}</span></p>
                                     <p className="total">
                                         <span>共{list.pr_count}件商品</span>
                                         <span>合计：<span>￥{list.all_price}</span></span>
