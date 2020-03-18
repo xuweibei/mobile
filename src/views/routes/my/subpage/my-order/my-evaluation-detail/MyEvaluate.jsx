@@ -7,7 +7,7 @@ import {Radio, Flex, TextareaItem, ImagePicker} from 'antd-mobile';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 
 const {urlCfg} = Configs;
-const {appHistory, getUrlParam, showInfo, showSuccess} = Utils;
+const {appHistory, getUrlParam, showInfo, showSuccess, native, nativeCssDiff} = Utils;
 const {MESSAGE: {Form, Feedback}, IMGSIZE} = Constants;
 //评价 好评 中评 差评
 const evaluates = [
@@ -109,7 +109,7 @@ export default class MyEvaluate extends BaseComponent {
     //点击添加图片
     addPictrue = (data, index) => {
         if (process.env.NATIVE) {
-            window.DsBridge.call('picCallback', {num: data.get('nativePicNum') || 9}, (dataList) => {
+            native('picCallback', {num: data.get('nativePicNum') || 9}, (dataList) => {
                 const res = dataList ? JSON.parse(dataList) : '';
                 const {files, evaluate} = this.state;
                 const arr = [];
@@ -144,9 +144,6 @@ export default class MyEvaluate extends BaseComponent {
                     });
                 }
             });
-            // native('picCallback', {num: data.get('nativePicNum') || 9}).then(res => {
-
-            // });
         }
     };
 
@@ -225,7 +222,7 @@ export default class MyEvaluate extends BaseComponent {
         });
         this.fetch(urlCfg.publishAssess, {data: {
             order_id: id,
-            pingjia_content: pasArr
+            pingjia_content: pasArr.slice(0, 8)
         }}).subscribe((res) => {
             if (res && res.status === 0) {
                 if (files.some(item => item && item.length > 0) && res.id && res.id.length > 0) { //有图片先请求
@@ -311,7 +308,7 @@ export default class MyEvaluate extends BaseComponent {
                                                             }
                                                             {
                                                                 (!files.get(index) || files.get(index).length < 9) && (
-                                                                    <li className="imgAdd-button" onClick={() => this.addPictrue(item, index)}>
+                                                                    <li className="imgAdd-button" style={{border: nativeCssDiff() ? '1PX solid #e5e5e5' : '0.02rem solid #e5e5e5'}} onClick={() => this.addPictrue(item, index)}>
                                                                         <span>+</span>
                                                                     </li>
                                                                 )

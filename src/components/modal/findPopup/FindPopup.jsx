@@ -25,11 +25,6 @@ class FindPopup extends React.PureComponent {
         super(props, context);
     }
 
-    componentWillReceiveProps(nextProps) {
-        // console.log(n++);
-    }
-
-
     render() {
         // console.log('alter render');
         const {visible, className} = this.props;

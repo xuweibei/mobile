@@ -303,7 +303,7 @@ export default class HomeList extends BaseComponent {
                 <img src={item.picpath} alt={item.title}/>
                 <div className="hot-content">
                     <p>{item.title}</p>
-                    <span className="tally">记账量：{item.deposit}</span>
+                    <span className="tally">C米：{item.deposit}</span>
                     <div className="original">{item.price_ori === '0.00' ?  '' : '￥' + item.price_ori}</div>
                     <div className="current">
                         <span>￥<span>{item.price}</span></span>
@@ -320,7 +320,7 @@ export default class HomeList extends BaseComponent {
                 <img src={item.picpath} alt=""/>
                 <div className="hot-content">
                     <p>{item.title}</p>
-                    <span className="tally">记账量：{item.deposit}</span>
+                    <span className="tally">C米：{item.deposit}</span>
                     <div className="original-box">
                         <div className="original">{item.price_ori === '0.00' ?  '' : '￥' + item.price_ori}</div>
                     </div>

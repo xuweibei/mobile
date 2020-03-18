@@ -126,7 +126,7 @@ class EvaluationSuccess extends BaseComponent {
                             <div className="goods-information">
                                 <div className="goods-explain" onClick={() => this.goToGooods(item.pr_id)}>{item.title}</div>
                                 <div className="bookkeeping" onClick={() => this.goToGooods(item.pr_id)}>
-                                    <span className="bookkeeping-l">记账量：{item.deposit}</span>
+                                    <span className="bookkeeping-l">C米：{item.deposit}</span>
                                     <span className="bookkeeping-r">{item.city}</span>
                                 </div>
                                 <div className="payment">
@@ -180,7 +180,7 @@ class EvaluationSuccess extends BaseComponent {
                                             </ul>
                                             <div className="num-appraise" onClick={() => this.goToGooods(data.pr_id)}>x{data.pr_num}</div>
                                             <div className="bookkeeping" onClick={() => this.goToGooods(data.pr_id)}>
-                                                <span className="bookkeeping-l">记账量：{data.deposit}</span>
+                                                <span className="bookkeeping-l">C米：{data.deposit}</span>
                                             </div>
                                             <div className="price">
                                                 <div className="price-l">

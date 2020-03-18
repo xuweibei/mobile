@@ -15,3 +15,4 @@ export const navColorF = '#ffffff';
 export const navColorR = '#ff2d51';
 export const navColorO = '#f20c00';
 export const WEB_NAME = '中卖网'; //名称
+export const gradation = 'linear-gradient(180deg,rgba(242,12,0,1) 0%,rgba(255,45,81,1) 100%)';//渐变背景色

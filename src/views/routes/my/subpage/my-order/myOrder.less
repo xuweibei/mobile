@@ -79,6 +79,10 @@
         white-space:nowrap;
         width: 126px;
         text-align: right;
+        font-size: 30px;
+        .samll-money{
+            font-size: 24px;
+        }
     }
     .shop-lists .goods .goods-right {
         width: 400px;
@@ -110,20 +114,18 @@
                 font-weight: 500;
                 //.TextareaOverflow(1);
                 img {
-                    width: 72px;
-                    height: 72px;
+                    width: 59px;
+                    height: 59px;
                     border-radius: 50%;
                 }
                 p {
                     font-size: 30px;
-                    line-height: 72px;
+                    height:56px;
+                    line-height: 56px;
                     color: @darker-black;
-                    margin: 0 20px 0 31px;
+                    margin:0 16px 0 20px;
                     max-width: 300px;
                     .TextareaOverflow(1);
-                }
-                .enter {
-                    margin-top: 7px;
                 }
                 .enter:before {
                     content: '\E643';
@@ -134,7 +136,7 @@
             .right{
                 color: @fiery-red;
                 line-height: 72px;
-                font-weight: bold;
+                font-size: 26px;
             }
             .icon-select-z:before {
                 font-size: 34px;
@@ -159,14 +161,14 @@
                 margin-right: 20px;
                 display: flex;
                 div{
-                    height:240px;
+                    height:200px;
                     overflow: hidden;
                 }
                 img {
                     border-radius: 20px;
                     flex: 0 0 240px;
-                    width: 240px;
-                    height: 240px;
+                    width: 200px;
+                    height: 200px;
                 }
             }
             .goods-right {
@@ -180,9 +182,13 @@
                     justify-content: space-between;
                     color: @darker-black;
                     .desc-title{
-                        width: 245px;
-                        height: 67px;
+                        width: 306px;
                         .TextareaOverflow(2);
+                        letter-spacing:18px;
+                        font-weight:500;
+                    }
+                    .price{
+                        font-weight:bold;
                     }
                 }
 
@@ -199,11 +205,12 @@
                             //flex: 1;
                             max-width: 33%;
                             .TextareaOverflow(1);
-                            margin: 0 20px 0 0;
+                            margin: 10px 20px 12px 0;
                         }
                     }
                     .sku-right {
                         text-align: right;
+                        margin-top:10px;
                         //flex: 1;
                     }
                 }
@@ -211,6 +218,10 @@
                     padding: 3px 12px;
                     height: auto;
                     line-height: 30px;
+                    color:#FF2D51;
+                    background:#ffeaed;
+                    font-size:20px;
+                    border-radius: 4px;
                 }
 
                 .goods-price {
@@ -230,9 +241,10 @@
                 float: none!important;
                 width:100% !important;
                 .total-count{
-                    font-size: 26px;
+                    font-size: 24px;
                     font-weight: 500;
                     text-align: right;
+                    color:#666666;
                     span{
                         color: @fiery-red;
                         font-weight: normal;
@@ -243,7 +255,7 @@
                     justify-content: right;
                     //font-size: @font-size-28;
                     font-size:26px;
-                    margin-top: 20px;
+                    margin-top: 24px;
                     .total-price-right{
                         //flex: 1;
                         text-align: center;
@@ -253,8 +265,20 @@
                         -webkit-line-clamp: 1;
                         -webkit-box-orient: vertical;
                         text-overflow: ellipsis;
+                        color:#666666;
+                        font-size: 24px;
                         .zxa {
                             margin-top: 1px;
+                            font-size: 36px;
+                            color:#333333;
+                            span{
+                                color:#666666;
+                                font-size: 24px;
+                            }
+                            .samll-money{
+                                font-size: 24px;
+                                color:#333333;
+                            }
                         }
                     }
                     .total-price-left{
@@ -262,6 +286,8 @@
                         text-align: right !important;
                         line-height: 38px;
                         margin-right:10px;
+                        color:#666666;
+                        font-size: 24px;
                     }
                     span{
                         font-size: @font-size-30;

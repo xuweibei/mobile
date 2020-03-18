@@ -1,4 +1,4 @@
-/**我的订单页面 之搜索 */
+/**线上订单页面 之搜索 */
 
 import React from 'react';
 import {connect} from 'react-redux';
@@ -54,13 +54,13 @@ class MyOrderSearch extends BaseComponent {
         temp.isLoading = true;
         this.fetch(urlCfg.mallOrder,
             {data:
-            {
-                page,
-                pagesize: temp.pagesize,
-                pageCount,
-                status: -1,
-                key: decodeURI(getUrlParam('keywords', encodeURI(this.props.location.search)))
-            }
+                {
+                    page,
+                    pagesize: temp.pagesize,
+                    pageCount,
+                    status: -1,
+                    key: decodeURI(getUrlParam('keywords', encodeURI(this.props.location.search)))
+                }
             }, noLoading)
             .subscribe((res) => {
                 temp.isLoading = false;
@@ -70,10 +70,6 @@ class MyOrderSearch extends BaseComponent {
                     } else {
                         temp.stackData = temp.stackData.concat(res.list);
                     }
-                    //为待付款需要取消订单的时候，或者售后订单需要删除的时候，将数据储存一份。
-                    this.setState((prevState) => ({
-                        retainArr: prevState.retainArr.concat(res.list)
-                    }));
                     if (page >= res.pageCount) {
                         this.setState({
                             hasMore: false
@@ -82,7 +78,8 @@ class MyOrderSearch extends BaseComponent {
                     this.setState((prevState) => ({
                         dataSource: prevState.dataSource.cloneWithRows(temp.stackData),
                         pageCount: res.pageCount,
-                        refreshing: false
+                        refreshing: false,
+                        retainArr: prevState.retainArr.concat(res.list)//为待付款需要取消订单的时候，或者售后订单需要删除的时候，将数据储存一份。
                     }
                     ));
                 }
@@ -294,23 +291,28 @@ class MyOrderSearch extends BaseComponent {
         case '0'://待付款
             blockModal = (
                 <div className="buttons">
-                    <div onClick={() => this.setState({canStatus: true, canCelId: item.id})} className="look-button">取消订单</div>
-                    <div onClick={() => this.payNow(item.id, item.order_no)} className="evaluate-button">立即付款</div>
+                    <div onClick={() => this.setState({canStatus: true, canCelId: item.id})} className="look-button" style={{border: this.styleCompatible()}}>取消订单</div>
+                    <div onClick={() => this.payNow(item.id, item.order_no)} className="evaluate-button" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>立即付款</div>
                 </div>
             );
             break;
         case '1': //待发货
             blockModal = (
                 <div className="buttons">
-                    {/* {
-                        (item.refund_button === 1) && (
+                    { //余丽  暂时屏蔽  is_reservice 为0 不支持售后 为1 支持售后
+                        item.showButton && item.refund_button === 1 && (
                             <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
-                                {
-                                    item.showButton && <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev, 1)}>申请退款</span>
-                                }
+                                <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev, 1)}>申请退款</span>
                             </div>
                         )
-                    } */}
+                    }
+                    {//is_reservice 为0 不支持售后 为1 支持售后   京东商品
+                        item.showButton && item.is_reservice === 1 && item.app_type === '3' && (
+                            <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
+                                <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev)}>申请售后</span>
+                            </div>
+                        )
+                    }
                     {
                         !item.all_refund && <div className="evaluate-button" style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}} onClick={() => this.remindDelivery([item.id, item.can_tip])}>提醒发货</div>
                     }
@@ -321,11 +323,23 @@ class MyOrderSearch extends BaseComponent {
             blockModal = (
                 <div className="buttons">
                     {
-                        item.delayed_receiving === '0' && <div className="look-button" onClick={(ev) => this.extendedReceipt(item.id, ev)}>延长收货</div>
+                        item.showButton && item.refund_button === 1 && (
+                            <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
+                                <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev)}>申请退款</span>
+                            </div>
+                        )
                     }
-                    <div className="look-button" onClick={(ev) => this.goApplyService(item.id, ev)}>查看物流</div>
+                    {//is_reservice 为0 不支持售后 为1 支持售后  京东商品
+                        item.showButton && item.is_reservice === 1 && item.app_type === '3' && (
+                            <div className="button-more icon" onClick={(ev) => this.showRetunButton(item, ev)}>
+                                <span onClick={(ev) => this.serviceRefund(item.id, item.shop_id, ev)}>申请售后</span>
+                            </div>
+                        )
+                    }
+                    <div className="look-button" onClick={(ev) => this.extendedReceipt(item.id, ev)} style={{border: this.styleCompatible()}}>延长收货</div>
+                    <div className="look-button" onClick={(ev) => this.goApplyService(item.id, ev)} style={{border: this.styleCompatible()}}>查看物流</div>
                     {
-                        item.all_refund === 1 ? <div className="evaluate-button" onClick={(ev) => this.revoke(item.pr_list[0].return_id, ev)}>撤销申请</div> : <div className="evaluate-button" onClick={(ev) => this.confirmTake(item.id, ev)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>确认收货</div>
+                        item.app_type !== '3' && (item.all_refund === 1 ? <div className="evaluate-button" onClick={(ev) => this.revoke(item.pr_list[0].return_id, ev)}>撤销申请</div> : <div className="evaluate-button" onClick={(ev) => this.confirmTake(item.id, ev)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>确认收货</div>)
                     }
                 </div>
             );
@@ -333,17 +347,20 @@ class MyOrderSearch extends BaseComponent {
         case '3'://待评价
             blockModal = (
                 <div className="buttons">
-                    <div className="look-button" onClick={(ev) => this.goApplyService(item.id, ev)}>查看物流</div>
+                    <div className="look-button" onClick={(ev) => this.goApplyService(item.id, ev)} style={{border: this.styleCompatible()}}>查看物流</div>
                     <div className="delete-button" onClick={() => this.deleteOrder(item.id)} style={{border: this.styleCompatible()}}>删除</div>
                     {item.have_add && <div className="delete-button" onClick={() => this.publishReview(item.id)} style={{border: this.styleCompatible()}}>追加评论</div>}
                     <div className="evaluate-button" onClick={(ev) => this.promptlyEstimate(item.id, ev)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>立即评价</div>
                 </div>
             );
             break;
-        case '6'://售后
+        // case '12'://售后
+        case '4':
+        case '10'://已取消
+        case '13'://商家取消
             blockModal = (
                 <div className="buttons">
-                    <div className="delete-button" onClick={() => this.deleteOrder(item.id)}>删除</div>
+                    <div className="delete-button" onClick={() => this.deleteOrder(item.id)} style={{border: this.styleCompatible()}}>删除</div>
                 </div>
             );
             break;
@@ -385,6 +402,21 @@ class MyOrderSearch extends BaseComponent {
         }
     };
 
+    //点击其他位置，将弹出的 申请退款 按钮隐藏
+    closeButton = () => {
+        const {retainArr} = this.state;
+        const arr = [];
+        retainArr.forEach(value => {
+            value.showButton = false;
+            //赋址改变，为重新渲染
+            arr.push(Object.assign({}, value));
+        });
+        this.setState((prevState) => ({
+            dataSource: prevState.dataSource.cloneWithRows(arr),
+            retainArr: arr
+        }));
+    }
+
     //返回到我的页面
     goToBack = () => {
         appHistory.goBack();
@@ -393,7 +425,7 @@ class MyOrderSearch extends BaseComponent {
     render() {
         const {dataSource, height, canStatus, refreshing} = this.state;
         const row = item => (
-            <div className="shop-lists" >
+            <div className="shop-lists" onClick={this.closeButton}>
                 <div className="shop-name" onClick={() => this.goShopHome(item.shop_id)}>
                     <div className="shop-title">
                         <img
@@ -423,14 +455,14 @@ class MyOrderSearch extends BaseComponent {
                                 </div>
                                 <div className="sku-right">x{items.num}</div>
                             </div>
-                            <div className="btn-keep">记账量：{items.deposit}</div>
+                            <div className="btn-keep">C米：{items.deposit}</div>
                         </div>
                     </div>
                 ))}
                 <div className="shop-bottom">
                     <div className="right-bottom">
                         <div className="total-count">
-                            总记账量：<span>{item.all_deposit}</span>
+                            总C米：<span>{item.all_deposit}</span>
                         </div>
                         <div className="total-price">
                             <div className="total-price-left">共{item.pr_count}件商品</div>

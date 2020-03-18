@@ -99,9 +99,9 @@ class CategoryListView extends BaseComponent {
             showStatus[currentIndex] = !showStatus[currentIndex];
         }
         const {page} = this.state;
+        const {cardNo} = this.props;//优惠券页面跳转过来
         const keywords = this.props.keywords;
         this.temp.isLoading = true;
-
         if (shopId) { //店内搜索
             this.fetch(urlCfg.allGoodsInTheShop, {
                 data: {
@@ -144,7 +144,8 @@ class CategoryListView extends BaseComponent {
                     id: id,
                     types: 2,
                     order: num || null,
-                    keyword: '' || keywords
+                    keyword: keywords === 'null' ? '' : keywords,
+                    card_no: cardNo
                 }
             }, noLoading)
                 .subscribe((res) => {
@@ -289,7 +290,7 @@ class CategoryListView extends BaseComponent {
                     <div className="goods-information">
                         <div className="goods-explain">{item.title}</div>
                         <div className="bookkeeping">
-                            <span className="bookkeeping-left">记账量：{item.deposit}</span>
+                            <span className="bookkeeping-left">C米：{item.deposit}</span>
                             <span className="bookkeeping-right">{item.province + item.city}</span>
                         </div>
                         <div className="payment">

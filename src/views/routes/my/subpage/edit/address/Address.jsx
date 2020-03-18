@@ -21,7 +21,7 @@ class Address extends BaseComponent {
         province: '', //省的名字
         city: '', //市辖区的名字
         county: '', //城市的名字
-        street: '', //街道的名字
+        town: '', //街道的名字
         addressArr: {}, //初始地址
         editStatus: true, //地址选择显示与否
         addressStatus: decodeURI(getUrlParam('status', encodeURI(this.props.location.search))), //编辑还是添加 1编辑2添加
@@ -61,21 +61,6 @@ class Address extends BaseComponent {
                 });
         }
     };
-
-    // componentWillReaciveProps(nextProps) {
-    //     const status = decodeURI(getUrlParam('status', encodeURI(this.props.location.search)));
-    //     const nextRouter = decodeURI(getUrlParam('status', encodeURI(nextProps.location.search)));
-    //     console.log(status,nextRouter,'扣篮大赛')
-    //     if (process.env.NATIVE && status !== nextRouter) {
-    //         this.setState({
-    //             edit: nextRouter
-    //         }, () => {
-    //             if (nextRouter === '1') {
-    //                 this.getList();
-    //             }
-    //         });
-    //     }
-    // }
 
     //前往新增地址页面
     switchTo = () => {
@@ -383,6 +368,7 @@ class Address extends BaseComponent {
                                             editStatus={editStatus}
                                             editStatusChange={this.editStatusChange}
                                             typeFour
+                                            textAlign
                                         />
                                     ) : (
                                         <Region
@@ -392,6 +378,7 @@ class Address extends BaseComponent {
                                             onSetStreet={this.setStreet}
                                             add
                                             typeFour
+                                            textAlign
                                         />
                                     )
                                 }

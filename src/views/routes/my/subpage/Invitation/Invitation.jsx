@@ -50,9 +50,9 @@ class Invitation extends BaseComponent {
         const {shareArr} = this.state;
         if (process.env.NATIVE) {
             if (shareArr) {
-                native('savePicCallback', {type: '2', imgUrl: encodeURIComponent(shareArr)}, (data) => {
-                    console.log(data, '看了是到付款了发');
-                    if (data.status === 0) {
+                native('savePicCallback', {imgUrl: encodeURIComponent(shareArr)}, (data) => {
+                    const info = JSON.parse(data);
+                    if (info.status === 0) {
                         showInfo('保存成功');
                     } else {
                         showFail('保存失败');
@@ -82,10 +82,6 @@ class Invitation extends BaseComponent {
         return null;
     }
 
-    // componentWillReceiveProps() {
-    //     ActionSheet.close();//关闭分享
-    // }
-
     //弹出分享框maskImg
     showShareActionSheet = () => {
         if (!window.isWX) {
@@ -101,22 +97,20 @@ class Invitation extends BaseComponent {
         const {shareArr} = this.state;
         TD.log(TD_EVENT_ID.MY.ID, TD_EVENT_ID.MY.LABEL.SHARE);
         if (process.env.NATIVE) {
-            const obj = {
-                type: value + 1,
-                title: '分享',
-                content: '个人二维码',
-                url: shareArr,
-                imgUrl: shareArr
-            };
             if (shareArr) {
-                window.DsBridge.call('showShare', obj, res => {
-                    native('goH5', {'': ''});
-                });
-                // native('showShare', obj).then(res => {
-                //     native('goH5', {'': ''});
-                // }).catch(err => {
-                //     native('goH5', {'': ''});
-                // });
+                native(
+                    'showShare',
+                    {
+                        type: value + 1,
+                        title: '分享',
+                        content: '个人二维码',
+                        url: shareArr,
+                        imgUrl: shareArr
+                    },
+                    res => {
+                        native('goH5', {'': ''});
+                    }
+                );
             } else {
                 showInfo('暂无图片可以分享');
             }

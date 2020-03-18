@@ -113,8 +113,8 @@ class ShopHomeIndexFive extends React.PureComponent {
                                     <div className="introduce-left">{content.sort2_pr3_title1}</div>
                                     <div className="popular-two-left-bot-price">
                                         <span className="money-ZH">￥</span>
-                                        <span className="money-now">{content.sort2_pr3_title1}</span>
-                                        <span className="money-before">{content.sort2_pr3_title1}</span>
+                                        <span className="money-now">{content.sort2_pr3_title2}</span>
+                                        <span className="money-before">{content.sort2_pr3_title3}</span>
                                     </div>
                                 </div>
                             </div>

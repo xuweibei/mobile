@@ -25,7 +25,8 @@ class CategoryList extends BaseComponent {
         pageCount: 0, //总共页数
         keywords1: '',
         textStatus: false,
-        shopId: parseInt(getUrlParam('id', this.props.location.search), 10) || ''
+        shopId: parseInt(getUrlParam('id', this.props.location.search), 10) || '',
+        cardNo: getUrlParam('cardNo', this.props.location.search) //优惠券页面跳转过来所需的参数
     };
 
     componentWillMount() {
@@ -110,7 +111,7 @@ class CategoryList extends BaseComponent {
     }
 
     render() {
-        const {text, changeNav, textStatus, shopId} = this.state;
+        const {text, changeNav, textStatus, shopId, cardNo} = this.state;
         return (
             <div
                 data-component="classify-list"
@@ -150,6 +151,7 @@ class CategoryList extends BaseComponent {
                     that={this}
                     onRef={this.onRef}
                     keywords={this.state.keywords}
+                    cardNo={cardNo}
                 />
             </div>
         );

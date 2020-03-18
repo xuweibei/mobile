@@ -50,7 +50,7 @@ class Sku extends React.PureComponent {
         Ids: this.props.select, //存放被选中的属性id
         price: this.props.detail.price, // 价格
         originalPrice: '0.00', //原价
-        deposit: '0.00', //记账量
+        deposit: '0.00', //C米
         submitalbe: false//确认按钮是否可点击
     };
 
@@ -346,7 +346,7 @@ class Sku extends React.PureComponent {
                             <div className="residue">库存{stock < 10000 ? stock : '充足'}</div>
                             <div className="inventory-box">
                                 <div className="count">
-                                    记账量：{deposit}
+                                    C米：{deposit}
                                 </div>
                             </div>
                             <div className="close icon" onClick={onClose}/>

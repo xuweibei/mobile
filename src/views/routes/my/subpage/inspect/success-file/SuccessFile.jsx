@@ -60,7 +60,7 @@ class SuccessFile extends BaseComponent {
                         <span>{info && info.price}</span>
                     </li>
                     <li>
-                        <span>订单记账量</span>
+                        <span>订单C米</span>
                         <span>{info && info.deposit}</span>
                     </li>
                     <li>

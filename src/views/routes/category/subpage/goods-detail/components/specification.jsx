@@ -47,8 +47,11 @@ export default class Specification extends React.PureComponent {
                         }
                     </div>
                 </div>
+                {
+                    specificationStatus ? (<Link className="speci-footer" onClick={changeSpecification} to="specification" spy smooth duration={500} activeClass=" ">展示</Link>) : (<Link className="speci-footer-hide" onClick={changeSpecification} to="specification" spy smooth duration={500} activeClass=" ">隐藏</Link>)
+                }
 
-                <Link className="speci-footer" onClick={changeSpecification} to="specification" spy smooth duration={500} activeClass=" ">展示</Link>
+
             </Element>
         );
     }

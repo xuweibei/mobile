@@ -207,3 +207,36 @@ export function spliceArr(arr, arr2) {
     });
     return tempArr;
 }
+
+//切割金额，变成一大一小
+export function moneyDot(money) {
+    let arr = ['00', '00'];
+    if (money) {
+        arr = money.toString().split('.');
+        if (!arr[1]) {
+            arr[1] = '00';
+        }
+    }
+    return arr;
+}
+
+
+//设置tab颜色 1 =  #ff2d51 ; 2 = #F20C00;
+export function navColor(obj) {
+    const routerArr = ['myOrder', 'selfMention'];
+    const routerPassWordArr = ['password'];
+    let onOff = false;
+    if (obj) {
+        routerArr.forEach(item => {
+            if (obj.includes(item)) {
+                onOff = 1;
+            }
+        });
+        routerPassWordArr.forEach(item => {
+            if (obj.includes(item)) {
+                onOff = 2;
+            }
+        });
+    }
+    return onOff;
+}

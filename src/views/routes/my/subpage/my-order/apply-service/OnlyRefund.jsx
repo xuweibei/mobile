@@ -7,7 +7,7 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 import './ApplyService.less';
 
 const {appHistory, showInfo, dealImage, getUrlParam, TD} = Utils;
-const {MESSAGE: {Form, Feedback}, TD_EVENT_ID} = Constants;
+const {MESSAGE: {Form}, TD_EVENT_ID} = Constants;
 const {urlCfg} = Configs;
 //退货退款类型
 const molds = [
@@ -98,12 +98,13 @@ class applyService extends BaseComponent {
     //提交申请
     editApply = () => {
         const {selectText, Service, question, fileInfo} = this.state;
-        const {location: {search}, setOrderStatus} = this.props;
+        const {location: {search}} = this.props;
         const orderId = decodeURI(getUrlParam('orderId', encodeURI(search)));
         const prId = decodeURI(getUrlParam('prId', encodeURI(search)));
         const returnType = decodeURI(getUrlParam('returnType', encodeURI(search)));
         const arrInfo = decodeURI(getUrlParam('arrInfo', encodeURI(search)));
         const down = decodeURI(getUrlParam('down', encodeURI(search)));
+        let timer = null;
         TD.log(TD_EVENT_ID.AFTER_SALE.ID, TD_EVENT_ID.AFTER_SALE.LABEL.APPLY_REFUND);
         if (!selectText) {
             showInfo(Form.Error_Reason_Required);
@@ -142,37 +143,42 @@ class applyService extends BaseComponent {
                             }));
                         });
                         Promise.all(pasArr).then(ooo => {
-                            showInfo(Feedback.Apply_Success);
+                            // showInfo(Feedback.Apply_Success);
                             if (down === '1') { //线下订单申请
                                 if (returnType === '1') {
-                                    appHistory.go(-2);
+                                    appHistory.go(-1);
                                 } else {
-                                    appHistory.go(-3);
+                                    appHistory.go(-2);
                                 }
                                 dropByCacheKey('selfMentionOrderPage');//清除线下订单
-                                setTimeout(() => {
-                                    appHistory.push(`/selfOrderingDetails?id=${orderId}`);
+                                timer = setTimeout(() => {
+                                    clearTimeout(timer);
+                                    // appHistory.push(`/selfOrderingDetails?id=${orderId}`);
+                                    appHistory.replace(`/jdsSaveSuccess?id=${orderId}&self=1&orderId=${res.id}`);
                                 });
-                                setOrderStatus(3);
+                                // setOrderStatus(3);
                             } else {
                                 //将我的订单的tab状态设置为售后
                                 if (returnType === '1') { //整条订单退款
-                                    appHistory.go(-2);
+                                    appHistory.go(-1);
                                 } else { //非整条订单退款
                                     appHistory.go(-3);
                                 }
                                 //清除我的订单的缓存
                                 dropByCacheKey('OrderPage');
-                                setTimeout(() => {
-                                    appHistory.push(`/refundDetails?id=${res.id}`);
+                                timer = setTimeout(() => {
+                                    clearTimeout(timer);
+                                    // appHistory.push(`/refundDetails?id=${res.id}`);
+                                    appHistory.replace(`/jdsSaveSuccess?id=${orderId}&orderId=${res.id}`);
                                 });
-                                setOrderStatus(0);
+                                // setOrderStatus(0);
                             }
                         }, err => {
                             console.log(err);
                         });
                     } else {
-                        showInfo(Feedback.Apply_Success);
+                        // showInfo(Feedback.Apply_Success);
+                        // eslint-disable-next-line no-lonely-if
                         if (down === '1') { //线下订单申请
                             if (returnType === '1') {
                                 appHistory.go(-1);
@@ -180,22 +186,26 @@ class applyService extends BaseComponent {
                                 appHistory.go(-2);
                             }
                             dropByCacheKey('selfMentionOrderPage');//清除线下订单
-                            setTimeout(() => {
-                                appHistory.push(`/selfOrderingDetails?id=${orderId}`);
+                            timer = setTimeout(() => {
+                                clearTimeout(timer);
+                                // appHistory.push(`/selfOrderingDetails?id=${orderId}`);
+                                appHistory.replace(`/jdsSaveSuccess?id=${orderId}&self=1&orderId=${res.id}`);
                             });
-                            setOrderStatus(3);
+                            // setOrderStatus(3);
                         } else {
                             if (returnType === '1') { //整条订单退款
-                                appHistory.go(-2);
+                                appHistory.go(-1);
                             } else { //非整条订单退款
                                 appHistory.go(-3);
                             }
                             //清除我的订单的缓存
                             dropByCacheKey('OrderPage');
-                            setTimeout(() => {
-                                appHistory.push(`/refundDetails?id=${res.id}`);
+                            timer = setTimeout(() => {
+                                // appHistory.push(`/refundDetails?id=${res.id}`);
+                                clearTimeout(timer);
+                                appHistory.replace(`/jdsSaveSuccess?id=${orderId}&orderId=${res.id}`);
                             });
-                            setOrderStatus(0);
+                            // setOrderStatus(0);
                         }
                     }
                 }

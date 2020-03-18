@@ -3,7 +3,7 @@ import {TextareaItem, Button, ImagePicker} from 'antd-mobile';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './ApplyDrawback.less';
 
-const {dealImage, appHistory, getUrlParam, showSuccess} = Utils;
+const {dealImage, appHistory, getUrlParam, showSuccess, native} = Utils;
 const  {urlCfg} = Configs;
 const {MESSAGE: {Feedback}} = Constants;
 
@@ -157,7 +157,7 @@ export default class applyDrawback extends BaseComponent {
     //原生图片选择
     addPictrue = () => {
         const {nativePicNum, filesArr} = this.state;
-        window.DsBridge.call('picCallback', {num: nativePicNum}, (dataList) => {
+        native('picCallback', {num: nativePicNum}, (dataList) => {
             const res = dataList ? JSON.parse(dataList) : '';
             const arr = filesArr;
             if (res && res.status  === '0') {
@@ -170,16 +170,6 @@ export default class applyDrawback extends BaseComponent {
                 });
             }
         });
-        // native('picCallback', {num: nativePicNum}).then(res => {
-        //     const arr = filesArr;
-        //     res.data.img.forEach(item => {
-        //         arr.push({urlB: item[0], url: item[1], id: new Date()});
-        //     });
-        //     this.setState({
-        //         filesArr: arr,
-        //         nativePicNum: 9 - arr.length
-        //     });
-        // });
     };
 
     //点击删除图片

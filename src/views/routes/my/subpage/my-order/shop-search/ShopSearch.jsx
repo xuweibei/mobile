@@ -51,16 +51,10 @@ export default class Search extends BaseComponent {
 
     //获取输入框文字
     getKeyWords = (val, e) => {
-        if (val.length !== 0) {
-            this.setState({
-                keywords: val,
-                textStatus: true
-            });
-        } else {
-            this.setState({
-                textStatus: false
-            });
-        }
+        this.setState({
+            keywords: val,
+            textStatus: !!val.length
+        });
     };
 
     render() {

@@ -37,18 +37,6 @@ class ShopFooter extends React.PureComponent {
         }
     }
 
-    // componentWillReceiveProps(nextProps) {
-    //     if (process.env.NATIVE) {
-    //         const haveNext = nextProps.haveModalAll;
-    //         const have = this.props.haveModalAll;
-    //         if (haveNext !== have) {
-    //             this.setState({
-    //                 haveModalAll: haveNext
-    //             });
-    //         }
-    //     }
-    // }
-
     gotoPage = (path) => {
         this.props.onTabChange(path);
         // this.context.store.dispatch(replace(`/${path}`));

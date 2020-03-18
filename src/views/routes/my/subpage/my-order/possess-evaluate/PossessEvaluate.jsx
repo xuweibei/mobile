@@ -124,35 +124,6 @@ class PossessEvaluate extends BaseComponent {
         }
     }
 
-    // componentWillReceiveProps(nextProps) {
-    //     const userType = nextProps.location.search.split('=')[1];
-    //     if (process.env.NATIVE && (userType !== this.state.userType)) {
-    //         this.setState({
-    //             dataSource: new ListView.DataSource({
-    //                 rowHasChanged: (row1, row2) => row1 !== row2
-    //             }),
-    //             alerdeyData: new ListView.DataSource({
-    //                 rowHasChanged: (row1, row2) => row1 !== row2
-    //             }),
-    //             page: 1, //已评价页码
-    //             pageToBe: 1, //待评价页码
-    //             types: this.props.evaStatus, //tab类型 默认进入页面为全部
-    //             pageCount: -1,
-    //             pageCountToBe: -1,
-    //             tabkey: this.props.tabValue || 0, //tab状态
-    //             refreshing: false, //是否显示刷新状态
-    //             height: document.documentElement.clientHeight - (window.isWX ? window.rem * 1.08 : window.rem * 2),
-    //             heightAlready: document.documentElement.clientHeight - (window.isWX ? window.rem * 2.98 : window.rem * 4.06), //已评价的列表高
-    //             arrChecked: arr, //已评价按钮状态切换集合
-    //             userType: userType, //用户身份
-    //             hasMore: false, //底部请求状态文字显示情况
-    //             requestOne: false //判断tab切换的时候是否请求接口
-    //         }, () => {
-    //             this.sentPas();
-    //         });
-    //     }
-    // }
-
     //我的评价页面的请求
     sentPas = () => {
         //追评之后，从新返回的时候，。请求
@@ -439,7 +410,6 @@ class PossessEvaluate extends BaseComponent {
     //待评价结构
     toBeEvaluatedRow = (item) => {
         const {userType} = this.state;
-        // console.log(item.picpath);
         return (
             <div className="unevaluated-box">
                 <div className="unevaluated">
@@ -470,14 +440,14 @@ class PossessEvaluate extends BaseComponent {
                                         </div>
                                         <div className="sku-right">x{items.num}</div>
                                     </div>
-                                    <div className="btn-keep">记账量：{items.deposit}</div>
+                                    <div className="btn-keep">C米：{items.deposit}</div>
                                 </div>
                             </div>
                         ))}
                         <div className="shop-bottom">
                             <div className="right-bottom">
                                 <div className="total-count">
-                                总记账量：<span>{item.all_price}</span>
+                                总C米：<span>{item.all_price}</span>
                                 </div>
                                 <div className="total-price">
                                     <div className="total-price-left">共{item.pr_count}件商品</div>
@@ -490,7 +460,6 @@ class PossessEvaluate extends BaseComponent {
                                         </div>
                                     )
                                 }
-
                             </div>
                         </div>
                     </div>

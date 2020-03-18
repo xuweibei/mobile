@@ -1,13 +1,14 @@
 //退款详情
 
 import {connect} from 'react-redux';
+import copy from 'copy-to-clipboard';
 import {dropByCacheKey} from 'react-router-cache-route';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import BaseComponent from '../../../../../../components/base/BaseComponent';
 import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAction';
 import './RefundDetails.less';
 
-const {getUrlParam, appHistory, showInfo, native} = Utils;
+const {getUrlParam, appHistory, showInfo, native, showSuccess} = Utils;
 const {urlCfg} = Configs;
 
 const {MESSAGE: {Form, Feedback}} = Constants;
@@ -124,6 +125,12 @@ class refundDetails extends BaseComponent {
         appHistory.push(`/returnGoods?id=${refundArr.id}&shopId=${refundArr.shop_mid}`);
     }
 
+    //京东填写物流
+    JDFillInLogistics = () => {
+        const {refundArr} = this.state;
+        appHistory.push(`/fillInLogistics?id=${refundArr.id}&shopperName=${refundArr.s_link_name}&shopperPhone=${refundArr.s_phone}&shopperArea=${encodeURIComponent(refundArr.s_address)}`);
+    }
+
     //查看物流
     seeLogistics = (id) => {
         if (process.env.NATIVE) {
@@ -189,6 +196,13 @@ class refundDetails extends BaseComponent {
         }
     }
 
+    //复制订单号
+    copyNo = () => {
+        const {refundArr} = this.state;
+        copy(refundArr.return_no);
+        showSuccess('复制成功');
+    }
+
     render() {
         const {refundArr} = this.state;
         const type = decodeURI(getUrlParam('type', encodeURI(this.props.location.search)));
@@ -211,6 +225,38 @@ class refundDetails extends BaseComponent {
                             {/*<span>00:00:00</span>*/}
                         </div>
                     </div>
+                    <div className="refund-money-all">
+                        <span className="list-left">退回总金额：</span>
+                        <span className="list-right">
+                            ￥{refundArr.return_price}
+                        </span>
+                    </div>
+                    {
+                        refundArr.status === '3'
+                        && (
+                            <div className="logistics-info">
+                                <div className="detail-list">
+                                    <span className="list-left">店家姓名：</span>
+                                    <span className="list-center">{refundArr.s_link_name}</span>
+                                    <span>
+                                        {refundArr.s_phone}
+                                    </span>
+                                </div>
+                                {//types为1的时候不展示
+                                    refundArr.types !== '1'
+                                    && (
+                                        <div className="detail-list">
+                                            <span className="list-left">店家地址：</span>
+                                            <span className="list-right">
+                                                {refundArr.s_address}
+                                            </span>
+                                        </div>
+                                    )
+                                }
+                                <p>{refundArr.tips_msg}</p>
+                            </div>
+                        )
+                    }
                 </div>
                 {/*商品*/}
                 {/* <div className="consult-his" onClick={this.goToConsultHistory}><span>协商历史</span><span className="icon history"/></div> */}
@@ -243,6 +289,7 @@ class refundDetails extends BaseComponent {
                                                 </span>
                                             </div>
                                             {refundArr.is_shoper === 0 && type !== '2' && this.allButton(refundArr)}
+                                            {refundArr.write_express === 1 && <div className="buttons"><div className="evaluate-button" onClick={this.JDFillInLogistics}>填写物流</div></div>}
                                         </div>
                                     </div>
                                 </div>
@@ -256,11 +303,12 @@ class refundDetails extends BaseComponent {
                         <span className="list-left">退款编号：</span>
                         <span>
                             {refundArr.return_no}
+                            <span className="list-copy" onClick={this.copyNo}>复制</span>
                         </span>
                     </div>
                     <div className="detail-list">
                         <span className="list-left">退款金额：</span>
-                        <span>{refundArr.return_price}</span>
+                        <span>￥{refundArr.return_price}</span>
                     </div>
                     <div className="detail-list">
                         <span className="list-left">申请时间：</span>
@@ -269,13 +317,42 @@ class refundDetails extends BaseComponent {
                         </span>
                     </div>
                     <div className="detail-list">
-                        <span className="list-left">退款原因：</span>
+                        <span className="list-left">申请原因：</span>
                         <span>{refundArr.reason ? refundArr.reason.split(',').join('|') : '' }</span>
+                    </div>
+                    <div className="detail-list-quest">
+                        <span className="list-left">问题描述：</span>
+                        <p className="list-right">
+                            <p>{refundArr.describe}</p>
+                            {
+                                (refundArr.return_picpath && refundArr.return_picpath.length > 0) ? refundArr.return_picpath.map(item => <img src={item}/>) : ''
+                            }
+                        </p>
                     </div>
                     <div className="detail-list">
                         <span className="list-left">申请数量：</span>
                         <span>{refundArr.num}件</span>
                     </div>
+                    <div className="detail-list">
+                        <span className="list-left">申请时间：</span>
+                        <span>{refundArr.crtdate}</span>
+                    </div>
+                    {
+                        refundArr.pickwareType && (
+                            <div className="detail-list">
+                                <span className="list-left">取件方式：</span>
+                                <span>{refundArr.pickwareType}</span>
+                            </div>
+                        )
+                    }
+                    {
+                        refundArr.returnwareType && (
+                            <div className="detail-list">
+                                <span className="list-left">返件方式：</span>
+                                <span>{refundArr.returnwareType}</span>
+                            </div>
+                        )
+                    }
                     {
                         refundArr.status === '3' && (
                             <div>
@@ -307,7 +384,7 @@ class refundDetails extends BaseComponent {
                     <div className="business-box">
                         <div className="business">
                             <div className="business-left icon" onClick={this.goToShoper}><span>联系商家</span></div>
-                            <span className="business-right icon" onClick={() => this.shopPhone()}>商家电话</span>
+                            {/* <span className="business-right icon" onClick={() => this.shopPhone()}>商家电话</span> */}
                         </div>
                     </div>
                 </div>

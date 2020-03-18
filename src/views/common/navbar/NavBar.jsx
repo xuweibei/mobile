@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './NavBar.less';
+import {navColorO} from '../../../constants';
 
-const {appHistory, native, showInfo} = Utils;
+const {appHistory, native, showInfo, navColor} = Utils;
 const {navColorF, navColorR} = Constants;
 // const hashs = window.location.hash;
 // const str = hashs.substring(hashs.length - 8);
@@ -31,7 +32,6 @@ class NavBar extends React.PureComponent {
         backgroundColor: PropTypes.string,
         rightExplainClick: PropTypes.func,
         show: PropTypes.bool,
-        color: PropTypes.string,
         status: PropTypes.string
     }
 
@@ -52,7 +52,7 @@ class NavBar extends React.PureComponent {
         show: true,
         backgroundColor: '',
         rightExplainClick: () => {},
-        color: '',
+        // color: '',
         status: '1',
         goSearch: () => {}
     };
@@ -60,28 +60,19 @@ class NavBar extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {};//初始化需要
-        if (process.env.NATIVE) { //设置tab颜色
-            const {color} = this.props;
-            this.setNavClor(color);
-        }
     }
 
     static getDerivedStateFromProps(nextProps) {
         if (process.env.NATIVE) {
-            const {color} = nextProps;
-            native('setNavColor', {color: color || navColorF});
+            const value = navColor(window.location.hash);
+            if (value) {
+                native('setNavColor', {color: value === 1 ? navColorR : navColorO});
+            } else {
+                native('setNavColor', {color: navColorF});
+            }
         }
         // 否则，对于state不进行任何操作
         return null;
-    }
-
-    //设置顶部颜色
-    setNavClor = (color) => {
-        if (window.location.hash.includes('myOrder') || window.location.hash.includes('selfMention')) {
-            native('setNavColor', {color: navColorR});
-        } else {
-            native('setNavColor', {color: color || navColorF});
-        }
     }
 
     //左边按钮图标点击样式
@@ -138,7 +129,7 @@ class NavBar extends React.PureComponent {
         return (
             (window.isWX && status === '1') ? null : (
                 <div className="wrapTabNav">
-                    <div className="navbar" style={{backgroundColor: backgroundColor || '@white'}}>
+                    <div className="navbar" style={{background: backgroundColor || '@white'}}>
                         { redBackground //红底
                             ? (
                                 <div>

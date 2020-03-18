@@ -10,7 +10,7 @@ import AppNavBar from '../../../../common/navbar/NavBar';
 import Coupon from '../../../category/subpage/goods-detail/components/Coupon';
 import './AppendOrder.less';
 
-const {appHistory, showFail, getUrlParam, getShopCartInfo, systemApi: {setValue, removeValue, getValue}, native, nativeCssDiff} = Utils;
+const {appHistory, showFail, getUrlParam, systemApi: {setValue, removeValue, getValue}, native, nativeCssDiff} = Utils;
 const {urlCfg} = Configs;
 
 const nowTimeStamp = Date.now();
@@ -38,7 +38,7 @@ class appendOrder extends BaseComponent {
         invoiceStatus: false,  //发票弹框显示状态
         notAllow: true, //不支持提交状态
         num: [], // 商品数量
-        deps: [], // 记账量
+        deps: [], // C米
         prices: [], //商品单价
         invoice: [],
         invoiceIndex: '',
@@ -54,7 +54,10 @@ class appendOrder extends BaseComponent {
         couponList: {},  // 优惠券数据
         checkCouponStatus: [], // 选中优惠券状态
         useCouponStatus: false, // 是否使用户优惠券
-        couponPrice: 0  // 优惠折扣价
+        couponPrice: 0,  // 优惠折扣价
+        goodsArr: this.props.arr,
+        allDeposit: 0,
+        goShop: true //是否显示进店按钮
     };
 
     componentDidMount() {
@@ -66,19 +69,18 @@ class appendOrder extends BaseComponent {
             if (timer === 'null') { //非购物车进入的时候
                 this.getOrderState();
             } else {
-                window.DsBridge.call('getInfo', obj, (data) => {
+                native('getInfo', obj, (data) => {
                     const res = data ? JSON.parse(data) : '';
                     if (res && res.status === 0) {
                         setOrder(res.data.arr);
                         setIds(res.data.cartArr);
-                        that.getOrderState();
+                        this.setState({
+                            goodsArr: res.data.arr
+                        }, () => {
+                            that.getOrderState();
+                        });
                     }
                 });
-                // getShopCartInfo('getInfo', obj).then(res => {
-                //     setOrder(res.data.arr);
-                //     setIds(res.data.cartArr);
-                //     that.getOrderState();
-                // });//原生方法获取前面的redux
             }
         } else {
             this.getOrderState();
@@ -118,48 +120,17 @@ class appendOrder extends BaseComponent {
                 invoice: {},
                 invoiceIndex: ''
             }, () => {
-                getShopCartInfo('getInfo', {'': ''}).then(res => {
-                    setOrder(res.data.arr);
-                    setIds(res.data.cartArr);
-                    this.getOrderState();
+                native('getInfo', {'': ''}, (dataValue) => {
+                    const res = dataValue ? JSON.parse(dataValue) : '';
+                    if (res && res.status === 0) {
+                        setOrder(res.data.arr);
+                        setIds(res.data.cartArr);
+                        this.getOrderState();
+                    }
                 });//原生方法获取前面的redux
             });
         }
     }
-
-    // componentWillReceiveProps(next, data) {
-    //     const {setOrder, setIds, location} = this.props;
-    //     const timerNext = decodeURI(getUrlParam('time', encodeURI(next.location.search)));
-    //     const timer = decodeURI(getUrlParam('time', encodeURI(location.search)));
-    //     if (process.env.NATIVE && timer && timerNext !== timer) {
-    //         this.setState({
-    //             shopInfo: [],
-    //             addressInfo: {},
-    //             goodsCount: 0,
-    //             goods: [],
-    //             idCard: '', //身份证
-    //             total: 0, // 总价
-    //             totalCount: 0, //商品总数量
-    //             files: {},
-    //             order: {}, //订单备注信息
-    //             IDcard: [],
-    //             date: now,
-    //             self: true, //发票类型
-    //             currentIndex: 0, //默认发票选中类型
-    //             textInfo: '企业',
-    //             invoiceStatus: false,  //发票弹框显示状态
-    //             notAllow: true, //不支持提交状态
-    //             invoice: {},
-    //             invoiceIndex: ''
-    //         }, () => {
-    //             getShopCartInfo('getInfo', {'': ''}).then(res => {
-    //                 setOrder(res.data.arr);
-    //                 setIds(res.data.cartArr);
-    //                 this.getOrderState();
-    //             });//原生方法获取前面的redux
-    //         });
-    //     }
-    // }
 
     componentWillUnmount() {
         const {saveAddress} = this.props;
@@ -227,8 +198,8 @@ class appendOrder extends BaseComponent {
         }).subscribe((res) => {
             if (res && res.status === 0) {
                 const {setOrderInfo} = this.props;
-                setOrderInfo(res);
-                setValue('orderInfo', JSON.stringify(res));//将订单相关数据存入locastage
+                setOrderInfo(res.data);
+                setValue('orderInfo', JSON.stringify(res.data));//将订单相关数据存入locastage
                 appHistory.replace('/payMoney');
                 removeValue('invoices');
                 removeValue('order');
@@ -272,7 +243,7 @@ class appendOrder extends BaseComponent {
 
     //获取订单页面数据
     getOrderState = () => {
-        const {arr} = this.props;
+        const {goodsArr} = this.state;
         const {address} = this.props;
         let addressId;
         if (address) {
@@ -280,7 +251,7 @@ class appendOrder extends BaseComponent {
         }
         this.fetch(urlCfg.submitOrder, {
             data: {
-                pr_arr: arr,
+                pr_arr: goodsArr,
                 type: 2,
                 address_id: addressId
             }
@@ -299,8 +270,10 @@ class appendOrder extends BaseComponent {
                             invoice.push([]);
                         }
                     }
+
                     this.setState({
                         total: res.all_price,
+                        allDeposit: res.all_deposit,
                         shopInfo: res.data,
                         addressInfo: res.addr,
                         files: array,
@@ -310,7 +283,8 @@ class appendOrder extends BaseComponent {
                         num: res.data ? res.data.map(shop => shop.data.map(goods => goods.num)) : [],
                         deps: res.data ? res.data.map(shop => shop.data.map(goods => goods.deposit)) : [],
                         prices: res.data ? res.data.map(shop => shop.data.map(goods => goods.price)) : [],
-                        invoice
+                        invoice,
+                        goShop: !(res.data && res.data.map(shop => shop.data.some(item => item.app_type === '3')))[0]
                     }, () => {
                         const {goods} = this.state;
                         if (goods && goods.length > 0) {
@@ -436,10 +410,14 @@ class appendOrder extends BaseComponent {
         }
         this.setState(prevState => {
             numArr.splice(i, 1, nowNum.toString());
+            prevState.goodsArr[i].num = nowNum;
             arr.push(numArr);
             return {
-                num: arr
+                num: arr,
+                goodsArr: prevState.goodsArr
             };
+        }, () => {
+            this.getOrderState();
         });
     }
 
@@ -522,7 +500,7 @@ class appendOrder extends BaseComponent {
     }
 
     render() {
-        const {shopInfo, addressInfo, couponList, couponPrice, couponStatus, useCouponStatus, checkCouponStatus, self, currentIndex, textInfo, notAllow, invoiceStatus, invoice, invoiceIndex, num} = this.state;
+        const {shopInfo, addressInfo, couponList, goShop, allDeposit, total, couponPrice, couponStatus, useCouponStatus, checkCouponStatus, self, currentIndex, textInfo, notAllow, invoiceStatus, invoice, invoiceIndex, num} = this.state;
         const {address} = this.props;
         const invoices = JSON.parse(getValue('invoices'));
         const orders = JSON.parse(getValue('order'));
@@ -535,11 +513,20 @@ class appendOrder extends BaseComponent {
                             addressInfo ? (
                                 <div className="user-address" onClick={this.addressTo}>
                                     <div className="address-left">
-                                        <div className="left-top">
+                                        {/* <div className="left-top">
                                             <span>{(address && address.linkname) || addressInfo.linkname}</span>
                                             <span>{(address && address.linktel) || addressInfo.linktel}</span>
                                         </div>
                                         <div className="left-bottom">{(address && (address.addr_detail && address.addr_detail.toString().replace(/,/g, '')) + address.address) || addressInfo.addr_detail ? ((addressInfo.addr_detail && addressInfo.addr_detail.toString().replace(/,/g, '')) + addressInfo.address) : ''}
+                                        </div> */}
+                                        <div className="left-top">
+                                            <span>默认</span>
+                                            <span>{(address && (address.addr_detail && address.addr_detail.toString().replace(/,/g, ''))) || addressInfo.addr_detail ? ((addressInfo.addr_detail && addressInfo.addr_detail.toString().replace(/,/g, ''))) : ''}</span>
+                                        </div>
+                                        <div className="left-middle">{(address && address.address) || addressInfo.addr_detail ? (addressInfo.address) : ''}</div>
+                                        <div className="left-bottom">
+                                            <span>{(address && address.linkname) || addressInfo.linkname}</span>
+                                            <span>{(address && address.linktel) || addressInfo.linktel}</span>
                                         </div>
                                     </div>
                                     <div className="address-right">
@@ -569,7 +556,7 @@ class appendOrder extends BaseComponent {
                                             <span onClick={() => this.goToShop(shop.shop_id)}>{shop.shopName}</span>
                                         </div>
                                         <div className="top-enter">
-                                            <span onClick={() => this.goToShop(shop.shop_id)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>进店</span>
+                                            {goShop && (<span onClick={() => this.goToShop(shop.shop_id)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>进店</span>)}
                                         </div>
                                     </div>
                                     {
@@ -609,7 +596,7 @@ class appendOrder extends BaseComponent {
                                                                     </div>
                                                                     <div className="num-add">
                                                                         <div className="desc-count">
-                                                                            记账量：{goods.deposit}
+                                                                            C米：{goods.deposit}
                                                                         </div>
                                                                     </div>
                                                                     {
@@ -623,19 +610,31 @@ class appendOrder extends BaseComponent {
                                             </React.Fragment>
                                         ))
                                     }
+                                    <List>
+                                        <InputItem
+                                            placeholder="请和商家协议一致"
+                                            maxLength={50}
+                                            defaultValue={orders && orders[index]}
+                                            onChange={(val) => this.getRemark(val, index)}
+                                        >订单备注
+                                        </InputItem>
+                                        {
+                                            goShop && shop.data.some(goods => goods.if_invoice === '1') && (<List.Item key={index.toString()} onClick={() => { this.showPanel(index) }} className="invoice">发票抬头</List.Item>)
+                                        }
+                                    </List>
                                     <div className="goods-attr">
                                         <ul className="range-top">
                                             <li className="list">
-                                                <span>记账量</span>
-                                                <span>{this.totalDep()}</span>
+                                                <span>C米</span>
+                                                <span>{shopInfo[index].all_deposit}</span>
                                             </li>
                                             <li className="list">
                                                 <span>商品总价</span>
-                                                <span>￥{this.totalPrice()}</span>
+                                                <span>￥{shopInfo[index].all_price}</span>
                                             </li>
                                             <li className="list">
                                                 <span>运费</span>
-                                                <span>￥{shop.express_money}</span>
+                                                <span>￥{shopInfo[index].express_money}</span>
                                             </li>
                                         </ul>
                                     </div>
@@ -659,7 +658,7 @@ class appendOrder extends BaseComponent {
                                     </List>
                                     <div className="payable">
                                         <span>实付款</span>
-                                        <span>￥{this.totalPrice()}</span>
+                                        <span>￥{shopInfo[index].actual_all_price}</span>
                                     </div>
                                 </div>
                             ))
@@ -677,9 +676,9 @@ class appendOrder extends BaseComponent {
                                 <div className="total-price">
                                     <div>
                                         <span>合计：</span>
-                                        <span className="total-pri">￥{this.totalPrice()}</span>
+                                        <span className="total-pri">￥{total}</span>
                                     </div>
-                                    <div className="total-dep">记账量:{this.totalDep()}</div>
+                                    <div className="total-dep">C米:{allDeposit}</div>
                                 </div>
                             </div>
                             <Button onClick={this.postOrder} disabled={!notAllow}>立即付款</Button>

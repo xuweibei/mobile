@@ -286,7 +286,7 @@ export default class ReDetail extends BaseComponent {
                     <p className="mask-title">{recommendDetail.intro}</p>
                     <div className="mask-price">
                         <p>￥{recommendDetail.price}</p>
-                        <span>记账量 : {recommendDetail.deposit}</span>
+                        <span>C米 : {recommendDetail.deposit}</span>
                         <img src={recommendDetail.picpath} alt=""/>
                     </div>
                     <Button onClick={this.saveImage}>保存图片</Button>

@@ -51,12 +51,18 @@ export const urlCfg = {
     dailyIncome: href.apiPath + '/gettaking', //我的资产列表 -- 每天的收入
     dailyIncomeAll: href.apiPath + '/taking-other', //我的资产列表 -- 每天的收入集合
     afterSalesRefundList: href.apiPath + '/notice-list', //售后/退款 列表
+    selectAftersalestype: href.apiPath + '/select-aftersalestype', //售后/退款 申请选项
+    jdRefundPage: href.apiPath + '/jd-refund-page', //售后/退款 申请页
+    jdRefundApply: href.apiPath + '/jd-refund-apply', //售后/退款 申请保存
+    jdCreateAfsApply: href.apiPath + '/jd-create-afs-apply', //售后/退款 申请保存后通知京东的接口
     originalQuantification: href.apiPath + '/invori', //原始定量
     commodityCollection: href.apiPath + '/my-collect-add-pr', //商品收藏
     updatePaymentPassword: href.apiPath + '/modifypaypwd', //更新支付密码
     settingPageData: href.apiPath + '/set-used', //设置页面数据请求
-    wechatPayment: href.apiPath + '/wx-app-pay', //微信支付
-    alipayPayment: href.apiPath + '/alipay', //支付宝支付
+    // wechatPayment: href.apiPath + '/wx-app-pay', //微信支付
+    // wechatPayment: href.apiPath + '/wxpay', //微信支付
+    // alipayPayment: href.apiPath + '/alipay', //支付宝支付
+    payAppPay: href.apiPath + '/app-pay', // 支付接口， 琦红，2019.3.9
     batchPayment: href.apiPath + '/nmrs-pay', //批量支付
     storeDetails: href.apiPath + '/shop-detail', //商店详情
     allGoodsInTheShop: href.apiPath + '/shop-pr-list', //商店内所有商品
@@ -89,7 +95,8 @@ export const urlCfg = {
     applicationForRefund: href.apiPath + '/refund-apply', //退款，退货退款
     getTXImInfo: href.apiPath + '/tencent-im', //获取腾讯im的账号和密码
     myAppraiseList: href.apiPath + '/my-appraiselist', //我的评价列表
-    refundDetail: href.apiPath + '/refund-detail', //我的评价列表
+    refundDetail: href.apiPath + '/refund-detail', //售后详情
+    refurefundOrderExpressndDetail: href.apiPath + '/refund-order-express', //京东物流填写
     rublishReview: href.apiPath + '/my-appra-add-page', //追评页面
     publishAReview: href.apiPath + '/my-order-add-appra', //追评评论
     personalAddress: href.apiPath + '/save-per-info', //个人所在区域管理

@@ -6,7 +6,7 @@ import {dropByCacheKey} from 'react-router-cache-route';
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './PublishReview.less';
 
-const {getUrlParam, dealImage, showInfo, showSuccess, appHistory} = Utils;
+const {getUrlParam, dealImage, showInfo, showSuccess, appHistory, native} = Utils;
 const {MESSAGE: {Form, Feedback}, IMGSIZE} = Constants;
 const {urlCfg} = Configs;
 export default class PublishReview extends BaseComponent {
@@ -66,7 +66,7 @@ export default class PublishReview extends BaseComponent {
     addPictrue = () => {
         const {nativePicNum, fileArr} = this.state;
         if (process.env.NATIVE) {
-            window.DsBridge.call('picCallback', {num: nativePicNum}, (dataList) => {
+            native('picCallback', {num: nativePicNum}, (dataList) => {
                 const arr = fileArr;
                 const res = dataList ? JSON.parse(dataList) : '';
                 if (res && res.status === '0') {
@@ -79,8 +79,6 @@ export default class PublishReview extends BaseComponent {
                     });
                 }
             });
-            // native('picCallback', {num: nativePicNum}).then(res => {
-            // });
         }
     };
 

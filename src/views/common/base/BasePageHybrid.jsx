@@ -22,9 +22,7 @@ class BasePageHybrid extends BaseComponent {
     }
 
     componentWillUpdate() {
-        console.log(window.localStorage.getItem('close_key_board'), '考虑到法国');
-        if (!window.localStorage.getItem('close_key_board')) { //控制是否使用此方法
-            console.log('健康的方式个');
+        if (!window.localStorage.getItem('close_key_board') && process.env.NATIVE) { //控制是否使用此方法
             //关闭键盘
             native('closeKeyboard');
         }

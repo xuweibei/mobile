@@ -96,6 +96,10 @@
 //公共内边距
     .common-margin {
         padding: 0 30px;
+        .self-mention{
+            color:#666;
+            font-size: 24px;
+        }
     }
 
     .shop-lists{
@@ -168,7 +172,16 @@
                     color: @darker-black;
                     .desc-title{
                         .TextareaOverflow(2);
-                        margin-right: 28px;
+                        // margin-right: 28px;
+                        float:left;
+                        font-size: 36px;
+                        width:3rem;
+                    }
+                    .desc_price{
+                        float:right;
+                        .small_money{
+                            font-size: 24px;
+                        }
                     }
                 }
                 .goods-sku {
@@ -190,6 +203,7 @@
                             .TextareaOverflow(1);
                             //border-right: 1px solid @gray;
                             //.hairline('right',gray);
+                            font-size: 24px;
                         }
                         .goods-size:nth-child(1) {
                             padding-left: 0;
@@ -199,6 +213,9 @@
                             padding-right: 0;
                         }
                     }
+                    .local {
+                        font-size: @font-size-24;
+                    }
                 }
                 .accounting {
                     display: flex;
@@ -207,6 +224,10 @@
                     .local {
                         font-size: @font-size-28;
                         color: @gray;
+                    }
+                    .btn-keep{
+                        background:#ffeaed;
+                        color:#FF2D51;
                     }
                 }
                 .goods-price {
@@ -240,6 +261,8 @@
         .bookkeeping ,.all-prices {
             display: flex;
             justify-content: space-between;
+            font-size: 24px;
+            color:#666;
         }
         .all-prices {
             margin: 20px 0;
@@ -251,11 +274,18 @@
     .payable {
         display: flex;
         justify-content: space-between;
-        font-size: @font-size-30;
+        font-size: @font-size-24;
         color: @darker-black;
         padding: 43px 30px 45px 30px;
         background-color: @white;
         margin-bottom: 17px;
+    }
+
+    .payable span:nth-child(2){
+        font-size: 36px;
+        .small_money{
+            font-size: 24px;
+        }
     }
 
     .order {

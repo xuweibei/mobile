@@ -13,7 +13,7 @@ const {FIELD} = Constants;
 const Item = List.Item;
 const Brief = Item.Brief;
 const {urlCfg} = Configs;
-const {appHistory, native, nativeCssDiff} = Utils;
+const {appHistory, native, nativeCssDiff, getUrlParam} = Utils;
 const hybirid = process.env.NATIVE;
 //tab配置信息
 const tabs = [
@@ -36,11 +36,28 @@ class Customer extends BaseComponent {
         refreshing: false, //是否在下拉刷新时显示指示器
         isLoading: false, //是否在上拉加载时显示提示
         hasMore: false, //是否有数据可请求
-        totalNum: 0 //当前选中tab总人数
+        totalNum: 0, //当前选中tab总人数
+        propsData: this.props
     };
 
     componentDidMount() {
         this.getCustomerList();
+    }
+
+    static getDerivedStateFromProps(prevProps, prevState) {
+        return {
+            propsData: prevProps
+        };
+    }
+
+    componentDidUpdate(prev, data) {
+        if (process.env.NATIVE) {
+            const timer = decodeURI(getUrlParam('time', encodeURI(this.state.propsData.location.search)));
+            const timerNext = decodeURI(getUrlParam('time', encodeURI(prev.location.search)));
+            if (timer !== timerNext) {
+                this.getCustomerList();
+            }
+        }
     }
 
     //获取客户数据，第一页需记录总页数和总人数，并在翻页时回传后端。noLoading为true时不显示菊花图
@@ -104,12 +121,12 @@ class Customer extends BaseComponent {
             isLoading: false,
             ...extra
         }, () => {
-            console.log(`第${page}页`, this.stackData);
+            // console.log(`第${page}页`, this.stackData);
             if (page < this.state.pageCount) {
                 this.setState({
                     hasMore: true
                 }, () => {
-                    console.log('可上拉加载');
+                    // console.log('可上拉加载');
                 });
             }
         });

@@ -228,12 +228,11 @@ class SourceBrowse extends BaseComponent {
     //重新扫码
     sureSaoAgain = () => {
         if (process.env.NATIVE) {
-            const obj = {
+            native('qrCodeScanCallback', {
                 pay: urlCfg.importSum,
                 write: urlCfg.consumer,
                 source: urlCfg.sourceBrowse
-            };
-            native('qrCodeScanCallback', obj);
+            });
         }
     }
 

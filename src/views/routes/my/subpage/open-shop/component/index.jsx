@@ -140,7 +140,6 @@ class ShopIndex extends BaseComponent {
     getShopIntro = () => {
         this.fetch(urlCfg.getShopIntro).subscribe(res => {
             if (res && res.status === 0) {
-                console.log(res);
                 this.setState({
                     intro: res.data
                 });
@@ -156,7 +155,6 @@ class ShopIndex extends BaseComponent {
 
     render() {
         const {status} = this.state;
-        console.log(status);
         return (
             <div className="select-type">
                 {

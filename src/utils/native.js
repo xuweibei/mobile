@@ -2,99 +2,20 @@
  * 对接原生方法
  */
 import {store} from '../redux/store';
-import {systemApi} from './systemApi';
 import {baseActionCreator} from '../redux/baseAction';
 import {appHistory} from './appHistory';
 
-const {systemApi: {removeValue}, showFail} = Utils;
+const {systemApi: {removeValue, isAndroid}} = Utils;
 const {LOCALSTORAGE} = Constants;
 //统一封装原生接口请求
-export const native = (str, obj) => {
-    window.DsBridge.call(str, obj);
-};
-
-// new Promise((resolve, reject) => {
-//     if (window.WebViewJavascriptBridge && window.WebViewJavascriptBridge.callHandler && process.env.NATIVE) {
-//         window.WebViewJavascriptBridge.callHandler(
-//             str,
-//             JSON.stringify(obj),
-//             (responseData) => {
-//                 const info = JSON.parse(responseData);
-//                 if (info && info.status === '0') {
-//                     resolve(info);
-//                 } else if (info) {
-//                     reject(info);
-//                     showInfo(info.message);
-//                 }
-//             }
-//         );
-//     }
-// });
-
-//设置nav的颜色，回传给原生
-export const setNavColor = (str, obj) => {
-    window.DsBridge.call(str, obj);
-};
-
-// new Promise((resolve, reject) => {
-//     if (window.WebViewJavascriptBridge && window.WebViewJavascriptBridge.callHandler) {
-//         process.env.NATIVE && window.WebViewJavascriptBridge.callHandler(
-//             str,
-//             JSON.stringify(obj),
-//             (responseData) => {
-//             }
-//         );
-//     }
-// });
-
-
-//获取购物车点击结算的时候的跳转数据
-export const getShopCartInfo = (str, obj, callBack) => {
-    window.DsBridge.call(str, obj);
-};
-
-
-// new Promise((resolve, reject) => {
-//     setTimeout(() => {
-//         if (window.WebViewJavascriptBridge && window.WebViewJavascriptBridge.callHandler && process.env.NATIVE) {
-//             window.WebViewJavascriptBridge.callHandler(
-//                 str,
-//                 JSON.stringify(obj),
-//                 (responseData) => {
-//                     const info = JSON.parse(responseData);
-//                     if (info && info.status === '0') {
-//                         resolve(info);
-//                     }
-//                 }
-//             );
-//         }
-//     }, 500);
-// });
-
-//获取userToken
-export const getAppUserToken = () => new Promise((resolve, reject) => {
-    // setTimeout(() => {
-    if (window.WebViewJavascriptBridge && window.WebViewJavascriptBridge.callHandler && process.env.NATIVE) {
-        window.WebViewJavascriptBridge.callHandler('wxLoginCallback',
-            JSON.stringify({}),
-            (responseData) => {
-                console.log(responseData, '卡列表估计快了发过火');
-                alert(responseData);
-                resolve(responseData);
-                if (responseData && JSON.parse(responseData).status === '0') {
-                    const str = JSON.parse(responseData).data.usertoken || null;
-                    systemApi.setValue('userToken', str);
-                    store.dispatch(baseActionCreator.setUserToken(str));
-                } else if (responseData) {
-                    showFail('身份验证失败');
-                }
-            });
-        resolve();
-    } else {
-        reject();
+export const native = (str, obj, callBack = () => {}) => {
+    if (!obj && isAndroid) {
+        obj = 'null';
+    } else if (!obj) {
+        obj = {};
     }
-    // }, 500);
-});
+    if (process.env.NATIVE) { window.DsBridge.call(str, obj, callBack) }
+};
 
 //安卓底部回退按钮 // APP右滑
 global.goBack = function () {
@@ -102,7 +23,7 @@ global.goBack = function () {
     if (!onOff) {
         if (appHistory.length() === 0 && process.env.NATIVE) {
             if (!window.location.href.includes('userAgreementDetail')) {
-                window.DsBridge.call('goBack');
+                window.DsBridge.call('goBack', isAndroid ? 'null' : {}, () => {});
             }
         } else {
             appHistory.goBack();
@@ -135,7 +56,7 @@ global.goBackApp = function () {
 export function goBackModal() {
     if (process.env.NATIVE && appHistory.length() === 0) {
         // native('goBack');
-        window.DsBridge.call('goBack');
+        window.DsBridge.call('goBack', isAndroid ? 'null' : {}, () => {});
     } else {
         appHistory.goBack();
     }
@@ -145,7 +66,7 @@ export function goBackModal() {
 export function nativeCssDiff() {
     const str = navigator.userAgent;
     console.log(str, '型号参数查看');
-    const phoneModal =  ['OPPO R7sm', 'm1 note', 'Letv X501', 'Redmi Note 4X', 'OPPO A59m'];
+    const phoneModal =  ['OPPO R7sm', 'm1 note', 'Letv X501', 'Redmi Note 4X', 'OPPO A59m', 'COL-AL10', 'HONOR'];
     let onOff = false;
     phoneModal.forEach(item => {
         if (str.indexOf(item) > -1) {

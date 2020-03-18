@@ -122,7 +122,6 @@ class Collect extends BaseComponent {
 
     //上拉加载
     onEndReached = () => {
-        console.log(1);
         const {pageShop, pageShopping, pageCountShop, pageCountShopping, tabKey} = this.state;
         if (this.temp.isLoading) return;
         if (tabKey === 0) {
@@ -373,7 +372,7 @@ class Collect extends BaseComponent {
                                 }
                             </div>
                             <div className="count">
-                                <div className="num">记账量：{item.deposit}</div>
+                                <div className="num">C米：{item.deposit}</div>
                                 {item.status === '0' && <span>已下架</span>}
                                 <div className="city">{item.city || '北京'}</div>
                             </div>

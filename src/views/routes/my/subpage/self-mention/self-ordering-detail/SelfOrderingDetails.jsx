@@ -6,7 +6,7 @@ import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAc
 import AppNavBar from '../../../../../common/navbar/NavBar';
 import './SelfOrderingDetails.less';
 
-const {showSuccess, appHistory, getUrlParam, native, showFail, showInfo, nativeCssDiff} = Utils;
+const {showSuccess, appHistory, getUrlParam, native, showFail, showInfo, nativeCssDiff, moneyDot} = Utils;
 const {MESSAGE: {Feedback}} = Constants;
 const {urlCfg} = Configs;
 //right:0未付款;1已付款（待使用）;3已使用（未评价）;4交易成功（已评价）;10取消订单 ;11删除订单;12申请退款成功关闭订单;13商家关闭订单14商家删除订单
@@ -251,6 +251,7 @@ class ReDetail extends BaseComponent {
                                     <div className="goods-right">
                                         <div className="goods-desc">
                                             <div className="desc-title">{item.pr_title}</div>
+                                            <div className="desc_price">￥{moneyDot(item.price)[0] + '.'}<span className="small_money">{moneyDot(item.price)[1]}</span></div>
                                         </div>
                                         <div className="goods-sku">
                                             <div className="sku-left">
@@ -261,7 +262,7 @@ class ReDetail extends BaseComponent {
                                             <div className="local">x{item.num}</div>
                                         </div>
                                         <div className="accounting">
-                                            <div className="btn-keep">记账量：{item.deposit}</div>
+                                            <div className="btn-keep">C米：{item.deposit}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -271,7 +272,7 @@ class ReDetail extends BaseComponent {
                     <div className="total-price">
                         <div className="common-margin">
                             <div className="bookkeeping">
-                                <span className="bookkeeping-left">记账量</span>
+                                <span className="bookkeeping-left">C米</span>
                                 <span className="bookkeeping-riht">{selfSufficiency.all_deposit}</span>
                             </div>
                             <div className="all-prices">
@@ -285,7 +286,7 @@ class ReDetail extends BaseComponent {
                     </div>
                     <div className="payable">
                         <span>实付款</span>
-                        <span>￥{selfSufficiency.countprice}</span>
+                        <span>￥{moneyDot(selfSufficiency.countprice)[0] + '.' }<span className="small_money">{moneyDot(selfSufficiency.countprice)[1]}</span></span>
                     </div>
                     <div className="order common-margin">
                         <div className="number">
@@ -345,7 +346,7 @@ class ReDetail extends BaseComponent {
                                                 </div>
                                             </div>
                                             <div className="accounting">
-                                                <div className="btn-keep accounting-left">记账量：{item.deposit || 0}</div>
+                                                <div className="btn-keep accounting-left">C米：{item.deposit || 0}</div>
                                                 <div className="accounting-right">{item.area}</div>
                                             </div>
                                             <div className="drawee">
@@ -380,17 +381,17 @@ class ReDetail extends BaseComponent {
                                 )} 暂时屏蔽 */}
                         </div>
                     )}
-                    {/* {(selfSufficiency.status === '1' || selfSufficiency.status === '3' || selfSufficiency.status === '4') && (
-                            <div>
-                                {selfSufficiency.return_name ? (
-                                    <div className="cancel-order" onClick={(e) => this.skipAfterSale(e, selfSufficiency.return_id)}>{selfSufficiency.return_name}</div>
-                                ) : (
-                                    <div className="cancel-order" onClick={(e) => this.serviceRefund(e, selfSufficiency.order_id)}>申请售后</div>
-                                )
-                                }
-                                {selfSufficiency.return_name && <div className="cancel-order" onClick={(e) => this.skipAfterSale(e, selfSufficiency.return_id)}>{selfSufficiency.return_name}</div>}
-                            </div>
-                        )} */}
+                    {(selfSufficiency.status === '1' || selfSufficiency.status === '3' || selfSufficiency.status === '4') && (
+                        <div>
+                            {selfSufficiency.return_name ? (
+                                <div className="cancel-order" onClick={(e) => this.skipAfterSale(e, selfSufficiency.return_id)}>{selfSufficiency.return_name}</div>
+                            ) : (
+                                <div className="cancel-order" onClick={(e) => this.serviceRefund(e, selfSufficiency.order_id)}>申请售后</div>
+                            )
+                            }
+                            {selfSufficiency.return_name && <div className="cancel-order" onClick={(e) => this.skipAfterSale(e, selfSufficiency.return_id)}>{selfSufficiency.return_name}</div>}
+                        </div>
+                    )}
                 </div>
             </div>
         );

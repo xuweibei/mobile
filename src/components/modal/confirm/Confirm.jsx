@@ -38,7 +38,7 @@ class Confirm extends React.PureComponent {
     }
 
     render() {
-        console.log('confirm render');
+        // console.log('confirm render');
         const {
             visible,
             title,

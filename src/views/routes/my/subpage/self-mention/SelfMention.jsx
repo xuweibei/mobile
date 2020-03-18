@@ -11,7 +11,7 @@ import CancelOrder from '../../../../common/cancel-order/CancleOrder';
 import MyListView from '../../../../common/my-list-view/MyListView';
 import AppNavBar from '../../../../common/navbar/NavBar';
 
-const {appHistory, showInfo, native, getUrlParam, systemApi: {removeValue}, nativeCssDiff} = Utils;
+const {appHistory, showInfo, native, getUrlParam, systemApi: {removeValue}, nativeCssDiff, moneyDot} = Utils;
 const {urlCfg} = Configs;
 const {MESSAGE: {Feedback}, FIELD, navColorR} = Constants;
 const tabs = [
@@ -38,8 +38,6 @@ class ReDetail extends BaseComponent {
             height: document.documentElement.clientHeight - (window.isWX ? 0.75 : window.rem * 1.8),
             propsData: props
         };
-        removeValue('orderInfo');//清除下单流程留下来的订单信息
-        removeValue('orderArr');
     }
 
     componentDidMount() {
@@ -63,25 +61,9 @@ class ReDetail extends BaseComponent {
                 status: numNext
             }, () => {
                 this.init(numNext);
-                removeValue('orderInfo');//清除下单流程留下来的订单信息
-                removeValue('orderArr');
             });
         }
     }
-
-    // componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方
-    //     const numNext = this.statusChoose(nextProps.location.pathname.split('/')[2]);
-    //     const numPrev = this.statusChoose(this.props.location.pathname.split('/')[2]);
-    //     if (numNext !== numPrev) {
-    //         this.setState({
-    //             status: numNext
-    //         }, () => {
-    //             this.init(numNext);
-    //             removeValue('orderInfo');//清除下单流程留下来的订单信息
-    //             removeValue('orderArr');
-    //         });
-    //     }
-    // }
 
     init = (num) => {
         this.setState({
@@ -274,8 +256,10 @@ class ReDetail extends BaseComponent {
 
     //立即支付
     payNow = (e, item) => {
-        e.stopPropagation();
+        removeValue('orderInfo');//先清除一下，正常流程下单页面的缓存数据，以免冲突
+        removeValue('orderArr');//先清除一下，正常流程下单页面的缓存数据，以免冲突
         appHistory.push(`/payMoney?orderId=${item.id}&orderNum=${item.order_no}&source=${4}&down=1`);
+        e.stopPropagation();
     }
 
     //前往售后详情页
@@ -329,7 +313,7 @@ class ReDetail extends BaseComponent {
                         <div className="goods-right">
                             <div className="goods-desc">
                                 <div className="desc-title">{items.pr_title}</div>
-                                <div className="price">￥{items.price}</div>
+                                <span className="price">￥{moneyDot(items.price)[0] + '.'}<span className="samll-money">{moneyDot(items.price)[1]}</span></span>
                             </div>
                             <div className="goods-sku">
                                 <div className="sku-left">
@@ -340,18 +324,20 @@ class ReDetail extends BaseComponent {
                                 </div>
                                 <div className="sku-right">x{items.num}</div>
                             </div>
-                            <div className="btn-keep">记账量：{items.deposit}</div>
+                            <div className="btn-keep">C米：{items.deposit}</div>
                         </div>
                     </div>
                 )) : ''}
                 <div className="shop-bottom">
                     <div className="right-bottom">
                         <div className="total-count">
-                            总记账量：<span>{item.all_deposit}</span>
+                            总C米：<span>{item.all_deposit}</span>
                         </div>
                         <div className="total-price">
-                            <div className="total-price-left">共{item.pr_num}件商品</div>
-                            <div className="total-price-right"><span>合计：</span><span className="money">{item.all_price}元</span></div>
+                            {/* <div className="total-price-left">共{item.pr_num}件商品</div> */}
+                            <div className="total-price-left"/>
+                            <div className="total-price-right">共{item.pr_count}件商品 合计：<span className="money">￥{moneyDot(item.all_price)[0] + '.'}<span className="samll-money">{moneyDot(item.all_price)[1]}</span></span></div>
+                            {/* <div className="total-price-right"><span>合计：</span><span className="money">{item.all_price}元</span></div> */}
                         </div>
                         {/*等待付款*/}
                         {(item.status === '0' && !item.return_status) && (
@@ -363,9 +349,9 @@ class ReDetail extends BaseComponent {
                         {/*等待使用*/}
                         {(item.status === '1' || item.return_status === '1') && (
                             <div className="buttons">
-                                {/* {!item.return_status && (
+                                {!item.return_status && (
                                     <div onClick={(e) => this.serviceRefund(e, item.id)}>退款</div>
-                                )} */}
+                                )}
                                 <div className="evaluate-button" onClick={(e) => this.skipSelf(e, item.id)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>立即使用</div>
                                 {item.return_status === '1' && (
                                     <div className="evaluate-button" onClick={(e) => this.skipAfterSale(e, item.return_id)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>查看详情</div>

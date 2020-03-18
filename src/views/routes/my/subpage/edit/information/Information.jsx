@@ -24,7 +24,7 @@ export default class Information extends BaseComponent {
         this.fetch(urlCfg.messageSetupStatus).subscribe(res => {
             if (res && res.status === 0) {
                 //判断初始是否有值
-                if (res.data.length !== 0) {
+                if (res.data.length) {
                     this.setState({
                         data: res.data
                     });

@@ -9,7 +9,7 @@ import AppNavBar from '../../../../../common/navbar/NavBar';
 import BaseComponent from '../../../../../../components/base/BaseComponent';
 
 const {urlCfg} = Configs;
-const {validator, showInfo, appHistory, getUrlParam, systemApi: {setValue, getValue, removeValue}, getShopCartInfo, native} = Utils;
+const {validator, showInfo, appHistory, getUrlParam, systemApi: {setValue, getValue, removeValue}, native} = Utils;
 
 class ReDetail extends BaseComponent {
     constructor(props, context) {
@@ -42,19 +42,14 @@ class ReDetail extends BaseComponent {
             if (timer === 'null') { //非购物车进入时
                 this.getOrderSelf();
             } else { //这里的情况是，原生那边跳转的时候，需要处理一些问题，所以就购物车过来的时候，存数据，这边取数据
-                window.DsBridge.call('getSelfMentio', {'': ''}, (data) => {
-                    console.log(data, '就看来水电费接口');
+                native('getSelfMentio', {'': ''}, (data) => {
                     const res = data ? JSON.parse(data) : '';
-                    console.log(res, '老地方开个会');
-                    if (res && res.status === 0) {
-                        alert(2);
+                    if (res && (res.status === 0 || res.status === '0')) {
                         setOrder(res.data.arr);
                         setIds(res.data.cartArr);
                         this.getOrderSelf();
                     }
                 });
-                // getShopCartInfo('getSelfMentio', {'': ''}).then(res => {
-                // });
             }
         } else {
             this.getOrderSelf();
@@ -88,42 +83,16 @@ class ReDetail extends BaseComponent {
                 address: '', //门店地址
                 textarea: '' //获取备注信息
             }, () => {
-                getShopCartInfo('getSelfMentio', {'': ''}).then(res => {
-                    setOrder(res.data.arr);
-                    this.getOrderSelf();
+                native('getSelfMentio', {'': ''}, (data) => {
+                    const res = data ? JSON.parse(data) : '';
+                    if (res && res.status === 0) {
+                        setOrder(res.data.arr);
+                        this.getOrderSelf();
+                    }
                 });
             });
         }
     }
-
-    // componentWillReceiveProps(next) {
-    //     const {setOrder, location: {search}} = this.props;
-    //     const timerNext = decodeURI(getUrlParam('time', encodeURI(next.location.search)));
-    //     const timer = decodeURI(getUrlParam('time', encodeURI(search)));
-    //     if ((timerNext !== timer) && process.env.NATIVE) {
-    //         this.setState({
-    //             modal: false, //自提弹窗是否弹出
-    //             currentTab: 0, //当前自提日期的key
-    //             valueItem: 0, //当前自提时间的key
-    //             value: '请选择', //当前自提时间
-    //             rdata: [{list: []}], //获取所有自提时间
-    //             tabsr: [], //获取所有自提日期
-    //             radioTreaty: false, //自提协议是否勾选
-    //             OrderSelf: [], //获取自提数据
-    //             alertPhone: 0, //自提手机号
-    //             showPhone: true, //是否显示修改自提手机号
-    //             goodsArr: [], //订单商品遍历
-    //             shopdata: [], //店铺
-    //             address: '', //门店地址
-    //             textarea: '' //获取备注信息
-    //         }, () => {
-    //             getShopCartInfo('getSelfMentio', {'': ''}).then(res => {
-    //                 setOrder(res.data.arr);
-    //                 this.getOrderSelf();
-    //             });
-    //         });
-    //     }
-    // }
 
     //自提数据获取
     getOrderSelf = () => {
@@ -370,7 +339,7 @@ class ReDetail extends BaseComponent {
                                     </div>
                                     <div className="sku-right">x{item.num}</div>
                                 </div>
-                                <div className="btn-keep">记账量：{item.deposit}</div>
+                                <div className="btn-keep">C米：{item.deposit}</div>
                             </div>
                         </div>
                     ))}
@@ -386,7 +355,7 @@ class ReDetail extends BaseComponent {
                     <div className="shop-bottom">
                         <div className="right-bottom">
                             <div className="total-count">
-                                总记账量：<span>{OrderSelf.all_deposit}</span>
+                                总C米：<span>{OrderSelf.all_deposit}</span>
                             </div>
                             <div className="total-price">
                                 <div className="total-price-left">共{OrderSelf.all_pr_num}件商品</div>
