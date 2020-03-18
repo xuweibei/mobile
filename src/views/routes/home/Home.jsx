@@ -10,7 +10,8 @@ import {baseActionCreator as actionCreator} from '../../../redux/baseAction';
 import {myActionCreator as ActionCreator} from '../my/actions/index';
 import {homeActionCreator} from './actions/index';
 import HomeList from './home-list/homeList';
-
+import CouponOne from './CouponOne';
+import CouponTwo from './CouponTwo';
 import './Home.less';
 
 
@@ -28,7 +29,12 @@ class Home extends BaseComponent {
         pages: [],
         show: false,
         show1: false,
-        goodStuff: []
+        goodStuff: [],
+        pouponOneStatus: false, // 控制优惠券1显示隐藏
+        pouponTwoStatus: false, // 控制优惠券1显示隐藏
+        pouponText: [], // 优惠券右侧文字
+        couponList: {}, // 优惠券数据
+        getStatus: false || [] // 优惠券领取状态
     };
 
     componentWillMount() {
@@ -36,7 +42,7 @@ class Home extends BaseComponent {
     }
 
     componentDidMount() {
-        const {showMenu, setOrder, userToken, getNav, getBanner} = this.props;
+        const {showMenu, setOrder, userToken, getNav, getBanner, coupon} = this.props;
         this.setState({
             userToken: systemApi.getValue('userToken')
         });
@@ -49,6 +55,9 @@ class Home extends BaseComponent {
             this.login();
         }
         this.goodStuff();
+        if (!coupon) {
+            this.getCoupon();
+        }
     }
 
     componentWillUnmount() {
@@ -153,8 +162,77 @@ class Home extends BaseComponent {
         }
     }
 
+    onClose = () => {
+        this.setState({
+            pouponOneStatus: false
+        });
+    }
+
+    onCloseTwo = () => {
+        this.setState({
+            pouponTwoStatus: false
+        });
+    }
+
+    // 获取优惠券
+    getCoupon = () => {
+        const {setCoupon} = this.props;
+        this.fetch(urlCfg.getCoupon, {data: {type: 0}}).subscribe(res => {
+            if (res && res.status === 0) {
+                setCoupon(res.data);
+                this.setState({
+                    couponList: res.data,
+                    pouponOneStatus: res.data && res.data.card_num === 1,
+                    pouponTwoStatus: res.data && res.data.card_num > 1,
+                    getStatus: res.data && res.data.card_num > 1 ?  Array.from({length: res.data.card_num}).fill(false) : false,
+                    pouponText: res.data && res.data.card_num > 1 ?  Array.from({length: res.data.card_num}).fill('立即领取') : '立即领取'
+                });
+            }
+        });
+    }
+
+    //领取优惠券
+    reciveCard = (no, index, id, type) => {
+        const {getStatus, pouponText} = this.state;
+        if (getStatus[index]) {
+            if (type && type === 2) {
+                appHistory.push(`/goodsDetail?id=${id}`);
+            } else if (type && type === 3) {
+                appHistory.push(`/shopHome?id=${id}`);
+            }
+            return;
+        }
+        const status = [...getStatus];
+        const text = [...pouponText];
+        this.fetch(urlCfg.reciveCard, {data: {card_no: no}}).subscribe(res => {
+            if (res && res.status === 0) {
+                this.setState(pre => {
+                    status.splice(index, 1, true);
+                    text.splice(index, 1, '立即使用');
+                    return {
+                        getStatus: status,
+                        pouponText: text
+                    };
+                });
+                Toast.info('优惠券领取成功', 1);
+            }
+        });
+    }
+
+    getCoup =(no) => {
+        this.fetch(urlCfg.reciveCard, {data: {card_no: no}}).subscribe(res => {
+            if (res && res.status === 0) {
+                // Toast('优惠券领取成功', 1);
+                this.setState({
+                    pouponOneStatus: false
+                });
+                Toast.info('优惠券领取成功', 1);
+            }
+        });
+    }
+
     render() {
-        const {goodStuff} = this.state;
+        const {goodStuff, pouponOneStatus, pouponText, pouponTwoStatus, couponList, getStatus} = this.state;
         const {userToken, logo, banner, nav} = this.props;
         return (
             <div className="home">
@@ -261,6 +339,21 @@ class Home extends BaseComponent {
                         </div>
                     </div>
                     <HomeList/>
+                    <CouponOne
+                        pouponOneStatus={pouponOneStatus}
+                        onClose={this.onClose}
+                        title={couponList && couponList.title}
+                        couponList={couponList && couponList.card_list}
+                        getCoup={this.getCoup}
+                    />
+                    <CouponTwo
+                        pouponText={pouponText}
+                        onCloseTwo={this.onCloseTwo}
+                        pouponTwoStatus={pouponTwoStatus}
+                        couponList={couponList && couponList.card_list}
+                        reciveCard={this.reciveCard}
+                        getStatus={getStatus}
+                    />
                 </div>
                 <FooterBar active="home"/>
             </div>
@@ -277,7 +370,8 @@ const mapStateToProps = state => {
         userToken: base.get('userToken'),
         banner: home.get('banner'),
         logo: home.get('logo'),
-        nav: home.get('nav')
+        nav: home.get('nav'),
+        coupon: home.get('coupon')
     };
 };
 
@@ -286,7 +380,8 @@ const mapDispatchToProps = {
     showMenu: actionCreator.showMenu,
     setOrder: ActionCreator.setOrderInformation,
     getBanner: homeActionCreator.getBanner,
-    getNav: homeActionCreator.getNav
+    getNav: homeActionCreator.getNav,
+    setCoupon: homeActionCreator.setCoupon
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

@@ -7,6 +7,7 @@ import {connect} from 'react-redux';
 import {Link, Element, scrollSpy, animateScroll} from 'react-scroll';
 import Recommend from './components/Recommend';
 import Evaluate from './components/Evaluate';
+import Coupon from './components/Coupon';
 // import Specification from './components/specification';
 import {shopCartActionCreator as action} from '../../../shop-cart/actions';
 import {baseActionCreator as actionCreator} from '../../../../../redux/baseAction';
@@ -71,17 +72,30 @@ class GoodsDetail extends BaseComponent {
         propsData: this.props,
         specification: [],  // 京东商品参数
         list: [],
-        specificationStatus: true
+        specificationStatus: true,
+        couponStatus: false, // 优惠券modal框
+        isZM: true, // 判断当前是否是中卖
+        couponList: {}, // 优惠券数据
+        getCoupon: [], // 当前优惠券领取状态
+        isDetail: true // 判断页面
     };
 
     componentDidMount() {
         this.init();
+        this.getCoupon();
     }
 
     init = () => {
         this.getGoodsDetail();
         window.addEventListener('scroll', this.handleScroll);
         scrollSpy.update();
+    }
+
+    componentWillUnmount() {
+        // 清除选中sku
+        this.setState({
+            ids: []
+        });
     }
 
     //网页滚动
@@ -139,44 +153,6 @@ class GoodsDetail extends BaseComponent {
         }
     }
 
-    // componentWillReceiveProps(nextProps, value) { //路由跳转时的判断，id有变化就请求
-    //     if (process.env.NATIVE) {
-    //         const id = decodeURI(getUrlParam('id', encodeURI(nextProps.location.search)));
-    //         const {goodId} = this.state;
-    //         if (id !== goodId) {
-    //             this.setState({
-    //                 topSwithe: true,
-    //                 popup: false, //sku是否显示
-    //                 paginationNum: 1,
-    //                 goodsDetail: {}, //详情界面
-    //                 picPath: [], //轮播
-    //                 shop: {}, //  详情商店数据
-    //                 recommend: [], //店铺商品推荐
-    //                 goodsAttr: [],
-    //                 stocks: [],
-    //                 type: '',
-    //                 names: [], //选中商品属性
-    //                 collect: [], //商品收藏状态
-    //                 status: '1', //判断商品是否下架
-    //                 visible: false,
-    //                 text: '',
-    //                 lineStatus: false, //底部商品状态栏
-    //                 ids: [], //选中属性id
-    //                 goodsSku: [], //商品的结果集
-    //                 // shopAddress: '', // 店铺位置
-    //                 lineText: '', //商品状态栏文字
-    //                 pickType: {}, //配送方式
-    //                 selectType: '', //选中配送方式 1快递 2自提
-    //                 clickType: 0, //打开sku的方式 0箭头 1购物车 2立即购买
-    //                 totalNUm: 0, //商品库存,
-    //                 goodId: id
-    //             }, () => {
-    //                 this.init();
-    //             });
-    //         }
-    //     }
-    // }
-
     //获取商品详情
     getGoodsDetail = () => {
         const {goodId} = this.state;
@@ -216,7 +192,8 @@ class GoodsDetail extends BaseComponent {
                         evalute: evalute,
                         hasType: res.data.distribution_mode.data.some(item => item.value === '到店自提'),
                         specification,
-                        ids: res.data.app_type === '3' ? res.data.attr_arr_list[0][0] : []
+                        ids: res.data.app_type === '3' ? res.data.attr_arr_list[0][0] : [],
+                        isZM: res.data.app_type === '2'
                     },
                     () => {
                         this.getGoodsStatus();
@@ -242,18 +219,25 @@ class GoodsDetail extends BaseComponent {
     };
 
     //确定按钮点击
-    confirmSku = (type, ids, names) => {
-        const {clickType} = this.state;
+    confirmSku = (type, ids, names, clickType) => {
+        const {goodsAttr} = this.state;
+        if (ids.length < goodsAttr.length) {
+            showFail('请选择完整的商品属性');
+            return;
+        }
         this.setState({
             selectType: type,
+            clickType,
             ids: ids,
             names,
             popup: false
         }, () => {
-            if (clickType === 1) {
+            console.log(this.state.clickType, '吉萨还得健身卡回答');
+            if (this.state.clickType === 1) {
                 TD.log(TD_EVENT_ID.STORE.ID, TD_EVENT_ID.STORE.LABEL.STORE_HOME);
                 this.addCart();
-            } else if (clickType === 2) {
+            } else if (this.state.clickType === 2) {
+                console.log('暗示健康的会撒娇客户端就看上的');
                 this.emption();
             }
         });
@@ -261,11 +245,12 @@ class GoodsDetail extends BaseComponent {
 
     //添加商品到购物车
     addCart = () => {
-        const {shop, goodsDetail, paginationNum, ids, selectType, status, max} = this.state;
+        const {shop, goodsDetail, paginationNum, ids, selectType, status, max, goodsAttr} = this.state;
+        // console.log('点击了购买', ids);
         if (shop.shoper_open_status === '0' || status === '0' || status === '2') {
             return;
         }
-        if (paginationNum === 0 || ids.length === 0) {
+        if (paginationNum === 0 || ids.length !== goodsAttr.length) {
             this.setState({
                 popup: true,
                 clickType: 1
@@ -580,11 +565,61 @@ class GoodsDetail extends BaseComponent {
         }));
     }
 
+    // 打开优惠券
+    openCoupon = () => {
+        console.log('object');
+        this.setState({
+            couponStatus: true
+        });
+    }
+
+    // 关闭优惠券
+    closeCoupon = () => {
+        this.setState({
+            couponStatus: false
+        });
+    }
+
+    // 领取优惠券
+    useCoupon = (index, no) => {
+        const {getCoupon} = this.state;
+        if (getCoupon[index]) {
+            this.setState({
+                couponStatus: false
+            });
+            return;
+        }
+        const status = [...getCoupon];
+
+        this.fetch(urlCfg.reciveCard, {data: {card_no: no}}).subscribe(res => {
+            if (res && res.status === 0) {
+                this.setState(pre => {
+                    status.splice(index, 1, true);
+                    return {
+                        getCoupon: status
+                    };
+                });
+            }
+        });
+    }
+
+    // 获取优惠券
+    getCoupon = () => {
+        this.fetch(urlCfg.getCoupon, {data: {type: 0}}).subscribe(res => {
+            if (res && res.status === 0) {
+                this.setState({
+                    couponList: res.data,
+                    getCoupon: res.data && Array(res.data.card_num).fill(false)
+                });
+            }
+        });
+    }
+
     render() {
         const {
             topSwithe, popup, paginationNum, ids, maskStatus,
             picPath, goodsDetail, shop, recommend, collect, status, evalute,
-            goodsAttr, stocks, lineStatus, lineText, pickType, selectType, names, hasType, list,
+            goodsAttr, stocks, lineStatus, lineText, isZM, isDetail, couponList, pickType, selectType, names, hasType, list, couponStatus
         } = this.state;
 
         // console.log(specification);
@@ -723,9 +758,11 @@ class GoodsDetail extends BaseComponent {
                             </Flex>
                         </div>
                     </div>
+
                     {/*店铺、商品规格*/}
                     <Evaluate
                         names={names}
+                        isZM={isZM}
                         routeToEvalute={() => this.routeToEvalute(evalute.id)}
                         evalute={evalute}
                         hasType={hasType}
@@ -734,8 +771,8 @@ class GoodsDetail extends BaseComponent {
                         shop={shop}
                         shopH={this.shopH}
                         openSku={this.openSku}
+                        openCoupon={this.openCoupon}
                     />
-
 
                     {/*店铺推荐*/}
                     <Recommend
@@ -756,7 +793,16 @@ class GoodsDetail extends BaseComponent {
                         )
                     } */}
 
-
+                    {/**  优惠券弹框 */}
+                    <Coupon
+                        couponStatus={couponStatus}
+                        closeCoupon={this.closeCoupon}
+                        couponList={couponList && couponList.card_list}
+                        title="领取优惠券"
+                        useCoupon={this.useCoupon}
+                        getCoupon={this.state.getCoupon}
+                        isDetail={isDetail}
+                    />
                     {/*商品详情*/}
                     <div className="recommend-commodity-detail">
                         <div className="currency-detail">
@@ -780,6 +826,7 @@ class GoodsDetail extends BaseComponent {
                     {popup && (
                         <Sku
                             detail={goodsDetail}
+                            isZM={isZM}
                             paginationNum={paginationNum}
                             attributes={goodsAttr}
                             stocks={stocks}

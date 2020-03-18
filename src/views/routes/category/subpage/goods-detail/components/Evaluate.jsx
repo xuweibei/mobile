@@ -11,7 +11,9 @@ export default class Evaluate extends React.PureComponent {
         shopH: PropTypes.func.isRequired,
         openSku: PropTypes.func.isRequired,
         routeToEvalute: PropTypes.func.isRequired,
-        hasType: PropTypes.bool.isRequired
+        hasType: PropTypes.bool.isRequired,
+        isZM: PropTypes.bool.isRequired,
+        openCoupon: PropTypes.func.isRequired
     }
 
     static defaultProps = {
@@ -19,8 +21,8 @@ export default class Evaluate extends React.PureComponent {
     }
 
     render() {
-        const {Element, names, goodsDetail, shop, shopH, openSku, hasType, evalute, routeToEvalute} = this.props;
-        console.log(evalute);
+        const {Element, openCoupon, names, isZM, goodsDetail, shop, shopH, openSku, hasType, evalute, routeToEvalute} = this.props;
+
         return (
             <Element name="evaluate" className="goods-shop">
                 {
@@ -42,6 +44,20 @@ export default class Evaluate extends React.PureComponent {
                                 <div className="select-right">
                                     <span className="icon right-icon"/>
                                 </div>
+                            </div>
+                        </div>
+                    )
+                }
+
+                {
+                    isZM && (
+                        <div className="coupon" onClick={openCoupon}>
+                            <div className="coupon-left">
+                                <span>领劵</span>
+                                <span className="icon icon-scan">满20元可领劵</span>
+                            </div>
+                            <div className="coupin-right">
+                                <span className="icon right-icon"/>
                             </div>
                         </div>
                     )

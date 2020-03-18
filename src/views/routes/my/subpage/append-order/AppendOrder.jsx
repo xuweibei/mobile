@@ -7,6 +7,7 @@ import {myActionCreator as ActionCreator} from '../../actions/index';
 import {shopCartActionCreator} from '../../../shop-cart/actions/index';
 import {baseActionCreator as actionCreator} from '../../../../../redux/baseAction';
 import AppNavBar from '../../../../common/navbar/NavBar';
+import Coupon from '../../../category/subpage/goods-detail/components/Coupon';
 import './AppendOrder.less';
 
 const {appHistory, showFail, getUrlParam, getShopCartInfo, systemApi: {setValue, removeValue, getValue}, native, nativeCssDiff} = Utils;
@@ -47,7 +48,13 @@ class appendOrder extends BaseComponent {
         invoiceAddress: '',
         bankCard: '',
         invoicePhone: '',
-        propsData: this.props
+        propsData: this.props,
+        couponStatus: false, // 优惠券 弹窗
+        isDetail: false, // 【判断页面
+        couponList: {},  // 优惠券数据
+        checkCouponStatus: [], // 选中优惠券状态
+        useCouponStatus: false, // 是否使用户优惠券
+        couponPrice: 0  // 优惠折扣价
     };
 
     componentDidMount() {
@@ -456,8 +463,66 @@ class appendOrder extends BaseComponent {
         return price / 100;
     }
 
+    // 切换优惠券显示
+    changeCouponStatus = () => {
+        this.setState({
+            couponStatus: true
+        });
+    }
+
+    closeCoupon = () => {
+        this.setState({
+            couponStatus: false
+        });
+    }
+
+    // 开启优惠券
+    openCoupon = (shop) => {
+        const goodsId = [];
+        shop.data.forEach(item => {
+            goodsId.push(item.id);
+        });
+        this.getCoupon(Number(shop.shop_id), goodsId.join(','));
+        this.setState({
+            couponStatus: true
+        });
+    }
+
+    // 选择使用优惠券
+    checkCoupon = (index, price) => {
+        const {checkCouponStatus} = this.state;
+        const status = [...checkCouponStatus].map(item => false);
+        this.setState(pre => {
+            status.splice(index, 1, !status[index]);
+            return {
+                checkCouponStatus: status,
+                useCouponStatus: false,
+                couponPrice: price
+            };
+        });
+    }
+
+    // 选择不使用优惠券
+    notUseCoupon = () => {
+        const {checkCouponStatus} = this.state;
+        const status = [...checkCouponStatus].map(item => false);
+        this.setState(pre => ({useCouponStatus: !pre.useCouponStatus, checkCouponStatus: status, couponPrice: 0}));
+    }
+
+    // 获取优惠券
+    getCoupon = (id, ids) => {
+        this.fetch(urlCfg.cardUseList, {data: {shop_no: id, pr: ids}}).subscribe(res => {
+            if (res && res.status === 0) {
+                this.setState({
+                    couponList: res.data.card_list,
+                    checkCouponStatus: Array.from({length: res.data.card_num}).fill(false)
+                });
+            }
+        });
+    }
+
     render() {
-        const {shopInfo, addressInfo, self, currentIndex, textInfo, notAllow, invoiceStatus, invoice, invoiceIndex, num} = this.state;
+        const {shopInfo, addressInfo, couponList, couponPrice, couponStatus, useCouponStatus, checkCouponStatus, self, currentIndex, textInfo, notAllow, invoiceStatus, invoice, invoiceIndex, num} = this.state;
         const {address} = this.props;
         const invoices = JSON.parse(getValue('invoices'));
         const orders = JSON.parse(getValue('order'));
@@ -575,6 +640,12 @@ class appendOrder extends BaseComponent {
                                         </ul>
                                     </div>
                                     <List>
+                                        <List.Item onClick={() => { this.openCoupon(shop) }}>
+                                            <div className="coupon">
+                                                <span>优惠券抵扣</span>
+                                                <span>-{couponPrice}元</span>
+                                            </div>
+                                        </List.Item>
                                         <InputItem
                                             placeholder="请和商家协议一致"
                                             maxLength={50}
@@ -615,6 +686,19 @@ class appendOrder extends BaseComponent {
                         </div>
                     )
                 }
+
+                {/**优惠券 */}
+                <Coupon
+                    couponStatus={couponStatus}
+                    isDetail={this.state.isDetail}
+                    closeCoupon={this.closeCoupon}
+                    checkCoupon={this.checkCoupon}
+                    couponList={couponList}
+                    useCouponStatus={useCouponStatus}
+                    checkCouponStatus={checkCouponStatus}
+                    notUseCoupon={this.notUseCoupon}
+                    title="优惠券"
+                />
 
                 {
                     invoiceStatus && (

@@ -8,7 +8,7 @@ const {errorType} = Utils;
 export function getHomeBanner(action$) {
     return action$.ofType(homeActionTypes.GET_BANNER)
         .switchMap(
-            (action) => XHR.fetch(urlCfg.homeBanner)
+            (action) => XHR.fetch(urlCfg.homeBanner, {data: action.data})
                 .map(res => {
                     if (res.status !== 0) {
                         return errorType(res);
@@ -41,3 +41,19 @@ export function getNav(action$) {
                 })
         );
 }
+
+// export function getCoupon(action$) {
+//     return action$.ofType(homeActionTypes.GET_COUPON)
+//         .switchMap(action => XHR.fetch(urlCfg.getCoupon))
+//         .map(res => {
+//             if (res.status !== 0) {
+//                 return errorType(res);
+//             }
+//             return ({
+//                 type: homeActionTypes.SET_COUPON,
+//                 payload: {
+//                     data: res.data
+//                 }
+//             });
+//         });
+// }
