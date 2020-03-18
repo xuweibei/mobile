@@ -27,6 +27,10 @@ const GoodsDetailPage = Loadable({
     loading: () => null
 });
 
+const CShareCard = Loadable({
+    loader: () => import(/*webpackChunkName: 'hybird'*/'./subpage/goods-detail/cshare'),
+    loading: () => null
+});
 
 const Classify = () =>  (
     <React.Fragment>
@@ -35,6 +39,7 @@ const Classify = () =>  (
         <CacheRoute path="/goodsDetail" cacheKey="GoodsDetailPage" component={GoodsDetailPage}/>
         <CacheRoute path="/evaluate" component={EvaluatePage}/>
         <Route path="/evaluateDetail" component={EvaluateDetailPage}/>
+        <Route path="/cshare-card" component={CShareCard}/>
     </React.Fragment>
 );
 

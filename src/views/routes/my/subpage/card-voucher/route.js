@@ -1,6 +1,6 @@
 //卡券包页面  2020.3.11
 
-import {Route} from 'react-router-dom';
+import CacheRoute from 'react-router-cache-route';
 
 
 const CardVoucherModal = Loadable({
@@ -11,7 +11,7 @@ const CardVoucherModal = Loadable({
 
 const MyCardVoucherModal = () => (
     <React.Fragment>
-        <Route path="/cardVoucher" component={CardVoucherModal}/>
+        <CacheRoute path="/cardVoucher" when="back" cacheKey="OrderPage" component={CardVoucherModal}/>
     </React.Fragment>
 );
 

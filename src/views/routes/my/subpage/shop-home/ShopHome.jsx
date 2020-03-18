@@ -16,6 +16,7 @@ import LazyLoadIndex from '../../../../common/lazy-load/LazyLoad';
 import Top from '../../../../common/top/Top';
 import Nothing from '../../../../common/nothing/Nothing';
 import Animation from '../../../../common/animation/Animation';
+import ShopEnvlope from '../../../../common/shop-envelope';
 import {ListFooter} from '../../../../common/list-footer';
 import './ShopHome.less';
 
@@ -35,7 +36,7 @@ class ShopHome extends BaseComponent {
         };
         this.state = {
             dataSource,
-            height: document.documentElement.clientHeight - (window.isWX ? window.rem * 2.7 : window.rem * 2.8),
+            height: document.documentElement.clientHeight - (window.isWX ? window.rem * 2.7 : window.rem * 3.4), //如果有优惠券信息就变成4.3
             page: 1,
             pageCount: -1,
             currentState: decodeURI(getUrlParam('business', encodeURI(props.location.search))) === '1' ? 'business' : '', //判断当前点击状态对应的页面展示
@@ -47,6 +48,7 @@ class ShopHome extends BaseComponent {
             hasMore: false, //底部请求状态文字显示情况
             business: decodeURI(getUrlParam('business', encodeURI(props.location.search))) === '1', //表示从发现页面过来的，需要直接展示商家信息
             propsData: props,
+            shopCardShow: false, //是否显示红包列表
             isJingDong: false //判断是否是京东商品过来的
         };
     }
@@ -120,8 +122,8 @@ class ShopHome extends BaseComponent {
                         dataSource: prevState.dataSource.cloneWithRows(this.temp.stackData),
                         pageCount: res.data.page_count,
                         shopOnsInfo: res.data.shop_info,
-                        isJingDong: res.data.shop_info.is_jdshop === 1,
-                        height: res.data.shop_info.is_jdshop === 1 ? (document.documentElement.clientHeight - (window.isWX ? window.rem * 2 : window.rem * 2.8)) : (document.documentElement.clientHeight - (window.isWX ? window.rem * 2.7 : window.rem * 3.5))
+                        isJingDong: res.data.shop_info.is_jdshop === 1
+                        // height: res.data.shop_info.is_jdshop === 1 ? (document.documentElement.clientHeight - (window.isWX ? window.rem * 2 : window.rem * 2.8)) : (document.documentElement.clientHeight - (window.isWX ? window.rem * 2.7 : window.rem * 3.5))
                     }
                 ));
             }
@@ -192,9 +194,16 @@ class ShopHome extends BaseComponent {
         return arr;
     }
 
+    changeBox = () => {
+        this.setState((prevState) => ({
+            shopCardShow: !prevState.shopCardShow
+        }));
+    }
+
+
     //全部商品
     structure = () => {
-        const {height, dataSource, refreshing, hasMore, isJingDong} = this.state;
+        const {height, dataSource, refreshing, hasMore, isJingDong, shopCardShow} = this.state;
         const row = (item) => (
             <div className="goods">
                 <div className="goods-name" onClick={() => this.allgoods(item.id)}>
@@ -235,6 +244,13 @@ class ShopHome extends BaseComponent {
         );
         return (
             <div data-component="shopHome" data-role="page" className="all-merchandise">
+                {/* <div className="shop-coupon">
+                    <div className="tips">
+                        <div/>
+                        <p>您有优惠券待领取哦！</p>
+                    </div>
+                    <span className="icon" onClick={this.changeBox}>立即领取</span>
+                </div> */}
                 <div className="all-goods">
                     {
                         dataSource.getRowCount() > 0 ? (
@@ -262,6 +278,10 @@ class ShopHome extends BaseComponent {
                             />
                         ) : <Nothing text={FIELD.No_Commodity}/>
                     }
+                    {
+                        shopCardShow && <ShopEnvlope changeBox={this.changeBox}/>
+                    }
+
                 </div>
             </div>
         );
@@ -269,7 +289,10 @@ class ShopHome extends BaseComponent {
 
     //底部tab
     onTabChange = (data) => {
-        const {shopOnsInfo} = this.state;
+        const {shopOnsInfo, shopCardShow} = this.state;
+        if (shopCardShow && data !== 'category') {
+            this.changeBox();
+        }
         this.setState({
             business: false
         }, () => {

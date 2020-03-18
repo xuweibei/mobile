@@ -50,6 +50,10 @@ const consumerOrder = [
     {
         text: '二维码',
         className: 'icon qr-code'
+    },
+    {
+        text: '优惠券',
+        className: 'icon coupon'
     }
 ];
 
@@ -123,7 +127,8 @@ class My extends BaseComponent {
                 [1, '/browseHistory'],
                 // [2, `/possessEvaluate?userType=${myInfo.info.iden_type}`],
                 [2, '/possessEvaluate'],
-                [3, '/invitation']
+                [3, '/invitation'],
+                [4, '/cardVoucher/dl']
             ]);
         }
         appHistory.push(url.get(index));
@@ -312,7 +317,7 @@ class My extends BaseComponent {
                             <Grid
                                 data={(myInfo && myInfo.info.iden_type === '2') ? shopOrder : consumerOrder}
                                 // columnNum={(myInfo && myInfo.info.iden_type === '2') ? 3 : 3}
-                                columnNum={4}
+                                columnNum={consumerOrder.length}
                                 hasLine={false}
                                 activeStyle={false}
                                 renderItem={dataItem => (
@@ -325,7 +330,6 @@ class My extends BaseComponent {
                             />
                         </div>
                     </div>
-                    {/* <Button onClick={() => this.jumpRouter('/cardVoucher')}>卡券包</Button> */}
 
                     <div className="setUpShop" onClick={() => this.jumpRouter((myInfo && myInfo.info.iden_type === '1') ? '/selectType' : myInfo.info.url.split('#')[1])}>
                         <img src={myInfo && (userInfo.shop_url)} alt=""/>

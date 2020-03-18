@@ -62,6 +62,11 @@ class PaymentCompleted extends BaseComponent {
         appHistory.reduction();
     }
 
+    //前往优惠券页面
+    goToCoupon = () => {
+        appHistory.replace('/cardVoucher');
+    }
+
     render() {
         const {location: {search}} = this.props;
         const allPrice = decodeURI(getUrlParam('allPrice', encodeURI(search)));
@@ -73,15 +78,16 @@ class PaymentCompleted extends BaseComponent {
                 str = item.title;
             }
         });
+        const isJD = false;
         return (
             <div data-component="Payment-completed" data-role="page" className="Payment-completed">
                 <AppNavBar goBackModal={this.seeOrderInfo} rightShow title="支付成功"/>
                 <div className="finish">
                     <img src={require('../../../../../../assets/images/finish.png')} alt=""/>
-                    <div className="finish-bottom">支付成功</div>
+                    <div className="finish-bottom">订单支付成功</div>
                 </div>
                 <div className="bill">
-                    <div className="frame">
+                    <div className={isJD ? 'frame-jd' : 'frame-success'}>
                         <div className="bill-top">
                             <span>记账量</span>
                             <span>+{deposit || getValue('orderInfo').all_deposit}</span>
@@ -96,7 +102,21 @@ class PaymentCompleted extends BaseComponent {
                         </div>
                     </div>
                 </div>
-                {/* <div className="advise">我们将尽快安排发货，请您保持通讯畅通， 以便快递小哥能第一时间联系到您</div>  余丽让隐藏*/}
+                {
+                    !isJD && (
+                        <div className="red-env">
+                            <div className="env-money"><span>￥</span>10</div>
+                            <div className="env-main">
+                                <p>恭喜您获得10元购物券</p>
+                                <span>请到<span className="my-coupon icon" onClick={this.goToCoupon}>我的优惠券</span>中查看</span>
+                            </div>
+                        </div>
+                    )
+                }
+                <div className="remider">
+                    <span>温馨提示：</span>
+                    <p>中卖网不会以订单异常、系统升级为由要求您点击任何网址链接进行退款操作。</p>
+                </div>
                 <div className="instructions">
                     <div className="see" onClick={this.seeOrderInfo}>查看订单</div>
                     <div className="return" onClick={this.goToHome}>返回首页</div>
