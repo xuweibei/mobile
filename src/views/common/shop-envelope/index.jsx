@@ -1,101 +1,73 @@
-
 import './index.less';
 import PropTypes from 'prop-types';
 
-const mokeDate = [
-    {money: '1', arrive: '3', time: '2019-12-03至2023-12-03', state: '新到'},
-    {
-        money: '234',
-        arrive: '45634',
-        time: '2010-12-03至2063-12-03',
-        state: '将过期'
-    },
-    {
-        money: '89',
-        arrive: '5464',
-        time: '2019-16-03至2023-92-03',
-        state: '新到'
-    },
-    {money: '1', arrive: '3', time: '2019-12-03至2023-12-03', state: '新到'},
-    {
-        money: '234',
-        arrive: '45634',
-        time: '2010-12-03至2063-12-03',
-        state: '将过期'
-    },
-    {
-        money: '89',
-        arrive: '5464',
-        time: '2019-16-03至2023-92-03',
-        state: '新到'
-    },
-
-    {money: '1', arrive: '3', time: '2019-12-03至2023-12-03', state: '新到'},
-    {
-        money: '234',
-        arrive: '45634',
-        time: '2010-12-03至2063-12-03',
-        state: '将过期'
-    },
-    {
-        money: '89',
-        arrive: '5464',
-        time: '2019-16-03至2023-92-03',
-        state: '新到'
-    },
-
-    {money: '1', arrive: '3', time: '2019-12-03至2023-12-03', state: '新到'},
-    {
-        money: '234',
-        arrive: '45634',
-        time: '2010-12-03至2063-12-03',
-        state: '将过期'
-    },
-    {
-        money: '89',
-        arrive: '5464',
-        time: '2019-16-03至2023-92-03',
-        state: '新到'
-    }
-];
-
 class ShopEnvlope extends React.PureComponent {
     static propTypes = {
-        changeBox: PropTypes.func.isRequired
-    }
+        changeBox: PropTypes.func.isRequired,
+        cardData: PropTypes.array.isRequired,
+        getCardProps: PropTypes.func.isRequired,
+        userCard: PropTypes.func.isRequired
+    };
 
+    //关闭弹框
     changeBox = () => {
         this.props.changeBox();
-    }
+    };
+
+    //立即领取
+    getCard = no => {
+        this.props.getCardProps(no);
+    };
+
+    //立即使用
+    userCard = value => {
+        this.props.userCard(value);
+    };
 
     render() {
+        const {cardData} = this.props;
         return (
             <div className="shop-env-wrap">
                 <div className="shop-env-main">
                     <div className="shop-env-title">
-                        <p>领取红包</p>
+                        <p>领取优惠券</p>
                         <span className="icon" onClick={this.changeBox}/>
                     </div>
                     <div className="shop-env-list">
-                        {
-                            mokeDate.map(item => (
-                                <div className="card-view">
-                                    <div className="card-money">
-                                        <p>
-                                            <span>￥</span>10
-                                        </p>
-                                        <span className="full">满50可用</span>
-                                    </div>
-                                    <div className="card-main">
-                                        <p>全站满10使用</p>
-                                        <p>限实物商品</p>
-                                        <p>2016-2019</p>
-                                        {<span className="card-receive">立即领取</span>}
-                                        {/* {<span className="card-use">去使用</span>} */}
-                                    </div>
+                        {cardData.map(item => (
+                            <div className="card-view" key={item.card_no}>
+                                <div className="card-money">
+                                    <p>
+                                        <span>￥</span>
+                                        {item.price}
+                                    </p>
+                                    <span className="full">
+                                        {item.price_limit}
+                                    </span>
                                 </div>
-                            ))
-                        }
+                                <div className="card-main">
+                                    <p>{item.card_title}</p>
+                                    <p>{item.limit_tip}</p>
+                                    <p>{item.term_validity}</p>
+                                    {item.btnCode === 1 ? (
+                                        <span
+                                            className="card-receive"
+                                            onClick={() => this.getCard(item.card_no)
+                                            }
+                                        >
+                                            立即领取
+                                        </span>
+                                    ) : (
+                                        <span
+                                            className="card-use"
+                                            onClick={() => this.userCard(item)}
+                                        >
+                                            去使用
+                                        </span>
+                                    )}
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>

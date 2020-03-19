@@ -289,6 +289,7 @@ class Edit extends BaseComponent {
                         <div>UID:{userInfo && userInfo.no}</div>
                     </div>
                 </div>
+                <Button onClick={() => appHistory.push('/cshare-card')}>C享</Button>
                 <List className="my-list">{this.initListData()}</List>
                 {/* <Button
                     className="logOut"

@@ -4,6 +4,7 @@
 import {ListView, PullToRefresh} from 'antd-mobile';
 import PropTypes from 'prop-types';
 import Animation from '../animation/Animation';
+import {ListFooter} from '../list-footer';
 import './MyListView.less';
 
 class MyListView extends React.PureComponent {
@@ -48,15 +49,6 @@ class MyListView extends React.PureComponent {
         });
     }
 
-    //渲染列表底部
-    renderFooter = () => {
-        const {loding, more} = this.props;
-        if (loding) {
-            return <p>正在加载...</p>;
-        }
-        return more ? <p>没有更多了</p> : null;
-    };
-
     onEndReached = () => {
         this.props.onEndReached();
     }
@@ -66,7 +58,7 @@ class MyListView extends React.PureComponent {
     }
 
     render() {
-        const {data, height, initSize, size, row, pullAble, refreshing} = this.props;
+        const {data, height, initSize, size, row, pullAble, refreshing, more} = this.props;
         return (
             <ListView
                 dataSource={this.dataSource.cloneWithRows(data)}//为dataSource赋值
@@ -76,7 +68,7 @@ class MyListView extends React.PureComponent {
                 renderRow={row}//从dataSource传入一行数据，返回用这行数据渲染的组件
                 onEndReachedThreshold={50} //调用onEndReached之前的临界值，单位是像素
                 onEndReached={this.onEndReached}
-                renderFooter={this.renderFooter}
+                renderFooter={() => ListFooter(more)}
                 {...pullAble && {
                     pullToRefresh: <PullToRefresh
                         refreshing={refreshing}

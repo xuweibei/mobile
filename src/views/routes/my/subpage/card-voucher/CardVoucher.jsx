@@ -7,8 +7,8 @@ import Animation from '../../../../common/animation/Animation';
 import './CardVoucher.less';
 
 
-const {urlCfg, showSuccess} = Configs;
-const {appHistory} = Utils;
+const {urlCfg} = Configs;
+const {appHistory, showSuccess} = Utils;
 const tabsData = [
     {title: '待领取'},
     {title: '未使用'},

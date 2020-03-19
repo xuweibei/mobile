@@ -25,7 +25,7 @@ export default class Search extends BaseComponent {
             native('closeKeyboard');
             const timer = setTimeout(() => {
                 clearTimeout(timer);
-                appHistory.push(`/shop-detail?flag=${true}&keywords=${encodeURI(keywords)}`);
+                appHistory.push(`/shop-detail?keywords=${encodeURI(keywords)}`);
             }, 100);
         } else {
             appHistory.goBack();
@@ -57,6 +57,22 @@ export default class Search extends BaseComponent {
         });
     };
 
+    // 键盘搜索键事件
+    keyDown = (e) => {
+        if (e.keyCode === 13) {
+            const {textStatus, keywords} = this.state;
+            if (textStatus) {
+                if (keywords.length === 0) {
+                    this.setState({
+                        textStatus: false
+                    });
+                } else {
+                    appHistory.push(`/shop-detail?keywords=${encodeURI(keywords)}`);
+                }
+            }
+        }
+    }
+
     render() {
         const {history, textStatus} = this.state;
         return (
@@ -67,6 +83,7 @@ export default class Search extends BaseComponent {
                         type="text"
                         placeholder="请输入商品名称"
                         clear
+                        onKeyDown={this.keyDown}
                         onChange={(val, e) => this.getKeyWords(val, e)}
                     >
                         <Icon type="search"/>

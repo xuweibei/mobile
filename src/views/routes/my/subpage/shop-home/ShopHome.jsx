@@ -3,6 +3,7 @@
  */
 import {ListView, PullToRefresh} from 'antd-mobile';
 import {connect} from 'react-redux';
+import {dropByCacheKey} from 'react-router-cache-route';
 import ShopHomes from '../../../../common/shop-home-nav/ShopHome';
 import {baseActionCreator as actionCreator} from '../../../../../redux/baseAction';
 import {ShopFooter} from '../../../../common/shop-footer/ShopFooter';
@@ -22,7 +23,14 @@ import './ShopHome.less';
 
 const {FIELD} = Constants;
 const {urlCfg} = Configs;
-const {appHistory, getUrlParam, showInfo, native} = Utils;
+const {appHistory, getUrlParam, showInfo, native, showSuccess, moneyDot} = Utils;
+
+const heightArr = [
+    3.5, //( (115+50)*2+20 )/100
+    2.5, //( 115*2+20 )/100
+    4.4 //( (115+50)*2+20 + 90)/100
+];//商品列表高度集合
+
 class ShopHome extends BaseComponent {
     constructor(props) {
         super(props);
@@ -31,12 +39,11 @@ class ShopHome extends BaseComponent {
         });
         this.temp = {
             stackData: [],
-            isLoading: true,
             pagesize: 5
         };
         this.state = {
             dataSource,
-            height: document.documentElement.clientHeight - (window.isWX ? window.rem * 2.7 : window.rem * 3.4), //如果有优惠券信息就变成4.3
+            height: document.documentElement.clientHeight - (window.isWX ? window.rem * 2.7 : window.rem * heightArr[0]), //如果有优惠券信息就变成4.3
             page: 1,
             pageCount: -1,
             currentState: decodeURI(getUrlParam('business', encodeURI(props.location.search))) === '1' ? 'business' : '', //判断当前点击状态对应的页面展示
@@ -45,11 +52,13 @@ class ShopHome extends BaseComponent {
             hasPage: true, //有无更多数据
             lat: '',
             lon: '',
-            hasMore: false, //底部请求状态文字显示情况
+            hasMore: true, //底部请求状态文字显示情况
             business: decodeURI(getUrlParam('business', encodeURI(props.location.search))) === '1', //表示从发现页面过来的，需要直接展示商家信息
             propsData: props,
             shopCardShow: false, //是否显示红包列表
-            isJingDong: false //判断是否是京东商品过来的
+            isJingDong: false, //判断是否是京东商品过来的
+            isCardShow: false, // 是否有红包可以领取
+            cardData: [] //红包储存
         };
     }
 
@@ -58,6 +67,9 @@ class ShopHome extends BaseComponent {
         this.getShop(shoppingId);
         this.getShopModel(shoppingId);
     }
+
+    //计算商品列的高度
+    calculationHeight = (wx = 2.7, h) => document.documentElement.clientHeight - (window.isWX ? window.rem * wx : window.rem * h)
 
     static getDerviedStateFromProps(nextProps, prevState) {
         return {
@@ -95,39 +107,88 @@ class ShopHome extends BaseComponent {
     getShop = (id, noShowLoading = false) => {
         const {setshoppingId} = this.props;
         const {page} = this.state;
-        this.temp.isLoading = true;
-        this.setState({
-            hasMore: true
-        });
         setshoppingId(id);
         this.fetch(urlCfg.allGoodsInTheShop, {data: {id, page, pagesize: this.temp.pagesize}}, noShowLoading).subscribe(res => {
-            this.temp.isLoading = false;
             if (res && res.status === 0) {
-                this.setState({
-                    refreshing: false
-                });
-                res.data.page = page;
+                const {data} = res;
+
                 if (page === 1) {
-                    this.temp.stackData = res.data.data;
+                    this.temp.stackData = data.data;
                 } else {
-                    this.temp.stackData = this.temp.stackData.concat(res.data.data);
+                    this.temp.stackData = this.temp.stackData.concat(data.data);
                 }
-                if (page >= res.data.page_count) {
+
+                if (page >= data.page_count) {
                     this.setState({
                         hasMore: false
                     });
                 }
+
                 this.setState((prevState) => (
                     {
                         dataSource: prevState.dataSource.cloneWithRows(this.temp.stackData),
-                        pageCount: res.data.page_count,
-                        shopOnsInfo: res.data.shop_info,
-                        isJingDong: res.data.shop_info.is_jdshop === 1
-                        // height: res.data.shop_info.is_jdshop === 1 ? (document.documentElement.clientHeight - (window.isWX ? window.rem * 2 : window.rem * 2.8)) : (document.documentElement.clientHeight - (window.isWX ? window.rem * 2.7 : window.rem * 3.5))
+                        pageCount: data.page_count,
+                        shopOnsInfo: data.shop_info,
+                        isJingDong: data.shop_info.is_jdshop === 1,
+                        refreshing: false,
+                        height: data.shop_info.is_jdshop === 1 ? this.calculationHeight('', heightArr[1]) : this.calculationHeight('', heightArr[0])
                     }
-                ));
+                ), () => {
+                    //如果不是京东商品则进行请求，获取红包信息
+                    if (data.shop_info.is_jdshop !== 1) {
+                        this.getCard(id);
+                    }
+                });
             }
         });
+    }
+
+    //获取红包信息
+    getCard = (id) => {
+        this.fetch(urlCfg.cardShow, {data: {type: 2, id}}).subscribe(res => {
+            if (res.status === 0) {
+                res.data.card_list.forEach(item => {
+                    item.btnCode = 1; //设置按钮 ， 1为未领取 2为已领取 默认为 1
+                });
+                this.setState({
+                    isCardShow: res.data.card_num > 0,
+                    cardData: res.data.card_list,
+                    height: res.data.card_num > 0 ? this.calculationHeight('', heightArr[2]) : this.calculationHeight('', heightArr[0])
+                });
+            }
+        });
+    }
+
+    //红包，点击立即领取
+    getCardProps = (no) => {
+        this.fetch(urlCfg.cardReceive, {data: {card_no: no}}, true).subscribe(res => {
+            if (res.status === 0) {
+                showSuccess('领取成功');
+                const {cardData} = this.state;
+                cardData.forEach(item => {
+                    if (item.card_no === no) {
+                        item.btnCode = 2;
+                    }
+                });
+                this.setState({
+                    cardData: [...cardData]
+                });
+            }
+        });
+    }
+
+    //立即使用
+    userCard = value => {
+        if (value.types === 1) { //如果是商城平台券，则跳转到分类页面
+            dropByCacheKey('CategoryListPage');
+            appHistory.push(`/categoryList?cardNo=${value.card_no}&title=${'优惠券可用商品'}`);
+        } else if (value.types === 3) {
+            appHistory.push(`/goodsDetail?id=${value.jump_id}`);
+        } else {
+            this.setState({
+                shopCardShow: false
+            });
+        }
     }
 
     //商品详情
@@ -163,12 +224,13 @@ class ShopHome extends BaseComponent {
 
     //上拉刷新
     onEndReached = () => {
-        const {page, pageCount} = this.state;
+        const {page, pageCount, hasMore} = this.state;
         const shoppingId = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
-        if (this.temp.isLoading) return;
+        if (!hasMore) return;
         if (pageCount > page) {
             this.setState((pervState) => ({
-                page: pervState.page + 1
+                page: pervState.page + 1,
+                hasMore: true
             }), () => {
                 this.getShop(shoppingId);
             });
@@ -189,21 +251,16 @@ class ShopHome extends BaseComponent {
         });
     };
 
-    moneyDot = (money) => {
-        const arr = money.toString().split('.');
-        return arr;
-    }
-
+    //切换红包列表是否显示
     changeBox = () => {
         this.setState((prevState) => ({
             shopCardShow: !prevState.shopCardShow
         }));
     }
 
-
     //全部商品
     structure = () => {
-        const {height, dataSource, refreshing, hasMore, isJingDong, shopCardShow} = this.state;
+        const {height, dataSource, refreshing, hasMore, isJingDong, shopCardShow, isCardShow, cardData} = this.state;
         const row = (item) => (
             <div className="goods">
                 <div className="goods-name" onClick={() => this.allgoods(item.id)}>
@@ -215,7 +272,7 @@ class ShopHome extends BaseComponent {
                     </div>
                     <div className="goods-information">
                         <div className="goods-explain">{item.title}</div>
-                        <span className="btn-keep">C米：{item.deposit}</span>
+                        <span className="shop-c">C米：{item.deposit}</span>
                         <div className="payment">
                             <span>销量：{item.num_sold}</span>
                             <span className="payment-r">￥{item.price_original}</span>
@@ -236,21 +293,25 @@ class ShopHome extends BaseComponent {
                     </div>
                     <div className="goods-information">
                         <div className="goods-explain">{item.title}</div>
-                        <span className="btn-keep btn-jd">C米：{item.deposit}</span>
-                        <div className="price">￥{this.moneyDot(item.price)[0]}.<span>{this.moneyDot(item.price)[1]}</span></div>
+                        <span className="shop-c btn-jd">C米：{item.deposit}</span>
+                        <div className="price-jd">￥{moneyDot(item.price)[0]}.<span>{moneyDot(item.price)[1]}</span></div>
                     </div>
                 </div>
             </div>
         );
         return (
             <div data-component="shopHome" data-role="page" className="all-merchandise">
-                {/* <div className="shop-coupon">
-                    <div className="tips">
-                        <div/>
-                        <p>您有优惠券待领取哦！</p>
-                    </div>
-                    <span className="icon" onClick={this.changeBox}>立即领取</span>
-                </div> */}
+                {
+                    isCardShow && (
+                        <div className="shop-coupon">
+                            <div className="tips">
+                                <div/>
+                                <p>您有优惠券待领取哦！</p>
+                            </div>
+                            <span className="icon" onClick={this.changeBox}>立即领取</span>
+                        </div>
+                    )
+                }
                 <div className="all-goods">
                     {
                         dataSource.getRowCount() > 0 ? (
@@ -258,9 +319,7 @@ class ShopHome extends BaseComponent {
                                 dataSource={dataSource}
                                 initialListSize={this.temp.pagesize}
                                 renderRow={isJingDong ? jdRow : row}
-                                style={{
-                                    height: height
-                                }}
+                                style={{height}}
                                 pageSize={this.temp.pagesize}
                                 onEndReachedThreshold={100}
                                 onEndReached={this.onEndReached}
@@ -279,7 +338,14 @@ class ShopHome extends BaseComponent {
                         ) : <Nothing text={FIELD.No_Commodity}/>
                     }
                     {
-                        shopCardShow && <ShopEnvlope changeBox={this.changeBox}/>
+                        shopCardShow && (
+                            <ShopEnvlope
+                                cardData={cardData}
+                                changeBox={this.changeBox}
+                                getCardProps={this.getCardProps}
+                                userCard={this.userCard}
+                            />
+                        )
                     }
 
                 </div>

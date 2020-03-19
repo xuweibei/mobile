@@ -36,7 +36,7 @@ export default class PaySuccess extends BaseComponent {
                 <div className="number">
                     <span className="number-left">核销验证码</span>
                     <span className="number-right">
-                        <span className="digit">{orderDetail.white_off}{'19619173JAX'}</span>
+                        <span className="digit">{orderDetail.white_off}</span>
                     </span>
                 </div>
 

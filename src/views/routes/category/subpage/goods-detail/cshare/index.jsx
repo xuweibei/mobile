@@ -40,7 +40,7 @@ export default class CShareCard extends BaseComponent {
     //获取数据
     getInfoData = no => {
         this.fetch(urlCfg.cardDetail, {
-            data: {card_no: 'null'}
+            data: {card_no: no}
         }).subscribe(res => {
             if (res.status === 0) {
                 res.data.firstPr = res.data.first_pr;
@@ -200,7 +200,7 @@ export default class CShareCard extends BaseComponent {
                             </span>
                         </div>
                         <div className="main-volume">
-                            记账量：{firstPr && firstPr.deposit}
+                            C米：{firstPr && firstPr.deposit}
                         </div>
                     </div>
                     <p

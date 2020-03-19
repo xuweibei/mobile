@@ -8,6 +8,10 @@ const {urlCfg} = Configs;
 const {appHistory, native} = Utils;
 
 export default class Search extends BaseComponent {
+    componentDidMount() {
+        this.searchList();
+    }
+
     state = {
         history: null, //历史记录
         textStatus: false, //右边文字状态
@@ -42,7 +46,7 @@ export default class Search extends BaseComponent {
 
     //热门搜索和历史搜索跳转
     switchTo = (val) => {
-        appHistory.push(`/consumer-search?keywords=${val}`);
+        appHistory.push(`/self-list?&keywords=${encodeURI(val)}`);
     };
 
     //获取输入框文字
@@ -53,16 +57,33 @@ export default class Search extends BaseComponent {
         });
     };
 
+    // 键盘搜索键事件
+    keyDown = (e) => {
+        if (e.keyCode === 13) {
+            const {textStatus, keywords} = this.state;
+            if (textStatus) {
+                if (keywords.length === 0) {
+                    this.setState({
+                        textStatus: false
+                    });
+                } else {
+                    appHistory.push(`/self-list?&keywords=${encodeURI(keywords)}`);
+                }
+            }
+        }
+    }
+
     render() {
         const {history, textStatus} = this.state;
         return (
-            <div data-component="search" data-role="page" className="search">
+            <div data-component="search" data-role="page" className="self-search">
                 <div className="search-box ">
                     <InputItem
                         className=""
                         type="text"
                         placeholder="请输入商品名称"
                         clear
+                        onKeyDown={this.keyDown}
                         onChange={(val) => this.getKeyWords(val)}
                     >
                         <Icon type="search"/>
@@ -73,13 +94,14 @@ export default class Search extends BaseComponent {
                     >{textStatus ? '搜索' : '取消'}
                     </div>
                 </div>
+                {/* <div className="search-title">历史搜索</div> */}
                 <div className="search-popular aroundBlank">
-                    {/* <div className="search-title">历史搜索</div> */}
+                    <div className="search-title">历史搜索</div>
                     <div className="search-popular-content">
                         {
                             history && history.map((item, index) => (
                                 <Button
-                                    className="auxiliaryButton gray"
+                                    className="auxiliary-button gray"
                                     activeStyle={false}
                                     key={index.toString()}
                                     onClick={() => this.switchTo(item.keyword)}

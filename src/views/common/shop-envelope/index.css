@@ -1,3 +1,13 @@
+@keyframes myfirst {
+  0% {
+    left: 0px;
+    bottom: -1000px;
+  }
+  100% {
+    left: 0px;
+    bottom: 96px;
+  }
+}
 .shop-env-wrap {
   width: 100%;
   position: fixed;
@@ -10,8 +20,8 @@
 .shop-env-wrap .shop-env-main {
   background: #fff;
   position: fixed;
-  left: 0;
-  bottom: 100px;
+  bottom: 96px;
+  animation: myfirst 1s ease 0s 1;
   width: 100%;
   border-radius: 10px 10px 0px 0px;
 }
@@ -30,7 +40,7 @@
   right: 32px;
 }
 .shop-env-wrap .shop-env-main .shop-env-title span::after {
-  content: '\E67c';
+  content: "\E67c";
   font-size: 30px;
 }
 .shop-env-wrap .shop-env-main .shop-env-list {
@@ -40,7 +50,6 @@
   margin: 0 25px;
 }
 .shop-env-wrap .shop-env-main .shop-env-list .card-view {
-  width: 686px;
   height: 186px;
   margin-bottom: 24px;
   overflow: hidden;
@@ -52,9 +61,11 @@
 }
 .shop-env-wrap .shop-env-main .shop-env-list .card-view .card-money {
   position: relative;
-  margin-left: 31px;
+  width: 170px;
   padding-top: 22px;
+  text-align: center;
   color: #ff2d51;
+  margin-left: 8px;
 }
 .shop-env-wrap .shop-env-main .shop-env-list .card-view .card-money p {
   font-size: 68px;
@@ -69,13 +80,15 @@
   font-family: PingFang SC;
 }
 .shop-env-wrap .shop-env-main .shop-env-list .card-view .card-money .full {
+  display: inline-block;
+  min-width: 110px;
   font-size: 26px;
   font-weight: 400;
   color: #333333;
-  letter-spacing: 36;
+  white-space: nowrap;
 }
 .shop-env-wrap .shop-env-main .shop-env-list .card-view .card-main {
-  margin-left: 55px;
+  margin-left: 24px;
   margin-top: 34px;
   position: relative;
   width: 68%;
@@ -113,7 +126,11 @@
 .shop-env-wrap .shop-env-main .shop-env-list .card-view .card-main :nth-child(2) {
   font-size: 26px;
   color: #999999;
-  margin: 8px 0 13px;
+  width: 278px;
+  margin: 15px 0 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .shop-env-wrap .shop-env-main .shop-env-list .card-view .card-main :nth-child(3) {
   font-size: 24px;
