@@ -125,7 +125,6 @@ class NavBar extends React.PureComponent {
             }
             // return null;
         }
-        console.log(rightSearch, '技术的健康撒谎的抠脚大汉撒 ');
         return (
             (window.isWX && status === '1') ? null : (
                 <div className="wrapTabNav">

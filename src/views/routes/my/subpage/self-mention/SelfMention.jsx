@@ -115,6 +115,10 @@ class ReDetail extends BaseComponent {
                             pageList: result
                         });
                     }
+                } else {
+                    this.setState({
+                        hasMore: false
+                    });
                 }
             });
     }
