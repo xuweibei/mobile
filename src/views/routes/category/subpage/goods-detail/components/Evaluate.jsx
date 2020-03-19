@@ -12,29 +12,19 @@ export default class Evaluate extends React.PureComponent {
         openSku: PropTypes.func.isRequired,
         routeToEvalute: PropTypes.func.isRequired,
         hasType: PropTypes.bool.isRequired,
+        isZM: PropTypes.bool.isRequired,
+        openCoupon: PropTypes.func.isRequired,
         createStar: PropTypes.func.isRequired,
         returnLev: PropTypes.func.isRequired
-    };
+    }
 
     static defaultProps = {
         names: []
     };
 
     render() {
-        const {
-            Element,
-            names,
-            goodsDetail,
-            shop,
-            shopH,
-            openSku,
-            hasType,
-            evalute,
-            routeToEvalute,
-            createStar,
-            returnLev
-        } = this.props;
-        console.log(evalute);
+        const {Element, openCoupon, names, isZM, goodsDetail, shop, shopH, openSku, hasType, evalute, routeToEvalute, createStar, returnLev} = this.props;
+
         return (
             <Element name="evaluate" className="goods-shop">
                 {goodsDetail.app_type !== '3' && (
@@ -59,6 +49,20 @@ export default class Evaluate extends React.PureComponent {
                     </div>
                 )}
 
+                {
+                    isZM && (
+                        <div className="coupon" onClick={openCoupon}>
+                            <div className="coupon-left">
+                                <span>领劵</span>
+                                <span className="icon icon-scan">满20元可领劵</span>
+                            </div>
+                            <div className="coupin-right">
+                                <span className="icon right-icon"/>
+                            </div>
+                        </div>
+                    )
+                }
+
                 {goodsDetail.app_type === '2'
                     && goodsDetail.effective_type === '0' && (
                     <div className="serve">
@@ -66,23 +70,6 @@ export default class Evaluate extends React.PureComponent {
                         <div className="their">
                             {hasType && <span>门店可自提</span>}
                             <span className="dolt"/>
-                        </div>
-                    </div>
-                )}
-
-                {goodsDetail.app_type === '2'
-                    && goodsDetail.effective_type !== '0' && (
-                    <div className="serve">
-                        <div className="waiter">有效时间</div>
-                        <div className="their">
-                            <div className="nonsupport">
-                                {goodsDetail.effective_type}
-                            </div>
-                            <div className="validity">
-                                {goodsDetail.if_holiday === '0'
-                                    ? '仅工作日有效'
-                                    : '节假日通用(节假日包含周六、周日)'}
-                            </div>
                         </div>
                     </div>
                 )}

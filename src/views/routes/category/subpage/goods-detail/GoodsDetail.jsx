@@ -7,6 +7,8 @@ import {connect} from 'react-redux';
 import {Link, Element, scrollSpy, animateScroll} from 'react-scroll';
 import Recommend from './components/Recommend';
 import Evaluate from './components/Evaluate';
+import Coupon from './components/Coupon';
+// import Specification from './components/specification';
 import Specification from './components/specification';
 import {shopCartActionCreator as action} from '../../../shop-cart/actions';
 import {baseActionCreator as actionCreator} from '../../../../../redux/baseAction';
@@ -92,11 +94,17 @@ class GoodsDetail extends BaseComponent {
         propsData: this.props,
         specification: [], // 京东商品参数
         list: [],
-        specificationStatus: true
+        specificationStatus: true,
+        couponStatus: false, // 优惠券modal框
+        isZM: true, // 判断当前是否是中卖
+        couponList: {}, // 优惠券数据
+        getCoupon: [], // 当前优惠券领取状态
+        isDetail: true // 判断页面
     };
 
     componentDidMount() {
         this.init();
+        this.getCoupon();
     }
 
     init = () => {
@@ -104,6 +112,13 @@ class GoodsDetail extends BaseComponent {
         window.addEventListener('scroll', this.handleScroll);
         scrollSpy.update();
     };
+
+    componentWillUnmount() {
+        // 清除选中sku
+        this.setState({
+            ids: []
+        });
+    }
 
     //网页滚动
     handleScroll = e => {
@@ -216,10 +231,10 @@ class GoodsDetail extends BaseComponent {
                                 item => item.value === '到店自提'
                             ),
                             specification,
-                            ids:
-                                res.data.app_type === '3'
-                                    ? res.data.attr_arr_list[0][0]
-                                    : []
+                            ids: res.data.app_type === '3'
+                                ? res.data.attr_arr_list[0][0]
+                                : [],
+                            isZM: res.data.app_type === '2'
                         },
                         () => {
                             this.getGoodsStatus();
@@ -246,48 +261,36 @@ class GoodsDetail extends BaseComponent {
     };
 
     //确定按钮点击
-    confirmSku = (type, ids, names) => {
-        const {clickType} = this.state;
-        this.setState(
-            {
-                selectType: type,
-                ids: ids,
-                names,
-                popup: false
-            },
-            () => {
-                if (clickType === 1) {
-                    TD.log(
-                        TD_EVENT_ID.STORE.ID,
-                        TD_EVENT_ID.STORE.LABEL.STORE_HOME
-                    );
-                    this.addCart();
-                } else if (clickType === 2) {
-                    this.emption();
-                }
+    confirmSku = (type, ids, names, clickType) => {
+        const {goodsAttr} = this.state;
+        if (ids.length < goodsAttr.length) {
+            showFail('请选择完整的商品属性');
+            return;
+        }
+        this.setState({
+            selectType: type,
+            clickType,
+            ids: ids,
+            names,
+            popup: false
+        }, () => {
+            if (this.state.clickType === 1) {
+                TD.log(TD_EVENT_ID.STORE.ID, TD_EVENT_ID.STORE.LABEL.STORE_HOME);
+                this.addCart();
+            } else if (this.state.clickType === 2) {
+                this.emption();
             }
-        );
+        });
     };
 
     //添加商品到购物车
     addCart = () => {
-        const {
-            shop,
-            goodsDetail,
-            paginationNum,
-            ids,
-            selectType,
-            status,
-            max
-        } = this.state;
-        if (
-            shop.shoper_open_status === '0'
-            || status === '0'
-            || status === '2'
-        ) {
+        const {shop, goodsDetail, paginationNum, ids, selectType, status, max, goodsAttr} = this.state;
+        // console.log('点击了购买', ids);
+        if (shop.shoper_open_status === '0' || status === '0' || status === '2') {
             return;
         }
-        if (paginationNum === 0 || ids.length === 0) {
+        if (paginationNum === 0 || ids.length !== goodsAttr.length) {
             this.setState({
                 popup: true,
                 clickType: 1
@@ -681,31 +684,61 @@ class GoodsDetail extends BaseComponent {
         return ele;
     };
 
+    // 打开优惠券
+    openCoupon = () => {
+        console.log('object');
+        this.setState({
+            couponStatus: true
+        });
+    }
+
+    // 关闭优惠券
+    closeCoupon = () => {
+        this.setState({
+            couponStatus: false
+        });
+    }
+
+    // 领取优惠券
+    useCoupon = (index, no) => {
+        const {getCoupon} = this.state;
+        if (getCoupon[index]) {
+            this.setState({
+                couponStatus: false
+            });
+            return;
+        }
+        const status = [...getCoupon];
+
+        this.fetch(urlCfg.reciveCard, {data: {card_no: no}}).subscribe(res => {
+            if (res && res.status === 0) {
+                this.setState(pre => {
+                    status.splice(index, 1, true);
+                    return {
+                        getCoupon: status
+                    };
+                });
+            }
+        });
+    }
+
+    // 获取优惠券
+    getCoupon = () => {
+        this.fetch(urlCfg.getCoupon, {data: {type: 0}}).subscribe(res => {
+            if (res && res.status === 0) {
+                this.setState({
+                    couponList: res.data,
+                    getCoupon: res.data && Array(res.data.card_num).fill(false)
+                });
+            }
+        });
+    }
+
     render() {
         const {
-            topSwithe,
-            popup,
-            paginationNum,
-            ids,
-            maskStatus,
-            picPath,
-            goodsDetail,
-            shop,
-            recommend,
-            collect,
-            status,
-            evalute,
-            goodsAttr,
-            stocks,
-            lineStatus,
-            lineText,
-            pickType,
-            selectType,
-            names,
-            hasType,
-            list,
-            specification,
-            specificationStatus
+            topSwithe, popup, paginationNum, ids, maskStatus,
+            picPath, goodsDetail, shop, recommend, collect, status, evalute,
+            goodsAttr, stocks, lineStatus, lineText, specification, specificationStatus, isZM, isDetail, couponList, pickType, selectType, names, hasType, list, couponStatus
         } = this.state;
 
         // console.log(specification);
@@ -862,9 +895,11 @@ class GoodsDetail extends BaseComponent {
                             </div>
                         )}
                     </div>
+
                     {/*店铺、商品规格*/}
                     <Evaluate
                         names={names}
+                        isZM={isZM}
                         routeToEvalute={() => this.routeToEvalute(evalute.id)}
                         evalute={evalute}
                         hasType={hasType}
@@ -873,6 +908,7 @@ class GoodsDetail extends BaseComponent {
                         shop={shop}
                         shopH={this.shopH}
                         openSku={this.openSku}
+                        openCoupon={this.openCoupon}
                         createStar={this.createStar}
                         returnLev={this.returnLev}
                     />
@@ -886,6 +922,16 @@ class GoodsDetail extends BaseComponent {
                         />
                     )}
 
+                    {/**  优惠券弹框 */}
+                    <Coupon
+                        couponStatus={couponStatus}
+                        closeCoupon={this.closeCoupon}
+                        couponList={couponList && couponList.card_list}
+                        title="领取优惠券"
+                        useCoupon={this.useCoupon}
+                        getCoupon={this.state.getCoupon}
+                        isDetail={isDetail}
+                    />
                     {goodsDetail && goodsDetail.app_type === '3' && (
                         <Specification
                             Element={Element}
@@ -925,6 +971,7 @@ class GoodsDetail extends BaseComponent {
                     {popup && (
                         <Sku
                             detail={goodsDetail}
+                            isZM={isZM}
                             paginationNum={paginationNum}
                             attributes={goodsAttr}
                             stocks={stocks}

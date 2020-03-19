@@ -13,6 +13,7 @@ const {navColorF, navColorR} = Constants;
 class NavBar extends React.PureComponent {
     static propTypes = {
         goBackModal: PropTypes.func,
+        goSearch: PropTypes.func,
         nativeGoBack: PropTypes.bool,
         title: PropTypes.string,
         rightShow: PropTypes.bool,
@@ -51,7 +52,9 @@ class NavBar extends React.PureComponent {
         show: true,
         backgroundColor: '',
         rightExplainClick: () => {},
-        status: '1'
+        // color: '',
+        status: '1',
+        goSearch: () => {}
     };
 
     constructor(props) {
@@ -115,14 +118,14 @@ class NavBar extends React.PureComponent {
     }
 
     render() {
-        const {title, rightShow, redBackground, rightSearch, show, rightExplain, rightEdit, search, isEdit, backgroundColor, status} = this.props;
+        const {title, rightShow, redBackground, goSearch, rightSearch, show, rightExplain, rightEdit, search, isEdit, backgroundColor, status} = this.props;
         if (window.isWX) {
             if (title) {
                 document.title = title;
             }
             // return null;
         }
-
+        console.log(rightSearch, '技术的健康撒谎的抠脚大汉撒 ');
         return (
             (window.isWX && status === '1') ? null : (
                 <div className="wrapTabNav">
@@ -174,7 +177,7 @@ class NavBar extends React.PureComponent {
                                     {
                                         rightSearch && ( //是否展示 搜索图标
                                             <div className="rightSearch">
-                                                <div className="icon-rightSearch icon"/>
+                                                <div className="icon-rightSearch icon" onClick={goSearch}/>
                                             </div>
                                         )
                                     }

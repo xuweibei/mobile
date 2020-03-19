@@ -10,7 +10,8 @@ const initState = {
     banner: null,
     logo: null,
     nav: null,
-    count: 0
+    count: 0,
+    coupon: null
 };
 
 /**
@@ -30,6 +31,10 @@ export default {
         [ActionsTypes.SET_NAV](state, action) {
             const {nav} = action.payload;
             return state.set('nav', nav);
+        },
+        [ActionsTypes.SET_COUPON](state, action) {
+            const {data} = action.payload;
+            return state.set('coupon', data);
         }
     })
 };

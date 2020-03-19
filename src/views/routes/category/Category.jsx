@@ -60,12 +60,16 @@ class Category extends BaseComponent {
         appHistory.push({pathname: `/categoryList?id=${el.id}&title=${el.text}&keywords=${''}&flag=${false}`});
     };
 
+    goSearch = () => {
+        appHistory.push('/search');
+    }
+
     render() {
         const {categoryData} = this.props;
         const {currentIndex} = this.state;
         return (
             <div data-component="category" data-role="page" className={classNames('category', {WX: window.isWX})}>
-                <AppNavBar title="分类" show={false}/>
+                <AppNavBar title="分类" show={false} rightSearch goSearch={this.goSearch}/>
                 <div className="category-main content-box">
                     {categoryData && (
                         <Tabs

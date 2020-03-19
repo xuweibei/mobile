@@ -151,7 +151,7 @@ export default class CShareCard extends BaseComponent {
 
     //立即领取
     getTheCard = (no, id) => {
-        this.fetch(urlCfg.cardReceive, {data: {card_no: no}}).subscribe(
+        this.fetch(urlCfg.reciveCard, {data: {card_no: no}}).subscribe(
             res => {
                 if (res.status === 0) {
                     showSuccess(res.message);

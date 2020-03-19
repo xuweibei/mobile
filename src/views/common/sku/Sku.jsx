@@ -11,6 +11,7 @@ class Sku extends React.PureComponent {
     //组件API类型
     static propTypes = {
         visible: PropTypes.bool, //sku是否显示
+        isZM: PropTypes.bool.isRequired, //sku是否显示
         detail: PropTypes.object, //商品详情
         attributes: PropTypes.array, //商品属性
         stocks: PropTypes.array, //商品库存
@@ -293,7 +294,7 @@ class Sku extends React.PureComponent {
     };
 
     //提交选中的商品属性
-    onSubmit=() => {
+    onSubmit=(clickType) => {
         const {selectType, Ids, selectedTemp} = this.state;
         const {goods, type, onSubmit} = this.props;
         //配送方式不能为空
@@ -303,9 +304,9 @@ class Sku extends React.PureComponent {
         }
         const valueArr = Object.values(selectedTemp).map(item => item.value);
         if (goods.length === 0) {
-            onSubmit(selectType, Ids, valueArr); //商品详情
+            onSubmit(selectType, Ids, valueArr, clickType); //商品详情
         } else {
-            onSubmit(selectType, Ids, goods); //购物车
+            onSubmit(selectType, Ids, goods, clickType); //购物车
         }
     };
 
@@ -323,7 +324,7 @@ class Sku extends React.PureComponent {
 
     render() {
         const {selectedTemp, selectType, submitalbe, price, originalPrice, deposit, stock} = this.state;
-        const {type, attributes, cover, visible, onClose} = this.props;
+        const {type, attributes, cover, visible, onClose, isZM} = this.props;
         return (
             <Modal
                 className="panel-mask"
@@ -393,14 +394,23 @@ class Sku extends React.PureComponent {
                             </div>
                             {this.getExtraElement(stock)}
                         </div>
-                        <Button
-                            style={{width: '93%', margin: 'auto'}}
-                            onClick={submitalbe
-                                ? this.onSubmit
-                                : () => this.showToast(selectedTemp)
-                            }
-                        >确定
-                        </Button>
+
+                        {isZM ? (
+                            <div className="sku-btn">
+                                <div onClick={() => this.onSubmit(1)}>加入购物车</div>
+                                <div onClick={() => this.onSubmit(2)}>立即购买</div>
+                            </div>
+                        ) : (
+                            <Button
+                                style={{width: '93%', margin: 'auto'}}
+                                onClick={submitalbe
+                                    ? this.onSubmit
+                                    : () => this.showToast(selectedTemp)
+                                }
+                            >确定
+                            </Button>
+                        )}
+
                     </div>
 
                 </div>

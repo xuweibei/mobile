@@ -186,7 +186,8 @@ export const urlCfg = {
     protocolsCase: href.apiPath + '/clause-get', //协议接口
     getAgreement: href.apiPath + '/get-agreement', // 获取协议
     getCardList: href.apiPath + '/card-wallet-list', //获取卡券包列表
-    cardReceive: href.apiPath + '/card-receive', // 领取卡券
     cardDetail: href.apiPath + '/card-detail', //C享过来的商品红包详情
-    cardShow: href.apiPath + '/card-show' //进入店铺判断是否有红包
+    getCoupon: href.apiPath + '/card-show', // 首页优惠券列表
+    reciveCard: href.apiPath + '/card-receive',  // 领取红包
+    cardUseList: href.apiPath + '/card-use-list'  // 领取红包
 };

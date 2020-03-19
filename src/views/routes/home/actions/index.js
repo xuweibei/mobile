@@ -7,7 +7,9 @@ const homeActionTypes = Utils.keyMirror({
     SET_BANNER: '',
     GET_NAV: '',
     SET_NAV: '',
-    ADD_COUNT: ''
+    ADD_COUNT: '',
+    // GET_COUPON: '',
+    SET_COUPON: ''
 });
 
 
@@ -42,11 +44,30 @@ function _setNav(nav) {
     };
 }
 
+// function _getCoupon(data) {
+//     return {
+//         type: homeActionTypes.GET_COUPON,
+//         payload: {
+//             data
+//         }
+//     };
+// }
+function _setCoupon(data) {
+    return {
+        type: homeActionTypes.SET_COUPON,
+        payload: {
+            data
+        }
+    };
+}
+
 const homeActionCreator = {
     getBanner: _getBanner,
     setBanner: _setBanner,
     setNav: _setNav,
-    getNav: _getNav
+    getNav: _getNav,
+    // getCoupon: _getCoupon,
+    setCoupon: _setCoupon
 };
 
 

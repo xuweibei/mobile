@@ -305,7 +305,7 @@ class CategoryListView extends BaseComponent {
                                         className="enter-right"
                                         onClick={(e) => this.goToShop(e, item.shop_id)}
                                     >
-                                    进店
+                                        进店
                                         <span className="icon"/>
                                     </span>
                                 </div>

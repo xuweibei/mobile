@@ -5,7 +5,41 @@
     width: 100%;
     background: @white;
     box-sizing: border-box;
+     .coupon {
+          display: flex;
+          justify-content: space-between;
+          line-height: 60px;
+          .coupon-left {
+              span {
+                  display: inline-block;
+              }
+              span:first-child {
+                  font-size: 20px;
+                  color: #333;
+                  margin-right: 80px;
+                  font-weight: @font-weight-bold;
+              }
+              span:last-child {
+                font-size: 20px;
+                color: #FF2D51;
+                font-weight: bold;
+              }
+              span:last-child::before {
+                content: '\e62d';
+                font-size: 25px!important;
+                margin-right: 7px;
+            }
+          }
+      }
+      .right-icon {
+        line-height: 60px;
+    }
 
+    .right-icon:before {
+        content: '\e643';
+        font-size: 30px !important;
+        color: #A0A0A0;
+    }
     .icon-tiny:before {
         content: '\E637';
         color: @duckling-yellow;
