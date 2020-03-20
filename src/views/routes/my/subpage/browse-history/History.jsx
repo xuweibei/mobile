@@ -179,7 +179,7 @@ class History extends BaseComponent {
                             </div>
                             <div className="goods-row-right-third">
                                 <span>{item.shopName}</span>
-                                <span className="icon icon-arrow" onClick={(e) => this.goToShopHome(e, item.shop_id)}>进店</span>
+                                <span className="icon icon-arrow" onClick={(e) => (checkout ? this.onChangeCheck(item) : this.goToShopHome(e, item.shop_id))}>进店</span>
                                 <span>￥{item.price}</span>
                             </div>
                         </div>
@@ -390,7 +390,7 @@ class History extends BaseComponent {
                             />
                         </div>
                     )}
-                    {this.renderListItem(item, true)}
+                    {this.renderListItem(item, isEdit)}
                 </span>
             ))
         );
