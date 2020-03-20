@@ -904,7 +904,7 @@ class MySearch extends BaseComponent {
                     ? item.pr_list.map(items => (
                         <div
                             className="goods"
-                            key={item.id}
+                            key={items.id}
                             onClick={ev => this.goToOrderDetail(
                                 item.id,
                                 item.return_status,
