@@ -177,9 +177,15 @@ class MyOrder extends BaseComponent {
                         hasMore: false
                     });
                 }
+                const aaa =  new ListView.DataSource({
+                    rowHasChanged: (row1, row2) => row1 !== row2
+                });
+                // const arr =
+                const oldAry = [...temp.stackData];
+                const newAry = oldAry.map(item => Object.assign({}, item));
                 this.setState(prevState => ({
-                    dataSource: prevState.dataSource.cloneWithRows(
-                        temp.stackData
+                    dataSource: aaa.cloneWithRows(
+                        newAry
                     ),
                     pageCount: res.pageCount,
                     refreshing: false
