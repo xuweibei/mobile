@@ -157,11 +157,21 @@ class MyOrder extends BaseComponent {
                 if (page === 1) {
                     temp.stackData = res.list;
                 } else {
-                    temp.stackData = temp.stackData.concat(res.list);
+                    const arr = res.list.filter(val => {
+                        let result = true;
+                        temp.stackData.forEach(v => {
+                            if (v.id === val.id) {
+                                result = false;
+                            }
+                        });
+                        return result;
+                    });
+                    temp.stackData = temp.stackData.concat(arr);
+                    console.log(temp.stackData);
                     //数组去重，这里的主要目的是为了，当点击立即领取之后，会出现一个位置的空缺，数据库会将这条数据移除
                     //后面的数据会补上来，这时，请求当页的数据，会将补上来的那条数据请求过来，不过也会因此多请求重复的数据
                     //所以去重就可以达到将新数据请求过来的目的
-                    const obj = {};
+                    /*const obj = {};
                     let result = [];
                     result = temp.stackData.reduce((item, next) => {
                         if (!obj[next.id]) {
@@ -170,7 +180,7 @@ class MyOrder extends BaseComponent {
                         }
                         return item;
                     }, []);
-                    temp.stackData = result;
+                    temp.stackData = result;*/
                 }
                 if (page >= res.pageCount) {
                     this.setState({
@@ -181,11 +191,11 @@ class MyOrder extends BaseComponent {
                     rowHasChanged: (row1, row2) => row1 !== row2
                 });
                 // const arr =
-                const oldAry = [...temp.stackData];
-                const newAry = oldAry.map(item => Object.assign({}, item));
+                /*const oldAry = [...temp.stackData];
+                const newAry = oldAry.map(item => Object.assign({}, item));*/
                 this.setState(prevState => ({
                     dataSource: aaa.cloneWithRows(
-                        newAry
+                        [...temp.stackData]
                     ),
                     pageCount: res.pageCount,
                     refreshing: false
@@ -895,7 +905,7 @@ class MyOrder extends BaseComponent {
             refreshing
         } = this.state;
         const row = item => (
-            <div className="shop-lists" onClick={this.closeButton}>
+            <div className="shop-lists" onClick={this.closeButton} key={item.id}>
                 <div
                     className="shop-name"
                     onClick={() => this.goShopHome(item.shop_id)}
@@ -927,7 +937,7 @@ class MyOrder extends BaseComponent {
                     ? item.pr_list.map(items => (
                         <div
                             className="goods"
-                            key={item.id}
+                            key={items.id}
                             onClick={ev => this.goToOrderDetail(
                                 item.id,
                                 item.return_status,
