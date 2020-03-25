@@ -3,6 +3,7 @@
 .goods-detail {
     // touch-action:none;
     touch-action: pan-y;
+    position: relative;
     position: absolute;
     top: 0;
     right: 0;
@@ -318,9 +319,13 @@
         }
     }
 
+    .detail-img > div {
+        max-width: 100%;
+    }
     //商品详情图片
     .detail-img {
         // padding: 0 30px 30px;
+        max-width: 750px !important;
         img {
             max-width: 750px;
         }
@@ -329,7 +334,14 @@
         width: 100%;
         background: @white;
         overflow-wrap: break-word;
-
+        table {
+            // max-width: 750px;
+            tr {
+                padding-right: 30px;
+            }
+            // padding-right: 30px;
+            width: 100%;
+        }
         .ssd-module-wrap {
             width: 100% !important;
 
@@ -402,7 +414,7 @@
         position: fixed;
         bottom: -10px;
         left: 0;
-        width: 100%;
+        width: 750px;
         height: 110px;
         background: @white;
         padding: 0 @padding-wingBlank;
