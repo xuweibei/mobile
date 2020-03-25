@@ -7,6 +7,7 @@ import {baseActionCreator as actionCreator} from '../../../../../redux/baseActio
 import Nothing from '../../../../common/nothing/Nothing';
 import LazyLoad from '../../../../common/lazy-load/LazyLoad';
 import AppNavBar from '../../../../common/navbar/NavBar';
+import {ListFooter} from '../../../../common/list-footer';
 import './History.less';
 
 const {urlCfg} = Configs;
@@ -48,7 +49,7 @@ class History extends BaseComponent {
         page: 1, //当前选中tab页码
         pageCount: -1, //当前选中tab总页数
         isLoading: false, //是否在上拉加载时显示提示
-        hasMore: false, //是否有数据可请求
+        hasMore: true, //是否有数据可请求
         isEdit: false, //底部编辑菜单是否显示
         checkedIds: [] //存放选中的行id
     };
@@ -69,6 +70,10 @@ class History extends BaseComponent {
         }).subscribe(res => {
             if (res && res.status === 0 && res.data.length > 0) {
                 this.handleResult(res);
+            } else {
+                this.setState({
+                    hasMore: false
+                });
             }
         });
     }
@@ -97,9 +102,9 @@ class History extends BaseComponent {
             // isEdit: window.isWX
         }), () => {
             // console.log(this.state.data);
-            if (page < this.state.pageCount) {
+            if (page >= this.state.pageCount) {
                 this.setState({
-                    hasMore: true
+                    hasMore: false
                 });
             }
         });
@@ -118,7 +123,7 @@ class History extends BaseComponent {
             page: 1,
             pageCount: -1,
             isLoading: false,
-            hasMore: false,
+            hasMore: true,
             checkedIds: [],
             isEdit: false
         }, () => {
@@ -129,12 +134,10 @@ class History extends BaseComponent {
     //上拉加载列表回调，
     onEndReached = () => {
         const {hasMore} = this.state;
-        if (!hasMore) {
-            return;
-        }
+        if (!hasMore) return;
         this.setState(prevState => ({
             isLoading: true,
-            hasMore: false,
+            hasMore: true,
             page: prevState.page + 1
         }), () => {
             this.getHistoryList();
@@ -142,14 +145,14 @@ class History extends BaseComponent {
     };
 
     //根据当前tab判断渲染样式
-    renderListItem = (item) => {
+    renderListItem = (item, checkout) => {
         const {tabKey, isEdit} = this.state;
         return (
             tabKey === 0
                 ? (
                     <div
                         className={`goods-row${isEdit ? '' : ' unedit'}`}
-                        onClick={() => this.goToGoodsDetail(item.pr_id)}
+                        onClick={() => (checkout ? this.onChangeCheck(item) : this.goToGoodsDetail(item.pr_id))}
                     >
                         <div className="goods-row-left">
                             <LazyLoad key={item.picpath} src={item.picpath}/>
@@ -190,7 +193,7 @@ class History extends BaseComponent {
                         <div className="shop-row">
                             <div
                                 className="shop-row-second"
-                                onClick={(e) => this.goToShopHome(e, item.shop_id)}
+                                onClick={(e) => (checkout ? this.onChangeCheck(item) : this.goToShopHome(e, item.shop_id))}
                             >
                                 <div className="shop-row-left">
                                     <img
@@ -248,15 +251,6 @@ class History extends BaseComponent {
         }
         return arr;
     }
-
-    //渲染列表底部
-    renderFooter = () => {
-        const {isLoading, hasMore} = this.props;
-        if (isLoading) {
-            return <p>正在加载</p>;
-        }
-        return hasMore ? <p>加载完成</p> : null;
-    };
 
     //返回键回调
     goBackModal = () => {
@@ -372,7 +366,7 @@ class History extends BaseComponent {
             page: 1,
             pageCount: -1,
             isLoading: false,
-            hasMore: false,
+            hasMore: true,
             isEdit: false,
             checkedIds: []
         }, () => {
@@ -381,7 +375,7 @@ class History extends BaseComponent {
     };
 
     render() {
-        const {data, tabKey, isEdit, checkedIds} = this.state;
+        const {data, tabKey, isEdit, checkedIds, hasMore} = this.state;
         //滚动容器高度
         const height = document.documentElement.clientHeight - (window.isWX ? window.rem * 1.07 : window.rem * 1.95);
         //每行渲染样式
@@ -396,7 +390,7 @@ class History extends BaseComponent {
                             />
                         </div>
                     )}
-                    {this.renderListItem(item)}
+                    {this.renderListItem(item, true)}
                 </span>
             ))
         );
@@ -438,7 +432,7 @@ class History extends BaseComponent {
                                     renderRow={row}
                                     onEndReachedThreshold={50}
                                     onEndReached={this.onEndReached}
-                                    renderFooter={this.renderFooter}
+                                    renderFooter={() => ListFooter(hasMore)}
                                 />
                             </React.Fragment>
                         ) : (

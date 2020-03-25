@@ -223,7 +223,7 @@ export function moneyDot(money) {
 
 //设置tab颜色 1 =  #ff2d51 ; 2 = #F20C00;
 export function navColor(obj) {
-    const routerArr = ['myOrder', 'selfMention'];
+    const routerArr = ['myOrder', 'selfMention', 'shop-detail', 'self-list'];
     const routerPassWordArr = ['password'];
     let onOff = false;
     if (obj) {

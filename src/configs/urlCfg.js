@@ -185,6 +185,8 @@ export const urlCfg = {
     getQrCode: href.apiPath + '/wx-miniqr', //获取开店二维码
     protocolsCase: href.apiPath + '/clause-get', //协议接口
     getAgreement: href.apiPath + '/get-agreement', // 获取协议
+    getCardList: href.apiPath + '/card-wallet-list', //获取卡券包列表
+    cardDetail: href.apiPath + '/card-detail', //C享过来的商品红包详情
     getCoupon: href.apiPath + '/card-show', // 首页优惠券列表
     reciveCard: href.apiPath + '/card-receive',  // 领取红包
     cardUseList: href.apiPath + '/card-use-list'  // 领取红包

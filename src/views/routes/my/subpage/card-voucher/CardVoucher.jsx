@@ -7,8 +7,8 @@ import Animation from '../../../../common/animation/Animation';
 import './CardVoucher.less';
 
 
-const {urlCfg, showSuccess} = Configs;
-const {appHistory} = Utils;
+const {urlCfg} = Configs;
+const {appHistory, showSuccess} = Utils;
 const tabsData = [
     {title: '待领取'},
     {title: '未使用'},
@@ -137,7 +137,7 @@ export default class CardVoucher extends BaseComponent {
 
     //点击立即领取
     getCardReceive = (no) => {
-        this.fetch(urlCfg.cardReceive, {data: {card_no: no}}, true).subscribe(res => {
+        this.fetch(urlCfg.reciveCard, {data: {card_no: no}}, true).subscribe(res => {
             if (res.status === 0) {
                 showSuccess('领取成功');
                 temp.stackData = temp.stackData.filter(item => item.card_no !== no);

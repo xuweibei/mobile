@@ -26,7 +26,7 @@ class ReDetail extends BaseComponent {
         this.state = {
             refreshing: false, //是否在下拉刷新时显示指示器
             isLoading: false, //是否在上拉加载时显示提示
-            hasMore: false, //是否有数据可请求
+            hasMore: true, //是否有数据可请求
             status: 0, //tab状态
             page: 1, //列表第几页
             pageSize: 10, //每页多少条
@@ -86,10 +86,16 @@ class ReDetail extends BaseComponent {
     //获取订单列表信息
     getList = (drawCircle = false) => {
         //drawCircle 是否显示转圈圈动画 false 不显示  true 显示
-        const {pageSize, pageCount, page, status} = this.state;
+        const {pageSize, pageCount, page, status, pageList} = this.state;
         this.fetch(urlCfg.mallSelfOrder, {data: {page, pagesize: pageSize, pageCount, status}}, drawCircle)
             .subscribe(res => {
                 if (res && res.status === 0) {
+                    //判断是否为最后一页
+                    if (page >= res.pageCount) {
+                        this.setState({
+                            hasMore: false
+                        });
+                    }
                     if (page === 1) {
                         this.setState({
                             refreshing: false,
@@ -97,10 +103,22 @@ class ReDetail extends BaseComponent {
                             pageCount: res.pageCount
                         });
                     } else {
-                        this.setState(prevState => ({
-                            pageList: prevState.pageList.concat(res.list)
-                        }));
+                        const obj = {};
+                        const result = pageList.concat(res.list).reduce((item, next) => {
+                            if (!obj[next.id]) {
+                                item.push(next);
+                                obj[next.id] = true;
+                            }
+                            return item;
+                        }, []);
+                        this.setState({
+                            pageList: result
+                        });
                     }
+                } else {
+                    this.setState({
+                        hasMore: false
+                    });
                 }
             });
     }
@@ -141,16 +159,11 @@ class ReDetail extends BaseComponent {
 
     //上拉列表回调函数
     onEndReached = () => {
-        const {pageCount, page} = this.state;
-        //判断是否为最后一页
-        if (page >= pageCount) {
-            this.setState({
-                hasMore: true
-            });
-            return;
-        }
+        const {hasMore} = this.state;
+        if (!hasMore) return;
         this.setState(prevState => ({
-            page: prevState.page + 1
+            page: prevState.page + 1,
+            hasMore: true
         }), () => {
             this.getList();
         });
@@ -174,10 +187,9 @@ class ReDetail extends BaseComponent {
                     .subscribe(res => {
                         if (res && res.status === 0) {
                             showInfo(Feedback.Cancel_Success);
-                            this.setState({
-                                page: 1,
-                                pageCount: -1
-                            }, () => {
+                            this.setState((prevState) => ({
+                                pageList: prevState.pageList.filter(item => item.id !== orderId)
+                            }), () => {
                                 this.getList();
                             });
                         }
@@ -205,10 +217,9 @@ class ReDetail extends BaseComponent {
                     .subscribe(res => {
                         if (res && res.status === 0) {
                             showInfo(Feedback.Del_Success);
-                            this.setState({
-                                page: 1,
-                                pageCount: -1
-                            }, () => {
+                            this.setState((prevState) => ({
+                                pageList: prevState.pageList.filter(item => item.id !== id)
+                            }), () => {
                                 this.getList();
                             });
                         }
@@ -361,14 +372,14 @@ class ReDetail extends BaseComponent {
                         {/*订单完成，等待评价*/}
                         {((item.status === '3') && !item.return_status) && (
                             <div className="buttons">
-                                <span className="look-button delete" style={{border: nativeCssDiff() ? '1PX solid #666' : '0.02rem solid #666'}} onClick={(e) => this.deleteOrder(e, item.id)}>删除</span>
+                                <span className="look-button delete" onClick={(e) => this.deleteOrder(e, item.id)}>删除</span>
                                 <div className="evaluate-button" onClick={(e) => this.promptlyAssess(e, item.id)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>待评价</div>
                             </div>
                         )}
                         {/*订单完成*/}
                         {(item.status === '4' && !item.return_status) && (
                             <div className="buttons">
-                                <span className="look-button delete" onClick={(e) => this.deleteOrder(e, item.id)} style={{border: nativeCssDiff() ? '1PX solid #666' : '0.02rem solid #666'}}>删除</span>
+                                <span className="look-button delete" onClick={(e) => this.deleteOrder(e, item.id)} >删除</span>
                                 <div className="evaluate-button" onClick={(e) => this.skipDetail(e, item.id)} style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.02rem solid #ff2d51'}}>查看详情</div>
                             </div>
                         )}

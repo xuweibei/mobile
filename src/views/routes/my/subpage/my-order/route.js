@@ -105,8 +105,8 @@ const OrderModalOther = () => (
         <Route path="/logistics" component={Logistics}/> {/* 我的 物流*/}
         <Route path="/myComplain" component={MyComplain}/> {/* 我要投诉 */}
         <Route path="/applyDrawback" component={ApplyDrawback}/> {/* 修改申请*/}
-        <Route path="/shop-search" component={ShopSearch}/> {/*商店搜索*/}
-        <Route path="/shop-detail" component={shopDetail}/> {/*商店搜索详情*/}
+        <Route path="/shop-search" component={ShopSearch}/> {/*商品搜索*/}
+        <Route path="/shop-detail" component={shopDetail}/> {/*商品搜索详情*/}
     </React.Fragment>
 );
 

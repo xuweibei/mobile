@@ -74,8 +74,8 @@ class PossessEvaluate extends BaseComponent {
             pageCountToBe: -1,
             tabkey: props.tabValue || 0, //tab状态
             refreshing: false, //是否显示刷新状态
-            height: document.documentElement.clientHeight - (window.isWX ? window.rem * 1.08 : window.rem * 2),
-            heightAlready: document.documentElement.clientHeight - (window.isWX ? window.rem * 2.98 : window.rem * 4.06), //已评价的列表高
+            height: document.documentElement.clientHeight - (window.isWX ? window.rem * 1.08 : window.rem * 1.96),
+            heightAlready: document.documentElement.clientHeight - (window.isWX ? window.rem * 2.98 : window.rem * 4.07), //已评价的列表高
             arrChecked: arr, //已评价按钮状态切换集合
             userType: decodeURI(getUrlParam('userType', encodeURI(this.props.location.search))), //用户身份
             hasMore: false, //底部请求状态文字显示情况
@@ -363,10 +363,7 @@ class PossessEvaluate extends BaseComponent {
                             onRefresh={this.onRefresh}
                             damping={70}
                             indicator={{
-                                // activate: <Animation ref={ref => { this.Animation = ref }}/>,
-                                // deactivate: ' ',
-                                // release: <Animation ref={ref => { this.Animation = ref }}/>
-                                // finish: <Animation ref={ref => { this.Animation = ref }}/>
+                                release: <Animation ref={ref => { this.Animation = ref }}/>
                             }}
                         />
                     )}

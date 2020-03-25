@@ -1,13 +1,6 @@
 @import "~style";
 
 .online-transaction{
-    .navbar{
-        height:0.88rem;
-        background: @fiery-red;
-    }
-    .nav-title{
-        color: @white!important;
-    }
     .tabs{
         overflow:hidden;
         position:fixed;
@@ -16,8 +9,14 @@
         width:100%;
         z-index:3;
         .am-tabs-default-bar-tab{
-            border-right:0;
+            border-right: 1px solid @to-light-gray;
+            // .hairline('right', @to-light-gray);
+            height: 60px;
+            margin-top: 12px;
             color: @darker-black;
+        }
+        .am-tabs-default-bar-tab:nth-child(6) {
+            border-right: none!important;
         }
         .shop-list{
             background-color: @back-color;
@@ -31,11 +30,16 @@
             width: 36px !important;
             height: 8px;
             background: @fiery-red;
-            margin-left: 55px;
+            margin-left: 60px;
+            margin-bottom: 10px;
+            border-radius: 50px;
         }
         .am-tabs-default-bar-top{
             height: 90px;
             box-shadow: 2px 0 18px #FF9692;
+        }
+        .am-tabs-tab-bar-wrap{
+            //padding: 20px 0;
         }
         .am-tabs-pane-wrap{
             overflow-y: unset;
@@ -49,6 +53,15 @@
         .am-list-body::before,.am-list-body::after {
             height: 0!important;
         }
+
+        .am-tabs-default-bar-content > .am-tabs-default-bar-tab:last-child {
+
+        }
+    }
+    .general-other{
+        .am-tabs-default-bar-tab{
+            border-right: 1PX solid @to-light-gray;
+        }
     }
     .price {
 /*        flex: 1;*/
@@ -57,6 +70,10 @@
         white-space:nowrap;
         width: 126px;
         text-align: right;
+        font-size: 30px;
+        .samll-money{
+            font-size: 24px;
+        }
     }
     .shop-lists .goods .goods-right {
         width: 400px;
@@ -76,7 +93,7 @@
         border-radius: 20px;
         background: @white;
         padding: 20px;
-        overflow: hidden;
+        overflow: initial!important;
         .shop-name {
             display: flex;
             font-size: @font-size-30;
@@ -86,21 +103,20 @@
                 display: flex;
                 justify-content: left;
                 font-weight: 500;
+                //.TextareaOverflow(1);
                 img {
-                    width: 72px;
-                    height: 72px;
+                    width: 59px;
+                    height: 59px;
                     border-radius: 50%;
                 }
                 p {
                     font-size: 30px;
-                    line-height: 72px;
+                    height:56px;
+                    line-height: 56px;
                     color: @darker-black;
-                    margin: 0 20px 0 31px;
+                    margin:0 16px 0 20px;
+                    max-width: 300px;
                     .TextareaOverflow(1);
-                    max-width: 260px;
-                }
-                .enter {
-                    margin-top: 7px;
                 }
                 .enter:before {
                     content: '\E643';
@@ -111,7 +127,7 @@
             .right{
                 color: @fiery-red;
                 line-height: 72px;
-                font-weight: bold;
+                font-size: 26px;
             }
             .icon-select-z:before {
                 font-size: 34px;
@@ -135,28 +151,35 @@
             .goods-left {
                 margin-right: 20px;
                 display: flex;
+                div{
+                    height:200px;
+                    overflow: hidden;
+                }
                 img {
                     border-radius: 20px;
                     flex: 0 0 240px;
-                    width: 240px;
-                    height: 240px;
+                    width: 200px;
+                    height: 200px;
                 }
             }
             .goods-right {
                 flex: 1;
                 padding-top: 14px;
                 box-sizing: border-box;
-                height: auto;
+                height: 170px;
                 .goods-desc {
-                    height: 67px;
                     font-size: 30px;
                     display: flex;
                     justify-content: space-between;
                     color: @darker-black;
                     .desc-title{
-                        width: 245px;
-                        height: 67px;
+                        width: 306px;
                         .TextareaOverflow(2);
+                        letter-spacing:300/36px;
+                        font-weight:500;
+                    }
+                    .price{
+                        font-weight:bold;
                     }
                 }
 
@@ -169,20 +192,27 @@
                         display: flex;
                         justify-content: left;
                         flex: 1;
-
                         .goods-size{
+                            //flex: 1;
+                            max-width: 33%;
                             .TextareaOverflow(1);
-                            flex: 1;
-                            margin: 0 20px 0 0 ;
+                            margin: 10px 20px 12px 0;
                         }
                     }
                     .sku-right {
                         text-align: right;
+                        margin-top:10px;
                         //flex: 1;
                     }
                 }
                 .btn-keep {
-                    padding-top: 5px;
+                    padding: 3px 12px;
+                    height: auto;
+                    line-height: 30px;
+                    color:#FF2D51;
+                    background:#ffeaed;
+                    font-size:20px;
+                    border-radius: 4px;
                 }
 
                 .goods-price {
@@ -195,14 +225,17 @@
         }
         .shop-bottom{
             width: 100%;
+            //display: -webkit-box;
+            //overflow: hidden;
             .right-bottom{
                 color: @darker-black;
-                width: 420px;
-                float: right;
+                float: none!important;
+                width:100% !important;
                 .total-count{
-                    font-size: 26px;
+                    font-size: 24px;
                     font-weight: 500;
                     text-align: right;
+                    color:#666666;
                     span{
                         color: @fiery-red;
                         font-weight: normal;
@@ -213,24 +246,39 @@
                     justify-content: right;
                     //font-size: @font-size-28;
                     font-size:26px;
-                    margin-top: 20px;
+                    margin-top: 24px;
                     .total-price-right{
                         //flex: 1;
                         text-align: center;
-                        width: 240px;
+                        //width: 240px;
                         overflow: hidden;
                         white-space: nowrap;
                         -webkit-line-clamp: 1;
                         -webkit-box-orient: vertical;
                         text-overflow: ellipsis;
+                        color:#666666;
+                        font-size: 24px;
                         .zxa {
                             margin-top: 1px;
+                            font-size: 36px;
+                            color:#333333;
+                            span{
+                                color:#666666;
+                                font-size: 24px;
+                            }
+                            .samll-money{
+                                font-size: 24px;
+                                color:#333333;
+                            }
                         }
                     }
                     .total-price-left{
                         flex: 1;
-                        text-align: center;
+                        text-align: right !important;
                         line-height: 38px;
+                        margin-right:10px;
+                        color:#666666;
+                        font-size: 24px;
                     }
                     span{
                         font-size: @font-size-30;
@@ -244,14 +292,14 @@
         }
     }
     .buttons{
-        //margin-top: 65px;
+        margin-top: 30px;
         display: flex;
         justify-content: flex-end;
         position: relative;
         .button-more{
             position: absolute;
             top:0;
-            left:-260px;
+            left:-40px;
             border:none;
             span{
                 display: block;
@@ -273,7 +321,7 @@
         div{
             min-width: 140px;
             height: 50px;
-            border: 2px solid @dark-gray;
+            // border: 2px solid @dark-gray;
             border-radius: 25px;
             line-height: 50px;
             padding:0 20px;
@@ -284,9 +332,10 @@
         }
         .delete-button{
             border: none;
+            margin-right: 10px;
         }
         .evaluate-button{
-            border-color: @fiery-red;
+            border:1px solid @fiery-red;
             color: @fiery-red;
         }
         .look-button{
