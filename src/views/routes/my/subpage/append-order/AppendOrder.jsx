@@ -1,3 +1,4 @@
+/* eslint-disable implicit-arrow-linebreak */
 /*
 * 确认订单
 * */
@@ -57,7 +58,8 @@ class appendOrder extends BaseComponent {
         couponPrice: 0,  // 优惠折扣价
         goodsArr: this.props.arr,
         allDeposit: 0,
-        goShop: true //是否显示进店按钮
+        goShop: true, //是否显示进店按钮
+        couponData: undefined
     };
 
     componentDidMount() {
@@ -144,9 +146,17 @@ class appendOrder extends BaseComponent {
 
     //立即付款
     postOrder = () => {
-        const {addressInfo, shopInfo, order, invoice, num} = this.state;
+        const {addressInfo, shopInfo, order, invoice, num, checkCouponStatus} = this.state;
         const invoices = JSON.parse(getValue('invoices'));
         const orders = JSON.parse(getValue('order'));
+        const status = [...checkCouponStatus];
+        console.log(status, 'askjdhasjkdhas');
+        const cards = [];
+        status.forEach(item => {
+            if (item.defaultSelect) {
+                cards.push(item.no);
+            }
+        });
         let remark;
         if (orders) {
             remark = orders;
@@ -193,6 +203,7 @@ class appendOrder extends BaseComponent {
                 shop_arr: shopArr,
                 add_arr: addArr,
                 car_id: carId,
+                cards,
                 source: Number(source)
             }
         }).subscribe((res) => {
@@ -457,25 +468,55 @@ class appendOrder extends BaseComponent {
     // 开启优惠券
     openCoupon = (shop) => {
         const goodsId = [];
+        const price = [];
         shop.data.forEach(item => {
             goodsId.push(item.id);
+            price.push(item.price);
         });
-        this.getCoupon(Number(shop.shop_id), goodsId.join(','));
+        this.getCoupon(Number(shop.shop_id), goodsId.join(','), price.join(','));
         this.setState({
             couponStatus: true
         });
     }
 
     // 选择使用优惠券
-    checkCoupon = (index, price) => {
+    checkCoupon = (index, price, coupon) => {
+        if (!coupon.available) {
+            showFail('该劵不能使用!');
+            return;
+        }
         const {checkCouponStatus} = this.state;
-        const status = [...checkCouponStatus].map(item => false);
+        const status = [...checkCouponStatus];
+        let pr = 0;
+        let result = [];
+        const selectArr = [];
+        // 判断当前是平台卷还是商品卷
+        if (coupon.acc_types === '1') {
+            result = status.filter(item => item.type === coupon.acc_types);
+            // const nowIndex = status.findIndex(nowValue =>  nowValue.no === coupon.card_no);
+        } else {
+            result = status.filter(item => item.type === coupon.acc_types);
+            // const nowIndex = status.findIndex(nowValue =>  nowValue.no === coupon.card_no);
+        }
+        result.forEach(value => {
+            const i = status.findIndex(item => item.no === value.no);
+            status[i].defaultSelect = false;
+        });
         this.setState(pre => {
-            status.splice(index, 1, !status[index]);
+            status.splice(index, 1, Object.assign(status[index], {defaultSelect: !status[index].defaultSelect}));
+            status.forEach(item => {
+                if (item.defaultSelect) {
+                    selectArr.push(item);
+                }
+            });
+            selectArr.forEach(item => {
+                console.log(item);
+                pr += item.price;
+            });
             return {
                 checkCouponStatus: status,
                 useCouponStatus: false,
-                couponPrice: price
+                couponPrice: pr
             };
         });
     }
@@ -483,17 +524,39 @@ class appendOrder extends BaseComponent {
     // 选择不使用优惠券
     notUseCoupon = () => {
         const {checkCouponStatus} = this.state;
-        const status = [...checkCouponStatus].map(item => false);
-        this.setState(pre => ({useCouponStatus: !pre.useCouponStatus, checkCouponStatus: status, couponPrice: 0}));
+        const status = [...checkCouponStatus];
+        status.forEach(item => {
+            item.defaultSelect = false;
+        });
+        this.setState(pre => (
+            {useCouponStatus: !pre.useCouponStatus,
+                checkCouponStatus: status,
+                couponPrice: 0
+            }));
     }
 
     // 获取优惠券
-    getCoupon = (id, ids) => {
-        this.fetch(urlCfg.cardUseList, {data: {shop_no: id, pr: ids}}).subscribe(res => {
+    getCoupon = (id, ids, prices) => {
+        const {couponData} = this.state;
+        if (couponData) return;
+        this.fetch(urlCfg.cardUseList,
+            {data: {
+                shop_no: id,
+                pr: ids,
+                price: prices
+            }}).subscribe(res => {
             if (res && res.status === 0) {
+                let price = 0;
+                res.data.card_list.forEach(item => {
+                    if (item.selected === 1) {
+                        price += item.price;
+                    }
+                });
                 this.setState({
                     couponList: res.data.card_list,
-                    checkCouponStatus: Array.from({length: res.data.card_num}).fill(false)
+                    checkCouponStatus: res.data.card_list.map(item => ({defaultSelect: item.selected === 1, price: item.price, type: item.acc_types, no: item.card_no, disable: item.available})),
+                    couponPrice: price,
+                    couponData: res.data
                 });
             }
         });
@@ -658,7 +721,7 @@ class appendOrder extends BaseComponent {
                                     </List>
                                     <div className="payable">
                                         <span>实付款</span>
-                                        <span>￥{shopInfo[index].actual_all_price}</span>
+                                        <span>￥{parseInt(shopInfo[index].actual_all_price, 10) - couponPrice}</span>
                                     </div>
                                 </div>
                             ))
@@ -676,7 +739,7 @@ class appendOrder extends BaseComponent {
                                 <div className="total-price">
                                     <div>
                                         <span>合计：</span>
-                                        <span className="total-pri">￥{total}</span>
+                                        <span className="total-pri">￥{parseInt(total, 10) - couponPrice}</span>
                                     </div>
                                     <div className="total-dep">C米:{allDeposit}</div>
                                 </div>

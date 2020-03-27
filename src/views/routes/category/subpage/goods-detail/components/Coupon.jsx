@@ -69,7 +69,7 @@ export default class Coupon extends React.PureComponent {
                                                         onClick={() => useCoupon(index, item.card_no)}
                                                     >{getCoupon[index] ? '去使用' : '立即领取'}
                                                     </Button>
-                                                ) : (<div className={`icon ${checkCouponStatus[index] ? 'icon-check-active' : 'icon-check'}`} onClick={() => checkCoupon(index, item.price)}/>)
+                                                ) : (<div className={`icon ${checkCouponStatus[index].defaultSelect ? 'icon-check-active' : 'icon-check'}`} onClick={() => checkCoupon(index, item.price, item)}/>)
                                             }
                                         </div>
                                     </div>
