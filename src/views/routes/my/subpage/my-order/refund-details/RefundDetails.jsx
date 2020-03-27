@@ -264,7 +264,7 @@ class refundDetails extends BaseComponent {
                     <div className="refund-box">
                         {
                             refundArr.pr && refundArr.pr.map(value => (
-                                <div>
+                                <div key={value.pr_id}>
                                     <div className="details">
                                         <div className="details-l">
                                             <img src={value.picpath} alt=""/>
@@ -281,7 +281,7 @@ class refundDetails extends BaseComponent {
                                             <div className="label">
                                                 <div className="label-l">
                                                     {value.values_name.split(',').map(itemDiv => (
-                                                        <div className="goods-size">{itemDiv}</div>
+                                                        <div key={itemDiv} className="goods-size">{itemDiv}</div>
                                                     ))}
                                                 </div>
                                                 <span className="label-r">
@@ -322,12 +322,12 @@ class refundDetails extends BaseComponent {
                     </div>
                     <div className="detail-list-quest">
                         <span className="list-left">问题描述：</span>
-                        <p className="list-right">
+                        <div className="list-right">
                             <p>{refundArr.describe}</p>
                             {
                                 (refundArr.return_picpath && refundArr.return_picpath.length > 0) ? refundArr.return_picpath.map(item => <img src={item}/>) : ''
                             }
-                        </p>
+                        </div>
                     </div>
                     <div className="detail-list">
                         <span className="list-left">申请数量：</span>
@@ -356,13 +356,13 @@ class refundDetails extends BaseComponent {
                     {
                         refundArr.status === '3' && (
                             <div>
-                                <div calassName="refund-details">
+                                <div className="refund-details">
                                     <div className="detail-list">
                                         <span className="list-left">问题描述</span>
                                         <span>{refundArr.describe}</span>
                                     </div>
                                 </div>
-                                <div calassName="refund-details">
+                                <div className="refund-details">
                                     <div className="detail-list">
                                         <span className="list-left">实退金额：</span>
                                         <span>{refundArr.return_money}</span>

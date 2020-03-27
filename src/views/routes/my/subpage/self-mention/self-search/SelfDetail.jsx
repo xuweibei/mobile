@@ -300,7 +300,7 @@ class ReDetail extends BaseComponent {
                     <div className="right">{item.status_name}</div>
                 </div>
                 {(item.pr_list && item.pr_list.length > 0) ? item.pr_list.map(items => (
-                    <div className="goods" key={items.pr_id}>
+                    <div className="goods" key={items.id}>
                         <div className="goods-left">
                             <div>
                                 <LazyLoadIndex key={items.pr_picpath} src={items.pr_picpath}/>

@@ -359,7 +359,7 @@ class ReDetail extends BaseComponent {
                             </div>
                             <div className="total-price">
                                 <div className="total-price-left">共{OrderSelf.all_pr_num}件商品</div>
-                                <div className="total-price-right"><span>合计：</span><span className="money">{OrderSelf.all_price}</span></div>
+                                <div className="total-price-right"><span>合计：</span><span className="money">￥{OrderSelf.all_price}</span></div>
                             </div>
                         </div>
                     </div>

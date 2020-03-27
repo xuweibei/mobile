@@ -258,16 +258,20 @@ class PossessEvaluate extends BaseComponent {
         if (this.lv) { //切换的时候重新回到第一页
             this.lv.scrollTo(0, 0);
         }
-        const {arrChecked} = this.state;
-        arrChecked.forEach(item => { item.checked = false });
-        arrChecked.forEach((item, index) => { if (index === num) { item.checked = true } });
-        this.props.setEvaStatus(num);//储存评价的选择状态
-        temp.stackDataAlready = [];
         this.setState({
-            arrChecked: [...arrChecked],
-            types: num
+            page: 1
         }, () => {
-            this.getList();
+            const {arrChecked} = this.state;
+            arrChecked.forEach(item => { item.checked = false });
+            arrChecked.forEach((item, index) => { if (index === num) { item.checked = true } });
+            this.props.setEvaStatus(num);//储存评价的选择状态
+            temp.stackDataAlready = [];
+            this.setState({
+                arrChecked: [...arrChecked],
+                types: num
+            }, () => {
+                this.getList();
+            });
         });
     };
 
@@ -494,7 +498,7 @@ class PossessEvaluate extends BaseComponent {
                             <div className="append">
                                 <div className="append-chase">追评</div>
                                 <div className="append-theory">{item.add.content}</div>
-                                {item.add && item.add.pics && item.add.pics.length > 0 && item.add.pics.map((data, index) => <LazyLoadIndex src={data} bigPicture={() => this.bigPicture(item.add.pics, index)}/>)}
+                                {item.add && item.add.pics && item.add.pics.length > 0 && item.add.pics.map((data, index) => <LazyLoadIndex key={data} src={data} bigPicture={() => this.bigPicture(item.add.pics, index)}/>)}
                                 {item.add && item.add.return_content && <div className="reply">商家回复：{item.add.return_content}</div>}
                             </div>
                         )}
@@ -591,10 +595,10 @@ class PossessEvaluate extends BaseComponent {
     }
 
     render() {
-        const {userType, showBigImg, picArr, selectedIndex, arrChecked, tabkey} = this.state;
+        const {showBigImg, picArr, selectedIndex, arrChecked, tabkey} = this.state;
         return (
             <div data-component="possess-evaluate" data-role="page" className="possess-evaluate">
-                <AppNavBar title={userType === '2' ? '商家评价中心' : '评价中心'} goBackModal={this.goBackModal}/>
+                <AppNavBar title="评价中心" goBackModal={this.goBackModal}/>
                 <div className="evaluate-abs">
                     <div className="tabs">
                         <Tabs
@@ -636,8 +640,7 @@ const mapStateToProps = state => {
     const base = state.get('base');
     return {
         tabValue: base.get('tabValue'),
-        evaStatus: base.get('evaStatus'),
-        userTypes: base.get('userTypes')
+        evaStatus: base.get('evaStatus')
     };
 };
 
