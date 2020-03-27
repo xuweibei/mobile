@@ -233,7 +233,7 @@ class PayMoney extends BaseComponent {
                                     }&types=${selectIndex}&deposit=${listArr.deposit
                                         || listArr.all_deposit}&if_express=${
                                         res.data.if_express
-                                    }`
+                                    }&card=${res.data.card.card_no}&cardPrice=${res.data.card.price}`
                                 );
                             }
                         }
@@ -268,7 +268,7 @@ class PayMoney extends BaseComponent {
                                 }&types=${selectIndex}&deposit=${listArr.deposit
                                     || listArr.all_deposit}&if_express=${
                                     res.data.if_express
-                                }`
+                                }&card=${res.data.card.card_no}&cardPrice=${res.data.card.price}`
                             );
                         }
                     });

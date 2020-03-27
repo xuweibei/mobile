@@ -17,5 +17,6 @@ export const FIELD = {
     Succeed: '',
     Page_Crash: '当前页面已崩溃，请返回前一页',
     Net_Error: '网络异常，请稍后再试',
-    Server_Error: '服务器异常，请稍后再试'
+    Server_Error: '服务器异常，请稍后再试',
+    No_Card: '暂无优惠券'
 };
