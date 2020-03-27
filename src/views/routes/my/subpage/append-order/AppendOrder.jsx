@@ -22,7 +22,7 @@ const kind = [
 ];
 class appendOrder extends BaseComponent {
     state = {
-        shopInfo: [],
+        shopInfo: null,
         addressInfo: {},
         goodsCount: 0,
         goods: [],
@@ -150,11 +150,10 @@ class appendOrder extends BaseComponent {
         const invoices = JSON.parse(getValue('invoices'));
         const orders = JSON.parse(getValue('order'));
         const status = [...checkCouponStatus];
-        console.log(status, 'askjdhasjkdhas');
         const cards = [];
         status.forEach(item => {
             if (item.defaultSelect) {
-                cards.push(item.no);
+                cards.push(item.id);
             }
         });
         let remark;
@@ -280,7 +279,17 @@ class appendOrder extends BaseComponent {
                             infoArry.push([]);
                             invoice.push([]);
                         }
+                        res.data.forEach(shop => {
+                            const goodsId = [];
+                            const price = [];
+                            shop.data.forEach(item => {
+                                goodsId.push(item.id);
+                                price.push(item.price);
+                            });
+                            this.getCoupon(Number(shop.shop_id), goodsId.join(','), price.join(','));
+                        });
                     }
+
 
                     this.setState({
                         total: res.all_price,
@@ -467,13 +476,13 @@ class appendOrder extends BaseComponent {
 
     // 开启优惠券
     openCoupon = (shop) => {
-        const goodsId = [];
-        const price = [];
-        shop.data.forEach(item => {
-            goodsId.push(item.id);
-            price.push(item.price);
-        });
-        this.getCoupon(Number(shop.shop_id), goodsId.join(','), price.join(','));
+        // const goodsId = [];
+        // const price = [];
+        // shop.data.forEach(item => {
+        //     goodsId.push(item.id);
+        //     price.push(item.price);
+        // });
+        // this.getCoupon(Number(shop.shop_id), goodsId.join(','), price.join(','));
         this.setState({
             couponStatus: true
         });
@@ -488,16 +497,16 @@ class appendOrder extends BaseComponent {
         const {checkCouponStatus} = this.state;
         const status = [...checkCouponStatus];
         let pr = 0;
-        let result = [];
+        const result = status.filter(item => item.type === coupon.acc_types);
         const selectArr = [];
         // 判断当前是平台卷还是商品卷
-        if (coupon.acc_types === '1') {
-            result = status.filter(item => item.type === coupon.acc_types);
-            // const nowIndex = status.findIndex(nowValue =>  nowValue.no === coupon.card_no);
-        } else {
-            result = status.filter(item => item.type === coupon.acc_types);
-            // const nowIndex = status.findIndex(nowValue =>  nowValue.no === coupon.card_no);
-        }
+        // if (coupon.acc_types === '1') {
+        //     result = status.filter(item => item.type === coupon.acc_types);
+        //     // const nowIndex = status.findIndex(nowValue =>  nowValue.no === coupon.card_no);
+        // } else {
+        //     result = status.filter(item => item.type === coupon.acc_types);
+        //     // const nowIndex = status.findIndex(nowValue =>  nowValue.no === coupon.card_no);
+        // }
         result.forEach(value => {
             const i = status.findIndex(item => item.no === value.no);
             status[i].defaultSelect = false;
@@ -529,7 +538,8 @@ class appendOrder extends BaseComponent {
             item.defaultSelect = false;
         });
         this.setState(pre => (
-            {useCouponStatus: !pre.useCouponStatus,
+            {
+                useCouponStatus: !pre.useCouponStatus,
                 checkCouponStatus: status,
                 couponPrice: 0
             }));
@@ -540,11 +550,13 @@ class appendOrder extends BaseComponent {
         const {couponData} = this.state;
         if (couponData) return;
         this.fetch(urlCfg.cardUseList,
-            {data: {
-                shop_no: id,
-                pr: ids,
-                price: prices
-            }}).subscribe(res => {
+            {
+                data: {
+                    shop_no: id,
+                    pr: ids,
+                    price: prices
+                }
+            }).subscribe(res => {
             if (res && res.status === 0) {
                 let price = 0;
                 res.data.card_list.forEach(item => {
@@ -554,7 +566,7 @@ class appendOrder extends BaseComponent {
                 });
                 this.setState({
                     couponList: res.data.card_list,
-                    checkCouponStatus: res.data.card_list.map(item => ({defaultSelect: item.selected === 1, price: item.price, type: item.acc_types, no: item.card_no, disable: item.available})),
+                    checkCouponStatus: res.data.card_list.map(item => ({defaultSelect: item.selected === 1, price: item.price, type: item.acc_types, no: item.card_no, disable: item.available, id: item.id})),
                     couponPrice: price,
                     couponData: res.data
                 });
