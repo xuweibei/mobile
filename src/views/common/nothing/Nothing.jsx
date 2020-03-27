@@ -33,6 +33,9 @@ class Nothing extends React.PureComponent {
         console.log(typeof (text));
         let str = '';
         switch (text) {
+        case FIELD.No_Card:
+            str = 'no-card';
+            break;
         case FIELD.No_Order:
             str = 'no-order';
             break;

@@ -72,13 +72,14 @@ class PaymentCompleted extends BaseComponent {
         const allPrice = decodeURI(getUrlParam('allPrice', encodeURI(search)));
         const deposit = decodeURI(getUrlParam('deposit', encodeURI(search)));
         const types = decodeURI(getUrlParam('types', encodeURI(search)));
+        const card = decodeURI(getUrlParam('card', encodeURI(search)));
+        const cardPrice = decodeURI(getUrlParam('cardPrice', encodeURI(search)));
         let str = '';
         mode.forEach(item => {
             if (item.value === types) {
                 str = item.title;
             }
         });
-        const isJD = false;
         return (
             <div data-component="Payment-completed" data-role="page" className="Payment-completed">
                 <AppNavBar goBackModal={this.seeOrderInfo} rightShow title="支付成功"/>
@@ -87,7 +88,7 @@ class PaymentCompleted extends BaseComponent {
                     <div className="finish-bottom">订单支付成功</div>
                 </div>
                 <div className="bill">
-                    <div className={isJD ? 'frame-jd' : 'frame-success'}>
+                    <div className={(card === 'null') ? 'frame-jd' : 'frame-success'}>
                         <div className="bill-top">
                             <span>C米</span>
                             <span>+{deposit || getValue('orderInfo').all_deposit}</span>
@@ -103,11 +104,11 @@ class PaymentCompleted extends BaseComponent {
                     </div>
                 </div>
                 {
-                    !isJD && (
+                    card !== 'null' && (
                         <div className="red-env">
-                            <div className="env-money"><span>￥</span>10</div>
+                            <div className="env-money"><span>￥</span>{cardPrice}</div>
                             <div className="env-main">
-                                <p>恭喜您获得10元购物券</p>
+                                <p>恭喜您获得{cardPrice}元购物券</p>
                                 <span>请到<span className="my-coupon icon" onClick={this.goToCoupon}>我的优惠券</span>中查看</span>
                             </div>
                         </div>

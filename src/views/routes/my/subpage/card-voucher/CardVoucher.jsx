@@ -3,10 +3,12 @@ import {Tabs, ListView, PullToRefresh} from 'antd-mobile';
 import {dropByCacheKey} from 'react-router-cache-route';
 import AppNavBar from '../../../../common/navbar/NavBar';
 import {ListFooter} from '../../../../common/list-footer';
+import Nothing from '../../../../common/nothing/Nothing';
 import Animation from '../../../../common/animation/Animation';
 import './CardVoucher.less';
 
 
+const {FIELD} = Constants;
 const {urlCfg} = Configs;
 const {appHistory, showSuccess} = Utils;
 const tabsData = [
@@ -191,28 +193,34 @@ export default class CardVoucher extends BaseComponent {
                         swipeable={false}
                     >
                         <div className="card-list">
-                            <ListView
-                                initialListSize={temp.pagesize + 1}
-                                dataSource={dataSource}
-                                renderRow={row}
-                                style={{
-                                    height
-                                }}
-                                onEndReached={this.onEndReached}
-                                onEndReachedThreshold={30}
-                                pageSize={temp.pagesize}
-                                renderFooter={() => ListFooter(hasMore)}
-                                pullToRefresh={(
-                                    <PullToRefresh
-                                        refreshing={refreshing}
-                                        onRefresh={this.onRefresh}
-                                        damping={70}
-                                        indicator={{
-                                            release: <Animation ref={ref => { this.Animation = ref }}/>
-                                        }}
-                                    />
-                                )}
-                            />
+                            {
+                                dataSource.getRowCount() > 0
+                                    ? (
+                                        <ListView
+                                            initialListSize={temp.pagesize + 1}
+                                            dataSource={dataSource}
+                                            renderRow={row}
+                                            style={{
+                                                height
+                                            }}
+                                            onEndReached={this.onEndReached}
+                                            onEndReachedThreshold={30}
+                                            pageSize={temp.pagesize}
+                                            renderFooter={() => ListFooter(hasMore)}
+                                            pullToRefresh={(
+                                                <PullToRefresh
+                                                    refreshing={refreshing}
+                                                    onRefresh={this.onRefresh}
+                                                    damping={70}
+                                                    indicator={{
+                                                        release: <Animation ref={ref => { this.Animation = ref }}/>
+                                                    }}
+                                                />
+                                            )}
+                                        />
+                                    )
+                                    : <Nothing text={FIELD.No_Card}/>
+                            }
                         </div>
                     </Tabs>
                 </div>
