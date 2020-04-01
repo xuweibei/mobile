@@ -42,7 +42,7 @@ class Home extends BaseComponent {
     }
 
     componentDidMount() {
-        const {showMenu, setOrder, userToken, getNav, getBanner, coupon} = this.props;
+        const {showMenu, setOrder, userToken, getNav, getBanner} = this.props;
         this.setState({
             userToken: systemApi.getValue('userToken')
         });
@@ -55,9 +55,7 @@ class Home extends BaseComponent {
             this.login();
         }
         this.goodStuff();
-        if (!coupon) {
-            this.getCoupon();
-        }
+        this.getCoupon();
     }
 
     componentWillUnmount() {
@@ -176,10 +174,10 @@ class Home extends BaseComponent {
 
     // 获取优惠券
     getCoupon = () => {
-        const {setCoupon} = this.props;
+        // const {setCoupon} = this.props;
         this.fetch(urlCfg.getCoupon, {data: {type: 0}}).subscribe(res => {
             if (res && res.status === 0) {
-                setCoupon(res.data);
+                // setCoupon(res.data);
                 this.setState({
                     couponList: res.data,
                     pouponOneStatus: res.data && res.data.card_num === 1,
@@ -193,6 +191,12 @@ class Home extends BaseComponent {
 
     //领取优惠券
     reciveCard = (no, index, id, type) => {
+        const {userToken} = this.props;
+
+        if (!userToken) {
+            appHistory.push('/login');
+        }
+
         const {getStatus, pouponText} = this.state;
         if (getStatus[index]) {
             if (type && type === 2) {
