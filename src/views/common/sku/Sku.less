@@ -111,6 +111,7 @@
     // z-index: 20;
     .panel{
         width: 100%;
+        // position: relative;
         //height: 100%;
         background: @white;
         //position: fixed;
@@ -283,6 +284,10 @@
             border: 0;
         }
         .sku-btn {
+            position: fixed;
+            left: 30px;
+            right: 30px;
+            bottom: 30px;
             display: flex;
             height: 80px;
             border: 1px solid #FF2D51;
@@ -291,12 +296,17 @@
             line-height: 80px;
             color: #fff;
             color: 30px;
-            margin-top: 140px;
+            z-index: 100;
+            // margin-top: 140px;
             div{
                 flex: 1;
             }
             div:first-child {
                 color: #FF2D51;
+                background: #fff;
+                border-top-left-radius: 40px;
+                border-bottom-left-radius: 40px;
+                border: 1px solid #FF2D51;
             }
             div:last-child{
                 background:linear-gradient(180deg,@fiery-red 0%,@garnet-red 100%);
