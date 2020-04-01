@@ -141,7 +141,7 @@ class ShopHomeDetail extends BaseComponent {
                             <div className="shop-img-more">
                                 <Carousel>
                                     {
-                                        shopInfo.album_pic && shopInfo.album_pic.length > 0 ? shopInfo.album_pic.map(item => <img src={item} alt=""/>) : <div className="period"/>
+                                        shopInfo.album_pic && shopInfo.album_pic.length > 0 ? shopInfo.album_pic.map(item => <img key={item} src={item} alt=""/>) : <div className="period"/>
                                     }
                                 </Carousel>
                             </div>

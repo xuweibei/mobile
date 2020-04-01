@@ -151,8 +151,8 @@ export default class MyEvaluate extends BaseComponent {
     deleteImg = (id, index) => {
         const {files, evaluate} = this.state;
         const nnn = files.map((item, num) => {
-            item.forEach((lalala, numData) => {
-                if (lalala.id === id) {
+            item.forEach((dataValue, numData) => {
+                if (dataValue.id === id) {
                     evaluate.setIn([numData, 'nativePicNum'], 9 - item.length);
                 }
             });
@@ -268,13 +268,13 @@ export default class MyEvaluate extends BaseComponent {
                 <AppNavBar title="发表评论"/>
                 <div className="contents">
                     {evaluate.size > 0 ? evaluate.map((item, index) => (
-                        <div className="appraise">
+                        <div className="appraise" key={item.get('id')}>
                             <div className="trade-box">
                                 <div className="trade-name">
                                     <img src={item.get('picpath')} alt=""/>
                                     <div className="choice">
                                         {evaluates.map(items => (
-                                            <Flex>
+                                            <Flex key={items.title}>
                                                 <Flex.Item style={{padding: '15px 0', color: '@darker-black', flex: 'none'}}></Flex.Item>
                                                 <Flex.Item>
                                                     <Radio checked={estimate[index] === items.value} onChange={this.onChange.bind(this, [items.value, index])}>{items.title}</Radio>
@@ -300,7 +300,7 @@ export default class MyEvaluate extends BaseComponent {
                                                         <ul>
                                                             {
                                                                 files.get(index) && files.get(index).map((value, num) => num < 9 && (
-                                                                    <li id={value.id}>
+                                                                    <li key={value.id}>
                                                                         <span onClick={() => this.deleteImg(value.id, index)}>×</span>
                                                                         <img src={value.url}/>
                                                                     </li>
@@ -345,7 +345,7 @@ export default class MyEvaluate extends BaseComponent {
                                     <span className="score-left">店铺评价</span>
                                     <span className="score-right">
                                         {appraises.map((item) => (
-                                            <span className={`icon ${shop >= item.index ? 'stars' : 'starsRight'}`} onClick={() => this.grade(item.index)}/>
+                                            <span key={item.index} className={`icon ${shop >= item.index ? 'stars' : 'starsRight'}`} onClick={() => this.grade(item.index)}/>
                                         ))}
                                     </span>
                                 </div>
@@ -357,7 +357,7 @@ export default class MyEvaluate extends BaseComponent {
                                         <span className="score-left">物流评分</span>
                                         <span className="score-right">
                                             {appraises.map((item) => (
-                                                <span className={`icon ${logistics >= item.index ? 'stars' : 'starsRight'}`} onClick={() => this.logistics(item.index)}/>
+                                                <span key={item.index} className={`icon ${logistics >= item.index ? 'stars' : 'starsRight'}`} onClick={() => this.logistics(item.index)}/>
                                             ))}
                                         </span>
                                     </div>

@@ -515,7 +515,15 @@ class PayMoney extends BaseComponent {
                     </div>
                     <div className="surplus-bottom">
                         <span className="remaining-time">支付剩余时间</span>
-                        <span className="reciprocal">{remainingTime}</span>
+                        <span className="reciprocal">{
+                            remainingTime && remainingTime.split(':').map((item, index) => {
+                                if (index !== 2) {
+                                    return (<div className="have_dot"><span className="time-box">{item}</span><span className="dot">:</span></div>);
+                                }
+                                return <span className="time-box">{item}</span>;
+                            })
+                        }
+                        </span>
                     </div>
                 </div>
 
