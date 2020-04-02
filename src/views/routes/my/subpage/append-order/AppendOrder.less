@@ -1,6 +1,12 @@
 @import "~style";
 
 .append-order {
+    .no-use {
+        color: #999 !important;
+    }
+    .no-use::after {
+        color: #999 !important;
+    }
     .icon-invoice::after {
         font-family: "iconfont";
         content:'\e643';
@@ -329,8 +335,9 @@
 
     .goods-attr {
         color: @darker-black;
+        margin-top: 20px;
         background: @white;
-        padding: 0 30px;
+        padding: 30px 30px 0 30px;
         font-size: 30px;
         margin-top: -16px;
 
@@ -410,13 +417,14 @@
         .pay-left {
             display: flex;
             flex: 1;
-            justify-content: space-between;
+            justify-content: left;
+            line-height: 80px;
             .space {
                 // display: flex;
                 // margin-right: 25px;
                 font-size: @font-size-24;
                 color: @gray;
-                line-height: 100px;
+                line-height: 105px;
             }
 
             .total-dep {
@@ -427,11 +435,15 @@
             }
 
             .total-price {
-                // margin-left: 116px;
-
-                padding-top: 20px;
+                margin-left: 25px;
+                line-height: 100px;
+                // padding-top: 20px;
                 // line-height: 0;
                 // margin-bottom: 50px;
+                .price-left{
+                    color:#333;
+                    font-size: 28px;
+                }
                 .total-pri {
                     color: #FF2D51;
                     font-size: 24px;

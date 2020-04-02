@@ -578,14 +578,15 @@ class appendOrder extends BaseComponent {
                     checkCouponStatus: res.data.card_list && res.data.card_list.map(item => ({defaultSelect: item.selected === 1, price: item.price, type: item.acc_types, no: item.card_no, disable: item.available, id: item.id})),
                     couponPrice: price,
                     checkPrice: price,
-                    couponData: res.data
+                    couponData: res.data,
+                    sayNo: res.data.card_list && res.data.card_list.some(item => item.selected === 1)
                 });
             }
         });
     }
 
     render() {
-        const {shopInfo, addressInfo, couponList, goShop, allDeposit, total, couponPrice, couponStatus, useCouponStatus, checkCouponStatus, self, currentIndex, textInfo, notAllow, invoiceStatus, invoice, invoiceIndex, num} = this.state;
+        const {shopInfo, addressInfo, sayNo, couponList, goShop, total, couponPrice, couponStatus, useCouponStatus, checkCouponStatus, self, currentIndex, textInfo, notAllow, invoiceStatus, invoice, invoiceIndex, num} = this.state;
         const {address} = this.props;
         const invoices = JSON.parse(getValue('invoices'));
         const orders = JSON.parse(getValue('order'));
@@ -709,7 +710,9 @@ class appendOrder extends BaseComponent {
                                         <List.Item onClick={() => { this.openCoupon(shop) }}>
                                             <div className="coupon">
                                                 <span>优惠券抵扣</span>
-                                                <span>-{couponPrice}元</span>
+                                                {
+                                                    !sayNo ? <span className="no-use">暂无优惠券可抵扣</span> : <span>-{couponPrice}元</span>
+                                                }
                                             </div>
                                         </List.Item>
                                     </List>
@@ -761,10 +764,10 @@ class appendOrder extends BaseComponent {
                                 <div className="space">共{this.totalCount()}件</div>
                                 <div className="total-price">
                                     <div>
-                                        <span>合计：</span>
+                                        <span className="price-left">合计：</span>
                                         <span className="total-pri">￥{parseInt(total, 10) - couponPrice}</span>
                                     </div>
-                                    <div className="total-dep">C米:{allDeposit}</div>
+                                    {/* <div className="total-dep">C米:{allDeposit}</div> */}
                                 </div>
                             </div>
                             <Button onClick={this.postOrder} disabled={!notAllow}>立即付款</Button>
