@@ -394,25 +394,22 @@ class Sku extends React.PureComponent {
                             </div>
                             {this.getExtraElement(stock)}
                         </div>
-
-                        {isZM ? (
-                            <div className="sku-btn">
-                                <div onClick={() => this.onSubmit(1)}>加入购物车</div>
-                                <div onClick={() => this.onSubmit(2)}>立即购买</div>
-                            </div>
-                        ) : (
-                            <Button
-                                style={{width: '93%', margin: 'auto'}}
-                                onClick={submitalbe
-                                    ? this.onSubmit
-                                    : () => this.showToast(selectedTemp)
-                                }
-                            >确定
-                            </Button>
-                        )}
-
                     </div>
-
+                    {isZM ? (
+                        <div className="sku-btn">
+                            <div onClick={() => this.onSubmit(1)}>加入购物车</div>
+                            <div onClick={() => this.onSubmit(2)}>立即购买</div>
+                        </div>
+                    ) : (
+                        <Button
+                            style={{width: '93%', margin: 'auto'}}
+                            onClick={submitalbe
+                                ? this.onSubmit
+                                : () => this.showToast(selectedTemp)
+                            }
+                        >确定
+                        </Button>
+                    )}
                 </div>
             </Modal>
         );
