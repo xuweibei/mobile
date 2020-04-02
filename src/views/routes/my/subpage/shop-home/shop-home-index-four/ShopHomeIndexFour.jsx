@@ -43,10 +43,11 @@ class ShopHomeIndexFour extends React.PureComponent {
                         cHeight={158}
                         goToGoods={this.goToGoods}
                     />
-                    <div className="compile-box items" style={{marginTop: '30px', paddingLeft: '0', paddingRight: '0'}}>
+                    <div className="compile-box items" style={{paddingLeft: '0', paddingRight: '0'}}>
                         <div className="new-box">
                             <div className="new-left"/>
-                            <div className={(picurl && content && picurl[content.sort1_pr1_ix] && content.sort1_pr1_title1 && content.sort1_pr1_title2 && content.sort1_pr1_title3) ? 'new-right' : 'new no-edit-model'}>
+                            {/* <div className={(picurl && content && picurl[content.sort1_pr1_ix] && content.sort1_pr1_title1 && content.sort1_pr1_title2 && content.sort1_pr1_title3) ? 'new-right' : 'new no-edit-model'}> */}
+                            <div className="new-right">
                                 <div className="fresh">NEW</div>
                                 <img src={picurl && picurl[content.sort1_pr1_ix]} onClick={() => this.goToGoods(content.sort1_pr1_id)} alt=""/>
                                 <div className="headline-price">
@@ -60,7 +61,7 @@ class ShopHomeIndexFour extends React.PureComponent {
                             </div>
                         </div>
                     </div>
-                    <div className="compile-box items" style={{marginTop: '30px', backgroundColor: '#CAD9EC'}}>
+                    <div className="compile-box items" style={{backgroundColor: '#CAD9EC'}}>
                         <GoodsTitle
                             title1={content.sort2_title1}
                             title2={content.sort2_title2}
