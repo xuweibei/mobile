@@ -16,11 +16,12 @@ export default class Evaluate extends React.PureComponent {
         openCoupon: PropTypes.func.isRequired,
         createStar: PropTypes.func.isRequired,
         returnLev: PropTypes.func.isRequired,
-        max: PropTypes.number.isRequired
+        max: PropTypes.number
     }
 
     static defaultProps = {
-        names: []
+        names: [],
+        max: null
     };
 
     render() {
