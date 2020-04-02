@@ -150,7 +150,7 @@ class appendOrder extends BaseComponent {
         const {addressInfo, shopInfo, order, invoice, num, checkCouponStatus} = this.state;
         const invoices = JSON.parse(getValue('invoices'));
         const orders = JSON.parse(getValue('order'));
-        const status = [...checkCouponStatus];
+        const status = checkCouponStatus ? [...checkCouponStatus] : [];
         const cards = [];
         status.forEach(item => {
             if (item.defaultSelect) {
