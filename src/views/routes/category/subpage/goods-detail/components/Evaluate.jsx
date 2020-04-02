@@ -15,7 +15,8 @@ export default class Evaluate extends React.PureComponent {
         isZM: PropTypes.bool.isRequired,
         openCoupon: PropTypes.func.isRequired,
         createStar: PropTypes.func.isRequired,
-        returnLev: PropTypes.func.isRequired
+        returnLev: PropTypes.func.isRequired,
+        max: PropTypes.number.isRequired
     }
 
     static defaultProps = {
@@ -23,7 +24,7 @@ export default class Evaluate extends React.PureComponent {
     };
 
     render() {
-        const {Element, openCoupon, names, isZM, goodsDetail, shop, shopH, openSku, hasType, evalute, routeToEvalute, createStar, returnLev} = this.props;
+        const {Element, openCoupon, names, isZM, max, goodsDetail, shop, shopH, openSku, hasType, evalute, routeToEvalute, createStar, returnLev} = this.props;
 
         return (
             <Element name="evaluate" className="goods-shop">
@@ -54,7 +55,7 @@ export default class Evaluate extends React.PureComponent {
                         <div className="coupon" onClick={openCoupon}>
                             <div className="coupon-left">
                                 <span>领劵</span>
-                                <span className="icon icon-scan">满20元可领劵</span>
+                                <span className="icon icon-scan">{max ? `领取优惠券, 满${max}元可领劵` : '暂无优惠券可领取'}</span>
                             </div>
                             <div className="coupin-right">
                                 <span className="icon right-icon"/>
