@@ -13,9 +13,8 @@ export default class Coupon extends React.PureComponent {
         checkCoupon: PropTyps.func,
         sureCheck: PropTyps.func,
         notUseCoupon: PropTyps.func,
-        couponType: PropTyps.array,
         useCoupon: PropTyps.func,
-        couponList: PropTyps.oneOfType([PropTyps.array, PropTyps.object]).isRequired,
+        couponList: PropTyps.oneOfType([PropTyps.array, PropTyps.object]),
         // couponList: PropTyps.oneOfType([PropTyps.array, PropTyps.object]).isRequired,
         getCoupon: PropTyps.array
     }
@@ -23,16 +22,16 @@ export default class Coupon extends React.PureComponent {
     static defaultProps = {
         checkCoupon: () => {},
         sureCheck: () => {},
+        couponList: [],
         useCoupon: () => null,
         getCoupon: [],
-        couponType: [],
         useCouponStatus: false,
         checkCouponStatus: [],
         notUseCoupon: () => {}
     }
 
     render() {
-        const {couponStatus, closeCoupon, title, couponType, useCouponStatus, sureCheck, couponList, notUseCoupon, checkCouponStatus, getCoupon, useCoupon, isDetail, checkCoupon} = this.props;
+        const {couponStatus, closeCoupon, title, useCouponStatus, sureCheck, couponList, notUseCoupon, checkCouponStatus, getCoupon, useCoupon, isDetail, checkCoupon} = this.props;
         return (
             <Modal
                 className="coupon-modal"
@@ -60,7 +59,7 @@ export default class Coupon extends React.PureComponent {
                                     <div className="coupon-right">
                                         <div className="right-left">
                                             <div>
-                                                <div className="right-left-title">{couponType.length > 0 && couponType[index] === '2' ? item.shop_name :  item.limit_tip}</div>
+                                                <div className="right-left-title">{item.limit_tip}</div>
                                                 <div className="right-left-center">{item.card_title}</div>
                                                 <div className="right-left-date">{item.term_validity}</div>
                                             </div>
