@@ -100,7 +100,8 @@ class GoodsDetail extends BaseComponent {
         couponList: {}, // 优惠券数据
         getCoupon: [], // 当前优惠券领取状态
         isDetail: true, // 判断页面
-        maxNums: null // 优惠券最大面额
+        maxNums: null, // 优惠券最大面额
+        sayNo: false // 暂无优惠券
     };
 
     componentDidMount() {
@@ -174,7 +175,8 @@ class GoodsDetail extends BaseComponent {
                         selectType: '1', //选中配送方式 1快递 2自提
                         clickType: 0, //打开sku的方式 0箭头 1购物车 2立即购买
                         totalNUm: 0, //商品库存,
-                        goodId: id
+                        goodId: id,
+                        couponStatus: false
                     },
                     () => {
                         this.init();
@@ -728,12 +730,11 @@ class GoodsDetail extends BaseComponent {
         this.fetch(urlCfg.getCoupon, {data: {type: 0}}).subscribe(res => {
             if (res && res.status === 0) {
                 const nums = res.data.card_list.map(item => parseInt(item.price_limit.replace(/[^0-9]/ig, ''), 10));
-                const max = nums.length > 0 ? Math.max.apply(null, nums) : null;
+                const max = nums.length > 0 ? Math.min.apply(null, nums) : null;
                 this.setState({
                     couponList: res.data,
                     getCoupon: res.data && Array(res.data.card_num).fill(false),
                     maxNums: max
-
                 });
             }
         });
