@@ -100,7 +100,8 @@ class GoodsDetail extends BaseComponent {
         couponList: {}, // 优惠券数据
         getCoupon: [], // 当前优惠券领取状态
         isDetail: true, // 判断页面
-        maxNums: null // 优惠券最大面额
+        maxNums: null, // 优惠券最大面额
+        couponType: [] // 优惠券类型
     };
 
     componentDidMount() {
@@ -729,10 +730,12 @@ class GoodsDetail extends BaseComponent {
             if (res && res.status === 0) {
                 const nums = res.data.card_list.map(item => parseInt(item.price_limit.replace(/[^0-9]/ig, ''), 10));
                 const max = nums.length > 0 ? Math.max.apply(null, nums) : null;
+                const couponType = res.data.card_list.map(item => item.types);
                 this.setState({
                     couponList: res.data,
                     getCoupon: res.data && Array(res.data.card_num).fill(false),
-                    maxNums: max
+                    maxNums: max,
+                    couponType
                 });
             }
         });
@@ -741,7 +744,7 @@ class GoodsDetail extends BaseComponent {
     render() {
         const {
             topSwithe, popup, paginationNum, ids, maskStatus,
-            picPath, goodsDetail, shop, recommend, collect, status, evalute,
+            picPath, goodsDetail, shop, recommend, couponType, collect, status, evalute,
             goodsAttr, stocks, lineStatus, lineText, specification, specificationStatus, isZM, isDetail, couponList, pickType, selectType, names, hasType, list, couponStatus
         } = this.state;
 
@@ -934,6 +937,7 @@ class GoodsDetail extends BaseComponent {
                         couponList={couponList && couponList.card_list}
                         title="领取优惠券"
                         useCoupon={this.useCoupon}
+                        couponType={couponType}
                         getCoupon={this.state.getCoupon}
                         isDetail={isDetail}
                     />

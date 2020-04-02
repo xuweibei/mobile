@@ -56,6 +56,7 @@ class appendOrder extends BaseComponent {
         checkCouponStatus: [], // 选中优惠券状态
         useCouponStatus: false, // 是否使用户优惠券
         couponPrice: 0,  // 优惠折扣价
+        checkPrice: 0, // 选中价格
         goodsArr: this.props.arr,
         allDeposit: 0,
         goShop: true, //是否显示进店按钮
@@ -469,6 +470,14 @@ class appendOrder extends BaseComponent {
     }
 
     closeCoupon = () => {
+        const {checkPrice} = this.state;
+        this.setState({
+            couponStatus: false,
+            couponPrice: checkPrice
+        });
+    }
+
+    sureCheck = () => {
         this.setState({
             couponStatus: false
         });
@@ -519,7 +528,6 @@ class appendOrder extends BaseComponent {
                 }
             });
             selectArr.forEach(item => {
-                console.log(item);
                 pr += item.price;
             });
             return {
@@ -532,8 +540,9 @@ class appendOrder extends BaseComponent {
 
     // 选择不使用优惠券
     notUseCoupon = () => {
+        console.log('object');
         const {checkCouponStatus} = this.state;
-        const status = [...checkCouponStatus];
+        const status = checkCouponStatus ? [...checkCouponStatus] : [];
         status.forEach(item => {
             item.defaultSelect = false;
         });
@@ -559,15 +568,16 @@ class appendOrder extends BaseComponent {
             }).subscribe(res => {
             if (res && res.status === 0) {
                 let price = 0;
-                res.data.card_list.forEach(item => {
+                res.data.card_list && res.data.card_list.forEach(item => {
                     if (item.selected === 1) {
                         price += item.price;
                     }
                 });
                 this.setState({
                     couponList: res.data.card_list,
-                    checkCouponStatus: res.data.card_list.map(item => ({defaultSelect: item.selected === 1, price: item.price, type: item.acc_types, no: item.card_no, disable: item.available, id: item.id})),
+                    checkCouponStatus: res.data.card_list && res.data.card_list.map(item => ({defaultSelect: item.selected === 1, price: item.price, type: item.acc_types, no: item.card_no, disable: item.available, id: item.id})),
                     couponPrice: price,
+                    checkPrice: price,
                     couponData: res.data
                 });
             }
@@ -694,8 +704,14 @@ class appendOrder extends BaseComponent {
                                         >订单备注
                                         </InputItem>
                                         {
-                                            goShop && shop.data.some(goods => goods.if_invoice === '1') && (<List.Item key={index.toString()} onClick={() => { this.showPanel(index) }} className="invoice">发票抬头</List.Item>)
+                                            goShop && shop.data.some(goods => goods.if_invoice === '1') && (<List.Item key={index.toString()} onClick={() => { this.showPanel(index) }} className="invoice">发票抬头<span className="icon icon-invoice"/></List.Item>)
                                         }
+                                        <List.Item onClick={() => { this.openCoupon(shop) }}>
+                                            <div className="coupon">
+                                                <span>优惠券抵扣</span>
+                                                <span>-{couponPrice}元</span>
+                                            </div>
+                                        </List.Item>
                                     </List>
                                     <div className="goods-attr">
                                         <ul className="range-top">
@@ -714,22 +730,17 @@ class appendOrder extends BaseComponent {
                                         </ul>
                                     </div>
                                     <List>
-                                        <List.Item onClick={() => { this.openCoupon(shop) }}>
-                                            <div className="coupon">
-                                                <span>优惠券抵扣</span>
-                                                <span>-{couponPrice}元</span>
-                                            </div>
-                                        </List.Item>
-                                        <InputItem
+
+                                        {/* <InputItem
                                             placeholder="请和商家协议一致"
                                             maxLength={50}
                                             defaultValue={orders && orders[index]}
                                             onChange={(val) => this.getRemark(val, index)}
                                         >订单备注
-                                        </InputItem>
-                                        {
+                                        </InputItem> */}
+                                        {/* {
                                             shop.data.some(goods => goods.if_invoice === '1') && (<List.Item key={index.toString()} onClick={() => { this.showPanel(index) }} className="invoice">发票抬头</List.Item>)
-                                        }
+                                        } */}
                                     </List>
                                     <div className="payable">
                                         <span>实付款</span>
@@ -772,6 +783,7 @@ class appendOrder extends BaseComponent {
                     checkCouponStatus={checkCouponStatus}
                     notUseCoupon={this.notUseCoupon}
                     title="优惠券"
+                    sureCheck={this.sureCheck}
                 />
 
                 {
