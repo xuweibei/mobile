@@ -269,6 +269,7 @@ class appendOrder extends BaseComponent {
         })
             .subscribe((res) => {
                 if (res.status === 0) {
+                    const {arr} = this.props;
                     const array = [];
                     const cardArr = [];
                     const infoArry = [];
@@ -287,7 +288,7 @@ class appendOrder extends BaseComponent {
                                 goodsId.push(item.id);
                                 price.push(item.price);
                             });
-                            this.getCoupon(Number(shop.shop_id), goodsId.join(','), price.join(','));
+                            this.getCoupon(Number(arr[0].no), goodsId.join(','), price.join(','));
                         });
                     }
 
