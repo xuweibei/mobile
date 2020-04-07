@@ -106,11 +106,11 @@ class GoodsDetail extends BaseComponent {
 
     componentDidMount() {
         this.init();
-        this.getCoupon();
     }
 
     init = () => {
         this.getGoodsDetail();
+        this.getCoupon();
         window.addEventListener('scroll', this.handleScroll);
         scrollSpy.update();
     };

@@ -12,7 +12,7 @@ import ShopHomeTwo from './shop-home-index-two/ShopHomeIndexTwo';
 import ShopHomeThird from './shop-home-index-third/ShopHomeIndexThird';
 import ShopHomeFour from './shop-home-index-four/ShopHomeIndexFour';
 import ShopHomeFive from './shop-home-index-five/ShopHomeIndexFive';
-import ShopHomeDetail from './ShopHomeDetail';
+import ShopHomeDetail from './shop-modal/ShopHomeDetail';
 import LazyLoadIndex from '../../../../common/lazy-load/LazyLoad';
 import Top from '../../../../common/top/Top';
 import Nothing from '../../../../common/nothing/Nothing';
@@ -54,7 +54,6 @@ class ShopHome extends BaseComponent {
             lon: '',
             hasMore: true, //底部请求状态文字显示情况
             business: decodeURI(getUrlParam('business', encodeURI(props.location.search))) === '1', //表示从发现页面过来的，需要直接展示商家信息
-            propsData: props,
             shopCardShow: false, //是否显示红包列表
             isJingDong: false, //判断是否是京东商品过来的
             isCardShow: false, // 是否有红包可以领取
@@ -71,16 +70,10 @@ class ShopHome extends BaseComponent {
     //计算商品列的高度
     calculationHeight = (wx = 2.7, h) => document.documentElement.clientHeight - (window.isWX ? window.rem * wx : window.rem * h)
 
-    static getDerviedStateFromProps(nextProps, prevState) {
-        return {
-            propsData: nextProps
-        };
-    }
-
-    componentDidUpdate(prevProps, prevState) {
+    componentWillReceiveProps(prevProps, prevState) {
         if (process.env.NATIVE) {
-            const shoppingId = decodeURI(getUrlParam('id', encodeURI(this.state.propsData.location.search)));
-            const nextId = decodeURI(getUrlParam('id', encodeURI(prevState.propsData.location.search)));
+            const shoppingId = decodeURI(getUrlParam('id', encodeURI(this.props.location.search)));
+            const nextId = decodeURI(getUrlParam('id', encodeURI(prevProps.location.search)));
             if (shoppingId !== nextId) {
                 this.getShop(nextId);
                 this.getShopModel(nextId);
@@ -123,7 +116,6 @@ class ShopHome extends BaseComponent {
                         hasMore: false
                     });
                 }
-
                 this.setState((prevState) => (
                     {
                         dataSource: prevState.dataSource.cloneWithRows(this.temp.stackData),

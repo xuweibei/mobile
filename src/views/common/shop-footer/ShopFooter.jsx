@@ -7,54 +7,26 @@ import './ShopFooter.less';
 
 class ShopFooter extends React.PureComponent {
     static propTypes = {
-        active: PropTypes.string.isRequired,
         onTabChange: PropTypes.func.isRequired,
-        haveModalAll: PropTypes.bool.isRequired
+        haveModalAll: PropTypes.bool.isRequired,
+        active: PropTypes.bool.isRequired
     };
 
-    state = {
-        selectedTab: this.props.active,
-        haveModalAll: this.props.haveModalAll, //判断该店铺是否有模板，没有的话，就不显示店铺模板信息
-        propsData: this.props
-    };
-
-    static getDerivedStateFromProps(nextProps, prevState) {
-        return {
-            propsData: nextProps
-        };
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-        if (process.env.NATIVE) {
-            const haveNext = prevState.propsData.haveModalAll;
-            const have = this.state.propsData.haveModalAll;
-            if (haveNext !== have) {
-                // eslint-disable-next-line react/no-did-update-set-state
-                this.setState({
-                    haveModalAll: haveNext
-                });
-            }
-        }
-    }
 
     gotoPage = (path) => {
         this.props.onTabChange(path);
-        // this.context.store.dispatch(replace(`/${path}`));
-        this.setState({
-            selectedTab: path
-        });
     }
 
     //底部tab按钮
     dataList = () => {
-        const {haveModalAll, selectedTab} = this.state;
+        const {haveModalAll, active} = this.props;
         const arr = [
             {
                 title: '店铺首页',
                 key: 'home',
                 icon: <span className="icon bar-icon home-icon"/>,
                 selectedIcon: <span className="icon bar-icon home-icon-active"/>,
-                selected: selectedTab === 'shopHome',
+                selected: active === 'shopHome',
                 onPress: this.gotoPage.bind(this, 'shopHome')
             },
             {
@@ -62,7 +34,7 @@ class ShopFooter extends React.PureComponent {
                 key: 'category',
                 icon: <span className="icon bar-icon share-icon"/>,
                 selectedIcon: <span className="icon bar-icon share-icon-active"/>,
-                selected: selectedTab === 'category',
+                selected: active === 'category',
                 onPress: this.gotoPage.bind(this, 'category')
             },
             {
@@ -70,7 +42,7 @@ class ShopFooter extends React.PureComponent {
                 key: 'find',
                 icon: <span className="icon bar-icon find-icon"/>,
                 selectedIcon: <span className="icon bar-icon find-icon-active"/>,
-                selected: selectedTab === 'find',
+                selected: active === 'find',
                 onPress: this.gotoPage.bind(this, 'find')
             },
             {
@@ -78,7 +50,7 @@ class ShopFooter extends React.PureComponent {
                 key: 'im',
                 icon: <span className="icon bar-icon im-icon"/>,
                 selectedIcon: <span className="icon bar-icon im-icon-active"/>,
-                selected: selectedTab === 'im',
+                selected: active === 'im',
                 onPress: this.gotoPage.bind(this, 'im')
             }
         ];

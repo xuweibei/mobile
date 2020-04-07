@@ -5,9 +5,9 @@ import {InputItem} from 'antd-mobile';
 import classNames from 'classnames';
 import {connect} from 'react-redux';
 import AppNavBar from '../../../../common/navbar/NavBar';
+import {baseActionCreator as actionCreator} from '../../../../../redux/baseAction';
 import CategoryListView from './CategoryListView';
 import './CategoryList.less';
-
 
 const {getUrlParam, TD, goBackModal} = Utils;
 const {TD_EVENT_ID} = Constants;
@@ -25,35 +25,90 @@ class CategoryList extends BaseComponent {
         pageCount: 0, //总共页数
         keywords1: '',
         textStatus: false,
-        shopId: parseInt(getUrlParam('id', this.props.location.search), 10) || '',
-        cardNo: getUrlParam('cardNo', this.props.location.search) //优惠券页面跳转过来所需的参数
+        shopId:
+            parseInt(getUrlParam('id', this.props.location.search), 10) || '',
+        cardNo: getUrlParam('cardNo', this.props.location.search), //优惠券页面跳转过来所需的参数
+        isOriginal: getUrlParam('isOriginal', this.props.location.search)
     };
 
     componentWillMount() {
+        const {isOriginal} = this.state;
+        if (isOriginal === '1') { //优惠券跳转到分类的时候
+            this.props.setshoppingId('');
+        }
         this.init();
     }
 
-    componentWillReceiveProps(nextProps, value) { //路由跳转时的判断，id有变化就请求
-        if (this.state.shopId !== decodeURI(getUrlParam('id', encodeURI(nextProps.location.search)))) {
-            this.setState({
-                shopId: decodeURI(getUrlParam('id', encodeURI(nextProps.location.search))) === 'null' ? '' : decodeURI(getUrlParam('id', encodeURI(nextProps.location.search)))
-            }, () => {
-                this.init();
-            });
+    componentWillReceiveProps(nextProps, value) {
+        const {isOriginal, shopId, cardNo} = this.state;
+        if (isOriginal === '1') { //优惠券跳转到分类的时候
+            this.props.setshoppingId('');
+        }
+        //路由跳转时的判断，id有变化就请求
+        if (
+            (shopId
+            !== decodeURI(getUrlParam('id', encodeURI(nextProps.location.search)))) || (
+                cardNo
+            !== decodeURI(getUrlParam('cardNo', encodeURI(nextProps.location.search)))
+            )
+        ) {
+            this.setState(
+                {
+                    shopId:
+                        decodeURI(
+                            getUrlParam(
+                                'id',
+                                encodeURI(nextProps.location.search)
+                            )
+                        ) === 'null'
+                            ? ''
+                            : decodeURI(
+                                getUrlParam(
+                                    'id',
+                                    encodeURI(nextProps.location.search)
+                                )
+                            ),
+                    cardNo: decodeURI(
+                        getUrlParam(
+                            'cardNo',
+                            encodeURI(nextProps.location.search)
+                        )
+                    ) === 'null'
+                        ? ''
+                        : decodeURI(
+                            getUrlParam(
+                                'cardNo',
+                                encodeURI(nextProps.location.search)
+                            )
+                        )
+                },
+                () => {
+                    this.init();
+                }
+            );
         }
     }
 
     init = () => {
-        const title = decodeURI(getUrlParam('title', encodeURI(this.props.location.search)));
-        const flag = decodeURI(getUrlParam('flag', encodeURI(this.props.location.search)));
-        const keywords = decodeURI(getUrlParam('keywords', encodeURI(this.props.location.search)));
-        TD.log(TD_EVENT_ID.GOODS_CLASSIFY.ID, TD_EVENT_ID.GOODS_CLASSIFY.LABEL.LOOK_GOODS_DETAILS);
+        const title = decodeURI(
+            getUrlParam('title', encodeURI(this.props.location.search))
+        );
+        const flag = decodeURI(
+            getUrlParam('flag', encodeURI(this.props.location.search))
+        );
+        const keywords = decodeURI(
+            getUrlParam('keywords', encodeURI(this.props.location.search))
+        );
+        TD.log(
+            TD_EVENT_ID.GOODS_CLASSIFY.ID,
+            TD_EVENT_ID.GOODS_CLASSIFY.LABEL.LOOK_GOODS_DETAILS
+        );
         this.setState({
             keywords: decodeURIComponent(keywords),
             changeNav: flag,
             text: decodeURI(title)
         });
-    }
+    };
 
     //当前页面关键字搜索
     searchGoods = () => {
@@ -108,7 +163,7 @@ class CategoryList extends BaseComponent {
                 goBackModal();
             }
         }
-    }
+    };
 
     render() {
         const {text, changeNav, textStatus, shopId, cardNo} = this.state;
@@ -116,36 +171,38 @@ class CategoryList extends BaseComponent {
             <div
                 data-component="classify-list"
                 data-role="page"
-                className={classNames('classify-list',
-                    {WX: window.isWX})}
+                className={classNames('classify-list', {WX: window.isWX})}
             >
-                {
-                    !window.isWX && (
-                        changeNav === 'true' ? (
-                            <div className="seek">
-                                <div className="seek-left">
-                                    <InputItem
-                                        type="search"
-                                        clear
-                                        maxLength={20}
-                                        placeholder="搜索商品"
-                                        onKeyDown={this.keyDown}
-                                        onChange={(val) => this.getThisKeyWords(val)}
-                                    >
-                                        <div className="icon icon-lookup"/>
-                                    </InputItem>
-                                </div>
-                                <div className="seek-right" onClick={this.textClick}>{textStatus ? '搜索' : '取消'}</div>
+                {!window.isWX
+                    && (changeNav === 'true' ? (
+                        <div className="seek">
+                            <div className="seek-left">
+                                <InputItem
+                                    type="search"
+                                    clear
+                                    maxLength={20}
+                                    placeholder="搜索商品"
+                                    onKeyDown={this.keyDown}
+                                    onChange={(val) => this.getThisKeyWords(val)
+                                    }
+                                >
+                                    <div className="icon icon-lookup"/>
+                                </InputItem>
                             </div>
-                        ) : (
-                            <AppNavBar
-                                title={text}
-                                goBackModal={goBackModal}
-                                status="123"
-                            />
-                        )
-                    )
-                }
+                            <div
+                                className="seek-right"
+                                onClick={this.textClick}
+                            >
+                                {textStatus ? '搜索' : '取消'}
+                            </div>
+                        </div>
+                    ) : (
+                        <AppNavBar
+                            title={text}
+                            goBackModal={goBackModal}
+                            status="123"
+                        />
+                    ))}
                 <CategoryListView
                     id={shopId}
                     that={this}
@@ -158,7 +215,7 @@ class CategoryList extends BaseComponent {
     }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     const routing = state.get('routing');
     const base = state.get('base');
     return {
@@ -167,5 +224,7 @@ const mapStateToProps = state => {
     };
 };
 
-
-export default connect(mapStateToProps, null)(CategoryList);
+const mapDispatchToProps = {
+    setshoppingId: actionCreator.setshoppingId
+};
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryList);

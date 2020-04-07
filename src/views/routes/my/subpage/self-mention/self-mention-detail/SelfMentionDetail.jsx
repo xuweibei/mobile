@@ -6,6 +6,7 @@ import {myActionCreator as ActionCreator} from '../../../actions/index';
 import {baseActionCreator} from '../../../../../../redux/baseAction';
 import {shopCartActionCreator} from '../../../../shop-cart/actions/index';
 import AppNavBar from '../../../../../common/navbar/NavBar';
+import OrderPageCard from '../../../../../common/order-page-card';
 import BaseComponent from '../../../../../../components/base/BaseComponent';
 
 const {urlCfg} = Configs;
@@ -40,7 +41,10 @@ class ReDetail extends BaseComponent {
         address: '', //门店地址
         textarea: '', //获取备注信息
         protocolModal: false, //协议弹出框
-        propsData: this.props
+        propsData: this.props,
+        showCardList: false, //是否展示优惠券列表
+        priceArr: [], //获取红包数据
+        isRender: true //判断是否重新渲染红包列表
     };
 
     componentDidMount() {
@@ -68,14 +72,7 @@ class ReDetail extends BaseComponent {
         } else {
             this.getOrderSelf();
         }
-        // this.cardTicket();
     }
-
-    cardTicket = () => {
-        this.fetch(urlCfg.cardUseList, {}).then(res => {
-            console.log(res, '离开的方式');
-        });
-    };
 
     static getDerivedStateFromProps(nextProps, prevState) {
         return {
@@ -135,14 +132,52 @@ class ReDetail extends BaseComponent {
             }
         }).subscribe(res => {
             if (res && res.status === 0) {
+                this.setState(
+                    {
+                        OrderSelf: res,
+                        rdata: res.sufficiency.sufficiency_time,
+                        tabsr: res.sufficiency.tabs,
+                        alertPhone: res.phone,
+                        goodsArr: res.data.data,
+                        shopdata: res.data,
+                        address: res.sufficiency.sufficiency_address
+                    },
+                    () => {
+                        this.cardTicket(res.data);
+                    }
+                );
+            }
+        });
+    };
+
+    //查看是否有红包
+    cardTicket = data => {
+        const prArr = [],
+            priceArr = [];
+        if (data.data && data.data.length) {
+            data.data.forEach(item => {
+                prArr.push(item.id);
+                priceArr.push(item.price);
+            });
+        }
+        this.fetch(urlCfg.cardUseList, {
+            data: {
+                shop_no: data.shop_id,
+                pr: prArr.join(','),
+                price: priceArr.join(',')
+            }
+        }).subscribe(res => {
+            if (res && res.status === 0) {
+                const dataValue = res.data.card_list;
                 this.setState({
-                    OrderSelf: res,
-                    rdata: res.sufficiency.sufficiency_time,
-                    tabsr: res.sufficiency.tabs,
-                    alertPhone: res.phone,
-                    goodsArr: res.data.data,
-                    shopdata: res.data,
-                    address: res.sufficiency.sufficiency_address
+                    cardInfo:
+                        dataValue.length > 0
+                            ? dataValue.filter(item => item.available === 1)
+                            : [],
+                    priceArr:
+                        dataValue.length > 0
+                            ? dataValue.filter(item => item.selected === 1)
+                            : []
                 });
             }
         });
@@ -230,7 +265,8 @@ class ReDetail extends BaseComponent {
             currentTab,
             textarea,
             shopdata,
-            address
+            address,
+            priceArr
         } = this.state;
         const {
             setOrderInfo,
@@ -288,7 +324,8 @@ class ReDetail extends BaseComponent {
                     source: sou,
                     remarks: textarea,
                     car_id: carId,
-                    type: arr[0].if_express === '3' ? '2' : '1'
+                    type: arr[0].if_express === '3' ? '2' : '1',
+                    cards: priceArr.length ? priceArr.map(item => item.id) : []
                 }
             }).subscribe(res => {
                 if (res && res.status === 0) {
@@ -328,6 +365,47 @@ class ReDetail extends BaseComponent {
         e.stopPropagation();
     };
 
+    //开启或关闭优惠券选择
+    choiseCardList = () => {
+        this.setState(prevState => ({
+            isRender: false,
+            showCardList: !prevState.showCardList
+        }));
+    };
+
+    //开启或关闭优惠券选择
+    closeCardList = () => {
+        this.setState(prevState => ({
+            showCardList: !prevState.showCardList
+        }));
+    };
+
+    //点击确定
+    sureCheck = () => {
+        this.setState({
+            couponStatus: false
+        });
+    };
+
+    //点击确定按钮，获取数据
+    getCardValue = data => {
+        this.setState({
+            showCardList: false,
+            priceArr: data
+        });
+    };
+
+    //计算出需要扣除的红包总额
+    getCardPrice = data => {
+        let num = 0;
+        if (data.length) {
+            data.forEach(item => {
+                num += item.price;
+            });
+        }
+        return num;
+    };
+
     render() {
         const arr = JSON.parse(getValue('orderArr'));
         const {
@@ -343,8 +421,13 @@ class ReDetail extends BaseComponent {
             shopdata,
             goodsArr,
             address,
-            textarea
+            textarea,
+            cardInfo,
+            showCardList,
+            priceArr,
+            isRender
         } = this.state;
+        console.log(priceArr, '离开梵蒂冈');
         return (
             <div
                 data-component="Self-mentionDetail"
@@ -484,7 +567,7 @@ class ReDetail extends BaseComponent {
                                 </div>
                             </div>
                         ))}
-                    <List>
+                    <List className="list-line">
                         <Item
                             extra={(
                                 <TextareaItem
@@ -498,7 +581,24 @@ class ReDetail extends BaseComponent {
                         >
                             订单备注
                         </Item>
-                        <Item extra="123654">优惠券抵扣</Item>
+                        <Item
+                            onClick={this.choiseCardList}
+                            extra={(
+                                <span
+                                    className={
+                                        this.getCardPrice(priceArr)
+                                            ? 'ishas-card icon'
+                                            : 'no-has-cord icon'
+                                    }
+                                >
+                                    {this.getCardPrice(priceArr)
+                                        ? '- ' + this.getCardPrice(priceArr)
+                                        : '暂无可用抵扣'}
+                                </span>
+                            )}
+                        >
+                            优惠券抵扣
+                        </Item>
                     </List>
                     <div className="shop-bottom">
                         <div className="right-bottom">
@@ -512,7 +612,9 @@ class ReDetail extends BaseComponent {
                                 <div className="total-price-right">
                                     <span>合计：</span>
                                     <span className="money">
-                                        ￥{OrderSelf.all_price}
+                                        ￥
+                                        {OrderSelf.all_price
+                                            - this.getCardPrice(priceArr)}
                                     </span>
                                 </div>
                             </div>
@@ -527,7 +629,8 @@ class ReDetail extends BaseComponent {
                     <div className="altogether-center">
                         <span className="total-left">合计：</span>
                         <span className="total-right">
-                            ￥{OrderSelf.all_price}
+                            ￥
+                            {OrderSelf.all_price - this.getCardPrice(priceArr)}
                         </span>
                     </div>
                     <div className="altogether-right" onClick={this.submitSelf}>
@@ -579,6 +682,16 @@ class ReDetail extends BaseComponent {
                 >
                     <div className="protocol-content">{OrderSelf.agree}</div>
                 </Modal>
+
+                {/**优惠券 */}
+                <OrderPageCard
+                    showCardList={showCardList}
+                    closeCardList={this.closeCardList}
+                    cardLList={cardInfo}
+                    title="优惠券"
+                    getCardValue={this.getCardValue}
+                    isRender={isRender}
+                />
             </div>
         );
     }

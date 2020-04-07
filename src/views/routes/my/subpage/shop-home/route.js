@@ -6,7 +6,7 @@ import ShopHomeIndexTwoPage from './shop-home-index-two/ShopHomeIndexTwo';
 import ShopHomeIndexThirdPage from './shop-home-index-third/ShopHomeIndexThird';
 import ShopHomeIndexFourPage from './shop-home-index-four/ShopHomeIndexFour';
 import ShopHomeIndexFivePage from './shop-home-index-five/ShopHomeIndexFive';
-import ShopHomeDetailPage from './ShopHomeDetail';
+import ShopHomeDetailPage from './shop-modal/ShopHomeDetail';
 
 // const ShopHome = Loadable({
 //     loader: () => import(/* webpackChunkName: 'orderMains' */ './ShopHome'),
