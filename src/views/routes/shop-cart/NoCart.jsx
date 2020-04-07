@@ -622,7 +622,8 @@ class ShopCart extends BaseComponent {
                     pr_id: parseInt(item.pr_id, 10),
                     property: item.property_content,
                     num: item.num,
-                    if_express: currentIndex ? '0' : '1'
+                    if_express: currentIndex ? '0' : '1',
+                    no: item.shop_no
                 });
                 cartArr.push(item.id);
             }
