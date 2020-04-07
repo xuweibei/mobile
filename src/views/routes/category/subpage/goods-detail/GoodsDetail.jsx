@@ -375,8 +375,10 @@ class GoodsDetail extends BaseComponent {
             if_express: selectType,
             pr_id: parseInt(goodsDetail.id, 10),
             property: str,
-            num: paginationNum
+            num: paginationNum,
+            no: shop.no
         });
+        console.log(arr, 'asdjksahdkj');
         const {setOrder} = this.props;
         setOrder(arr);
         setValue('orderArr', JSON.stringify(arr));
