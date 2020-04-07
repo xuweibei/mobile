@@ -90,7 +90,6 @@ class CategoryListView extends BaseComponent {
     // 初始获取获取分类列表数据
     getCategoryList = (num, noLoading) => {
         const {currentIndex, showStatus, id, shopId} = this.state;
-        console.log(shopId, '离开过回家了');
         if (num) {
             this.setState({
                 initStatus: true
