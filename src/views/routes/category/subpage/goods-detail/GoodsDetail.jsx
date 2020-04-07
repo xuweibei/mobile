@@ -727,7 +727,7 @@ class GoodsDetail extends BaseComponent {
 
     // 获取优惠券
     getCoupon = () => {
-        this.fetch(urlCfg.getCoupon, {data: {type: 0}}).subscribe(res => {
+        this.fetch(urlCfg.getCoupon, {data: {type: 3}}).subscribe(res => {
             if (res && res.status === 0) {
                 const nums = res.data.card_list.map(item => parseInt(item.price_limit.replace(/[^0-9]/ig, ''), 10));
                 const max = nums.length > 0 ? Math.min.apply(null, nums) : null;
