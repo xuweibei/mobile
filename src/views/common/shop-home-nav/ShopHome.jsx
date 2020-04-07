@@ -130,7 +130,8 @@ class ShopHome extends BaseComponent {
 
     render() {
         const {shopModelArr, show} = this.props;
-        const {shopInfo, visible, starsArr, half} = this.state;
+        const {shopInfo, visible, half} = this.state;
+        const starsArr = [1, 2, 3, 4, 5];
         return (
             show ? '' : (
                 <div className="home-bar">
@@ -174,9 +175,6 @@ class ShopHome extends BaseComponent {
                                     {
                                         (shopInfo.is_jdshop && shopInfo.shoper_open_status !== '0' && half) ? <div className="icon icon-ban"/> : ''
                                     }
-                                    {
-                                        shopInfo && shopInfo.shoper_open_status === '0' && <span className="reatIng">休息中</span>
-                                    }
                                     {/* <span style={{color: '@duckling-yellow'}}>{shopInfo.shop_mark}分</span> */}
                                 </div>
                                 {
@@ -184,6 +182,9 @@ class ShopHome extends BaseComponent {
                                         <div className="home-text">
                                             {/*<span className="text">{shopInfo && shopInfo.shopName}</span>*/}
                                             <span className="text-num">人均消费 ￥{shopInfo && shopInfo.conper}元</span>
+                                            {
+                                                shopInfo && shopInfo.shoper_open_status === '0' && <span className="reatIng">休息中</span>
+                                            }
                                         </div>
                                     )
                                 }

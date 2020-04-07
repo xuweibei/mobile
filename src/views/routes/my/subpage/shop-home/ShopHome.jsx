@@ -173,7 +173,7 @@ class ShopHome extends BaseComponent {
     userCard = value => {
         if (value.types === 1) { //如果是商城平台券，则跳转到分类页面
             dropByCacheKey('CategoryListPage');
-            appHistory.push(`/categoryList?cardNo=${value.card_no}&title=${'优惠券可用商品'}`);
+            appHistory.push(`/categoryList?cardNo=${value.card_id}&title=${'优惠券可用商品'}`);
         } else if (value.types === 3) {
             appHistory.push(`/goodsDetail?id=${value.jump_id}`);
         } else {
@@ -386,6 +386,8 @@ class ShopHome extends BaseComponent {
         let str = '';
         if (type === 'business') {
             str = 'find';
+        } else if (type === 'modal') {
+            str = 'category';
         } else if (onOff) {
             str = 'shopHome';
         } else {

@@ -20,7 +20,7 @@ const tabsData = [
 
 const temp = {
     stackData: [],
-    pagesize: 5
+    pagesize: 6
 };
 export default class CardVoucher extends BaseComponent {
     constructor(props) {
@@ -152,7 +152,7 @@ export default class CardVoucher extends BaseComponent {
     goToUse = (value) => {
         if (value.types === '1') { //如果是商城平台券，则跳转到分类页面
             dropByCacheKey('CategoryListPage');
-            appHistory.push(`/categoryList?cardNo=${value.card_no}&title=${'优惠券可用商品'}`);
+            appHistory.push(`/categoryList?cardNo=${value.card_id}&title=${'优惠券可用商品'}`);
         } else if (value.types === '2') {
             appHistory.push(`/shopHome?id=${value.jump_id}`);
         } else {

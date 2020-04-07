@@ -272,6 +272,10 @@ class ReDetail extends BaseComponent {
                     <div className="total-price">
                         <div className="common-margin">
                             <div className="bookkeeping">
+                                <span className="bookkeeping-left">优惠券</span>
+                                <span className="bookkeeping-riht card-value">-￥{selfSufficiency.card_dic}</span>
+                            </div>
+                            <div className="all-prices">
                                 <span className="bookkeeping-left">C米</span>
                                 <span className="bookkeeping-riht">{selfSufficiency.all_deposit}</span>
                             </div>
@@ -389,7 +393,6 @@ class ReDetail extends BaseComponent {
                                 <div className="cancel-order" onClick={(e) => this.serviceRefund(e, selfSufficiency.order_id)}>申请售后</div>
                             )
                             }
-                            {selfSufficiency.return_name && <div className="cancel-order" onClick={(e) => this.skipAfterSale(e, selfSufficiency.return_id)}>{selfSufficiency.return_name}</div>}
                         </div>
                     )}
                 </div>

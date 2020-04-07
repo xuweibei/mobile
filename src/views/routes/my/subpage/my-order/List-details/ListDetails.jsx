@@ -308,6 +308,10 @@ class ListDetails extends BaseComponent {
                                 <div className="total-price">
                                     <div className="common-margin">
                                         <div className="total">
+                                            <span>优惠券</span>
+                                            <span className="card-value">-￥{canInfo.card_dic}</span>
+                                        </div>
+                                        <div className="total total-center">
                                             <span>C米</span>
                                             <span>{canInfo.all_deposit}</span>
                                         </div>

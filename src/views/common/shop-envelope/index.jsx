@@ -46,8 +46,8 @@ class ShopEnvlope extends React.PureComponent {
                                     </span>
                                 </div>
                                 <div className="card-main">
-                                    <p>{item.card_title}</p>
                                     <p>{item.limit_tip}</p>
+                                    <p>{item.card_title}</p>
                                     <p>{item.term_validity}</p>
                                     {item.btnCode === 1 ? (
                                         <span

@@ -146,7 +146,7 @@ class CategoryListView extends BaseComponent {
                     types: 2,
                     order: num || null,
                     keyword: keywords === 'null' ? '' : keywords,
-                    card_no: cardNo
+                    card_id: cardNo
                 }
             }, noLoading)
                 .subscribe((res) => {
