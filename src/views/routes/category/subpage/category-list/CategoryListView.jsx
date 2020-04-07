@@ -65,7 +65,8 @@ class CategoryListView extends BaseComponent {
             showStatus: [false, false, false],
             initStatus: false, // 判断是否显示筛选框
             id: props.id.toString(),
-            shopId: props.shoppingId
+            shopId: props.shoppingId,
+            cardNo: props.cardNo
         };
     }
 
@@ -75,10 +76,11 @@ class CategoryListView extends BaseComponent {
     }
 
     componentWillReceiveProps(data, value) {
-        if (data.id !== this.state.id) {
+        if ((data.id !== this.props.id) || (data.cardNo !== this.props.cardNo)) {
             this.setState({
                 id: data.id,
-                shopId: data.shoppingId
+                shopId: data.shoppingId,
+                cardNo: data.cardNo
             }, () => {
                 this.getCategoryList();
             });
@@ -88,6 +90,7 @@ class CategoryListView extends BaseComponent {
     // 初始获取获取分类列表数据
     getCategoryList = (num, noLoading) => {
         const {currentIndex, showStatus, id, shopId} = this.state;
+        console.log(shopId, '离开过回家了');
         if (num) {
             this.setState({
                 initStatus: true
@@ -98,8 +101,7 @@ class CategoryListView extends BaseComponent {
         } else {
             showStatus[currentIndex] = !showStatus[currentIndex];
         }
-        const {page} = this.state;
-        const {cardNo} = this.props;//优惠券页面跳转过来
+        const {page, cardNo} = this.state;
         const keywords = this.props.keywords;
         this.temp.isLoading = true;
         if (shopId) { //店内搜索

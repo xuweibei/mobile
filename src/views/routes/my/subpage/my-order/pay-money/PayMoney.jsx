@@ -91,20 +91,18 @@ class PayMoney extends BaseComponent {
 
     //获取数据
     getList = onOff => {
-        const {orderId, source, orderNum} = this.state;
-        const arr = [];
+        const {orderId, source} = this.state;
         this.fetch(urlCfg.payRightInfo, {
             data: {order_id: orderId},
             source //订单入口
         }).subscribe(res => {
             if (res && res.status === 0) {
-                arr.push(orderNum);
-                res.data.order = orderNum === 'null' ? '' : arr;
+                res.data.order = res.data.order_no;
                 if (onOff) {
                     //这里是为了区分首次进来和继续支付
                     this.setState({
                         listArr: res.data,
-                        orderNum: orderNum === 'null' ? '' : arr
+                        orderNum: res.data.order_no
                     });
                 }
                 this.setState(
@@ -253,25 +251,26 @@ class PayMoney extends BaseComponent {
         }).subscribe(res => {
             if (res && res.status === 0) {
                 if (process.env.NATIVE) {
-                    native('authInfo', res.data.response, dataList => {
-                        native('goH5', {'': ''});
-                        const data = dataList ? JSON.parse(dataList) : '';
-                        if (
-                            data
+                    native('authInfo',
+                        res.data ? res.data.arr : null, dataList => {
+                            native('goH5', {'': ''});
+                            const data = dataList ? JSON.parse(dataList) : '';
+                            if (
+                                data
                             && (data.status === '0' || data.status === 0)
-                        ) {
-                            appHistory.replace(
-                                `/paymentCompleted?allPrice=${
-                                    listArr.all_price
-                                }&id=${
-                                    res.data.order_id
-                                }&types=${selectIndex}&deposit=${listArr.deposit
+                            ) {
+                                appHistory.replace(
+                                    `/paymentCompleted?allPrice=${
+                                        listArr.all_price
+                                    }&id=${
+                                        res.data.order_id
+                                    }&types=${selectIndex}&deposit=${listArr.deposit
                                     || listArr.all_deposit}&if_express=${
-                                    res.data.if_express
-                                }&card=${res.data.card.card_no}&cardPrice=${res.data.card.price}`
-                            );
-                        }
-                    });
+                                        res.data.if_express
+                                    }&card=${res.data.card.card_no}&cardPrice=${res.data.card.price}`
+                                );
+                            }
+                        });
                 } else {
                     // window.location.href = res.data.mweb_url;
                 }

@@ -17,10 +17,18 @@ export const native = (str, obj, callBack = () => {}) => {
     if (process.env.NATIVE) { window.DsBridge.call(str, obj, callBack) }
 };
 
+//在点击返回的时候可以根据页面的不同做一些处理
+function doSomeing() {
+    const href = window.location.href;
+    if (href.includes('shopHome')) { //我的店铺退出的时候，清除掉一个店铺id，为了，优惠券到分类页面的时候的判断，
+        store.dispatch(baseActionCreator.setshoppingId(''));
+    }
+}
 //安卓底部回退按钮 // APP右滑
 global.goBack = function () {
     const onOff = store.getState().get('base').get('returnStatus');
     if (!onOff) {
+        doSomeing();
         if (appHistory.length() === 0 && process.env.NATIVE) {
             if (!window.location.href.includes('userAgreementDetail')) {
                 window.DsBridge.call('goBack', isAndroid ? 'null' : {}, () => {});

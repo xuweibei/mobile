@@ -3,8 +3,8 @@
  */
 import {connect} from 'react-redux';
 import {Carousel} from 'antd-mobile';
-import {baseActionCreator as actionCreator} from '../../../../../redux/baseAction';
-import AppNavBar from '../../../../common/navbar/NavBar';
+import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAction';
+import AppNavBar from '../../../../../common/navbar/NavBar';
 import './ShopHomeDetail.less';
 
 const {native, goBackModal} = Utils;
