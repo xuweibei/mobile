@@ -82,7 +82,7 @@ class NavBar extends React.PureComponent {
     //左边按钮图标点击样式
     backAway = () => {
         const {nativeGoBack, goBackModal} = this.props;
-        // this.doSomeing();
+        this.doSomeing();
         if (process.env.NATIVE) {
             //app状态下
             if (goBackModal) {

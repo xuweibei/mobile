@@ -47,8 +47,8 @@ export default class MyLogistics extends BaseComponent {
 
     //底部结构
     bottomModal = (logInfo, index, open) =>  (
-        <React.Fragment>
-            <div className="transport" key={logInfo.express_cate2}>
+        <React.Fragment key={logInfo.express_cate2}>
+            <div className="transport">
                 <div>
                     <span className="railing-state">{this.logisticsStatus(logInfo.status)}</span>
                 </div>
@@ -129,7 +129,7 @@ export default class MyLogistics extends BaseComponent {
         const {open, selectIndex, phoneArr} = this.state;
         const sidebar = (
             <List>
-                {phoneArr[selectIndex].map((item) => (<List.Item onClick={() => this.callPhone(item)}>{item}</List.Item>))}
+                {phoneArr[selectIndex].map((item) => (<List.Item key={item} onClick={() => this.callPhone(item)}>{item}</List.Item>))}
                 <List.Item onClick={() => this.setState({open: false})}>取消</List.Item>
             </List>
         );

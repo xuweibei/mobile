@@ -20,7 +20,7 @@ const tabsData = [
 
 const temp = {
     stackData: [],
-    pagesize: 5
+    pagesize: 6
 };
 export default class CardVoucher extends BaseComponent {
     constructor(props) {
@@ -140,7 +140,7 @@ export default class CardVoucher extends BaseComponent {
     //点击立即领取
     getCardReceive = (no) => {
         this.fetch(urlCfg.reciveCard, {data: {card_no: no}}, true).subscribe(res => {
-            if (res.status === 0) {
+            if (res && res.status === 0) {
                 showSuccess('领取成功');
                 temp.stackData = temp.stackData.filter(item => item.card_no !== no);
                 this.getList();
@@ -150,10 +150,10 @@ export default class CardVoucher extends BaseComponent {
 
     //去使用
     goToUse = (value) => {
-        if (value.types === 1) { //如果是商城平台券，则跳转到分类页面
+        if (value.types === '1') { //如果是商城平台券，则跳转到分类页面
             dropByCacheKey('CategoryListPage');
-            appHistory.push(`/categoryList?cardNo=${value.card_no}&title=${'优惠券可用商品'}`);
-        } else if (value.types === 2) {
+            appHistory.push(`/categoryList?cardNo=${value.card_id}&title=${'优惠券可用商品'}`);
+        } else if (value.types === '2') {
             appHistory.push(`/shopHome?id=${value.jump_id}`);
         } else {
             appHistory.push(`/goodsDetail?id=${value.jump_id}`);

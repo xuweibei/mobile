@@ -178,10 +178,10 @@ class OrderPageCard extends React.PureComponent {
                                         >
                                             <div className="card_describe">
                                                 <p className="card_limit">
-                                                    {item.limit_tip}
+                                                    {item.card_title}
                                                 </p>
                                                 <p className="card_limit_direct">
-                                                    {item.card_title}
+                                                    {item.limit_tip}
                                                 </p>
                                                 <span className="card_times">
                                                     {item.term_validity}

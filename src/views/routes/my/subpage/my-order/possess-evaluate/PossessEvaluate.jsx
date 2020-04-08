@@ -606,7 +606,7 @@ class PossessEvaluate extends BaseComponent {
                             initialPage={this.state.tabkey}
                             animated
                             useOnPan
-                            swipeable
+                            swipeable={false}
                             onChange={this.tabChange}
                         >
                             {

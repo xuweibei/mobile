@@ -24,6 +24,7 @@ function doSomeing() {
         store.dispatch(baseActionCreator.setshoppingId(''));
     }
 }
+
 //安卓底部回退按钮 // APP右滑
 global.goBack = function () {
     const onOff = store.getState().get('base').get('returnStatus');
@@ -73,7 +74,7 @@ export function goBackModal() {
 //判断部分机型边框样式不兼容
 export function nativeCssDiff() {
     const str = navigator.userAgent;
-    console.log(str, '型号参数查看');
+    // console.log(str, '型号参数查看');
     const phoneModal =  ['OPPO R7sm', 'm1 note', 'Letv X501', 'Redmi Note 4X', 'OPPO A59m', 'COL-AL10', 'HONOR'];
     let onOff = false;
     phoneModal.forEach(item => {

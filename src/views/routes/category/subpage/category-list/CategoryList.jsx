@@ -5,7 +5,6 @@ import {InputItem} from 'antd-mobile';
 import classNames from 'classnames';
 import {connect} from 'react-redux';
 import AppNavBar from '../../../../common/navbar/NavBar';
-import {baseActionCreator as actionCreator} from '../../../../../redux/baseAction';
 import CategoryListView from './CategoryListView';
 import './CategoryList.less';
 
@@ -33,18 +32,10 @@ class CategoryList extends BaseComponent {
     };
 
     componentWillMount() {
-        const {isOriginal} = this.state;
-        if (isOriginal === '1') { //优惠券跳转到分类的时候
-            this.props.setshoppingId('');
-        }
         this.init();
     }
 
     componentWillReceiveProps(nextProps, value) {
-        const {isOriginal, shopId, cardNo} = this.state;
-        if (isOriginal === '1') { //优惠券跳转到分类的时候
-            this.props.setshoppingId('');
-        }
         //路由跳转时的判断，id有变化就请求
         if (
             (shopId
@@ -226,7 +217,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispatchToProps = {
-    setshoppingId: actionCreator.setshoppingId
-};
-export default connect(mapStateToProps, mapDispatchToProps)(CategoryList);
+export default connect(mapStateToProps, null)(CategoryList);

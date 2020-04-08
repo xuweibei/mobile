@@ -427,7 +427,6 @@ class ReDetail extends BaseComponent {
             priceArr,
             isRender
         } = this.state;
-        console.log(priceArr, '离开梵蒂冈');
         return (
             <div
                 data-component="Self-mentionDetail"

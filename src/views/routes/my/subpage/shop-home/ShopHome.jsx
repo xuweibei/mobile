@@ -138,7 +138,7 @@ class ShopHome extends BaseComponent {
     //获取红包信息
     getCard = (id) => {
         this.fetch(urlCfg.getCoupon, {data: {type: 2, id}}).subscribe(res => {
-            if (res.status === 0) {
+            if (res && res.status === 0) {
                 res.data.card_list.forEach(item => {
                     item.btnCode = 1; //设置按钮 ， 1为未领取 2为已领取 默认为 1
                 });
@@ -154,7 +154,7 @@ class ShopHome extends BaseComponent {
     //红包，点击立即领取
     getCardProps = (no) => {
         this.fetch(urlCfg.reciveCard, {data: {card_no: no}}, true).subscribe(res => {
-            if (res.status === 0) {
+            if (res && res.status === 0) {
                 showSuccess('领取成功');
                 const {cardData} = this.state;
                 cardData.forEach(item => {
@@ -173,7 +173,7 @@ class ShopHome extends BaseComponent {
     userCard = value => {
         if (value.types === 1) { //如果是商城平台券，则跳转到分类页面
             dropByCacheKey('CategoryListPage');
-            appHistory.push(`/categoryList?cardNo=${value.card_no}&title=${'优惠券可用商品'}`);
+            appHistory.push(`/categoryList?cardNo=${value.card_id}&title=${'优惠券可用商品'}`);
         } else if (value.types === 3) {
             appHistory.push(`/goodsDetail?id=${value.jump_id}`);
         } else {
@@ -386,6 +386,8 @@ class ShopHome extends BaseComponent {
         let str = '';
         if (type === 'business') {
             str = 'find';
+        } else if (type === 'modal') {
+            str = 'category';
         } else if (onOff) {
             str = 'shopHome';
         } else {
