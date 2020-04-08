@@ -167,7 +167,6 @@ class MyOrder extends BaseComponent {
                         return result;
                     });
                     temp.stackData = temp.stackData.concat(arr);
-                    console.log(temp.stackData);
                     //数组去重，这里的主要目的是为了，当点击立即领取之后，会出现一个位置的空缺，数据库会将这条数据移除
                     //后面的数据会补上来，这时，请求当页的数据，会将补上来的那条数据请求过来，不过也会因此多请求重复的数据
                     //所以去重就可以达到将新数据请求过来的目的
@@ -187,14 +186,11 @@ class MyOrder extends BaseComponent {
                         hasMore: false
                     });
                 }
-                const aaa =  new ListView.DataSource({
+                const otherData =  new ListView.DataSource({
                     rowHasChanged: (row1, row2) => row1 !== row2
                 });
-                // const arr =
-                /*const oldAry = [...temp.stackData];
-                const newAry = oldAry.map(item => Object.assign({}, item));*/
                 this.setState(prevState => ({
-                    dataSource: aaa.cloneWithRows(
+                    dataSource: otherData.cloneWithRows(
                         [...temp.stackData]
                     ),
                     pageCount: res.pageCount,

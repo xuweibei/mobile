@@ -135,7 +135,7 @@ class PayMoney extends BaseComponent {
             second %= 3600; //余数代表 剩下的秒数；
             const minute = Math.floor(second / 60);
             second %= 60;
-            const str =                supple(hour) + ':' + supple(minute) + ':' + supple(second);
+            const str = supple(hour) + ':' + supple(minute) + ':' + supple(second);
             that.setState({
                 remainingTime: str
             });
@@ -404,7 +404,8 @@ class PayMoney extends BaseComponent {
         const {maturityTme, listArr} = this.state;
         const {
             showConfirm,
-            location: {search}
+            location: {search},
+            setReturn
         } = this.props;
         const down = decodeURI(getUrlParam('down', encodeURI(search))); //线下订单过来标识
         const oDate = new Date(); //获取日期对象
@@ -432,7 +433,7 @@ class PayMoney extends BaseComponent {
                     removeValue('orderInfo');
                     removeValue('orderArr');
                     if (arrInfo) {
-                        if (arr[0] && arr[0].if_express === '1') {
+                        if (arr && arr[0] && arr[0].if_express === '1') {
                             if (appLength === 0) {
                                 //线上订单，用户取消支付的时候，路由都没了，就走这里
                                 appHistory.push('/myOrder/fk');
@@ -468,7 +469,7 @@ class PayMoney extends BaseComponent {
                 }
             ]
         });
-        this.props.setReturn(true);
+        setReturn(true);
     };
 
     //cam输入框聚焦

@@ -16,7 +16,7 @@ const {appHistory, native, showInfo} = Utils;
 
 class showButton extends BaseComponent {
     static propTypes = {
-        visible: PropTypes.bool.isRequired
+        visible: PropTypes.object.isRequired
     }
 
     //选择分享类型

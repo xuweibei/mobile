@@ -138,7 +138,7 @@ class ShopHome extends BaseComponent {
     //获取红包信息
     getCard = (id) => {
         this.fetch(urlCfg.getCoupon, {data: {type: 2, id}}).subscribe(res => {
-            if (res.status === 0) {
+            if (res && res.status === 0) {
                 res.data.card_list.forEach(item => {
                     item.btnCode = 1; //设置按钮 ， 1为未领取 2为已领取 默认为 1
                 });
@@ -154,7 +154,7 @@ class ShopHome extends BaseComponent {
     //红包，点击立即领取
     getCardProps = (no) => {
         this.fetch(urlCfg.reciveCard, {data: {card_no: no}}, true).subscribe(res => {
-            if (res.status === 0) {
+            if (res && res.status === 0) {
                 showSuccess('领取成功');
                 const {cardData} = this.state;
                 cardData.forEach(item => {

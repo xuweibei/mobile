@@ -203,6 +203,29 @@ class refundDetails extends BaseComponent {
         showSuccess('复制成功');
     }
 
+    //底部按钮
+    bottomButton = (num) => {
+        const {refundArr} = this.state;
+        const blockModal = new Map([
+            [
+                '1',
+                <React.Fragment>
+                    <div onClick={this.revoke} className="immediate-evaluation-c">撤销申请</div>
+                    <div onClick={() => this.application(refundArr)} className="immediate-evaluation">修改申请</div>
+                </React.Fragment>
+            ],
+
+            [
+                '1',
+                <React.Fragment>
+                    <div onClick={this.revoke} className="immediate-evaluation-c">撤销申请</div>
+                    <div onClick={this.complaint} className="immediate-evaluation">投诉</div>
+                </React.Fragment>
+            ]
+        ]);
+        return blockModal.get(num);
+    }
+
     render() {
         const {refundArr} = this.state;
         const type = decodeURI(getUrlParam('type', encodeURI(this.props.location.search)));
@@ -390,14 +413,11 @@ class refundDetails extends BaseComponent {
                 </div>
                 <div/>
                 {
-                    type === '2' && (//type为2表示线下订单过来的
+                    (type === '2' && refundArr && this.bottomButton(refundArr.status)) ? (//type为2表示线下订单过来的
                         <div className="cancel-order-box">
-                            {refundArr && refundArr.status === '1' && <div onClick={this.revoke} className="immediate-evaluation-c">撤销申请</div>}
-                            {refundArr && refundArr.status === '1' && <div onClick={() => this.application(refundArr)} className="immediate-evaluation">修改申请</div>}
-                            {refundArr && refundArr.status === '2' && <div onClick={this.revoke} className="immediate-evaluation-c">撤销申请</div>}
-                            {refundArr && refundArr.status === '2' && <div onClick={this.complaint} className="immediate-evaluation">投诉</div>}
+                            {this.bottomButton(refundArr.status)}
                         </div>
-                    )
+                    ) : ''
                 }
             </div>
         );

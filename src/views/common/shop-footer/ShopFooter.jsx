@@ -9,7 +9,7 @@ class ShopFooter extends React.PureComponent {
     static propTypes = {
         onTabChange: PropTypes.func.isRequired,
         haveModalAll: PropTypes.bool.isRequired,
-        active: PropTypes.bool.isRequired
+        active: PropTypes.string.isRequired
     };
 
 

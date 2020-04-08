@@ -123,7 +123,7 @@ export default class MyOrder extends BaseComponent {
                         <Accordion.Panel header={this.header()}>
                             {
                                 orderInfo.length > 0 ? orderInfo.map((item, index) => (
-                                    <List>
+                                    <List key={item}>
                                         <div className="logistics-box">
                                             <div className="logistics-left">
                                                 <div className="time">{item.time.substr(5, 5)}</div>

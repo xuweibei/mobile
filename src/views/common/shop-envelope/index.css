@@ -5,7 +5,7 @@
   }
   100% {
     left: 0px;
-    bottom: 96px;
+    bottom: 80px;
   }
 }
 .shop-env-wrap {
@@ -91,7 +91,7 @@
   margin-left: 24px;
   margin-top: 34px;
   position: relative;
-  width: 68%;
+  width: 71%;
 }
 .shop-env-wrap .shop-env-main .shop-env-list .card-view .card-main .card-use {
   width: 140px;
