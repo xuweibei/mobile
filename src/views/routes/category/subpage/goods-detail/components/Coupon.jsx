@@ -59,8 +59,9 @@ export default class Coupon extends React.PureComponent {
                                     <div className="coupon-right">
                                         <div className="right-left">
                                             <div>
-                                                <div className="right-left-title">{item.limit_tip}</div>
-                                                <div className="right-left-center">{item.card_title}</div>
+                                                <div className="right-left-title">{item.card_title}</div>
+                                                <div className="right-left-center">{item.limit_tip}</div>
+                                                {/* <div className="right-left-center">{item.card_title}</div> */}
                                                 <div className="right-left-date">{item.term_validity}</div>
                                             </div>
                                         </div>

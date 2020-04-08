@@ -34,7 +34,8 @@ class Home extends BaseComponent {
         pouponTwoStatus: false, // 控制优惠券1显示隐藏
         pouponText: [], // 优惠券右侧文字
         couponList: {}, // 优惠券数据
-        getStatus: false || [] // 优惠券领取状态
+        getStatus: false || [], // 优惠券领取状态
+        cardNo: []
     };
 
     componentWillMount() {
@@ -191,7 +192,7 @@ class Home extends BaseComponent {
 
     //领取优惠券
     reciveCard = (no, index, id, type) => {
-        const {userToken} = this.props;
+        const {userToken, cardNo} = this.state;
 
         if (!userToken) {
             appHistory.push('/login');
@@ -199,10 +200,10 @@ class Home extends BaseComponent {
 
         const {getStatus, pouponText} = this.state;
         if (getStatus[index]) {
-            if (type && type === 2) {
+            if (type && type === '2') {
                 appHistory.push(`/goodsDetail?id=${id}`);
-            } else if (type && type === 3) {
-                appHistory.push(`/shopHome?id=${id}`);
+            } else if (type && type === '1') {
+                appHistory.push(`/categoryList?flag=${''}&keywords=${''}&id=${''}&cardId=${cardNo}&title=${'优惠券适用商品'}`);
             }
             return;
         }
@@ -215,7 +216,8 @@ class Home extends BaseComponent {
                     text.splice(index, 1, '立即使用');
                     return {
                         getStatus: status,
-                        pouponText: text
+                        pouponText: text,
+                        cardNo: res.data.card_id
                     };
                 });
                 Toast.info('优惠券领取成功', 1);
@@ -223,6 +225,7 @@ class Home extends BaseComponent {
         });
     }
 
+    // appHistory.push(`/categoryList?flag=${true}&keywords=${encodeURIComponent(keywords)}&id=${''}`);
     getCoup =(no) => {
         this.fetch(urlCfg.reciveCard, {data: {card_no: no}}).subscribe(res => {
             if (res && res.status === 0) {

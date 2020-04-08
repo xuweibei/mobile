@@ -28,7 +28,8 @@ class CategoryList extends BaseComponent {
         shopId:
             parseInt(getUrlParam('id', this.props.location.search), 10) || '',
         cardNo: getUrlParam('cardNo', this.props.location.search), //优惠券页面跳转过来所需的参数
-        isOriginal: getUrlParam('isOriginal', this.props.location.search)
+        isOriginal: getUrlParam('isOriginal', this.props.location.search),
+        cardID: getUrlParam('cardId', this.props.location.search)
     };
 
     componentWillMount() {
@@ -47,9 +48,9 @@ class CategoryList extends BaseComponent {
         //路由跳转时的判断，id有变化就请求
         if (
             (shopId
-            !== decodeURI(getUrlParam('id', encodeURI(nextProps.location.search)))) || (
+                !== decodeURI(getUrlParam('id', encodeURI(nextProps.location.search)))) || (
                 cardNo
-            !== decodeURI(getUrlParam('cardNo', encodeURI(nextProps.location.search)))
+                !== decodeURI(getUrlParam('cardNo', encodeURI(nextProps.location.search)))
             )
         ) {
             this.setState(
@@ -209,6 +210,7 @@ class CategoryList extends BaseComponent {
                     onRef={this.onRef}
                     keywords={this.state.keywords}
                     cardNo={cardNo}
+                    cardID={this.state.cardID}
                 />
             </div>
         );

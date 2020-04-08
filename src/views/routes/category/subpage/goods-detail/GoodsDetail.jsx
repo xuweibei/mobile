@@ -101,7 +101,8 @@ class GoodsDetail extends BaseComponent {
         getCoupon: [], // 当前优惠券领取状态
         isDetail: true, // 判断页面
         maxNums: null, // 优惠券最大面额
-        sayNo: false // 暂无优惠券
+        sayNo: false, // 暂无优惠券
+        maskStatus: false
     };
 
     componentDidMount() {
@@ -729,7 +730,8 @@ class GoodsDetail extends BaseComponent {
 
     // 获取优惠券
     getCoupon = () => {
-        this.fetch(urlCfg.getCoupon, {data: {type: 3}}).subscribe(res => {
+        const {goodId} = this.state;
+        this.fetch(urlCfg.getCoupon, {data: {type: 3, pr_id: parseInt(goodId, 10)}}).subscribe(res => {
             if (res && res.status === 0) {
                 const nums = res.data.card_list.map(item => parseInt(item.price_limit.replace(/[^0-9]/ig, ''), 10));
                 const max = nums.length > 0 ? Math.min.apply(null, nums) : null;
