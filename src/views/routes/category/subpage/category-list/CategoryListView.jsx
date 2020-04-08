@@ -90,6 +90,7 @@ class CategoryListView extends BaseComponent {
     // 初始获取获取分类列表数据
     getCategoryList = (num, noLoading) => {
         const {currentIndex, showStatus, id, shopId} = this.state;
+        // console.log(shopId, '离开过回家了');
         if (num) {
             this.setState({
                 initStatus: true
@@ -138,6 +139,7 @@ class CategoryListView extends BaseComponent {
                 }
             });
         } else {
+            console.log(this.props.cardID, 'sjkahdjkhdasjk');
             this.fetch(urlCfg.getCategoryList, {
                 data: {
                     page: page,
@@ -146,7 +148,8 @@ class CategoryListView extends BaseComponent {
                     types: 2,
                     order: num || null,
                     keyword: keywords === 'null' ? '' : keywords,
-                    card_id: cardNo
+                    card_no: cardNo,
+                    card_id: this.props.cardID ? parseInt(this.props.cardID, 10) : ''
                 }
             }, noLoading)
                 .subscribe((res) => {
