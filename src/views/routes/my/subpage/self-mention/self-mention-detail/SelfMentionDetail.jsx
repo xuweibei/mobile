@@ -160,9 +160,11 @@ class ReDetail extends BaseComponent {
                 priceArr.push(item.price);
             });
         }
+        const arr = JSON.parse(getValue('orderArr'));
+        const no = arr ? arr[0].no : '';
         this.fetch(urlCfg.cardUseList, {
             data: {
-                shop_no: data.shop_id,
+                shop_no: no,
                 pr: prArr.join(','),
                 price: priceArr.join(',')
             }

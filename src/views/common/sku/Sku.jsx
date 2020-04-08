@@ -397,7 +397,7 @@ class Sku extends React.PureComponent {
                     </div>
                     {isZM ? (
                         <div className="sku-btn">
-                            <div onClick={() => this.onSubmit(1)}>加入购物车</div>
+                            <div style={{border: nativeCssDiff() ? '1PX solid #FF2D51' : '0.01rem solid #FF2D51'}} onClick={() => this.onSubmit(1)}>加入购物车</div>
                             <div onClick={() => this.onSubmit(2)}>立即购买</div>
                         </div>
                     ) : (
