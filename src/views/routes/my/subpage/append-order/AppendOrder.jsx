@@ -287,13 +287,11 @@ class appendOrder extends BaseComponent {
                             const price = [];
                             shop.data.forEach(item => {
                                 goodsId.push(item.id);
-                                price.push(item.price);
+                                price.push(parseFloat(item.price) * item.num);
                             });
                             this.getCoupon(Number(arr[0].no), goodsId.join(','), price.join(','));
                         });
                     }
-
-
                     this.setState({
                         total: res.all_price,
                         allDeposit: res.all_deposit,
@@ -551,8 +549,6 @@ class appendOrder extends BaseComponent {
 
     // 获取优惠券
     getCoupon = (id, ids, prices) => {
-        const {couponData} = this.state;
-        if (couponData) return;
         this.fetch(urlCfg.cardUseList,
             {
                 data: {
