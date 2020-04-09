@@ -22,6 +22,10 @@ function doSomeing() {
     const href = window.location.href;
     if (href.includes('shopHome')) { //我的店铺退出的时候，清除掉一个店铺id，为了，优惠券到分类页面的时候的判断，
         store.dispatch(baseActionCreator.setshoppingId(''));
+    } else if (href.includes('myOrder')) {
+        window.DsBridge.call('setNavColor', {
+            color: '#ff2d51'
+        });
     }
 }
 

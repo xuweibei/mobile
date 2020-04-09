@@ -8,7 +8,7 @@ import BaseComponent from '../../../../../../components/base/BaseComponent';
 import {baseActionCreator as actionCreator} from '../../../../../../redux/baseAction';
 import './RefundDetails.less';
 
-const {getUrlParam, appHistory, showInfo, native, showSuccess} = Utils;
+const {getUrlParam, appHistory, showInfo, native, showSuccess, nativeCssDiff} = Utils;
 const {urlCfg} = Configs;
 
 const {MESSAGE: {Form, Feedback}} = Constants;
@@ -210,16 +210,16 @@ class refundDetails extends BaseComponent {
             [
                 '1',
                 <React.Fragment>
-                    <div onClick={this.revoke} className="immediate-evaluation-c">撤销申请</div>
-                    <div onClick={() => this.application(refundArr)} className="immediate-evaluation">修改申请</div>
+                    <div style={{border: nativeCssDiff() ? '1PX solid #666' : '0.01rem solid #666'}} onClick={this.revoke} className="immediate-evaluation-c">撤销申请</div>
+                    <div style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.01rem solid #ff2d51'}} onClick={() => this.application(refundArr)} className="immediate-evaluation">修改申请</div>
                 </React.Fragment>
             ],
 
             [
                 '1',
                 <React.Fragment>
-                    <div onClick={this.revoke} className="immediate-evaluation-c">撤销申请</div>
-                    <div onClick={this.complaint} className="immediate-evaluation">投诉</div>
+                    <div style={{border: nativeCssDiff() ? '1PX solid #666' : '0.01rem solid #666'}} onClick={this.revoke} className="immediate-evaluation-c">撤销申请</div>
+                    <div style={{border: nativeCssDiff() ? '1PX solid #ff2d51' : '0.01rem solid #ff2d51'}} onClick={this.complaint} className="immediate-evaluation">投诉</div>
                 </React.Fragment>
             ]
         ]);

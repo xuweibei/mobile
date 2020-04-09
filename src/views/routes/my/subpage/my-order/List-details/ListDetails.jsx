@@ -280,7 +280,7 @@ class ListDetails extends BaseComponent {
                     <div
                         className="cancel-order"
                         style={{
-                            borderRight: nativeCssDiff()
+                            border: nativeCssDiff()
                                 ? '1PX solid #666'
                                 : '0.02rem solid #666'
                         }}
@@ -306,7 +306,7 @@ class ListDetails extends BaseComponent {
                 <div
                     className="cancel-order"
                     style={{
-                        borderRight: nativeCssDiff()
+                        border: nativeCssDiff()
                             ? '1PX solid #666'
                             : '0.02rem solid #666'
                     }}
@@ -320,7 +320,7 @@ class ListDetails extends BaseComponent {
                 <div
                     className="cancel-order"
                     style={{
-                        borderRight: nativeCssDiff()
+                        border: nativeCssDiff()
                             ? '1PX solid #666'
                             : '0.02rem solid #666'
                     }}
@@ -334,7 +334,7 @@ class ListDetails extends BaseComponent {
                 <div
                     className="cancel-order"
                     style={{
-                        borderRight: nativeCssDiff()
+                        border: nativeCssDiff()
                             ? '1PX solid #666'
                             : '0.02rem solid #666'
                     }}
