@@ -111,7 +111,6 @@ class GoodsDetail extends BaseComponent {
 
     init = () => {
         this.getGoodsDetail();
-        this.getCoupon();
         window.addEventListener('scroll', this.handleScroll);
         scrollSpy.update();
     };
@@ -242,6 +241,7 @@ class GoodsDetail extends BaseComponent {
                         },
                         () => {
                             this.getGoodsStatus();
+                            this.getCoupon();
                         }
                     );
                 }
@@ -730,8 +730,8 @@ class GoodsDetail extends BaseComponent {
 
     // 获取优惠券
     getCoupon = () => {
-        const {goodId} = this.state;
-        this.fetch(urlCfg.getCoupon, {data: {type: 3, pr_id: parseInt(goodId, 10)}}).subscribe(res => {
+        const {goodId, shop} = this.state;
+        this.fetch(urlCfg.getCoupon, {data: {type: 3, pr_id: parseInt(goodId, 10), shop_id: parseInt(shop.id, 10)}}).subscribe(res => {
             if (res && res.status === 0) {
                 const nums = res.data.card_list.map(item => parseInt(item.price_limit.replace(/[^0-9]/ig, ''), 10));
                 const max = nums.length > 0 ? Math.min.apply(null, nums) : null;
