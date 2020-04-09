@@ -36,6 +36,7 @@ class CategoryList extends BaseComponent {
     }
 
     componentWillReceiveProps(nextProps, value) {
+        const {shopId, cardNo} = this.state;
         //路由跳转时的判断，id有变化就请求
         if (
             (shopId

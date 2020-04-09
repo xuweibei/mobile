@@ -60,7 +60,8 @@ class appendOrder extends BaseComponent {
         goodsArr: this.props.arr,
         allDeposit: 0,
         goShop: true, //是否显示进店按钮
-        couponData: undefined
+        couponData: undefined,
+        curCoupon: null
     };
 
     componentDidMount() {
@@ -504,39 +505,32 @@ class appendOrder extends BaseComponent {
             showFail('该劵不能使用!');
             return;
         }
-        const {checkCouponStatus} = this.state;
-        const status = [...checkCouponStatus];
+        const {curCoupon} = this.state;
+        const status = [...this.state.checkCouponStatus];
         let pr = 0;
         const result = status.filter(item => item.type === coupon.acc_types);
         const selectArr = [];
-        // 判断当前是平台卷还是商品卷
-        // if (coupon.acc_types === '1') {
-        //     result = status.filter(item => item.type === coupon.acc_types);
-        //     // const nowIndex = status.findIndex(nowValue =>  nowValue.no === coupon.card_no);
-        // } else {
-        //     result = status.filter(item => item.type === coupon.acc_types);
-        //     // const nowIndex = status.findIndex(nowValue =>  nowValue.no === coupon.card_no);
-        // }
         result.forEach(value => {
             const i = status.findIndex(item => item.no === value.no);
-            status[i].defaultSelect = false;
+            if (curCoupon !== index) {
+                status[i].defaultSelect = false;
+            }
         });
-        this.setState(pre => {
-            status.splice(index, 1, Object.assign(status[index], {defaultSelect: !status[index].defaultSelect}));
-            status.forEach(item => {
-                if (item.defaultSelect) {
-                    selectArr.push(item);
-                }
-            });
-            selectArr.forEach(item => {
-                pr += item.price;
-            });
-            return {
-                checkCouponStatus: status,
-                useCouponStatus: false,
-                couponPrice: pr
-            };
+        status[index].defaultSelect = !status[index].defaultSelect;
+        status.forEach(item => {
+            if (item.defaultSelect) {
+                selectArr.push(item);
+            }
         });
+        selectArr.forEach(item => {
+            pr += item.price;
+        });
+        this.setState(pre => ({
+            checkCouponStatus: status,
+            useCouponStatus: false,
+            couponPrice: pr,
+            curCoupon: index
+        }));
     }
 
     // 选择不使用优惠券
@@ -748,7 +742,7 @@ class appendOrder extends BaseComponent {
                                     </List>
                                     <div className="payable">
                                         <span>实付款</span>
-                                        <span>￥{parseInt(shopInfo[index].actual_all_price, 10) - couponPrice}</span>
+                                        <span>￥{parseFloat(total) - couponPrice < 0 ? 0 : parseFloat(total) - couponPrice}</span>
                                     </div>
                                 </div>
                             ))
@@ -766,7 +760,7 @@ class appendOrder extends BaseComponent {
                                 <div className="total-price">
                                     <div>
                                         <span className="price-left">合计：</span>
-                                        <span className="total-pri">￥{parseInt(total, 10) - couponPrice}</span>
+                                        <span className="total-pri">￥{parseFloat(total) - couponPrice < 0 ? 0 : parseFloat(total) - couponPrice}</span>
                                     </div>
                                     {/* <div className="total-dep">C米:{allDeposit}</div> */}
                                 </div>
