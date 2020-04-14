@@ -100,7 +100,7 @@ class GoodsDetail extends BaseComponent {
         couponList: {}, // 优惠券数据
         getCoupon: [], // 当前优惠券领取状态
         isDetail: true, // 判断页面
-        maxNums: null, // 优惠券最大面额
+        maxNums: 0, // 优惠券最大面额
         sayNo: false, // 暂无优惠券
         maskStatus: false
     };

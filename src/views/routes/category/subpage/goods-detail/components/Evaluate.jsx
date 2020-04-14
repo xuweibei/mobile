@@ -26,7 +26,6 @@ export default class Evaluate extends React.PureComponent {
 
     render() {
         const {Element, openCoupon, names, isZM, max, goodsDetail, shop, shopH, openSku, hasType, evalute, routeToEvalute, createStar, returnLev} = this.props;
-
         return (
             <Element name="evaluate" className="goods-shop">
                 {goodsDetail.app_type !== '3' && (
@@ -56,7 +55,7 @@ export default class Evaluate extends React.PureComponent {
                         <div className="coupon" onClick={openCoupon}>
                             <div className="coupon-left">
                                 <span>领劵</span>
-                                <span className="icon icon-scan">{max ? `领取优惠券, 满${max}元可领劵` : '暂无优惠券可领取'}</span>
+                                <span className="icon icon-scan">{max >= 0 ? `领取优惠券, 满${max}元可领劵` : '暂无优惠券可领取'}</span>
                             </div>
                             <div className="coupin-right">
                                 <span className="icon right-icon"/>
